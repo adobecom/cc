@@ -1,6 +1,11 @@
 export default function createIconBlock(main, document) {
   const el = document.querySelector('#express');
 
+  // fast return
+  if (!el) {
+    return;
+  }
+
   // all different blocks
   const metaDatas = el.querySelectorAll('.position');
 

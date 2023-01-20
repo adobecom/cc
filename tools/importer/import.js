@@ -16,6 +16,8 @@
   import rules
 */
 
+import createAccordionBlocks from './rules/accordion.js';
+import createMarqueeBlocks from "./rules/marquee.js";
 import createIconBlock from './rules/iconblock.js';
 
 export default {
@@ -40,6 +42,8 @@ export default {
     /*
       blocks
     */
+    createAccordionBlocks(main, document);
+    createMarqueeBlocks(main, document);
     createIconBlock(main, document);
 
     /*
@@ -47,7 +51,13 @@ export default {
     */
 
     // use helper method to remove header, footer, etc.
-    WebImporter.DOMUtils.remove(main, ['.globalnavfooter', '.globalnavheader']);
+    WebImporter.DOMUtils.remove(main, [
+      '.globalnavfooter',
+      '.globalnavheader',
+      '.modalContainer',
+      'header',
+      'footer',
+    ]);
 
     return main;
   },
