@@ -48,32 +48,9 @@ export default {
     // use helper method to remove header, footer, etc.
     WebImporter.DOMUtils.remove(main, [
       '.modalContainer',
-      '.globalNavHeader',
-      '.tableOfContents-mobile-drawer',
-      '.TableOfContents',
-      '.globalNavFooter',
-      '.toc',
-      'locale-modal',
-      'iframe',
-      'img[style="display:none"]',
-      'img[style="display:none;"]',
-      'img[style="display:none;"]',
-      'img[style="display: none;"]',
-      'img[height="0"][width="0"]',
-      'header',
-      'footer',
-      // 'script',
-      // 'style',
-      '#adbMsgClientWrapper',
-      '.helpx-note',
-      '#onetrust-consent-sdk',
-      '#ot-general',
-      '#ot-enable-disabled',
-      // right top side menu, display none in original page
-      '.plan-card',
-      // '.position:has(.xfreference)',
-      '#sidebar',
-      '#internal-article-bar-container',
+    '.globalNavHeader',
+    'header',
+    'footer'
     ]);
 
     return main;
