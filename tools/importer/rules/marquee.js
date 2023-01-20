@@ -89,11 +89,17 @@ export default function createMarqueeBlocks(main, document) {
     }
     // Check if marquee has primary cta
     let marqueePrimaryCtaButton = null;
+    let marqueePrimaryCtaButtonHTML = null
     if (marquee.querySelector('.spectrum-Button--accent')) {
+      marqueePrimaryCtaButtonHTML = marquee.querySelector('.spectrum-Button--accent')
+    } else if ('.spectrum-Button--cta') {
+      marqueePrimaryCtaButtonHTML = marquee.querySelector('.spectrum-Button--cta')
+    }
+    if (marqueePrimaryCtaButtonHTML) {
       marqueePrimaryCtaButton = document.createElement('b');
       const marqueePrimaryContent = document.createElement('a');
-      marqueePrimaryContent.appendChild(document.createTextNode(marquee.querySelector('.spectrum-Button--accent').textContent));
-      marqueePrimaryContent.setAttribute('href', marquee.querySelector('.spectrum-Button--accent').getAttribute('href'));
+      marqueePrimaryContent.appendChild(document.createTextNode(marqueePrimaryCtaButtonHTML.textContent));
+      marqueePrimaryContent.setAttribute('href', marqueePrimaryCtaButtonHTML.getAttribute('href'));
       marqueePrimaryCtaButton.appendChild(marqueePrimaryContent);
     }
 
