@@ -66,6 +66,7 @@ export default {
       'footer',
       // [Docx issue] : Image files having blob issue while converting to png.
       'img[src="/content/dam/cc/us/en/creative-cloud/cc_express_appicon_256.svg"]',
+      'img[src="/content/dam/cct/creativecloud/business/teams/mnemonics/cc-express.svg"]',
       // [Docx issue] : Image files having dimension issue with type image/avif.
       'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow1_700x525?$pjpeg$&jpegSize=200&wid=764"]',
       'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow2_700x525?$pjpeg$&jpegSize=200&wid=764"]',
@@ -75,6 +76,7 @@ export default {
       'img[src="/content/dam/cc/us/en/products/draw/Draw_EOL_Page_icon-Ps.svg"]',
       'img[src="/content/dam/cc/us/en/products/sketch/Sketch_EOL_Page_icon-Ca.svg"]',
       'img[src="/content/dam/cct/creativecloud/business/teams/mnemonics/mnemonic-Fresco-32x32.svg"]',
+      'img[src="/content/dam/cc/icons/icon-mobile-tablet-desktop.svg"]',
     ]);
 
     return main;
