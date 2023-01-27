@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -17,7 +18,7 @@
 */
 
 import createAccordionBlocks from './rules/accordion.js';
-import createMarqueeBlocks from "./rules/marquee.js";
+import createMarqueeBlocks from './rules/marquee.js';
 import createIconBlock from './rules/iconblock.js';
 
 export default {
@@ -39,6 +40,12 @@ export default {
   }) => {
     const main = document.body;
 
+    main.querySelectorAll('s').forEach((s) => {
+      const span = document.createElement('span');
+      span.innerHTML = s.innerHTML;
+      s.replaceWith(span);
+    });
+
     /*
       blocks
     */
@@ -57,6 +64,17 @@ export default {
       '.modalContainer',
       'header',
       'footer',
+      // [Docx issue] : Image files having blob issue while converting to png.
+      'img[src="/content/dam/cc/us/en/creative-cloud/cc_express_appicon_256.svg"]',
+      // [Docx issue] : Image files having dimension issue with type image/avif.
+      'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow1_700x525?$pjpeg$&jpegSize=200&wid=764"]',
+      'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow2_700x525?$pjpeg$&jpegSize=200&wid=764"]',
+      'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow3_700x525?$pjpeg$&jpegSize=200&wid=764"]',
+      'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow4_700x525?$pjpeg$&jpegSize=200&wid=764"]',
+      // [Docx issue] : Image files having width and height as float.
+      'img[src="/content/dam/cc/us/en/products/draw/Draw_EOL_Page_icon-Ps.svg"]',
+      'img[src="/content/dam/cc/us/en/products/sketch/Sketch_EOL_Page_icon-Ca.svg"]',
+      'img[src="/content/dam/cct/creativecloud/business/teams/mnemonics/mnemonic-Fresco-32x32.svg"]',
     ]);
 
     return main;

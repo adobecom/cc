@@ -1,8 +1,14 @@
+/* eslint-disable no-undef */
 export default function createIconBlock(main, document) {
   const el = document.querySelector('#express');
 
   // fast return
   if (!el) {
+    return;
+  }
+
+  // some marquee has id 'express'(not iconblock)
+  if (el.querySelector('[daa-lh="mobile-marquee"]')) {
     return;
   }
 
@@ -13,7 +19,16 @@ export default function createIconBlock(main, document) {
   const textImageMetaData = metaDatas[0];
 
   // find image
-  const image = textImageMetaData.querySelector('.image img');
+  const imageElement = textImageMetaData.querySelector('.image img');
+  let imageSrc = '';
+  if (imageElement?.getAttribute('src')?.indexOf('https') === -1) {
+    imageSrc = `https://www.adobe.com${imageElement.getAttribute('src')}`;
+  } else {
+    imageSrc = imageElement.getAttribute('src');
+  }
+  const imageLink = document.createElement('a');
+  imageLink.innerHTML = imageSrc;
+  imageLink.setAttribute('href', imageSrc);
 
   // find title content
   let titleElement = textImageMetaData.querySelector('.text h2');
@@ -23,8 +38,7 @@ export default function createIconBlock(main, document) {
   const titleContent = titleElement.textContent;
 
   // find description content
-  const descriptionContent =
-    textImageMetaData.querySelector('.text p').textContent;
+  const descriptionContent = textImageMetaData.querySelector('.text p').textContent;
 
   // icon block cell creation
   const title = document.createElement('h2');
@@ -32,7 +46,7 @@ export default function createIconBlock(main, document) {
   const description = document.createElement('p');
   description.innerHTML = descriptionContent;
   const contentCell = document.createElement('div');
-  contentCell.appendChild(image);
+  contentCell.appendChild(imageLink);
   contentCell.appendChild(title);
   contentCell.appendChild(description);
 
@@ -51,19 +65,28 @@ export default function createIconBlock(main, document) {
   const flexItems = columnsMetaData.querySelectorAll('.flex');
   flexItems.forEach((flex) => {
     if (flex.className.indexOf('aem-GridColumn') === -1) {
-      const image = flex.querySelector('.image img');
-      const titleContent = flex.querySelector('.text p').textContent;
+      const imageElementColumn = columnsMetaData.querySelector('.image img');
+      let imageSrcColumn = '';
+      if (imageElementColumn.getAttribute('src').indexOf('https') === -1) {
+        imageSrcColumn = `https://www.adobe.com${imageElement.getAttribute('src')}`;
+      } else {
+        imageSrcColumn = imageElementColumn.getAttribute('src');
+      }
+      const imageLinkColumn = document.createElement('a');
+      imageLinkColumn.innerHTML = imageSrcColumn;
+      imageLinkColumn.setAttribute('href', imageSrcColumn);
+      const titleContentColumn = flex.querySelector('.text p').textContent;
       const linkElement = flex.querySelector('.dexter-Cta a');
 
       // column creation
       const column = document.createElement('div');
-      column.appendChild(image);
+      column.appendChild(imageLinkColumn);
       const titleParent = document.createElement('p');
-      const title = document.createElement('a');
-      title.href = linkElement.href;
-      title.target = linkElement.target;
-      title.innerHTML = titleContent;
-      titleParent.appendChild(title);
+      const titleColumn = document.createElement('a');
+      titleColumn.href = linkElement.href;
+      titleColumn.target = linkElement.target;
+      titleColumn.innerHTML = titleContentColumn;
+      titleParent.appendChild(titleColumn);
       column.appendChild(titleParent);
       columns.push(column);
     }
@@ -86,12 +109,11 @@ export default function createIconBlock(main, document) {
   // section metadata Table
   const sectionMetaDataTable = WebImporter.DOMUtils.createTable(
     sectionMetadataCells,
-    document
+    document,
   );
 
   el.insertAdjacentElement('beforebegin', sectionMetaDataTable);
 
   el.insertAdjacentElement('beforebegin', document.createElement('hr'));
-
   el.remove();
 }
