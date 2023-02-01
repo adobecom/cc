@@ -9,6 +9,7 @@ export default function createAccordionBlocks(main, document) {
   }
 
   accordions.forEach((accordion) => {
+    const parentClasses = accordion.parentElement.classList;
     const items = accordion.querySelectorAll('.spectrum-Accordion-item');
     const accBlockTable = document.createElement('table');
 
@@ -17,7 +18,7 @@ export default function createAccordionBlocks(main, document) {
     if (items) {
       items.forEach((item) => {
         const text = document.createTextNode(
-          item.querySelector('.spectrum-Accordion-itemHeader').textContent
+          item.querySelector('.spectrum-Accordion-itemHeader').textContent,
         );
         const content = item.querySelector('.spectrum-Accordion-itemContent');
 
@@ -27,6 +28,8 @@ export default function createAccordionBlocks(main, document) {
     }
     accordion.insertAdjacentElement('beforebegin', accBlockTable);
     accordion.insertAdjacentElement('beforebegin', document.createElement('hr'));
+    // eslint-disable-next-line no-unused-expressions
+    parentClasses.contains('dexter-FlexContainer-Items') && parentClasses.remove('dexter-FlexContainer-Items');
     accordion.remove();
   });
 }
