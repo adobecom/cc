@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* global WebImporter */
 export default function createIconBlock(main, document) {
   const el = document.querySelector('#express');
 
@@ -55,7 +55,7 @@ export default function createIconBlock(main, document) {
   // icon block table
   const table = WebImporter.DOMUtils.createTable(cells, document);
 
-  el.insertAdjacentElement('beforebegin', table);
+  el.before(table);
 
   // coloumns selectors
   const columnsMetaData = metaDatas[1];
@@ -98,7 +98,7 @@ export default function createIconBlock(main, document) {
   // columns Table
   const columnTable = WebImporter.DOMUtils.createTable(columnCells, document);
 
-  el.insertAdjacentElement('beforebegin', columnTable);
+  el.before(columnTable);
 
   // section metadata cell creation
   const sectionMetadataCells = [
@@ -111,9 +111,7 @@ export default function createIconBlock(main, document) {
     sectionMetadataCells,
     document,
   );
-
-  el.insertAdjacentElement('beforebegin', sectionMetaDataTable);
-
-  el.insertAdjacentElement('beforebegin', document.createElement('hr'));
+  el.before(sectionMetaDataTable);
+  el.before(document.createElement('hr'));
   el.remove();
 }

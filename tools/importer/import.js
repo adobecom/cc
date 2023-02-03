@@ -20,7 +20,7 @@
 import createAccordionBlocks from './rules/accordion.js';
 import createMarqueeBlocks from './rules/marquee.js';
 import createIconBlock from './rules/iconblock.js';
-import guessColumnsBlocks from './rules/columns.js';
+// import guessColumnsBlocks from './rules/columns.js';
 
 export default {
   /**
@@ -33,7 +33,6 @@ export default {
    * @returns {HTMLElement} The root element to be transformed
    */
   transformDOM: ({
-    // eslint-disable-next-line no-unused-vars
     document,
     url,
     html,
@@ -53,7 +52,7 @@ export default {
     createAccordionBlocks(main, document);
     createMarqueeBlocks(main, document);
     createIconBlock(main, document);
-    guessColumnsBlocks(main, document);
+    // guessColumnsBlocks(main, document);
     /*
       clean
     */
@@ -65,21 +64,13 @@ export default {
       '.modalContainer',
       'header',
       'footer',
+      '.language-Navigation',
+      '#onetrust-consent-sdk',
       // [Docx issue] : Image files having convertToBlob issue while converting to png.
       'img[src="/content/dam/cc/us/en/creative-cloud/cc_express_appicon_256.svg"]',
       'img[src="/content/dam/cc/one-console/icons_rebrand/adobeexpress.svg"]',
       'img[src="/content/dam/cct/creativecloud/business/teams/mnemonics/cc-express.svg"]',
-      // [Docx issue] : Image files having dimension issue with type image/avif.
-      // 'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow1_700x525?$pjpeg$&jpegSize=200&wid=764"]',
-      // 'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow2_700x525?$pjpeg$&jpegSize=200&wid=764"]',
-      // 'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow3_700x525?$pjpeg$&jpegSize=200&wid=764"]',
-      // 'img[src="https://cc-prod.scene7.com/is/image/CCProdAuthor/dt_illustration_category_riverflow4_700x525?$pjpeg$&jpegSize=200&wid=764"]',
-      // [Docx issue] : Image files having width and height as float.
-      // 'img[src="/content/dam/cc/us/en/products/draw/Draw_EOL_Page_icon-Ps.svg"]',
-      // 'img[src="/content/dam/cc/us/en/products/sketch/Sketch_EOL_Page_icon-Ca.svg"]',
-      // eslint-disable-next-line max-len
-      // 'img[src="/content/dam/cct/creativecloud/business/teams/mnemonics/mnemonic-Fresco-32x32.svg"]',
-      // 'img[src="/content/dam/cc/icons/icon-mobile-tablet-desktop.svg"]',
+      'img[src="/content/dam/shared/images/product-icons/svg/cc-express.svg"]',
     ]);
 
     return main;

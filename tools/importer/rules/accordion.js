@@ -1,5 +1,4 @@
-import { addRow } from '../utils.js';
-
+/* global WebImporter */
 export default function createAccordionBlocks(main, document) {
   const accordions = document.querySelectorAll('.accordion');
 
@@ -11,9 +10,7 @@ export default function createAccordionBlocks(main, document) {
   accordions.forEach((accordion) => {
     const parentClasses = accordion.parentElement.classList;
     const items = accordion.querySelectorAll('.spectrum-Accordion-item');
-    const accBlockTable = document.createElement('table');
-
-    addRow(accBlockTable, document.createTextNode('Accordion (seo)'));
+    const cells = [['Accordion (seo)']];
 
     if (items) {
       items.forEach((item) => {
@@ -22,14 +19,19 @@ export default function createAccordionBlocks(main, document) {
         );
         const content = item.querySelector('.spectrum-Accordion-itemContent');
 
-        addRow(accBlockTable, text);
-        addRow(accBlockTable, content);
+        cells.push([text]);
+        cells.push([content]);
       });
     }
-    accordion.insertAdjacentElement('beforebegin', accBlockTable);
-    accordion.insertAdjacentElement('beforebegin', document.createElement('hr'));
-    // eslint-disable-next-line no-unused-expressions
-    parentClasses.contains('dexter-FlexContainer-Items') && parentClasses.remove('dexter-FlexContainer-Items');
+    const accBlockTable = WebImporter.DOMUtils.createTable(
+      cells,
+      document,
+    );
+    if (parentClasses.contains('dexter-FlexContainer-Items')) {
+      parentClasses.remove('dexter-FlexContainer-Items');
+    }
+    accordion.before(accBlockTable);
+    accordion.before(document.createElement('hr'));
     accordion.remove();
   });
 }

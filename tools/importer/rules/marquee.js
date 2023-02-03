@@ -1,24 +1,4 @@
-import { addRow } from "../utils.js";
-
-
-function addMarqueeRowWithMultipleColumns(table, count, ...content) {
-  const newRow = table.insertRow(-1);
-  let loopCounter = 1;
-
-  while (loopCounter <= count) {
-    const newCell = newRow.insertCell(loopCounter - 1);
-    newCell.appendChild(content[loopCounter - 1]);
-    loopCounter += 1;
-  }
-
-  let rowLoopCounter = 0;
-  while (rowLoopCounter < table.rows.length - 1) {
-    table.rows[rowLoopCounter].cells[0].setAttribute('colspan', count);
-    rowLoopCounter += 1;
-  }
-}
-
-
+/* global WebImporter */
 export default function createMarqueeBlocks(main, document) {
   const marquees = document.querySelectorAll('#marquee');
 
@@ -28,10 +8,8 @@ export default function createMarqueeBlocks(main, document) {
   }
 
   marquees.forEach((marquee) => {
-
     // Create table for marquee
-    const marqueeBlockTable = document.createElement('table');
-    addRow(marqueeBlockTable, document.createTextNode('Marquee'));
+    const cells = [['Marquee']];
 
     // Check if marquee has background video
     if (marquee.querySelector('.has-video.dexter-Background')) {
@@ -39,10 +17,10 @@ export default function createMarqueeBlocks(main, document) {
       const bgvideoa = document.createElement('a');
       bgvideoa.innerHTML = backgroundVideoURL;
       bgvideoa.setAttribute('href', backgroundVideoURL);
-      addRow(marqueeBlockTable, bgvideoa);
+      cells.push([bgvideoa]);
     }
 
-    // Check if marquee has icon 
+    // Check if marquee has icon
     const images = marquee.querySelectorAll('img');
     let iconImageUrl = null;
     let iconImage = null;
@@ -52,7 +30,7 @@ export default function createMarqueeBlocks(main, document) {
       }
       if (image.getAttribute('alt').indexOf('icon') > -1) {
         if (image.getAttribute('src').indexOf('https') === -1) {
-          iconImage = "https://www.adobe.com/" + image.getAttribute('src');
+          iconImage = `https://www.adobe.com/${image.getAttribute('src')}`;
         } else {
           iconImage = image.getAttribute('src');
         }
@@ -84,8 +62,8 @@ export default function createMarqueeBlocks(main, document) {
       italicsElement.appendChild(document.createTextNode(marquee.querySelector('.spectrum-Button--overBackground').textContent));
       marqueeWhiteBorderButton.appendChild(italicsElement);
       marqueeWhiteBorderButton.setAttribute('href', marquee.querySelector('.spectrum-Button--overBackground').getAttribute('href'));
-
     }
+
     // Check if marquee has primary cta
     let marqueePrimaryCtaButton = null;
     if (marquee.querySelector('.spectrum-Button--accent')) {
@@ -98,17 +76,29 @@ export default function createMarqueeBlocks(main, document) {
 
     // Append all elementa of marquee in a div and add to block
     const textElement = document.createElement('div');
-    iconImageUrl ? textElement.appendChild(iconImageUrl) : '';
-    marqueeHeading ? textElement.appendChild(marqueeHeading) : '';
-    marqueeContent ? textElement.appendChild(marqueeContent) : '';
-    marqueeWhiteBorderButton ? textElement.appendChild(marqueeWhiteBorderButton) : '';
+    if (iconImageUrl) {
+      textElement.appendChild(iconImageUrl);
+    }
+    if (marqueeHeading) {
+      textElement.appendChild(marqueeHeading);
+    }
+    if (marqueeContent) {
+      textElement.appendChild(marqueeContent);
+    }
+    if (marqueeWhiteBorderButton) {
+      textElement.appendChild(marqueeWhiteBorderButton);
+    }
     textElement.appendChild(document.createTextNode('\u00A0'));
-    marqueePrimaryCtaButton ? textElement.appendChild(marqueePrimaryCtaButton) : '';
-
-    addMarqueeRowWithMultipleColumns(marqueeBlockTable, 2, textElement, document.createTextNode(" "));
-
-    marquee.insertAdjacentElement('beforebegin', marqueeBlockTable);
-    marquee.insertAdjacentElement('beforebegin', document.createElement('hr'));
+    if (marqueePrimaryCtaButton) {
+      textElement.appendChild(marqueePrimaryCtaButton);
+    }
+    cells.push([textElement, ' ']);
+    const marqueeBlockTable = WebImporter.DOMUtils.createTable(
+      cells,
+      document,
+    );
+    marquee.before(marqueeBlockTable);
+    marquee.before(document.createElement('hr'));
     marquee.remove();
   });
 }
