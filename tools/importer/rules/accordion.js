@@ -1,9 +1,9 @@
 /* global WebImporter */
 export default function createAccordionBlocks(main, document) {
-  const accordions = document.querySelectorAll('.accordion');
+  const accordions = main.querySelectorAll('.accordion');
 
   // fast return
-  if (!accordions) {
+  if (!accordions.length) {
     return;
   }
 
@@ -14,11 +14,10 @@ export default function createAccordionBlocks(main, document) {
 
     if (items) {
       items.forEach((item) => {
-        const text = document.createTextNode(
-          item.querySelector('.spectrum-Accordion-itemHeader').textContent,
-        );
-        const content = item.querySelector('.spectrum-Accordion-itemContent');
-
+        const text = document.createElement('p');
+        const textContent = item.querySelector('.spectrum-Accordion-itemHeader')?.textContent || 'Title?';
+        text.innerHTML = textContent;
+        const content = item.querySelector('.spectrum-Accordion-itemContent') || 'Description?';
         cells.push([text]);
         cells.push([content]);
       });
@@ -30,8 +29,7 @@ export default function createAccordionBlocks(main, document) {
     if (parentClasses.contains('dexter-FlexContainer-Items')) {
       parentClasses.remove('dexter-FlexContainer-Items');
     }
-    accordion.before(accBlockTable);
     accordion.before(document.createElement('hr'));
-    accordion.remove();
+    accordion.replaceWith(accBlockTable);
   });
 }

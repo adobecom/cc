@@ -1,6 +1,6 @@
 /* global WebImporter */
 export default function guessColumnsBlocks(main, document) {
-  const containers = [...document.body.querySelectorAll('.dexter-FlexContainer-Items')].filter((c) => {
+  const containers = [...main.querySelectorAll('.dexter-FlexContainer-Items')].filter((c) => {
     // ignore empty containers and single element containers
     if (c.childElementCount < 2) return false;
     let ancestor = c; let keep;

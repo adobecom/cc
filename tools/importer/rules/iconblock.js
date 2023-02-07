@@ -1,6 +1,6 @@
 /* global WebImporter */
 export default function createIconBlock(main, document) {
-  const el = document.querySelector('#express');
+  const el = main.querySelector('#express');
 
   // fast return
   if (!el) {
@@ -13,18 +13,16 @@ export default function createIconBlock(main, document) {
   }
 
   // all different blocks
-  const metaDatas = el.querySelectorAll('.position');
+  const metaData = el.querySelectorAll('.position');
 
   // icon block selectors
-  const textImageMetaData = metaDatas[0];
+  const textImageMetaData = metaData[0];
 
   // find image
   const imageElement = textImageMetaData.querySelector('.image img');
-  let imageSrc = '';
-  if (imageElement?.getAttribute('src')?.indexOf('https') === -1) {
-    imageSrc = `https://www.adobe.com${imageElement.getAttribute('src')}`;
-  } else {
-    imageSrc = imageElement.getAttribute('src');
+  let imageSrc = imageElement?.getAttribute('src');
+  if (imageSrc && imageSrc.indexOf('https') === -1) {
+    imageSrc = `https://www.adobe.com${imageSrc}`;
   }
   const imageLink = document.createElement('a');
   imageLink.innerHTML = imageSrc;
@@ -55,10 +53,8 @@ export default function createIconBlock(main, document) {
   // icon block table
   const table = WebImporter.DOMUtils.createTable(cells, document);
 
-  el.before(table);
-
   // coloumns selectors
-  const columnsMetaData = metaDatas[1];
+  const columnsMetaData = metaData[1];
 
   // find flex elements
   const columns = [];
@@ -66,11 +62,9 @@ export default function createIconBlock(main, document) {
   flexItems.forEach((flex) => {
     if (flex.className.indexOf('aem-GridColumn') === -1) {
       const imageElementColumn = columnsMetaData.querySelector('.image img');
-      let imageSrcColumn = '';
-      if (imageElementColumn.getAttribute('src').indexOf('https') === -1) {
-        imageSrcColumn = `https://www.adobe.com${imageElement.getAttribute('src')}`;
-      } else {
-        imageSrcColumn = imageElementColumn.getAttribute('src');
+      let imageSrcColumn = imageElementColumn?.getAttribute('src');
+      if (imageSrcColumn && imageSrcColumn.indexOf('https') === -1) {
+        imageSrcColumn = `https://www.adobe.com${imageSrcColumn}`;
       }
       const imageLinkColumn = document.createElement('a');
       imageLinkColumn.innerHTML = imageSrcColumn;
@@ -82,11 +76,8 @@ export default function createIconBlock(main, document) {
       const column = document.createElement('div');
       column.appendChild(imageLinkColumn);
       const titleParent = document.createElement('p');
-      const titleColumn = document.createElement('a');
-      titleColumn.href = linkElement.href;
-      titleColumn.target = linkElement.target;
-      titleColumn.innerHTML = titleContentColumn;
-      titleParent.appendChild(titleColumn);
+      linkElement.innerHTML = titleContentColumn;
+      titleParent.appendChild(linkElement);
       column.appendChild(titleParent);
       columns.push(column);
     }
@@ -97,8 +88,6 @@ export default function createIconBlock(main, document) {
 
   // columns Table
   const columnTable = WebImporter.DOMUtils.createTable(columnCells, document);
-
-  el.before(columnTable);
 
   // section metadata cell creation
   const sectionMetadataCells = [
@@ -111,7 +100,6 @@ export default function createIconBlock(main, document) {
     sectionMetadataCells,
     document,
   );
-  el.before(sectionMetaDataTable);
   el.before(document.createElement('hr'));
-  el.remove();
+  el.replaceWith(table, columnTable, sectionMetaDataTable);
 }
