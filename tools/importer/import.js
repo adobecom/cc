@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -13,14 +12,12 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
-/*
-  import rules
-*/
-
-import createAccordionBlocks from './rules/accordion.js';
-import createMarqueeBlocks from './rules/marquee.js';
-import createIconBlock from './rules/iconblock.js';
+// import createAccordionBlocks from './rules/accordion.js';
+// import createMarqueeBlocks from './rules/marquee.js';
+// import createIconBlock from './rules/iconblock.js';
 // import guessColumnsBlocks from './rules/columns.js';
+
+import magazinePageImporter from "./rules/magazine-pages.js";
 
 export default {
   /**
@@ -47,12 +44,18 @@ export default {
     });
 
     /*
-      blocks
+      individual blocks import rules
     */
-    createAccordionBlocks(main, document);
-    createMarqueeBlocks(main, document);
-    createIconBlock(main, document);
+    // createAccordionBlocks(main, document);
+    // createMarqueeBlocks(main, document);
+    // createIconBlock(main, document);
     // guessColumnsBlocks(main, document);
+
+    /*
+      magazine pages import rules
+    */
+    magazinePageImporter(main, document);
+
     /*
       clean
     */
@@ -75,4 +78,6 @@ export default {
 
     return main;
   },
+
+  generateDocumentPath: ({ document, url, html, params }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, ''))
 };
