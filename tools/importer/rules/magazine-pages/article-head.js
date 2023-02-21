@@ -52,9 +52,27 @@ export default function articleHead(main, document, meta) {
     cells,
     document,
   );
+  const div = document.createElement('div');
+  text.before(div);
   text.before(document.createElement('hr'));
   text.replaceWith(marqueeBlockTable);
   marqueeBlockTable.nextElementSibling.before(document.createElement('hr'));
 
-  // to-do: add breadcrumbs
+  // the breadcrumbs block
+  const breadcrumbsList = document.createElement('ul');
+  const home = document.createElement('li');
+  home.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/">Substance 3D</a>';
+  breadcrumbsList.append(home);
+  const magazine = document.createElement('li');
+  magazine.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/magazine">Magazine</a>';
+  breadcrumbsList.append(magazine);
+  const breadcrumbsCells = [
+    ['Breadcrumbs'],
+    [breadcrumbsList],
+  ];
+  const breadcrumbsTable = WebImporter.DOMUtils.createTable(
+    breadcrumbsCells,
+    document,
+  );
+  div.replaceWith(breadcrumbsTable);
 }

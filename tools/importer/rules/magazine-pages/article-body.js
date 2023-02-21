@@ -30,4 +30,25 @@ export default function articleBody(main, document) {
     const asideInlineBlock = WebImporter.DOMUtils.createTable(asideInlineCells, document);
     asideInline.replaceWith(asideInlineBlock);
   });
+
+  // create the author bio blocks
+  document.querySelectorAll('.exergue--img').forEach((authorBio) => {
+    const authorBioCells = [
+      ['Icon Block (bio, small)'],
+      [authorBio.innerHTML],
+    ];
+    const authorBioBlock = WebImporter.DOMUtils.createTable(authorBioCells, document);
+    authorBio.replaceWith(authorBioBlock);
+    // wrap the author bio block in a section
+    const sectionMetadataBlockCells = [
+      ['Section Metadata'],
+      ['style', 'center, grid width 8, L spacing'],
+    ];
+    const sectionMetadataBlock = WebImporter.DOMUtils.createTable(sectionMetadataBlockCells, document);
+    authorBioBlock.after(document.createElement('hr'));
+    authorBioBlock.after(sectionMetadataBlock);
+    const hr = document.createElement('hr');
+    authorBioBlock.before(hr);
+    hr.before(sectionMetadataBlock.cloneNode(true));
+  });
 }

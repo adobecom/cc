@@ -32,4 +32,10 @@ export default function magazinePageImporter(main, document) {
     '#ot-cookie-button',
     '#ot-cookie-settings',
   ]);
+
+  document.querySelectorAll('a').forEach((a) => {
+    if (a.getAttribute('href').startsWith('/magazine/wp-content/')) {
+      a.remove();
+    }
+  });
 }
