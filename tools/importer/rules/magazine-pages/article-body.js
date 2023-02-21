@@ -42,7 +42,7 @@ export default function articleBody(main, document) {
     // wrap the author bio block in a section
     const sectionMetadataBlockCells = [
       ['Section Metadata'],
-      ['style', 'center, grid width 8, L spacing'],
+      ['style', 'grid width 8, L spacing'],
     ];
     const sectionMetadataBlock = WebImporter.DOMUtils.createTable(sectionMetadataBlockCells, document);
     authorBioBlock.after(document.createElement('hr'));
