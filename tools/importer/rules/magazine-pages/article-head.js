@@ -52,13 +52,12 @@ export default function articleHead(main, document, meta) {
     cells,
     document,
   );
-  const div = document.createElement('div');
-  text.before(div);
-  text.before(document.createElement('hr'));
   text.replaceWith(marqueeBlockTable);
-  marqueeBlockTable.nextElementSibling.before(document.createElement('hr'));
-
+  marqueeBlockTable.after(document.createElement('hr'));
+  
   // the breadcrumbs block
+  const div = document.createElement('div');
+  marqueeBlockTable.before(div);
   const breadcrumbsList = document.createElement('ul');
   const home = document.createElement('li');
   home.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/">Substance 3D</a>';

@@ -34,8 +34,14 @@ export default function magazinePageImporter(main, document) {
   ]);
 
   document.querySelectorAll('a').forEach((a) => {
-    if (a.getAttribute('href').startsWith('/magazine/wp-content/')) {
-      a.remove();
+    if (a.getAttribute('href') && a.getAttribute('href').startsWith('/magazine/wp-content/') && !a.getAttribute('href').endsWith('.mp4')) {
+      const img = a.querySelector('img:first-child:last-child');
+      if (img) {
+        a.replaceWith(img);
+      }
+    }
+    if (a.href.startsWith('/')) {
+      a.setAttribute('href', `https://main--cc--adobecom.hlx.page${a.href}`);
     }
   });
 }
