@@ -31,6 +31,12 @@
       "environments": ["prod"],
       "event": "check-schema",
       "excludePaths": ["/tools**", "*.json"]
+    },
+    {
+      "title": "Preflight",
+      "id": "preflight",
+      "environments": ["dev", "preview", "live"],
+      "event": "preflight"
     }
   ]
 }
