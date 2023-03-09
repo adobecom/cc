@@ -60,10 +60,10 @@ export default function articleHead(main, document, meta) {
   marqueeBlockTable.before(div);
   const breadcrumbsList = document.createElement('ul');
   const home = document.createElement('li');
-  home.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/">Substance 3D</a>';
+  home.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/products/substance3d/">Substance 3D</a>';
   breadcrumbsList.append(home);
   const magazine = document.createElement('li');
-  magazine.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/magazine">Magazine</a>';
+  magazine.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/products/substance3d/magazine/">Magazine</a>';
   breadcrumbsList.append(magazine);
   const breadcrumbsCells = [
     ['Breadcrumbs'],

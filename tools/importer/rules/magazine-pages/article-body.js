@@ -51,4 +51,20 @@ export default function articleBody(main, document) {
     authorBioBlock.before(hr);
     hr.before(sectionMetadataBlock.cloneNode(true));
   });
+
+  // create the quote blocks
+  document.querySelectorAll('.wp-block-quote').forEach((quote) => {
+    const quoteCells = [
+      ['Quote (contained)'],
+      [quote.innerHTML],
+    ];
+    const quoteBlock = WebImporter.DOMUtils.createTable(quoteCells, document);
+    quote.replaceWith(quoteBlock);
+    // wrap the quote block in a section
+    quoteBlock.after(document.createElement('hr'));
+    quoteBlock.after(sectionMetadataBlock.cloneNode(true));
+    const quoteHR = document.createElement('hr');
+    quoteBlock.before(quoteHR);
+    quoteHR.before(sectionMetadataBlock.cloneNode(true));
+  });
 }
