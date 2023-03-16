@@ -1,0 +1,53 @@
+version: 1
+
+sitemaps:
+  fedpub:
+    origin: https://www.adobe.com
+    lastmod: YYYY-MM-DD
+    default: en-US    
+    languages:
+      au:
+        source: /hub/query-index-au.json
+        destination: /hub/sitemap-au.xml
+        hreflang: en-AU
+        alternate: /au/{path}
+      de:
+        source: /hub/query-index-de.json
+        destination: /hub/sitemap-de.xml
+        hreflang: de-DE
+        alternate: /de/{path}
+      en:
+        source: /hub/query-index-en.json
+        destination: /hub/sitemap-en.xml
+        hreflang: en-US
+        alternate: /{path}        
+      es:
+        source: /hub/query-index-es.json
+        destination: /hub/sitemap-es.xml
+        hreflang: es-ES
+        alternate: /es/{path}
+      fr:
+        source: /hub/query-index-fr.json
+        destination: /hub/sitemap-fr.xml
+        hreflang: fr-FR
+        alternate: /fr/{path}
+      it:
+        source: /hub/query-index-it.json
+        destination: /hub/sitemap-it.xml
+        hreflang: it-IT
+        alternate: /it/{path}
+      jp:
+        source: /hub/query-index-jp.json
+        destination: /hub/sitemap-jp.xml
+        hreflang: ja-JP
+        alternate: /jp/{path}
+      kr:
+        source: /hub/query-index-kr.json
+        destination: /hub/sitemap-kr.xml
+        hreflang: ko-KR
+        alternate: /kr/{path}
+      ru:
+        source: /hub/query-index-ru.json
+        destination: /hub/sitemap-ru.xml
+        hreflang: ru-RU
+        alternate: /ru/{path}
