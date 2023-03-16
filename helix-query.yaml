@@ -1,0 +1,86 @@
+version: 1
+
+indices:
+  fedpub: &default
+    exclude:
+      - '_documentation/**'
+      - '_draft/**'
+      - '_bench/**'
+      - '**/promotions/**'
+      - '**/fragments/**'
+    target: creativecloud/hub/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: |
+          dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+
+  fedpub-au:
+    <<: *default
+    include:
+      - '/au/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-au.xlsx'
+
+  fedpub-de:
+    <<: *default
+    include:
+      - '/de/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-de.xlsx'
+
+  fedpub-en:
+    <<: *default
+    include:
+      - '/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-en.xlsx'
+
+  fedpub-es:
+    <<: *default
+    include:
+      - '/es/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-es.xlsx'
+
+  fedpub-fr:
+    <<: *default
+    include:
+      - '/fr/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-fr.xlsx'
+
+  fedpub-it:
+    <<: *default
+    include:
+      - '/it/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-it.xlsx'
+
+  fedpub-jp:
+    <<: *default
+    include:
+      - '/jp/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-jp.xlsx'
+
+  fedpub-kr:
+    <<: *default
+    include:
+      - '/kr/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-kr.xlsx'
+
+  fedpub-ru:
+    <<: *default
+    include:
+      - '/ru/creativecloud/hub/**'
+    target: '/creativecloud/hub/query-index-ru.xlsx'
