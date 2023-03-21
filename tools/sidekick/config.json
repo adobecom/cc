@@ -20,9 +20,10 @@
       "id": "localize",
       "title": "Localize",
       "environments": [ "edit" ],
-      "url": "https://milo.adobe.com/tools/translation/index.html",
+      "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=cc--adobecom",
       "passReferrer": true,
-      "include_paths": [ "**.xlsx**" ]
+      "excludePaths": [ "/**" ],
+      "includePaths": [ "**/:x**" ]
     },
     {
       "containerId": "tools",
@@ -56,7 +57,7 @@
       "passConfig": true,
       "passReferrer": true,
       "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
-      "url": "/tools/locale-nav",
+      "url": "https://milo.adobe.com/tools/locale-nav",
       "includePaths": [ "**.docx**" ]
     }
   ]
