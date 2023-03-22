@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs } from './utils.js';
-
 // Add project-wide style path here.
 const STYLES = '/cclibs/styles/styles.css';
 
@@ -66,6 +64,7 @@ function decoratePromotion() {
  * ------------------------------------------------------------
  */
 
+const { setLibs } = await import('./utils.js');
 const miloLibs = setLibs(LIBS);
 
 (function loadStyles() {
