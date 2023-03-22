@@ -13,7 +13,7 @@
 import { setLibs } from './utils.js';
 
 // Add project-wide style path here.
-const STYLES = '';
+const STYLES = '/cclibs/styles/styles.css';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = '/libs';
