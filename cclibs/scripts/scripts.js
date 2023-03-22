@@ -16,27 +16,49 @@ import { setLibs } from './utils.js';
 const STYLES = '';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
-const LIBS = 'https://milo.adobe.com/libs';
+const LIBS = '/libs';
 
 // Add any config options.
 const CONFIG = {
-  // codeRoot: '',
-  // contentRoot: '',
-  // imsClientId: 'college',
-  // geoRouting: 'off',
-  // fallbackRouting: 'off',
+  codeRoot: '/cclibs',
+  contentRoot: '/creativecloud',
+  imsClientId: 'ccmilo', 
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
     de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
     kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
+    TH_th: { ietf: 'TH–th', tk: 'zfo3ouc' },
+  },
+  geoRouting: 'on',
+  locales: {
+    '': { ietf: 'en-US', tk: 'hah7vzn.css' },
+    de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
+    kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
+    prodDomains: ['www.adobe.com'],
   },
 };
 
 // Load LCP image immediately
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
-  lcpImg?.removeAttribute('loading');
+  lcpImg?.setAttribute('loading', 'eager');
 }());
+
+function decoratePromotion() {
+  if (document.querySelector('main .promotion') instanceof HTMLElement) {
+    return;
+  }
+
+  const promotionElement = document.querySelector('head meta[name="promotion"]');
+  if (!promotionElement) {
+    return;
+  }
+
+  const promo = document.createElement('div');
+  promo.classList.add('promotion');
+  promo.setAttribute('data-promotion', promotionElement.getAttribute('content').toLowerCase());
+  document.querySelector('main > div').appendChild(promo);
+}
 
 /*
  * ------------------------------------------------------------
@@ -59,7 +81,7 @@ const miloLibs = setLibs(LIBS);
 
 (async function loadPage() {
   const { loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
-
+  decoratePromotion();
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
   loadDelayed();
