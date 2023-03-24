@@ -75,7 +75,6 @@ export default {
       'img[src="/content/dam/cct/creativecloud/business/teams/mnemonics/cc-express.svg"]',
       'img[src="/content/dam/shared/images/product-icons/svg/cc-express.svg"]',
     ]);
-
     return main;
   },
 

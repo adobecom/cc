@@ -14,9 +14,11 @@ export default function magazinePageImporter(main, document) {
   articleBody(main, document);
   articleBottom(main, document);
 
-  /*
-    clean
-  */
+  // Remove double hr
+  document.querySelectorAll('hr + hr').forEach((hr) => {
+    hr.remove();
+  });
+  // Clean up the page
   WebImporter.DOMUtils.remove(main, [
     '.c-nav__close',
     '.feds-header-wrapper',
@@ -34,14 +36,20 @@ export default function magazinePageImporter(main, document) {
   ]);
 
   document.querySelectorAll('a').forEach((a) => {
-    if (a.getAttribute('href') && a.getAttribute('href').startsWith('/magazine/wp-content/') && !a.getAttribute('href').endsWith('.mp4')) {
+    if (a.href && a.href.startsWith('/magazine/wp-content/')) {
+      a.setAttribute('href', `https://substance3d.adobe.com${a.href}`);
       const img = a.querySelector('img:first-child:last-child');
-      if (img) {
-        a.replaceWith(img);
-      }
-    }
-    if (a.href.startsWith('/')) {
+      if (img) a.replaceWith(img);
+    } else if (a.href.startsWith('/')) {
       a.setAttribute('href', `https://main--cc--adobecom.hlx.page${a.href}`);
+    }
+  });
+  document.querySelectorAll('video').forEach((video) => {
+    const source = video.querySelector('source').getAttribute('src');
+    if (source.startsWith('/magazine/wp-content/')) {
+      video.querySelector('source').setAttribute('src', `https://substance3d.adobe.com${source}`);
+    } else if (source.startsWith('/')) {
+      video.querySelector('source').setAttribute('src', `https://main--cc--adobecom.hlx.page${source}`);
     }
   });
 }

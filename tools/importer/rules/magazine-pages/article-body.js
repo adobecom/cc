@@ -20,6 +20,7 @@ export default function articleBody(main, document) {
 
   // create the aside inline blocks
   document.querySelectorAll('.main__article .has-background.has-very-light-gray-background-color').forEach((asideInline) => {
+    if (asideInline.textContent.length > 400 || asideInline.querySelector('a') || asideInline.querySelector('p + p') || asideInline.querySelector('br')) return;
     const div = document.createElement('div');
     div.innerHTML = asideInline.innerHTML;
     const asideInlineCells = [
@@ -33,6 +34,7 @@ export default function articleBody(main, document) {
 
   // create the author bio blocks
   document.querySelectorAll('.exergue--img').forEach((authorBio) => {
+    if (!authorBio.querySelector('img')) authorBio.insertAdjacentHTML('afterbegin', ' ‏‏　 ');
     const authorBioCells = [
       ['Icon Block (bio, small)'],
       [authorBio.innerHTML],
@@ -66,5 +68,10 @@ export default function articleBody(main, document) {
     const quoteHR = document.createElement('hr');
     quoteBlock.before(quoteHR);
     quoteHR.before(sectionMetadataBlock.cloneNode(true));
+  });
+
+  // fix the tables
+  document.querySelectorAll('table').forEach((table) => {
+    table.querySelector('thead')?.insertAdjacentHTML('afterbegin', '<tr><th>Columns (table)</th></tr>');
   });
 }

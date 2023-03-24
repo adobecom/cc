@@ -5,7 +5,7 @@ export default function articleHead(main, document, meta) {
   if (!img || !text) return;
   
   // the aside block
-  const cells = [['Aside (Split, Small, Dark)']];
+  const cells = [['Marquee (Split, One-Third)'], ['#1E1E1E']];
   const textElement = document.createElement('div');
   const imageElement = document.createElement('div');
 
@@ -22,9 +22,7 @@ export default function articleHead(main, document, meta) {
   }
   const imageCredits = document.querySelector('.poppertooltip');
   if (imageCredits) {
-    const marqueeImageCredits = document.createElement('p');
-    marqueeImageCredits.innerHTML = imageCredits.textContent;
-    imageElement.append(marqueeImageCredits);
+    imageElement.insertAdjacentHTML('beforeend', imageCredits.textContent);
     imageCredits.remove();
   }
 
@@ -46,8 +44,12 @@ export default function articleHead(main, document, meta) {
     textElement.append(marqueeDescription);
   }
 
-  cells.push([imageElement]);
-  cells.push([textElement, ' ']);
+  const logos = document.querySelector('.main__header .magazineItem3D__logos');
+  if (logos) {
+    textElement.insertAdjacentElement('afterbegin', logos);
+  }
+
+  cells.push([textElement, imageElement]);
   const marqueeBlockTable = WebImporter.DOMUtils.createTable(
     cells,
     document,
