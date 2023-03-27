@@ -39,7 +39,7 @@ const CONFIG = {
 // Load LCP image immediately
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
-  lcpImg?.setAttribute('loading', 'eager');
+  lcpImg?.removeAttribute('loading');
 }());
 
 function decoratePromotion() {
