@@ -11,7 +11,7 @@
  */
 
 import { setLibs } from './utils.js';
-console.log(setLibs)
+
 // Add project-wide style path here.
 const STYLES = '/cclibs/styles/styles.css';
 
