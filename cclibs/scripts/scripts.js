@@ -22,7 +22,7 @@ const LIBS = 'https://milo.adobe.com/libs';
 const CONFIG = {
   codeRoot: '/cclibs',
   contentRoot: '/creativecloud',
-  imsClientId: 'ccmilo', 
+  imsClientId: 'ccmilo',
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
     de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
@@ -30,12 +30,7 @@ const CONFIG = {
     TH_th: { ietf: 'TH–th', tk: 'zfo3ouc' },
   },
   geoRouting: 'on',
-  locales: {
-    '': { ietf: 'en-US', tk: 'hah7vzn.css' },
-    de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
-    kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
-    prodDomains: ['www.adobe.com'],
-  },
+  prodDomains: ['www.adobe.com'],
 };
 
 // Load LCP image immediately
