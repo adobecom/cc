@@ -12,9 +12,8 @@
 
 // export default async function (block, name, document) {
 export default async function init(el) {
-  const locale = 'en-US';
   const promotionName = el.getAttribute('data-promotion');
-  const response = await window.fetch(`${locale === 'en-US' ? '' : `/${locale}`}/promotions/hub/${promotionName}.plain.html`);
+  const response = await window.fetch('/promotions/hub/${promotionName}.plain.html');
   if (!response.ok) {
     // No valid response
     return;
