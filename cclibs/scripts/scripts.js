@@ -39,22 +39,6 @@ const CONFIG = {
   lcpImg?.removeAttribute('loading');
 }());
 
-function decoratePromotion() {
-  if (document.querySelector('main .promotion') instanceof HTMLElement) {
-    return;
-  }
-
-  const promotionElement = document.querySelector('head meta[name="promotion"]');
-  if (!promotionElement) {
-    return;
-  }
-
-  const promo = document.createElement('div');
-  promo.classList.add('promotion');
-  promo.setAttribute('data-promotion', promotionElement.getAttribute('content').toLowerCase());
-  document.querySelector('main > div').appendChild(promo);
-}
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -75,8 +59,15 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
+  if (document.querySelector('main .promotion') instanceof HTMLElement) {
+    const promotionElement = document.querySelector('head meta[name="promotion"]');
+    if (promotionElement) {
+      const { default: decoratePromotion } = await import('../features/short-article-promotion.js');
+      decoratePromotion(promotionElement);
+    }
+  }
+
   const { loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
-  decoratePromotion();
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
   loadDelayed();
