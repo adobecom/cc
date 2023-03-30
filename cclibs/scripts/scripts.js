@@ -59,7 +59,7 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  if (document.querySelector('main .promotion') instanceof HTMLElement) {
+  if (!(document.querySelector('main .promotion') instanceof HTMLElement)) {
     const promotionElement = document.querySelector('head meta[name="promotion"]');
     if (promotionElement) {
       const { default: decoratePromotion } = await import('../features/short-article-promotion.js');
