@@ -39,14 +39,12 @@ const CONFIG = {
   lcpImg?.removeAttribute('loading');
 }());
 
-async function loadArticlePromotions() {
-  if (!(document.querySelector('main .promotion') instanceof HTMLElement)) {
-    const promotionElement = document.querySelector('head meta[name="promotion"]');
-    if (promotionElement) {
-      const { default: decoratePromotion } = await import('../features/short-article-promotion.js');
-      decoratePromotion(promotionElement);
-    }
-  }
+async function loadArticlePromo(getMetadata) {
+  const promoEl = document.querySelector('main .promotion');
+  const promoMeta = getMetadata('promotion');
+  if (!(promoEl && promoMeta)) return;
+  const { default: decoratePromo } = await import('../features/article-promotion.js');
+  decoratePromo(promoEl);
 }
 
 /*
@@ -69,8 +67,8 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  await loadArticlePromotions();
-  const { loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
+  const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
+  await loadArticlePromo(getMetadata);
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
   loadDelayed();
