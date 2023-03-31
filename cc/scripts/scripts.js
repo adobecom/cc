@@ -44,7 +44,7 @@ async function loadArticlePromo(getMetadata) {
   const promoMeta = getMetadata('promotion');
   if (!(promoEl) && !(promoMeta)) return;
   const { default: decoratePromo } = await import('../features/article-promotion.js');
-  decoratePromo(promoEl);
+  decoratePromo(promoMeta);
 }
 
 /*
