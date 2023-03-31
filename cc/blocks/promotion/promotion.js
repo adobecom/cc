@@ -10,10 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-// export default async function (block, name, document) {
-export default async function init(el) {
+export default async function init(el, promotionPath = '/creativecloud/promotions/hub') {
   const promotionName = el.getAttribute('data-promotion');
-  const response = await window.fetch(`/creativecloud/promotions/hub/${promotionName}.plain.html`);
+  const response = await window.fetch(`${promotionPath}/${promotionName}.plain.html`);
   if (!response.ok) {
     return;
   }
