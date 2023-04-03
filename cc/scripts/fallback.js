@@ -3,6 +3,7 @@ div.style.width = '100%';
 div.style.position = 'absolute';
 div.style.display = 'block';
 div.style.minHeight = '80px';
+div.style.top = '0';
 div.style.zIndex = '9999';
 div.style.textAlign = 'center';
 div.style.background = '#fff';
