@@ -1,0 +1,53 @@
+version: 1
+
+sitemaps:
+  fedpub:
+    origin: https://www.adobe.com
+    lastmod: YYYY-MM-DD
+    default: en-US    
+    languages:
+      au:
+        source: /creativecloud/hub/query-index-au.json
+        destination: /creativecloud/hub/sitemap-au.xml
+        hreflang: en-AU
+        alternate: /au/{path}
+      de:
+        source: /creativecloud/hub/query-index-de.json
+        destination: /creativecloud/hub/sitemap-de.xml
+        hreflang: de-DE
+        alternate: /de/{path}
+      en:
+        source: /creativecloud/hub/query-index-en.json
+        destination: /creativecloud/hub/sitemap-en.xml
+        hreflang: en-US
+        alternate: /{path}        
+      es:
+        source: /creativecloud/hub/query-index-es.json
+        destination: /creativecloud/hub/sitemap-es.xml
+        hreflang: es-ES
+        alternate: /es/{path}
+      fr:
+        source: /creativecloud/hub/query-index-fr.json
+        destination: /creativecloud/hub/sitemap-fr.xml
+        hreflang: fr-FR
+        alternate: /fr/{path}
+      it:
+        source: /creativecloud/hub/query-index-it.json
+        destination: /creativecloud/hub/sitemap-it.xml
+        hreflang: it-IT
+        alternate: /it/{path}
+      jp:
+        source: /creativecloud/hub/query-index-jp.json
+        destination: /creativecloud/hub/sitemap-jp.xml
+        hreflang: ja-JP
+        alternate: /jp/{path}
+      kr:
+        source: /creativecloud/hub/query-index-kr.json
+        destination: /creativecloud/hub/sitemap-kr.xml
+        hreflang: ko-KR
+        alternate: /kr/{path}
+      ru:
+        source: /creativecloud/hub/query-index-ru.json
+        destination: /creativecloud/hub/sitemap-ru.xml
+        hreflang: ru-RU
+        alternate: /ru/{path}

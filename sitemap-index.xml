@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-kr.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-ru.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-au.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-en.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-de.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-jp.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-fr.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-es.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hub/sitemap-it.xml</loc>
+  </sitemap>
+</sitemapindex>

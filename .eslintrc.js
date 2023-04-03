@@ -20,4 +20,7 @@ module.exports = {
       ExportDeclaration: 'never',
     }],
   },
+  plugins: [
+    'chai-friendly',
+  ],
 };

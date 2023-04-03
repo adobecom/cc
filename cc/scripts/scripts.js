@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Adobe. All rights reserved.
+ * Copyright 2023 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,23 +13,24 @@
 import { setLibs } from './utils.js';
 
 // Add project-wide style path here.
-const STYLES = '';
+const STYLES = '/cc/styles/styles.css';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = 'https://milo.adobe.com/libs';
 
 // Add any config options.
 const CONFIG = {
-  // codeRoot: '',
-  // contentRoot: '',
-  // imsClientId: 'college',
-  // geoRouting: 'off',
-  // fallbackRouting: 'off',
+  codeRoot: '/cc',
+  contentRoot: '/creativecloud',
+  imsClientId: 'ccmilo',
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
     de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
     kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
+    th_th: { ietf: 'th–TH', tk: 'zfo3ouc' },
   },
+  geoRouting: 'on',
+  prodDomains: ['www.adobe.com'],
 };
 
 // Load LCP image immediately
@@ -37,6 +38,14 @@ const CONFIG = {
   const lcpImg = document.querySelector('img');
   lcpImg?.removeAttribute('loading');
 }());
+
+async function loadArticlePromo(getMetadata) {
+  const promoEl = document.querySelector('main .promotion');
+  const promoMeta = getMetadata('promotion');
+  if (!(promoEl) && !(promoMeta)) return;
+  const { default: decoratePromo } = await import('../features/article-promotion.js');
+  decoratePromo(promoMeta);
+}
 
 /*
  * ------------------------------------------------------------
@@ -58,8 +67,8 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
-
+  const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
+  await loadArticlePromo(getMetadata);
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
   loadDelayed();
