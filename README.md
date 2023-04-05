@@ -29,3 +29,21 @@ or:
 npm run test:watch
 ```
 This will give you several options to debug tests. Note: coverage may not be accurate.
+
+## Linting
+To run the linter run:
+```sh
+npm run lint
+```
+To lint just js or css files, run
+```sh
+npm run lint:css
+```
+or:
+```sh
+npm run lint:js
+```
+If you need to lint just one file, you can run:
+```sh
+npx eslint file1.js
+```
