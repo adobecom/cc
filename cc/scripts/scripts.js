@@ -21,7 +21,7 @@ const LIBS = 'https://milo.adobe.com/libs';
 // Add any config options.
 const CONFIG = {
   codeRoot: '/cc',
-  contentRoot: '/creativecloud',
+  contentRoot: '/',
   imsClientId: 'ccmilo',
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
