@@ -40,8 +40,10 @@ export default function magazinePageImporter(main, document) {
       a.setAttribute('href', `https://substance3d.adobe.com${a.href}`);
       const img = a.querySelector('img:first-child:last-child');
       if (img) a.replaceWith(img);
-    } else if (a.href.startsWith('/')) {
-      a.setAttribute('href', `https://main--cc--adobecom.hlx.page${a.href}`);
+    } else {
+      if (a.href.startsWith('/magazine')) a.setAttribute('href', `/products/substance3d${a.href}`);
+      if (a.href.endsWith('/')) a.setAttribute('href', a.href.slice(0, -1));
+      if (a.href.startsWith('/')) a.setAttribute('href', `https://main--cc--adobecom.hlx.page${a.href}`);
     }
   });
   document.querySelectorAll('video').forEach((video) => {
