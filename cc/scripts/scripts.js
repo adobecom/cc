@@ -29,7 +29,7 @@ const CONFIG = {
     kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
     th_th: { ietf: 'th–TH', tk: 'zfo3ouc' },
   },
-  geoRouting: 'on',
+  // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
 };
 
