@@ -37,8 +37,6 @@ export default function magazinePageImporter(main, document) {
 
   // Transform the links to the new site
   document.querySelectorAll('.main__article a').forEach((a) => {
-    console.log(a);
-    
     const img = a.querySelector('img:first-child:last-child');
     if (img) {
       a.replaceWith(img);
