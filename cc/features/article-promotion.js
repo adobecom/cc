@@ -3,4 +3,5 @@ export default function init(el) {
   promo.classList.add('promotion');
   promo.setAttribute('data-promotion', el.toLowerCase());
   document.querySelector('main > div').appendChild(promo);
+  return promo;
 }
