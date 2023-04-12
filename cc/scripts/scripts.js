@@ -70,6 +70,6 @@ const miloLibs = setLibs(LIBS);
   const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
-  loadDelayed();
   await loadArticlePromo(getMetadata);
+  loadDelayed();
 }());
