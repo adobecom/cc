@@ -43,8 +43,8 @@ async function loadArticlePromo(getMetadata) {
   const promoEl = document.querySelector('main .promotion');
   const promoMeta = getMetadata('promotion');
   if (!(promoEl) && !(promoMeta)) return;
-  const { decoratePromo } = await import('../blocks/promotion/promotion.js');
-  decoratePromo(promoMeta);
+  const { default: init } = await import('../blocks/promotion/promotion.js');
+  init(promoMeta);
 }
 
 /*
