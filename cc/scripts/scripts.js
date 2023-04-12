@@ -43,10 +43,8 @@ async function loadArticlePromo(getMetadata) {
   const promoEl = document.querySelector('main .promotion');
   const promoMeta = getMetadata('promotion');
   if (!(promoEl) && !(promoMeta)) return;
-  const { default: decoratePromo } = await import('../features/article-promotion.js');
-  const decoratedPromoEl = decoratePromo(promoMeta);
-  const { default: addFedpubPromo } = await import('../blocks/promotion/promotion.js');
-  addFedpubPromo(decoratedPromoEl);
+  const { decoratePromotion } = await import('../blocks/promotion/promotion.js');
+  decoratePromotion(promoMeta);
 }
 
 /*
@@ -72,6 +70,6 @@ const miloLibs = setLibs(LIBS);
   const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
-  await loadArticlePromo(getMetadata);
   loadDelayed();
+  await loadArticlePromo(getMetadata);
 }());

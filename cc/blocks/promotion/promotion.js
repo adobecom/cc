@@ -6,3 +6,11 @@ export default async function init(el, promotionPath = '/creativecloud/promotion
   if (!promotionContent.length) return;
   el.appendChild(document.createRange().createContextualFragment(promotionContent));
 }
+
+export async function decoratePromotion(el) {
+  const promoEl = document.createElement('div');
+  promoEl.classList.add('promotion');
+  promoEl.setAttribute('data-promotion', el.toLowerCase());
+  document.querySelector('main > div').appendChild(promoEl);
+  init(promoEl);
+}
