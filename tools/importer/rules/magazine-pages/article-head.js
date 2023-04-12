@@ -44,9 +44,24 @@ export default function articleHead(main, document, meta) {
     textElement.append(marqueeDescription);
   }
 
+  // handle mnemonics
   const logos = document.querySelector('.main__header .magazineItem3D__logos');
   if (logos) {
     textElement.insertAdjacentElement('afterbegin', logos);
+    logos.querySelectorAll('img').forEach((img) => {
+      const alt = img.getAttribute('alt');
+      const a = document.createElement('a');
+      a.setAttribute('href', `https://main--cc--adobecom.hlx.page/products/substance3d/${alt.toLowerCase().replace(/ /g, '-')}`);
+      let src = img.getAttribute('src');
+      if (src.endsWith('.svg') || src.includes('.svg?')) {
+        // add svgs inside links using milo format
+        a.innerHTML = `https://main--cc--adobecom.hlx.page/cc/icons/${alt.toLowerCase().replace(/ /g, '-')}.svg | ${alt}`;
+        img.replaceWith(a);
+      } else {
+        // add links after <img> tags
+        img.after(a);
+      }
+    });
   }
 
   cells.push([textElement, imageElement]);

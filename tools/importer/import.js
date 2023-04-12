@@ -12,12 +12,7 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
-// import createAccordionBlocks from './rules/accordion.js';
-// import createMarqueeBlocks from './rules/marquee.js';
-// import createIconBlock from './rules/iconblock.js';
-// import guessColumnsBlocks from './rules/columns.js';
-
-import magazinePageImporter from "./rules/magazine-pages.js";
+import magazinePageImporter from "./rules/magazine-pages/magazine-pages.js";
 
 export default {
   /**
@@ -44,15 +39,7 @@ export default {
     });
 
     /*
-      individual blocks import rules
-    */
-    // createAccordionBlocks(main, document);
-    // createMarqueeBlocks(main, document);
-    // createIconBlock(main, document);
-    // guessColumnsBlocks(main, document);
-
-    /*
-      magazine pages import rules
+      import rules
     */
     magazinePageImporter(main, document);
 
@@ -78,5 +65,6 @@ export default {
     return main;
   },
 
+  /* change the output paths */
   generateDocumentPath: ({ document, url, html, params }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, ''))
 };

@@ -13,6 +13,5 @@ export default function articleBottom(main, document) {
   ];
   const sectionMetadataBlock = WebImporter.DOMUtils.createTable(sectionMetadataBlockCells, document);
   bottomOfThePage.before(sectionMetadataBlock);
-
-  // to-do: add the related articles
+  bottomOfThePage.insertAdjacentHTML('beforeEnd', '<a href="https://main--cc--adobecom.hlx.page/tools/caas">https://main--cc--adobecom.hlx.page/tools/caas</a>');
 }
