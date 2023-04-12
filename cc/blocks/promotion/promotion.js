@@ -7,7 +7,7 @@ export default async function init(el, promotionPath = '/creativecloud/promotion
   el.appendChild(document.createRange().createContextualFragment(promotionContent));
 }
 
-export async function decoratePromotion(el) {
+export async function decoratePromo(el) {
   const promoEl = document.createElement('div');
   promoEl.classList.add('promotion');
   promoEl.setAttribute('data-promotion', el.toLowerCase());
