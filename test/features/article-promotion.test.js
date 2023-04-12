@@ -7,7 +7,7 @@ document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('short form article promotion when metadata is set', () => {
   before(async () => {
     const metaEl = document.querySelector('head meta[name="promotion"]');
-    const { default: init } = await import('../../cc/features/article-promotion.js');
+    const { default: init } = await import('../../creativecloud/features/article-promotion.js');
     init(metaEl.content);
   });
 
