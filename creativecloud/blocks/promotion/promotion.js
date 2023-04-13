@@ -6,7 +6,6 @@ export async function addPromoContent(el, promoPath) {
   if (!promotionContent.length) return;
   el.appendChild(document.createRange().createContextualFragment(promotionContent));
 }
-
 export default async function init(el, promoPath = '/creativecloud/promotions/hub') {
   const promoEl = document.createElement('div');
   promoEl.classList.add('promotion');

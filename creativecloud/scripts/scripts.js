@@ -13,14 +13,14 @@
 import { setLibs } from './utils.js';
 
 // Add project-wide style path here.
-const STYLES = '/cc/styles/styles.css';
+const STYLES = '/creativecloud/styles/styles.css';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = 'https://milo.adobe.com/libs';
 
 // Add any config options.
 const CONFIG = {
-  codeRoot: '/cc',
+  codeRoot: '/creativecloud',
   contentRoot: '/creativecloud',
   imsClientId: 'ccmilo',
   locales: {
@@ -29,7 +29,7 @@ const CONFIG = {
     kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
     th_th: { ietf: 'th–TH', tk: 'zfo3ouc' },
   },
-  // geoRouting: 'on',
+  geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
 };
 
