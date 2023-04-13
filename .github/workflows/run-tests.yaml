@@ -2,11 +2,11 @@ name: Unit Tests and Linting
 on:
   push:
     branches:
-      - main
+      - stage
   pull_request:
     types: [opened, synchronize, reopened, edited]
     branches:
-      - main
+      - stage
 jobs:
   run-tests:
     name: Running tests
