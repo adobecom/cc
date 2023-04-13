@@ -55,7 +55,7 @@ export default function articleHead(main, document, meta) {
       let src = img.getAttribute('src');
       if (src.endsWith('.svg') || src.includes('.svg?')) {
         // add svgs inside links using milo format
-        a.innerHTML = `https://main--cc--adobecom.hlx.page/cc/img/icons/${alt.toLowerCase().replace(/ /g, '-')}.svg | ${alt}`;
+        a.innerHTML = `https://main--cc--adobecom.hlx.page/creativecloud/img/icons/${alt.toLowerCase().replace(/ /g, '-')}.svg | ${alt}`;
         img.replaceWith(a);
       } else {
         // add links after <img> tags
