@@ -13,14 +13,14 @@
 import { setLibs } from './utils.js';
 
 // Add project-wide style path here.
-const STYLES = '/creativecloud/styles/styles.css';
+const STYLES = '/cc/styles/styles.css';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = 'https://milo.adobe.com/libs';
 
 // Add any config options.
 const CONFIG = {
-  codeRoot: '/creativecloud',
+  codeRoot: '/cc',
   contentRoot: '/creativecloud',
   imsClientId: 'ccmilo',
   locales: {
@@ -29,7 +29,7 @@ const CONFIG = {
     kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
     th_th: { ietf: 'th–TH', tk: 'zfo3ouc' },
   },
-  geoRouting: 'on',
+  // geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
 };
 
@@ -43,8 +43,8 @@ async function loadArticlePromo(getMetadata) {
   const promoEl = document.querySelector('main .promotion');
   const promoMeta = getMetadata('promotion');
   if (!(promoEl) && !(promoMeta)) return;
-  const { default: decoratePromo } = await import('../features/article-promotion.js');
-  decoratePromo(promoMeta);
+  const { default: init } = await import('../blocks/promotion/promotion.js');
+  init(promoMeta);
 }
 
 /*
@@ -68,8 +68,8 @@ const miloLibs = setLibs(LIBS);
 
 (async function loadPage() {
   const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
-  await loadArticlePromo(getMetadata);
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
+  loadArticlePromo(getMetadata);
   loadDelayed();
 }());
