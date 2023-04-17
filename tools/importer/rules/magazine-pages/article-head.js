@@ -51,7 +51,7 @@ export default function articleHead(main, document, meta) {
     logos.querySelectorAll('img').forEach((img) => {
       const alt = img.getAttribute('alt');
       const a = document.createElement('a');
-      a.setAttribute('href', `https://main--cc--adobecom.hlx.page/products/substance3d/${alt.toLowerCase().replace(/ /g, '-')}`);
+      a.setAttribute('href', `https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/${alt.toLowerCase().replace(/ /g, '-')}`);
       let src = img.getAttribute('src');
       if (src.endsWith('.svg') || src.includes('.svg?')) {
         // add svgs inside links using milo format
@@ -77,10 +77,10 @@ export default function articleHead(main, document, meta) {
   marqueeBlockTable.before(div);
   const breadcrumbsList = document.createElement('ul');
   const home = document.createElement('li');
-  home.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/products/substance3d/">Substance 3D</a>';
+  home.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/">Substance 3D</a>';
   breadcrumbsList.append(home);
   const magazine = document.createElement('li');
-  magazine.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/products/substance3d/magazine/">Magazine</a>';
+  magazine.innerHTML = '<a href="https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/magazine/">Magazine</a>';
   breadcrumbsList.append(magazine);
   const breadcrumbsCells = [
     ['Breadcrumbs'],
