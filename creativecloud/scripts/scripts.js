@@ -42,7 +42,7 @@ const CONFIG = {
 async function loadArticlePromo(getMetadata) {
   const promoEl = document.querySelector('main .promotion');
   const promoMeta = getMetadata('promotion');
-  if (!(promoEl) && !(promoMeta)) return;
+  if (!(promoEl) || !(promoMeta)) return;
   const { default: decoratePromo } = await import('../features/article-promotion.js');
   decoratePromo(promoMeta);
 }
