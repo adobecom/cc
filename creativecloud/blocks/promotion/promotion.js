@@ -6,10 +6,10 @@ export async function addPromoContent(el, promoPath) {
   if (!promotionContent.length) return;
   el.appendChild(document.createRange().createContextualFragment(promotionContent));
 }
-export default async function init(el, promoPath = '/creativecloud/promotions/hub') {
+export default async function init(mdContent, promoPath = '/creativecloud/promotions/hub') {
   const promoEl = document.createElement('div');
   promoEl.classList.add('promotion');
-  promoEl.setAttribute('data-promotion', el.toLowerCase());
+  promoEl.setAttribute('data-promotion', mdContent.toLowerCase());
   document.querySelector('main > div').appendChild(promoEl);
   await addPromoContent(promoEl, promoPath);
 }
