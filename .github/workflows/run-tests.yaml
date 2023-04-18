@@ -1,11 +1,13 @@
-name: Unit Tests
+name: Unit Tests and Linting
 on:
   push:
     branches:
+      - stage
       - main
   pull_request:
     types: [opened, synchronize, reopened, edited]
     branches:
+      - stage
       - main
 jobs:
   run-tests:
@@ -30,6 +32,9 @@ jobs:
 
     - name: Install dependencies
       run: npm install
+      
+    - name: Run the linter
+      run: npm run lint  
 
     - name: Run the tests
       run: xvfb-run -a npm test
