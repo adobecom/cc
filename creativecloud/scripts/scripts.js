@@ -105,6 +105,7 @@ const locales = {
 // Add any config options.
 const CONFIG = {
   codeRoot: '/creativecloud',
+  contentRoot: '/creativecloud',
   imsClientId: 'ccmilo',
   locales,
   geoRouting: 'on',
