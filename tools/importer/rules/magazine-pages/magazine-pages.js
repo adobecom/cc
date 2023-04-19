@@ -48,7 +48,7 @@ export default function magazinePageImporter(main, document) {
         if (a.href.startsWith('/')) a.setAttribute('href', `https://main--cc--adobecom.hlx.page${a.href}`);
         if (a.href.startsWith('http://localhost:3001/')) a.setAttribute('href', `https://main--cc--adobecom.hlx.page${a.href.slice(21)}`);
         if (a.href.startsWith('https://substance3d.adobe.com/')) a.setAttribute('href', `https://main--cc--adobecom.hlx.page${a.href.slice(29)}`);
-        if (a.href.startsWith('https://main--cc--adobecom.hlx.page/magazine/')) a.setAttribute('href', `https://main--cc--adobecom.hlx.page/creativecloud/3d-ar/magazine${a.href.slice(44)}`);
+        if (a.href.startsWith('https://main--cc--adobecom.hlx.page/magazine/')) a.setAttribute('href', `https://main--cc--adobecom.hlx.page/products/substance3d/magazine${a.href.slice(44)}`);
         if (a.href.endsWith('/')) a.setAttribute('href', a.href.slice(0, -1));
       }
     }
