@@ -1,5 +1,6 @@
 export default async function init(el, promotionPath = '/creativecloud/promotions/hub') {
   const promotionName = el.getAttribute('data-promotion');
+  if (!promotionName) return;
   const response = await window.fetch(`${promotionPath}/${promotionName}.plain.html`);
   if (!response.ok) return;
   const promotionContent = await response.text();
