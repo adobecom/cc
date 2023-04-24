@@ -50,18 +50,3 @@ sitemaps:
         alternate: /ru/{path}.html
         destination: /ru/creativecloud/assets/sitemaps/sitemap.xml
         hreflang: ru-RU
-      hk:
-        source: /hk_zh/creativecloud/assets/sitemaps/query-index-hk.json
-        alternate: /hk_zh/{path}.html
-        destination: /hk_zh/creativecloud/assets/sitemaps/sitemap-hk.xml
-        hreflang: hk-zh
-      th:
-        source: /th_th/creativecloud/assets/sitemaps/query-index-th.json
-        alternate: /th_th/{path}.html
-        destination: /th_th/creativecloud/assets/sitemaps/sitemap-th.xml
-        hreflang: TH-th
-      tw:
-        source: /tw/creativecloud/assets/sitemaps/query-index.json
-        alternate: /tw/{path}.html
-        destination: /tw/creativecloud/assets/sitemaps/sitemap-tw.xml
-        hreflang: TW
