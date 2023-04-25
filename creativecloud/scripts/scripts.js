@@ -146,9 +146,10 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
+  const { getMetadata, loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   await loadArticlePromo(getMetadata);
   setConfig({ ...CONFIG, miloLibs });
+  loadLana({ clientId: 'cc' });
   await loadArea();
   loadDelayed();
 }());
