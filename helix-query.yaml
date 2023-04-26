@@ -9,7 +9,7 @@ indices:
     - '**/drafts/**'
     - '**/fragments/**'
     - '**/localization/**'
-    target: /creativecloud/assets/sitemaps/query-index.xlsx
+    target: /creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -34,7 +34,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /au/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /au/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -59,7 +59,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /de/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /de/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -84,7 +84,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /es/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /es/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -109,7 +109,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /fr/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /fr/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -134,7 +134,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /it/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /it/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -159,7 +159,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /jp/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /jp/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -184,7 +184,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /kr/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /kr/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -209,7 +209,7 @@ indices:
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-    target: /ru/creativecloud/assets/sitemaps/query-index.xlsx
+    target: /ru/creativecloud/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
