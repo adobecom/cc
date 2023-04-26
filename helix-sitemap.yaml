@@ -6,47 +6,47 @@ sitemaps:
     lastmod: YYYY-MM-DD
     languages:
       default:
-        source: /creativecloud/assets/sitemaps/query-index.json
-        destination: /creativecloud/assets/sitemaps/sitemap.xml
+        source: /creativecloud/query-index.json
+        destination: /creativecloud/sitemap.xml
         hreflang: en-US
         alternate: /{path}.html
       au:
-        source: /au/creativecloud/assets/sitemaps/query-index.json
+        source: /au/creativecloud/query-index.json
         alternate: /au/{path}.html
-        destination: /au/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /au/creativecloud/sitemap.xml
         hreflang: en-AU
       de:
-        source: /de/creativecloud/assets/sitemaps/query-index.json
+        source: /de/creativecloud/query-index.json
         alternate: /de/{path}.html
-        destination: /de/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /de/creativecloud/sitemap.xml
         hreflang: de-DE
       es:
-        source: /es/creativecloud/assets/sitemaps/query-index.json
+        source: /es/creativecloud/query-index.json
         alternate: /es/{path}.html
-        destination: /es/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /es/creativecloud/sitemap.xml
         hreflang: es-ES
       fr:
-        source: /fr/creativecloud/assets/sitemaps/query-index.json
+        source: /fr/creativecloud/query-index.json
         alternate: /fr/{path}.html
-        destination: /fr/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /fr/creativecloud/sitemap.xml
         hreflang: fr-FR
       it:
-        source: /it/creativecloud/assets/sitemaps/query-index.json
+        source: /it/creativecloud/query-index.json
         alternate: /it/{path}.html
-        destination: /it/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /it/creativecloud/sitemap.xml
         hreflang: it-IT
       jp:
-        source: /jp/creativecloud/assets/sitemaps/query-index.json
+        source: /jp/creativecloud/query-index.json
         alternate: /jp/{path}.html
-        destination: /jp/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /jp/creativecloud/sitemap.xml
         hreflang: ja-JP
       kr:
-        source: /kr/creativecloud/assets/sitemaps/query-index.json
+        source: /kr/creativecloud/query-index.json
         alternate: /kr/{path}.html
-        destination: /kr/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /kr/creativecloud/sitemap.xml
         hreflang: ko-KR
       ru:
-        source: /ru/creativecloud/assets/sitemaps/query-index.json
+        source: /ru/creativecloud/query-index.json
         alternate: /ru/{path}.html
-        destination: /ru/creativecloud/assets/sitemaps/sitemap.xml
+        destination: /ru/creativecloud/sitemap.xml
         hreflang: ru-RU
