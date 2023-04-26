@@ -3,9 +3,10 @@ version: 1
 indices:
   us:
     include:
-    - /**
+    - /creativecloud/**
     exclude:
-    - '**/gnav/**'
+    - '**/gnav**'
+    - '**/footer**'
     - '**/drafts/**'
     - '**/fragments/**'
     - '**/localization/**'
@@ -28,9 +29,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
    au:
     include:
-      - /au/**
+      - /au/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
@@ -53,9 +55,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   de:
     include:
-      - /de/**
+      - /de/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
@@ -78,9 +81,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   es:
     include:
-      - /es/**
+      - /es/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
@@ -103,9 +107,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   fr:
     include:
-      - /fr/**
+      - /fr/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
@@ -128,9 +133,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   it:
     include:
-      - /it/**
+      - /it/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
@@ -153,9 +159,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   jp:
     include:
-      - /jp/**
+      - /jp/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
@@ -178,9 +185,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   kr:
     include:
-      - /kr/**
+      - /kr/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
@@ -203,9 +211,10 @@ indices:
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   ru:
     include:
-      - /ru/**
+      - /ru/creativecloud/**
     exclude:
-      - '**/gnav/**'
+      - '**/gnav**'
+      - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
