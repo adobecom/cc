@@ -2,30 +2,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://www.adobe.com/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/ru/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/ru/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/au/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/au/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/kr/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/kr/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/de/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/de/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/jp/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/jp/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/fr/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/fr/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/es/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/es/creativecloud/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.adobe.com/it/creativecloud/assets/sitemaps/sitemap.xml</loc>
+    <loc>https://www.adobe.com/it/creativecloud/sitemap.xml</loc>
   </sitemap>
 </sitemapindex>
