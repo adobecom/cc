@@ -1,265 +1,263 @@
 version: 1
 
 indices:
-  creativecloud:
-    us:
-      include:
-      - /creativecloud/**
-      exclude:
+  creativecloud-us:
+    include:
+    - /creativecloud/**
+    exclude:
+    - '**/gnav**'
+    - '**/footer**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+   creativecloud-au:
+    include:
+      - /au/creativecloud/**
+    exclude:
       - '**/gnav**'
       - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-      target: /creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-     au:
-      include:
-        - /au/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /au/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-    de:
-      include:
-        - /de/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /de/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-    es:
-      include:
-        - /es/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /es/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-    fr:
-      include:
-        - /fr/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /fr/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-    it:
-      include:
-        - /it/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /it/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-    jp:
-      include:
-        - /jp/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /jp/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-    kr:
-      include:
-        - /kr/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /kr/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-    ru:
-      include:
-        - /ru/creativecloud/**
-      exclude:
-        - '**/gnav**'
-        - '**/footer**'
-        - '**/drafts/**'
-        - '**/fragments/**'
-        - '**/localization/**'
-      target: /ru/creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  products:
-    us:
-      include:
-      - /creativecloud/**
-      exclude:
+    target: /au/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  creativecloud-de:
+    include:
+      - /de/creativecloud/**
+    exclude:
       - '**/gnav**'
       - '**/footer**'
       - '**/drafts/**'
       - '**/fragments/**'
       - '**/localization/**'
-      target: /creativecloud/query-index.xlsx
-      properties:
-        title:
-          select: head > meta[property="og:title"]
-          value: attribute(el, 'content')
-        date:
-          select: head > meta[name="publishdate"]
-          value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
-        image:
-          select: head > meta[property="og:image"]
-          value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-        description:
-          select: head > meta[name="description"]
-          value: attribute(el, 'content')
-        lastModified:
-          select: none
-          value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+    target: /de/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  creativecloud-es:
+    include:
+      - /es/creativecloud/**
+    exclude:
+      - '**/gnav**'
+      - '**/footer**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /es/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  creativecloud-fr:
+    include:
+      - /fr/creativecloud/**
+    exclude:
+      - '**/gnav**'
+      - '**/footer**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /fr/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  creativecloud-it:
+    include:
+      - /it/creativecloud/**
+    exclude:
+      - '**/gnav**'
+      - '**/footer**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /it/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  creativecloud-jp:
+    include:
+      - /jp/creativecloud/**
+    exclude:
+      - '**/gnav**'
+      - '**/footer**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /jp/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  creativecloud-kr:
+    include:
+      - /kr/creativecloud/**
+    exclude:
+      - '**/gnav**'
+      - '**/footer**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /kr/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  creativecloud-ru:
+    include:
+      - /ru/creativecloud/**
+    exclude:
+      - '**/gnav**'
+      - '**/footer**'
+      - '**/drafts/**'
+      - '**/fragments/**'
+      - '**/localization/**'
+    target: /ru/creativecloud/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  products-us:
+    include:
+    - /products/**
+    exclude:
+    - '**/gnav**'
+    - '**/footer**'
+    - '**/drafts/**'
+    - '**/fragments/**'
+    - '**/localization/**'
+    target: /products/query-index.xlsx
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
