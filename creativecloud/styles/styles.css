@@ -12,3 +12,13 @@
   margin: auto;
   padding: 20px;
 }
+
+ .reading-width-footer-tag {
+  max-width: 600px;
+  margin: -20px auto;
+}
+
+ .reading-width-footer-tag > .content {
+  max-width: var(--grid-container-width);
+  margin: 0 auto;
+}
