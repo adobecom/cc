@@ -21,4 +21,5 @@
  .reading-width-footer-tag > .content {
   max-width: var(--grid-container-width);
   margin: 0 auto;
+  padding: 0 20px 20px;
 }
