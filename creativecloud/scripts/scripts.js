@@ -118,14 +118,6 @@ const CONFIG = {
   lcpImg?.removeAttribute('loading');
 }());
 
-async function loadArticlePromo(getMetadata) {
-  const promoEl = document.querySelector('main .promotion');
-  const promoMeta = getMetadata('promotion');
-  if (promoEl || !(promoMeta)) return;
-  const { default: decoratePromo } = await import('../features/article-promotion.js');
-  decoratePromo(promoMeta);
-}
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -146,9 +138,9 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
-  await loadArticlePromo(getMetadata);
+  const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
+  loadLana({ clientId: 'cc' });
   await loadArea();
   loadDelayed();
 }());
