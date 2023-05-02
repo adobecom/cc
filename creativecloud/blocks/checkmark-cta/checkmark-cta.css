@@ -1,0 +1,37 @@
+.checkmark-cta {
+  max-width: var(--grid-container-width);
+  margin: 0 auto;
+}
+
+.checkmark-cta > div,
+.center .checkmark-cta {
+  max-width: 320px;
+}
+
+.checkmark-cta label {
+  font-size: var(--type-body-s-size);
+  display: block;
+  position: relative;
+  padding-left: 2rem;
+  padding-top: 1rem;
+}
+
+.checkmark-cta label .checkbox-container {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  height: 100%;
+  width: 2rem;
+}
+
+/* 
+  Below: temporary styles until ryan's milo branch is merged 
+  https://github.com/adobecom/milo/commit/bff2c6b8fea04e08eff85b32ee5fb03847ffa15a 
+*/
+.checkmark-cta a[aria-disabled="true"] {
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-500);
+  color: var(--color-gray-500);
+  pointer-events: none;
+  cursor: default;
+}
