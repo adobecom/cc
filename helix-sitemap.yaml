@@ -11,7 +11,7 @@ sitemaps:
         destination: /creativecloud/sitemap.xml
         hreflang: x-default
         
-      en:
+      us:
         source: /creativecloud/query-index.json
         alternate: /{path}.html
         destination: /creativecloud/sitemap.xml
