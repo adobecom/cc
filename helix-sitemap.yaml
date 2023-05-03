@@ -9,6 +9,12 @@ sitemaps:
         source: /creativecloud/query-index.json
         alternate: /{path}.html
         destination: /creativecloud/sitemap.xml
+        hreflang: x-default
+        
+      en:
+        source: /creativecloud/query-index.json
+        alternate: /{path}.html
+        destination: /creativecloud/sitemap.xml
         hreflang: en-US
 
       au:
