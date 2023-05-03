@@ -7,44 +7,52 @@ sitemaps:
     languages:
       default:
         source: /creativecloud/query-index.json
+        alternate: /{path}.html
         destination: /creativecloud/sitemap.xml
         hreflang: en-US
-        alternate: /{path}.html
+
       au:
         source: /au/creativecloud/query-index.json
         alternate: /au/{path}.html
         destination: /au/creativecloud/sitemap.xml
         hreflang: en-AU
+
       de:
         source: /de/creativecloud/query-index.json
         alternate: /de/{path}.html
         destination: /de/creativecloud/sitemap.xml
         hreflang: de-DE
+
       es:
         source: /es/creativecloud/query-index.json
         alternate: /es/{path}.html
         destination: /es/creativecloud/sitemap.xml
         hreflang: es-ES
+
       fr:
         source: /fr/creativecloud/query-index.json
         alternate: /fr/{path}.html
         destination: /fr/creativecloud/sitemap.xml
         hreflang: fr-FR
+
       it:
         source: /it/creativecloud/query-index.json
         alternate: /it/{path}.html
         destination: /it/creativecloud/sitemap.xml
         hreflang: it-IT
+
       jp:
         source: /jp/creativecloud/query-index.json
         alternate: /jp/{path}.html
         destination: /jp/creativecloud/sitemap.xml
         hreflang: ja-JP
+
       kr:
         source: /kr/creativecloud/query-index.json
         alternate: /kr/{path}.html
         destination: /kr/creativecloud/sitemap.xml
         hreflang: ko-KR
+        
       ru:
         source: /ru/creativecloud/query-index.json
         alternate: /ru/{path}.html
