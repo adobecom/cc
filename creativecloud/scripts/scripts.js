@@ -106,7 +106,7 @@ const locales = {
 const CONFIG = {
   contentRoot: '/creativecloud',
   codeRoot: '/creativecloud',
-  imsClientId: 'ccmilo',
+  imsClientId: 'adobedotcom-cc',
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
@@ -117,14 +117,6 @@ const CONFIG = {
   const lcpImg = document.querySelector('img');
   lcpImg?.removeAttribute('loading');
 }());
-
-async function loadArticlePromo(getMetadata) {
-  const promoEl = document.querySelector('main .promotion');
-  const promoMeta = getMetadata('promotion');
-  if (promoEl || !(promoMeta)) return;
-  const { default: decoratePromo } = await import('../features/article-promotion.js');
-  decoratePromo(promoMeta);
-}
 
 /*
  * ------------------------------------------------------------
@@ -146,9 +138,9 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { getMetadata, loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
-  await loadArticlePromo(getMetadata);
+  const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
+  loadLana({ clientId: 'cc' });
   await loadArea();
   loadDelayed();
 }());
