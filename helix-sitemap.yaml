@@ -7,13 +7,6 @@ sitemaps:
     languages:
       default:
         source: /creativecloud/query-index.json
-        alternate: /{path}.html
-        destination: /creativecloud/sitemap.xml
-        hreflang: x-default
-        
-      us:
-        source: /creativecloud/query-index.json
-        alternate: /{path}.html
         destination: /creativecloud/sitemap.xml
         hreflang: en-US
 
