@@ -4,10 +4,11 @@ sitemaps:
   website:
     origin: https://www.adobe.com
     lastmod: YYYY-MM-DD
-    default: us
+    default: en-US
     languages:
       us:
         source: /creativecloud/query-index.json
+        alternate: /{path}.html
         destination: /creativecloud/sitemap.xml
         hreflang: en-US
 
