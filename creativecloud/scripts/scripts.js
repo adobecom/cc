@@ -104,7 +104,7 @@ const locales = {
 
 // Add any config options.
 const CONFIG = {
-  contentRoot: '/creativecloud',
+  contentRoot: '/cc-shared',
   codeRoot: '/creativecloud',
   imsClientId: 'adobedotcom-cc',
   locales,
