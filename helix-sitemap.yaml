@@ -37,7 +37,7 @@ sitemaps:
         hreflang: fr-FR
 
       it:
-        source: /it/creativecloud/query-index.json
+        source: /it/cc-shared/assets/query-index.json
         alternate: /it/{path}.html
         destination: /it/cc-shared/assets/sitemap.xml
         hreflang: it-IT
