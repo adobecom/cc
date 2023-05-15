@@ -3,6 +3,7 @@ version: 1
 indices:
   def: &def
     exclude:
+      - '**/cc-shared/**'
       - '**/gnav**'
       - '**/footer**'
       - '**/drafts/**'
