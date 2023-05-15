@@ -9,7 +9,7 @@ indices:
       - '**/fragments/**'
     include:
       - /creativecloud/**
-    target: /creativecloud/query-index.xlsx
+    target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -31,37 +31,37 @@ indices:
     <<: *def
     include:
       - /au/creativecloud/**
-    target: /au/creativecloud/query-index.xlsx
+    target: /au/cc-shared/assets/query-index.xlsx
 
   creativecloud-de:
     <<: *def
     include:
       - /de/creativecloud/**
-    target: /de/creativecloud/query-index.xlsx
+    target: /de/cc-shared/assets/query-index.xlsx
     
   creativecloud-es:
     <<: *def
     include:
       - /es/creativecloud/**
-    target: /es/creativecloud/query-index.xlsx
+    target: /es/cc-shared/assets/query-index.xlsx
 
   creativecloud-fr:
     <<: *def
     include:
       - /fr/creativecloud/**
-    target: /fr/creativecloud/query-index.xlsx
+    target: /fr/cc-shared/assets/query-index.xlsx
 
   creativecloud-it:
     <<: *def
     include:
       - /it/creativecloud/**
-    target: /it/creativecloud/query-index.xlsx
+    target: /it/cc-shared/assets/query-index.xlsx
 
   creativecloud-jp:
     <<: *def
     include:
       - /jp/creativecloud/**
-    target: /jp/creativecloud/query-index.xlsx
+    target: /jp/cc-shared/assets/query-index.xlsx
 
   creativecloud-kr:
     <<: *def
@@ -73,5 +73,5 @@ indices:
     <<: *def
     include:
       - /ru/creativecloud/**
-    target: /ru/creativecloud/query-index.xlsx
+    target: /ru/cc-shared/assets/query-index.xlsx
 
