@@ -59,6 +59,15 @@
       "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
       "url": "https://milo.adobe.com/tools/locale-nav",
       "includePaths": [ "**.docx**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "version-history",
+      "title": "Version History",
+      "environments": [ "edit" ],
+      "url": "http://localhost:3000/tools/version-history/index.html?project=milo--adobecom",
+      "passReferrer": true,
+      "includePaths": [ "**.docx**" ]
     }
   ]
 }
