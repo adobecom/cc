@@ -110,10 +110,10 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
-  local: {
+  /*local: {
     pdfViewerClientId: '6cc88769fee749aea8aac8ca3555794c',
     //pdfViewerReportSuite: 'adbadobedxqa',
-  },
+  },*/
   stage: {
     pdfViewerClientId: '0ec2ae23ed19462ebb358a917cdbab1e',
     //pdfViewerReportSuite: 'adbadobedxqa',
