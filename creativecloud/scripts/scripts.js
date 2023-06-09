@@ -111,7 +111,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
   stage: {
-    pdfViewerClientId: '0ec2ae23ed19462ebb358a917cdbab1e',
+    pdfViewerClientId: '8d2de6a43c194397933c3d41f6dadef5',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   live: {
