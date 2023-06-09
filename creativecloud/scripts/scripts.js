@@ -115,7 +115,10 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   live: {
-    pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
+    //feature branch
+    pdfViewerClientId: '73aed50cefdd432583c921083d2e7ede',
+    //main branch
+    //pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   prod: {
