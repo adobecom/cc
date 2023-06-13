@@ -110,6 +110,18 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
+  stage: {
+    pdfViewerClientId: '8d2de6a43c194397933c3d41f6dadef5',
+    pdfViewerReportSuite: 'adbadobenonacdcqa',
+  },
+  live: {
+    pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
+    pdfViewerReportSuite: 'adbadobenonacdcqa',
+  },
+  prod: {
+    pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
+    pdfViewerReportSuite: 'adbadobenonacdcprod',
+  },
 };
 
 // Load LCP image immediately
