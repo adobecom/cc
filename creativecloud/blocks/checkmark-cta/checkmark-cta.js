@@ -33,3 +33,5 @@ const init = (block) => {
   decorateBlockAnalytics(block);
   decorateLinkAnalytics(block, []);
 };
+
+export default init;
