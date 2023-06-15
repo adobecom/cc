@@ -4,7 +4,7 @@ const miloLibs = getLibs();
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const { decorateBlockAnalytics, decorateLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
 
-const checkmarkCTA = (block) => {
+const init = (block) => {
   const firstCell = block.querySelector(':scope > div:first-child');
   const secondCell = block.querySelector(':scope > div:nth-child(2)');
   if (!firstCell || !secondCell) return;
@@ -33,5 +33,3 @@ const checkmarkCTA = (block) => {
   decorateBlockAnalytics(block);
   decorateLinkAnalytics(block, []);
 };
-
-export default checkmarkCTA;
