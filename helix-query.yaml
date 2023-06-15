@@ -1,86 +1,78 @@
 version: 1
 
 indices:
-  fedpub: &default
+  def: &def
     exclude:
-      - '_documentation/**'
-      - '_draft/**'
-      - '_bench/**'
-      - '**/promotions/**'
+      - '**/cc-shared/**'
+      - '**/gnav**'
+      - '**/footer**'
+      - '**/drafts/**'
       - '**/fragments/**'
-    target: creativecloud/hub/query-index.xlsx
+    include:
+      - /creativecloud/**
+    target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
         select: head > meta[property="og:title"]
-        value: |
-          attribute(el, 'content')
+        value: attribute(el, 'content')
       date:
         select: head > meta[name="publishdate"]
-        value: |
-          dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
       image:
         select: head > meta[property="og:image"]
-        value: |
-          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       description:
         select: head > meta[name="description"]
-        value: |
-          attribute(el, 'content')
+        value: attribute(el, 'content')
       lastModified:
         select: none
-        value: |
-          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
 
-  fedpub-au:
-    <<: *default
+  creativecloud-au:
+    <<: *def
     include:
-      - '/au/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-au.xlsx'
+      - /au/creativecloud/**
+    target: /au/cc-shared/assets/query-index.xlsx
 
-  fedpub-de:
-    <<: *default
+  creativecloud-de:
+    <<: *def
     include:
-      - '/de/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-de.xlsx'
+      - /de/creativecloud/**
+    target: /de/cc-shared/assets/query-index.xlsx
+    
+  creativecloud-es:
+    <<: *def
+    include:
+      - /es/creativecloud/**
+    target: /es/cc-shared/assets/query-index.xlsx
 
-  fedpub-en:
-    <<: *default
+  creativecloud-fr:
+    <<: *def
     include:
-      - '/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-en.xlsx'
+      - /fr/creativecloud/**
+    target: /fr/cc-shared/assets/query-index.xlsx
 
-  fedpub-es:
-    <<: *default
+  creativecloud-it:
+    <<: *def
     include:
-      - '/es/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-es.xlsx'
+      - /it/creativecloud/**
+    target: /it/cc-shared/assets/query-index.xlsx
 
-  fedpub-fr:
-    <<: *default
+  creativecloud-jp:
+    <<: *def
     include:
-      - '/fr/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-fr.xlsx'
+      - /jp/creativecloud/**
+    target: /jp/cc-shared/assets/query-index.xlsx
 
-  fedpub-it:
-    <<: *default
+  creativecloud-kr:
+    <<: *def
     include:
-      - '/it/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-it.xlsx'
+      - /kr/creativecloud/**
+    target: /kr/creativecloud/query-index.xlsx
 
-  fedpub-jp:
-    <<: *default
+  creativecloud-ru:
+    <<: *def
     include:
-      - '/jp/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-jp.xlsx'
+      - /ru/creativecloud/**
+    target: /ru/cc-shared/assets/query-index.xlsx
 
-  fedpub-kr:
-    <<: *default
-    include:
-      - '/kr/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-kr.xlsx'
-
-  fedpub-ru:
-    <<: *default
-    include:
-      - '/ru/creativecloud/hub/**'
-    target: '/creativecloud/hub/query-index-ru.xlsx'
