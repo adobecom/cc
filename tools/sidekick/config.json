@@ -60,6 +60,14 @@
     },
     {
       "containerId": "tools",
+      "id": "ost",
+      "title": "Use offer",
+      "environments": [ "edit", "dev", "preview" ],
+      "url": "https://milo.adobe.com/tools/ost",
+      "includePaths": [ "**.docx**" ]
+    },
+    {
+      "containerId": "tools",
       "id": "locales",
       "title": "Locales",
       "environments": [ "edit", "dev", "preview", "live" ],
@@ -68,14 +76,6 @@
       "passReferrer": true,
       "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
       "url": "https://milo.adobe.com/tools/locale-nav",
-      "includePaths": [ "**.docx**" ]
-    },
-    {
-      "containerId": "tools",
-      "id": "ost",
-      "title": "Use offer",
-      "environments": [ "edit", "dev", "preview" ],
-      "url": "https://milo.adobe.com/tools/ost",
       "includePaths": [ "**.docx**" ]
     }
   ]
