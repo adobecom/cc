@@ -50,12 +50,12 @@
       "environments": ["dev", "preview", "live"],
       "event": "preflight"
     },
-        {
+    {
       "containerId": "tools",
       "id": "ost",
       "title": "Use offer",
-      "environments": [ "edit" ],
-      "url": "/tools/ost",
+      "environments": [ "edit", "dev", "preview" ],
+      "url": "https://milo.adobe.com/tools/ost",
       "includePaths": [ "**.docx**" ]
     },
     {
