@@ -50,6 +50,14 @@
       "environments": ["dev", "preview", "live"],
       "event": "preflight"
     },
+        {
+      "containerId": "tools",
+      "id": "ost",
+      "title": "Use offer",
+      "environments": [ "edit" ],
+      "url": "/tools/ost",
+      "includePaths": [ "**.docx**" ]
+    },
     {
       "containerId": "tools",
       "id": "locales",
