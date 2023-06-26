@@ -59,12 +59,6 @@ sitemaps:
         alternate: /ru/{path}.html
         destination: /ru/cc-shared/assets/sitemap.xml
         hreflang: ru-RU
-      
-      th_th:
-        source: /th_th/cc-shared/assets/query-index.json
-        alternate: /th_th/{path}.html
-        destination: /th_th/cc-shared/assets/sitemap.xml
-        hreflang: th-TH  
 
       hk_zh:
         source: /hk_zh/cc-shared/assets/query-index.json
