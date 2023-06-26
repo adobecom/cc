@@ -76,12 +76,6 @@ indices:
       - /ru/creativecloud/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
-  creativecloud-th_th:
-    <<: *def
-    include:
-      - /th_th/creativecloud/**
-    target: /th_th/cc-shared/assets/query-index.xlsx  
-
   creativecloud-hk_zh:
     <<: *def
     include:
