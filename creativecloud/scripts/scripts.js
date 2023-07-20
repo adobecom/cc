@@ -112,11 +112,9 @@ const CONFIG = {
   prodDomains: ['www.adobe.com'],
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
-    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6'
+    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
   },
-  live: {
-    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6'
-  },
+  live: { edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6' },
 };
 
 // Load LCP image immediately
