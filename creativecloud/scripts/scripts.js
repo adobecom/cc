@@ -111,6 +111,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
   stage: {
+    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
     pdfViewerClientId: '8d2de6a43c194397933c3d41f6dadef5',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
@@ -119,6 +120,7 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   prod: {
+    edgeConfigId: '2cba807b-7430-41ae-9aac-db2b0da742d5',
     pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
     pdfViewerReportSuite: 'adbadobenonacdcprod',
   },
