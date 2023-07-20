@@ -111,11 +111,13 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
   stage: {
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
     pdfViewerClientId: '8d2de6a43c194397933c3d41f6dadef5',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   live: {
+    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
     pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
