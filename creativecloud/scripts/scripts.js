@@ -117,11 +117,11 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   live: {
-    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
     pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   prod: {
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-5dd5dd2177e6.min.js',
     edgeConfigId: '2cba807b-7430-41ae-9aac-db2b0da742d5',
     pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
     pdfViewerReportSuite: 'adbadobenonacdcprod',
