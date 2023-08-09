@@ -115,6 +115,11 @@ const CONFIG = {
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
   },
   live: { edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6' },
+  jarvis: {
+    id: 'adobedotcom2',
+    version: '1.83',
+    onDemand: false,
+  },
 };
 
 // Load LCP image immediately
