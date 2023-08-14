@@ -126,6 +126,11 @@ const CONFIG = {
     pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
     pdfViewerReportSuite: 'adbadobenonacdcprod',
   },
+  jarvis: {
+    id: 'adobedotcom2',
+    version: '1.83',
+    onDemand: false,
+  },
 };
 
 // Load LCP image immediately
