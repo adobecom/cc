@@ -144,3 +144,5 @@ const miloLibs = setLibs(LIBS);
   await loadArea();
   loadDelayed();
 }());
+
+export default miloLibs;
