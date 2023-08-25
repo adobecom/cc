@@ -182,7 +182,12 @@ function setImages(type, node1, mobileProp, tabletProp, desktopProp) {
 export function getData(node, id) {
   const node1 = [...node];
   if (id === 0) {
+    // const backImg = document.createElement('img');
     setImages('img', node1, 'mobileBackground', 'tabletBackground', 'desktopBackground');
+    // backImg.src = obj.desktopBackground;
+    // console.log('backImg: ', backImg);
+    // backImg.classList.add('backImg');
+    // el.appendChild(backImg);
   } else if (id === 1) {
     setImages('img', node1, 'mobileForeground', 'tabletForeground', 'desktopforeground');
   } else if (id === 2) {
@@ -294,12 +299,11 @@ export default function init(el) {
     const { children } = data;
     getData(children, id);
   });
+  import(`${base}/deps/blades/9c8d172e.js`);
   renderBlade();
   el.innerText = '';
   el.appendChild(customElem);
-  import(`${base}/deps/blades/9c8d172e.js`);
-  // getJson(true);
-  setTimeout(function () {
-    getJson(true);
-  }, 15000);
+  // setTimeout(() => {
+  //   getJson(true);
+  // }, 15000);
 }
