@@ -303,7 +303,8 @@ export default function init(el) {
   el.innerText = '';
   el.appendChild(customElem);
   import(`${base}/deps/blades/9c8d172e.js`);
-  setTimeout(() => {
-    getJson(true);
-  }, 15000);
+  getJson(true);
+  // setTimeout(() => {
+  //   getJson(true);
+  // }, 15000);
 }
