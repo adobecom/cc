@@ -155,7 +155,11 @@ function renderBlade() {
 }
 
 function getImageSrc(node) {
-  return Array.from(node).map((el) => el.querySelector('picture > img').src);
+  return Array.from(node).map((el) => {
+    const a = el.querySelector('picture > img').src;
+    const newA = a.split(".png")[0] + ".png";
+    return newA;
+  });
 }
 
 function getText(node) {
