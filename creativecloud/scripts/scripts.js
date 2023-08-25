@@ -120,10 +120,9 @@ const eagerLoad = (img) => {
 // Load LCP image immediately
 (async function loadLCPImage() {
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  console.log('firstDiv: ', firstDiv);
   if (firstDiv?.classList.contains('interactive-marquee')) {
-    const { children } = firstDiv;
-    children[0].querySelectorAll('img').forEach(eagerLoad);
+    // const { children } = firstDiv;
+    firstDiv.querySelectorAll('img').forEach(eagerLoad);
   } else {
     eagerLoad(document.querySelector('img'));
   }
