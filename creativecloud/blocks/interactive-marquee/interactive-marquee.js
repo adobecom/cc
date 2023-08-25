@@ -299,11 +299,11 @@ export default function init(el) {
     const { children } = data;
     getData(children, id);
   });
-  import(`${base}/deps/blades/9c8d172e.js`);
   renderBlade();
   el.innerText = '';
   el.appendChild(customElem);
-  // setTimeout(() => {
-  //   getJson(true);
-  // }, 15000);
+  import(`${base}/deps/blades/9c8d172e.js`);
+  setTimeout(() => {
+    getJson(true);
+  }, 15000);
 }
