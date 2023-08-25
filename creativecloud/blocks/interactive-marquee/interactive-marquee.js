@@ -3,14 +3,9 @@ import miloLibs from '../../scripts/scripts.js';
 
 const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
 const config = getConfig();
-// const configkeys = ['tryitImage'];
 const obj = {};
-let customElem;
+const customElem = document.createElement('ft-changebackgroundmarquee');
 let excelJson;
-// configkeys.forEach((key, idx) => {
-//   obj[key] = data[idx].value;
-//   if()
-// })
 
 const base = config.codeRoot;
 
@@ -159,300 +154,80 @@ function renderBlade() {
   };
 }
 
-function getSrc(node) {
-  const arr = [];
-  node.forEach((el) => {
-    arr.push(el.querySelector('picture > img').src);
-  });
-  return arr;
+function getImageSrc(node) {
+  return Array.from(node).map((el) => el.querySelector('picture > img').src);
 }
 
 function getText(node) {
-  const arr = [];
-  node.forEach((el) => {
-    arr.push(el.innerText.trim());
-  });
-  return arr;
+  return Array.from(node).map((el) => el.innerText.trim());
 }
 
-// function getImg() {
-//   const img = '';
-//   return img;
-// }
-
-// export function getData(node, id) {
-//   const [nodekey] = node;
-//   const text = nodekey.textContent;
-//   const nodeCollection = [...node];
-//   nodeCollection.shift();
-//   if (text === 'Tryit Image Cursor') {
-//     const imgSrc = getImg();
-//     tryitImage = imgSrc;
-//   } else if (text === 'Cursor') {
-//     const imgSrc = getImg();
-//     cursorImage = imgSrc;
-//   } else if (text === 'Remove Background Icon') {
-//     const imgSrc = getImg();
-//     backgroundIcon = imgSrc;
-//   } else if (text === 'Change Photo Icon') {
-//     const imgSrc = getImg();
-//     changePhotoIcon = imgSrc;
-//   } else if (text === 'Change Pattern Icon') {
-//     const imgSrc = getImg();
-//     changePatternIcon = imgSrc;
-//   } else if (text === 'Change Color Icon') {
-//     const imgSrc = getImg();
-//     changeColorIcon = imgSrc;
-//   } else if (text === 'Marquee Title') {
-//     if (node.length > 0) {
-//       const imgValue = getSrc(nodeCollection);
-//       if (imgValue.length === 1) {
-//         mobileMarqueeTitle = imgValue[0];
-//         tabletMarqueeTitle = imgValue[0];
-//         desktopMarqueeTitle = imgValue[0];
-//       } else if (imgValue.length === 2) {
-//         mobileMarqueeTitle = imgValue[0];
-//         tabletMarqueeTitle = imgValue[0];
-//         desktopMarqueeTitle = imgValue[1];
-//       } else {
-//         [mobileMarqueeTitle, tabletMarqueeTitle, desktopMarqueeTitle] = imgValue;
-//       }
-//     }
-//   } else if (text === 'Tryit Text') {
-//     if (node.length > 0) {
-//       const nodetext = getText(nodeCollection);
-//       if (nodetext.length === 1) {
-//         mobileTryIttext = nodetext[0];
-//         tabletTryIttext = nodetext[0];
-//         desktopTryIttext = nodetext[0];
-//       } else if (nodetext.length === 2) {
-//         mobileTryIttext = nodetext[0];
-//         tabletTryIttext = nodetext[0];
-//         desktopTryIttext = nodetext[1];
-//       } else {
-//         [mobileTryIttext, tabletTryIttext, desktopTryIttext] = nodetext;
-//       }
-//     }
-//   } else if (text === 'Foreground') {
-//     if (node.length > 0) {
-//       const imgValue = getSrc(nodeCollection);
-//       if (imgValue.length === 1) {
-//         mobileForeground = imgValue[0];
-//         tabletForeground = imgValue[0];
-//         desktopforeground = imgValue[0];
-//       } else if (imgValue.length === 2) {
-//         mobileForeground = imgValue[0];
-//         tabletForeground = imgValue[0];
-//         desktopforeground = imgValue[1];
-//       } else {
-//         [mobileForeground, tabletForeground, desktopforeground] = imgValue;
-//       }
-//     }
-//   } else if (text === 'Background') {
-//     if (node.length > 0) {
-//       const imgValue = getSrc(nodeCollection);
-//       if (imgValue.length === 1) {
-//         mobileBackground = imgValue[0];
-//         tabletBackground = imgValue[0];
-//         desktopBackground = imgValue[0];
-//       } else if (imgValue.length === 2) {
-//         mobileBackground = imgValue[0];
-//         tabletBackground = imgValue[0];
-//         desktopBackground = imgValue[1];
-//       } else {
-//         [mobileBackground, tabletBackground, desktopBackground] = imgValue;
-//       }
-//     }
-//   } else if (text === 'Remove Background Text') {
-//     if (node.length > 0) {
-//       const nodetext = getText(nodeCollection);
-//       if (nodetext.length === 1) {
-//         mobileRemoveBackText = nodetext[0];
-//         tabletRemoveBackText = nodetext[0];
-//         desktopRemoveBackText = nodetext[0];
-//       } else if (nodetext.length === 2) {
-//         mobileRemoveBackText = nodetext[0];
-//         tabletRemoveBackText = nodetext[0];
-//         desktopRemoveBackText = nodetext[1];
-//       } else {
-//         [mobileRemoveBackText, tabletRemoveBackText, desktopRemoveBackText] = nodetext;
-//       }
-//     }
-//   } else if (text === 'Change Photo Text') {
-//     if (node.length > 0) {
-//       const nodetext = getText(nodeCollection);
-//       if (nodetext.length === 1) {
-//         mobChangePhotoText = nodetext[0];
-//         tabChangePhotoText = nodetext[0];
-//         dskChangePhotoText = nodetext[0];
-//       } else if (nodetext.length === 2) {
-//         mobChangePhotoText = nodetext[0];
-//         tabChangePhotoText = nodetext[0];
-//         dskChangePhotoText = nodetext[1];
-//       } else {
-//         [mobChangePhotoText, tabChangePhotoText, dskChangePhotoText] = nodetext;
-//       }
-//     }
-//   } else if (text === 'Change Color Text') {
-//     if (node.length > 0) {
-//       const nodetext = getText(nodeCollection);
-//       if (nodetext.length === 1) {
-//         mobChangeColorText = nodetext[0];
-//         tabChangeColorText = nodetext[0];
-//         dskChangeColorText = nodetext[0];
-//       } else if (nodetext.length === 2) {
-//         mobChangeColorText = nodetext[0];
-//         tabChangeColorText = nodetext[0];
-//         dskChangeColorText = nodetext[1];
-//       } else {
-//         [mobChangeColorText, tabChangeColorText, dskChangeColorText] = nodetext;
-//       }
-//     }
-//   } else if (text === 'Change Pattern Text') {
-//     if (node.length > 0) {
-//       const nodetext = getText(nodeCollection);
-//       if (nodetext.length === 1) {
-//         mobChangePatternText = nodetext[0];
-//         tabChangePatternText = nodetext[0];
-//         dskChangePatternText = nodetext[0];
-//       } else if (nodetext.length === 2) {
-//         mobChangePatternText = nodetext[0];
-//         tabChangePatternText = nodetext[0];
-//         dskChangePatternText = nodetext[1];
-//       } else {
-//         [mobChangePatternText, tabChangePatternText, dskChangePatternText] = nodetext;
-//       }
-//     }
-//   }
-// }
+function setImages(type, node1, mobileProp, tabletProp, desktopProp) {
+  if (node1.length > 0) {
+    const dataValue = type === 'img' ? getImageSrc(node1) : getText(node1);
+    if (dataValue.length === 1) {
+      obj[mobileProp] = dataValue[0];
+      obj[tabletProp] = dataValue[0];
+      obj[desktopProp] = dataValue[0];
+    } else if (dataValue.length === 2) {
+      obj[mobileProp] = dataValue[0];
+      obj[tabletProp] = dataValue[0];
+      obj[desktopProp] = dataValue[1];
+    } else {
+      [obj[mobileProp], obj[tabletProp], obj[desktopProp]] = dataValue;
+    }
+  }
+}
 
 export function getData(node, id) {
   const node1 = [...node];
   if (id === 0) {
-    if (node.length > 0) {
-      const imgValue = getSrc(node1);
-      if (imgValue.length === 1) {
-        obj.mobileBackground = imgValue[0];
-        obj.tabletBackground = imgValue[0];
-        obj.desktopBackground = imgValue[0];
-      } else if (imgValue.length === 2) {
-        obj.mobileBackground = imgValue[0];
-        obj.tabletBackground = imgValue[0];
-        obj.desktopBackground = imgValue[1];
-      } else {
-        [obj.mobileBackground, obj.tabletBackground, obj.desktopBackground] = imgValue;
-      }
-    }
+    setImages('img', node1, 'mobileBackground', 'tabletBackground', 'desktopBackground');
   } else if (id === 1) {
-    if (node.length > 0) {
-      const imgValue = getSrc(node1);
-      if (imgValue.length === 1) {
-        obj.tabletForeground = imgValue[0];
-        obj.mobileForeground = imgValue[0];
-        obj.desktopforeground = imgValue[0];
-      } else if (imgValue.length === 2) {
-        obj.mobileForeground = imgValue[0];
-        obj.tabletForeground = imgValue[0];
-        obj.desktopforeground = imgValue[1];
-      } else {
-        [obj.mobileForeground, obj.tabletForeground, obj.desktopforeground] = imgValue;
-      }
-    }
+    setImages('img', node1, 'mobileForeground', 'tabletForeground', 'desktopforeground');
   } else if (id === 2) {
-    if (node.length > 0) {
-      const imgValue = getSrc(node1);
-      if (imgValue.length === 1) {
-        obj.mobileMarqueeTitle = imgValue[0];
-        obj.tabletMarqueeTitle = imgValue[0];
-        obj.desktopMarqueeTitle = imgValue[0];
-      } else if (imgValue.length === 2) {
-        obj.mobileMarqueeTitle = imgValue[0];
-        obj.tabletMarqueeTitle = imgValue[0];
-        obj.desktopMarqueeTitle = imgValue[1];
-      } else {
-        [obj.mobileMarqueeTitle, obj.tabletMarqueeTitle, obj.desktopMarqueeTitle] = imgValue;
-      }
-    }
+    setImages('img', node1, 'mobileMarqueeTitle', 'tabletMarqueeTitle', 'desktopMarqueeTitle');
   } else if (id === 3) {
-    if (node.length > 0) {
-      const nodetext = getText(node1);
-      if (nodetext.length === 1) {
-        obj.mobileTryIttext = nodetext[0];
-        obj.tabletTryIttext = nodetext[0];
-        obj.desktopTryIttext = nodetext[0];
-      } else if (nodetext.length === 2) {
-        obj.mobileTryIttext = nodetext[0];
-        obj.tabletTryIttext = nodetext[0];
-        obj.desktopTryIttext = nodetext[1];
-      } else {
-        [obj.mobileTryIttext, obj.tabletTryIttext, obj.desktopTryIttext] = nodetext;
-      }
-    }
+    setImages('text', node1, 'mobileTryIttext', 'tabletTryIttext', 'desktopTryIttext');
   } else if (id === 4) {
     const iconBlock = node1.shift();
     obj.backgroundIcon = iconBlock.querySelector('picture > img').src;
-    const nodetext = getText(node1);
-    if (nodetext.length === 1) {
-      obj.mobileRemoveBackText = nodetext[0];
-      obj.tabletRemoveBackText = nodetext[0];
-      obj.desktopRemoveBackText = nodetext[0];
-    } else if (nodetext.length === 2) {
-      obj.mobileRemoveBackText = nodetext[0];
-      obj.tabletRemoveBackText = nodetext[0];
-      obj.desktopRemoveBackText = nodetext[1];
-    } else {
-      [obj.mobileRemoveBackText, obj.tabletRemoveBackText, obj.desktopRemoveBackText] = nodetext;
-    }
+    setImages('text', node1, 'mobileRemoveBackText', 'tabletRemoveBackText', 'desktopRemoveBackText');
   } else if (id === 5) {
     const iconBlock = node1.shift();
     obj.changePhotoIcon = iconBlock.querySelector('picture > img').src;
-    const nodetext = getText(node1);
-    if (nodetext.length === 1) {
-      obj.mobChangePhotoText = nodetext[0];
-      obj.tabChangePhotoText = nodetext[0];
-      obj.dskChangePhotoText = nodetext[0];
-    } else if (nodetext.length === 2) {
-      obj.mobChangePhotoText = nodetext[0];
-      obj.tabChangePhotoText = nodetext[0];
-      obj.dskChangePhotoText = nodetext[1];
-    } else {
-      [obj.mobChangePhotoText, obj.tabChangePhotoText, obj.dskChangePhotoText] = nodetext;
-    }
+    setImages('text', node1, 'mobChangePhotoText', 'tabChangePhotoText', 'dskChangePhotoText');
   } else if (id === 6) {
     const iconBlock = node1.shift();
     obj.changeColorIcon = iconBlock.querySelector('picture > img').src;
-    const nodetext = getText(node1);
-    if (nodetext.length === 1) {
-      obj.mobChangeColorText = nodetext[0];
-      obj.tabChangeColorText = nodetext[0];
-      obj.dskChangeColorText = nodetext[0];
-    } else if (nodetext.length === 2) {
-      obj.mobChangeColorText = nodetext[0];
-      obj.tabChangeColorText = nodetext[0];
-      obj.dskChangeColorText = nodetext[1];
-    } else {
-      [obj.mobChangeColorText, obj.tabChangeColorText, obj.dskChangeColorText] = nodetext;
-    }
+    setImages('text', node1, 'mobChangeColorText', 'tabChangeColorText', 'dskChangeColorText');
   } else if (id === 7) {
     const iconBlock = node1.shift();
     obj.changePatternIcon = iconBlock.querySelector('picture > img').src;
-    const nodetext = getText(node1);
-    if (nodetext.length === 1) {
-      obj.mobChangePatternText = nodetext[0];
-      obj.tabChangePatternText = nodetext[0];
-      obj.dskChangePatternText = nodetext[0];
-    } else if (nodetext.length === 2) {
-      obj.mobChangePatternText = nodetext[0];
-      obj.tabChangePatternText = nodetext[0];
-      obj.dskChangePatternText = nodetext[1];
-    } else {
-      [obj.mobChangePatternText, obj.tabChangePatternText, obj.dskChangePatternText] = nodetext;
-    }
+    setImages('text', node1, 'mobChangePatternText', 'tabChangePatternText', 'dskChangePatternText');
   } else if (id === 8) {
     excelJson = node1[0].innerText.trim();
   }
-  renderBlade();
 }
+
+// function reRenderBlade() {
+//   const dskChangePhoto = [
+//     {
+//       src: `${obj.desktopChnagePhotoImage1}`,
+//       swatchSrc: `${obj.ChangePhotoIcon1}`,
+//     },
+//     {
+//       src: `${obj.desktopChnagePhotoImage2}`,
+//       swatchSrc: `${obj.ChangePhotoIcon2}`,
+//     },
+//     {
+//       src: `${obj.desktopChnagePhotoImage3}`,
+//       swatchSrc: `${obj.ChangePhotoIcon3}`,
+//     },
+//   ];
+//   customElem.config.desktop.groups[1].options = dskChangePhoto;
+//   console.log('1', customElem.config.desktop.groups[1]);
+// }
 
 async function getExcelData() {
   const resp = await fetch('https://main--cc--adobecom.hlx.page/drafts/suhjain/book.json');
@@ -465,7 +240,7 @@ async function getExcelData() {
   return arr;
 }
 
-async function getJson() {
+async function getJson(loadHeavyImages) {
   const arr = await getExcelData();
   arr.forEach((grp) => {
     if (grp.Data === 'Tryit Image Cursor') {
@@ -473,9 +248,11 @@ async function getJson() {
     } else if (grp.Data === 'Cursor') {
       obj.cursorImage = grp.Value1;
     } else if (grp.Data === 'Desktop Change Photo images') {
-      obj.desktopChnagePhotoImage1 = grp.Value1;
-      obj.desktopChnagePhotoImage2 = grp.Value2;
-      obj.desktopChnagePhotoImage3 = grp.Value3;
+      if (loadHeavyImages) {
+        obj.desktopChnagePhotoImage1 = grp.Value1;
+        obj.desktopChnagePhotoImage2 = grp.Value2;
+        obj.desktopChnagePhotoImage3 = grp.Value3;
+      }
     } else if (grp.Data === 'Change Photo Thumbnails') {
       obj.ChangePhotoIcon1 = grp.Value1;
       obj.ChangePhotoIcon2 = grp.Value2;
@@ -489,9 +266,11 @@ async function getJson() {
       obj.ChangePatternIcon2 = grp.Value2;
       obj.ChangePatternIcon3 = grp.Value3;
     } else if (grp.Data === 'Desktop Change Pattern Images') {
-      obj.desktopChangePatternImage1 = grp.Value1;
-      obj.desktopChangePatternImage2 = grp.Value2;
-      obj.desktopChangePatternImage3 = grp.Value3;
+      if (loadHeavyImages) {
+        obj.desktopChangePatternImage1 = grp.Value1;
+        obj.desktopChangePatternImage2 = grp.Value2;
+        obj.desktopChangePatternImage3 = grp.Value3;
+      }
     } else if (grp.Data === 'Tablet  Change Photo images') {
       obj.tabletChnagePhotoImage1 = grp.Value1;
     } else if (grp.Data === 'Tablet  Change Pattern images') {
@@ -511,13 +290,16 @@ async function getJson() {
 
 export default function init(el) {
   const dataSet = el.querySelectorAll(':scope > div');
-  import(`${base}/deps/blades/9c8d172e.js`);
-  customElem = document.createElement('ft-changebackgroundmarquee');
   dataSet.forEach((data, id) => {
     const { children } = data;
     getData(children, id);
   });
+  renderBlade();
   el.innerText = '';
   el.appendChild(customElem);
-  getJson();
+  import(`${base}/deps/blades/9c8d172e.js`);
+  // getJson(true);
+  setTimeout(function () {
+    getJson(true);
+  }, 15000);
 }
