@@ -165,9 +165,10 @@ function renderBlade() {
 
 function getImageSrc(node) {
   return Array.from(node).map((el) => {
-    const a = el.querySelector('picture > img').src;
-    const newA = a.split(".png")[0] + ".png";
-    return newA;
+    console.log('el: ', el);
+    const a = el.querySelector('picture > img').currentSrc;
+    // const newA = a.split(".png")[0] + ".png";
+    return a;
   });
 }
 
@@ -175,9 +176,12 @@ function getText(node) {
   return Array.from(node).map((el) => el.innerText.trim());
 }
 
-function setImages(type, node1, mobileProp, tabletProp, desktopProp) {
+function setImages(type, node1, mobileProp, tabletProp, desktopProp, flag) {
   if (node1.length > 0) {
     const dataValue = type === 'img' ? getImageSrc(node1) : getText(node1);
+    if (flag) {
+      console.log('dataValue', dataValue, type);
+    }
     if (dataValue.length === 1) {
       obj[mobileProp] = dataValue[0];
       obj[tabletProp] = dataValue[0];
@@ -195,7 +199,9 @@ function setImages(type, node1, mobileProp, tabletProp, desktopProp) {
 export function getSharepointDocData(node, id) {
   const node1 = [...node];
   if (id === 0) {
-    setImages('img', node1, 'mobileBackground', 'tabletBackground', 'desktopBackground');
+    console.log('node1: ', node1);
+    setImages('img', node1, 'mobileBackground', 'tabletBackground', 'desktopBackground', true);
+    console.log('d');
   } else if (id === 1) {
     setImages('img', node1, 'mobileForeground', 'tabletForeground', 'desktopforeground');
   } else if (id === 2) {
