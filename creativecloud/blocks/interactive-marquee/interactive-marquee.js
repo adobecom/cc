@@ -3,6 +3,7 @@ import miloLibs from '../../scripts/scripts.js';
 
 const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
 const config = getConfig();
+// TODO: check if obj shoould be global or not
 const obj = {};
 const customElem = document.createElement('ft-changebackgroundmarquee');
 let excelJson;
@@ -11,6 +12,14 @@ const base = config.codeRoot;
 
 function renderBlade() {
   console.log('----------------------');
+  // createConfig func
+  // create obj with 3 keys desktop, mobile tablet.
+  // within those keys, have the following keys, marqueeTitleImgSrc, talentSrc,defaultBgSrc...groups...
+  // get sharepoint doc data and update the necessary values in the obj
+  // get sharepoint excel data save the sharepoint excel data in another global variable excelData
+  // call another func to updateObjwithExcelData(obj, excelData, loadHeavyImages=False)
+  // call renderBlade and assign obj directly to customelem.config = obj
+  // updateObjwithExcelData(obj, excelData, loadHeavyImages=True)
   customElem.config = {
     desktop: {
       marqueeTitleImgSrc: `${obj.desktopMarqueeTitle}`,
@@ -183,15 +192,10 @@ function setImages(type, node1, mobileProp, tabletProp, desktopProp) {
   }
 }
 
-export function getData(node, id) {
+export function getSharepointDocData(node, id) {
   const node1 = [...node];
   if (id === 0) {
-    // const backImg = document.createElement('img');
     setImages('img', node1, 'mobileBackground', 'tabletBackground', 'desktopBackground');
-    // backImg.src = obj.desktopBackground;
-    // console.log('backImg: ', backImg);
-    // backImg.classList.add('backImg');
-    // el.appendChild(backImg);
   } else if (id === 1) {
     setImages('img', node1, 'mobileForeground', 'tabletForeground', 'desktopforeground');
   } else if (id === 2) {
@@ -249,7 +253,7 @@ async function getExcelData() {
   return arr;
 }
 
-async function getJson(loadHeavyImages) {
+async function getSharepointExcelData({ loadHeavyImages = false } = {}) {
   const arr = await getExcelData();
   arr.forEach((grp) => {
     if (grp.Data === 'Tryit Image Cursor') {
@@ -294,21 +298,18 @@ async function getJson(loadHeavyImages) {
       obj.mobileChangeColorText1 = grp.Value1;
     }
   });
-  renderBlade();
 }
 
 export default function init(el) {
   const dataSet = el.querySelectorAll(':scope > div');
   dataSet.forEach((data, id) => {
     const { children } = data;
-    getData(children, id);
+    getSharepointDocData(children, id);
   });
   renderBlade();
   el.innerText = '';
   el.appendChild(customElem);
   import(`${base}/deps/blades/9c8d172e.js`);
-  getJson(true);
-  // setTimeout(() => {
-  //   getJson(true);
-  // }, 15000);
+  // getSharepointExcelData({ loadHeavyImages: true });
+  // renderBlade();
 }
