@@ -167,9 +167,9 @@ async function createConfig(el) {
 }
 
 export default async function init(el) {
-  createConfig(el);
-  // el.innerText = '';
-  // el.appendChild(customElem);
+  const clone = el.cloneNode(true);
+  el.innerText = '';
+  createConfig(clone);
   import(`${base}/deps/blades/9c8d172e.js`);
   excelJsonData = await getExcelData(excelLink);
   customElem.config = createConfigExcel(excelJsonData, configObj);
