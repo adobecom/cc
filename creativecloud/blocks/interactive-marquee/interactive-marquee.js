@@ -105,13 +105,13 @@ function getSrcFromExcelData(name, viewportType, excelData, type) {
   const arr = [];
   excelData.forEach((data) => {
     if (data.ComponentName === name && data.Viewport === viewportType && data.MappedName === type) {
-      if (data.Value1.trim() !== "") {
+      if (data.Value1.trim() !== '') {
         arr.push(data.Value1);
       }
-      if (data.Value2.trim() !== "") {
+      if (data.Value2.trim() !== '') {
         arr.push(data.Value2);
       }
-      if (data.Value3.trim() !== "") {
+      if (data.Value3.trim() !== '') {
         arr.push(data.Value3);
       }
     }
@@ -169,11 +169,10 @@ async function createConfig(el) {
 export default async function init(el) {
   const clone = el.cloneNode(true);
   el.innerText = '';
+  import(`${base}/deps/blades/interactivemarquee.js`);
   createConfig(clone);
-  import(`${base}/deps/blades/9c8d172e.js`);
   excelJsonData = await getExcelData(excelLink);
   customElem.config = createConfigExcel(excelJsonData, configObj);
-  el.innerText = '';
   el.appendChild(customElem);
   console.log('configObj', customElem.config);
 }
