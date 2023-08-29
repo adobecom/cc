@@ -119,7 +119,8 @@ function getSrcFromExcelData(name, viewportType, excelData, type) {
   return arr;
 }
 
-function createConfigExcel(excelJson, configObjData) {
+function createConfigExcel(excelJson, configObjData2) {
+  let configObjData = JSON.parse(JSON.stringify(configObjData2));
   for (const viewportType of ['desktop', 'tablet', 'mobile']) {
     configObjData[`${viewportType}`].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
     configObjData[`${viewportType}`].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
@@ -142,7 +143,7 @@ function createConfigExcel(excelJson, configObjData) {
       }
     }
   }
-  console.log('configObj', configObjData);
+  return configObjData;
 }
 
 async function createConfig(el) {
@@ -167,9 +168,12 @@ async function createConfig(el) {
 
 export default async function init(el) {
   createConfig(el);
-  el.innerText = '';
+  // el.innerText = '';
+  // el.appendChild(customElem);
   import(`${base}/deps/blades/9c8d172e.js`);
+  excelJsonData = await getExcelData(excelLink);
+  customElem.config = createConfigExcel(excelJsonData, configObj);
+  el.innerText = '';
   el.appendChild(customElem);
-  // excelJsonData = await getExcelData(excelLink);
-  // createConfigExcel(excelJsonData, configObj);
+  console.log('configObj', customElem.config);
 }
