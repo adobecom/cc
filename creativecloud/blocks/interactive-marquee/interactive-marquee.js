@@ -170,6 +170,6 @@ export default async function init(el) {
   el.innerText = '';
   import(`${base}/deps/blades/9c8d172e.js`);
   el.appendChild(customElem);
-  excelJsonData = await getExcelData(excelLink);
-  createConfigExcel(excelJsonData, configObj);
+  // excelJsonData = await getExcelData(excelLink);
+  // createConfigExcel(excelJsonData, configObj);
 }
