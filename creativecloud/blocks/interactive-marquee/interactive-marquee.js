@@ -142,7 +142,7 @@ function createConfigExcel(excelJson, configObjData) {
       }
     }
   }
-  return configObjData;
+  // return configObjData;
 }
 
 async function createConfig(el) {
@@ -172,6 +172,6 @@ export default async function init(el) {
   createConfig(clone);
   excelJsonData = await getExcelData(excelLink);
   el.appendChild(customElem);
-  customElem.config = createConfigExcel(excelJsonData, configObj);
+  createConfigExcel(excelJsonData, configObj);
   console.log('configObj', customElem.config);
 }
