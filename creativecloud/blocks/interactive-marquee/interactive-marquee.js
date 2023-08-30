@@ -166,13 +166,12 @@ async function createConfig(el) {
 }
 
 export default async function init(el) {
-  console.log('d');
-  // const clone = el.cloneNode(true);
-  // el.innerText = '';
-  // import(`${base}/deps/blades/interactivemarquee.js`);
-  // createConfig(clone);
-  // excelJsonData = await getExcelData(excelLink);
-  // el.appendChild(customElem);
-  // createConfigExcel(excelJsonData, configObj);
-  // console.log('configObj', customElem.config);
+  const clone = el.cloneNode(true);
+  createConfig(clone);
+  el.innerText = '';
+  import(`${base}/deps/blades/interactivemarquee.js`);
+  excelJsonData = await getExcelData(excelLink);
+  el.appendChild(customElem);
+  createConfigExcel(excelJsonData, configObj);
+  console.log('configObj', customElem.config);
 }
