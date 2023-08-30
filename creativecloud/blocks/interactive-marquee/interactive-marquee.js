@@ -168,11 +168,11 @@ async function createConfig(el) {
 
 export default async function init(el) {
   const clone = el.cloneNode(true);
-  el.innerText = '';
-  import(`${base}/deps/blades/interactivemarquee.js`);
   createConfig(clone);
+  el.innerText = '';
+  el.appendChild(customElem);
+  import(`${base}/deps/blades/interactivemarquee.js`);
   excelJsonData = await getExcelData(excelLink);
   customElem.config = createConfigExcel(excelJsonData, configObj);
-  el.appendChild(customElem);
   console.log('configObj', customElem.config);
 }
