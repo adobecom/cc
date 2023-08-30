@@ -119,8 +119,7 @@ function getSrcFromExcelData(name, viewportType, excelData, type) {
   return arr;
 }
 
-function createConfigExcel(excelJson, configObjData2) {
-  let configObjData = JSON.parse(JSON.stringify(configObjData2));
+function createConfigExcel(excelJson, configObjData) {
   for (const viewportType of ['desktop', 'tablet', 'mobile']) {
     configObjData[`${viewportType}`].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
     configObjData[`${viewportType}`].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
@@ -172,7 +171,7 @@ export default async function init(el) {
   import(`${base}/deps/blades/interactivemarquee.js`);
   createConfig(clone);
   excelJsonData = await getExcelData(excelLink);
-  customElem.config = createConfigExcel(excelJsonData, configObj);
   el.appendChild(customElem);
+  customElem.config = createConfigExcel(excelJsonData, configObj);
   console.log('configObj', customElem.config);
 }
