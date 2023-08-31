@@ -14,6 +14,7 @@ const configObj = {};
 function getImageSrc(node) {
   return Array.from(node).map((el) => {
     const a = el.querySelector('picture > img').src;
+    console.log('a: ', a, el);
     return a;
   });
 }
@@ -51,6 +52,7 @@ function getImageUrlValues(dataSet, objKeys, viewportType) {
     childrenArr = processDataSet(dataSet[2]);
   }
   const getValueArr = getValue(childrenArr, 'img');
+  console.log('getValueArr: ',viewportType, getValueArr);
   if (viewportType === 'desktop') {
     return getValueArr[2];
   } else if (viewportType === 'tablet') {
@@ -166,12 +168,12 @@ async function createConfig(el) {
 
 export default async function init(el) {
   const clone = el.cloneNode(true);
+  import(`${base}/deps/blades/interactivemarquee.js`);
   createConfig(clone);
   el.innerText = '';
   el.appendChild(customElem);
-  console.log('configObjq', customElem.config);
-  import(`${base}/deps/blades/interactivemarquee.js`);
+  console.log('configObjq1', customElem.config);
   excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, configObj);
-  console.log('configObj', customElem.config);
+  console.log('configObj2', customElem.config);
 }
