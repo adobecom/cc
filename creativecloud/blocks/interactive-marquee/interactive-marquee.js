@@ -173,5 +173,5 @@ export default async function init(el) {
   excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, configObj);
   console.log('configObj', customElem.config);
-  import(`${base}/deps/blades/interactivemarquee.js`);
+  import(`${base}/deps/blades/interactiveMarquee.js`);
 }
