@@ -147,6 +147,7 @@ function createConfigExcel(excelJson, configObjData) {
 }
 
 async function createConfig(el) {
+  customElem.config = configObj;
   const dataSet = el.querySelectorAll(':scope > div');
   for (const viewportType of ['desktop', 'tablet', 'mobile']) {
     const viewportObj = {};
@@ -162,7 +163,7 @@ async function createConfig(el) {
     // TODO: uncomment when needed
     configObj[viewportType] = viewportObj;
   }
-  customElem.config = configObj;
+  // customElem.config = configObj;
   excelLink = dataSet[dataSet.length - 1].innerText.trim();
 }
 
