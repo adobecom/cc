@@ -13,7 +13,7 @@ const configObj = {};
 
 function getImageSrc(node) {
   return Array.from(node).map((el) => {
-    const a = el.querySelector('picture > img').currentSrc;
+    const a = el.querySelector('picture > img').src;
     return a;
   });
 }
