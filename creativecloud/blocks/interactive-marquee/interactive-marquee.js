@@ -169,6 +169,7 @@ export default async function init(el) {
   createConfig(clone);
   el.innerText = '';
   el.appendChild(customElem);
+  console.log('configObjq', customElem.config);
   import(`${base}/deps/blades/interactivemarquee.js`);
   excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, configObj);
