@@ -170,7 +170,7 @@ export default async function init(el) {
   el.innerText = '';
   el.appendChild(customElem);
   excelJsonData = await getExcelData(excelLink);
-  // createConfigExcel(excelJsonData, configObj);
-  // console.log('configObj', customElem.config);
-  // import(`${base}/deps/blades/interactivemarquee.js`);
+  createConfigExcel(excelJsonData, configObj);
+  console.log('configObj', customElem.config);
+  import(`${base}/deps/blades/interactivemarquee.js`);
 }
