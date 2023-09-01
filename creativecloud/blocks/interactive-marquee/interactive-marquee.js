@@ -149,7 +149,7 @@ function createConfigExcel(excelJson, configObjData) {
 async function createConfig(el) {
   customElem.config = configObj;
   const dataSet = el.querySelectorAll(':scope > div');
-  for (const viewportType of ['desktop', 'tablet', 'mobile']) {
+  for (const viewportType of ['mobile', 'tablet', 'tablet']) {
     const viewportObj = {};
     for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
       viewportObj[objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
