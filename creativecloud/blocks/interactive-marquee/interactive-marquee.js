@@ -170,38 +170,38 @@ async function createConfig(el) {
 function getAssests() {
   customElem.config = {
     desktop: {
-      marqueeTitleImgSrc: './assets/desktop/everyonecanphotoshop.webp',
-      talentSrc: './assets/desktop/yogalady.webp',
-      defaultBgSrc: './assets/desktop/defaultBg.webp',
-      tryitSrc: './assets/tryit.svg',
+      marqueeTitleImgSrc: `${base}/assets/desktop/everyonecanphotoshop.webp`,
+      talentSrc: `${base}/assets/desktop/yogalady.webp`,
+      defaultBgSrc: `${base}/assets/desktop/defaultBg.webp`,
+      tryitSrc: `${base}/assets/tryit.svg`,
       tryitText: 'それを試してみてください',
-      cursorSrc: './assets/desktop/dt-Mouse-arrow.svg',
+      cursorSrc: `${base}/assets/desktop/dt-Mouse-arrow.svg`,
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: './assets/remove-background-icon.svg'
+          iconUrl: `${base}/assets/remove-background-icon.svg`
         },
         {
           name: 'Change Photo',
-          iconUrl: './assets/change-photo-icon.svg',
+          iconUrl: `${base}/assets/change-photo-icon.svg`,
           options: [
             {
-              src: './assets/desktop/photo1.webp',
-              swatchSrc: './assets/photo-submenu-1.png'
+              src: `${base}/assets/desktop/photo1.webp`,
+              swatchSrc: `${base}/assets/photo-submenu-1.png`
             },
             {
-              src: './assets/desktop/photo2.webp',
-              swatchSrc: './assets/photo-submenu-2.png'
+              src: `${base}/assets/desktop/photo2.webp`,
+              swatchSrc: `${base}/assets/photo-submenu-2.png`
             },
             {
-              src: './assets/desktop/photo3.webp',
-              swatchSrc: './assets/photo-submenu-3.png'
+              src: `${base}/assets/desktop/photo3.webp`,
+              swatchSrc: `${base}/assets/photo-submenu-3.png`
             }
           ]
         },
         {
           name: 'Change Color',
-          'iconUrl': './assets/change-color-icon.svg',
+          'iconUrl': `${base}/assets/change-color-icon.svg`,
           'options': [
             {
               'src': '#31A8FF'
@@ -216,48 +216,48 @@ function getAssests() {
         },
         {
           'name': 'Change Pattern',
-          'iconUrl': './assets/change-pattern-icon.svg',
+          'iconUrl': `${base}/assets/change-pattern-icon.svg`,
           'options': [
             {
-              'src': './assets/desktop/pattern1.webp',
-              'swatchSrc': './assets/pattern-submenu-1.png'
+              'src': `${base}/assets/desktop/pattern1.webp`,
+              'swatchSrc': `${base}/assets/pattern-submenu-1.png`
             },
             {
-              'src': './assets/desktop/pattern2.webp',
-              'swatchSrc': './assets/pattern-submenu-2.png'
+              'src': `${base}/assets/desktop/pattern2.webp`,
+              'swatchSrc': `${base}/assets/pattern-submenu-2.png`
             },
             {
-              src: './assets/desktop/pattern3.webp',
-              swatchSrc: './assets/pattern-submenu-3.png'
+              src: `${base}/assets/desktop/pattern3.webp`,
+              swatchSrc: `${base}/assets/pattern-submenu-3.png`
             }
           ]
         }
       ]
     },
     'tablet': {
-      'marqueeTitleImgSrc': './assets/tablet/everyonecanphotoshop.webp',
-      'talentSrc': './assets/tablet/yogalady.webp',
-      'defaultBgSrc': './assets/tablet/defaultBg.webp',
-      'tryitSrc': './assets/tryit.svg',
+      'marqueeTitleImgSrc': `${base}/assets/tablet/everyonecanphotoshop.webp`,
+      'talentSrc': `${base}/assets/tablet/yogalady.webp`,
+      'defaultBgSrc': `${base}/assets/tablet/defaultBg.webp`,
+      'tryitSrc': `${base}/assets/tryit.svg`,
       'tryitText': 'Versuch es',
       'groups': [
         {
           'name': 'Remove Background',
-          'iconUrl': './assets/remove-background-icon.svg'
+          'iconUrl': `${base}/assets/remove-background-icon.svg`
         },
         {
           'name': 'Change Photo',
-          'iconUrl': './assets/change-photo-icon.svg',
+          'iconUrl': `${base}/assets/change-photo-icon.svg`,
           'options': [
             {
-              'src': './assets/tablet/photo1.webp',
-              'swatchSrc': './assets/photo-submenu-1.png'
+              'src': `${base}/assets/tablet/photo1.webp`,
+              'swatchSrc': `${base}/assets/photo-submenu-1.png`
             }
           ]
         },
         {
           'name': 'Change Color',
-          'iconUrl': './assets/change-color-icon.svg',
+          'iconUrl': `${base}/assets/change-color-icon.svg`,
           'options': [
             {
               'src': '#31A8FF'
@@ -266,40 +266,40 @@ function getAssests() {
         },
         {
           'name': 'Change Pattern',
-          'iconUrl': './assets/change-pattern-icon.svg',
+          'iconUrl': `${base}/assets/change-pattern-icon.svg`,
           'options': [
             {
-              'src': './assets/tablet/pattern1.webp',
-              'swatchSrc': './assets/pattern-submenu-1.png'
+              'src': `${base}/assets/tablet/pattern1.webp`,
+              'swatchSrc': `${base}/assets/pattern-submenu-1.png`
             }
           ]
         }
       ]
     },
     'mobile': {
-      'marqueeTitleImgSrc': './assets/mobile/everyonecanphotoshop.webp',
-      'talentSrc': './assets/mobile/yogalady.webp',
-      'defaultBgSrc': './assets/mobile/defaultBg.webp',
-      'tryitSrc': './assets/tryit.svg',
+      'marqueeTitleImgSrc': `${base}/assets/mobile/everyonecanphotoshop.webp`,
+      'talentSrc': `${base}/assets/mobile/yogalady.webp`,
+      'defaultBgSrc': `${base}/assets/mobile/defaultBg.webp`,
+      'tryitSrc': `${base}/assets/tryit.svg`,
       'tryitText': 'Try it',
       'groups': [
         {
           'name': 'Remove Background',
-          'iconUrl': './assets/remove-background-icon.svg'
+          'iconUrl': `${base}/assets/remove-background-icon.svg`
         },
         {
           'name': 'Change Photo',
-          'iconUrl': './assets/change-photo-icon.svg',
+          'iconUrl': `${base}/assets/change-photo-icon.svg`,
           'options': [
             {
-              'src': './assets/mobile/photo1.webp',
-              'swatchSrc': './assets/photo-submenu-1.png'
+              'src': `${base}/assets/mobile/photo1.webp`,
+              'swatchSrc': `${base}/assets/photo-submenu-1.png`
             }
           ]
         },
         {
           'name': 'Change Color',
-          'iconUrl': './assets/change-color-icon.svg',
+          'iconUrl': `${base}/assets/change-color-icon.svg`,
           'options': [
             {
               'src': '#31A8FF'
@@ -308,11 +308,11 @@ function getAssests() {
         },
         {
           'name': 'Change Pattern',
-          'iconUrl': './assets/change-pattern-icon.svg',
+          'iconUrl': `${base}/assets/change-pattern-icon.svg`,
           'options': [
             {
-              'src': './assets/mobile/pattern1.webp',
-              'swatchSrc': './assets/pattern-submenu-1.png'
+              'src': `${base}/assets/mobile/pattern1.webp`,
+              'swatchSrc': `${base}/assets/pattern-submenu-1.png`
             }
           ]
         }
