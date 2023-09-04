@@ -324,10 +324,10 @@ function getAssests() {
 export default async function init(el) {
   const clone = el.cloneNode(true);
   import(`${base}/deps/blades/interactivemarquee.js`);
-  getAssests();
-  // createConfig(clone);
   el.innerText = '';
   el.appendChild(customElem);
+  getAssests();
+  // createConfig(clone);
   // console.log('configObjq1', customElem.config);
   // excelJsonData = await getExcelData(excelLink);
   // createConfigExcel(excelJsonData, configObj);
