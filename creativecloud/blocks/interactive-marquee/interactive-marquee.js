@@ -322,14 +322,15 @@ function getAssests() {
 }
 
 export default async function init(el) {
+  console.log(el);
   const clone = el.cloneNode(true);
   import(`${base}/deps/blades/interactivemarquee.js`);
   el.innerText = '';
   el.appendChild(customElem);
-  getAssests();
-  // createConfig(clone);
+  // getAssests();
+  createConfig(clone);
   // console.log('configObjq1', customElem.config);
-  // excelJsonData = await getExcelData(excelLink);
-  // createConfigExcel(excelJsonData, configObj);
+  excelJsonData = await getExcelData(excelLink);
+  createConfigExcel(excelJsonData, configObj);
   console.log('configObj2', customElem.config);
 }
