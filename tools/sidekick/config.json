@@ -25,6 +25,7 @@
       "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
     },
+    
     {
       "containerId": "tools",
       "id": "floodgate",
@@ -67,6 +68,18 @@
       "environments": [ "edit", "dev", "preview" ],
       "url": "https://milo.adobe.com/tools/ost",
       "includePaths": [ "**.docx**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "version-history",
+      "title": "Version History",
+      "environments": [ "edit" ],
+      "url": "https://milo.adobe.com/tools/version-history",
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 498px; width: 460px;",
+      "includePaths": [ "**.docx**", "**.xlsx**" ]
     },
     {
       "containerId": "tools",
