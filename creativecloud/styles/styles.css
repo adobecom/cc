@@ -24,12 +24,12 @@
   margin: 0 auto;
 }
   
- .section.grid-width-6:has(.icon-block) {
+ .section.grid-width-6 > .icon-block {
     padding-left: var(--grid-margins-width-6);
 }
 
 @media screen and (min-width: 600px) and (max-width: 1200px) {
-  .section.grid-width-6:has(.icon-block) {
+  .section.grid-width-6 > .icon-block {
     padding-left: var(--grid-margins-width-6);
     padding-right: var(--grid-margins-width-6);
   }
