@@ -80,3 +80,14 @@ indices:
       - /ru/creativecloud/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
+  creativecloud-hk_zh:
+    <<: *def
+    include:
+      - /hk_zh/creativecloud/**
+    target: /hk_zh/cc-shared/assets/query-index.xlsx  
+
+  creativecloud-tw:
+    <<: *def
+    include:
+      - /tw/creativecloud/**
+    target: /tw/cc-shared/assets/query-index.xlsx  
