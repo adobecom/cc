@@ -25,6 +25,7 @@
       "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
     },
+    
     {
       "containerId": "tools",
       "id": "floodgate",
@@ -34,14 +35,6 @@
       "passReferrer": true,
       "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
-    },
-    {
-      "containerId": "tools",
-      "title": "Send to CaaS",
-      "id": "sendtocaas",
-      "environments": ["dev","preview", "live", "prod"],
-      "event": "send-to-caas",
-      "excludePaths": ["https://milo.adobe.com/tools/caas**", "*.json"]
     },
     {
       "containerId": "tools",
@@ -60,6 +53,36 @@
     },
     {
       "containerId": "tools",
+      "id": "offerpreview",
+      "title": "Offer preview",
+      "environments": [ "edit" ],
+      "isPalette": true,
+      "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
+      "url": "https://milo.adobe.com/tools/commerce",
+      "includePaths": [ "**.docx**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "ost",
+      "title": "Use offer",
+      "environments": [ "edit", "dev", "preview" ],
+      "url": "https://milo.adobe.com/tools/ost",
+      "includePaths": [ "**.docx**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "version-history",
+      "title": "Version History",
+      "environments": [ "edit" ],
+      "url": "https://milo.adobe.com/tools/version-history",
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 498px; width: 460px;",
+      "includePaths": [ "**.docx**", "**.xlsx**" ]
+    },
+    {
+      "containerId": "tools",
       "id": "locales",
       "title": "Locales",
       "environments": [ "edit", "dev", "preview", "live" ],
@@ -72,10 +95,19 @@
     },
     {
       "containerId": "tools",
+      "title": "Tag Selector",
+      "id": "tag-selector",
+      "environments": ["edit"],
+      "url": "https://milo.adobe.com/tools/tag-selector",
+      "isPalette": true,
+      "paletteRect": "top: 150px; left: 7%; height: 675px; width: 85vw;"
+    },
+    {
+      "containerId": "tools",
       "id": "version-history",
       "title": "Version History",
       "environments": [ "edit" ],
-      "url": "https://main--milo--bandana147.hlx.page/drafts/blaishram/document1?project=milo--adobecom",
+      "url": "https://milo.adobe.com/tools/version-history",
       "isPalette": true,
       "passReferrer": true,
       "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 498px; width: 460px;",
