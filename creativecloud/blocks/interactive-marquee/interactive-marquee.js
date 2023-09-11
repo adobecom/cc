@@ -13,8 +13,8 @@ const configObj = {};
 
 function getImageSrc(node) {
   return Array.from(node).map((el) => {
-    // const a = el.querySelector('picture > img').src;
-    const a = el.querySelector('picture');
+    const a = el.querySelector('picture > img').src;
+    // const a = el.querySelector('picture');
     return a;
   });
 }
@@ -160,16 +160,16 @@ async function createConfig(el) {
     for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
       viewportObj[objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
     }
-    viewportObj['tryitText'] = getTextItemValues(dataSet[3], viewportType);
-    viewportObj['groups'] = [];
-    for (let i = 4; i < dataSet.length - 1; i++) {
-      const arr = getIconAndName(dataSet[i], viewportType);
-      viewportObj.groups.push({'iconUrl': arr.iconUrl, 'name': arr.name});
-    }
+    // viewportObj['tryitText'] = getTextItemValues(dataSet[3], viewportType);
+    // viewportObj['groups'] = [];
+    // for (let i = 4; i < dataSet.length - 1; i++) {
+    //   const arr = getIconAndName(dataSet[i], viewportType);
+    //   viewportObj.groups.push({'iconUrl': arr.iconUrl, 'name': arr.name});
+    // }
     // TODO: uncomment when needed
     configObj[viewportType] = viewportObj;
   }
-  excelLink = dataSet[dataSet.length - 1].innerText.trim();
+  // excelLink = dataSet[dataSet.length - 1].innerText.trim();
 }
 
 export default async function init(el) {
@@ -179,7 +179,7 @@ export default async function init(el) {
   const background = document.createElement('div');
   background.classList.add('background');
   el.appendChild(background);
-  // el.appendChild(customElem);
+  el.appendChild(customElem);
   createConfig(clone);
   // excelJsonData = await getExcelData(excelLink);
   // createConfigExcel(excelJsonData, configObj);
