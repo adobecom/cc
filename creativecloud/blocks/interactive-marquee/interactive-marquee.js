@@ -23,12 +23,12 @@ const decorateBlockBg = (node) => {
       child.classList.add(viewports[index], 'blade');
     }
   });
+  console.log('1---------------');
 };
 
 function getImageSrc(node) {
   return Array.from(node).map((el) => {
     const a = el.querySelector('picture > img').src;
-    console.log('a: ', a, el);
     return a;
   });
 }
@@ -66,7 +66,6 @@ function getImageUrlValues(dataSet, objKeys, viewportType) {
     childrenArr = processDataSet(dataSet[2]);
   }
   const getValueArr = getValue(childrenArr, 'img');
-  console.log('getValueArr: ',viewportType, getValueArr);
   if (viewportType === 'desktop') {
     return getValueArr[2];
   } else if (viewportType === 'tablet') {
@@ -117,16 +116,17 @@ async function createConfig(el) {
   }
   // customElem.config = configObj;
   excelLink = dataSet[dataSet.length - 1].innerText.trim();
+  console.log('2---------------------');
   el.innerText = '';
   el.appendChild(customElem);
 }
 
 export default async function init(el) {
-  import(`${base}/deps/blades/interactivemarquee.js`);
   const dataSet = el.querySelectorAll(':scope > div');
   if (dataSet.length > 1) {
     dataSet[0].classList.add('background');
     decorateBlockBg(dataSet[0]);
   }
+  import(`${base}/deps/blades/interactivemarquee.js`);
   createConfig(el);
 }
