@@ -1,3 +1,7 @@
+div:not(:first-child) {
+    display: none;
+}
+
 .interactive-marquee .background picture{
   object-fit: cover;
   height: 100%;
