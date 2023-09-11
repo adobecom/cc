@@ -178,7 +178,7 @@ export default async function init(el) {
   const background = document.createElement('div');
   background.classList.add('background');
   el.appendChild(background);
-  el.appendChild(customElem);
+  // el.appendChild(customElem);
   createConfig(clone);
   // excelJsonData = await getExcelData(excelLink);
   // createConfigExcel(excelJsonData, configObj);
