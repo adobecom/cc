@@ -25,6 +25,7 @@ const decorateBlockBg = (node) => {
 };
 
 export default async function init(el) {
+  import(`${base}/deps/blades/interactivemarquee.js`);
   const dataSet = el.querySelectorAll(':scope > div');
   if (dataSet.length > 1) {
     dataSet[0].classList.add('background');
