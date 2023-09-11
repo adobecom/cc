@@ -55,13 +55,13 @@ function getImageUrlValues(dataSet, objKeys, viewportType) {
   } else if (objKeys === 'marqueeTitleImgSrc') {
     childrenArr = processDataSet(dataSet[2]);
   }
-  const getValueArr = getValue(childrenArr, 'img');
-  if (viewportType === 'desktop') {
-    return getValueArr[2];
-  } if (viewportType === 'tablet') {
-    return getValueArr[1];
-  }
-  return getValueArr;
+  // const getValueArr = getValue(childrenArr, 'img');
+  // if (viewportType === 'desktop') {
+  //   return getValueArr[2];
+  // } if (viewportType === 'tablet') {
+  //   return getValueArr[1];
+  // }
+  // return getValueArr;
 }
 
 function getTextItemValues(dataSet, viewportType, flag) {
