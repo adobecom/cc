@@ -61,7 +61,7 @@ function getImageUrlValues(dataSet, objKeys, viewportType) {
   } if (viewportType === 'tablet') {
     return getValueArr[1];
   }
-  return getValueArr[0];
+  return getValueArr;
 }
 
 function getTextItemValues(dataSet, viewportType, flag) {
