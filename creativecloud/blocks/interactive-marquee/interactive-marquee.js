@@ -101,9 +101,9 @@ async function createConfig(el) {
 export default async function init(el) {
   console.log(el);
   const clone = el.cloneNode(true);
-  // import(`${base}/deps/blades/interactivemarquee.js`);
+  import(`../../deps/blades/interactivemarquee.js`);
   customElem.config = configObj;
-  // el.innerText = '';
+  el.innerText = '';
   el.appendChild(customElem);
   await createConfig(clone);
 }
