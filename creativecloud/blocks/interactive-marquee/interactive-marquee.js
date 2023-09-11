@@ -154,21 +154,22 @@ async function createConfig(el) {
   const dataSet = el.querySelectorAll(':scope > div');
   const background = document.querySelector('.background');
   background.appendChild(dataSet[0]);
-  for (const viewportType of ['mobile', 'tablet', 'desktop']) {
-    const viewportObj = {};
-    for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
-      viewportObj[objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
-    }
-    viewportObj['tryitText'] = getTextItemValues(dataSet[3], viewportType);
-    viewportObj['groups'] = [];
-    for (let i = 4; i < dataSet.length - 1; i++) {
-      const arr = getIconAndName(dataSet[i], viewportType);
-      viewportObj.groups.push({'iconUrl': arr.iconUrl, 'name': arr.name});
-    }
-    // TODO: uncomment when needed
-    configObj[viewportType] = viewportObj;
-  }
-  excelLink = dataSet[dataSet.length - 1].innerText.trim();
+  getImageUrlValues(dataSet, 'defaultBgSrc', '');
+  // for (const viewportType of ['mobile', 'tablet', 'desktop']) {
+  //   const viewportObj = {};
+  //   for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
+  //     viewportObj[objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
+  //   }
+  //   viewportObj['tryitText'] = getTextItemValues(dataSet[3], viewportType);
+  //   viewportObj['groups'] = [];
+  //   for (let i = 4; i < dataSet.length - 1; i++) {
+  //     const arr = getIconAndName(dataSet[i], viewportType);
+  //     viewportObj.groups.push({'iconUrl': arr.iconUrl, 'name': arr.name});
+  //   }
+  //   // TODO: uncomment when needed
+  //   configObj[viewportType] = viewportObj;
+  // }
+  // excelLink = dataSet[dataSet.length - 1].innerText.trim();
 }
 
 export default async function init(el) {
