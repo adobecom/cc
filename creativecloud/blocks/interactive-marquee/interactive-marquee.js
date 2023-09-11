@@ -1,22 +1,15 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-self-assign */
-/* eslint-disable prefer-destructuring */
+/* eslint-disable max-len */
 import miloLibs from '../../scripts/scripts.js';
 
 const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
-const config = getConfig();
 const customElem = document.createElement('ft-changebackgroundmarquee');
-let excelJsonData = '';
 let excelLink = '';
-const base = config.codeRoot;
 const configObj = {};
+const config = getConfig();
+const base = config.codeRoot;
 
 function getImageSrc(node) {
-  return Array.from(node).map((el) => {
-    const a = el.querySelector('picture > img').src;
-    // const a = el.querySelector('picture');
-    return a;
-  });
+  return Array.from(node).map((el) => el.querySelector('picture > img').src);
 }
 
 function getText(node) {
@@ -25,62 +18,30 @@ function getText(node) {
 
 function getValue(childrenArr, type) {
   const valueArr = type === 'img' ? getImageSrc(childrenArr) : getText(childrenArr);
-  let newData = [];
-  if (valueArr.length === 1) {
-    newData = [valueArr[0], valueArr[0], valueArr[0]];
-  } else if (valueArr.length === 2) {
-    newData = [valueArr[0], valueArr[0], valueArr[1]];
-  } else {
-    newData = [valueArr[0], valueArr[1], valueArr[2]];
-  }
+  const newData = valueArr.length === 1 ? [valueArr[0], valueArr[0], valueArr[0]] : valueArr.length === 2 ? [valueArr[0], valueArr[0], valueArr[1]] : [valueArr[0], valueArr[1], valueArr[2]];
   return newData;
 }
 
 function processDataSet(dataSet) {
-  const { children } = dataSet;
-  const childrenArr = [...children];
-  return childrenArr;
+  return [...dataSet.children];
 }
 
 function getImageUrlValues(dataSet, objKeys, viewportType) {
-  let childrenArr = '';
-  if (objKeys === 'defaultBgSrc') {
-    const viewports = ['mobile-only', 'tablet-only', 'desktop-only'];
-    childrenArr = processDataSet(dataSet[0]);
-    childrenArr.forEach((arr, index) => {
-      arr.classList.add(viewports[index]);
-    });
-  } else if (objKeys === 'talentSrc') {
-    childrenArr = processDataSet(dataSet[1]);
-  } else if (objKeys === 'marqueeTitleImgSrc') {
-    childrenArr = processDataSet(dataSet[2]);
-  }
-  // const getValueArr = getValue(childrenArr, 'img');
-  // if (viewportType === 'desktop') {
-  //   return getValueArr[2];
-  // } if (viewportType === 'tablet') {
-  //   return getValueArr[1];
-  // }
-  // return getValueArr;
+  const childrenArr = objKeys === 'defaultBgSrc' ? processDataSet(dataSet[0]) : objKeys === 'talentSrc' ? processDataSet(dataSet[1]) : processDataSet(dataSet[2]);
+  const getValueArr = getValue(childrenArr, 'img');
+  return viewportType === 'desktop' ? getValueArr[2] : viewportType === 'tablet' ? getValueArr[1] : getValueArr[0];
 }
 
 function getTextItemValues(dataSet, viewportType, flag) {
   const childrenArr = processDataSet(dataSet);
-  if (flag) {
-    childrenArr.shift();
-  }
+  if (flag) childrenArr.shift();
   const getValueArr = getValue(childrenArr, 'text');
-  if (viewportType === 'desktop') {
-    return getValueArr[2];
-  } if (viewportType === 'tablet') {
-    return getValueArr[1];
-  }
-  return getValueArr[0];
+  return viewportType === 'desktop' ? getValueArr[2] : viewportType === 'tablet' ? getValueArr[1] : getValueArr[0];
 }
 
 function getIconAndName(dataSet, viewportType) {
   const childrenArr = processDataSet(dataSet);
-  const objArr = [];
+  const objArr = {};
   const iconBlock = childrenArr.shift();
   objArr['iconUrl'] = iconBlock.querySelector('picture > img').src;
   objArr['name'] = getTextItemValues(dataSet, viewportType, true);
@@ -88,100 +49,61 @@ function getIconAndName(dataSet, viewportType) {
 }
 
 async function getExcelData(excelLink) {
-  const resp = await fetch(`${excelLink}`);
-  const html = await resp.json();
-  const { data } = html;
-  const arr = [];
-  data.forEach((grp) => {
-    arr.push(grp);
-  });
-  return arr;
+  const resp = await fetch(excelLink);
+  const { data } = await resp.json();
+  return data.map((grp) => grp);
 }
 
 function getExcelDataCursor(excelJson, type) {
   const foundData = excelJson.find((data) => data.MappedName === type);
-  if (foundData) {
-    return foundData.Value1;
-  }
-  return null;
+  return foundData ? foundData.Value1 : null;
 }
 
 function getSrcFromExcelData(name, viewportType, excelData, type) {
-  const arr = [];
-  excelData.forEach((data) => {
-    if (data.ComponentName === name && data.Viewport === viewportType && data.MappedName === type) {
-      if (data.Value1.trim() !== '') {
-        arr.push(data.Value1);
-      }
-      if (data.Value2.trim() !== '') {
-        arr.push(data.Value2);
-      }
-      if (data.Value3.trim() !== '') {
-        arr.push(data.Value3);
-      }
-    }
-  });
-  return arr;
+  return excelData
+    .filter((data) => data.ComponentName === name && data.Viewport === viewportType && data.MappedName === type)
+    .flatMap((data) => [data.Value1, data.Value2, data.Value3].filter((value) => value.trim() !== ''));
 }
 
 function createConfigExcel(excelJson, configObjData) {
-  for (const viewportType of ['desktop', 'tablet', 'mobile']) {
-    configObjData[`${viewportType}`].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
-    configObjData[`${viewportType}`].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
-    const existingGroups = configObjData[`${viewportType}`].groups;
+  const viewportTypes = ['desktop', 'tablet', 'mobile'];
+  for (const viewportType of viewportTypes) {
+    configObjData[viewportType].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
+    configObjData[viewportType].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
+    const existingGroups = configObjData[viewportType].groups;
     for (const group of existingGroups) {
       const name = group.name;
       const groupsrc = getSrcFromExcelData(name, viewportType, excelJson, 'src');
       const groupswatchSrc = getSrcFromExcelData(name, viewportType, excelJson, 'swatchSrc');
-      if (groupsrc.length > 0 && groupswatchSrc.length > 0) {
-        group.options = [];
-        for (let i = 0; i < groupsrc.length; i++) {
-          group.options.push({'src': groupsrc[i], 'swatchSrc': groupswatchSrc[i]});
-        }
-      }
-      if (groupsrc.length > 0 && groupswatchSrc.length === 0) {
-        group.options = [];
-        for (let i = 0; i < groupsrc.length; i++) {
-          group.options.push({'src': groupsrc[i]});
-        }
+      group.options = [];
+      for (let i = 0; i < groupsrc.length; i++) {
+        const option = { src: groupsrc[i] };
+        if (groupswatchSrc[i]) option.swatchSrc = groupswatchSrc[i];
+        group.options.push(option);
       }
     }
   }
 }
 
 async function createConfig(el) {
-  customElem.config = configObj;
   const dataSet = el.querySelectorAll(':scope > div');
-  const background = document.querySelector('.background');
-  background.appendChild(dataSet[0]);
-  getImageUrlValues(dataSet, 'defaultBgSrc', '');
-  // for (const viewportType of ['mobile', 'tablet', 'desktop']) {
-  //   const viewportObj = {};
-  //   for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
-  //     viewportObj[objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
-  //   }
-    // viewportObj['tryitText'] = getTextItemValues(dataSet[3], viewportType);
-    // viewportObj['groups'] = [];
-    // for (let i = 4; i < dataSet.length - 1; i++) {
-    //   const arr = getIconAndName(dataSet[i], viewportType);
-    //   viewportObj.groups.push({'iconUrl': arr.iconUrl, 'name': arr.name});
-    // }
-    // TODO: uncomment when needed
-    // configObj[viewportType] = viewportObj;
-  // }
-  // excelLink = dataSet[dataSet.length - 1].innerText.trim();
+  const viewportTypes = ['mobile', 'tablet', 'desktop'];
+  for (const viewportType of viewportTypes) {
+    const viewportObj = {};
+    for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
+      viewportObj[objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
+    }
+    configObj[viewportType] = viewportObj;
+  }
+  excelLink = dataSet[dataSet.length - 1].innerText.trim();
 }
 
 export default async function init(el) {
+  console.log(el);
   const clone = el.cloneNode(true);
-  import(`${base}/deps/blades/interactivemarquee.js`);
-  el.innerText = '';
-  const background = document.createElement('div');
-  background.classList.add('background');
-  el.appendChild(background);
+  // import(`${base}/deps/blades/interactivemarquee.js`);
+  customElem.config = configObj;
+  // el.innerText = '';
   el.appendChild(customElem);
-  createConfig(clone);
-  // excelJsonData = await getExcelData(excelLink);
-  // createConfigExcel(excelJsonData, configObj);
-  // console.log('configObj2', customElem.config);
+  await createConfig(clone);
 }
