@@ -167,8 +167,8 @@ async function createConfig(el) {
     //   viewportObj.groups.push({'iconUrl': arr.iconUrl, 'name': arr.name});
     // }
     // TODO: uncomment when needed
-    configObj[viewportType] = viewportObj;
-  }
+    // configObj[viewportType] = viewportObj;
+  // }
   // excelLink = dataSet[dataSet.length - 1].innerText.trim();
 }
 
