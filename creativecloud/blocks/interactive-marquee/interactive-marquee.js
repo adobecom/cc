@@ -14,7 +14,7 @@ const configObj = {};
 function getImageSrc(node) {
   return Array.from(node).map((el) => {
     const a = el.querySelector('picture > img').src;
-    console.log('a: ', a, el);
+    // const a = el.querySelector('picture');
     return a;
   });
 }
@@ -45,17 +45,20 @@ function processDataSet(dataSet) {
 function getImageUrlValues(dataSet, objKeys, viewportType) {
   let childrenArr = '';
   if (objKeys === 'defaultBgSrc') {
+    const viewports = ['mobile-only', 'tablet-only', 'desktop-only'];
     childrenArr = processDataSet(dataSet[0]);
+    childrenArr.forEach((arr, index) => {
+      arr.classList.add(viewports[index]);
+    });
   } else if (objKeys === 'talentSrc') {
     childrenArr = processDataSet(dataSet[1]);
   } else if (objKeys === 'marqueeTitleImgSrc') {
     childrenArr = processDataSet(dataSet[2]);
   }
   const getValueArr = getValue(childrenArr, 'img');
-  console.log('getValueArr: ',viewportType, getValueArr);
   if (viewportType === 'desktop') {
     return getValueArr[2];
-  } else if (viewportType === 'tablet') {
+  } if (viewportType === 'tablet') {
     return getValueArr[1];
   }
   return getValueArr[0];
@@ -69,7 +72,7 @@ function getTextItemValues(dataSet, viewportType, flag) {
   const getValueArr = getValue(childrenArr, 'text');
   if (viewportType === 'desktop') {
     return getValueArr[2];
-  } else if (viewportType === 'tablet') {
+  } if (viewportType === 'tablet') {
     return getValueArr[1];
   }
   return getValueArr[0];
@@ -149,6 +152,8 @@ function createConfigExcel(excelJson, configObjData) {
 async function createConfig(el) {
   customElem.config = configObj;
   const dataSet = el.querySelectorAll(':scope > div');
+  const background = document.querySelector('.background');
+  background.appendChild(dataSet[0]);
   for (const viewportType of ['mobile', 'tablet', 'desktop']) {
     const viewportObj = {};
     for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
@@ -163,173 +168,18 @@ async function createConfig(el) {
     // TODO: uncomment when needed
     configObj[viewportType] = viewportObj;
   }
-  // customElem.config = configObj;
   excelLink = dataSet[dataSet.length - 1].innerText.trim();
 }
 
-function getAssests() {
-  customElem.config = {
-    desktop: {
-      marqueeTitleImgSrc: `${base}/assets/desktop/everyonecanphotoshop.webp`,
-      talentSrc: `${base}/assets/desktop/yogalady.webp`,
-      defaultBgSrc: `${base}/assets/desktop/defaultBg.webp`,
-      tryitSrc: `${base}/assets/tryit.svg`,
-      tryitText: 'それを試してみてください',
-      cursorSrc: `${base}/assets/desktop/dt-Mouse-arrow.svg`,
-      groups: [
-        {
-          name: 'Remove Background',
-          iconUrl: `${base}/assets/remove-background-icon.svg`
-        },
-        {
-          name: 'Change Photo',
-          iconUrl: `${base}/assets/change-photo-icon.svg`,
-          options: [
-            {
-              src: `${base}/assets/desktop/photo1.webp`,
-              swatchSrc: `${base}/assets/photo-submenu-1.png`
-            },
-            {
-              src: `${base}/assets/desktop/photo2.webp`,
-              swatchSrc: `${base}/assets/photo-submenu-2.png`
-            },
-            {
-              src: `${base}/assets/desktop/photo3.webp`,
-              swatchSrc: `${base}/assets/photo-submenu-3.png`
-            }
-          ]
-        },
-        {
-          name: 'Change Color',
-          'iconUrl': `${base}/assets/change-color-icon.svg`,
-          'options': [
-            {
-              'src': '#31A8FF'
-            },
-            {
-              'src': '#7F66E6'
-            },
-            {
-              'src': '#31F7FF'
-            }
-          ]
-        },
-        {
-          'name': 'Change Pattern',
-          'iconUrl': `${base}/assets/change-pattern-icon.svg`,
-          'options': [
-            {
-              'src': `${base}/assets/desktop/pattern1.webp`,
-              'swatchSrc': `${base}/assets/pattern-submenu-1.png`
-            },
-            {
-              'src': `${base}/assets/desktop/pattern2.webp`,
-              'swatchSrc': `${base}/assets/pattern-submenu-2.png`
-            },
-            {
-              src: `${base}/assets/desktop/pattern3.webp`,
-              swatchSrc: `${base}/assets/pattern-submenu-3.png`
-            }
-          ]
-        }
-      ]
-    },
-    'tablet': {
-      'marqueeTitleImgSrc': `${base}/assets/tablet/everyonecanphotoshop.webp`,
-      'talentSrc': `${base}/assets/tablet/yogalady.webp`,
-      'defaultBgSrc': `${base}/assets/tablet/defaultBg.webp`,
-      'tryitSrc': `${base}/assets/tryit.svg`,
-      'tryitText': 'Versuch es',
-      'groups': [
-        {
-          'name': 'Remove Background',
-          'iconUrl': `${base}/assets/remove-background-icon.svg`
-        },
-        {
-          'name': 'Change Photo',
-          'iconUrl': `${base}/assets/change-photo-icon.svg`,
-          'options': [
-            {
-              'src': `${base}/assets/tablet/photo1.webp`,
-              'swatchSrc': `${base}/assets/photo-submenu-1.png`
-            }
-          ]
-        },
-        {
-          'name': 'Change Color',
-          'iconUrl': `${base}/assets/change-color-icon.svg`,
-          'options': [
-            {
-              'src': '#31A8FF'
-            }
-          ]
-        },
-        {
-          'name': 'Change Pattern',
-          'iconUrl': `${base}/assets/change-pattern-icon.svg`,
-          'options': [
-            {
-              'src': `${base}/assets/tablet/pattern1.webp`,
-              'swatchSrc': `${base}/assets/pattern-submenu-1.png`
-            }
-          ]
-        }
-      ]
-    },
-    'mobile': {
-      'marqueeTitleImgSrc': `${base}/assets/mobile/everyonecanphotoshop.webp`,
-      'talentSrc': `${base}/assets/mobile/yogalady.webp`,
-      'defaultBgSrc': `${base}/assets/mobile/defaultBg.webp`,
-      'tryitSrc': `${base}/assets/tryit.svg`,
-      'tryitText': 'Try it',
-      'groups': [
-        {
-          'name': 'Remove Background',
-          'iconUrl': `${base}/assets/remove-background-icon.svg`
-        },
-        {
-          'name': 'Change Photo',
-          'iconUrl': `${base}/assets/change-photo-icon.svg`,
-          'options': [
-            {
-              'src': `${base}/assets/mobile/photo1.webp`,
-              'swatchSrc': `${base}/assets/photo-submenu-1.png`
-            }
-          ]
-        },
-        {
-          'name': 'Change Color',
-          'iconUrl': `${base}/assets/change-color-icon.svg`,
-          'options': [
-            {
-              'src': '#31A8FF'
-            }
-          ]
-        },
-        {
-          'name': 'Change Pattern',
-          'iconUrl': `${base}/assets/change-pattern-icon.svg`,
-          'options': [
-            {
-              'src': `${base}/assets/mobile/pattern1.webp`,
-              'swatchSrc': `${base}/assets/pattern-submenu-1.png`
-            }
-          ]
-        }
-      ]
-    }
-  };
-}
-
 export default async function init(el) {
-  console.log(el);
   const clone = el.cloneNode(true);
   import(`${base}/deps/blades/interactivemarquee.js`);
   el.innerText = '';
+  const background = document.createElement('div');
+  background.classList.add('background');
+  el.appendChild(background);
   el.appendChild(customElem);
-  // getAssests();
   createConfig(clone);
-  // console.log('configObjq1', customElem.config);
   excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, configObj);
   console.log('configObj2', customElem.config);

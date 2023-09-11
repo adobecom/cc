@@ -1,0 +1,37 @@
+.interactive-marquee .background picture{
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.interactive-marquee .mobile-only.tablet-only {
+    display: block;
+  }
+  
+.interactive-marquee .tablet-only,
+.interactive-marquee .desktop-only {
+    display: none;
+}
+
+@media screen and (min-width: 600px) {
+  .interactive-marquee .background .mobile-only,
+  .interactive-marquee .background .desktop-only {
+    display: none;
+  }
+
+  .interactive-marquee .background .tablet-only {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .interactive-marquee .background .mobile-only.tablet-only,
+  .interactive-marquee .background .mobile-only,
+  .interactive-marquee .background .tablet-only {
+    display: none;
+  }
+
+  .interactive-marquee .background .desktop-only {
+    display: block;
+  }
+}
