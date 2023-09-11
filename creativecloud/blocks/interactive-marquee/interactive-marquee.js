@@ -179,7 +179,7 @@ export default async function init(el) {
   background.classList.add('background');
   el.appendChild(background);
   el.appendChild(customElem);
-  // createConfig(clone);
+  createConfig(clone);
   // excelJsonData = await getExcelData(excelLink);
   // createConfigExcel(excelJsonData, configObj);
   // console.log('configObj2', customElem.config);
