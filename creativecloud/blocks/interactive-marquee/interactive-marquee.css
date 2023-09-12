@@ -1,11 +1,19 @@
-div:not(:first-child) {
+/* .interactive-marquee > div:not(.background) {
     display: none;
 }
 
-.interactive-marquee .background picture{
+.interactive-marquee .background div{
   object-fit: cover;
   height: 100%;
   width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.interactive-marquee .background {
+    position: relative;
+    height: 500px;
 }
 
 .interactive-marquee .mobile-only.tablet-only {
@@ -38,4 +46,4 @@ div:not(:first-child) {
   .interactive-marquee .background .desktop-only {
     display: block;
   }
-}
+} */
