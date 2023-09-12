@@ -313,7 +313,7 @@ async function createConfig(el) {
 export default async function init(el) {
   console.log(el);
   const clone = el.cloneNode(true);
-  // import(`${base}/deps/blades/interactivemarquee.js`);
+  import(`${base}/deps/blades/interactivemarquee.js`);
   // el.innerText = '';
   el.appendChild(customElem);
   createConfig(clone);
