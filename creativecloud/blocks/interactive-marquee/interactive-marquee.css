@@ -1,19 +1,15 @@
-/* .interactive-marquee > div:not(.background) {
+.interactive-marquee > div:not(.background) {
     display: none;
 }
 
-.interactive-marquee .background div{
+.interactive-marquee {
+  max-height: 518px;
+}
+
+.interactive-marquee .background img{
   object-fit: cover;
   height: 100%;
   width: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.interactive-marquee .background {
-    position: relative;
-    height: 500px;
 }
 
 .interactive-marquee .mobile-only.tablet-only {
@@ -46,4 +42,4 @@
   .interactive-marquee .background .desktop-only {
     display: block;
   }
-} */
+}
