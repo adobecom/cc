@@ -130,8 +130,8 @@ export default async function init(el) {
   }
   import(`${base}/deps/blades/interactivemarquee.js`);
   createConfig(clone);
-  setTimeout(() => {
-    el.innerText = '';
-    el.appendChild(customElem);
-  }, 5000);
+  // setTimeout(() => {
+  //   el.innerText = '';
+  //   el.appendChild(customElem);
+  // }, 5000);
 }
