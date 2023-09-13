@@ -133,5 +133,5 @@ export default async function init(el) {
   setTimeout(() => {
     el.innerText = '';
     el.appendChild(customElem);
-  }, 1500);
+  }, 5000);
 }
