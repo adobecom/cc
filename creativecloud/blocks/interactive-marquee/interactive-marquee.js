@@ -136,5 +136,5 @@ export default async function init(el) {
       // el.innerText = '';
       customElem.style.display = 'block';
     });
-  }, 10000);
+  }, 5000);
 }
