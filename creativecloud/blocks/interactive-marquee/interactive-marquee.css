@@ -2,13 +2,13 @@
     display: none;
 }
 
-ft-changebackgroundmarquee {
+/* ft-changebackgroundmarquee {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   z-index: 10;
-}
+} */
 
 .interactive-marquee{
   /* mix-blend-mode: normal;
