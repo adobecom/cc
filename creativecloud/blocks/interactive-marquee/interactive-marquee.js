@@ -129,10 +129,10 @@ export default async function init(el) {
     decorateBlockBg(dataSet[0]);
     decorateBlockBg(dataSet[2]);
   }
-  import(`${base}/deps/blades/interactivemarquee.js`);
   createConfig(el);
-  setTimeout(() => {
+  setTimeout(async () => {
+    await import(`${base}/deps/blades/interactivemarquee.js`);
     el.innerText = '';
     el.appendChild(customElem);
-  }, 2000);
+  }, 10000);
 }
