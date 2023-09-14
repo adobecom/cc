@@ -116,12 +116,12 @@ async function createConfig(el) {
   }
   // customElem.config = configObj;
   excelLink = dataSet[dataSet.length - 1].innerText.trim();
-  console.log('2---------------------');
+  console.log('2---------------------', configObj);
 }
 
 export default async function init(el) {
   console.log('el', el);
-  const clone = el.cloneNode(true);
+  // const clone = el.cloneNode(true);
   const dataSet = el.querySelectorAll(':scope > div');
   if (dataSet.length > 1) {
     dataSet[0].classList.add('background');
@@ -129,10 +129,10 @@ export default async function init(el) {
     decorateBlockBg(dataSet[0]);
     decorateBlockBg(dataSet[2]);
   }
-  import(`${base}/deps/blades/interactivemarquee.js`);
+  createConfig(el);
   setTimeout(() => {
-    createConfig(clone);
-    el.innerText = '';
-    el.appendChild(customElem);
+    // import(`${base}/deps/blades/interactivemarquee.js`);
+    // el.innerText = '';
+    // el.appendChild(customElem);
   }, 2000);
 }
