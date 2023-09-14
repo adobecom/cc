@@ -133,7 +133,7 @@ export default async function init(el) {
   el.appendChild(customElem);
   setTimeout(async () => {
     import(`${base}/deps/blades/interactivemarquee.js`).then(() => {
-      el.innerText = '';
+      // el.innerText = '';
       customElem.style.display = 'block';
     });
   }, 10000);
