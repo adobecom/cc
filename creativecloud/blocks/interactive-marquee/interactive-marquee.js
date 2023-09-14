@@ -120,18 +120,19 @@ async function createConfig(el) {
 }
 
 export default async function init(el) {
+  console.log('el', el);
   const clone = el.cloneNode(true);
   const dataSet = el.querySelectorAll(':scope > div');
   if (dataSet.length > 1) {
     dataSet[0].classList.add('background');
-    dataSet[2].classList.add('background');
+    dataSet[2].classList.add('background1');
     decorateBlockBg(dataSet[0]);
     decorateBlockBg(dataSet[2]);
   }
-  import(`${base}/deps/blades/interactivemarquee.js`);
-  createConfig(clone);
-  // setTimeout(() => {
-  //   el.innerText = '';
-  //   el.appendChild(customElem);
-  // }, 5000);
+  setTimeout(() => {
+    import(`${base}/deps/blades/interactivemarquee.js`);
+    createConfig(clone);
+    el.innerText = '';
+    el.appendChild(customElem);
+  }, 2000);
 }

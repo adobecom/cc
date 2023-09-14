@@ -1,20 +1,33 @@
-.interactive-marquee > div:not(.background) {
+.interactive-marquee > div:not(.background):not(.background1) {
     display: none;
 }
 
-.interactive-marquee {
-  max-height: 518px;
+.interactive-marquee{
+  /* mix-blend-mode: normal;
+  opacity: 1;
+  transform: translate(0px, 0px);
+  width: 599px;
+  height: 591px; */
+  background-color: black;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
-.interactive-marquee .background img{
+/* .interactive-marquee .background img{
   object-fit: cover;
   height: 100%;
   width: 100%;
-}
+} */
 
 .interactive-marquee .mobile-only.tablet-only {
     display: block;
   }
+.interactive-marquee .background1 {
+  background-color: black;
+  width: 274px;
+  height: 123px;
+  display: flex;
+}
   
 .interactive-marquee .tablet-only,
 .interactive-marquee .desktop-only {
@@ -23,6 +36,7 @@
 
 @media screen and (min-width: 600px) {
   .interactive-marquee .background .mobile-only,
+  .interactive-marquee .background1,
   .interactive-marquee .background .desktop-only {
     display: none;
   }
@@ -33,8 +47,15 @@
 }
 
 @media screen and (min-width: 1200px) {
+  .interactive-marquee {
+    width: 1920px;
+    height: 860px;
+    transform: translate(0px, 0px) scale(1);
+    position: relative;
+  }
   .interactive-marquee .background .mobile-only.tablet-only,
   .interactive-marquee .background .mobile-only,
+  .interactive-marquee .background1,
   .interactive-marquee .background .tablet-only {
     display: none;
   }
