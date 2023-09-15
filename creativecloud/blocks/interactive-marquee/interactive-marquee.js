@@ -173,5 +173,5 @@ export default async function init(el) {
     createConfig(el);
     const excelJsonData = await getExcelData(excelLink);
     createConfigExcel(excelJsonData, customElem.config);
-  }, 500);
+  }, 10000);
 }
