@@ -119,6 +119,43 @@ async function createConfig(el) {
   console.log('2---------------------', configObj);
 }
 
+async function getExcelData(link) {
+  const resp = await fetch(link);
+  const { data } = await resp.json();
+  return data.map((grp) => grp);
+}
+
+function getExcelDataCursor(excelJson, type) {
+  const foundData = excelJson.find((data) => data.MappedName === type);
+  return foundData ? foundData.Value1 : null;
+}
+
+function getSrcFromExcelData(name, viewportType, excelData, type) {
+  return excelData
+    .filter((data) => data.ComponentName === name && data.Viewport === viewportType && data.MappedName === type)
+    .flatMap((data) => [data.Value1, data.Value2, data.Value3].filter((value) => value.trim() !== ''));
+}
+
+function createConfigExcel(excelJson, configObjData) {
+  const viewportTypes = ['desktop', 'tablet', 'mobile'];
+  for (const viewportType of viewportTypes) {
+    configObjData[viewportType].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
+    configObjData[viewportType].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
+    const existingGroups = configObjData[viewportType].groups;
+    for (const group of existingGroups) {
+      const name = group.name;
+      const groupsrc = getSrcFromExcelData(name, viewportType, excelJson, 'src');
+      const groupswatchSrc = getSrcFromExcelData(name, viewportType, excelJson, 'swatchSrc');
+      group.options = [];
+      for (let i = 0; i < groupsrc.length; i++) {
+        const option = { src: groupsrc[i] };
+        if (groupswatchSrc[i]) option.swatchSrc = groupswatchSrc[i];
+        group.options.push(option);
+      }
+    }
+  }
+}
+
 export default async function init(el) {
   console.log('el', el);
   // const clone = el.cloneNode(true);
@@ -133,6 +170,8 @@ export default async function init(el) {
   el.appendChild(customElem);
   setTimeout(async () => {
     createConfig(el);
+    const excelJsonData = await getExcelData(excelLink);
+  createConfigExcel(excelJsonData, customElem.config);
     customElem.style.display = 'block';
   }, 500);
 }
