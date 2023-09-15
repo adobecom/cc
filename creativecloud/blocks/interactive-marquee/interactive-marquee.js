@@ -169,9 +169,9 @@ export default async function init(el) {
   import(`${base}/deps/blades/interactivemarquee.js`);
   el.appendChild(customElem);
   setTimeout(async () => {
+    customElem.style.display = 'block';
     createConfig(el);
     const excelJsonData = await getExcelData(excelLink);
-  createConfigExcel(excelJsonData, customElem.config);
-    customElem.style.display = 'block';
+    createConfigExcel(excelJsonData, customElem.config);
   }, 500);
 }
