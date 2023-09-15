@@ -131,7 +131,7 @@ export default async function init(el) {
   }
   createConfig(el);
   el.appendChild(customElem);
-  // import(`${base}/deps/blades/interactivemarquee.js`);
+  import(`${base}/deps/blades/interactivemarquee.js`);
   // setTimeout(async () => {
   //   // import(`${base}/deps/blades/interactivemarquee.js`).then(() => {
   //     // el.innerText = '';
