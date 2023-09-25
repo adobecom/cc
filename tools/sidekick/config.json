@@ -18,10 +18,10 @@
     {
       "containerId": "tools",
       "id": "localize",
-      "title": "Localize",
+      "title": "Localize project",
       "environments": [ "edit" ],
       "passConfig": true,
-      "url": "http://localhost:3000/drafts/cmillar/locui",
+      "url": "https://locui--cc--adobecom.hlx.page/tools/loc?milolibs=locui",
       "passReferrer": true,
       "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
