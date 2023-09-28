@@ -22,7 +22,6 @@
       "environments": [ "edit" ],
       "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=cc--adobecom",
       "passReferrer": true,
-      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
     },
     
@@ -33,7 +32,6 @@
       "environments": [ "edit" ],
       "url": "https://main--milo--adobecom.hlx.page/tools/floodgate/index.html?project=cc--adobecom",
       "passReferrer": true,
-      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
     },
     {
