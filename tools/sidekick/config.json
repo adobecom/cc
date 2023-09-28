@@ -23,7 +23,6 @@
       "passConfig": true,
       "url": "https://locui--cc--adobecom.hlx.page/tools/loc?milolibs=locui",
       "passReferrer": true,
-      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
     },
     
