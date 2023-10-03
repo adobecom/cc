@@ -5,6 +5,6 @@
         "editorconfig.editorconfig",
         "ryanluker.vscode-coverage-gutters",
         "eamodio.gitlens",
-        "virtual-comments.virtual-comment-system"
+        "virtual-comments.virtual-comments"
     ]
 }
