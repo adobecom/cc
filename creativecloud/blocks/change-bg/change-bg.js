@@ -1,14 +1,5 @@
-// import miloLibs from '../../scripts/scripts.js';
-
-// const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
-// const config = getConfig();
-// const base = config.codeRoot;
-// const assetsRoot = `${base}/assets`;
-// const customElem = document.createElement('ft-changebackgroundmarquee');
-
 const base = `${window.location.origin}/creativecloud`;
 const assetsRoot = `${base}/assets`;
-console.log('base', assetsRoot);
 const customElem = document.createElement('ft-changebackgroundmarquee');
 
 function getAssests() {
@@ -171,6 +162,7 @@ export default function init(el) {
     const img = new Image();
     img.fetchPriority = "high";
     img.src = `${assetsRoot}/mobile/defaultBg.webp`;
+    console.log('img');
   }
 
   import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
