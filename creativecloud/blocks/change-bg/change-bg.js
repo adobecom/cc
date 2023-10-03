@@ -6,9 +6,9 @@
 // const assetsRoot = `${base}/assets`;
 // const customElem = document.createElement('ft-changebackgroundmarquee');
 
-const base = `${window.location.origin}/libs`;
-console.log('base', base);
-const assetsRoot = `${base}/assets/interactive-marquee-changebg`;
+const base = `${window.location.origin}/creativecloud`;
+const assetsRoot = `${base}/assets`;
+console.log('base', assetsRoot);
 const customElem = document.createElement('ft-changebackgroundmarquee');
 
 function getAssests() {
