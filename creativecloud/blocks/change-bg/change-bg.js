@@ -1,9 +1,14 @@
-import miloLibs from '../../scripts/scripts.js';
+// import miloLibs from '../../scripts/scripts.js';
 
-const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
-const config = getConfig();
-const base = config.codeRoot;
-const assetsRoot = `${base}/assets`;
+// const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
+// const config = getConfig();
+// const base = config.codeRoot;
+// const assetsRoot = `${base}/assets`;
+// const customElem = document.createElement('ft-changebackgroundmarquee');
+
+const base = `${window.location.origin}/libs`;
+console.log('base', base);
+const assetsRoot = `${base}/assets/interactive-marquee-changebg`;
 const customElem = document.createElement('ft-changebackgroundmarquee');
 
 function getAssests() {
