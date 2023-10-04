@@ -158,12 +158,6 @@ function getAssests() {
 
 export default function init(el) {
   // prefetch the mobile background image
-  if (matchMedia(`screen and (max-width: 599px)`).matches) {
-    const img = new Image();
-    img.fetchPriority = "high";
-    img.src = `${assetsRoot}/mobile/defaultBg.webp`;
-    console.log('img');
-  }
 
   import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
   getAssests();

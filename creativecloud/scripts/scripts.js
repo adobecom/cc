@@ -14,6 +14,8 @@ import { setLibs } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
+const base = `${window.location.origin}/creativecloud`;
+const assetsRoot = `${base}/assets`;
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = 'https://milo.adobe.com/libs';
@@ -135,6 +137,13 @@ const eagerLoad = (img) => {
  */
 
 const miloLibs = setLibs(LIBS);
+
+if (matchMedia(`screen and (max-width: 599px)`).matches) {
+  const img = new Image();
+  img.fetchPriority = "high";
+  img.src = `${assetsRoot}/mobile/defaultBg.webp`;
+  console.log('img');
+}
 
 (async function loadPage() {
   const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
