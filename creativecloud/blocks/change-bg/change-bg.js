@@ -156,7 +156,7 @@ function getAssests() {
   };
 }
 
-export default function init(el) {
+export default async function init(el) {
   // prefetch the mobile background image
   if (matchMedia(`screen and (max-width: 599px)`).matches) {
     const img = new Image();
@@ -164,7 +164,7 @@ export default function init(el) {
     img.src = `${assetsRoot}/mobile/defaultBg.webp`;
     console.log('img');
   }
-  el.replaceChildren(customElem);
-  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
+  await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
   getAssests();
+  el.replaceChildren(customElem);
 }
