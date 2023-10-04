@@ -13,23 +13,6 @@ const base = `${window.location.origin}/creativecloud`;
 // const assetsRoot = `${base}/assets`;
 const customElem = document.createElement('ft-changebackgroundmarquee');
 
-const decorateBlockBg = (node) => {
-  const viewports = ['mobile-only', 'tablet-only', 'desktop-only'];
-  const { children } = node;
-  const childCount = node.childElementCount;
-  if (childCount === 2) {
-    children[0].classList.add(viewports[0], viewports[1]);
-    children[1].classList.add(viewports[2]);
-  }
-
-  [...children].forEach(async (child, index) => {
-    if (childCount === 3) {
-      child.classList.add(viewports[index], 'blade');
-    }
-  });
-  console.log('1---------------');
-};
-
 function getImageSrc(node) {
   return Array.from(node).map((el) => {
     const a = el.querySelector('picture > img');
@@ -161,6 +144,12 @@ function createConfigExcel(excelJson, configObjData) {
 }
 
 export default async function init(el) {
+  if (matchMedia(`screen and (max-width: 599px)`).matches) {
+    const img = new Image();
+    img.fetchPriority = "high";
+    img.src = `${assetsRoot}/mobile/defaultBg.webp`;
+    console.log('img');
+  }
   console.log(el);
   const clone = el.cloneNode(true);
   import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
