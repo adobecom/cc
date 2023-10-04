@@ -1,13 +1,17 @@
 // /* eslint-disable no-restricted-syntax */
 // /* eslint-disable max-len */
-import miloLibs from '../../scripts/scripts.js';
+// import miloLibs from '../../scripts/scripts.js';
 
-const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
-const customElem = document.createElement('ft-changebackgroundmarquee');
+// const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
+// const customElem = document.createElement('ft-changebackgroundmarquee');
 let excelLink = '';
 const configObj = {};
-const config = getConfig();
-const base = config.codeRoot;
+// const config = getConfig();
+// const base = config.codeRoot;
+
+const base = `${window.location.origin}/creativecloud`;
+// const assetsRoot = `${base}/assets`;
+const customElem = document.createElement('ft-changebackgroundmarquee');
 
 const decorateBlockBg = (node) => {
   const viewports = ['mobile-only', 'tablet-only', 'desktop-only'];
@@ -157,21 +161,15 @@ function createConfigExcel(excelJson, configObjData) {
 }
 
 export default async function init(el) {
-  console.log('el', el);
-  // const clone = el.cloneNode(true);
-  const dataSet = el.querySelectorAll(':scope > div');
-  if (dataSet.length > 1) {
-    dataSet[0].classList.add('background');
-    dataSet[2].classList.add('background1');
-    decorateBlockBg(dataSet[0]);
-    decorateBlockBg(dataSet[2]);
-  }
+  console.log(el);
+  const clone = el.cloneNode(true);
+  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
+  el.innerText = '';
   el.appendChild(customElem);
-  setTimeout(async () => {
-    import(`${base}/deps/blades/interactivemarquee.js`);
-    customElem.style.display = 'block';
-    createConfig(el);
-    const excelJsonData = await getExcelData(excelLink);
-    createConfigExcel(excelJsonData, customElem.config);
-  }, 500);
+  await createConfig(clone, configObj);
+  customElem.config = configObj;
+  console.log('configObj2', customElem.config);
+  const excelJsonData = await getExcelData(excelLink);
+  createConfigExcel(excelJsonData, customElem.config);
+  console.log('configObj2', customElem.config);
 }
