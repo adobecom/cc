@@ -145,6 +145,14 @@ const miloLibs = setLibs(LIBS);
 //   console.log('img');
 // }
 
+(async function loadPage() {
+  const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  setConfig({ ...CONFIG, miloLibs });
+  loadLana({ clientId: 'cc' });
+  await loadArea();
+  loadDelayed();
+}());
+
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
@@ -154,14 +162,6 @@ const miloLibs = setLibs(LIBS);
     link.setAttribute('href', path);
     document.head.appendChild(link);
   });
-}());
-
-(async function loadPage() {
-  const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
-  setConfig({ ...CONFIG, miloLibs });
-  loadLana({ clientId: 'cc' });
-  await loadArea();
-  loadDelayed();
 }());
 
 export default miloLibs;
