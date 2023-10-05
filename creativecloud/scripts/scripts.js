@@ -138,13 +138,6 @@ const eagerLoad = (img) => {
 
 const miloLibs = setLibs(LIBS);
 
-// if (matchMedia(`screen and (max-width: 599px)`).matches) {
-//   const img = new Image();
-//   img.fetchPriority = "high";
-//   img.src = `${assetsRoot}/mobile/defaultBg.webp`;
-//   console.log('img');
-// }
-
 (async function loadPage() {
   const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
