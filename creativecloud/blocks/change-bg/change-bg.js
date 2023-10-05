@@ -148,11 +148,11 @@ function getAssests() {
 
 export default async function init(el) {
   // prefetch the mobile background image
-  // if (matchMedia('screen and (max-width: 599px)').matches) {
-  //   const img = new Image();
-  //   img.fetchPriority = 'high';
-  //   img.src = `${assetsRoot}/mobile/defaultBg.webp`;
-  // }
+  if (matchMedia('screen and (max-width: 599px)').matches) {
+    const img = new Image();
+    img.fetchPriority = 'high';
+    img.src = `${assetsRoot}/mobile/defaultBg.webp`;
+  }
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
   getAssests();
   el.replaceChildren(customElem);
