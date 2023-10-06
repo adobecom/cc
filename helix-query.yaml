@@ -10,6 +10,7 @@ indices:
       - '**/fragments/**'
     include:
       - /creativecloud/**
+      - /products/substance3d/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -27,6 +28,9 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+      robots:
+        select: head > meta[name="robots"]
+        value: attribute(el, 'content')  
 
   creativecloud-au:
     <<: *def
@@ -76,3 +80,14 @@ indices:
       - /ru/creativecloud/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
+  creativecloud-hk_zh:
+    <<: *def
+    include:
+      - /hk_zh/creativecloud/**
+    target: /hk_zh/cc-shared/assets/query-index.xlsx  
+
+  creativecloud-tw:
+    <<: *def
+    include:
+      - /tw/creativecloud/**
+    target: /tw/cc-shared/assets/query-index.xlsx  

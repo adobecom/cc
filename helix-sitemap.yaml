@@ -59,3 +59,15 @@ sitemaps:
         alternate: /ru/{path}.html
         destination: /ru/cc-shared/assets/sitemap.xml
         hreflang: ru-RU
+
+      hk_zh:
+        source: /hk_zh/cc-shared/assets/query-index.json
+        alternate: /hk_zh/{path}.html
+        destination: /hk_zh/cc-shared/assets/sitemap.xml
+        hreflang: zh-HK 
+
+      tw:
+        source: /tw/cc-shared/assets/query-index.json
+        alternate: /tw/{path}.html
+        destination: /tw/cc-shared/assets/sitemap.xml
+        hreflang: zh-TW
