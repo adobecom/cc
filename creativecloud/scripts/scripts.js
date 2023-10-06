@@ -123,6 +123,7 @@ const CONFIG = {
 const miloLibs = setLibs(LIBS);
 
 (async function loadPage() {
+  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
   const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
