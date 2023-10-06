@@ -152,6 +152,9 @@ export default async function init(el) {
     const img = new Image();
     img.fetchPriority = 'high';
     img.src = `${assetsRoot}/mobile/defaultBg.webp`;
+    const img1 = new Image();
+    img1.fetchPriority = 'high';
+    img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
   }
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
   getAssests();
