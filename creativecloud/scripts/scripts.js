@@ -114,22 +114,6 @@ const CONFIG = {
   prodDomains: ['www.adobe.com'],
 };
 
-const eagerLoad = (img) => {
-  img?.setAttribute('loading', 'eager');
-  img?.setAttribute('fetchpriority', 'high');
-};
-
-// Load LCP image immediately
-(async function loadLCPImage() {
-  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  if (firstDiv?.classList.contains('interactive-marquee')) {
-    // const { children } = firstDiv;
-    firstDiv.querySelectorAll('img').forEach(eagerLoad);
-  } else {
-    eagerLoad(document.querySelector('img'));
-  }
-}());
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
