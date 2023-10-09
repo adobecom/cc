@@ -30,7 +30,7 @@ describe('Create Image for LCP', () => {
   it('should create a new Image with the correct src if matchMedia matches', () => {
     matchMediaStub.returns({ matches: true });
     init(marquee);
-    expect(ImageStub.calledOnce).to.be.true;
+    expect(ImageStub.calledThrice).to.be.true;
     expect(ImageStub.firstCall.returnValue.src).to.equal(`${assetsRoot}/mobile/defaultBg.webp`);
   });
 });
