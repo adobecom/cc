@@ -20,7 +20,7 @@
       "id": "localize",
       "title": "Localize",
       "environments": [ "edit" ],
-      "url": "http://main--cc--adobecom.hlx.page/tools/loc/index.html?project=cc--adobecom&&milolibs=loc",
+      "url": "https://main--cc--adobecom.hlx.page/tools/loc/index.html?project=cc--adobecom&&milolibs=loc",
       "passReferrer": true,
       "includePaths": [ "**/:x**" ]
     },
