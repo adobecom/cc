@@ -1,5 +1,6 @@
 const base = `${window.location.origin}/creativecloud`;
-const assetsRoot = `${base}/assets`;
+const assetsRoot = `https://adobe.sharepoint.com/:f:/r/sites/adobecom/CC/www/drafts/suhjain/assets-new`;
+const assetsRoot1 = `${base}/assets`;
 const customElem = document.createElement('ft-changebackgroundmarquee');
 
 function getAssests() {
@@ -14,11 +15,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot}/desktop/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/desktop/photo1.webp`,
@@ -36,7 +37,7 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
             { src: '#7F66E6' },
@@ -45,7 +46,7 @@ function getAssests() {
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-pattern-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/desktop/pattern1.webp`,
@@ -72,11 +73,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot1}/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/tablet/photo1.webp`,
@@ -86,14 +87,14 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-pattern-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/tablet/pattern1.webp`,
@@ -112,11 +113,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot1}/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/mobile/photo1.webp`,
@@ -126,14 +127,14 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
+          iconUrl: `${assetsRoot1}/change-pattern-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/mobile/pattern1.webp`,
@@ -159,7 +160,7 @@ export default async function init(el) {
     img2.fetchPriority = 'high';
     img2.src = `${assetsRoot}/tablet/yogalady.webp`;
   }
-  await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
+  await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests();
   el.replaceChildren(customElem);
 }
