@@ -15,7 +15,7 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot1}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
         },
         {
           name: 'Change Photo',
