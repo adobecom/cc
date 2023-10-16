@@ -71,3 +71,9 @@ sitemaps:
         alternate: /tw/{path}.html
         destination: /tw/cc-shared/assets/sitemap.xml
         hreflang: zh-TW
+
+      th_th:
+        source: /th_th/cc-shared/assets/query-index.json
+        alternate: /th_th/{path}.html
+        destination: /th_th/cc-shared/assets/sitemap.xml
+        hreflang: th-TH  
