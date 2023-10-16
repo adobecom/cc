@@ -90,4 +90,10 @@ indices:
     <<: *def
     include:
       - /tw/creativecloud/**
-    target: /tw/cc-shared/assets/query-index.xlsx  
+    target: /tw/cc-shared/assets/query-index.xlsx
+
+  creativecloud-th_th:
+    <<: *def
+    include:
+      - /th_th/creativecloud/**
+    target: /th_th/cc-shared/assets/query-index.xlsx      
