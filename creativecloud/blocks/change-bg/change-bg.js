@@ -6,9 +6,9 @@ const customElem = document.createElement('ft-changebackgroundmarquee');
 function getAssests() {
   customElem.config = {
     desktop: {
-      marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.jpg`,
-      talentSrc: `${assetsRoot}/desktop/yogalady.jpg`,
-      defaultBgSrc: `${assetsRoot}/desktop/defaultbg.jpg`,
+      marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
+      defaultBgSrc: `${assetsRoot}/desktop/defaultBg.webp`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       cursorSrc: `${assetsRoot}/desktop/dt-mouse-arrow.svg`,
@@ -65,9 +65,9 @@ function getAssests() {
       ],
     },
     tablet: {
-      marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.jpeg`,
-      talentSrc: `${assetsRoot}/tablet/yogalady.jpeg`,
-      defaultBgSrc: `${assetsRoot}/tablet/defaultbg.jpeg`,
+      marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
+      defaultBgSrc: `${assetsRoot}/tablet/defaultBg.webp`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -105,8 +105,8 @@ function getAssests() {
       ],
     },
     mobile: {
-      marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.jpg`,
-      talentSrc: `${assetsRoot}/mobile/yogalady.jpg`,
+      marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
       defaultBgSrc: `${assetsRoot1}/mobile/defaultBg.webp`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
@@ -154,13 +154,13 @@ export default async function init(el) {
   if (matchMedia('screen and (max-width: 599px)').matches) {
     const img1 = new Image();
     img1.fetchPriority = 'high';
-    img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.jpg`;
+    img1.src = `${assetsRoot1}/mobile/everyonecanphotoshop.webp`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
-    img2.src = `${assetsRoot}/mobile/yogalady.jpg`;
+    img2.src = `${assetsRoot1}/mobile/yogalady.webp`;
     const img = new Image();
     img.fetchPriority = 'high';
-    img.src = `${assetsRoot}/mobile/defaultbg.png`;
+    img.src = `${assetsRoot1}/mobile/defaultBg.webp`;
   }
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests();
