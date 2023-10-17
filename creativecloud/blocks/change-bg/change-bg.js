@@ -105,10 +105,10 @@ function getAssests() {
       ],
     },
     mobile: {
-      marqueeTitleImgSrc: `${assetsRoot1}/mobile/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot1}/mobile/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot1}/mobile/defaultBg.webp`,
-      tryitSrc: `${assetsRoot1}/tryit.svg`,
+      marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.jpg`,
+      talentSrc: `${assetsRoot}/mobile/yogalady.png`,
+      defaultBgSrc: `${assetsRoot}/mobile/defaultBg.png`,
+      tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
         {
