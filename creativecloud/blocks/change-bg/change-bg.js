@@ -152,21 +152,15 @@ export default async function init(el) {
   console.log('el', assetsRoot);
   // prefetch the mobile background image
   if (matchMedia('screen and (max-width: 599px)').matches) {
-    const img = new Image();
-    img.fetchPriority = 'high';
-    // fetch(`${assetsRoot}/mobile/defaultbg.jpg`, { mode: 'no-cors' })
-    //   .then((response) => {
-    //     img.src = response.headers.location;
-    //     console.log('img.src ', img.src);
-    //   })
-    //   .catch((error) => console.error('Error fetching image: ', error));
-    img.src = `${assetsRoot}/mobile/defaultbg.jpg`;
     const img1 = new Image();
     img1.fetchPriority = 'high';
     img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.jpg`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
     img2.src = `${assetsRoot}/tablet/yogalady.jpeg`;
+    const img = new Image();
+    img.fetchPriority = 'high';
+    img.src = `${assetsRoot}/mobile/defaultbg.jpg`;
   }
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests();
