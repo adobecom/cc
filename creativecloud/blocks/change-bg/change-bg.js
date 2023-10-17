@@ -9,17 +9,17 @@ function getAssests() {
       marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.png`,
       talentSrc: `${assetsRoot}/desktop/yogalady.png`,
       defaultBgSrc: `${assetsRoot}/desktop/defaultbg.png`,
-      tryitSrc: `${assetsRoot1}/tryit.svg`,
+      tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
-      cursorSrc: `${assetsRoot1}/desktop/dt-Mouse-arrow.svg`,
+      cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/desktop/dt-mouse-arrow.svg`,
+          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/desktop/photo1.jpg`,
@@ -37,7 +37,7 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
             { src: '#7F66E6' },
@@ -65,19 +65,19 @@ function getAssests() {
       ],
     },
     tablet: {
-      marqueeTitleImgSrc: `${assetsRoot1}/tablet/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot1}/tablet/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot1}/tablet/defaultBg.webp`,
-      tryitSrc: `${assetsRoot1}/tryit.svg`,
+      marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.png`,
+      talentSrc: `${assetsRoot}/tablet/yogalady.png`,
+      defaultBgSrc: `${assetsRoot}/tablet/defaultbg.png`,
+      tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot1}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/tablet/photo1.jpeg`,
@@ -87,7 +87,7 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
