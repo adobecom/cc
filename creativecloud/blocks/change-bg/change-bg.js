@@ -157,7 +157,7 @@ export default async function init(el) {
     img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.jpg`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
-    img2.src = `${assetsRoot}/tablet/yogalady.jpeg`;
+    img2.src = `${assetsRoot}/mobile/yogalady.jpg`;
     const img = new Image();
     img.fetchPriority = 'high';
     img.src = `${assetsRoot}/mobile/defaultbg.jpg`;
