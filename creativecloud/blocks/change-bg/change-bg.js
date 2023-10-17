@@ -107,7 +107,7 @@ function getAssests() {
     mobile: {
       marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.jpg`,
       talentSrc: `${assetsRoot}/mobile/yogalady.jpg`,
-      defaultBgSrc: `${assetsRoot1}/mobile/defaultbg.webp`,
+      defaultBgSrc: `${assetsRoot1}/mobile/defaultBg.webp`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -160,7 +160,7 @@ export default async function init(el) {
     img2.src = `${assetsRoot}/mobile/yogalady.jpg`;
     const img = new Image();
     img.fetchPriority = 'high';
-    img.src = `${assetsRoot1}/mobile/defaultbg.png`;
+    img.src = `${assetsRoot}/mobile/defaultbg.png`;
   }
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests();
