@@ -6,8 +6,8 @@ const customElem = document.createElement('ft-changebackgroundmarquee');
 function getAssests() {
   customElem.config = {
     desktop: {
-      marqueeTitleImgSrc: `${assetsRoot1}/desktop/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot1}/desktop/yogalady.webp`,
+      marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.jpg`,
+      talentSrc: `${assetsRoot}/desktop/yogalady.jpg`,
       defaultBgSrc: `${assetsRoot1}/desktop/defaultBg.webp`,
       tryitSrc: `${assetsRoot1}/tryit.svg`,
       tryitText: 'Try it',
