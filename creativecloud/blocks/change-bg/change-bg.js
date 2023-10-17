@@ -154,7 +154,7 @@ export default async function init(el) {
   if (matchMedia('screen and (max-width: 599px)').matches) {
     const img1 = new Image();
     img1.fetchPriority = 'high';
-    img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.png`;
+    img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.jpg`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
     img2.src = `${assetsRoot}/mobile/yogalady.png`;
