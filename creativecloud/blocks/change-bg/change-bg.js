@@ -6,12 +6,12 @@ const customElem = document.createElement('ft-changebackgroundmarquee');
 function getAssests() {
   customElem.config = {
     desktop: {
-      marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot}/desktop/defaultBg.webp`,
-      tryitSrc: `${assetsRoot}/tryit.svg`,
+      marqueeTitleImgSrc: `${assetsRoot1}/desktop/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot1}/desktop/yogalady.webp`,
+      defaultBgSrc: `${assetsRoot1}/desktop/defaultBg.webp`,
+      tryitSrc: `${assetsRoot1}/tryit.svg`,
       tryitText: 'Try it',
-      cursorSrc: `${assetsRoot}/desktop/dt-mouse-arrow.svg`,
+      cursorSrc: `${assetsRoot1}/desktop/dt-mouse-arrow.svg`,
       groups: [
         {
           name: 'Remove Background',
@@ -65,10 +65,10 @@ function getAssests() {
       ],
     },
     tablet: {
-      marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot}/tablet/defaultBg.webp`,
-      tryitSrc: `${assetsRoot}/tryit.svg`,
+      marqueeTitleImgSrc: `${assetsRoot1}/tablet/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot1}/tablet/yogalady.webp`,
+      defaultBgSrc: `${assetsRoot1}/tablet/defaultBg.webp`,
+      tryitSrc: `${assetsRoot1}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
         {
@@ -105,10 +105,10 @@ function getAssests() {
       ],
     },
     mobile: {
-      marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
+      marqueeTitleImgSrc: `${assetsRoot1}/mobile/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot1}/mobile/yogalady.webp`,
       defaultBgSrc: `${assetsRoot1}/mobile/defaultBg.webp`,
-      tryitSrc: `${assetsRoot}/tryit.svg`,
+      tryitSrc: `${assetsRoot1}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
         {
