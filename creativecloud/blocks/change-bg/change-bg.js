@@ -107,7 +107,7 @@ function getAssests() {
     mobile: {
       marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.jpg`,
       talentSrc: `${assetsRoot}/mobile/yogalady.png`,
-      defaultBgSrc: `${assetsRoot}/mobile/defaultBg.png`,
+      defaultBgSrc: `${assetsRoot}/mobile/defaultbg.png`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
