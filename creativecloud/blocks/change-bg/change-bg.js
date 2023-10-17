@@ -7,7 +7,7 @@ function getAssests() {
   customElem.config = {
     desktop: {
       marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.jpg`,
-      talentSrc: `${assetsRoot}/desktop/yogalady.jpg`,
+      talentSrc: `${assetsRoot1}/desktop/yogalady.webp`,
       defaultBgSrc: `${assetsRoot1}/desktop/defaultBg.webp`,
       tryitSrc: `${assetsRoot1}/tryit.svg`,
       tryitText: 'Try it',
