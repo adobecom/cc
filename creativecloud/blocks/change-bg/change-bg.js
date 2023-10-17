@@ -11,7 +11,7 @@ function getAssests() {
       defaultBgSrc: `${assetsRoot}/desktop/defaultbg.png`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
-      cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
+      cursorSrc: `${assetsRoot}/desktop/dt-mouse-arrow.svg`,
       groups: [
         {
           name: 'Remove Background',
