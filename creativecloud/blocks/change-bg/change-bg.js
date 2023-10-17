@@ -154,13 +154,13 @@ export default async function init(el) {
   if (matchMedia('screen and (max-width: 599px)').matches) {
     const img1 = new Image();
     img1.fetchPriority = 'high';
-    img1.src = `${assetsRoot1}/mobile/everyonecanphotoshop.webp`;
+    img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.png`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
-    img2.src = `${assetsRoot1}/mobile/yogalady.webp`;
+    img2.src = `${assetsRoot}/mobile/yogalady.png`;
     const img = new Image();
     img.fetchPriority = 'high';
-    img.src = `${assetsRoot1}/mobile/defaultBg.webp`;
+    img.src = `${assetsRoot}/mobile/defaultbg.png`;
   }
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests();
