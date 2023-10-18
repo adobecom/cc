@@ -11,15 +11,15 @@ function getAssests() {
       defaultBgSrc: `${assetsRoot}/desktop/defaultbg.png`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
-      cursorSrc: `${assetsRoot1}/desktop/dt-mouse-arrow.svg`,
+      cursorSrc: `${assetsRoot}/desktop/dt-mouse-arrow.svg`,
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot1}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/desktop/photo1.jpg`,
@@ -37,7 +37,7 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
             { src: '#7F66E6' },
@@ -46,7 +46,7 @@ function getAssests() {
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot1}/change-pattern-icon.svg`,
+          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/desktop/pattern1.jpg`,
@@ -73,11 +73,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot1}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/tablet/photo1.jpeg`,
@@ -87,14 +87,14 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot1}/change-pattern-icon.svg`,
+          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/tablet/pattern1.jpeg`,
@@ -113,11 +113,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot1}/remove-background-icon.svg`,
+          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot1}/change-photo-icon.svg`,
+          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/mobile/photo1.jpg`,
@@ -127,14 +127,14 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot1}/change-color-icon.svg`,
+          iconUrl: `${assetsRoot}/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot1}/change-pattern-icon.svg`,
+          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
           options: [
             {
               src: `${assetsRoot}/mobile/pattern1.jpg`,
