@@ -155,6 +155,20 @@ const miloLibs = setLibs(LIBS);
   }
 }());
 
+(async function fetchImages() {
+  if (matchMedia('screen and (max-width: 599px)').matches) {
+    const img1 = new Image();
+    img1.fetchPriority = 'high';
+    img1.src = `https://main--cc--adobecom.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/everyonecanphotoshop.jpg`;
+    const img2 = new Image();
+    img2.fetchPriority = 'high';
+    img2.src = `https://main--cc--adobecom.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/yogalady.png`;
+    const img = new Image();
+    img.fetchPriority = 'high';
+    img.src = `https://main--cc--adobecom.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/defaultbg.png`;
+  }
+}());
+
 (async function loadPage() {
   const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
