@@ -124,7 +124,7 @@ const miloLibs = setLibs(LIBS);
 
 (async function loadScript() {
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  if (firstDiv?.classList.contains('change-bg')) {
+  if (firstDiv?.classList.contains('interactive-marquee')) {
     import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   }
 }());
