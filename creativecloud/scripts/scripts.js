@@ -125,12 +125,25 @@ const miloLibs = setLibs(LIBS);
 (async function loadScript() {
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
   if (firstDiv?.classList.contains('change-bg')) {
-    import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
+    import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
+  }
+}());
+
+const eagerLoad = (img) => {
+  img?.setAttribute('loading', 'eager');
+  img?.setAttribute('fetchpriority', 'high');
+};
+
+(async function loadLCPImage() {
+  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
+  if (firstDiv?.classList.contains('interactive-marquee')) {
+    firstDiv.querySelectorAll('img').forEach(eagerLoad);
+  } else {
+    eagerLoad(document.querySelector('img'));
   }
 }());
 
 (async function loadPage() {
-  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
   const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
