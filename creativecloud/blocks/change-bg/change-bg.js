@@ -8,7 +8,7 @@ function getAssests() {
     desktop: {
       marqueeTitleImgSrc: `${assetsRoot1}/desktop/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot1}/desktop/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot1}/desktop/defaultbg.webp`,
+      defaultBgSrc: `${assetsRoot1}/desktop/defaultBg.webp`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       cursorSrc: `${assetsRoot}/desktop/dt-mouse-arrow.svg`,
@@ -67,7 +67,7 @@ function getAssests() {
     tablet: {
       marqueeTitleImgSrc: `${assetsRoot1}/tablet/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot1}/tablet/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot1}/tablet/defaultbg.webp`,
+      defaultBgSrc: `${assetsRoot1}/tablet/defaultBg.webp`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -107,7 +107,7 @@ function getAssests() {
     mobile: {
       marqueeTitleImgSrc: `${assetsRoot1}/mobile/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot1}/mobile/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot1}/mobile/defaultbg.webp`,
+      defaultBgSrc: `${assetsRoot1}/mobile/defaultBg.webp`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -160,7 +160,7 @@ export default async function init(el) {
     img2.src = `${assetsRoot1}/mobile/yogalady.webp`;
     const img = new Image();
     img.fetchPriority = 'high';
-    img.src = `${assetsRoot1}/mobile/defaultbg.webp`;
+    img.src = `${assetsRoot1}/mobile/defaultBg.webp`;
   }
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests();
