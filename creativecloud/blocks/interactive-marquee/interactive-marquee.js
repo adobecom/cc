@@ -7,7 +7,6 @@ function getImageSrc(node) {
     return Array.from(node).map((el) => {
       const a = el.querySelector('picture');
       const img = a.querySelector('source');
-      console.log('a: ', img.srcset);
       return img.srcset;
     });
   }
@@ -88,14 +87,13 @@ async function createConfig(el) {
     viewportObj['groups'] = [];
     for (let i = 4; i < dataSet.length - 1; i++) {
       const arr = getIconAndName(dataSet[i], viewportType);
-      viewportObj.groups.push({'iconUrl': arr.iconUrl, 'name': arr.name});
+      viewportObj.groups.push({iconUrl: arr.iconUrl, name: arr.name});
     }
     // TODO: uncomment when needed
     configObj[viewportType] = viewportObj;
   }
   // customElem.config = configObj;
   excelLink = dataSet[dataSet.length - 1].innerText.trim();
-  console.log('2---------------------', configObj);
 }
 
 async function getExcelData(link) {
@@ -116,34 +114,38 @@ function getSrcFromExcelData(name, viewportType, excelData, type) {
 }
 
 function createConfigExcel(excelJson, configObjData) {
-  const viewportTypes = ['desktop', 'tablet', 'mobile'];
-  for (const viewportType of viewportTypes) {
-    configObjData[viewportType].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
-    configObjData[viewportType].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
-    const existingGroups = configObjData[viewportType].groups;
-    for (const group of existingGroups) {
-      const name = group.name;
-      const groupsrc = getSrcFromExcelData(name, viewportType, excelJson, 'src');
-      const groupswatchSrc = getSrcFromExcelData(name, viewportType, excelJson, 'swatchSrc');
-      group.options = [];
-      for (let i = 0; i < groupsrc.length; i++) {
-        const option = { src: groupsrc[i] };
-        if (groupswatchSrc[i]) option.swatchSrc = groupswatchSrc[i];
-        group.options.push(option);
+    const viewportTypes = ['desktop', 'tablet', 'mobile'];
+    for (const viewportType of viewportTypes) {
+      configObjData[viewportType].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
+      if (viewportType == 'desktop') {
+        configObjData[viewportType].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
+      }
+      const existingGroups = configObjData[viewportType].groups;
+      for (const group of existingGroups) {
+        const name = group.name;
+        const groupsrc = getSrcFromExcelData(name, viewportType, excelJson, 'src');
+        const groupswatchSrc = getSrcFromExcelData(name, viewportType, excelJson, 'swatchSrc');
+        group.options = [];
+        for (let i = 0; i < groupsrc.length; i++) {
+          const option = { src: groupsrc[i] };
+          if (groupswatchSrc[i]) option.swatchSrc = groupswatchSrc[i];
+          group.options.push(option);
+        }
+        if (group.options.length === 0) {
+            delete group.options;
+        }
       }
     }
   }
-}
 
 export default async function init(el) {
-  console.log(el);
   const clone = el.cloneNode(true);
-  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   el.innerText = '';
   el.appendChild(customElem);
   await createConfig(clone, configObj);
   console.log('configObj2', customElem.config);
   const excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, customElem.config);
-  console.log('configObj2', customElem.config);
+  console.log('configObj3', customElem.config);
+  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
 }
