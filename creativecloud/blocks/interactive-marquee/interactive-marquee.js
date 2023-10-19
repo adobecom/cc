@@ -138,10 +138,10 @@ function createConfigExcel(excelJson, configObjData) {
 export default async function init(el) {
   console.log(el);
   const clone = el.cloneNode(true);
-  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   el.innerText = '';
   el.appendChild(customElem);
   await createConfig(clone, configObj);
+  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   console.log('configObj2', customElem.config);
   const excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, customElem.config);
