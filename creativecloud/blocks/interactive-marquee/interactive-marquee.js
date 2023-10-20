@@ -141,6 +141,14 @@ function createConfigExcel(excelJson, configObjData) {
 export default async function init(el) {
     console.log('el', el);
   const clone = el.cloneNode(true);
+  const firstDiv = el.querySelector('div');
+  const links = firstDiv.querySelectorAll('a');
+  [...links].forEach((link) => {
+    const img = new Image();
+    img.fetchPriority = 'high';
+    img.src = `${link.href}`;
+    console.log('imgggg', img);
+  });
   el.innerText = '';
   el.appendChild(customElem);
   await createConfig(clone, configObj);
