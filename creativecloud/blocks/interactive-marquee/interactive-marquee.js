@@ -164,7 +164,7 @@ function getAssests(el) {
       desktop: {
         marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
         talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
-        defaultBgSrc: `${defaultBgLInk[2]}`,
+        defaultBgSrc: `https://main--cc--adobecom.hlx.page/media_154e33f4d90e93617034769fd1131751bfecddd4b.png#width=1920&height=860`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
@@ -222,8 +222,8 @@ function getAssests(el) {
       },
       tablet: {
         marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
-        talentSrc: `${defaultBgLInk[1]}`,
-        defaultBgSrc: `${assetsRoot}/tablet/defaultBg.webp`,
+        talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
+        defaultBgSrc: `https://main--cc--adobecom.hlx.page/media_10af13ddad8e4c21e58ccd2b79317b58d8ccad11c.jpeg#width=1199&height=747`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         groups: [
@@ -263,7 +263,7 @@ function getAssests(el) {
       mobile: {
         marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
         talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
-        defaultBgSrc: `${defaultBgLInk[0]}`,
+        defaultBgSrc: `https://main--cc--adobecom.hlx.page/media_1fc8ba84d06c0fec979dd1f8604ae78e0c6194df8.png#width=599&height=591`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         groups: [
@@ -305,22 +305,22 @@ function getAssests(el) {
 
 export default async function init(el) {
 // prefetch the mobile background image
-//   if (matchMedia('screen and (max-width: 599px)').matches) {
-//     const img = new Image();
-//     img.fetchPriority = 'high';
-//     img.src = `${assetsRoot}/mobile/defaultBg.webp`;
-//     const img1 = new Image();
-//     img1.fetchPriority = 'high';
-//     img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
-//     const img2 = new Image();
-//     img2.fetchPriority = 'high';
-//     img2.src = `${assetsRoot}/tablet/yogalady.webp`;
-//   }
-    const firstDiv = el.querySelector('div');
-    const links = firstDiv.querySelectorAll('a');
-    [...links].forEach((link, id) => {
-        defaultBgLInk[id] = link.href;
-    });
+  if (matchMedia('screen and (max-width: 599px)').matches) {
+    const img = new Image();
+    img.fetchPriority = 'high';
+    img.src = `https://main--cc--adobecom.hlx.page/media_1fc8ba84d06c0fec979dd1f8604ae78e0c6194df8.png#width=599&height=591`;
+    const img1 = new Image();
+    img1.fetchPriority = 'high';
+    img1.src = `https://main--cc--adobecom.hlx.page/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png#width=599&height=591`;
+    const img2 = new Image();
+    img2.fetchPriority = 'high';
+    img2.src = `ttps://main--cc--adobecom.hlx.page/media_1db4c02317b2f5110a4c37bcffc06cc25650c0993.jpeg#width=548&height=334`;
+  }
+    // const firstDiv = el.querySelector('div');
+    // const links = firstDiv.querySelectorAll('a');
+    // [...links].forEach((link, id) => {
+    //     defaultBgLInk[id] = link.href;
+    // });
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests(el);
   el.replaceChildren(customElem);
