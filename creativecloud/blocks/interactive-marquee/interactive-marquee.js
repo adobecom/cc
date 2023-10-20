@@ -3,7 +3,7 @@ const configObj = {};
 const base = `${window.location.origin}/creativecloud`;
 const assetsRoot = `${base}/assets`;
 const customElem = document.createElement('ft-changebackgroundmarquee');
-
+const defaultBgLInk = [];
 function getImageSrc(node) {
     return Array.from(node).map((el) => {
       const a = el.querySelector('a');
@@ -159,12 +159,12 @@ function createConfigExcel(excelJson, configObjData) {
 // //   console.log('configObj3', customElem.config);
 // }
 
-function getAssests() {
+function getAssests(el) {
     customElem.config = {
       desktop: {
         marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
         talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
-        defaultBgSrc: `${assetsRoot}/desktop/defaultBg.webp`,
+        defaultBgSrc: `${defaultBgLInk[2]}`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
@@ -222,7 +222,7 @@ function getAssests() {
       },
       tablet: {
         marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
-        talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
+        talentSrc: `${defaultBgLInk[1]}`,
         defaultBgSrc: `${assetsRoot}/tablet/defaultBg.webp`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
@@ -263,7 +263,7 @@ function getAssests() {
       mobile: {
         marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
         talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
-        defaultBgSrc: `${assetsRoot}/mobile/defaultBg.webp`,
+        defaultBgSrc: `${defaultBgLInk[0]}`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         groups: [
@@ -305,18 +305,23 @@ function getAssests() {
 
 export default async function init(el) {
 // prefetch the mobile background image
-  if (matchMedia('screen and (max-width: 599px)').matches) {
-    const img = new Image();
-    img.fetchPriority = 'high';
-    img.src = `${assetsRoot}/mobile/defaultBg.webp`;
-    const img1 = new Image();
-    img1.fetchPriority = 'high';
-    img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
-    const img2 = new Image();
-    img2.fetchPriority = 'high';
-    img2.src = `${assetsRoot}/tablet/yogalady.webp`;
-  }
+//   if (matchMedia('screen and (max-width: 599px)').matches) {
+//     const img = new Image();
+//     img.fetchPriority = 'high';
+//     img.src = `${assetsRoot}/mobile/defaultBg.webp`;
+//     const img1 = new Image();
+//     img1.fetchPriority = 'high';
+//     img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
+//     const img2 = new Image();
+//     img2.fetchPriority = 'high';
+//     img2.src = `${assetsRoot}/tablet/yogalady.webp`;
+//   }
+    const firstDiv = el.querySelector('div');
+    const links = firstDiv.querySelectorAll('a');
+    [...links].forEach((link, id) => {
+        defaultBgLInk[id] = link.href;
+    });
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
-  getAssests();
+  getAssests(el);
   el.replaceChildren(customElem);
 }
