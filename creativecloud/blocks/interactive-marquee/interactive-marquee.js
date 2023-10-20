@@ -164,7 +164,7 @@ function getAssests(el) {
       desktop: {
         marqueeTitleImgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopDesktop?$png$&jpegSize=300&wid=1920`,
         talentSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyDesktop?$png$&jpegSize=300&wid=1920`,
-        defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgDesktop?$png$&jpegSize=300&wid=1920`,
+        defaultBgSrc: `${assetsRoot}/desktop/defaultBg.webp`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
@@ -223,7 +223,7 @@ function getAssests(el) {
       tablet: {
         marqueeTitleImgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopTablet?$png$&jpegSize=100&wid=599`,
         talentSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyTablet?$png$&jpegSize=100&wid=599`,
-        defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgTablet?$pjpeg$&jpegSize=100&wid=599`,
+        defaultBgSrc: `${assetsRoot}/tablet/defaultBg.webp`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         groups: [
@@ -263,7 +263,7 @@ function getAssests(el) {
       mobile: {
         marqueeTitleImgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopMobile?$pjpeg$&jpegSize=100&wid=548`,
         talentSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyMobile?$png$&jpegSize=100&wid=599`,
-        defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`,
+        defaultBgSrc: `${assetsRoot}/mobile/defaultBg.webp`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         groups: [
