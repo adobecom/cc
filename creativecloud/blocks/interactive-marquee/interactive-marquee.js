@@ -159,11 +159,11 @@ function createConfigExcel(excelJson, configObjData) {
 // //   console.log('configObj3', customElem.config);
 // }
 
-function getAssests(el) {
+function getAssests() {
     customElem.config = {
       desktop: {
-        marqueeTitleImgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopDesktop?$png$&jpegSize=300&wid=1920`,
-        talentSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyDesktop?$png$&jpegSize=300&wid=1920`,
+        arqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
+        talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
         defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgDesktop?$png$&jpegSize=300&wid=1920`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
@@ -221,8 +221,8 @@ function getAssests(el) {
         ],
       },
       tablet: {
-        marqueeTitleImgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopTablet?$png$&jpegSize=100&wid=599`,
-        talentSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyTablet?$png$&jpegSize=100&wid=599`,
+        marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
         defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgTablet?$pjpeg$&jpegSize=100&wid=599`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
@@ -261,8 +261,8 @@ function getAssests(el) {
         ],
       },
       mobile: {
-        marqueeTitleImgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopMobile?$pjpeg$&jpegSize=100&wid=548`,
-        talentSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyMobile?$png$&jpegSize=100&wid=599`,
+        marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
+      talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
         defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
@@ -316,11 +316,6 @@ export default async function init(el) {
     img2.fetchPriority = 'high';
     img2.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
   }
-    // const firstDiv = el.querySelector('div');
-    // const links = firstDiv.querySelectorAll('a');
-    // [...links].forEach((link, id) => {
-    //     defaultBgLInk[id] = link.href;
-    // });
   await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests(el);
   el.replaceChildren(customElem);
