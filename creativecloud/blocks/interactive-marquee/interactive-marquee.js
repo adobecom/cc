@@ -139,6 +139,7 @@ function createConfigExcel(excelJson, configObjData) {
   }
 
 export default async function init(el) {
+  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
     console.log('el', el);
   const clone = el.cloneNode(true);
   const firstDiv = el.querySelector('div');
@@ -147,14 +148,12 @@ export default async function init(el) {
     const img = new Image();
     img.fetchPriority = 'high';
     img.src = `${link.href}`;
-    console.log('imgggg', img);
   });
-  el.innerText = '';
-  el.appendChild(customElem);
   await createConfig(clone, configObj);
   console.log('configObj2', customElem.config);
   const excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, customElem.config);
+  el.innerText = '';
+  el.appendChild(customElem);
   console.log('configObj3', customElem.config);
-  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
 }
