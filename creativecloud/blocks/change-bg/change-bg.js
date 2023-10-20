@@ -159,7 +159,7 @@ export default async function init(el) {
     img2.fetchPriority = 'high';
     img2.src = `${assetsRoot}/tablet/yogalady.webp`;
   }
-  await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-37df0239.js`);
+  await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-41eebb1a.js`);
   getAssests();
   el.replaceChildren(customElem);
 }
