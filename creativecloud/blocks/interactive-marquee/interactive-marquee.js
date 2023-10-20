@@ -308,13 +308,13 @@ export default async function init(el) {
   if (matchMedia('screen and (max-width: 599px)').matches) {
     const img = new Image();
     img.fetchPriority = 'high';
-    img.src = `https://cc-prod.scene7.com/is/image/CCQA01Author/defaultBg%20(7)?$png$&jpegSize=300&wid=1920`;
+    img.src = `https://cc-prod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopMobile?$pjpeg$&jpegSize=100&wid=548`;
     const img1 = new Image();
     img1.fetchPriority = 'high';
-    img1.src = `https://main--cc--adobecom.hlx.live/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png#width=599&height=591`;
+    img1.src = `https://cc-prod.scene7.com/is/image/CCQA01Author/yogaladyMobile?$png$&jpegSize=100&wid=599`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
-    img2.src = `https://main--cc--adobecom.hlx.live/media_1db4c02317b2f5110a4c37bcffc06cc25650c0993.jpeg#width=548&height=334`;
+    img2.src = `https://cc-prod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
   }
     // const firstDiv = el.querySelector('div');
     // const links = firstDiv.querySelectorAll('a');
