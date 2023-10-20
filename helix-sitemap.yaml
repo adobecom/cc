@@ -80,7 +80,7 @@ sitemaps:
 
       pl:
         source: /pl/cc-shared/assets/query-index.json
-        alternate: /ppl/{path}.html
+        alternate: /pl/{path}.html
         destination: /pl/cc-shared/assets/sitemap.xml
         hreflang: pl-PL 
 
