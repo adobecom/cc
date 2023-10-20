@@ -72,7 +72,7 @@ indices:
     <<: *def
     include:
       - /kr/creativecloud/**
-    target: /kr/creativecloud/query-index.xlsx
+    target: /kr/cc-shared/assets/query-index.xlsx
 
   creativecloud-ru:
     <<: *def
@@ -91,3 +91,27 @@ indices:
     include:
       - /tw/creativecloud/**
     target: /tw/cc-shared/assets/query-index.xlsx  
+
+  creativecloud-nl:
+    <<: *def
+    include:
+      - /nl/creativecloud/**
+    target: /nl/cc-shared/assets/query-index.xlsx
+
+  creativecloud-pl:
+    <<: *def
+    include:
+      - /pl/creativecloud/**
+    target: /pl/cc-shared/assets/query-index.xlsx
+
+  creativecloud-tr:
+    <<: *def
+    include:
+      - /tr/creativecloud/**
+    target: /tr/cc-shared/assets/query-index.xlsx  
+
+  creativecloud-uk:
+    <<: *def
+    include:
+      - /uk/creativecloud/**
+    target: /uk/cc-shared/assets/query-index.xlsx     

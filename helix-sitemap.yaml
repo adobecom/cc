@@ -71,3 +71,27 @@ sitemaps:
         alternate: /tw/{path}.html
         destination: /tw/cc-shared/assets/sitemap.xml
         hreflang: zh-TW
+        
+      nl:
+        source: /nl/cc-shared/assets/query-index.json
+        alternate: /nl/{path}.html
+        destination: /nl/cc-shared/assets/sitemap.xml
+        hreflang: nl-NL
+
+      pl:
+        source: /pl/cc-shared/assets/query-index.json
+        alternate: /pl/{path}.html
+        destination: /pl/cc-shared/assets/sitemap.xml
+        hreflang: pl-PL 
+
+      tr:
+        source: /tr/cc-shared/assets/query-index.json
+        alternate: /tr/{path}.html
+        destination: /tr/cc-shared/assets/sitemap.xml
+        hreflang: tr-TR 
+
+      uk:
+        source: /uk/cc-shared/assets/query-index.json
+        alternate: /uk/{path}.html
+        destination: /uk/cc-shared/assets/sitemap.xml
+        hreflang: en-GB     
