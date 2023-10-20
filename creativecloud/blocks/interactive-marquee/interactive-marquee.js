@@ -164,7 +164,7 @@ function getAssests() {
     desktop: {
       marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot}/desktop/defaultBg.webp`,
+      defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgDesktop?$png$&jpegSize=300&wid=1920`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
@@ -223,7 +223,7 @@ function getAssests() {
     tablet: {
       marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot}/tablet/defaultBg.webp`,
+      defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgTablet?$pjpeg$&jpegSize=100&wid=599`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -263,7 +263,7 @@ function getAssests() {
     mobile: {
       marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot}/mobile/defaultBg.webp`,
+      defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -308,7 +308,7 @@ export default async function init(el) {
 if (matchMedia('screen and (max-width: 599px)').matches) {
   const img = new Image();
   img.fetchPriority = 'high';
-  img.src = `${assetsRoot}/mobile/defaultBg.webp`;
+  img.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
   const img1 = new Image();
   img1.fetchPriority = 'high';
   img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
