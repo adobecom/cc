@@ -162,9 +162,9 @@ function createConfigExcel(excelJson, configObjData) {
 function getAssests(el) {
     customElem.config = {
       desktop: {
-        marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
-        talentSrc: `https://main--cc--adobecom.hlx.live/media_1f5cd02cf46306e3e94d2dd1c301489599e0decbb.png#width=1920&height=860`,
-        defaultBgSrc: `https://main--cc--adobecom.hlx.live/media_154e33f4d90e93617034769fd1131751bfecddd4b.png#width=1920&height=860`,
+        marqueeTitleImgSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopDesktop?$png$&jpegSize=300&wid=1920`,
+        talentSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/yogaladyDesktop?$png$&jpegSize=300&wid=1920`,
+        defaultBgSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/defaultBgDesktop?$png$&jpegSize=300&wid=1920`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
@@ -221,9 +221,9 @@ function getAssests(el) {
         ],
       },
       tablet: {
-        marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
-        talentSrc: `https://main--cc--adobecom.hlx.live/media_1df39bd0e23f818e6c0e7ef9d6a35b7ea911be8b2.png#width=1199&height=747`,
-        defaultBgSrc: `https://main--cc--adobecom.hlx.live/media_10af13ddad8e4c21e58ccd2b79317b58d8ccad11c.jpeg#width=1199&height=747`,
+        marqueeTitleImgSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopTablet?$png$&jpegSize=100&wid=599`,
+        talentSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/yogaladyTablet?$png$&jpegSize=100&wid=599`,
+        defaultBgSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/defaultBgTablet?$pjpeg$&jpegSize=100&wid=599`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         groups: [
@@ -261,9 +261,9 @@ function getAssests(el) {
         ],
       },
       mobile: {
-        marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
-        talentSrc: `https://main--cc--adobecom.hlx.live/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png#width=599&height=591`,
-        defaultBgSrc: `https://main--cc--adobecom.hlx.live/media_1fc8ba84d06c0fec979dd1f8604ae78e0c6194df8.png#width=599&height=591`,
+        marqueeTitleImgSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopMobile?$pjpeg$&jpegSize=100&wid=548`,
+        talentSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/yogaladyMobile?$png$&jpegSize=100&wid=599`,
+        defaultBgSrc: `https://cc-prod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
         groups: [
@@ -308,7 +308,7 @@ export default async function init(el) {
   if (matchMedia('screen and (max-width: 599px)').matches) {
     const img = new Image();
     img.fetchPriority = 'high';
-    img.src = `https://main--cc--adobecom.hlx.live/media_1fc8ba84d06c0fec979dd1f8604ae78e0c6194df8.png#width=599&height=591`;
+    img.src = `https://cc-prod.scene7.com/is/image/CCQA01Author/defaultBg%20(7)?$png$&jpegSize=300&wid=1920`;
     const img1 = new Image();
     img1.fetchPriority = 'high';
     img1.src = `https://main--cc--adobecom.hlx.live/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png#width=599&height=591`;
