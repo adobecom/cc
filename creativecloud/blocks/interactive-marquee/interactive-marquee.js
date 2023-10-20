@@ -5,9 +5,9 @@ const customElem = document.createElement('ft-changebackgroundmarquee');
 
 function getImageSrc(node) {
     return Array.from(node).map((el) => {
-      const a = el.querySelector('picture');
-      const img = a.querySelector('source');
-      return img.srcset;
+      const a = el.querySelector('a');
+    //   const img = a.querySelector('source');
+      return a.href;
     });
   }
 
@@ -139,6 +139,7 @@ function createConfigExcel(excelJson, configObjData) {
   }
 
 export default async function init(el) {
+    console.log('el', el);
   const clone = el.cloneNode(true);
   el.innerText = '';
   el.appendChild(customElem);
