@@ -308,10 +308,10 @@ export default async function init(el) {
   if (matchMedia('screen and (max-width: 599px)').matches) {
     const img = new Image();
     img.fetchPriority = 'high';
-    img.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/everyonecanphotoshopMobile?$pjpeg$&jpegSize=100&wid=548`;
+    img.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
     const img1 = new Image();
     img1.fetchPriority = 'high';
-    img1.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyMobile?$png$&jpegSize=100&wid=599`;
+    img1.src = `${assetsRoot}/tablet/yogalady.webp`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
     img2.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
