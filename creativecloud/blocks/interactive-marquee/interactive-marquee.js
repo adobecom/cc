@@ -163,7 +163,7 @@ function getAssests(el) {
     customElem.config = {
       desktop: {
         marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
-        talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
+        talentSrc: `https://main--cc--adobecom.hlx.page/media_1f5cd02cf46306e3e94d2dd1c301489599e0decbb.png#width=1920&height=860`,
         defaultBgSrc: `https://main--cc--adobecom.hlx.page/media_154e33f4d90e93617034769fd1131751bfecddd4b.png#width=1920&height=860`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
@@ -222,7 +222,7 @@ function getAssests(el) {
       },
       tablet: {
         marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
-        talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
+        talentSrc: `https://main--cc--adobecom.hlx.page/media_1df39bd0e23f818e6c0e7ef9d6a35b7ea911be8b2.png#width=1199&height=747`,
         defaultBgSrc: `https://main--cc--adobecom.hlx.page/media_10af13ddad8e4c21e58ccd2b79317b58d8ccad11c.jpeg#width=1199&height=747`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
@@ -262,7 +262,7 @@ function getAssests(el) {
       },
       mobile: {
         marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
-        talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
+        talentSrc: `https://main--cc--adobecom.hlx.page/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png#width=599&height=591`,
         defaultBgSrc: `https://main--cc--adobecom.hlx.page/media_1fc8ba84d06c0fec979dd1f8604ae78e0c6194df8.png#width=599&height=591`,
         tryitSrc: `${assetsRoot}/tryit.svg`,
         tryitText: 'Try it',
@@ -314,7 +314,7 @@ export default async function init(el) {
     img1.src = `https://main--cc--adobecom.hlx.page/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png#width=599&height=591`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
-    img2.src = `ttps://main--cc--adobecom.hlx.page/media_1db4c02317b2f5110a4c37bcffc06cc25650c0993.jpeg#width=548&height=334`;
+    img2.src = `https://main--cc--adobecom.hlx.page/media_1db4c02317b2f5110a4c37bcffc06cc25650c0993.jpeg#width=548&height=334`;
   }
     // const firstDiv = el.querySelector('div');
     // const links = firstDiv.querySelectorAll('a');
