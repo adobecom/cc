@@ -96,7 +96,7 @@ indices:
     <<: *def
     include:
       - /nl/creativecloud/**
-    target: /nl/creativecloud/query-index.xlsx
+    target: /nl/cc-shared/assets/query-index.xlsx
 
   creativecloud-pl:
     <<: *def
