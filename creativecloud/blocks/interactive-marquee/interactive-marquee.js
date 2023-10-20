@@ -314,7 +314,7 @@ export default async function init(el) {
     img1.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/yogaladyMobile?$png$&jpegSize=100&wid=599`;
     const img2 = new Image();
     img2.fetchPriority = 'high';
-    img2.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
+    img2.src = `${assetsRoot}/desktop/defaultBg.webp`;
   }
     // const firstDiv = el.querySelector('div');
     // const links = firstDiv.querySelectorAll('a');
