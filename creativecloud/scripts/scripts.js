@@ -109,7 +109,7 @@ const locales = {
   gt: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
   eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
   kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
-  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Quatar (Arabic)
+  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Qatar (Arabic)
   eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
   kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
   qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
