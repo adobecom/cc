@@ -115,3 +115,27 @@ indices:
     include:
       - /uk/creativecloud/**
     target: /uk/cc-shared/assets/query-index.xlsx     
+
+  merch-cards:
+    include:
+      - /cc-shared/fragments/merch/**/cards/**
+    target: /cc-shared/assets/query-index-cards.xslx
+    properties:
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      cardClasses:
+        select: main div.merch-card
+        value: attribute(el, "className")
+      cardContent:
+        select: main > div
+        value: innerHTML(el)
+      tags:
+        select: head > meta[property="article:tag"]
+        values: attribute(el, "content")
+      publicationDate:
+        select: none
+        value: parseTimestamp(headers["date"], "ddd, DD MMM YYYY hh:mm:ss GMT")
