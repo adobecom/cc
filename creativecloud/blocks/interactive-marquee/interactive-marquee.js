@@ -141,7 +141,7 @@ function createConfigExcel(excelJson, configObjData) {
   }
 
 export default async function init(el) {
-  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
+  // import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
     console.log('el', el);
   // const clone = el.cloneNode(true);
   const firstDiv = el.querySelectorAll(':scope > div');
