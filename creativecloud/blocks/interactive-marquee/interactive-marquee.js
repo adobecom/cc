@@ -171,11 +171,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
           options: [
             {
               src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1c6207a67c23a8aac1fc673b00a0709597108383e.jpeg`,
@@ -193,7 +193,7 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
             { src: '#7F66E6' },
@@ -202,7 +202,7 @@ function getAssests() {
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-pattern-icon.svg`,
           options: [
             {
               src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1e5f0dde8b87f7df5f0ac4204af775d8dca0c9ae4.jpeg`,
@@ -229,11 +229,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
           options: [
             {
               src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_15b4d2588f135edf8d528d5a81b078342f9bb449b.jpeg`,
@@ -243,7 +243,7 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
@@ -269,11 +269,11 @@ function getAssests() {
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
           options: [
             {
               src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_10d610e50c0693186f9fea2878e4ccaf632721746.jpeg`,
@@ -283,7 +283,7 @@ function getAssests() {
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
@@ -294,7 +294,7 @@ function getAssests() {
           options: [
             {
               src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18658b1087531668846f43a3f2acc7d1243b00130.jpeg`,
-              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1c1dba01879e4c649e0057e3a32f73f2a4b5d7d10.jpeg`,
+              swatchSrc: `$https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1c1dba01879e4c649e0057e3a32f73f2a4b5d7d10.jpeg`,
             },
           ],
         },
