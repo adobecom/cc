@@ -164,7 +164,7 @@ function getAssests() {
     desktop: {
       marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
-      defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgDesktop?$png$&jpegSize=300&wid=1920`,
+      defaultBgSrc: `${assetsRoot}/mobile/media_1fc4ae12a2e1d3837be2a7d794223aeff4cb135ed.png?format=webply`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
