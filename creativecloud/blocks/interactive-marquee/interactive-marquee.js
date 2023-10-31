@@ -162,38 +162,38 @@ function createConfigExcel(excelJson, configObjData) {
 function getAssests() {
   customElem.config = {
     desktop: {
-      marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
+      marqueeTitleImgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1ecd480463ad12637e596ee086dec2f2ec15bca12.png?format=webply`,
+      talentSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1f5cd02cf46306e3e94d2dd1c301489599e0decbb.png?format=webply`,
       defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/defaultbg.png?format=webply`,
-      tryitSrc: `${assetsRoot}/tryit.svg`,
+      tryitSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tryit.svg`,
       tryitText: 'Try it',
-      cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
+      cursorSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/dt-mouse-arrow.svg`,
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
           options: [
             {
-              src: `${assetsRoot}/desktop/photo1.webp`,
-              swatchSrc: `${assetsRoot}/photo-submenu-1.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1c6207a67c23a8aac1fc673b00a0709597108383e.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_178998ef2e42f9da793da13c5fa2c666a88244e1a.jpeg`,
             },
             {
-              src: `${assetsRoot}/desktop/photo2.webp`,
-              swatchSrc: `${assetsRoot}/photo-submenu-2.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1d3224f95359b57b3058277dd61e42703b4c80f8c.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1890e29f4e69d9ef3f1f9374322e554f0eb4cc3a8.jpeg`,
             },
             {
-              src: `${assetsRoot}/desktop/photo3.webp`,
-              swatchSrc: `${assetsRoot}/photo-submenu-3.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_12e4d603ff6ec7cd3f87ff1a8a80ee30e891d91fb.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_17b16658049c0007cd1ff44ab069a5dae3d497b27.jpeg`,
             },
           ],
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
             { src: '#7F66E6' },
@@ -202,59 +202,59 @@ function getAssests() {
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-pattern-icon.svg`,
           options: [
             {
-              src: `${assetsRoot}/desktop/pattern1.webp`,
-              swatchSrc: `${assetsRoot}/pattern-submenu-1.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1e5f0dde8b87f7df5f0ac4204af775d8dca0c9ae4.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1c1dba01879e4c649e0057e3a32f73f2a4b5d7d10.jpeg`,
             },
             {
-              src: `${assetsRoot}/desktop/pattern2.webp`,
-              swatchSrc: `${assetsRoot}/pattern-submenu-2.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_122eee5e2de5125356f5d674079026da06ac8148d.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1550358bbdc7509c3027dafa289586705fdaf223e.jpeg`,
             },
             {
-              src: `${assetsRoot}/desktop/pattern3.webp`,
-              swatchSrc: `${assetsRoot}/pattern-submenu-3.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1f874ae7861d4b25d4e123217b24146b4449a9a38.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_11791a3a979984c3865d457ee54d8cb40e2daa974.jpeg`,
             },
           ],
         },
       ],
     },
     tablet: {
-      marqueeTitleImgSrc: `${assetsRoot}/tablet/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot}/tablet/yogalady.webp`,
-      defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultBgTablet?$pjpeg$&jpegSize=100&wid=599`,
-      tryitSrc: `${assetsRoot}/tryit.svg`,
+      marqueeTitleImgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_178b471c39e081933fa5361ac916194b0afdce975.png?format=webply`,
+      talentSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_1df39bd0e23f818e6c0e7ef9d6a35b7ea911be8b2.png?format=webply`,
+      defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_1eb30d9fb492f8746beaaca63331ecc4cf3ada9cb.jpeg`,
+      tryitSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tryit.svg`,
       tryitText: 'Try it',
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
           options: [
             {
-              src: `${assetsRoot}/tablet/photo1.webp`,
-              swatchSrc: `${assetsRoot}/photo-submenu-1.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_15b4d2588f135edf8d528d5a81b078342f9bb449b.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_178998ef2e42f9da793da13c5fa2c666a88244e1a.jpeg`,
             },
           ],
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-pattern-icon.svg`,
           options: [
             {
-              src: `${assetsRoot}/tablet/pattern1.webp`,
-              swatchSrc: `${assetsRoot}/pattern-submenu-1.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_156a0847e949506991877bbc651ebf41bef4bb3be.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1c1dba01879e4c649e0057e3a32f73f2a4b5d7d10.jpeg`,
             },
           ],
         },
@@ -264,37 +264,37 @@ function getAssests() {
       marqueeTitleImgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18206fcf6e7a17d51e324c79e84d89c453081f551.jpeg?format=webply`,
       talentSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png?format=webply`,
       defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_1f58b1c83685c0c2b61aa47e6dddec0a5a913dba4.png?format=webply`,
-      tryitSrc: `${assetsRoot}/tryit.svg`,
+      tryitSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tryit.svg`,
       tryitText: 'Try it',
       groups: [
         {
           name: 'Remove Background',
-          iconUrl: `${assetsRoot}/remove-background-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
         },
         {
           name: 'Change Photo',
-          iconUrl: `${assetsRoot}/change-photo-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
           options: [
             {
-              src: `${assetsRoot}/mobile/photo1.webp`,
-              swatchSrc: `${assetsRoot}/photo-submenu-1.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_10d610e50c0693186f9fea2878e4ccaf632721746.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_178998ef2e42f9da793da13c5fa2c666a88244e1a.jpeg`,
             },
           ],
         },
         {
           name: 'Change Color',
-          iconUrl: `${assetsRoot}/change-color-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
           options: [
             { src: '#31A8FF' },
           ],
         },
         {
           name: 'Change Pattern',
-          iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
+          iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-pattern-icon.svg`,
           options: [
             {
-              src: `${assetsRoot}/mobile/pattern1.webp`,
-              swatchSrc: `${assetsRoot}/pattern-submenu-1.webp`,
+              src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18658b1087531668846f43a3f2acc7d1243b00130.jpeg`,
+              swatchSrc: `$https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1c1dba01879e4c649e0057e3a32f73f2a4b5d7d10.jpeg`,
             },
           ],
         },
@@ -317,11 +317,6 @@ if (matchMedia('screen and (max-width: 599px)').matches) {
   img2.fetchPriority = 'high';
   img2.src = `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png?format=webply`;
 }
-    // const firstDiv = el.querySelector('div');
-    // const links = firstDiv.querySelectorAll('a');
-    // [...links].forEach((link, id) => {
-    //     defaultBgLInk[id] = link.href;
-    // });
   import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests(el);
   el.replaceChildren(customElem);
