@@ -294,7 +294,7 @@ function getAssests() {
           options: [
             {
               src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18658b1087531668846f43a3f2acc7d1243b00130.jpeg`,
-              swatchSrc: `$https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1c1dba01879e4c649e0057e3a32f73f2a4b5d7d10.jpeg`,
+              swatchSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/media_1c1dba01879e4c649e0057e3a32f73f2a4b5d7d10.jpeg`,
             },
           ],
         },
