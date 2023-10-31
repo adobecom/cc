@@ -143,7 +143,7 @@ function createConfigExcel(excelJson, configObjData) {
 export default async function init(el) {
   import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
     console.log('el', el);
-  const clone = el.cloneNode(true);
+  // const clone = el.cloneNode(true);
   // const firstDiv = el.querySelectorAll(':scope > div');
   // const firstThreeDivs = Array.prototype.slice.call(firstDiv, 0, 3);
   // [...firstThreeDivs].forEach((ele) => {
@@ -153,7 +153,7 @@ export default async function init(el) {
   //   img.src = `${d.innerText}`;
   //   console.log('img', img);
   // });
-  createConfig(clone, configObj);
+  createConfig(el, configObj);
   console.log('configObj2', customElem.config);
   const excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, customElem.config);
