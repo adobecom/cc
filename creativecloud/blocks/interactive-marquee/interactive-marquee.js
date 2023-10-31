@@ -263,7 +263,7 @@ function getAssests() {
     mobile: {
       marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
-      defaultBgSrc: `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`,
+      defaultBgSrc: `${assetsRoot}/mobile/media_1fc4ae12a2e1d3837be2a7d794223aeff4cb135ed.png?format=webply`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -303,12 +303,13 @@ function getAssests() {
   };
 }
 
-export default async function init(el) {
+export default function init(el) {
 // prefetch the mobile background image
 if (matchMedia('screen and (max-width: 599px)').matches) {
   const img = new Image();
   img.fetchPriority = 'high';
-  img.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
+  // img.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
+  img.src = `${assetsRoot}/mobile/media_1fc4ae12a2e1d3837be2a7d794223aeff4cb135ed.png?format=webply`;
   const img1 = new Image();
   img1.fetchPriority = 'high';
   img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
@@ -321,7 +322,7 @@ if (matchMedia('screen and (max-width: 599px)').matches) {
     // [...links].forEach((link, id) => {
     //     defaultBgLInk[id] = link.href;
     // });
-  await import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
+  import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
   getAssests(el);
   el.replaceChildren(customElem);
 }
