@@ -71,7 +71,8 @@ function getIconAndName(dataSet, viewportType) {
   const childrenArr = processDataSet(dataSet);
   const objArr = [];
   const iconBlock = childrenArr.shift();
-  objArr['iconUrl'] = iconBlock.querySelector('picture > img').src;
+  console.log('iconBlock', iconBlock);
+  objArr['iconUrl'] = iconBlock.innerText;
   objArr['name'] = getTextItemValues(dataSet, viewportType, true);
   return objArr;
 }
