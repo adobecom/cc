@@ -160,13 +160,11 @@ export default async function init(el) {
   //   img.src = `${link.innerText}`;
   //   console.log('img', img);
   // });
-  el.replaceWith(customElem);
   createConfig(clone, configObj);
   console.log('configObj2', customElem.config);
-  // el.innerText = '';
-  // el.appendChild(customElem);
   const excelJsonData = await getExcelData(excelLink);
   createConfigExcel(excelJsonData, customElem.config);
+  el.replaceWith(customElem);
 }
 
 // function getAssests() {
