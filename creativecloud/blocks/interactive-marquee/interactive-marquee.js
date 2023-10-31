@@ -152,10 +152,10 @@ export default async function init(el) {
   });
   await createConfig(clone, configObj);
   console.log('configObj2', customElem.config);
-  const excelJsonData = await getExcelData(excelLink);
-  createConfigExcel(excelJsonData, customElem.config);
   el.innerText = '';
   el.appendChild(customElem);
+  const excelJsonData = await getExcelData(excelLink);
+  createConfigExcel(excelJsonData, customElem.config);
   console.log('configObj3', customElem.config);
 }
 
