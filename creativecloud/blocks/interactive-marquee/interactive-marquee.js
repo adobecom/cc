@@ -164,7 +164,7 @@ function getAssests() {
     desktop: {
       marqueeTitleImgSrc: `${assetsRoot}/desktop/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/desktop/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot}/mobile/media_1fc4ae12a2e1d3837be2a7d794223aeff4cb135ed.png`,
+      defaultBgSrc: `https://www.adobe.com/drafts/suhjain/assets-interactive-marquee/desktop/defaultbg.png?format=webply`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       cursorSrc: `${assetsRoot}/desktop/dt-Mouse-arrow.svg`,
@@ -263,7 +263,7 @@ function getAssests() {
     mobile: {
       marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
-      defaultBgSrc: `${assetsRoot}/mobile/media_1fc4ae12a2e1d3837be2a7d794223aeff4cb135ed.png?format=webply`,
+      defaultBgSrc: `$https://www.adobe.com/drafts/suhjain/assets-interactive-marquee/mobile/defaultbg.png?format=webply`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -309,7 +309,7 @@ if (matchMedia('screen and (max-width: 599px)').matches) {
   const img = new Image();
   img.fetchPriority = 'high';
   // img.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
-  img.src = `${assetsRoot}/mobile/media_1fc4ae12a2e1d3837be2a7d794223aeff4cb135ed.png?format=webply`;
+  img.src = `https://www.adobe.com/drafts/suhjain/assets-interactive-marquee/mobile/defaultbg.png?format=webply`;
   const img1 = new Image();
   img1.fetchPriority = 'high';
   img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
