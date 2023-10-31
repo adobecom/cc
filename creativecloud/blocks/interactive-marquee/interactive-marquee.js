@@ -145,7 +145,7 @@ export default async function init(el) {
     console.log('el', el);
   // const clone = el.cloneNode(true);
   const firstDiv = el.querySelectorAll(':scope > div');
-  const firstThreeDivs = Array.prototype.slice.call(firstDiv, 0, 1);
+  const firstThreeDivs = Array.prototype.slice.call(firstDiv, 0, 3);
   [...firstThreeDivs].forEach((ele) => {
     const d = ele.querySelector('div');
     const img = new Image();
