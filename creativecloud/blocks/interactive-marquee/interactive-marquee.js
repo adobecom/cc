@@ -263,7 +263,7 @@ function getAssests() {
     mobile: {
       marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
       talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
-      defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/defaultbg.png?format=webply`,
+      defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_1f58b1c83685c0c2b61aa47e6dddec0a5a913dba4.png?format=webply`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
       groups: [
@@ -309,7 +309,7 @@ if (matchMedia('screen and (max-width: 599px)').matches) {
   const img = new Image();
   img.fetchPriority = 'high';
   // img.src = `https://cc-preprod.scene7.com/is/image/CCQA01Author/defaultbgnewMobile?$png$&jpegSize=100&wid=599`;
-  img.src = `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/defaultbg.png?format=webply`;
+  img.src = `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_1f58b1c83685c0c2b61aa47e6dddec0a5a913dba4.png?format=webply`;
   const img1 = new Image();
   img1.fetchPriority = 'high';
   img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
