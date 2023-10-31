@@ -261,8 +261,8 @@ function getAssests() {
       ],
     },
     mobile: {
-      marqueeTitleImgSrc: `${assetsRoot}/mobile/everyonecanphotoshop.webp`,
-      talentSrc: `${assetsRoot}/mobile/yogalady.webp`,
+      marqueeTitleImgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18206fcf6e7a17d51e324c79e84d89c453081f551.jpeg?format=webply`,
+      talentSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png?format=webply`,
       defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_1f58b1c83685c0c2b61aa47e6dddec0a5a913dba4.png?format=webply`,
       tryitSrc: `${assetsRoot}/tryit.svg`,
       tryitText: 'Try it',
@@ -312,10 +312,10 @@ if (matchMedia('screen and (max-width: 599px)').matches) {
   img.src = `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_1f58b1c83685c0c2b61aa47e6dddec0a5a913dba4.png?format=webply`;
   const img1 = new Image();
   img1.fetchPriority = 'high';
-  img1.src = `${assetsRoot}/mobile/everyonecanphotoshop.webp`;
+  img1.src = `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18206fcf6e7a17d51e324c79e84d89c453081f551.jpeg?format=webply`;
   const img2 = new Image();
   img2.fetchPriority = 'high';
-  img2.src = `${assetsRoot}/tablet/yogalady.webp`;
+  img2.src = `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png?format=webply`;
 }
     // const firstDiv = el.querySelector('div');
     // const links = firstDiv.querySelectorAll('a');
