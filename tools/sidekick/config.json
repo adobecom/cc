@@ -23,15 +23,15 @@
       "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=cc--adobecom",
       "passReferrer": true,
       "includePaths": [ "**/:x**" ]
-    },
-    
+    },    
     {
       "containerId": "tools",
       "id": "floodgate",
       "title": "Floodgate",
       "environments": [ "edit" ],
-      "url": "https://main--milo--adobecom.hlx.page/tools/floodgate/index.html?project=cc--adobecom",
+      "url": "https://main--milo--adobecom.hlx.page/tools/floodgate?milolibs=floodgateui",
       "passReferrer": true,
+      "passConfig": true,
       "includePaths": [ "**/:x**" ]
     },
     {
