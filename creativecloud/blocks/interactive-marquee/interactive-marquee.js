@@ -1,9 +1,10 @@
 let excelLink = '';
-const configObj = {};
+// let configObj = {};
 const base = `${window.location.origin}/creativecloud`;
 const assetsRoot = `${base}/assets`;
 const customElem = document.createElement('ft-changebackgroundmarquee');
 const defaultBgLInk = [];
+
 function getImageSrc(node) {
     return Array.from(node).map((el) => {
       const a = el.querySelector('a');
@@ -12,22 +13,16 @@ function getImageSrc(node) {
     });
   }
 
-  customElem.config = {
+ const configObj = {
         desktop: {
-          marqueeTitleImgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1ecd480463ad12637e596ee086dec2f2ec15bca12.png?format=webply`,
-          talentSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1f5cd02cf46306e3e94d2dd1c301489599e0decbb.png?format=webply`,
-          defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/defaultbg.png?format=webply`,
           tryitSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tryit.svg`,
           tryitText: 'Try it',
           cursorSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/dt-mouse-arrow.svg`,
           groups: [
             {
-              name: 'Remove Background',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
+              options:[],
             },
             {
-              name: 'Change Photo',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
               options: [
                 {
                   src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1c6207a67c23a8aac1fc673b00a0709597108383e.jpeg`,
@@ -44,8 +39,6 @@ function getImageSrc(node) {
               ],
             },
             {
-              name: 'Change Color',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
               options: [
                 { src: '#31A8FF' },
                 { src: '#7F66E6' },
@@ -53,8 +46,6 @@ function getImageSrc(node) {
               ],
             },
             {
-              name: 'Change Pattern',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-pattern-icon.svg`,
               options: [
                 {
                   src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/desktop/media_1e5f0dde8b87f7df5f0ac4204af775d8dca0c9ae4.jpeg`,
@@ -73,19 +64,13 @@ function getImageSrc(node) {
           ],
         },
         tablet: {
-          marqueeTitleImgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_178b471c39e081933fa5361ac916194b0afdce975.png?format=webply`,
-          talentSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_1df39bd0e23f818e6c0e7ef9d6a35b7ea911be8b2.png?format=webply`,
-          defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_1eb30d9fb492f8746beaaca63331ecc4cf3ada9cb.jpeg`,
           tryitSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tryit.svg`,
           tryitText: 'Try it',
           groups: [
             {
-              name: 'Remove Background',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
+              options: [],
             },
             {
-              name: 'Change Photo',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
               options: [
                 {
                   src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_15b4d2588f135edf8d528d5a81b078342f9bb449b.jpeg`,
@@ -94,15 +79,11 @@ function getImageSrc(node) {
               ],
             },
             {
-              name: 'Change Color',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
               options: [
                 { src: '#31A8FF' },
               ],
             },
             {
-              name: 'Change Pattern',
-              iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
               options: [
                 {
                   src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tablet/media_156a0847e949506991877bbc651ebf41bef4bb3be.jpeg`,
@@ -113,19 +94,13 @@ function getImageSrc(node) {
           ],
         },
         mobile: {
-          marqueeTitleImgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18206fcf6e7a17d51e324c79e84d89c453081f551.jpeg?format=webply`,
-          talentSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_17fbe5525a6d4a53db0ef6dd84324dc52a86977cb.png?format=webply`,
-          defaultBgSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_1f58b1c83685c0c2b61aa47e6dddec0a5a913dba4.png?format=webply`,
           tryitSrc: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/tryit.svg`,
           tryitText: 'Try it',
           groups: [
             {
-              name: 'Remove Background',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/remove-background-icon.svg`,
+              options:[],
             },
             {
-              name: 'Change Photo',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-photo-icon.svg`,
               options: [
                 {
                   src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_10d610e50c0693186f9fea2878e4ccaf632721746.jpeg`,
@@ -134,15 +109,11 @@ function getImageSrc(node) {
               ],
             },
             {
-              name: 'Change Color',
-              iconUrl: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/change-color-icon.svg`,
               options: [
                 { src: '#31A8FF' },
               ],
             },
             {
-              name: 'Change Pattern',
-              iconUrl: `${assetsRoot}/change-pattern-icon.svg`,
               options: [
                 {
                   src: `https://changebg--cc--suhjainadobe.hlx.live/drafts/suhjain/assets-interactive-marquee/mobile/media_18658b1087531668846f43a3f2acc7d1243b00130.jpeg`,
@@ -224,21 +195,25 @@ async function createConfig(el) {
   customElem.config = configObj;
   const dataSet = el.querySelectorAll(':scope > div');
   for (const viewportType of ['mobile', 'tablet', 'desktop']) {
-    const viewportObj = {};
+    // const viewportObj = {};
+    let count = 0;
     for (const objKeys of ['defaultBgSrc', 'talentSrc', 'marqueeTitleImgSrc']) {
-      viewportObj[objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
+      configObj[viewportType][objKeys] = getImageUrlValues(dataSet, objKeys, viewportType);
     }
-    viewportObj['tryitText'] = getTextItemValues(dataSet[3], viewportType);
-    viewportObj['groups'] = [];
+    configObj[viewportType]['tryitText'] = getTextItemValues(dataSet[3], viewportType);
+    // viewportObj['groups'] = [];
     for (let i = 4; i < dataSet.length - 1; i++) {
       const arr = getIconAndName(dataSet[i], viewportType);
-      viewportObj.groups.push({iconUrl: arr.iconUrl, name: arr.name});
+      // configObj[viewportType].groups.push({iconUrl: arr.iconUrl, name: arr.name});
+      configObj[viewportType].groups[count]['iconUrl'] = arr.iconUrl;
+      configObj[viewportType].groups[count]['name'] = arr.name;
+      count = count +1;
     }
     // TODO: uncomment when needed
-    configObj[viewportType] = viewportObj;
+    // configObj[viewportType] = viewportObj;
   }
   // customElem.config = configObj;
-  excelLink = dataSet[dataSet.length - 1].innerText.trim();
+  // excelLink = dataSet[dataSet.length - 1].innerText.trim();
 }
 
 async function getExcelData(link) {
