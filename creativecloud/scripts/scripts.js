@@ -126,6 +126,18 @@ const miloLibs = setLibs(LIBS);
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
   if (firstDiv?.classList.contains('interactive-marquee')) {
     import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
+    const a = firstDiv.querySelectorAll(':scope > div');
+    const firstThreeDivs = Array.prototype.slice.call(a, 0, 3);
+    [...firstThreeDivs].forEach((ele) => {
+      const d = ele.querySelector('div');
+      const img = new Image();
+      img.fetchPriority = 'high';
+      img.src = `${d.innerText}`;
+    });
+    const excelLink = a[0].innerText.trim();
+    const resp = await fetch(excelLink);
+    const { data } = await resp.json();
+    data.map((grp) => grp);
   }
 }());
 
