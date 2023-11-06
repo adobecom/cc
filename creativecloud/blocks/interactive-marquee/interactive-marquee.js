@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 let excelLink = '';
 const configObj = {};
 const customElem = document.createElement('ft-changebackgroundmarquee');
@@ -5,7 +6,7 @@ const customElem = document.createElement('ft-changebackgroundmarquee');
 async function getExcelData(link) {
   const resp = await fetch(link);
   const { data } = await resp.json();
-  return data.map((grp) => grp);
+  return data;
 }
 
 function getSrcFromExcelData(name, viewportType, excelData, type) {
@@ -21,15 +22,14 @@ function createConfigExcel(excelJson, configObjData) {
   for (const viewportType of viewportTypes) {
     const existingGroups = configObjData[viewportType].groups;
     for (const group of existingGroups) {
-      const name = group.name;
+      const { name } = group;
       const groupsrc = getSrcFromExcelData(name, viewportType, excelJson, 'src');
       const groupswatchSrc = getSrcFromExcelData(name, viewportType, excelJson, 'swatchSrc');
-      group.options = [];
-      for (let i = 0; i < groupsrc.length; i++) {
-        const option = { src: groupsrc[i] };
+      group.options = groupsrc.map((src, i) => {
+        const option = { src };
         if (groupswatchSrc[i]) option.swatchSrc = groupswatchSrc[i];
-        group.options.push(option);
-      }
+        return option;
+      });
       if (group.options.length === 0) {
         delete group.options;
       }

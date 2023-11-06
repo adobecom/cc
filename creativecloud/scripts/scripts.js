@@ -15,7 +15,6 @@ import { setLibs } from './utils.js';
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
 const base = `${window.location.origin}/creativecloud`;
-const assetsRoot = `${base}/assets`;
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = 'https://milo.adobe.com/libs';
@@ -126,12 +125,9 @@ const miloLibs = setLibs(LIBS);
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
   if (firstDiv?.classList.contains('interactive-marquee')) {
     import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
-    const a = firstDiv.querySelectorAll(':scope > div');
-    const excelLink = a[0].innerText.trim();
-    const resp = await fetch(excelLink);
+    const resp = await fetch(firstDiv.querySelector(':scope > div').innerText.trim());
     const { data } = await resp.json();
-    const exceldata = data.map((grp) => grp);
-    const exceldataImage = exceldata.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
+    const exceldataImage = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
     || ele.ResourceName === 'marqueeTitleImgSrc' || ele.ResourceName === 'talentSrc'));
     exceldataImage.forEach((ele) => {
       const img = new Image();
@@ -147,12 +143,7 @@ const eagerLoad = (img) => {
 };
 
 (async function loadLCPImage() {
-  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  if (firstDiv?.classList.contains('interactive-marquee')) {
-    firstDiv.querySelectorAll('img').forEach(eagerLoad);
-  } else {
-    eagerLoad(document.querySelector('img'));
-  }
+  eagerLoad(document.querySelector('img'));
 }());
 
 (async function loadPage() {
