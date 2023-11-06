@@ -113,7 +113,7 @@ function getExcelDataCursor(excelJson, type) {
 
 function getSrcFromExcelData(name, viewportType, excelData, type) {
   return excelData
-    .filter((data) => data.ComponentName === name && data.Viewport === viewportType && data.MappedName === type)
+    .filter((data) => data.MenuName === name && data.Viewport === viewportType && data.MappedName === type)
     .flatMap((data) => [data.Value1, data.Value2, data.Value3].filter((value) => value.trim() !== ''));
 }
 
@@ -147,7 +147,7 @@ function configExcelData(jsonData) {
   // const rearrangedData = {};customElem.config = configObj;
   customElem.config = configObj;
   jsonData.forEach((item) => {
-    const { Viewport, MappedName, Value1, ComponentName } = item;
+    const { Viewport, MappedName, Value1, MenuName } = item;
     if (Viewport && MappedName && Value1) {
       if (!configObj[Viewport]) {
         configObj[Viewport] = {};
@@ -157,7 +157,7 @@ function configExcelData(jsonData) {
         configObj[Viewport][MappedName] = Value1;
       } else if (MappedName === 'iconUrl') {
         const obj = {};
-        obj['name'] = ComponentName;
+        obj['name'] = MenuName;
         obj[MappedName] = Value1;
         configObj[Viewport]['groups'].push(obj);
       }
