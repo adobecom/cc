@@ -1,36 +1,31 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon, { stub } from 'sinon';
-import init from '../../../creativecloud/blocks/change-bg/change-bg.js';
+import init, { configExcelData, createConfigExcel } from '../../../creativecloud/features/changeBg/changeBg.js';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-
-describe('interactive-marquee', async () => {
-  const marquee = document.querySelector('.change-bg');
-  init(marquee);
-  it('should exist', () => {
-    const changebackgroundmarquee = document.querySelector('ft-changebackgroundmarquee');
-    expect(changebackgroundmarquee).to.exist;
+describe('configExcelData', async () => {
+  it('should correctly configure the excel data', async () => {
+    const data = JSON.parse(await readFile({ path: './mocks/body.json' }));
+    const resultdata = JSON.parse(await readFile({ path: './mocks/result.json' }));
+    const marquee = document.querySelector('.interactive-marquee');
+    const customElem = document.createElement('ft-changebackgroundmarquee');
+    init(marquee);
+    customElem.config = configExcelData(data);
+    createConfigExcel(data, customElem.config);
+    expect(customElem.config).to.deep.equal(resultdata);
   });
 });
 
-describe('Create Image for LCP', () => {
-  let matchMediaStub;
-  let ImageStub;
-  const assetsRoot = `${window.location.origin}/creativecloud/assets`;
-  const marquee = document.querySelector('.change-bg');
-  beforeEach(() => {
-    matchMediaStub = sinon.stub(window, 'matchMedia');
-    ImageStub = sinon.stub(window, 'Image');
-  });
-  afterEach(() => {
-    matchMediaStub.restore();
-    ImageStub.restore();
-  });
-  it('should create a new Image with the correct src if matchMedia matches', () => {
-    matchMediaStub.returns({ matches: true });
-    init(marquee);
-    expect(ImageStub.calledOnce).to.be.true;
-    expect(ImageStub.firstCall.returnValue.src).to.equal(`${assetsRoot}/mobile/defaultBg.webp`);
+describe('getExcelData', () => {
+  it('should fetch data from provided link', async () => {
+    const fakeFetch = stub().resolves({ json: () => ({ data: [] }) });
+    window.fetch = fakeFetch;
+    const fakeLink = 'fakeLink';
+    await init({
+      querySelectorAll: () => [{ innerText: fakeLink }],
+      replaceWith: () => {},
+    });
+    expect(fakeFetch.calledWith(fakeLink)).to.be.true;
   });
 });
