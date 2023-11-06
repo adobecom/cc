@@ -10,6 +10,7 @@ indices:
       - '**/fragments/**'
     include:
       - /creativecloud/**
+      - /products/substance3d/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -27,6 +28,9 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+      robots:
+        select: head > meta[name="robots"]
+        value: attribute(el, 'content')  
 
   creativecloud-au:
     <<: *def
@@ -68,7 +72,7 @@ indices:
     <<: *def
     include:
       - /kr/creativecloud/**
-    target: /kr/creativecloud/query-index.xlsx
+    target: /kr/cc-shared/assets/query-index.xlsx
 
   creativecloud-ru:
     <<: *def
@@ -76,3 +80,62 @@ indices:
       - /ru/creativecloud/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
+  creativecloud-hk_zh:
+    <<: *def
+    include:
+      - /hk_zh/creativecloud/**
+    target: /hk_zh/cc-shared/assets/query-index.xlsx  
+
+  creativecloud-tw:
+    <<: *def
+    include:
+      - /tw/creativecloud/**
+    target: /tw/cc-shared/assets/query-index.xlsx  
+
+  creativecloud-nl:
+    <<: *def
+    include:
+      - /nl/creativecloud/**
+    target: /nl/cc-shared/assets/query-index.xlsx
+
+  creativecloud-pl:
+    <<: *def
+    include:
+      - /pl/creativecloud/**
+    target: /pl/cc-shared/assets/query-index.xlsx
+
+  creativecloud-tr:
+    <<: *def
+    include:
+      - /tr/creativecloud/**
+    target: /tr/cc-shared/assets/query-index.xlsx  
+
+  creativecloud-uk:
+    <<: *def
+    include:
+      - /uk/creativecloud/**
+    target: /uk/cc-shared/assets/query-index.xlsx     
+
+  merch-cards:
+    include:
+      - /cc-shared/fragments/merch/**/cards/**
+    target: /cc-shared/assets/query-index-cards.xslx
+    properties:
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      cardClasses:
+        select: main div.merch-card
+        value: attribute(el, "className")
+      cardContent:
+        select: main > div
+        value: innerHTML(el)
+      tags:
+        select: head > meta[property="article:tag"]
+        values: attribute(el, "content")
+      publicationDate:
+        select: none
+        value: parseTimestamp(headers["date"], "ddd, DD MMM YYYY hh:mm:ss GMT")
