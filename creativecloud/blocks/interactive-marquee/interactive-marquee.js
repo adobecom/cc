@@ -17,7 +17,7 @@ function getSrcFromExcelData(name, viewportType, excelData, type) {
 }
 
 function createConfigExcel(excelJson, configObjData) {
-  const viewportTypes = ['desktop', 'tablet', 'mobile'];
+  const viewportTypes = ['mobile', 'tablet', 'desktop'];
   for (const viewportType of viewportTypes) {
     const existingGroups = configObjData[viewportType].groups;
     for (const group of existingGroups) {
