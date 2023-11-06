@@ -17,7 +17,7 @@ const STYLES = '/creativecloud/styles/styles.css';
 const base = `${window.location.origin}/creativecloud`;
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
-const LIBS = 'https://milo.adobe.com/libs';
+const LIBS = '/libs';
 
 const locales = {
   // Americas
@@ -75,10 +75,10 @@ const locales = {
   bg: { ietf: 'bg-BG', tk: 'aaz7dvd.css' },
   ru: { ietf: 'ru-RU', tk: 'aaz7dvd.css' },
   ua: { ietf: 'uk-UA', tk: 'aaz7dvd.css' },
-  il_he: { ietf: 'he', tk: 'nwq1mna.css' },
-  ae_ar: { ietf: 'ar', tk: 'nwq1mna.css' },
-  mena_ar: { ietf: 'ar', tk: 'dis2dpj.css' },
-  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css' },
+  il_he: { ietf: 'he', tk: 'nwq1mna.css', dir: 'rtl' },
+  ae_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
+  mena_ar: { ietf: 'ar', tk: 'dis2dpj.css', dir: 'rtl' },
+  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
   // Asia Pacific
   au: { ietf: 'en-AU', tk: 'pps7abe.css' },
   hk_en: { ietf: 'en-HK', tk: 'pps7abe.css' },
@@ -101,6 +101,20 @@ const locales = {
   kr: { ietf: 'ko-KR', tk: 'qjs5sfm' },
   // Langstore Support.
   langstore: { ietf: 'en-US', tk: 'hah7vzn.css' },
+  // geo expansion MWPW-125686
+  za: { ietf: 'en-GB', tk: 'pps7abe.css' }, // South Africa (GB English)
+  ng: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Nigeria (GB English)
+  cr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Costa Rica (Spanish Latin America)
+  ec: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
+  pr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
+  gt: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
+  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
+  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
+  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Qatar (Arabic)
+  eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
+  kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
+  qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
+  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
 };
 
 // Add any config options.
@@ -111,6 +125,27 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
+  stage: {
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
+    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
+    pdfViewerClientId: '8d2de6a43c194397933c3d41f6dadef5',
+    pdfViewerReportSuite: 'adbadobenonacdcqa',
+  },
+  live: {
+    pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
+    pdfViewerReportSuite: 'adbadobenonacdcqa',
+  },
+  prod: {
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-5dd5dd2177e6.min.js',
+    edgeConfigId: '2cba807b-7430-41ae-9aac-db2b0da742d5',
+    pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
+    pdfViewerReportSuite: 'adbadobenonacdcprod',
+  },
+  jarvis: {
+    id: 'adobedotcom2',
+    version: '1.83',
+    onDemand: false,
+  },
 };
 
 /*
@@ -142,14 +177,6 @@ const miloLibs = setLibs(LIBS);
   lcpImg?.removeAttribute('loading');
 }());
 
-(async function loadPage() {
-  const { loadArea, loadDelayed, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
-  setConfig({ ...CONFIG, miloLibs });
-  loadLana({ clientId: 'cc' });
-  await loadArea();
-  loadDelayed();
-}());
-
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
@@ -161,4 +188,9 @@ const miloLibs = setLibs(LIBS);
   });
 }());
 
-export default miloLibs;
+(async function loadPage() {
+  const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  setConfig({ ...CONFIG, miloLibs });
+  loadLana({ clientId: 'cc' });
+  await loadArea();
+}());
