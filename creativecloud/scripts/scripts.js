@@ -127,17 +127,17 @@ const miloLibs = setLibs(LIBS);
   if (firstDiv?.classList.contains('interactive-marquee')) {
     import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
     const a = firstDiv.querySelectorAll(':scope > div');
-    const firstThreeDivs = Array.prototype.slice.call(a, 0, 3);
-    [...firstThreeDivs].forEach((ele) => {
-      const d = ele.querySelector('div');
-      const img = new Image();
-      img.fetchPriority = 'high';
-      img.src = `${d.innerText}`;
-    });
     const excelLink = a[0].innerText.trim();
     const resp = await fetch(excelLink);
     const { data } = await resp.json();
-    data.map((grp) => grp);
+    const exceldata = data.map((grp) => grp);
+    const exceldataImage = exceldata.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
+    || ele.ResourceName === 'marqueeTitleImgSrc' || ele.ResourceName === 'talentSrc'));
+    exceldataImage.forEach((ele) => {
+      const img = new Image();
+      img.fetchPriority = 'high';
+      img.src = `${ele.Value1}`;
+    });
   }
 }());
 
