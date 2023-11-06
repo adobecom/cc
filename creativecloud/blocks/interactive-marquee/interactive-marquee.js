@@ -8,11 +8,6 @@ async function getExcelData(link) {
   return data.map((grp) => grp);
 }
 
-function getExcelDataCursor(excelJson, type) {
-  const foundData = excelJson.find((data) => data.ResourceName === type);
-  return foundData ? foundData.Value1 : null;
-}
-
 function getSrcFromExcelData(name, viewportType, excelData, type) {
   return excelData
     .filter((data) => data.MenuName === name
@@ -24,10 +19,6 @@ function getSrcFromExcelData(name, viewportType, excelData, type) {
 function createConfigExcel(excelJson, configObjData) {
   const viewportTypes = ['desktop', 'tablet', 'mobile'];
   for (const viewportType of viewportTypes) {
-    configObjData[viewportType].tryitSrc = getExcelDataCursor(excelJson, 'tryitSrc');
-    if (viewportType == 'desktop') {
-      configObjData[viewportType].cursorSrc = getExcelDataCursor(excelJson, 'cursorSrc');
-    }
     const existingGroups = configObjData[viewportType].groups;
     for (const group of existingGroups) {
       const name = group.name;
