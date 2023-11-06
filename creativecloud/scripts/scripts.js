@@ -127,9 +127,9 @@ const miloLibs = setLibs(LIBS);
     import(`${base}/deps/interactive-marquee-changebg/ft-everyonechangebgmarquee-8e121e97.js`);
     const resp = await fetch(firstDiv.querySelector(':scope > div').innerText.trim());
     const { data } = await resp.json();
-    const exceldataImage = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
+    const excelImages = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
     || ele.ResourceName === 'marqueeTitleImgSrc' || ele.ResourceName === 'talentSrc'));
-    exceldataImage.forEach((ele) => {
+    excelImages.forEach((ele) => {
       const img = new Image();
       img.fetchPriority = 'high';
       img.src = `${ele.Value1}`;
@@ -137,13 +137,9 @@ const miloLibs = setLibs(LIBS);
   }
 }());
 
-const eagerLoad = (img) => {
-  img?.setAttribute('loading', 'eager');
-  img?.setAttribute('fetchpriority', 'high');
-};
-
 (async function loadLCPImage() {
-  eagerLoad(document.querySelector('img'));
+  const lcpImg = document.querySelector('img');
+  lcpImg?.removeAttribute('loading');
 }());
 
 (async function loadPage() {
