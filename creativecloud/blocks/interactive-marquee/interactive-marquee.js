@@ -64,6 +64,5 @@ export default async function init(el) {
   const excelJsonData = await getExcelData(excelLink);
   configExcelData(excelJsonData);
   createConfigExcel(excelJsonData, customElem.config);
-  console.log('rearrangedData', configObj);
   el.replaceWith(customElem);
 }
