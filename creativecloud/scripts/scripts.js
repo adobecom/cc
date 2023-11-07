@@ -147,7 +147,7 @@ const CONFIG = {
   },
 };
 
-const base = `${window.location.origin}${CONFIG.codeRoot}`;
+const base = `${CONFIG.codeRoot}`;
 
 /*
  * ------------------------------------------------------------
