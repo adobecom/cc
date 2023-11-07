@@ -1,8 +1,4 @@
 /* eslint-disable no-restricted-syntax */
-let excelLink = '';
-const configObj = {};
-const customElem = document.createElement('ft-changebackgroundmarquee');
-
 async function getExcelData(link) {
   const resp = await fetch(link);
   const { data } = await resp.json();
@@ -38,6 +34,7 @@ export function createConfigExcel(excelJson, configObjData) {
 }
 
 export function configExcelData(jsonData) {
+  const configObj = {};
   jsonData.forEach((item) => {
     const { Viewport, ResourceName, Value1, MenuName } = item;
     if (Viewport && ResourceName && Value1) {
@@ -45,7 +42,7 @@ export function configExcelData(jsonData) {
         configObj[Viewport] = {};
         configObj[Viewport].groups = [];
       }
-      if (ResourceName !== 'iconUrl' && ResourceName !== 'src' && ResourceName !== 'swatchSrc') {
+      if (!['iconUrl', 'src', 'swatchSrc'].includes(ResourceName)) {
         configObj[Viewport][ResourceName] = Value1;
       } else if (ResourceName === 'iconUrl') {
         const obj = {};
@@ -59,9 +56,10 @@ export function configExcelData(jsonData) {
 }
 
 export default async function changeBg(el) {
-  const firstDiv = el.querySelectorAll(':scope > div');
-  excelLink = firstDiv[0].innerText.trim();
-  const excelJsonData = await getExcelData(excelLink);
+  let marqueeAssetsData = '';
+  const customElem = document.createElement('ft-changebackgroundmarquee');
+  marqueeAssetsData = el.querySelector(':scope > div').innerText.trim();
+  const excelJsonData = await getExcelData(marqueeAssetsData);
   customElem.config = configExcelData(excelJsonData);
   createConfigExcel(excelJsonData, customElem.config);
   el.replaceWith(customElem);
