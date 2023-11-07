@@ -26,36 +26,14 @@ function decorateText(el, size) {
     const bodyEl = headingEl.nextElementSibling;
     bodyEl?.classList.add(`body-${typeSize[1]}`);
     bodyEl?.nextElementSibling?.classList.add(`body-${typeSize[1]}`, 'pricing');
-    console.log(el.querySelector('ic'));
-    const sib = headingEl.previousElementSibling;
-    if (sib) {
-      console.log('sib', sib);
-      const className = sib.querySelector('img, .icon') ? 'icon-area' : `detail-${typeSize[2]}`;
-      sib.classList.add(className);
-      sib.previousElementSibling?.classList.add('icon-area');
-    }
+    headingEl.previousElementSibling?.classList.add('icon-area');
   };
   decorate(heading, config);
   const iconAreaElements = el.querySelectorAll('.icon-area');
   const outerDiv = createTag('div', { class: 'icon-container' });
   outerDiv.appendChild(iconAreaElements[1]);
   outerDiv.appendChild(iconAreaElements[0]);
-  // outerDiv.querySelector('h2').classList.add('heading-xs', 'icon-title');
   el.insertBefore(outerDiv, el.children[0]);
-}
-
-function decorateMultipleIconArea(iconArea) {
-  iconArea.querySelectorAll(':scope > picture').forEach((picture) => {
-    const src = picture.querySelector('img')?.getAttribute('src');
-    const a = picture.nextElementSibling;
-    if (src?.endsWith('.svg') || a?.tagName !== 'A') return;
-    if (!a.querySelector('img')) {
-      a.innerHTML = '';
-      a.className = '';
-      a.appendChild(picture);
-    }
-  });
-  if (iconArea.childElementCount > 1) iconArea.classList.add('icon-area-multiple');
 }
 
 function extendButtonsClass(text) {
@@ -76,12 +54,9 @@ const decorateImage = (media) => {
 };
 
 export default async function init(el) {
-  // checking if it has light? adding dark by default
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
-  // all children - foreground and bg
   const children = el.querySelectorAll(':scope > div');
-  // last child will be foreground
   const foreground = children[children.length - 1];
   if (children.length > 1) {
     children[0].classList.add('background');
@@ -89,27 +64,22 @@ export default async function init(el) {
   }
   foreground.classList.add('foreground', 'container');
   const headline = foreground.querySelector('h1, h2, h3, h4, h5, h6');
-  console.log(foreground);
   const text = headline.closest('div');
   text.classList.add('text');
-  const media = foreground.querySelector(':scope > div:not([class])');
-  console.log(foreground);
+  const mediaElements = foreground.querySelectorAll(':scope > div:not([class])');
+  const media = mediaElements[0];
   if (media && !media.querySelector('video, a[href*=".mp4"]')) {
     const interactiveBox = createTag('div', { class: 'interactive-container' });
     interactiveBox.appendChild(media);
     media.classList.add('media');
     decorateImage(media);
     foreground.appendChild(interactiveBox);
-    console.log(foreground);
   }
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
   if (firstDivInForeground?.classList.contains('media-new')) el.classList.add('row-reversed');
 
-  const size = 'large';
-  decorateButtons(text, size === 'large' ? 'button-xl' : 'button-l');
-  decorateText(text, size);
-  const iconArea = text.querySelector('.icon-area');
-  if (iconArea?.childElementCount > 1) decorateMultipleIconArea(iconArea);
+  decorateButtons(text, 'button-l');
+  decorateText(text, 'large');
   extendButtonsClass(text);
 }
