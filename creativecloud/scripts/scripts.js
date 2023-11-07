@@ -14,7 +14,6 @@ import { setLibs } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
-const base = `${window.location.origin}/creativecloud`;
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = '/libs';
@@ -147,6 +146,8 @@ const CONFIG = {
     onDemand: false,
   },
 };
+
+const base = `${window.location.origin}/${CONFIG.codeRoot}`;
 
 /*
  * ------------------------------------------------------------
