@@ -147,8 +147,6 @@ const CONFIG = {
   },
 };
 
-const base = `${CONFIG.codeRoot}`;
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -160,7 +158,7 @@ const miloLibs = setLibs(LIBS);
 (async function loadScript() {
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
   if (firstDiv?.classList.contains('interactive-marquee')) {
-    import(`${base}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+    import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
     const resp = await fetch(firstDiv.querySelector(':scope > div').innerText.trim());
     const { data } = await resp.json();
     const excelImages = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
