@@ -38,16 +38,11 @@ export function configExcelData(jsonData) {
   jsonData.forEach((item) => {
     const { Viewport, ResourceName, Value1, MenuName } = item;
     if (Viewport && ResourceName && Value1) {
-      if (!configObj[Viewport]) {
-        configObj[Viewport] = {};
-        configObj[Viewport].groups = [];
-      }
+      if (!configObj[Viewport]) configObj[Viewport] = { groups: [] };
       if (!['iconUrl', 'src', 'swatchSrc'].includes(ResourceName)) {
         configObj[Viewport][ResourceName] = Value1;
       } else if (ResourceName === 'iconUrl') {
-        const obj = {};
-        obj.name = MenuName;
-        obj[ResourceName] = Value1;
+        const obj = { name: MenuName, [ResourceName]: Value1 };
         configObj[Viewport].groups.push(obj);
       }
     }
