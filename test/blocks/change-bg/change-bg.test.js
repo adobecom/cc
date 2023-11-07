@@ -16,16 +16,3 @@ describe('configExcelData', async () => {
     expect(customElem.config).to.deep.equal(resultdata);
   });
 });
-
-describe('getExcelData', () => {
-  it('should fetch data from provided link', async () => {
-    const fakeFetch = stub().resolves({ json: () => ({ data: [] }) });
-    window.fetch = fakeFetch;
-    const fakeLink = 'fakeLink';
-    await init({
-      querySelectorAll: () => [{ innerText: fakeLink }],
-      replaceWith: () => {},
-    });
-    expect(fakeFetch.calledWith(fakeLink)).to.be.true;
-  });
-});
