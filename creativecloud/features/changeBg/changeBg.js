@@ -57,5 +57,7 @@ export default async function changeBg(el) {
   const excelJsonData = await getExcelData(marqueeAssetsData);
   customElem.config = configExcelData(excelJsonData);
   createConfigExcel(excelJsonData, customElem.config);
-  el.replaceWith(customElem);
+  // const a = el.querySelector('.imarquee-mobile');
+  // a.style.display = 'none';
+  el.append(customElem);
 }

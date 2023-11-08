@@ -35,6 +35,7 @@
 
 .imarquee-composite {
   position: relative;
+  line-height: 0;
 }
 
 .imarquee-composite img {
@@ -42,8 +43,14 @@
   position: absolute;
 }
 
+.imarquee-composite img:first-child {
+  top: unset;
+  position: unset;
+}
+
 .imarquee-mobile {
   display: block;
+  line-height: 0;
 }
 
 .imarquee-mobile > img {
