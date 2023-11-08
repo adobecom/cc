@@ -6,34 +6,30 @@ const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/dec
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 // [headingSize, bodySize, detailSize]
-const blockTypeSizes = {
-  marquee: {
-    small: ['xl', 'm', 'm'],
-    medium: ['xl', 'm', 'm'],
-    large: ['xxl', 'xl', 'l'],
-    xlarge: ['xxl', 'xl', 'l'],
-  },
-};
+const typeSizes = ['xxl', 'xl', 'l'];
 
-function decorateText(el, size) {
+function decorateText(el) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
-  const iconTitle = headings.length > 1 ? headings[0] : null;
-  iconTitle?.classList.add('icon-area', 'heading-xs', 'icon-title');
-  const config = blockTypeSizes.marquee[size];
+  // const iconTitle = headings.length > 1 ? headings[0] : null;
+  // iconTitle?.classList.add('icon-area', 'heading-xs', 'icon-title');
+  const config = typeSizes;
   const decorate = (headingEl, typeSize) => {
     headingEl.classList.add(`heading-${typeSize[0]}`);
     const bodyEl = headingEl.nextElementSibling;
     bodyEl?.classList.add(`body-${typeSize[1]}`);
     bodyEl?.nextElementSibling?.classList.add(`body-${typeSize[1]}`, 'pricing');
-    headingEl.previousElementSibling?.classList.add('icon-area');
+    const iconAreaElements = headingEl.previousElementSibling;
+    const iconText = createTag('div', { class: 'heading-xs icon-text' });
+    iconText.textContent = iconAreaElements.textContent;
+    // iconAreaElements.innerText = '';
+    iconAreaElements.appendChild(iconText);
+    iconAreaElements?.classList.add('icon-area');
   };
   decorate(heading, config);
-  const iconAreaElements = el.querySelectorAll('.icon-area');
-  const outerDiv = createTag('div', { class: 'icon-container' });
-  outerDiv.appendChild(iconAreaElements[1]);
-  outerDiv.appendChild(iconAreaElements[0]);
-  el.insertBefore(outerDiv, el.children[0]);
+  // const iconAreaElements = el.querySelectorAll('.icon-area');
+  // outerDiv.appendChild(iconAreaElements[0]);
+  // el.insertBefore(outerDiv, el.children[0]);
 }
 
 function extendButtonsClass(text) {
@@ -80,6 +76,6 @@ export default async function init(el) {
   if (firstDivInForeground?.classList.contains('media')) el.classList.add('row-reversed');
 
   decorateButtons(text, 'button-l');
-  decorateText(text, 'large');
+  decorateText(text);
   extendButtonsClass(text);
 }

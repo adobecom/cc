@@ -43,19 +43,20 @@
   margin-bottom: var(--spacing-xs);
 }
 
-.interactive-marquee .icon-container {
-  display: flex;
+/* .interactive-marquee .icon-container {
+  
   padding: 0 0 var(--spacing-s);
-}
+} */
 
 .interactive-marquee .icon-area {
+  display: flex;
   margin-bottom: var(--spacing-s);
   margin-top: 0;
 }
 
-.interactive-marquee .icon-title {
+/* .interactive-marquee .icon-title {
   margin: auto var(--spacing-xs);
-}
+} */
 
 .interactive-marquee .icon-area picture,
 .interactive-marquee .icon-area a {
