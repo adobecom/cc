@@ -77,7 +77,7 @@ export default async function init(el) {
   }
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
-  if (firstDivInForeground?.classList.contains('media-new')) el.classList.add('row-reversed');
+  if (firstDivInForeground?.classList.contains('media')) el.classList.add('row-reversed');
 
   decorateButtons(text, 'button-l');
   decorateText(text, 'large');
