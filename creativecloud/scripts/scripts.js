@@ -161,29 +161,29 @@ const gradient = () => {
   return gradient;
 }
 
-(async function loadScript() {
-  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  if (firstDiv?.classList.contains('interactive-marquee')) {
-    import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
-    const resp = await fetch(firstDiv.querySelector(':scope > div').innerText.trim());
-    const { data } = await resp.json();
-    const a = firstDiv.querySelector('div');
-    a.classList.add('hide');
-    const excelImages = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
-    || ele.ResourceName === 'marqueeTitleImgSrc' || ele.ResourceName === 'talentSrc'));
-    const images = [];
-    excelImages.forEach((ele) => {
-      const img = new Image();
-      img.fetchPriority = 'high';
-      img.src = `${ele.Value1}`;
-      images.push(img);
-    });
-    const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-    const mobileComposite = createTag('div', { class: 'imarquee-composite' }, [images[0], gradient(), images[1]]);
-    const mobileContainer = createTag('div', { class: 'imarquee-mobile' }, [images[2], mobileComposite]);
-    firstDiv.appendChild(mobileContainer);
-  }
-}());
+// (async function loadScript() {
+//   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
+//   if (firstDiv?.classList.contains('interactive-marquee')) {
+//     import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+//     const resp = await fetch(firstDiv.querySelector(':scope > div').innerText.trim());
+//     const { data } = await resp.json();
+//     const a = firstDiv.querySelector('div');
+//     a.classList.add('hide');
+//     const excelImages = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
+//     || ele.ResourceName === 'marqueeTitleImgSrc' || ele.ResourceName === 'talentSrc'));
+//     const images = [];
+//     excelImages.forEach((ele) => {
+//       const img = new Image();
+//       img.fetchPriority = 'high';
+//       img.src = `${ele.Value1}`;
+//       images.push(img);
+//     });
+//     const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+//     const mobileComposite = createTag('div', { class: 'imarquee-composite' }, [images[0], gradient(), images[1]]);
+//     const mobileContainer = createTag('div', { class: 'imarquee-mobile' }, [images[2], mobileComposite]);
+//     firstDiv.appendChild(mobileContainer);
+//   }
+// }());
 
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
@@ -202,6 +202,7 @@ const gradient = () => {
 }());
 
 (async function loadPage() {
+  import(`${window.location.origin}/creativecloud/deps/interactive-marquee-changebg/changeBgMarquee.js`);
   const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
