@@ -22,8 +22,17 @@
       "environments": [ "edit" ],
       "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=cc--adobecom",
       "passReferrer": true,
-      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "localize-2",
+      "title": "Localize (V2)",
+      "environments": [ "edit" ],
+      "url": "https://main--cc--adobecom.hlx.page/tools/loc?milolibs=locui",
+      "passReferrer": true,
+      "passConfig": true,
+      "includePaths": [ "**.xlsx**" ]
     },
     {
       "containerId": "tools",
@@ -32,8 +41,15 @@
       "environments": [ "edit" ],
       "url": "https://main--milo--adobecom.hlx.page/tools/floodgate/index.html?project=cc--adobecom",
       "passReferrer": true,
-      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
+    },
+    {
+      "containerId": "tools",
+      "title": "Send to CaaS",
+      "id": "sendtocaas",
+      "environments": ["dev","preview", "live", "prod"],
+      "event": "send-to-caas",
+      "excludePaths": ["https://milo.adobe.com/tools/caas**", "*.json"]
     },
     {
       "containerId": "tools",
@@ -52,11 +68,33 @@
     },
     {
       "containerId": "tools",
+      "id": "offerpreview",
+      "title": "Offer preview",
+      "environments": [ "edit" ],
+      "isPalette": true,
+      "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
+      "url": "https://milo.adobe.com/tools/commerce",
+      "includePaths": [ "**.docx**" ]
+    },
+    {
+      "containerId": "tools",
       "id": "ost",
       "title": "Use offer",
       "environments": [ "edit", "dev", "preview" ],
       "url": "https://milo.adobe.com/tools/ost",
       "includePaths": [ "**.docx**" ]
+    },
+    {
+      "containerId": "tools",
+      "id": "version-history",
+      "title": "Version History",
+      "environments": [ "edit" ],
+      "url": "https://milo.adobe.com/tools/version-history",
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 498px; width: 460px;",
+      "includePaths": [ "**.docx**", "**.xlsx**" ]
     },
     {
       "containerId": "tools",
@@ -77,7 +115,25 @@
       "environments": ["edit"],
       "url": "https://milo.adobe.com/tools/tag-selector",
       "isPalette": true,
-      "paletteRect": "top: 150px; left: 7%; height: 675px; width: 85vw;"
+      "paletteRect": "top: 100px; left: 7%; height: 675px; width: 85vw;"
+    },
+    {
+      "containerId": "tools",
+      "id": "caas-configurator",
+      "title": "CaaS Configurator",
+      "environments": [ "edit", "preview", "dev" ],
+      "url": "https://milo.adobe.com/tools/caas",
+      "isPalette": false,
+      "includePaths": [ "**.docx**"]
+    },
+    {
+      "containerId": "tools",
+      "id": "faas-configurator",
+      "title": "FaaS Configurator",
+      "environments": [ "edit", "preview", "dev" ],
+      "url": "https://milo.adobe.com/tools/faas",
+      "isPalette": false,
+      "includePaths": [ "**.docx**"]
     }
   ]
 }
