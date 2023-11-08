@@ -41,6 +41,7 @@
 .imarquee-composite img {
   top: 0;
   position: absolute;
+  left: 0;
 }
 
 .imarquee-composite img:first-child {

@@ -172,11 +172,10 @@ const gradient = () => {
     const excelImages = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
     || ele.ResourceName === 'marqueeTitleImgSrc' || ele.ResourceName === 'talentSrc'));
     const images = [];
-    excelImages.forEach((ele, id) => {
+    excelImages.forEach((ele) => {
       const img = new Image();
       img.fetchPriority = 'high';
       img.src = `${ele.Value1}`;
-      img.classList.add(id);
       images.push(img);
     });
     const { createTag } = await import(`${miloLibs}/utils/utils.js`);
