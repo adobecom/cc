@@ -11,8 +11,6 @@ const typeSizes = ['xxl', 'xl', 'l'];
 function decorateText(el) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
-  // const iconTitle = headings.length > 1 ? headings[0] : null;
-  // iconTitle?.classList.add('icon-area', 'heading-xs', 'icon-title');
   const config = typeSizes;
   const decorate = (headingEl, typeSize) => {
     headingEl.classList.add(`heading-${typeSize[0]}`);
@@ -21,15 +19,12 @@ function decorateText(el) {
     bodyEl?.nextElementSibling?.classList.add(`body-${typeSize[1]}`, 'pricing');
     const iconAreaElements = headingEl.previousElementSibling;
     const iconText = createTag('div', { class: 'heading-xs icon-text' });
-    iconText.textContent = iconAreaElements.textContent;
-    // iconAreaElements.innerText = '';
     iconAreaElements.appendChild(iconText);
     iconAreaElements?.classList.add('icon-area');
+    iconText.innerText = (iconAreaElements.textContent.trim());
+    iconText.previousSibling.textContent = '';
   };
   decorate(heading, config);
-  // const iconAreaElements = el.querySelectorAll('.icon-area');
-  // outerDiv.appendChild(iconAreaElements[0]);
-  // el.insertBefore(outerDiv, el.children[0]);
 }
 
 function extendButtonsClass(text) {
