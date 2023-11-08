@@ -154,5 +154,4 @@ export default async function changeBg(block) {
   customElem.config['desktop']['groups'].push(desktopChangePattern);
   block.innerHTML = '';
   block.append(customElem);
-  import(`${window.location.origin}/creativecloud/deps/interactive-marquee-changebg/changeBgMarquee.js`);
 }
