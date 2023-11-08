@@ -16,7 +16,7 @@ import { setLibs } from './utils.js';
 const STYLES = '/creativecloud/styles/styles.css';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
-const LIBS = 'https://milo.adobe.com/libs';
+const LIBS = '/libs';
 
 const locales = {
   // Americas
@@ -100,6 +100,20 @@ const locales = {
   kr: { ietf: 'ko-KR', tk: 'qjs5sfm' },
   // Langstore Support.
   langstore: { ietf: 'en-US', tk: 'hah7vzn.css' },
+  // geo expansion MWPW-125686
+  za: { ietf: 'en-GB', tk: 'pps7abe.css' }, // South Africa (GB English)
+  ng: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Nigeria (GB English)
+  cr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Costa Rica (Spanish Latin America)
+  ec: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
+  pr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
+  gt: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
+  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
+  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
+  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Qatar (Arabic)
+  eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
+  kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
+  qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
+  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
 };
 
 // Add any config options.
@@ -110,13 +124,28 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
+  stage: {
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
+    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
+    pdfViewerClientId: '8d2de6a43c194397933c3d41f6dadef5',
+    pdfViewerReportSuite: 'adbadobenonacdcqa',
+  },
+  live: {
+    pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
+    pdfViewerReportSuite: 'adbadobenonacdcqa',
+  },
+  prod: {
+    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-5dd5dd2177e6.min.js',
+    edgeConfigId: '2cba807b-7430-41ae-9aac-db2b0da742d5',
+    pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
+    pdfViewerReportSuite: 'adbadobenonacdcprod',
+  },
+  jarvis: {
+    id: 'adobedotcom2',
+    version: '1.83',
+    onDemand: false,
+  },
 };
-
-// Load LCP image immediately
-(async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  lcpImg?.removeAttribute('loading');
-}());
 
 /*
  * ------------------------------------------------------------
@@ -125,6 +154,41 @@ const CONFIG = {
  */
 
 const miloLibs = setLibs(LIBS);
+
+const gradient = () => {
+  const gradient = document.createElement('div');
+  gradient.className = 'imarquee-gradient';
+  return gradient;
+}
+
+(async function loadScript() {
+  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
+  if (firstDiv?.classList.contains('interactive-marquee')) {
+    import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+    const resp = await fetch(firstDiv.querySelector(':scope > div').innerText.trim());
+    const { data } = await resp.json();
+    const a = firstDiv.querySelector('div');
+    a.classList.add('hide');
+    const excelImages = data.filter((ele) => ele.Viewport === 'mobile' && (ele.ResourceName === 'defaultBgSrc'
+    || ele.ResourceName === 'marqueeTitleImgSrc' || ele.ResourceName === 'talentSrc'));
+    const images = [];
+    excelImages.forEach((ele) => {
+      const img = new Image();
+      img.fetchPriority = 'high';
+      img.src = `${ele.Value1}`;
+      images.push(img);
+    });
+    const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+    const mobileComposite = createTag('div', { class: 'imarquee-composite' }, [images[0], gradient(), images[1]]);
+    const mobileContainer = createTag('div', { class: 'imarquee-mobile' }, [images[2], mobileComposite]);
+    firstDiv.appendChild(mobileContainer);
+  }
+}());
+
+(async function loadLCPImage() {
+  const lcpImg = document.querySelector('img');
+  lcpImg?.removeAttribute('loading');
+}());
 
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];

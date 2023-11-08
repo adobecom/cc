@@ -27,4 +27,10 @@
   <sitemap>
     <loc>https://www.adobe.com/it/cc-shared/assets/sitemap.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/hk_zh/cc-shared/assets/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adobe.com/tw/cc-shared/assets/sitemap.xml</loc>
+  </sitemap>
 </sitemapindex>

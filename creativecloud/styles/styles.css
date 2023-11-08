@@ -23,3 +23,47 @@
   max-width: var(--grid-container-width);
   margin: 0 auto;
 }
+
+.interactive-marquee {
+  position: relative;
+  background-color: black;
+}
+
+.hide {
+  display: none !important;
+}
+
+.imarquee-composite {
+  position: relative;
+  line-height: 0;
+}
+
+.imarquee-composite img {
+  top: 0;
+  position: absolute;
+  left: 0;
+}
+
+.imarquee-composite img:first-child {
+  top: unset;
+  position: unset;
+}
+
+.imarquee-mobile {
+  display: block;
+  line-height: 0;
+}
+
+.imarquee-mobile > img {
+  width: 274px;
+  /* height: 167px; */
+}
+
+.imarquee-gradient {
+  background: linear-gradient(90deg, #333, #fff);
+  mix-blend-mode: multiply;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
