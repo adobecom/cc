@@ -23,3 +23,30 @@
   max-width: var(--grid-container-width);
   margin: 0 auto;
 }
+
+.interactive-marquee {
+  position: relative;
+  background-color: black;
+}
+
+.hide {
+  display: none !important;
+}
+
+.imarquee-composite {
+  position: relative;
+}
+
+.imarquee-composite img {
+  top: 0;
+  position: absolute;
+}
+
+.imarquee-mobile {
+  display: block;
+}
+
+.imarquee-mobile > img {
+  width: 274px;
+  /* height: 167px; */
+}
