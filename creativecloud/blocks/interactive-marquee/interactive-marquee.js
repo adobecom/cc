@@ -5,8 +5,8 @@ const miloLibs = setLibs('/libs');
 const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
-// [headingSize, bodySize, detailSize]
-const typeSizes = ['xxl', 'xl', 'l'];
+// [headingSize, bodySize, detailSize, titlesize]
+const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
 function decorateText(el) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -17,8 +17,14 @@ function decorateText(el) {
     const bodyEl = headingEl.nextElementSibling;
     bodyEl?.classList.add(`body-${typeSize[1]}`);
     bodyEl?.nextElementSibling?.classList.add(`body-${typeSize[1]}`, 'pricing');
-    const iconAreaElements = headingEl.previousElementSibling;
-    const iconText = createTag('div', { class: 'heading-xs icon-text' });
+    const sib = headingEl.previousElementSibling;
+    if (sib) {
+      const className = sib.querySelector('img, .icon') ? 'icon-area' : `detail-${typeSize[2]}`;
+      sib.classList.add(className);
+      sib.previousElementSibling?.classList.add('icon-area');
+    }
+    const iconAreaElements = el.querySelector('.icon-area');
+    const iconText = createTag('div', { class: `heading-${typeSize[3]} icon-text` });
     iconAreaElements.appendChild(iconText);
     iconAreaElements?.classList.add('icon-area');
     iconText.innerText = (iconAreaElements.textContent.trim());
@@ -59,12 +65,19 @@ export default async function init(el) {
   text.classList.add('text');
   const mediaElements = foreground.querySelectorAll(':scope > div:not([class])');
   const media = mediaElements[0];
-  if (media && !media.querySelector('video, a[href*=".mp4"]')) {
+  if (media) {
     const interactiveBox = createTag('div', { class: 'interactive-container' });
     interactiveBox.appendChild(media);
     media.classList.add('media');
-    decorateImage(media);
     foreground.appendChild(interactiveBox);
+    const childNodes = media.querySelectorAll('p');
+    [...childNodes].forEach(async (child) => {
+      const video = child.querySelector('video, a[href*=".mp4"]');
+      const image = child.querySelector('img');
+      if (image && !video) {
+        decorateImage(child);
+      }
+    });
   }
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
