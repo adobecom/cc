@@ -29,7 +29,7 @@
       "id": "floodgate",
       "title": "Floodgate",
       "environments": [ "edit" ],
-      "url": "https://main--milo--adobecom.hlx.page/tools/floodgate?milolibs=floodgateui",
+      "url": "https://main--cc--adobecom.hlx.page/tools/floodgate?milolibs=floodgateui",
       "passReferrer": true,
       "passConfig": true,
       "includePaths": [ "**/:x**" ]
