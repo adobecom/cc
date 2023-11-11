@@ -22,37 +22,35 @@ function createLayer(viewport, property, layerConfig) {
 function createEnticement(viewport, property, entConfig) {
   const enticementText = entConfig.querySelector('a').textContent.trim();
   const enticementIcon = entConfig.querySelector('a').href;
-  customElem.config[viewport][property[0]] = enticementText;
+  if (property[0] !== '') {
+    customElem.config[viewport][property[0]] = enticementText;
+  }
   customElem.config[viewport][property[1]] = enticementIcon;
   return 1;
 }
 
-function createChangeBgGroups(viewport, group, swatches, backgrounds) {
-  const groupName = group.textContent.trim();
-  const groupIcon = group.querySelector('a').href;
-  const groupObj = {
-    name: groupName,
-    iconUrl: groupIcon,
+function createGroups(vp, current, swatchArr, srcArr) {
+  const obj = {
+    name: current.innerText.trim(),
+    iconUrl: current.querySelector('a').href,
   };
-  if (swatches) {
-    groupObj.options = [];
-    const bgImgs = backgrounds.querySelectorAll('picture');
-    bgImgs.forEach((bgImg, i) => {
-      const optionObj = {};
-      optionObj.swatchSrc = getImageSrc(viewport, swatches[i]);
-      optionObj.src = getImageSrc(viewport, bgImg);
-      groupObj.options.push(optionObj);
+  if (swatchArr && srcArr) {
+    obj.options = [];
+    srcArr.forEach((src, i) => {
+      const optionObj = {
+        src: getImageSrc(vp, src),
+        swatchSrc: getImageSrc(vp, swatchArr[i]),
+      };
+      obj.options.push(optionObj);
     });
-  } else if (backgrounds) {
-    groupObj.options = [];
-    const bgs = backgrounds.querySelectorAll('p');
-    bgs.forEach((bgP) => {
-      const optionObj = {};
-      optionObj.src = bgP.textContent.trim();
-      groupObj.options.push(optionObj);
+  } else if (srcArr) {
+    obj.options = [];
+    srcArr.forEach((src) => {
+      const optionObj = { src };
+      obj.options.push(optionObj);
     });
   }
-  customElem.config[viewport].groups.push(groupObj);
+  customElem.config[vp].groups.push(obj);
 }
 
 export default async function changeBg(el) {
@@ -64,18 +62,31 @@ export default async function changeBg(el) {
       currentRowIndex += createLayer(vp, layer, layerRows[currentRowIndex].querySelectorAll('picture')[vi]);
     });
     currentRowIndex += createEnticement(vp, ['tryitText', 'tryitSrc'], layerRows[currentRowIndex]);
-    const groups = el.querySelectorAll(':scope > div:nth-child(n + 5) > div:only-child');
-    [...groups].forEach((group) => {
-      const swatchDiv = group.parentNode.nextElementSibling;
-      const backgroundDiv = group.parentNode.nextElementSibling.nextElementSibling;
-      const swatches = swatchDiv.querySelectorAll('picture').length > 1 ? swatchDiv.querySelectorAll('picture') : null;
-      let backgrounds = null;
-      if (swatches) backgrounds = backgroundDiv.querySelectorAll('div').length > 1 ? backgroundDiv.querySelectorAll('div')[vi] : null;
-      else backgrounds = swatchDiv.querySelectorAll('div').length > 1 ? swatchDiv.querySelectorAll('div')[vi] : null;
-      createChangeBgGroups(vp, group, swatches, backgrounds);
-    });
+    if (vp === 'desktop') {
+      currentRowIndex += createEnticement(vp, ['', 'cursorSrc'], layerRows[currentRowIndex]);
+      // currentRowIndex = currentRowIndex;
+    } else {
+      currentRowIndex += 1;
+    }
+    while (currentRowIndex < layerRows.length) {
+      let temprowid = currentRowIndex;
+      while (temprowid + 1 < layerRows.length && layerRows[temprowid + 1].getElementsByTagName('a').length === 0) {
+        temprowid += 1;
+      }
+      const current = layerRows[currentRowIndex].querySelector('div');
+      if (currentRowIndex + 2 === temprowid) {
+        const swatchArr = layerRows[currentRowIndex + 1].querySelectorAll('picture');
+        const srcArr = layerRows[currentRowIndex + 2].querySelectorAll('div')[vi].querySelectorAll('picture');
+        createGroups(vp, current, swatchArr, srcArr);
+      } else if (currentRowIndex + 1 === temprowid) {
+        const srcArr = layerRows[currentRowIndex + 1].querySelectorAll('div')[vi].innerText.split(',');
+        createGroups(vp, current, '', srcArr);
+      } else {
+        createGroups(vp, current);
+      }
+      currentRowIndex = temprowid + 1;
+    }
   });
-
   el.innerHTML = '';
   el.append(customElem);
 }
