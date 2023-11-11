@@ -158,6 +158,7 @@ const eagerLoad = (img) => {
   if (firstDiv?.classList.contains('marquee')) {
     firstDiv.querySelectorAll('img').forEach(eagerLoad);
   } else if (firstDiv?.classList.contains('changebg')) {
+    import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
     firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
   } else {
     eagerLoad(document.querySelector('img'));
