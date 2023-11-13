@@ -100,20 +100,6 @@ const locales = {
   kr: { ietf: 'ko-KR', tk: 'qjs5sfm' },
   // Langstore Support.
   langstore: { ietf: 'en-US', tk: 'hah7vzn.css' },
-  // geo expansion MWPW-125686
-  za: { ietf: 'en-GB', tk: 'pps7abe.css' }, // South Africa (GB English)
-  ng: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Nigeria (GB English)
-  cr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Costa Rica (Spanish Latin America)
-  ec: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
-  pr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
-  gt: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
-  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
-  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
-  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Qatar (Arabic)
-  eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
-  kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
-  qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
-  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
 };
 
 // Add any config options.
@@ -177,4 +163,8 @@ const miloLibs = setLibs(LIBS);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
   await loadArea();
+  if (window.adobeIMS?.isSignedInUser() && (window.location.search.includes('goToFirefly') || window.location.search.includes('goToFireflyEffects') || window.location.search.includes('goToFireflyGenFill'))) {
+    const { redirectWithParam } = await import('../features/firefly/fireflySUSI.js');
+    redirectWithParam();
+  }
 }());
