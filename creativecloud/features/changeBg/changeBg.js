@@ -19,11 +19,11 @@ function createLayer(viewport, property, layerConfig) {
 }
 
 function createEnticement(viewport, property, entConfig) {
+  const enticementText = entConfig.querySelector('a').textContent.trim();
+  const enticementIcon = entConfig.querySelector('a').href;
   if (property[0] !== '') {
-    const enticementText = entConfig.querySelector('a').textContent.trim();
     customElem.config[viewport][property[0]] = enticementText;
   }
-  const enticementIcon = entConfig.querySelector('a').href;
   customElem.config[viewport][property[1]] = enticementIcon;
   return 1;
 }
