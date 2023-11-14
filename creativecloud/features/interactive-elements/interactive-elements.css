@@ -18,9 +18,9 @@
   display: flex;
 }
 
-.interactive-marquee .media {
+/*.interactive-marquee .media {
   top: 72px;
-}
+}*/
 
 /* Prompt Bar */
 .promptbar {
@@ -216,7 +216,7 @@ div.genfillPrompt>p:first-child {
 
   .enticementText {
     position: absolute;
-    right: 340px;
+    right: 345px;
     top: -60px;
     width: 240px;
     display: block;
@@ -332,7 +332,7 @@ div.genfillPrompt>p:first-child {
 
   .enticementText {
     position: absolute;
-    right: 340px;
+    right: 345px;
     top: -60px;
     width: 240px;
     display: block;
