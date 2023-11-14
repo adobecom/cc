@@ -14,6 +14,8 @@
   position: absolute;
   top: 24px;
   margin-left: 16px;
+  height: 30px;
+  display: flex;
 }
 
 .interactive-marquee .media {
@@ -21,21 +23,21 @@
 }
 
 /* Prompt Bar */
-.promptbar.light {
-  background: #111111;
-  border: 1px solid #323232;
-}
-
 .promptbar {
-  height: 28px;
+  height: 30px;
   background: #FFFFFF;
   border-radius: 40px;
   display: flex;
-  padding: 8px 8px 8px 12px;
+  padding: 7px 7px 7px 12px;
   border: 1px solid #E6E6E6;
   display: flex;
   justify-content: space-between;
   width: 248px;
+}
+
+.promptbar.light {
+  background: #111111;
+  border: 1px solid #323232;
 }
 
 .promptText {
@@ -90,7 +92,6 @@ button.options.light:hover {
 
 div.options {
   border-radius: 4px;
-  z-index: 1;
   display: flex;
   background: #FFFFFF;
   padding: 8px 8px 8px 8px;
@@ -148,7 +149,6 @@ button.last-button {
 /* Genfill Prompt */
 div.genfillPrompt {
   position: absolute;
-  z-index: 1;
   bottom: 106px;
   margin-left: 16px;
   font-size: var(--type-body-xs-size);
@@ -185,16 +185,15 @@ div.genfillPrompt>p:first-child {
   }
 
   .genfillPromptBar {
-    position: absolute;
     top: 56px;
     margin-left: 40px;
+    height: 50px;
   }
 
   /* Prompt Bar */
   .promptbar {
-    height: 48px;
-    border-radius: 40px;
-    padding: 8px 8px 8px 40px;
+    height: 50px;
+    padding: 7px 7px 7px 40px;
     width: 441px;
   }
 
@@ -271,8 +270,6 @@ div.genfillPrompt>p:first-child {
 
   /* Genfill prompt */
   div.genfillPrompt {
-    position: absolute;
-    z-index: 1;
     bottom: 46px;
     margin-left: 40px;
     font-size: var(--type-body-s-size);
@@ -298,9 +295,9 @@ div.genfillPrompt>p:first-child {
   }
 
   .genfillPromptBar {
-    position: absolute;
     top: 40px;
     margin-left: 32px;
+    height: 40px;
   }
 
   .fireflySelectorTray {
@@ -312,9 +309,8 @@ div.genfillPrompt>p:first-child {
 
   /* Prompt Bar */
   .promptbar {
-    height: 38px;
-    border-radius: 40px;
-    padding: 8px 8px 8px 32px;
+    height: 40px;
+    padding: 7px 7px 7px 32px;
     width: 465px;
   }
 
@@ -349,8 +345,6 @@ div.genfillPrompt>p:first-child {
 
   /* Genfill Prompt*/
   div.genfillPrompt {
-    position: absolute;
-    z-index: 1;
     bottom: 145px;
     margin-left: 32px;
     font-size: var(--type-body-s-size);
