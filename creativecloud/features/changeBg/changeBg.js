@@ -1,4 +1,3 @@
-const viewports = ['mobile', 'tablet', 'desktop'];
 const customElem = document.createElement('ft-changebackgroundmarquee');
 customElem.config = {
   mobile: { groups: [] },
@@ -20,11 +19,11 @@ function createLayer(viewport, property, layerConfig) {
 }
 
 function createEnticement(viewport, property, entConfig) {
-  const enticementText = entConfig.querySelector('a').textContent.trim();
-  const enticementIcon = entConfig.querySelector('a').href;
   if (property[0] !== '') {
+    const enticementText = entConfig.querySelector('a').textContent.trim();
     customElem.config[viewport][property[0]] = enticementText;
   }
+  const enticementIcon = entConfig.querySelector('a').href;
   customElem.config[viewport][property[1]] = enticementIcon;
   return 1;
 }
@@ -56,7 +55,7 @@ function createGroups(vp, current, swatchArr, srcArr) {
 export default async function changeBg(el) {
   const layers = ['defaultBgSrc', 'marqueeTitleImgSrc', 'talentSrc'];
   const layerRows = [...el.querySelectorAll(':scope > div')];
-  viewports.forEach((vp, vi) => {
+  ['mobile', 'tablet', 'desktop'].forEach((vp, vi) => {
     let currentRowIndex = 0;
     layers.forEach((layer) => {
       currentRowIndex += createLayer(vp, layer, layerRows[currentRowIndex].querySelectorAll('picture')[vi]);
@@ -64,7 +63,6 @@ export default async function changeBg(el) {
     currentRowIndex += createEnticement(vp, ['tryitText', 'tryitSrc'], layerRows[currentRowIndex]);
     if (vp === 'desktop') {
       currentRowIndex += createEnticement(vp, ['', 'cursorSrc'], layerRows[currentRowIndex]);
-      // currentRowIndex = currentRowIndex;
     } else {
       currentRowIndex += 1;
     }
