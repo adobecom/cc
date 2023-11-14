@@ -220,11 +220,12 @@ div.genfillPrompt>p:first-child {
     top: -60px;
     width: 240px;
     display: block;
-    color: #FFFFFF;
+    color: #000000;
+    
   }
 
   .enticementText.light {
-    color: #000000;
+    color: #FFFFFF;
   }
 
   /* Selector Tray */
@@ -336,11 +337,12 @@ div.genfillPrompt>p:first-child {
     top: -60px;
     width: 240px;
     display: block;
-    color: #FFFFFF;
+    color: #111111;
+    
   }
 
   .enticementText.light {
-    color: #111111;
+    color: #FFFFFF;
   }
 
   /* Genfill Prompt*/

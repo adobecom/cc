@@ -72,9 +72,8 @@ export default async function init(el) {
     foreground.appendChild(interactiveBox);
     const childNodes = media.querySelectorAll('p');
     [...childNodes].forEach(async (child) => {
-      const video = child.querySelector('video, a[href*=".mp4"]');
       const image = child.querySelector('img');
-      if (image && !video) {
+      if (image) {
         decorateImage(child);
       }
     });
