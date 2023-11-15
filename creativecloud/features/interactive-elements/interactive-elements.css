@@ -18,9 +18,9 @@
   display: flex;
 }
 
-/*.interactive-marquee .media {
+.interactive-marquee .media {
   top: 72px;
-}*/
+}
 
 /* Prompt Bar */
 .promptbar {
