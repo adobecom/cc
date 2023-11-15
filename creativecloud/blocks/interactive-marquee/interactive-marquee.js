@@ -39,17 +39,6 @@ function extendButtonsClass(text) {
   buttons.forEach((button) => { button.classList.add('button-justified-mobile'); });
 }
 
-const decorateImage = (media) => {
-  media.classList.add('image');
-  const imageLink = media.querySelector('a');
-  const picture = media.querySelector('picture');
-
-  if (imageLink && picture && !imageLink.parentElement.classList.contains('modal-img-link')) {
-    imageLink.textContent = '';
-    imageLink.append(picture);
-  }
-};
-
 function interactiveInit(el) {
   loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const isLight = el.classList.contains('light');
@@ -73,14 +62,6 @@ function interactiveInit(el) {
       interactiveBox.appendChild(mediaDiv);
     });
     foreground.appendChild(interactiveBox);
-    const childNodes = media.querySelectorAll('p');
-    [...childNodes].forEach(async (child) => {
-      const video = child.querySelector('video, a[href*=".mp4"]');
-      const image = child.querySelector('img');
-      if (image && !video) {
-        decorateImage(child);
-      }
-    });
   }
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
