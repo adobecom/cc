@@ -52,7 +52,7 @@ function createGroups(vp, current, swatchArr, srcArr) {
   customElem.config[vp].groups.push(obj);
 }
 
-export default async function changeBg(el) {
+export default function changeBg(el) {
   const layers = ['defaultBgSrc', 'marqueeTitleImgSrc', 'talentSrc'];
   const layerRows = [...el.querySelectorAll(':scope > div')];
   ['mobile', 'tablet', 'desktop'].forEach((vp, vi) => {

@@ -1,6 +1,5 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import sinon, { stub } from 'sinon';
 import changeBg from '../../../creativecloud/features/changeBg/changeBg.js';
 
 document.body.innerHTML = await readFile({ path: './mocks/index.html' });
