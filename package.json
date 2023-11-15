@@ -39,18 +39,5 @@
     "stylelint": "14.6.0",
     "stylelint-config-prettier": "9.0.3",
     "stylelint-config-standard": "25.0.0"
-  },
-  "jest": {
-    "testRegex": "\\.jest\\.(js|jsx)$",
-    "collectCoverageFrom": [
-      "creativecloud/**/*.js"
-    ],
-    "coverageProvider": "v8",
-    "moduleNameMapper": {
-      "^https://main--milo--adobecom\\.hlx\\.page/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
-      "^https://www\\.adobe\\.com/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
-      "^http://localhost:6456/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1",
-      "^/libs/(.*)$": "<rootDir>/test/mocks/milo/libs/$1"
-    }
   }
 }
