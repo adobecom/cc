@@ -4,7 +4,7 @@ import { setLibs } from '../../../creativecloud/scripts/utils.js';
 
 setLibs('/libs');
 
-document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+document.body.innerHTML = await readFile({ path: './mocks/sidenav.html' });
 const { default: init } = await import('../../../creativecloud/blocks/sidenav/sidenav.js');
 
 describe('Sidenav', () => {

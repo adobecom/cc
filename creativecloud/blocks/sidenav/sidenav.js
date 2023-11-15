@@ -1,7 +1,7 @@
 import { createTag, loadScript } from '../../scripts/miloUtils.js';
 
+await import('/creativecloud/deps/merch-spectrum.min.js');
 await import('../../deps/sidenav.js');
-loadScript('/creativecloud/deps/merch-spectrum.min.js');
 
 const getValueFromLabel = (label) => label
   .trim()
@@ -9,7 +9,7 @@ const getValueFromLabel = (label) => label
   .replace(/(and|-)/g, '')
   .replace(/\s+/g, '-');
 
-const appendSpSidenavItem = (parent, li) => {
+const appendSidenavItem = (parent, li) => {
   const label = li.childNodes[0]?.textContent;
   const value = getValueFromLabel(label);
   const item = createTag('sp-sidenav-item', { label, value });
@@ -17,7 +17,7 @@ const appendSpSidenavItem = (parent, li) => {
   const childList = li.querySelector('ul');
   if (childList) {
     childList.querySelectorAll('li').forEach((grandChild) => {
-      appendSpSidenavItem(item, grandChild);
+      appendSidenavItem(item, grandChild);
     });
   }
   parent.append(item);
@@ -31,7 +31,7 @@ export default function init(el) {
   if (root) {
     const rootNav = createTag('filter-sidenav', { title });
     root.querySelectorAll(':scope > li').forEach((li) => {
-      appendSpSidenavItem(rootNav, li);
+      appendSidenavItem(rootNav, li);
     });
     root.parentNode.replaceChild(rootNav, root);
   }
