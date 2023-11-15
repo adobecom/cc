@@ -1,11 +1,8 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-const interactiveElements = await import('./interactive-elements.css', {
-  assert: { type: 'css' }
-});
-document.adoptedStyleSheets = [interactiveElements.default];
+const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
 
 
 const DESKTOP_SIZE = 1200;
