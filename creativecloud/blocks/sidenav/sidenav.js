@@ -1,6 +1,6 @@
 import { createTag, loadScript } from '../../scripts/miloUtils.js';
 
-await import('/creativecloud/deps/merch-spectrum.min.js');
+loadScript('/creativecloud/deps/merch-spectrum.min.js');
 await import('../../deps/sidenav.js');
 
 const getValueFromLabel = (label) => label
