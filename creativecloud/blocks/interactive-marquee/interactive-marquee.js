@@ -51,7 +51,6 @@ const decorateImage = (media) => {
 };
 
 function interactiveInit(el) {
-  // loadStyles milo marquee
   loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
