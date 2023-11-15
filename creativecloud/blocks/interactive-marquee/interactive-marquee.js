@@ -52,7 +52,7 @@ const decorateImage = (media) => {
 
 function interactiveInit(el) {
   // loadStyles milo marquee
-  loadStyle('./milo-marquee.css');
+  loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
   const children = el.querySelectorAll(':scope > div');
@@ -73,8 +73,6 @@ function interactiveInit(el) {
       mediaDiv.classList.add('media');
       interactiveBox.appendChild(mediaDiv);
     });
-    // interactiveBox.appendChild(media);
-    // media.classList.add('media');
     foreground.appendChild(interactiveBox);
     const childNodes = media.querySelectorAll('p');
     [...childNodes].forEach(async (child) => {
