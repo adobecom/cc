@@ -10,7 +10,7 @@ indices:
       - '**/fragments/**'
     include:
       - /creativecloud/**
-      - /products/substance3d/**
+      - /products/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:

@@ -3,7 +3,7 @@ import { setLibs } from '../../scripts/utils.js';
 const miloLibs = setLibs('/libs');
 
 const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
@@ -50,7 +50,9 @@ const decorateImage = (media) => {
   }
 };
 
-export default async function init(el) {
+function interactiveInit(el) {
+  // loadStyles milo marquee
+  loadStyle('./milo-marquee.css');
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
   const children = el.querySelectorAll(':scope > div');
@@ -67,8 +69,12 @@ export default async function init(el) {
   const media = mediaElements[0];
   if (media) {
     const interactiveBox = createTag('div', { class: 'interactive-container' });
-    interactiveBox.appendChild(media);
-    media.classList.add('media');
+    mediaElements.forEach((mediaDiv) => {
+      mediaDiv.classList.add('media');
+      interactiveBox.appendChild(mediaDiv);
+    });
+    // interactiveBox.appendChild(media);
+    // media.classList.add('media');
     foreground.appendChild(interactiveBox);
     const childNodes = media.querySelectorAll('p');
     [...childNodes].forEach(async (child) => {
@@ -86,4 +92,8 @@ export default async function init(el) {
   decorateButtons(text, 'button-l');
   decorateText(text);
   extendButtonsClass(text);
+}
+
+export default async function init(el) {
+  interactiveInit(el);
 }
