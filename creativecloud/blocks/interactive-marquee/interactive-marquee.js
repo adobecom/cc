@@ -3,7 +3,7 @@ import { setLibs } from '../../scripts/utils.js';
 const miloLibs = setLibs('/libs');
 
 const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
@@ -39,8 +39,18 @@ function extendButtonsClass(text) {
   buttons.forEach((button) => { button.classList.add('button-justified-mobile'); });
 }
 
-async function interactiveInit(el) {
-  loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
+const decorateImage = (media) => {
+  media.classList.add('image');
+  const imageLink = media.querySelector('a');
+  const picture = media.querySelector('picture');
+
+  if (imageLink && picture && !imageLink.parentElement.classList.contains('modal-img-link')) {
+    imageLink.textContent = '';
+    imageLink.append(picture);
+  }
+};
+
+export default async function init(el) {
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
   const children = el.querySelectorAll(':scope > div');
@@ -57,11 +67,16 @@ async function interactiveInit(el) {
   const media = mediaElements[0];
   if (media) {
     const interactiveBox = createTag('div', { class: 'interactive-container' });
-    mediaElements.forEach((mediaDiv) => {
-      mediaDiv.classList.add('media');
-      interactiveBox.appendChild(mediaDiv);
-    });
+    interactiveBox.appendChild(media);
+    media.classList.add('media');
     foreground.appendChild(interactiveBox);
+    const childNodes = media.querySelectorAll('p');
+    [...childNodes].forEach(async (child) => {
+      const image = child.querySelector('img');
+      if (image) {
+        decorateImage(child);
+      }
+    });
   }
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
@@ -78,8 +93,4 @@ async function interactiveInit(el) {
     const { setInteractiveFirefly } = await import('../../features/firefly/fireflyInteractive.js');
     setInteractiveFirefly(media);
   }
-}
-
-export default async function init(el) {
-  interactiveInit(el); 
 }
