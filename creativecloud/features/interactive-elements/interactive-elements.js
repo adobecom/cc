@@ -1,7 +1,7 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const interactiveCss = await import('./interactive-elements.css', {
   assert: { type: 'css' }
 });
