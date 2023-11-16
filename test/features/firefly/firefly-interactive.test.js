@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 import { setLibs } from '../../../creativecloud/scripts/utils.js';
 import setInteractiveFirefly from '../../../creativecloud/features/firefly/firefly-interactive.js';
 
-setLibs('libs');
+setLibs('/libs');
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('firefly-marquee', async () => {
