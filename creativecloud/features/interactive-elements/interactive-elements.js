@@ -4,7 +4,6 @@ const miloLibs = setLibs('/libs');
 const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
 
-
 const DESKTOP_SIZE = 1200;
 const MOBILE_SIZE = 600;
 
@@ -20,9 +19,8 @@ function defineDeviceByScreenSize() {
 }
 
 export function createPromptField(prompt, buttonText, mode, trackingValue = '') {
-
   const promptField = createTag('div', { id: 'promptbar', class: 'promptbar' });
-  let promptInput = ''
+  let promptInput = '';
   if (mode !== 'genfill') {
     promptInput = createTag('input', { class: 'promptText', id: 'promptinput', placeholder: `${prompt}`, autofocus: 'true', maxlength: '250' });
   }
@@ -62,7 +60,6 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
 }
 
 export function createEnticement(enticementDetail, mode) {
-
   const enticementDiv = createTag('div');
   const svgImage = createTag('img', { class: 'enticementArrow', alt: '' });
   svgImage.src = enticementDetail.split('|')[1];
@@ -81,7 +78,7 @@ export function createSelectorTray(interactiveSelections, mode) {
   [...interactiveSelections].forEach(async (option) => {
     const button = createTag('button', { class: 'options', id: `${option.id}`, 'daa-ll': `${option.analytics}` });
     const span = createTag('span', { class: 'button-text' }, `${option.text}`);
-    const svgButton = document.createElement('img', {alt: ''});
+    const svgButton = document.createElement('img', { alt: '' });
     svgButton.src = option.svg.trim();
     svgButton.classList.add('optionsvg');
     const device = defineDeviceByScreenSize();

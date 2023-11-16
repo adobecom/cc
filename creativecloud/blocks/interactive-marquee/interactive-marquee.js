@@ -78,7 +78,7 @@ export default async function init(el) {
     case el.classList.contains('firefly'):
       const buttons = el.querySelectorAll('.con-button');
       if (buttons.length === 0) return;
-      buttons.forEach((button) => { if(button.innerText.includes('Firefly'))  button.setAttribute('daa-ll', 'getfirefly')});
+      buttons.forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
       const { setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
       setInteractiveFirefly(el);
       break;
