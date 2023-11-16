@@ -1,7 +1,6 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
-const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
 
 function eventOnGenerate(generateButton, media) {
@@ -53,7 +52,7 @@ function createGenFillPrompt(element) {
 
 export default function setInteractiveFirefly(el) {
   const buttons = el.querySelectorAll('.con-button');
-  if(buttons){
+  if (buttons){
       buttons.forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
   }
   const media = el.querySelector('.media');

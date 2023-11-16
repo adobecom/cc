@@ -1,7 +1,6 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
-const miloLibs = setLibs('/libs');
-const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const config = getConfig();
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
@@ -15,27 +14,19 @@ if (window.origin.includes(config.prodDomains[1])) {
 export function redirectWithParam() {
   const url = new URL(window.location.href);
   let prompt;
+  let windowLocation = '';
   if (window.location.search.includes('goToFireflyGenFill')) {
-    if (env === 'prod') {
-      window.location = `${fireflyprod}/upload/inpaint`;
-    } else {
-      window.location = `${fireflystage}/upload/inpaint`;
-    }
+    windowLocation = env === 'prod' ? `${fireflyprod}/upload/inpaint` : `${fireflystage}/upload/inpaint`;
   } else if (window.location.search.includes('goToFireflyEffects')) {
     prompt = url.searchParams.get('goToFireflyEffects');
-    if (env === 'prod') {
-      window.location = `${fireflyprod}/generate/font-styles?prompt=${prompt}`;
-    } else {
-      window.location = `${fireflystage}/generate/font-styles?prompt=${prompt}`;
-    }
+    const effectsPath = `generate/font-styles?prompt=${prompt}`
+    windowLocation = env === 'prod' ? `${fireflyprod}/${effectsPath}` : `${fireflystage}/${effectsPath}`;
   } else if (window.location.search.includes('goToFirefly')) {
     prompt = url.searchParams.get('goToFirefly');
-    if (env === 'prod') {
-      window.location = `${fireflyprod}/generate/images?prompt=${prompt}&modelInputVersion=v2`;
-    } else {
-      window.location = `${fireflystage}/generate/images?prompt=${prompt}&modelInputVersion=v2`;
-    }
+    const fireflyPath = `generate/images?prompt=${prompt}&modelInputVersion=v2&modelConfig=v2`;
+    windowLocation = env === 'prod' ? `${fireflyprod}/${fireflyPath}` :  `${fireflystage}/${fireflyPath}`;
   }
+  if (windowLocation) window.location = windowLocation;
 }
 
 export const signIn = (prompt, paramKey) => {

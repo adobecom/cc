@@ -1,4 +1,4 @@
-name: Unit Tests and Linting
+name: Unit Tests
 on:
   push:
     branches:
