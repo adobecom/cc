@@ -37,3 +37,8 @@ export const [setLibs, getLibs] = (() => {
     }, () => libs,
   ];
 })();
+
+const miloLibs = setLibs('/libs');
+
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+export { createTag };
