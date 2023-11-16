@@ -76,7 +76,7 @@ async function interactiveInit(el) {
       if (buttons.length === 0) return;
       buttons.forEach((button) => { if(button.innerText.includes('Firefly'))  button.setAttribute('daa-ll', 'getfirefly')});
       const { setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
-      setInteractiveFirefly(el);
+      setInteractiveFirefly(media);
       break;
     default:
       // default case
