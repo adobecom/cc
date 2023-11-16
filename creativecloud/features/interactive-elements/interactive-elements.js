@@ -1,11 +1,12 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-const interactiveCss = await import('./interactive-elements.css', {
+const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+/*const interactiveCss = await import('./interactive-elements.css', {
   assert: { type: 'css' }
 });
-document.adoptedStyleSheets = [interactiveCss.default];
+document.adoptedStyleSheets = [interactiveCss.default];*/
+loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
 
 
 
