@@ -1,7 +1,7 @@
 import { createTag } from '../../scripts/utils.js';
-
-await import('/creativecloud/deps/merch-spectrum.min.js');
-await import('../../deps/sidenav.js');
+import { html, css, LitElement } from '/creativecloud/deps/lit-all.min.js';
+import('/creativecloud/deps/merch-spectrum.min.js');
+import('../../deps/sidenav.js');
 
 const getValueFromLabel = (label) => label
   .trim()
@@ -25,11 +25,10 @@ const appendSidenavItem = (parent, li) => {
 
 export default function init(el) {
   const paragraph = el.querySelector('p');
-  const title = paragraph?.textContent;
   paragraph?.remove();
   const root = el.querySelector('ul');
   if (root) {
-    const rootNav = createTag('filter-sidenav', { title });
+    const rootNav = createTag('filter-sidenav', { paragraph?.textContent });
     root.querySelectorAll(':scope > li').forEach((li) => {
       appendSidenavItem(rootNav, li);
     });
