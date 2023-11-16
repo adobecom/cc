@@ -14,12 +14,12 @@ export function redirectWithParam() {
     windowLocation = env === 'prod' ? `${fireflyprod}/upload/inpaint` : `${fireflystage}/upload/inpaint`;
   } else if (window.location.search.includes('goToFireflyEffects')) {
     prompt = url.searchParams.get('goToFireflyEffects');
-    const effectsPath = `generate/font-styles?prompt=${prompt}`
+    const effectsPath = `generate/font-styles?prompt=${prompt}`;
     windowLocation = env === 'prod' ? `${fireflyprod}/${effectsPath}` : `${fireflystage}/${effectsPath}`;
   } else if (window.location.search.includes('goToFirefly')) {
     prompt = url.searchParams.get('goToFirefly');
     const fireflyPath = `generate/images?prompt=${prompt}&modelInputVersion=v2&modelConfig=v2`;
-    windowLocation = env === 'prod' ? `${fireflyprod}/${fireflyPath}` :  `${fireflystage}/${fireflyPath}`;
+    windowLocation = env === 'prod' ? `${fireflyprod}/${fireflyPath}` : `${fireflystage}/${fireflyPath}`;
   }
   if (windowLocation) window.location = windowLocation;
 }
