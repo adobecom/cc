@@ -28,7 +28,8 @@ export default function init(el) {
   paragraph?.remove();
   const root = el.querySelector('ul');
   if (root) {
-    const rootNav = createTag('filter-sidenav', { paragraph?.textContent });
+    const title = paragraph?.textContent;
+    const rootNav = createTag('filter-sidenav', { title });
     root.querySelectorAll(':scope > li').forEach((li) => {
       appendSidenavItem(rootNav, li);
     });
