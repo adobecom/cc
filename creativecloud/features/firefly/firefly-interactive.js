@@ -59,15 +59,16 @@ export function setInteractiveFirefly(el) {
   const allP = media.querySelectorAll('p');
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
   const selectorTrayMode = allP[2].innerText.split('(')[1]?.replaceAll(')', '');
-  let interactiveElemsText = Array.from(allP);
+  /*const option1PromptMode = allP[4].innerText.split('(')[1]?.replaceAll(')', '');
+  const option2PromptMode = allP[10].innerText.split('(')[1]?.replaceAll(')', '');
+  const option3PromptMode = allP[16].innerText.split('(')[1]?.replaceAll(')', '');*/
   [...allP].forEach(async (elem) => {
     if (elem.querySelector('strong')) {
       elem.remove();
-      const index = interactiveElemsText.indexOf(elem);
-      interactiveElemsText.splice(index, 1);
     }
   });
 
+  const interactiveElemsText = media.querySelectorAll('p');
   // Remove the prompt and option text for media
   /*interactiveElemsText[0].remove();
   interactiveElemsText[1].remove();
