@@ -1,7 +1,7 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
 
 function eventOnGenerate(generateButton, media) {
@@ -52,7 +52,6 @@ function createGenFillPrompt(element) {
 }
 
 export default function setInteractiveFirefly(el) {
-  loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
   const media = el.querySelector('.media');
 
   const allP = media.querySelectorAll('p');
