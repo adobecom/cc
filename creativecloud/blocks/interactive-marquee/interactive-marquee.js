@@ -74,7 +74,7 @@ function interactiveInit(el) {
 
 export default async function init(el) {
   switch (true) {
-    case el.classList.contains('firefly'): {   
+    case el.classList.contains('firefly'): {
       interactiveInit(el);
       const { default: setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
       setInteractiveFirefly(el);

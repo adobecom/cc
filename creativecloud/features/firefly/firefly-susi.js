@@ -4,12 +4,7 @@ const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const config = getConfig();
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
-let env = '';
-if (window.origin.includes(config.prodDomains[1])) {
-  env = 'prod';
-} else {
-  env = 'stage';
-}
+const env = window.origin.includes(config.prodDomains[1]) ? 'prod' : 'stage';
 
 export function redirectWithParam() {
   const url = new URL(window.location.href);

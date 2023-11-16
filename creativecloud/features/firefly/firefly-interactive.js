@@ -52,11 +52,10 @@ function createGenFillPrompt(element) {
 
 export default function setInteractiveFirefly(el) {
   const buttons = el.querySelectorAll('.con-button');
-  if (buttons){
-      buttons.forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
+  if (buttons) {
+    buttons.forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
   }
   const media = el.querySelector('.media');
-
   const allP = media.querySelectorAll('p');
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
   const selectorTrayMode = allP[2].innerText.split('(')[1]?.replaceAll(')', '');
