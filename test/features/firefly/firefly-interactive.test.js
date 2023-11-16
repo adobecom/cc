@@ -1,6 +1,9 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../scripts/utils.js';
 import setInteractiveFirefly from '../../../creativecloud/features/firefly/firefly-interactive.js';
+
+setLibs('libs');
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('firefly-marquee', async () => {
