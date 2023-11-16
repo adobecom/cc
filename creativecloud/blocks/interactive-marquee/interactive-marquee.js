@@ -73,14 +73,5 @@ function interactiveInit(el) {
 }
 
 export default async function init(el) {
-  switch (true) {
-    case el.classList.contains('genfill'): {
-      interactiveInit(el);
-      const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
-      decorateGenfill(el);
-      break;
-    }
-    default:
-      break;
-  }
+  interactiveInit(el);
 }
