@@ -1,8 +1,10 @@
-import { getLibs } from '../../scripts/utils.js';
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+import { setLibs } from '../../scripts/utils.js';
+
+const miloLibs = setLibs('/libs');
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const interactiveCss = await import('./interactive-elements.css', {
   assert: { type: 'css' }
-});
+  });
 document.adoptedStyleSheets = [interactiveCss.default];
 
 const DESKTOP_SIZE = 1200;
@@ -60,8 +62,8 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
 export function createEnticement(enticementDetail, mode) {
   const enticementDiv = createTag('div');
   const svgImage = createTag('img', { class: 'enticementArrow', alt: '' });
-  svgImage.src = enticementDetail.split('|')[1];
-  const arrowText = enticementDetail.split('|')[0];
+  let arrowText;
+  [arrowText, svgImage.src] = enticementDetail.split('|');
   const enticementText = createTag('h2', { class: 'enticementText heading-l' }, arrowText);
   enticementDiv.appendChild(enticementText);
   enticementDiv.appendChild(svgImage);

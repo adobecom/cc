@@ -1,6 +1,7 @@
-import { getLibs } from '../../scripts/utils.js';
+import { setLibs } from '../../scripts/utils.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+const miloLibs = setLibs('/libs');
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
 
 function eventOnGenerate(generateButton, media) {

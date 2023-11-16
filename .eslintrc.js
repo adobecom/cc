@@ -7,6 +7,7 @@ module.exports = {
     allowImportExportEverywhere: true,
     sourceType: 'module',
     requireConfigFile: false,
+    babelOptions: { parserOpts: { plugins: ['importAssertions'] } },
   },
   rules: {
     // allow reassigning param
