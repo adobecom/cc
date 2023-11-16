@@ -15,10 +15,13 @@ function eventOnGenerate(generateButton, media) {
     const textEffectsButton = media.querySelector('#TextEffects');
     let prompt = '';
     let promptDefault = false;
-    prompt = media.querySelector('.promptText')?.value;
-    if (prompt === '') {
+    const userprompt = media.querySelector('.promptText')?.value;
+    const placeholderprompt = media.querySelector('.promptText')?.getAttribute('placeholder');
+    if (userprompt === '') {
       promptDefault = true;
-      prompt = media.querySelector('.promptText')?.getAttribute('placeholder');
+      prompt = placeholderprompt;
+    } else {
+      prompt = userprompt;
     }
     if (textToImageButton.classList.contains('selected')) {
       if (promptDefault) {
@@ -36,7 +39,7 @@ function eventOnGenerate(generateButton, media) {
         generateButton.setAttribute('daa-ll', 'SubmitTextEffectsUserContent');
       }
       // eslint-disable-next-line import/no-cycle
-      const { signIn } = await import('./firefly-susi.js.js');
+      const { signIn } = await import('./firefly-susi.js');
       signIn(prompt, 'goToFireflyEffects');
     }
   });
