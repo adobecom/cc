@@ -82,7 +82,7 @@ export default async function init(el) {
       const { default: setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
       setInteractiveFirefly(el);
       break;
-    } 
+    }
     default:
       // default case
       break;
