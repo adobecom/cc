@@ -1,8 +1,13 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
+/*const interactiveCss = await import('../interactive-elements/interactive-elements.css', {
+  assert: { type: 'css' }
+});
+document.adoptedStyleSheets = [interactiveCss.default];*/
+
 
 function eventOnGenerate(generateButton, media) {
   generateButton.addEventListener('click', async () => {
