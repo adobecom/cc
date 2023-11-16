@@ -6,6 +6,9 @@
   "scripts": {
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
+    "wtr": "wtr \"./test/**/*.test.(js|html)\" --node-resolve --port=2000 --coverage --concurrent-browsers 4",
+    "wtr:watch": "npm run wtr -- --watch",
+    "lcov": "lcov -a coverage/jest/lcov.info -a coverage/wtr/lcov.info -o coverage/lcov.info",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint .",
     "lint:css": "stylelint 'creativecloud/blocks/**/*.css' 'creativecloud/styles/*.css'"
