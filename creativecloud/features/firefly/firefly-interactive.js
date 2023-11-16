@@ -76,24 +76,24 @@ export function setInteractiveFirefly(media) {
 
   //Set InteractiveSelection
   const option1 = {
-    id: `${interactiveElemsText[0].innerText.split('|')[2]}`,
+    id: `${interactiveElemsText[0].innerText.split('|')[0]}`,
     text: `${interactiveElemsText[0].innerText.split('|')[1]}`,
-    svg: `${interactiveElemsText[0].innerText.split('|')[0]}`,
-    analytics: `Select${interactiveElemsText[0].innerText.split('|')[2]}`,
+    svg: `${interactiveElemsText[0].innerText.split('|')[2]}`,
+    analytics: `Select${interactiveElemsText[0].innerText.split('|')[0]}`,
   }
 
   const option2 = {
-    id: `${interactiveElemsText[3].innerText.split('|')[2]}`,
+    id: `${interactiveElemsText[3].innerText.split('|')[0]}`,
     text: `${interactiveElemsText[3].innerText.split('|')[1]}`,
-    svg: `${interactiveElemsText[3].innerText.split('|')[0]}`,
-    analytics: `Select${interactiveElemsText[3].innerText.split('|')[2]}`,
+    svg: `${interactiveElemsText[3].innerText.split('|')[2]}`,
+    analytics: `Select${interactiveElemsText[3].innerText.split('|')[0]}`,
   }
 
   const option3 = {
-    id: `${interactiveElemsText[6].innerText.split('|')[2]}`,
+    id: `${interactiveElemsText[6].innerText.split('|')[0]}`,
     text: `${interactiveElemsText[6].innerText.split('|')[1]}`,
-    svg: `${interactiveElemsText[6].innerText.split('|')[0]}`,
-    analytics: `Select${interactiveElemsText[6].innerText.split('|')[2]}`,
+    svg: `${interactiveElemsText[6].innerText.split('|')[2]}`,
+    analytics: `Select${interactiveElemsText[6].innerText.split('|')[0]}`,
   }
 
   let textToImagePos = 0;
