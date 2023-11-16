@@ -1,25 +1,33 @@
 export function redirectWithParam() {
+  const fireflyprod = 'https://firefly.adobe.com';
+  const fireflystage = 'https://firefly-stage.corp.adobe.com';
+  let env = '';
+  if (window.origin.includes('www.adobe.com')) {
+    env = 'prod';
+  } else {
+    env = 'stage';
+  }
   let url = new URL(window.location.href);
   let prompt;
   if (window.location.search.includes('goToFireflyGenFill')) {
-    if (window.location.href.includes('www.stage.adobe.com') || window.location.href.includes('localhost') || window.location.href.includes('.hlx.')) {
-      window.location = 'https://firefly-stage.corp.adobe.com/upload/inpaint';
+    if (env === 'prod') {
+      window.location = `${fireflyprod}/upload/inpaint`;
     } else {
-      window.location = 'https://firefly.adobe.com/upload/inpaint';
+      window.location = `${fireflystage}/upload/inpaint`;
     }
   } else if (window.location.search.includes('goToFireflyEffects')) {
     prompt = url.searchParams.get('goToFireflyEffects');
-    if (window.location.href.includes('www.stage.adobe.com') || window.location.href.includes('localhost') || window.location.href.includes('.hlx.')) {
-      window.location = `https://firefly-stage.corp.adobe.com/generate/font-styles?prompt=${prompt}`;
+    if (env === 'prod') {
+      window.location = `${fireflyprod}/generate/font-styles?prompt=${prompt}`
     } else {
-      window.location = `https://firefly.adobe.com/generate/font-styles?prompt=${prompt}`
+      window.location = `${fireflystage}/generate/font-styles?prompt=${prompt}`;
     }
   } else if (window.location.search.includes('goToFirefly')) {
     prompt = url.searchParams.get('goToFirefly');
-    if (window.location.href.includes('www.stage.adobe.com') || window.location.href.includes('localhost') || window.location.href.includes('.hlx.')) {
-      window.location = `https://firefly-stage.corp.adobe.com/generate/images?prompt=${prompt}&modelInputVersion=v2`;
+    if (env === 'prod') {
+      window.location = `${fireflyprod}/generate/images?prompt=${prompt}&modelInputVersion=v2`;
     } else {
-      window.location = `https://firefly.adobe.com/generate/images?prompt=${prompt}&modelInputVersion=v2`;
+      window.location = `${fireflystage}/generate/images?prompt=${prompt}&modelInputVersion=v2`;
     }
   }
 }

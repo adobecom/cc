@@ -178,7 +178,7 @@ const miloLibs = setLibs(LIBS);
   loadLana({ clientId: 'cc' });
   await loadArea();
   if (window.adobeIMS?.isSignedInUser() && (window.location.search.includes('goToFirefly') || window.location.search.includes('goToFireflyEffects') || window.location.search.includes('goToFireflyGenFill'))) {
-    const { redirectWithParam } = await import('../features/firefly/fireflySUSI.js');
+    const { redirectWithParam } = await import('../features/firefly/firefly-susi.js');
     redirectWithParam();
   }
 }());

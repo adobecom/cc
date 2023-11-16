@@ -77,16 +77,16 @@ button.options.selected {
   color: #FFFFFF;
 }
 
-button.options.light.selected {
+/*div.options > :first-child{
   background-color: #1473E6;
   color: #FFFFFF;
 }
 
-button.options:hover {
-  border: 1px solid #1473E6;
-}
+div.options > :first-child > img{
+  filter: brightness(10);
+}*/
 
-button.options.light:hover {
+button.options:hover {
   border: 1px solid #1473E6;
 }
 
@@ -177,6 +177,7 @@ div.genfillPrompt>p:first-child {
 }
 
 @media screen and (min-width: 1200px) {
+
   /*Firefly interactive components position */
   .fireflyPrompt {
     top: 40px;
@@ -221,7 +222,7 @@ div.genfillPrompt>p:first-child {
     width: 240px;
     display: block;
     color: #000000;
-    
+
   }
 
   .enticementText.light {
@@ -338,7 +339,7 @@ div.genfillPrompt>p:first-child {
     width: 240px;
     display: block;
     color: #111111;
-    
+
   }
 
   .enticementText.light {
