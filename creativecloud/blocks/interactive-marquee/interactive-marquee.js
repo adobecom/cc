@@ -90,7 +90,7 @@ export default async function init(el) {
     const buttons = text.querySelectorAll('.con-button');
     if (buttons.length === 0) return;
     buttons.forEach((button) => { if(button.innerText.includes('Firefly'))  button.setAttribute('daa-ll', 'getfirefly')});
-    const { setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
+    const { default: setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
     setInteractiveFirefly(media);
   }
 }

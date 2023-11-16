@@ -51,8 +51,8 @@ function createGenFillPrompt(element) {
   return genfillPrompt;
 }
 
-export default function setInteractiveFirefly(el) {
-  const media = el.querySelector('.media');
+export default function setInteractiveFirefly(media) {
+  //const media = el.querySelector('.media');
 
   const allP = media.querySelectorAll('p');
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
