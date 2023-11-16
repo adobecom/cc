@@ -52,9 +52,9 @@ function createGenFillPrompt(element) {
   return genfillPrompt;
 }
 
-export function setInteractiveFirefly(media) {
+export function setInteractiveFirefly(el) {
   loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
-  //const media = el.querySelector('.media');
+  const media = el.querySelector('.media');
 
   const allP = media.querySelectorAll('p');
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
@@ -69,12 +69,20 @@ export function setInteractiveFirefly(media) {
   });
 
   // Remove the prompt and option text for media
-  interactiveElemsText[0].remove();
+  /*interactiveElemsText[0].remove();
   interactiveElemsText[1].remove();
   interactiveElemsText[3].remove();
   interactiveElemsText[4].remove();
   interactiveElemsText[6].remove();
-  interactiveElemsText[7].remove();
+  interactiveElemsText[7].remove();*/
+
+  interactiveElemsText[0].classList.remove('hide');
+  interactiveElemsText[1].classList.remove('hide');
+  interactiveElemsText[3].classList.remove('hide');
+  interactiveElemsText[4].classList.remove('hide');
+  interactiveElemsText[6].classList.remove('hide');
+  interactiveElemsText[7].classList.remove('hide');
+
 
   //Set Enticement
   const enticement = media.querySelector('h2');

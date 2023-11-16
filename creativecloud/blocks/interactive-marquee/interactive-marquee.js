@@ -70,21 +70,20 @@ async function interactiveInit(el) {
   decorateButtons(text, 'button-l');
   decorateText(text);
   extendButtonsClass(text);
-  switch (true) {
-    case el.classList.contains('firefly'):
-      const buttons = text.querySelectorAll('.con-button');
-      if (buttons.length === 0) return;
-      buttons.forEach((button) => { if(button.innerText.includes('Firefly'))  button.setAttribute('daa-ll', 'getfirefly')});
-      const { setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
-      setInteractiveFirefly(media);
-      break;
-    default:
-      // default case
-      break;
-  }
 }
 
 export default async function init(el) {
   interactiveInit(el);
-  
+  switch (true) {
+    case el.classList.contains('firefly'):
+      const buttons = document.querySelectorAll('.con-button');
+      if (buttons.length === 0) return;
+      buttons.forEach((button) => { if(button.innerText.includes('Firefly'))  button.setAttribute('daa-ll', 'getfirefly')});
+      const { setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
+      setInteractiveFirefly(el);
+      break;
+    default:
+      // default case
+      break;
+  }  
 }
