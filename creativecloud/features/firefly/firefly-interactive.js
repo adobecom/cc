@@ -54,7 +54,7 @@ function createGenFillPrompt(element) {
 export default function setInteractiveFirefly(el) {
   const buttons = el.querySelectorAll('.con-button');
   if(buttons) {
-      buttons.forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
+    buttons.forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
   }
   const media = el.querySelector('.media');
 
