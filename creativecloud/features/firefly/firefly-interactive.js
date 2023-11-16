@@ -51,7 +51,7 @@ function createGenFillPrompt(element) {
   return genfillPrompt;
 }
 
-export function setInteractiveFirefly(el) {
+export default function setInteractiveFirefly(el) {
   loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
   const media = el.querySelector('.media');
 

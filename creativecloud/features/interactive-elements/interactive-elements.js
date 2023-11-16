@@ -29,8 +29,7 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
   if (mode === 'light') {
     promptField.classList.add('light');
     promptInput.classList.add('light');
-  }
-  else if (mode === 'genfill') {
+  } else if (mode === 'genfill') {
     promptButton.setAttribute('id', 'genfill');
     promptField.classList.remove('promptbar');
   }
@@ -45,12 +44,10 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
     if (!promptButton.classList.contains('button-l')) {
       promptButton.classList.add('button-l');
     }
-  }
-  else if (device === 'MOBILE') {
+  } else if (device === 'MOBILE') {
     promptButton.classList.remove('button-xl');
     promptButton.classList.remove('button-l');
-  }
-  else if (device === 'DESKTOP') {
+  } else if (device === 'DESKTOP') {
     if (!promptButton.classList.contains('button-xl')) {
       promptButton.classList.add('button-xl');
     }
@@ -94,4 +91,4 @@ export function createSelectorTray(interactiveSelections, mode) {
   });
   options.lastChild.classList.add('last-button');
   return options;
-} 
+}
