@@ -1,6 +1,6 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setLibs } from '../../../scripts/utils.js';
+import { setLibs } from '../../../creativecloud/scripts/utils.js';
 import setInteractiveFirefly from '../../../creativecloud/features/firefly/firefly-interactive.js';
 
 setLibs('libs');
