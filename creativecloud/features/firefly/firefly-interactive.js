@@ -51,9 +51,9 @@ function createGenFillPrompt(element) {
   return genfillPrompt;
 }
 
-export default function setInteractiveFirefly(el) {
+export default function setInteractiveFirefly(media) {
   loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
-  const media = el.querySelector('.media');
+  //const media = el.querySelector('.media');
 
   const allP = media.querySelectorAll('p');
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
