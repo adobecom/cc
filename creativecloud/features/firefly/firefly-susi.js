@@ -1,7 +1,7 @@
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
 let env = '';
-if (window.origin.includes('https://www.adobe.com')) {
+if (window.origin.startsWith('https://www.adobe.com')) {
   env = 'prod';
 } else {
   env = 'stage';
