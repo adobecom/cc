@@ -1,6 +1,6 @@
-// Tue, 14 Nov 2023 13:43:15 GMT
+// Wed, 15 Nov 2023 11:50:27 GMT
 
-// src/filter-sidenav.js
+// src/merch-sidenav.js
 import { html, css, LitElement } from "./lit-all.min.js";
 
 // src/deeplink.js
@@ -27,11 +27,12 @@ function pushState(state) {
   window.location.hash = decodeURIComponent(hash.toString());
 }
 
-// src/filter-sidenav.js
-var FilterSideNav = class extends LitElement {
+// src/merch-sidenav.js
+var MerchSideNav = class extends LitElement {
   static properties = {
     title: { type: String },
-    label: { type: String }
+    label: { type: String },
+    filter: { type: String }
   };
   static styles = css`
         :host {
@@ -126,7 +127,7 @@ var FilterSideNav = class extends LitElement {
         </div>`;
   }
 };
-customElements.define("filter-sidenav", FilterSideNav);
+customElements.define("merch-sidenav", MerchSideNav);
 export {
-  FilterSideNav
+  MerchSideNav
 };
