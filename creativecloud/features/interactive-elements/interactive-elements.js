@@ -7,10 +7,9 @@ const interactiveCss = await import('./interactive-elements.css', {
   });
 document.adoptedStyleSheets = [interactiveCss.default];
 
-const DESKTOP_SIZE = 1200;
-const MOBILE_SIZE = 600;
-
 function defineDeviceByScreenSize() {
+  const DESKTOP_SIZE = 1200;
+  const MOBILE_SIZE = 600;
   const screenWidth = window.innerWidth;
   if (screenWidth >= DESKTOP_SIZE) {
     return 'DESKTOP';
@@ -27,7 +26,7 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
   if (mode !== 'genfill') {
     promptInput = createTag('input', { class: 'promptText', id: 'promptinput', placeholder: `${prompt}`, autofocus: 'true', maxlength: '250' });
   }
-  const promptButton = createTag('button', { class: 'con-button blue button-xl button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText}`);
+  const promptButton = createTag('button', { class: 'con-button blue button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText}`);
 
   if (mode === 'light') {
     promptField.classList.add('light');
@@ -42,20 +41,8 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
   promptField.append(promptButton);
 
   const device = defineDeviceByScreenSize();
-  if (device === 'TABLET') {
-    promptButton.classList.remove('button-xl');
-    if (!promptButton.classList.contains('button-l')) {
-      promptButton.classList.add('button-l');
-    }
-  } else if (device === 'MOBILE') {
-    promptButton.classList.remove('button-xl');
-    promptButton.classList.remove('button-l');
-  } else if (device === 'DESKTOP') {
-    if (!promptButton.classList.contains('button-xl')) {
-      promptButton.classList.add('button-xl');
-    }
-    promptButton.classList.remove('button-l');
-  }
+  if (device === 'TABLET') promptButton.classList.add('button-l');
+  else if (device === 'DESKTOP') promptButton.classList.add('button-xl');
   return promptField;
 }
 
@@ -65,11 +52,8 @@ export function createEnticement(enticementDetail, mode) {
   let arrowText;
   [arrowText, svgImage.src] = enticementDetail.split('|');
   const enticementText = createTag('h2', { class: 'enticementText heading-l' }, arrowText);
-  enticementDiv.appendChild(enticementText);
-  enticementDiv.appendChild(svgImage);
-  if (mode === 'light') {
-    enticementText.classList.add('light');
-  }
+  enticementDiv.append(enticementText, svgImage);
+  if (mode === 'light') enticementText.classList.add('light');
   return enticementDiv;
 }
 
@@ -78,15 +62,15 @@ export function createSelectorTray(interactiveSelections, mode) {
   [...interactiveSelections].forEach(async (option) => {
     const button = createTag('button', { class: 'options', id: `${option.id}`, 'daa-ll': `${option.analytics}` });
     const span = createTag('span', { class: 'button-text' }, `${option.text}`);
-    const svgButton = document.createElement('img', { alt: '' });
+    const svgButton = createTag('img', { alt: '', class: 'optionsvg' });
     svgButton.src = option.svg.trim();
-    svgButton.classList.add('optionsvg');
     const device = defineDeviceByScreenSize();
     if (mode === 'light') {
       button.classList.add('light');
       options.classList.add('light');
     }
-    if (((device === 'DESKTOP' || device === 'TABLET') && options.getElementsByTagName('button').length < 4) || (device === 'MOBILE' && options.getElementsByTagName('button').length < 3)) {
+    const buttonCount = options.querySelectorAll('button').length;
+    if (((device === 'DESKTOP' || device === 'TABLET') && buttonCount < 4) || (device === 'MOBILE' && buttonCount < 3)) {
       button.prepend(svgButton);
       button.appendChild(span);
       options.append(button);

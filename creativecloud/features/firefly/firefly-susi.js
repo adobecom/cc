@@ -1,7 +1,7 @@
-import { getLibs } from '../../scripts/utils.js';
+import { setLibs } from '../../scripts/utils.js';
 
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-const config = getConfig();
+const miloLibs = setLibs('/libs');
+const { config } = await import(`${miloLibs}/utils/utils.js`);
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
 const env = window.origin.includes(config.prodDomains[1]) ? 'prod' : 'stage';
@@ -26,9 +26,7 @@ export function redirectWithParam() {
 
 export const signIn = (prompt, paramKey) => {
   const url = new URL(window.location.href);
-  url.searchParams.delete('goToFirefly');
-  url.searchParams.delete('goToFireflyEffects');
-  url.searchParams.delete('goToFireflyGenFill');
+  url.searchParams.delete('goToFirefly', 'goToFireflyEffects', 'goToFireflyGenFill');
   url.searchParams.set(paramKey, encodeURI(prompt));
   if (paramKey === 'goToFirefly') {
     url.searchParams.set('modelInputVersion', 'v2');

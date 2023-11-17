@@ -44,23 +44,22 @@ function createGenFillPrompt(element) {
   const genfillPrompt = createTag('div', { class: 'genfillPrompt' });
   const prompt = createTag('p');
   prompt.innerText = `${element?.innerText?.split('|')[0].split('(')[0]}`;
-  genfillPrompt.appendChild(prompt);
   const promptText = createTag('p', { class: 'genfillPromptUsed' });
   promptText.innerText = `${element?.innerText?.split('|')[0].split('(')[1].replaceAll(')', '')}`;
-  genfillPrompt.appendChild(promptText);
+  genfillPrompt.append(prompt, promptText);
   return genfillPrompt;
 }
 
 export default function setInteractiveFirefly(el) {
   const buttons = el.querySelectorAll('.con-button');
   if (buttons) {
-    buttons.forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
+    [...buttons].forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
   }
   const media = el.querySelector('.media');
-  const allP = media.querySelectorAll('p');
+  const allP = media.querySelectorAll('p:not(:empty)');
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
   const selectorTrayMode = allP[2].innerText.split('(')[1]?.replaceAll(')', '');
-  const interactiveElemsText = Array.from(allP);
+  const interactiveElemsText = [...allP];
   [...allP].forEach(async (elem) => {
     if (elem.querySelector('strong')) {
       elem.remove();
