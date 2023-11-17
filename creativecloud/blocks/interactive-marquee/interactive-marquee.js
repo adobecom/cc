@@ -73,5 +73,16 @@ function interactiveInit(el) {
 }
 
 export default async function init(el) {
-  interactiveInit(el);
+  switch (true) {
+    case el.classList.contains('firefly'): {
+      interactiveInit(el);
+      loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
+      const { default: setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
+      setInteractiveFirefly(el);
+      break;
+    }
+    default:
+      // default case
+      break;
+  }
 }

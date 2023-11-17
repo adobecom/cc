@@ -1,0 +1,449 @@
+.hide {
+  display: none
+}
+
+/* Firefly interactive components position */
+.firefly-prompt {
+  position: absolute;
+  top: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.genfill-promptbar {
+  position: absolute;
+  top: 24px;
+  margin-left: 16px;
+  height: 30px;
+  display: flex;
+}
+
+.interactive-marquee .media {
+  top: 72px;
+}
+
+/* Prompt Bar */
+.promptbar {
+  height: 30px;
+  background: #FFFFFF;
+  border-radius: 40px;
+  display: flex;
+  padding: 7px 7px 7px 12px;
+  border: 1px solid #E6E6E6;
+  display: flex;
+  justify-content: space-between;
+  width: 248px;
+}
+
+.promptbar.light {
+  background: #111111;
+  border: 1px solid #323232;
+}
+
+.prompt-text {
+  max-width: calc(100% - 110px);
+  cursor: text;
+  outline: none;
+  color: #2c2c2c;
+  background: #FFFFFF;
+  display: flex;
+  border: none;
+  outline: none;
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.prompt-text.light {
+  color: #DBDBDB;
+  background: #111111;
+}
+
+/* Enticement */
+.enticement-arrow {
+  display: none;
+}
+
+.enticement-text {
+  display: none;
+  max-width: 30ch;
+}
+
+.enticement-text.light {
+color: #FFFFFF;
+}
+
+/* Selector Tray */
+div.options {
+  border-radius: 4px;
+  display: flex;
+  background: #FFFFFF;
+  padding: 8px;
+  justify-content: space-between;
+  width: auto;
+}
+
+div.options.light {
+  background: #111111;
+}
+
+button.options {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+  color: #2c2c2c;
+  font-size: var(--type-body-xxs-size);
+  line-height: var(--type-body-xxs-lh);
+  padding: 8px;
+  width: 100%;
+  margin-right: 8px;
+  font-weight: bold;
+  background: #FFFFFF;
+}
+
+button.options.light {
+  border: 1px solid #6D6D6D;
+  color: #DBDBDB;
+  background: #111111;
+}
+
+img.optionsvg {
+  width: 20px;
+  min-height: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 8px;
+}
+
+img.svgselected {
+  filter: brightness(10);
+}
+
+.button-text {
+  display: block;
+  max-width: 15ch;
+}
+
+button.last-button {
+  margin-right: 0;
+}
+
+button.options.selected {
+  background-color: #1473E6;
+  color: #FFFFFF;
+}
+
+button.options:hover {
+  border: 1px solid #1473E6;
+}
+
+/* Genfill Prompt */
+div.genfill-prompt {
+  position: absolute;
+  bottom: 106px;
+  margin-left: 16px;
+  font-size: var(--type-body-xs-size);
+  line-height: var(--type-body-xs-lh);
+  color: #2c2c2c
+}
+
+div.genfill-prompt>p:first-child {
+  margin-bottom: 8px;
+  color: #2c2c2c;
+}
+
+.genfill-promptused {
+  background-color: gray;
+  color: #FFFFFF;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 16px;
+  padding: 5px 14px;
+  font-style: normal;
+  text-decoration: none;
+  display: inline-block;
+  width: auto;
+  margin-top: 0;
+  border: 2px solid gray;
+}
+
+@media screen and (min-width: 1200px) {
+  /* Firefly interactive components position */
+  .firefly-prompt {
+    top: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .genfill-promptbar {
+    top: 56px;
+    margin-left: 40px;
+    height: 50px;
+  }
+
+  /* Prompt Bar */
+  .promptbar {
+    height: 50px;
+    padding: 7px 7px 7px 40px;
+    width: 441px;
+  }
+
+  .prompt-text {
+    font-size: var(--type-body-l-size);
+    line-height: var(--type-body-l-lh);
+    min-width: calc(100% - 145px);
+    text-overflow: ellipsis;
+  }
+
+  /* Enticement */
+  .enticement-arrow {
+    width: 49px !important;
+    height: 73px !important;
+    position: absolute;
+    right: 575px;
+    top: -45px;
+    display: block;
+  }
+
+  .enticement-text {
+    position: absolute;
+    right: 345px;
+    top: -60px;
+    width: 240px;
+    display: block;
+    color: #000000;
+
+  }
+
+  /* Selector Tray */
+  button.options {
+    margin-bottom: 16px;
+    padding: 16px;
+    width: 100%;
+    min-height: 60px;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: var(--type-body-m-size);
+    line-height: var(--type-body-m-lh);
+    margin-right: 0;
+  }
+
+  div.options {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    padding: 16px;
+    bottom: inherit;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button.last-button {
+    margin-bottom: 0;
+  }
+
+  img.optionsvg {
+    width: 40px;
+    min-height: 40px;
+    display: inline;
+    margin-left: 0;
+    margin-right: 16px;
+    margin-bottom: 0;
+  }
+
+  .button-text {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  /* Genfill prompt */
+  div.genfill-prompt {
+    bottom: 46px;
+    margin-left: 40px;
+    font-size: var(--type-body-s-size);
+    line-height: var(--type-body-s-lh);
+  }
+
+  .genfill-promptused {
+    border-radius: 20px;
+    font-size: 17px;
+    line-height: 20px;
+    min-height: 21px;
+    padding: 7px 18px 8px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1199px) {
+  /* Firefly interactive components position */
+  .firefly-prompt {
+    top: 32px;
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+
+  .genfill-promptbar {
+    top: 40px;
+    margin-left: 32px;
+    height: 40px;
+  }
+
+  .firefly-selectortray {
+    top: 0;
+    margin-left: 42px;
+    margin-right: 42px;
+    width: 80%;
+  }
+
+  /* Prompt Bar */
+  .promptbar {
+    height: 40px;
+    padding: 7px 7px 7px 32px;
+    width: 465px;
+  }
+
+  .prompt-text {
+    min-width: calc(100% - 126px);
+    font-size: var(--type-body-l-size);
+    line-height: var(--type-body-l-lh);
+  }
+
+  /* Enticement */
+  .enticement-arrow {
+    width: 49px !important;
+    height: 73px !important;
+    position: absolute;
+    right: 575px;
+    top: -45px;
+    display: block;
+  }
+
+  .enticement-text {
+    position: absolute;
+    right: 345px;
+    top: -60px;
+    width: 240px;
+    display: block;
+    color: #111111;
+
+  }
+
+  .enticement-text.light {
+    color: #FFFFFF;
+  }
+
+  /* Genfill Prompt */
+  div.genfill-prompt {
+    bottom: 145px;
+    margin-left: 32px;
+    font-size: var(--type-body-s-size);
+    line-height: var(--type-body-s-lh);
+  }
+
+  .genfill-promptused {
+    border-radius: 20px;
+    font-size: 17px;
+    line-height: 20px;
+    min-height: 21px;
+    padding: 7px 18px 8px;
+  }
+
+  /* Selector Tray */
+  button.options {
+    margin-right: 16px;
+    padding: 8px;
+    min-height: 49px;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: var(--type-body-xs-size);
+    line-height: var(--type-body-xs-lh);
+    width: 100%;
+    max-width: 18ch;
+  }
+
+  div.options {
+    display: flex;
+    flex-direction: row;
+    height: 65px;
+    padding: 16px;
+    bottom: inherit;
+  }
+
+  img.optionsvg {
+    //margin-right: 8px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  button.last-button {
+    margin-right: 0;
+  }
+
+  .button-text {
+    text-align: center;
+    width: 100%;
+  }
+
+  .interactive-marquee .text {
+    margin: 122px 0 0 auto;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Selector Tray */
+  .firefly-selectortray {
+    min-width: 110%;
+    margin-left: -22px;
+    margin-right: 16px;
+    justify-content: center;
+    margin-top: -8px;
+  }
+
+  .button-text {
+    text-align: center;
+    width: 100%;
+  }
+
+  .interactive-marquee .text {
+    margin: 106px 0 0 auto;
+  }
+}
+
+/* Selector Tray poition for firefly marquee */
+@media screen and (max-width: 1799px) and (min-width: 1650px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 370px);
+  }
+}
+
+@media screen and (max-width: 1649px) and (min-width: 1438px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 320px);
+  }
+}
+
+@media screen and (max-width: 1437px) and (min-width: 1200px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 280px);
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 407px);
+  }
+}
