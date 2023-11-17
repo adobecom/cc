@@ -2,23 +2,11 @@ import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
 const interactiveCss = await import('./interactive-elements.css', {
   assert: { type: 'css' }
   });
 document.adoptedStyleSheets = [interactiveCss.default];
-
-function defineDeviceByScreenSize() {
-  const DESKTOP_SIZE = 1200;
-  const MOBILE_SIZE = 600;
-  const screenWidth = window.innerWidth;
-  if (screenWidth >= DESKTOP_SIZE) {
-    return 'DESKTOP';
-  }
-  if (screenWidth <= MOBILE_SIZE) {
-    return 'MOBILE';
-  }
-  return 'TABLET';
-}
 
 export function createPromptField(prompt, buttonText, mode, trackingValue = '') {
   const promptField = createTag('div', { id: 'promptbar', class: 'promptbar' });
