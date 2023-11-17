@@ -13,13 +13,13 @@ function eventOnGenerate(generateButton) {
     TextEffects: ['SubmitTextEffects', 'SubmitTextEffectsUserContent', 'goToFireflyEffects'],
   };
   generateButton.addEventListener('click', async (e) => {
-    const userprompt = media.querySelector('.promptText')?.value;
-    const placeholderprompt = media.querySelector('.promptText')?.getAttribute('placeholder');
+    const userprompt = media.querySelector('.prompt-text')?.value;
+    const placeholderprompt = media.querySelector('.prompt-text')?.getAttribute('placeholder');
     const prompt = userprompt || placeholderprompt;
     const selected = media.querySelector('.selected');
     if (Object.keys(btnConfigs).includes(selected.id)) {
       const btnConfig = btnConfigs[selected.id];
-      const dall = userprompt === undefined || userprompt === '' ? btnConfig[0] : btnConfig[1];
+      const dall = userprompt === '' ? btnConfig[0] : btnConfig[1];
       e.target.setAttribute('daa-ll', dall);
       const { signIn } = await import('./firefly-susi.js');
       signIn(prompt, btnConfig[2]);
