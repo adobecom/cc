@@ -42,10 +42,9 @@ function eventOnGenerate(generateButton, media) {
 
 function createGenFillPrompt(element) {
   const genfillPrompt = createTag('div', { class: 'genfillPrompt' });
-  const prompt = createTag('p');
-  prompt.innerText = `${element?.innerText?.split('|')[0].split('(')[0]}`;
-  const promptText = createTag('p', { class: 'genfillPromptUsed' });
-  promptText.innerText = `${element?.innerText?.split('|')[0].split('(')[1].replaceAll(')', '')}`;
+  const promptConfig = element?.innerText?.split('|')[0].split('(');
+  const prompt = createTag('p', '', `${promptConfig[0]}`);
+  const promptText = createTag('p', { class: 'genfillPromptUsed' }, `${promptConfig[1].replaceAll(')', '')}`);
   genfillPrompt.append(prompt, promptText);
   return genfillPrompt;
 }
