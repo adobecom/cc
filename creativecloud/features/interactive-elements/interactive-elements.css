@@ -140,6 +140,7 @@ img.svgselected {
 
 .button-text {
   display: block;
+  max-width: 15ch;
 }
 
 button.last-button {
