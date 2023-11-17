@@ -3,17 +3,11 @@ import { setLibs } from '../../scripts/utils.js';
 const miloLibs = setLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
-const interactiveCss = await import('./interactive-elements.css', {
-  assert: { type: 'css' }
-  });
-document.adoptedStyleSheets = [interactiveCss.default];
 
 export function createPromptField(prompt, buttonText, mode, trackingValue = '') {
   const promptField = createTag('div', { id: 'promptbar', class: 'promptbar' });
   let promptInput = '';
-  if (mode !== 'genfill') {
-    promptInput = createTag('input', { class: 'promptText', id: 'promptinput', placeholder: `${prompt}`, autofocus: 'true', maxlength: '250' });
-  }
+  if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt}`, autofocus: 'true', maxlength: '250' });
   const promptButton = createTag('button', { class: 'con-button blue button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText}`);
 
   if (mode === 'light') {
@@ -23,9 +17,7 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
     promptButton.setAttribute('id', 'genfill');
     promptField.classList.remove('promptbar');
   }
-  if (mode !== 'genfill') {
-    promptField.append(promptInput);
-  }
+  if (mode !== 'genfill') promptField.append(promptInput);
   promptField.append(promptButton);
 
   const device = defineDeviceByScreenSize();
@@ -36,10 +28,10 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
 
 export function createEnticement(enticementDetail, mode) {
   const enticementDiv = createTag('div');
-  const svgImage = createTag('img', { class: 'enticementArrow', alt: '' });
+  const svgImage = createTag('img', { class: 'enticement-arrow', alt: '' });
   let arrowText;
   [arrowText, svgImage.src] = enticementDetail.split('|');
-  const enticementText = createTag('h2', { class: 'enticementText heading-l' }, arrowText);
+  const enticementText = createTag('h2', { class: 'enticement-text heading-l' }, arrowText);
   enticementDiv.append(enticementText, svgImage);
   if (mode === 'light') enticementText.classList.add('light');
   return enticementDiv;

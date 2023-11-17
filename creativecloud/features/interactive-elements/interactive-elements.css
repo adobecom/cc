@@ -2,15 +2,15 @@
   display: none
 }
 
-/*Firefly interactive components position */
-.fireflyPrompt {
+/* Firefly interactive components position */
+.firefly-prompt {
   position: absolute;
   top: 16px;
   margin-left: 16px;
   margin-right: 16px;
 }
 
-.genfillPromptBar {
+.genfill-promptbar {
   position: absolute;
   top: 24px;
   margin-left: 16px;
@@ -40,7 +40,7 @@
   border: 1px solid #323232;
 }
 
-.promptText {
+.prompt-text {
   max-width: calc(100% - 110px);
   cursor: text;
   outline: none;
@@ -57,44 +57,31 @@
   white-space: nowrap;
 }
 
-.promptText.light {
+.prompt-text.light {
   color: #DBDBDB;
   background: #111111;
 }
 
 /* Enticement */
-.enticementArrow {
-  display: none
+.enticement-arrow {
+  display: none;
 }
 
-.enticementText {
-  display: none
+.enticement-text {
+  display: none;
+  max-width: 30ch;
+}
+
+.enticement-text.light {
+color: #FFFFFF;
 }
 
 /* Selector Tray */
-button.options.selected {
-  background-color: #1473E6;
-  color: #FFFFFF;
-}
-
-/*div.options > :first-child{
-  background-color: #1473E6;
-  color: #FFFFFF;
-}
-
-div.options > :first-child > img{
-  filter: brightness(10);
-}*/
-
-button.options:hover {
-  border: 1px solid #1473E6;
-}
-
 div.options {
   border-radius: 4px;
   display: flex;
   background: #FFFFFF;
-  padding: 8px 8px 8px 8px;
+  padding: 8px;
   justify-content: space-between;
   width: auto;
 }
@@ -112,7 +99,7 @@ button.options {
   color: #2c2c2c;
   font-size: var(--type-body-xxs-size);
   line-height: var(--type-body-xxs-lh);
-  padding: 8px 8px 8px 8px;
+  padding: 8px;
   width: 100%;
   margin-right: 8px;
   font-weight: bold;
@@ -144,11 +131,20 @@ img.svgselected {
 }
 
 button.last-button {
-  margin-right: 0px;
+  margin-right: 0;
+}
+
+button.options.selected {
+  background-color: #1473E6;
+  color: #FFFFFF;
+}
+
+button.options:hover {
+  border: 1px solid #1473E6;
 }
 
 /* Genfill Prompt */
-div.genfillPrompt {
+div.genfill-prompt {
   position: absolute;
   bottom: 106px;
   margin-left: 16px;
@@ -157,12 +153,12 @@ div.genfillPrompt {
   color: #2c2c2c
 }
 
-div.genfillPrompt>p:first-child {
+div.genfill-prompt>p:first-child {
   margin-bottom: 8px;
   color: #2c2c2c;
 }
 
-.genfillPromptUsed {
+.genfill-promptused {
   background-color: gray;
   color: #FFFFFF;
   border-radius: 16px;
@@ -173,20 +169,19 @@ div.genfillPrompt>p:first-child {
   text-decoration: none;
   display: inline-block;
   width: auto;
-  margin-top: 0px;
+  margin-top: 0;
   border: 2px solid gray;
 }
 
 @media screen and (min-width: 1200px) {
-
-  /*Firefly interactive components position */
-  .fireflyPrompt {
+  /* Firefly interactive components position */
+  .firefly-prompt {
     top: 40px;
     margin-left: 40px;
     margin-right: 40px;
   }
 
-  .genfillPromptBar {
+  .genfill-promptbar {
     top: 56px;
     margin-left: 40px;
     height: 50px;
@@ -199,7 +194,7 @@ div.genfillPrompt>p:first-child {
     width: 441px;
   }
 
-  .promptText {
+  .prompt-text {
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
     min-width: calc(100% - 145px);
@@ -207,7 +202,7 @@ div.genfillPrompt>p:first-child {
   }
 
   /* Enticement */
-  .enticementArrow {
+  .enticement-arrow {
     width: 49px !important;
     height: 73px !important;
     position: absolute;
@@ -216,7 +211,7 @@ div.genfillPrompt>p:first-child {
     display: block;
   }
 
-  .enticementText {
+  .enticement-text {
     position: absolute;
     right: 345px;
     top: -60px;
@@ -226,44 +221,40 @@ div.genfillPrompt>p:first-child {
 
   }
 
-  .enticementText.light {
-    color: #FFFFFF;
-  }
-
   /* Selector Tray */
   button.options {
     margin-bottom: 16px;
-    padding: 16px 16px;
+    padding: 16px;
     width: 100%;
     min-height: 60px;
     flex-direction: row;
     justify-content: flex-start;
     font-size: var(--type-body-m-size);
     line-height: var(--type-body-m-lh);
-    margin-right: 0px;
+    margin-right: 0;
   }
 
   div.options {
     display: flex;
     flex-direction: column;
     width: auto;
-    padding: 16px 16px 16px 16px;
+    padding: 16px;
     bottom: inherit;
     justify-content: center;
     align-items: center;
   }
 
   button.last-button {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   img.optionsvg {
     width: 40px;
     min-height: 40px;
     display: inline;
-    margin-left: 0px;
+    margin-left: 0;
     margin-right: 16px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   .button-text {
@@ -272,14 +263,14 @@ div.genfillPrompt>p:first-child {
   }
 
   /* Genfill prompt */
-  div.genfillPrompt {
+  div.genfill-prompt {
     bottom: 46px;
     margin-left: 40px;
     font-size: var(--type-body-s-size);
     line-height: var(--type-body-s-lh);
   }
 
-  .genfillPromptUsed {
+  .genfill-promptused {
     border-radius: 20px;
     font-size: 17px;
     line-height: 20px;
@@ -289,22 +280,21 @@ div.genfillPrompt>p:first-child {
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {
-
-  /*Firefly interactive components position */
-  .fireflyPrompt {
+  /* Firefly interactive components position */
+  .firefly-prompt {
     top: 32px;
     margin-left: 32px;
     margin-right: 32px;
   }
 
-  .genfillPromptBar {
+  .genfill-promptbar {
     top: 40px;
     margin-left: 32px;
     height: 40px;
   }
 
-  .fireflySelectorTray {
-    top: 0px;
+  .firefly-selectortray {
+    top: 0;
     margin-left: 42px;
     margin-right: 42px;
     width: 80%;
@@ -317,14 +307,14 @@ div.genfillPrompt>p:first-child {
     width: 465px;
   }
 
-  .promptText {
+  .prompt-text {
     min-width: calc(100% - 126px);
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
   }
 
-  /*Enticement */
-  .enticementArrow {
+  /* Enticement */
+  .enticement-arrow {
     width: 49px !important;
     height: 73px !important;
     position: absolute;
@@ -333,7 +323,7 @@ div.genfillPrompt>p:first-child {
     display: block;
   }
 
-  .enticementText {
+  .enticement-text {
     position: absolute;
     right: 345px;
     top: -60px;
@@ -343,19 +333,19 @@ div.genfillPrompt>p:first-child {
 
   }
 
-  .enticementText.light {
+  .enticement-text.light {
     color: #FFFFFF;
   }
 
-  /* Genfill Prompt*/
-  div.genfillPrompt {
+  /* Genfill Prompt */
+  div.genfill-prompt {
     bottom: 145px;
     margin-left: 32px;
     font-size: var(--type-body-s-size);
     line-height: var(--type-body-s-lh);
   }
 
-  .genfillPromptUsed {
+  .genfill-promptused {
     border-radius: 20px;
     font-size: 17px;
     line-height: 20px;
@@ -366,7 +356,7 @@ div.genfillPrompt>p:first-child {
   /* Selector Tray */
   button.options {
     margin-right: 16px;
-    padding: 8px 8px 8px 8px;
+    padding: 8px;
     min-height: 49px;
     flex-direction: column;
     justify-content: flex-start;
@@ -380,19 +370,19 @@ div.genfillPrompt>p:first-child {
     display: flex;
     flex-direction: row;
     height: 65px;
-    padding: 16px 16px 16px 16px;
+    padding: 16px;
     bottom: inherit;
   }
 
   img.optionsvg {
-    margin-right: 8px;
+    //margin-right: 8px;
     display: block;
     margin-left: auto;
     margin-right: auto;
   }
 
   button.last-button {
-    margin-right: 0px;
+    margin-right: 0;
   }
 
   .button-text {
@@ -406,9 +396,8 @@ div.genfillPrompt>p:first-child {
 }
 
 @media (max-width: 600px) {
-
   /* Selector Tray */
-  .fireflySelectorTray {
+  .firefly-selectortray {
     min-width: 110%;
     margin-left: -22px;
     margin-right: 16px;
@@ -428,7 +417,7 @@ div.genfillPrompt>p:first-child {
 
 /* Selector Tray poition for firefly marquee */
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
-  .fireflySelectorTray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: calc(50% - 370px);
@@ -436,7 +425,7 @@ div.genfillPrompt>p:first-child {
 }
 
 @media screen and (max-width: 1649px) and (min-width: 1438px) {
-  .fireflySelectorTray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: calc(50% - 320px);
@@ -444,7 +433,7 @@ div.genfillPrompt>p:first-child {
 }
 
 @media screen and (max-width: 1437px) and (min-width: 1200px) {
-  .fireflySelectorTray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: calc(50% - 280px);
@@ -452,7 +441,7 @@ div.genfillPrompt>p:first-child {
 }
 
 @media screen and (min-width: 1800px) {
-  .fireflySelectorTray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: calc(50% - 407px);

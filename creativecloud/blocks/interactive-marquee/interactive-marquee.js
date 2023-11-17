@@ -76,6 +76,7 @@ export default async function init(el) {
   switch (true) {
     case el.classList.contains('firefly'): {
       interactiveInit(el);
+      loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
       const { default: setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
       setInteractiveFirefly(el);
       break;
