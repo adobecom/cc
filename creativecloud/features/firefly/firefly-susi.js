@@ -1,7 +1,8 @@
 import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
-const { config } = await import(`${miloLibs}/utils/utils.js`);
+const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const config = getConfig();
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
 const env = window.origin.includes(config.prodDomains[1]) ? 'prod' : 'stage';
