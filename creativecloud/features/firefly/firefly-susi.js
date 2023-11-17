@@ -33,10 +33,9 @@ export const signIn = (prompt, paramKey) => {
     url.searchParams.set('modelInputVersion', 'v2');
     url.searchParams.set('modelConfig', 'v2');
   }
-  if (env === 'stage') {
-    window.adobeIMS?.signIn({ dctx_id: 'v:2,s,f,bg:firefly2023,2e2b3d80-4e50-11ee-acbc-ab67eaa89524', redirect_uri: url.href });
-  } else {
-    window.adobeIMS?.signIn({ dctx_id: 'v:2,s,f,bg:firefly2023,cea19bc0-4e72-11ee-888a-c95a795c7f23', redirect_uri: url.href });
-  }
+  const stageSigninObj = { dctx_id: 'v:2,s,f,bg:firefly2023,2e2b3d80-4e50-11ee-acbc-ab67eaa89524', redirect_uri: url.href };
+  const prodSigninObj = { dctx_id: 'v:2,s,f,bg:firefly2023,cea19bc0-4e72-11ee-888a-c95a795c7f23', redirect_uri: url.href };
+  if (env === 'stage') window.adobeIMS?.signIn(stageSigninObj);
+  else window.adobeIMS?.signIn(prodSigninObj);
   redirectWithParam();
 };

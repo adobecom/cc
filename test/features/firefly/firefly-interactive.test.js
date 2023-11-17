@@ -12,7 +12,7 @@ describe('firefly-marquee', async () => {
   });
 
   it('Prompt should should be placed at proper place in interactive container', () => {
-    const fireflypromptbar = document.querySelector('.fireflyPrompt');
+    const fireflypromptbar = document.querySelector('.firefly-prompt');
     expect(fireflypromptbar).to.exist;
   });
 
@@ -22,13 +22,13 @@ describe('firefly-marquee', async () => {
   });
 
   it('Interactive selector should be placed at proper place in interactive container', () => {
-    const fireflyselector = document.querySelector('.fireflySelectorTray');
+    const fireflyselector = document.querySelector('.firefly-selectortray');
     expect(fireflyselector).to.exist;
   });
 
   it('Enticement should exist', () => {
-    const enticementText = document.querySelector('.enticementText');
-    const enticementArrow = document.querySelector('.enticementArrow');
+    const enticementText = document.querySelector('.enticement-text');
+    const enticementArrow = document.querySelector('.enticement-arrow');
     expect(enticementText).to.exist;
     expect(enticementArrow).to.exist;
   });

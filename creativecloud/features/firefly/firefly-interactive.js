@@ -6,6 +6,7 @@ const { createSelectorTray, createEnticement, createPromptField } = await import
 
 let interactiveElemsText;
 let media;
+
 function eventOnGenerate(generateButton) {
   const btnConfigs = {
     TextToImage: ['SubmitTextToImage', 'SubmitTextToImageUserContent', 'goToFirefly'],
@@ -18,7 +19,7 @@ function eventOnGenerate(generateButton) {
     const selected = media.querySelector('.selected');
     if (Object.keys(btnConfigs).includes(selected.id)) {
       const btnConfig = btnConfigs[selected.id];
-      const dall = userprompt === '' ? btnConfig[0] : btnConfig[1];
+      const dall = userprompt === undefined || userprompt === '' ? btnConfig[0] : btnConfig[1];
       e.target.setAttribute('daa-ll', dall);
       const { signIn } = await import('./firefly-susi.js');
       signIn(prompt, btnConfig[2]);
