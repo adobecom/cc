@@ -80,7 +80,7 @@
 }
 
 /* Selector Tray */
-div.selector-tray {
+.selector-tray {
   border-radius: 4px;
   display: flex;
   background: #FFFFFF;
@@ -89,11 +89,11 @@ div.selector-tray {
   width: auto;
 }
 
-div.selector-tray.light {
+.selector-tray.light {
   background: #111111;
 }
 
-button.options {
+.options {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -109,13 +109,13 @@ button.options {
   background: #FFFFFF;
 }
 
-button.options.light {
+.options.light {
   border: 1px solid #6D6D6D;
   color: #DBDBDB;
   background: #111111;
 }
 
-img.optionsvg {
+.optionsvg {
   width: 20px;
   min-height: 20px;
   display: block;
@@ -124,7 +124,7 @@ img.optionsvg {
   margin-bottom: 8px;
 }
 
-img.svgselected {
+.svgselected {
   filter: brightness(10);
 }
 
@@ -133,21 +133,21 @@ img.svgselected {
   max-width: 15ch;
 }
 
-button.last-button {
+.options.last-button {
   margin-right: 0;
 }
 
-button.options.selected {
+.options.selected {
   background-color: #1473E6;
   color: #FFFFFF;
 }
 
-button.options:hover {
+.options:hover {
   border: 1px solid #1473E6;
 }
 
 /* Genfill Prompt */
-div.genfill-prompt {
+.genfill-prompt {
   position: absolute;
   bottom: 106px;
   margin-left: 16px;
@@ -156,7 +156,7 @@ div.genfill-prompt {
   color: #2c2c2c
 }
 
-div.genfill-prompt>p:first-child {
+.genfill-prompt>p:first-child {
   margin-bottom: 8px;
   color: #2c2c2c;
 }
@@ -230,7 +230,7 @@ div.genfill-prompt>p:first-child {
     margin-right: 0;
   }
 
-  div.selector-tray {
+  .selector-tray {
     display: flex;
     flex-direction: column;
     width: auto;
@@ -240,11 +240,11 @@ div.genfill-prompt>p:first-child {
     align-items: center;
   }
 
-  button.last-button {
+  .options.last-button {
     margin-bottom: 0;
   }
 
-  img.optionsvg {
+  .optionsvg {
     width: 40px;
     min-height: 40px;
     display: inline;
@@ -259,7 +259,7 @@ div.genfill-prompt>p:first-child {
   }
 
   /* Genfill prompt */
-  div.genfill-prompt {
+  .genfill-prompt {
     bottom: 46px;
     margin-left: 40px;
     font-size: var(--type-body-s-size);
@@ -323,7 +323,7 @@ div.genfill-prompt>p:first-child {
   }
 
   /* Genfill Prompt */
-  div.genfill-prompt {
+  .genfill-prompt {
     bottom: 145px;
     margin-left: 32px;
     font-size: var(--type-body-s-size);
@@ -339,7 +339,7 @@ div.genfill-prompt>p:first-child {
   }
 
   /* Selector Tray */
-  button.options {
+  .options {
     margin-right: 16px;
     padding: 8px;
     min-height: 49px;
@@ -351,7 +351,7 @@ div.genfill-prompt>p:first-child {
     max-width: 18ch;
   }
 
-  div.selector-tray {
+  .selector-tray {
     display: flex;
     flex-direction: row;
     height: 65px;
@@ -359,13 +359,13 @@ div.genfill-prompt>p:first-child {
     bottom: inherit;
   }
 
-  img.optionsvg {
+  .optionsvg {
     display: block;
     margin-left: auto;
     margin-right: auto;
   }
 
-  button.last-button {
+  .options.last-button {
     margin-right: 0;
   }
 
