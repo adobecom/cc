@@ -38,7 +38,7 @@ export function createEnticement(enticementDetail, mode) {
 }
 
 export function createSelectorTray(interactiveSelections, mode) {
-  const options = createTag('div', { class: 'options' });
+  const options = createTag('div', { class: 'selector-tray' });
   [...interactiveSelections].forEach(async (option) => {
     const button = createTag('button', { class: 'options', id: `${option.id}`, 'daa-ll': `${option.analytics}` });
     const span = createTag('span', { class: 'button-text' }, `${option.text}`);

@@ -30,7 +30,6 @@
   display: flex;
   padding: 7px 7px 7px 12px;
   border: 1px solid #E6E6E6;
-  display: flex;
   justify-content: space-between;
   width: 248px;
 }
@@ -48,10 +47,8 @@
   background: #FFFFFF;
   display: flex;
   border: none;
-  outline: none;
   font-size: var(--type-body-s-size);
   line-height: var(--type-body-s-lh);
-  overflow-x: hidden;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -65,19 +62,25 @@
 /* Enticement */
 .enticement-arrow {
   display: none;
+  width: 49px !important;
+  height: 73px !important;
+  position: absolute;
 }
 
 .enticement-text {
   display: none;
   max-width: 30ch;
+  position: absolute;
+  color: #000000;
+  width: 240px;
 }
 
 .enticement-text.light {
-color: #FFFFFF;
+  color: #FFFFFF;
 }
 
 /* Selector Tray */
-div.options {
+div.selector-tray {
   border-radius: 4px;
   display: flex;
   background: #FFFFFF;
@@ -86,7 +89,7 @@ div.options {
   width: auto;
 }
 
-div.options.light {
+div.selector-tray.light {
   background: #111111;
 }
 
@@ -198,26 +201,19 @@ div.genfill-prompt>p:first-child {
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
     min-width: calc(100% - 145px);
-    text-overflow: ellipsis;
   }
 
   /* Enticement */
   .enticement-arrow {
-    width: 49px !important;
-    height: 73px !important;
-    position: absolute;
     right: 575px;
     top: -45px;
     display: block;
   }
 
   .enticement-text {
-    position: absolute;
     right: 345px;
     top: -60px;
-    width: 240px;
     display: block;
-    color: #000000;
 
   }
 
@@ -234,7 +230,7 @@ div.genfill-prompt>p:first-child {
     margin-right: 0;
   }
 
-  div.options {
+  div.selector-tray {
     display: flex;
     flex-direction: column;
     width: auto;
@@ -314,27 +310,16 @@ div.genfill-prompt>p:first-child {
   }
 
   /* Enticement */
-  .enticement-arrow {
-    width: 49px !important;
-    height: 73px !important;
-    position: absolute;
+  .enticement-arrow {    
     right: 575px;
     top: -45px;
     display: block;
   }
 
   .enticement-text {
-    position: absolute;
     right: 345px;
     top: -60px;
-    width: 240px;
     display: block;
-    color: #111111;
-
-  }
-
-  .enticement-text.light {
-    color: #FFFFFF;
   }
 
   /* Genfill Prompt */
@@ -366,7 +351,7 @@ div.genfill-prompt>p:first-child {
     max-width: 18ch;
   }
 
-  div.options {
+  div.selector-tray {
     display: flex;
     flex-direction: row;
     height: 65px;
@@ -375,7 +360,6 @@ div.genfill-prompt>p:first-child {
   }
 
   img.optionsvg {
-    //margin-right: 8px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -415,7 +399,7 @@ div.genfill-prompt>p:first-child {
   }
 }
 
-/* Selector Tray poition for firefly marquee */
+/* Selector Tray position for firefly marquee */
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
   .firefly-selectortray {
     top: 144px;
