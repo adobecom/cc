@@ -80,7 +80,6 @@ export default function setInteractiveFirefly(el) {
   // Set InteractiveSelection
   const selections = [];
   let j = 4;
-  let k = 0;
   for (let i = 3; i <= allP.length - 3; i += 6) {
     const optionPromptMode = allP[j].innerText.split('(')[1]?.replaceAll(')', '');
     const selectorValues = allP[i].innerText.split('|');
@@ -89,12 +88,10 @@ export default function setInteractiveFirefly(el) {
       text: `${selectorValues[1]}`,
       svg: `${selectorValues[2]}`,
       analytics: `Select${selectorValues[0]}`,
-      mediapos: k,
       promptmode: `${optionPromptMode}`,
       promptpos: i + 2,
     };
     j += 6;
-    k += 1;
     selections.push(option);
   }
   const textToImageDetail = {};
