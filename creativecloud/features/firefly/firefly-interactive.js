@@ -66,32 +66,35 @@ export default function setInteractiveFirefly(el) {
   [...buttons].forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
   media = el.querySelector('.media');
   const allP = media.querySelectorAll('p:not(:empty)');
+  const allAnchorTag = media.querySelectorAll('a');
   [...allP].forEach((s) => { if (!s.querySelector('picture') && !s.querySelector('video'))s.remove(); });
   mediaP = media.querySelectorAll('p:not(:empty');
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
-  const selectorTrayMode = allP[2].innerText.split('(')[1]?.replaceAll(')', '');
+  const selectorTrayMode = allP[3].innerText.split('(')[1]?.replaceAll(')', '');
 
   // Set Enticement
-  const enticement = media.querySelector('h2');
-  const enticementDiv = createEnticement(enticement.innerText, enticementMode);
-  enticement.classList.add('hide');
+  const enticementText = allAnchorTag[0].textContent.trim();
+  const enticementIcon = allAnchorTag[0].href;
+  const enticementDiv = createEnticement(`${enticementText}|${enticementIcon}`, enticementMode);
   media.appendChild(enticementDiv, media.firstChild);
 
   // Set InteractiveSelection
   const selections = [];
-  let j = 4;
-  for (let i = 3; i <= allP.length - 3; i += 6) {
+  let j = 5;
+  let k = 1;
+  for (let i = 4; i <= allP.length - 3; i += 6) {
     const optionPromptMode = allP[j].innerText.split('(')[1]?.replaceAll(')', '');
     const selectorValues = allP[i].innerText.split('|');
     const option = {
       id: `${selectorValues[0]}`,
-      text: `${selectorValues[1]}`,
-      svg: `${selectorValues[2]}`,
+      text: `${allAnchorTag[k].textContent.trim()}`,
+      svg: `${allAnchorTag[k].href}`,
       analytics: `Select${selectorValues[0]}`,
       promptmode: `${optionPromptMode}`,
       promptpos: i + 2,
     };
     j += 6;
+    k += 1;
     selections.push(option);
   }
   const textToImageDetail = {};
@@ -125,8 +128,8 @@ export default function setInteractiveFirefly(el) {
 
   // Create prompt field for first option on page load
   let fireflyPrompt = '';
-  const firstOptionDetail = allP[5].innerText.split('|');
-  const firstOptionPromptMode = allP[4].innerText.split('(')[1]?.replaceAll(')', '');
+  const firstOptionDetail = allP[6].innerText.split('|');
+  const firstOptionPromptMode = allP[5].innerText.split('(')[1]?.replaceAll(')', '');
   fireflyPrompt = createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, firstOptionPromptMode);
   if (firstOption.getAttribute('id') === 'TextToImage' || firstOption.getAttribute('id') === 'TextEffects') {
     fireflyPrompt.classList.add('firefly-prompt');
