@@ -37,6 +37,8 @@ function createGenFillPrompt(element) {
 }
 
 function hideRemoveElements(option) {
+  media.querySelector('#promptbar')?.remove();
+  media.querySelector('.genfill-prompt')?.remove();
   const selector = media.querySelector('.firefly-selectortray');
   let i = 0;
   [...selector.childNodes].forEach((el) => {
@@ -51,14 +53,6 @@ function hideRemoveElements(option) {
     }
     i += 1;
   });
-  if (option.id === 'TextToImage' || option.id === 'TextEffects') {
-    media.querySelector('.genfill-prompt')?.remove();
-    media.querySelector('#tryGenFill')?.remove();
-    media.querySelector('#genfill')?.remove();
-    media.querySelector('#promptbar')?.remove();
-  } else if (option.id === 'GenerativeFill') {
-    media.querySelector('#promptbar')?.remove();
-  }
 }
 
 export default function setInteractiveFirefly(el) {
