@@ -44,7 +44,8 @@ function createGroups(vp, current, swatchArr, srcArr) {
     });
   } else if (srcArr) {
     obj.options = [];
-    srcArr.forEach((src) => {
+    srcArr.forEach((textsrc) => {
+      const src = textsrc.trim();
       const optionObj = { src };
       obj.options.push(optionObj);
     });
@@ -52,7 +53,9 @@ function createGroups(vp, current, swatchArr, srcArr) {
   customElem.config[vp].groups.push(obj);
 }
 
-export default function changeBg(el) {
+export default async function changeBg(el) {
+  const { default: debug } = await import('./author-feedback.js');
+  debug(el);
   const layers = ['defaultBgSrc', 'marqueeTitleImgSrc', 'talentSrc'];
   const layerRows = [...el.querySelectorAll(':scope > div')];
   ['mobile', 'tablet', 'desktop'].forEach((vp, vi) => {
