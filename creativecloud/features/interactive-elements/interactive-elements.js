@@ -9,7 +9,6 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
   let promptInput = '';
   if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt}`, autofocus: 'true', maxlength: '250' });
   const promptButton = createTag('button', { class: 'con-button blue button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText}`);
-
   if (mode === 'light') {
     promptField.classList.add('light');
     promptInput.classList.add('light');
@@ -20,6 +19,12 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
   if (mode !== 'genfill') promptField.append(promptInput);
   promptField.append(promptButton);
 
+  promptInput.addEventListener('keydown', (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      promptButton.click();
+    }
+  });
   const device = defineDeviceByScreenSize();
   if (device === 'TABLET') promptButton.classList.add('button-l');
   else if (device === 'DESKTOP') promptButton.classList.add('button-xl');
