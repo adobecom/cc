@@ -1,0 +1,113 @@
+.hide {
+  display: none
+}
+
+/* Firefly interactive components position */
+.firefly-prompt {
+  position: absolute;
+  top: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.genfill-promptbar {
+  position: absolute;
+  top: 24px;
+  margin-left: 16px;
+  height: 30px;
+  display: flex;
+}
+
+.interactive-marquee .media {
+  top: 72px;
+}
+
+@media screen and (min-width: 1200px) {
+  /* Firefly interactive components position */
+  .firefly-prompt {
+    top: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .genfill-promptbar {
+    top: 56px;
+    margin-left: 40px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1199px) {
+  /* Firefly interactive components position */
+  .firefly-prompt {
+    top: 32px;
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+
+  .genfill-promptbar {
+    top: 40px;
+    margin-left: 32px;
+    height: 40px;
+  }
+
+  .firefly-selectortray {
+    top: 0;
+    margin-left: 42px;
+    margin-right: 42px;
+    width: 80%;
+  }
+
+  .interactive-marquee .text {
+    margin: 122px 0 0 auto;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Selector Tray */
+  .firefly-selectortray {
+    min-width: 110%;
+    margin-left: -22px;
+    margin-right: 16px;
+    justify-content: center;
+    margin-top: -8px;
+  }
+
+  .interactive-marquee .text {
+    margin: 106px 0 0 auto;
+  }
+}
+
+/* Selector Tray position for firefly marquee */
+@media screen and (max-width: 1799px) and (min-width: 1650px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 370px);
+  }
+}
+
+@media screen and (max-width: 1649px) and (min-width: 1438px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 320px);
+  }
+}
+
+@media screen and (max-width: 1437px) and (min-width: 1200px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 280px);
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 407px);
+  }
+}
+

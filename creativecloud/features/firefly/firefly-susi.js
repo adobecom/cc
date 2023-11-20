@@ -5,7 +5,7 @@ const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
 const config = getConfig();
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
-const env = window.origin.includes(config.prodDomains[1]) ? 'prod' : 'stage';
+const env = window.origin.includes(config.prodDomains[0]) ? 'prod' : 'stage';
 
 export function redirectWithParam() {
   const url = new URL(window.location.href);
