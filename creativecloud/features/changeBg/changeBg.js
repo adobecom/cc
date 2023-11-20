@@ -44,8 +44,7 @@ function createGroups(vp, current, swatchArr, srcArr) {
     });
   } else if (srcArr) {
     obj.options = [];
-    srcArr.forEach((textsrc) => {
-      const src = textsrc.trim();
+    srcArr.forEach((src) => {
       const optionObj = { src };
       obj.options.push(optionObj);
     });
@@ -54,8 +53,11 @@ function createGroups(vp, current, swatchArr, srcArr) {
 }
 
 export default async function changeBg(el) {
-  const { default: debug } = await import('./author-feedback.js');
-  debug(el);
+  const { default: CONFIG } = await import('../../scripts/scripts.js');
+  if (window.location.host !== CONFIG.prodDomains[0]) {
+    const { default: debug } = await import('./author-feedback.js');
+    debug(el);
+  }
   const layers = ['defaultBgSrc', 'marqueeTitleImgSrc', 'talentSrc'];
   const layerRows = [...el.querySelectorAll(':scope > div')];
   ['mobile', 'tablet', 'desktop'].forEach((vp, vi) => {
