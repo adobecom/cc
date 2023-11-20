@@ -51,7 +51,7 @@ function analyze(el) {
         return;
       }
 
-      if (dimensions[colIdx] && (pictures.length == 0)) {
+      if (dimensions[colIdx] && (pictures.length === 0)) {
         console.log(`expected an image in row ${rowIdx}, col ${colIdx}`);
         return;
       }
@@ -89,10 +89,10 @@ function analyze(el) {
   });
 
   // check Enticement
-  enticement.forEach((el, id) => {
-    checkExnticement(rowID, el);
+  enticement.forEach((ele) => {
+    checkExnticement(rowID, ele);
     rowID += 1;
-  })
+  });
 
   while (rowID < rows.length) {
     let temprowid = rowID;
