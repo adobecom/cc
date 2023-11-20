@@ -16,15 +16,16 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
     promptButton.setAttribute('id', 'genfill');
     promptField.classList.remove('promptbar');
   }
-  if (mode !== 'genfill') promptField.append(promptInput);
+  if (mode !== 'genfill') {
+    promptField.append(promptInput);
+    promptInput.addEventListener('keydown', (event) => {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        promptButton.click();
+      }
+    });
+  }
   promptField.append(promptButton);
-
-  promptInput.addEventListener('keydown', (event) => {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      promptButton.click();
-    }
-  });
   const device = defineDeviceByScreenSize();
   if (device === 'TABLET') promptButton.classList.add('button-l');
   else if (device === 'DESKTOP') promptButton.classList.add('button-xl');
