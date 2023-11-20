@@ -7,6 +7,10 @@ const { createSelectorTray, createEnticement, createPromptField } = await import
 let media;
 let mediaP;
 
+function focusOnInput() {
+  media.querySelector('#promptinput')?.focus();
+}
+
 function eventOnGenerate(generateButton) {
   const btnConfigs = {
     TextToImage: ['SubmitTextToImage', 'SubmitTextToImageUserContent', 'goToFirefly'],
@@ -150,6 +154,7 @@ export default function setInteractiveFirefly(el) {
     media.appendChild(textToImagePrompt);
     const generateButton = media.querySelector('#promptbutton');
     eventOnGenerate(generateButton);
+    focusOnInput();
   });
 
   generativeFillButton.addEventListener('click', () => {
@@ -174,5 +179,6 @@ export default function setInteractiveFirefly(el) {
     media.appendChild(textEffectPrompt);
     const generateButton = media.querySelector('#promptbutton');
     eventOnGenerate(generateButton);
+    focusOnInput();
   });
 }
