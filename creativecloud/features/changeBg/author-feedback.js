@@ -24,7 +24,6 @@ function analyze(el) {
       colors.forEach((color) => {
         if (!color.match(/^#[0-9A-Fa-f]{6}$/)) {
           console.log(`bad color format at row ${rowIdx}; format should be #rrggbb, found '${color}'`);
-          return;
         }
       });
     });
