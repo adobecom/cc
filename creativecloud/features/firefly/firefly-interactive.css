@@ -30,7 +30,7 @@
   top: 72px;
 }
 
-.interactive-marquee .media img,
+.interactive-marquee .media picture img,
 .interactive-marquee .media video {
   border-radius: 16px;
 }
