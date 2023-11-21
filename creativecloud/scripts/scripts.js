@@ -152,12 +152,13 @@ const miloLibs = setLibs(LIBS);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
   await loadArea();
-  await loadIms();
-  if (window.adobeIMS?.isSignedInUser()
-    && (window.location.search.includes('goToFirefly')
-    || window.location.search.includes('goToFireflyEffects')
-    || window.location.search.includes('goToFireflyGenFill'))) {
-    const { redirectWithParam } = await import('../features/firefly/firefly-susi.js');
-    redirectWithParam();
+  if ((window.location.search.includes('goToFirefly')
+  || window.location.search.includes('goToFireflyEffects')
+  || window.location.search.includes('goToFireflyGenFill'))) {
+    await loadIms();
+    if (window.adobeIMS?.isSignedInUser()) {
+      const { redirectWithParam } = await import('../features/firefly/firefly-susi.js');
+      redirectWithParam();
+    }
   }
 }());
