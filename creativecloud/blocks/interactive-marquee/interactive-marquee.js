@@ -74,6 +74,12 @@ function interactiveInit(el) {
 
 export default async function init(el) {
   switch (true) {
+    case el.classList.contains('genfill'): {
+      interactiveInit(el);
+      const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
+      decorateGenfill(el);
+      break;
+    }
     case el.classList.contains('firefly'): {
       interactiveInit(el);
       loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');

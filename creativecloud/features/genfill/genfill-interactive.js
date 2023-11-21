@@ -39,13 +39,13 @@ function handleClick(pics) {
 }
 
 function addEnticement(container, enticement, mode) {
-  const enticementElement = createEnticement(enticement.innerText, mode);
-  enticementElement.classList.add('enticement');
-  const n = container.children.length;
-  const desktopMedia = container.querySelector('.desktop-media');
-  const tabletMedia = (n > 2) ? container.querySelector('.tablet-media') : null;
-  desktopMedia.insertBefore(enticementElement, desktopMedia.firstElementChild);
-  tabletMedia?.insertBefore(enticementElement.cloneNode(true), tabletMedia.firstElementChild);
+const enticementElement = createEnticement(enticement.innerText, mode);
+enticementElement.classList.add('enticement');
+const n = container.children.length;
+const desktopMedia = container.querySelector('.desktop-media');
+const tabletMedia = (n > 2) ? container.querySelector('.tablet-media') : null;
+desktopMedia.insertBefore(enticementElement, desktopMedia.firstElementChild);
+tabletMedia?.insertBefore(enticementElement.cloneNode(true), tabletMedia.firstElementChild);
 }
 
 function getDeviceByScreenSize() {
