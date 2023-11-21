@@ -148,10 +148,11 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, loadIms } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
   await loadArea();
+  await loadIms();
   if (window.adobeIMS?.isSignedInUser()
     && (window.location.search.includes('goToFirefly')
     || window.location.search.includes('goToFireflyEffects')
