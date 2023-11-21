@@ -2,6 +2,14 @@
   display: none
 }
 
+.prompt-text::placeholder {
+  color: #2c2c2c;
+}
+
+.prompt-text.light::placeholder {
+  color: #FFFFFF;
+}
+
 /* Firefly interactive components position */
 .firefly-prompt {
   position: absolute;
@@ -20,6 +28,11 @@
 
 .interactive-marquee .media {
   top: 72px;
+}
+
+.interactive-marquee .media img,
+.interactive-marquee .media video {
+  border-radius: 16px;
 }
 
 @media screen and (min-width: 1200px) {
