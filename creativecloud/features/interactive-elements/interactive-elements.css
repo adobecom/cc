@@ -4,7 +4,10 @@
   background: #FFFFFF;
   border-radius: 40px;
   display: flex;
-  padding: 7px 7px 7px 12px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-inline-start: 12px;
+  padding-inline-end: 7px;
   border: 1px solid #E6E6E6;
   justify-content: space-between;
   width: 247px;
@@ -81,7 +84,7 @@
   line-height: var(--type-body-xxs-lh);
   padding: 8px;
   width: 100%;
-  margin-right: 8px;
+  margin-inline-end: 8px;
   font-weight: bold;
   background: #FFFFFF;
 }
@@ -96,8 +99,8 @@
   width: 20px;
   min-height: 20px;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline-end: auto;
+  margin-inline-start: auto;
   margin-bottom: 8px;
 }
 
@@ -111,7 +114,7 @@
 }
 
 .options.last-button {
-  margin-right: 0;
+  margin-inline-end: 0;
 }
 
 .options.selected {
@@ -127,7 +130,7 @@
 .genfill-prompt {
   position: absolute;
   bottom: 106px;
-  margin-left: 16px;
+  margin-inline-start: 16px;
   font-size: var(--type-body-xs-size);
   line-height: var(--type-body-xs-lh);
   color: #2c2c2c
@@ -157,7 +160,8 @@
   /* Prompt Bar */
   .promptbar {
     height: 50px;
-    padding: 7px 7px 7px 40px;
+    padding-inline-start: 40px;
+    padding-inline-end: 7px;
     width: 440px;
   }
 
@@ -178,7 +182,10 @@
     right: 345px;
     top: -100px;
     display: block;
+  }
 
+  [dir="rtl"] .enticement-text {
+    right: 510px;
   }
 
   /* Selector Tray */
@@ -191,7 +198,7 @@
     justify-content: flex-start;
     font-size: var(--type-body-m-size);
     line-height: var(--type-body-m-lh);
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 
   .selector-tray {
@@ -212,8 +219,8 @@
     width: 40px;
     min-height: 40px;
     display: inline;
-    margin-left: 0;
-    margin-right: 16px;
+    margin-inline-start: 0;
+    margin-inline-end: 16px;
     margin-bottom: 0;
   }
 
@@ -225,7 +232,7 @@
   /* Genfill prompt */
   .genfill-prompt {
     bottom: 46px;
-    margin-left: 40px;
+    margin-inline-start: 40px;
     font-size: var(--type-body-s-size);
     line-height: var(--type-body-s-lh);
   }
@@ -243,7 +250,8 @@
   /* Prompt Bar */
   .promptbar {
     height: 40px;
-    padding: 7px 7px 7px 32px;
+    padding-inline-start: 32px;
+    padding-inline-end: 7px;
     width: 464px;
   }
 
@@ -266,10 +274,14 @@
     display: block;
   }
 
+  [dir="rtl"] .enticement-text {
+    right: 380px;
+  }
+
   /* Genfill Prompt */
   .genfill-prompt {
     bottom: 145px;
-    margin-left: 32px;
+    margin-inline-start: 32px;
     font-size: var(--type-body-s-size);
     line-height: var(--type-body-s-lh);
   }
@@ -284,7 +296,7 @@
 
   /* Selector Tray */
   .options {
-    margin-right: 16px;
+    margin-inline-end: 16px;
     padding: 8px;
     min-height: 49px;
     flex-direction: column;
@@ -305,12 +317,12 @@
 
   .optionsvg {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
   }
 
   .options.last-button {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 
   .button-text {

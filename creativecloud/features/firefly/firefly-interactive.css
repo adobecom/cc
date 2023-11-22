@@ -7,21 +7,20 @@
 }
 
 .prompt-text.light::placeholder {
-  color: #FFFFFF;
+  color: #dbdbdb;
 }
 
-/* Firefly interactive components position */
 .firefly-prompt {
   position: absolute;
   top: 16px;
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-inline-start: 16px;
+  margin-inline-end: 16px;
 }
 
 .genfill-promptbar {
   position: absolute;
   top: 24px;
-  margin-left: 16px;
+  margin-inline-start: 16px;
   height: 30px;
   display: flex;
 }
@@ -36,38 +35,36 @@
 }
 
 @media screen and (min-width: 1200px) {
-  /* Firefly interactive components position */
   .firefly-prompt {
     top: 40px;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
   }
 
   .genfill-promptbar {
     top: 56px;
-    margin-left: 40px;
+    margin-inline-start: 40px;
     height: 50px;
   }
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {
-  /* Firefly interactive components position */
   .firefly-prompt {
     top: 32px;
-    margin-left: 32px;
-    margin-right: 32px;
+    margin-inline-start: 32px;
+    margin-inline-end: 32px;
   }
 
   .genfill-promptbar {
     top: 40px;
-    margin-left: 32px;
+    margin-inline-start: 32px;
     height: 40px;
   }
 
   .firefly-selectortray {
     top: 0;
-    margin-left: 42px;
-    margin-right: 42px;
+    margin-inline-start: 42px;
+    margin-inline-end: 42px;
     width: 80%;
   }
 
@@ -77,11 +74,10 @@
 }
 
 @media (max-width: 600px) {
-  /* Selector Tray */
   .firefly-selectortray {
     min-width: 110%;
-    margin-left: -22px;
-    margin-right: 16px;
+    margin-inline-start: -22px;
+    margin-inline-end: 16px;
     justify-content: center;
     margin-top: -8px;
   }
@@ -91,7 +87,6 @@
   }
 }
 
-/* Selector Tray position for firefly marquee */
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
   .firefly-selectortray {
     top: 144px;
