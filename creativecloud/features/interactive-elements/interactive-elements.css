@@ -16,7 +16,7 @@
 }
 
 .prompt-text {
-  max-width: 142px;
+  width: 142px;
   outline: none;
   color: #2c2c2c;
   background: #FFFFFF;
@@ -162,7 +162,7 @@
   .prompt-text {
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
-    min-width: 294px;
+    width: 294px;
   }
 
   /* Enticement */
@@ -246,7 +246,7 @@
   }
 
   .prompt-text {
-    min-width: 325px;
+    width: 325px;
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
   }
