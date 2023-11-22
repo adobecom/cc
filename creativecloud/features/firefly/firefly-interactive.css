@@ -68,8 +68,8 @@
     width: 80%;
   }
 
-  .interactive-marquee .text {
-    margin: 122px 0 0 auto;
+  .interactive-marquee .interactive-container {
+    height: 813px;
   }
 }
 
@@ -79,11 +79,16 @@
     margin-inline-start: -22px;
     margin-inline-end: 16px;
     justify-content: center;
-    margin-top: -8px;
+    margin-top: -7px;
+    margin-bottom: 24px;
   }
 
-  .interactive-marquee .text {
-    margin: 106px 0 0 auto;
+  .interactive-marquee .interactive-container {
+    height: 430px;
+  }
+
+  .interactive-marquee .media {
+    top: 8px;
   }
 }
 
