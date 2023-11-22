@@ -93,6 +93,12 @@
     position: absolute;
     right: calc(50% - 370px);
   }
+
+  [dir="rtl"] .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 407px);
+  }
 }
 
 @media screen and (max-width: 1649px) and (min-width: 1438px) {
@@ -101,6 +107,12 @@
     position: absolute;
     right: calc(50% - 320px);
   }
+
+  [dir="rtl"] .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 407px);
+  }
 }
 
 @media screen and (max-width: 1437px) and (min-width: 1200px) {
@@ -108,6 +120,12 @@
     top: 144px;
     position: absolute;
     right: calc(50% - 280px);
+  }
+
+  [dir="rtl"] .firefly-selectortray {
+    top: 144px;
+    position: absolute;
+    right: calc(50% - 407px);
   }
 }
 
