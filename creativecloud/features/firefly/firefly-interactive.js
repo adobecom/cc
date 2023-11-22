@@ -8,12 +8,12 @@ let media;
 let mediaP;
 
 function focusOnInput() {
-  media.querySelector('#promptinput')?.focus();;
+  media.querySelector('#promptinput')?.focus();
 }
 
 function waitForModal() {
-  var checkInterval = setInterval(function () {
-    var modalClose = document.querySelector('.dialog-close');
+  const checkInterval = setInterval(() => {
+    const modalClose = document.querySelector('.dialog-close');
     if (modalClose) {
       clearInterval(checkInterval);
       const input = media.querySelector('#promptinput');
@@ -21,7 +21,6 @@ function waitForModal() {
     }
   }, 100);
 }
-
 
 function eventOnGenerate(generateButton) {
   const btnConfigs = {
