@@ -7,7 +7,7 @@
   padding: 7px 7px 7px 12px;
   border: 1px solid #E6E6E6;
   justify-content: space-between;
-  width: 248px;
+  width: 247px;
 }
 
 .promptbar.light {
@@ -16,8 +16,7 @@
 }
 
 .prompt-text {
-  max-width: calc(100% - 110px);
-  cursor: text;
+  max-width: 142px;
   outline: none;
   color: #2c2c2c;
   background: #FFFFFF;
@@ -157,13 +156,13 @@
   .promptbar {
     height: 50px;
     padding: 7px 7px 7px 40px;
-    width: 441px;
+    width: 440px;
   }
 
   .prompt-text {
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
-    min-width: calc(100% - 145px);
+    min-width: 294px;
   }
 
   /* Enticement */
@@ -243,11 +242,11 @@
   .promptbar {
     height: 40px;
     padding: 7px 7px 7px 32px;
-    width: 465px;
+    width: 464px;
   }
 
   .prompt-text {
-    min-width: calc(100% - 126px);
+    min-width: 325px;
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
   }
