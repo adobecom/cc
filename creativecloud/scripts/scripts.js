@@ -155,7 +155,7 @@ const miloLibs = setLibs(LIBS);
   if ((window.location.search.includes('goToFirefly')
   || window.location.search.includes('goToFireflyEffects')
   || window.location.search.includes('goToFireflyGenFill'))) {
-    await loadIms();
+    try { await loadIms(); } catch { return; }
     if (window.adobeIMS?.isSignedInUser()) {
       const { redirectWithParam } = await import('../features/firefly/firefly-susi.js');
       redirectWithParam();

@@ -8,8 +8,20 @@ let media;
 let mediaP;
 
 function focusOnInput() {
-  media.querySelector('#promptinput')?.focus();
+  media.querySelector('#promptinput')?.focus();;
 }
+
+function waitForModal() {
+  var checkInterval = setInterval(function () {
+    var modalClose = document.querySelector('.dialog-close');
+    if (modalClose) {
+      clearInterval(checkInterval);
+      const input = media.querySelector('#promptinput');
+      modalClose?.addEventListener('click', () => input?.focus());
+    }
+  }, 100);
+}
+
 
 function eventOnGenerate(generateButton) {
   const btnConfigs = {
@@ -144,6 +156,7 @@ export default function setInteractiveFirefly(el) {
     });
   }
 
+  focusOnInput();
   /* Handle action on click of each firefly option button */
 
   textToImageButton.addEventListener('click', () => {
@@ -182,3 +195,5 @@ export default function setInteractiveFirefly(el) {
     focusOnInput();
   });
 }
+
+waitForModal();
