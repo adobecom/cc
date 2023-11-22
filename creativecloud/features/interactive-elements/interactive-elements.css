@@ -48,6 +48,8 @@
   position: absolute;
   color: #000000;
   width: 240px;
+  font-size: var(--type-heading-xl-size);
+  line-height: var(--type-heading-xl-lh);
 }
 
 .enticement-text.light {
@@ -174,7 +176,7 @@
 
   .enticement-text {
     right: 345px;
-    top: -60px;
+    top: -100px;
     display: block;
 
   }
@@ -260,7 +262,7 @@
 
   .enticement-text {
     right: 345px;
-    top: -60px;
+    top: -90px;
     display: block;
   }
 
