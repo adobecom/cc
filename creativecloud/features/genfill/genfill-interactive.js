@@ -74,7 +74,9 @@ export default async function decorateGenfill(el) {
 
   loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
   const interactiveContainer = el.querySelector('.interactive-container');
-  const [enticementMode, enticement, timer] = interactiveContainer.firstElementChild.querySelectorAll('p:not(:has(picture))');
+  const allP = interactiveContainer.querySelectorAll('.media:first-child p:not(:empty)');
+  const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
+  const [enticementMode, enticement, timer = null] = [...pMetadata];
 
   enticementMode.classList.add('enticement-mode');
   enticement.classList.add('enticement-detail');
