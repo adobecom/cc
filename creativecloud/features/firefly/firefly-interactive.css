@@ -131,6 +131,7 @@
   position: relative;
   top: 50%; 
   transform: translateY(-50%);
+  padding-inline-start: 0;
 }
 @keyframes blink {
   0% {
