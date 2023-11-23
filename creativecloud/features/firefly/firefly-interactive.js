@@ -11,9 +11,9 @@ function focusOnInput() {
   media.querySelector('#promptinput')?.focus();
 }
 
-function waitForModal() {
+function waitForGeoModal() {
   const checkInterval = setInterval(() => {
-    const modalClose = document.querySelector('.dialog-close');
+    const modalClose = document.querySelector('.locale-modal-v2 > .dialog-close');
     if (modalClose) {
       clearInterval(checkInterval);
       const input = media.querySelector('#promptinput');
@@ -195,4 +195,4 @@ export default function setInteractiveFirefly(el) {
   });
 }
 
-waitForModal();
+waitForGeoModal();
