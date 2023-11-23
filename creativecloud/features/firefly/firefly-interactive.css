@@ -123,3 +123,26 @@
     right: -122px;
   }
 }
+
+.blinking-cursor:not(:focus) {
+  animation: blink 0.95s infinite;
+  border-inline-start: 1px solid #2C2C2C;
+  height: 1em;
+  position: relative;
+  top: 50%; 
+  transform: translateY(-50%);
+}
+@keyframes blink {
+  0% {
+    border-inline-start-color: transparent;
+  }
+
+  50% {
+    border-inline-start-color: #2C2C2C;
+    
+  }
+
+  100% {
+    border-inline-start-color: transparent;
+  }
+}

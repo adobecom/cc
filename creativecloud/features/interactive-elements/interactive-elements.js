@@ -7,7 +7,7 @@ const { default: defineDeviceByScreenSize } = await import('../../scripts/decora
 export function createPromptField(prompt, buttonText, mode, trackingValue = '') {
   const promptField = createTag('div', { id: 'promptbar', class: 'promptbar' });
   let promptInput = '';
-  if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt}`, autofocus: true, maxlength: '250' });
+  if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt}`, maxlength: '250' });
   const promptButton = createTag('button', { class: 'con-button blue button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText}`);
   if (mode === 'light') {
     promptField.classList.add('light');

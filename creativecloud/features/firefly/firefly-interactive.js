@@ -8,18 +8,10 @@ let media;
 let mediaP;
 
 function focusOnInput() {
-  media.querySelector('#promptinput')?.focus();
-}
-
-function waitForGeoModal() {
-  const checkInterval = setInterval(() => {
-    const modalClose = document.querySelector('.locale-modal-v2 > .dialog-close');
-    if (modalClose) {
-      clearInterval(checkInterval);
-      const input = media.querySelector('#promptinput');
-      modalClose?.addEventListener('click', () => input?.focus());
-    }
-  }, 100);
+  const input = media.querySelector('#promptinput');
+  input?.focus();
+  input?.classList.add('blinking-cursor');
+  input?.addEventListener('focusout', () => input.classList.remove('blinking-cursor'));
 }
 
 function eventOnGenerate(generateButton) {
@@ -194,5 +186,3 @@ export default function setInteractiveFirefly(el) {
     focusOnInput();
   });
 }
-
-waitForGeoModal();
