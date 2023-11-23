@@ -1,9 +1,6 @@
 import { setLibs } from '../../scripts/utils.js';
 import { createEnticement } from '../interactive-elements/interactive-elements.js';
-
-const miloLibs = setLibs('/libs');
-
-const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
 function handleTransition(index, pics) {
   pics[index].style.display = 'none';
@@ -46,17 +43,6 @@ function addEnticement(container, enticement, mode) {
   tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
 
-function getDeviceByScreenSize() {
-  const screenWidth = window.innerWidth;
-  if (screenWidth >= 1200) {
-    return 'desktop';
-  }
-  if (screenWidth <= 600) {
-    return 'mobile';
-  }
-  return 'tablet';
-}
-
 function removePTags(media) {
   const pics = media.querySelectorAll('picture');
   pics.forEach((pic) => {
@@ -73,7 +59,8 @@ export default async function decorateGenfill(el) {
     autocycleInterval: null,
     isImageClicked: false,
   };
-
+  const miloLibs = setLibs('/libs');
+  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
   const interactiveContainer = el.querySelector('.interactive-container');
   const allP = interactiveContainer.querySelectorAll('.media:first-child p:not(:empty)');
@@ -102,7 +89,7 @@ export default async function decorateGenfill(el) {
     removePTags(media);
     const pictures = media.querySelectorAll('picture');
     handleClick(pictures, clickConfig);
-    if (getDeviceByScreenSize() === viewport) {
+    if (defineDeviceByScreenSize() === viewport) {
       setTimeout(() => {
         startAutocycle(intervalTime, pictures, clickConfig);
       }, delayTime);

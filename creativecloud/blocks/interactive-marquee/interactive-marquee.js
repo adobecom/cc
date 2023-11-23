@@ -1,14 +1,17 @@
 import { setLibs } from '../../scripts/utils.js';
 
-const miloLibs = setLibs('/libs');
+// const miloLibs = setLibs('/libs');
 
-const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+// const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
+// const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
-function decorateText(el) {
+async function decorateText(el) {
+  const miloLibs = setLibs('/libs');
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
   const config = typeSizes;
@@ -39,7 +42,11 @@ function extendButtonsClass(text) {
   buttons.forEach((button) => { button.classList.add('button-justified-mobile'); });
 }
 
-function interactiveInit(el) {
+async function interactiveInit(el) {
+  const miloLibs = setLibs('/libs');
+  const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
+  const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+
   loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
@@ -68,16 +75,18 @@ function interactiveInit(el) {
   if (firstDivInForeground?.classList.contains('media')) el.classList.add('row-reversed');
 
   decorateButtons(text, 'button-l');
-  decorateText(text);
+  await decorateText(text);
   extendButtonsClass(text);
 }
 
 export default async function init(el) {
+  const miloLibs = setLibs('/libs');
+  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
     case el.classList.contains('genfill'): {
-      interactiveInit(el);
+      await interactiveInit(el);
       const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
-      decorateGenfill(el);
+      await decorateGenfill(el);
       break;
     }
     case el.classList.contains('firefly'): {
@@ -88,7 +97,6 @@ export default async function init(el) {
       break;
     }
     default:
-      // default case
       break;
   }
 }
