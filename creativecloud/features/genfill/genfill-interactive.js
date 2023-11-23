@@ -35,7 +35,9 @@ function handleClick(pics, clickConfig) {
 }
 
 function addEnticement(container, enticement, mode) {
-  const entcmtEl = createEnticement(enticement.innerText, mode);
+  const svgUrl = enticement.querySelector('a').href;
+  const enticementText = enticement.innerText;
+  const entcmtEl = createEnticement(`${enticementText}|${svgUrl}`, mode);
   entcmtEl.classList.add('enticement');
   const n = container.children.length;
   const desktopMedia = container.querySelector('.desktop-media');
