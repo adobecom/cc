@@ -1,0 +1,170 @@
+{
+  "total": 27,
+  "offset": 0,
+  "limit": 27,
+  "data": [
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "",
+      "Name": ""
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "All",
+      "Level 2": "",
+      "Name": "All"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "Creativity and Design",
+      "Level 2": "",
+      "Name": "Creativity and Design"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Photo",
+      "Name": "Creativity and Design | Photo"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Graphic Design",
+      "Name": "Creativity and Design | Graphic Design"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Video",
+      "Name": "Creativity and Design | Video"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Illustration",
+      "Name": "Creativity and Design | Illustration"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Acrobat and PDF",
+      "Name": "Creativity and Design | Acrobat and PDF"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "3D and AR",
+      "Name": "Creativity and Design | 3D and AR"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Social Media",
+      "Name": "Creativity and Design | Social Media"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "PDF and E-signatures",
+      "Level 2": "",
+      "Name": "PDF and E-signatures"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "PDF",
+      "Name": "PDF and E-signatures | PDF"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "E-signatures",
+      "Name": "PDF and E-signatures | E-signatures"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "Marketing and Commerce",
+      "Level 2": "",
+      "Name": "Marketing and Commerce"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Insights and Audiences",
+      "Name": "Marketing and Commerce | Insights and Audiences"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Content and Journeys",
+      "Name": "Marketing and Commerce | Content and Journeys"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Channels and Engagement",
+      "Name": "Marketing and Commerce | Channels and Engagement"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Commerce and Conversions",
+      "Name": "Marketing and Commerce | Commerce and Conversions"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Optimization and Scale",
+      "Name": "Marketing and Commerce | Optimization and Scale"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "Additional Solutions",
+      "Level 2": "",
+      "Name": "Additional Solutions"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "ColdFusion",
+      "Name": "Additional Solutions | ColdFusion"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "eLearning",
+      "Name": "Additional Solutions | eLearning"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Print Imaging",
+      "Name": "Additional Solutions | Print Imaging"
+    },
+    {
+      "Type": "Categories",
+      "Level 1": "",
+      "Level 2": "Technical Communication",
+      "Name": "Additional Solutions | Technical Communication"
+    },
+    {
+      "Type": "Types",
+      "Level 1": "Desktop",
+      "Level 2": "",
+      "Name": "Desktop"
+    },
+    {
+      "Type": "Types",
+      "Level 1": "Mobile",
+      "Level 2": "",
+      "Name": "Mobile"
+    },
+    {
+      "Type": "Types",
+      "Level 1": "Web",
+      "Level 2": "",
+      "Name": "Web"
+    }
+  ],
+  ":type": "sheet"
+}
