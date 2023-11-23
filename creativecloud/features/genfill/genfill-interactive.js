@@ -24,9 +24,9 @@ function startAutocycle(interval, pics, clickConfig) {
 
 function handleClick(pics, clickConfig) {
   pics[0].style.display = 'block';
-  pics.forEach((picture, index) => {
-    picture.querySelector('img')?.removeAttribute('loading');
-    picture.addEventListener('click', () => {
+  pics.forEach((pic, index) => {
+    pic.querySelector('img')?.removeAttribute('loading');
+    pic.addEventListener('click', () => {
       clickConfig.isImageClicked = true;
       if (clickConfig.autocycleInterval) clearInterval(clickConfig.autocycleInterval);
       handleTransition(index, pics);
@@ -35,13 +35,13 @@ function handleClick(pics, clickConfig) {
 }
 
 function addEnticement(container, enticement, mode) {
-  const enticementElement = createEnticement(enticement.innerText, mode);
-  enticementElement.classList.add('enticement');
+  const entcmtEl = createEnticement(enticement.innerText, mode);
+  entcmtEl.classList.add('enticement');
   const n = container.children.length;
   const desktopMedia = container.querySelector('.desktop-media');
   const tabletMedia = (n > 2) ? container.querySelector('.tablet-media') : null;
-  desktopMedia.insertBefore(enticementElement, desktopMedia.firstElementChild);
-  tabletMedia?.insertBefore(enticementElement.cloneNode(true), tabletMedia.firstElementChild);
+  desktopMedia.insertBefore(entcmtEl, desktopMedia.firstElementChild);
+  tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
 
 function getDeviceByScreenSize() {
