@@ -23,7 +23,7 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
         event.preventDefault();
         promptButton.click();
       }
-      if (document.querySelector('#promptinput').value.length === 0 && event.keyCode === 32) {
+      if (event.target.value.length === 0 && event.keyCode === 32) {
         if (event.preventDefault) event.preventDefault();
         else event.returnValue = false;
       }
