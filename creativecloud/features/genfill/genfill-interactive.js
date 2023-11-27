@@ -89,7 +89,7 @@ export default async function decorateGenfill(el) {
     removePTags(media);
     const pictures = media.querySelectorAll('picture');
     handleClick(pictures, clickConfig);
-    if (defineDeviceByScreenSize() === viewport) {
+    if (defineDeviceByScreenSize() === viewport.toUpperCase()) {
       setTimeout(() => {
         startAutocycle(intervalTime, pictures, clickConfig);
       }, delayTime);
