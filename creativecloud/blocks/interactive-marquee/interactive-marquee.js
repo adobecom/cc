@@ -92,6 +92,7 @@ export default async function init(el) {
       break;
     }
     default:
+      await interactiveInit(el);
       break;
   }
 }
