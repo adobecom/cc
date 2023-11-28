@@ -57,21 +57,20 @@ function hideRemoveElements(option, media, mediaP) {
   });
 }
 
-function eventOnSelectorOption(selOption, promptDetail, allP, media, mediaP, createPromptField) {
+async function eventOnSelectorOption(selOption, promptDetail, allP, media, mediaP, createPromptField) {
   hideRemoveElements(selOption, media, mediaP);
-  let prompt;
   const promptText = allP[promptDetail.promptpos].innerText.split('|');
   if (selOption.id === 'GenerativeFill') {
-    prompt = createPromptField(`${promptText[0]}`, `${promptText[1]}`, promptDetail.promptMode, 'SubmitGenerativeFill');
-    media.appendChild(prompt);
-    prompt.classList.add('genfill-promptbar');
+    const genfilprompt = await createPromptField(`${promptText[0]}`, `${promptText[1]}`, promptDetail.promptmode, 'SubmitGenerativeFill');
+    media.appendChild(genfilprompt);
+    genfilprompt.classList.add('genfill-promptbar');
     const genFillButton = media.querySelector('#genfill');
     genFillButton.addEventListener('click', async () => {
       const { signIn } = await import('./firefly-susi.js');
       signIn('', 'goToFireflyGenFill');
     });
   } else {
-    prompt = createPromptField(`${promptText[0]}`, `${promptText[1]}`, promptDetail.promptMode);
+    const prompt = await createPromptField(`${promptText[0]}`, `${promptText[1]}`, promptDetail.promptmode);
     media.appendChild(prompt);
     prompt.classList.add('firefly-prompt');
     const generateButton = media.querySelector('#promptbutton');
