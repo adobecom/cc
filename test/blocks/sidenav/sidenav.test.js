@@ -1,30 +1,42 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
 import { setLibs } from '../../../creativecloud/scripts/utils.js';
 
-setLibs('/libs');
-
-document.body.innerHTML = await readFile({ path: './mocks/sidenav.html' });
 const { default: init } = await import('../../../creativecloud/blocks/sidenav/sidenav.js');
 
+setLibs('/libs');
+const taxoString = await readFile({ path: './mocks/taxonomy.json' });
+const taxonomy = JSON.parse(taxoString);
+document.body.innerHTML = await readFile({ path: './mocks/sidenav.html' });
+
+const mockedTaxonomy = ({
+  payload = taxonomy,
+  status = 200, ok = true,
+} = {}) => new Promise((resolve) => {
+  resolve({
+    status,
+    ok,
+    json: () => payload,
+    text: () => payload,
+  });
+});
+
 describe('Sidenav', () => {
-  it('creates 1 level of items for shallow nav', async () => {
-    const sidenavEl = document.querySelector('.sidenav.shallow');
-    await init(sidenavEl);
-    const items = sidenavEl.querySelectorAll('sp-sidenav-item');
-    expect(items.length).to.equal(3);
+  beforeEach(() => {
+    window.fetch = sinon.stub().callsFake(() => mockedTaxonomy());
   });
 
-  it('creates 2 levels of items for deep nav', async () => {
-    const sidenavEl = document.querySelector('.sidenav.multilevel');
+  it('does create nice categories sidenav', async () => {
+    const sidenavEl = document.querySelector('.sidenav.categories');
     await init(sidenavEl);
-    const items = sidenavEl.querySelectorAll('sp-sidenav-item');
-    expect(items.length).to.equal(12);
-  });
-
-  it('has a title for each item', async () => {
-    const sidenavEl = document.querySelector('.sidenav.shallow');
-    const rootElement = sidenavEl.querySelector('filter-sidenav');
-    expect(rootElement.getAttribute('title')).to.equal('Categories');
+    const newRoot = document.querySelector('merch-sidenav');
+    expect(newRoot.title).to.equal("REFINE YOUR RESULTS");
+    const items = newRoot.querySelectorAll('sp-sidenav-item');
+    expect(items.length).to.equal(24);
+    const search = newRoot.querySelector('sp-search');
+    expect(search.getAttribute('placeholder')).to.equal('Search all your products');
+    expect(newRoot.querySelectorAll('sp-checkbox').length).to.equal(3);
+    expect(newRoot.querySelector('sp-checkbox').textContent.trim()).to.equal('Desktop');
   });
 });
