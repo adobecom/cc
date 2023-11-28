@@ -1,11 +1,5 @@
 import { setLibs } from '../../scripts/utils.js';
 
-// const miloLibs = setLibs('/libs');
-
-// const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-// const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-
-// [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
 async function decorateText(el) {

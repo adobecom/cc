@@ -12,6 +12,7 @@
   display: none;
 }
 
+.genfill .media a,
 .genfill .media picture {
   display: none;
 }
@@ -31,11 +32,13 @@ color: #FFFFFF;
 }
 
 @media screen and (max-width: 600px) {
+  .genfill .mobile-media a,
   .genfill .mobile-media picture {
     display: none;
   }
 
   .genfill .media.mobile-media, 
+  .genfill .media.mobile-media a:first-child,
   .genfill .mobile-media picture:first-child {
     display: block;
   }
@@ -46,11 +49,13 @@ color: #FFFFFF;
 }
 
 @media screen and (min-width: 600px) and (max-width: 1200px) {
+  .genfill .tablet-media a,
   .genfill .tablet-media picture {
     display: none;
   }
 
   .genfill .tablet-media, 
+  .genfill .tablet-media a:first-child,
   .genfill .tablet-media picture:first-child {
     display: block;
   }
@@ -81,11 +86,13 @@ color: #FFFFFF;
 }
 
 @media screen and (min-width: 1200px) {
+  .genfill .desktop-media a,
   .genfill .desktop-media picture {
     display: none;
   }
 
   .genfill .desktop-media, 
+  .genfill .desktop-media a:first-child, 
   .genfill .desktop-media picture:first-child {
     display: block;
   }

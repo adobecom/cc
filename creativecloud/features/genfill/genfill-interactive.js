@@ -2,6 +2,9 @@ import { setLibs } from '../../scripts/utils.js';
 import { createEnticement } from '../interactive-elements/interactive-elements.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
+const miloLibs = setLibs('/libs');
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+
 function handleTransition(index, pics) {
   pics[index].style.display = 'none';
   const nextIndex = (index + 1) % pics.length;
@@ -43,13 +46,18 @@ function addEnticement(container, enticement, mode) {
   tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
 
-function removePTags(media) {
+async function removePTags(media) {
   const pics = media.querySelectorAll('picture');
-  pics.forEach((pic) => {
+  pics.forEach((pic, index) => {
     if (pic.closest('p')) {
       pic.closest('p').remove();
     }
-    media.appendChild(pic);
+    const a = createTag('a', { class: 'genfill-link' });
+    const img = pic.querySelector('img');
+    const altTxt = img.alt ? `${img.alt}|Marquee|EveryoneCanPs` : `Image${index}|Marquee|EveryoneCanPs`;
+    a.setAttribute('daa-ll', altTxt);
+    a.appendChild(pic);
+    media.appendChild(a);
   });
 }
 
@@ -59,7 +67,6 @@ export default async function decorateGenfill(el) {
     autocycleInterval: null,
     isImageClicked: false,
   };
-  const miloLibs = setLibs('/libs');
   const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
   const interactiveContainer = el.querySelector('.interactive-container');
@@ -86,10 +93,10 @@ export default async function decorateGenfill(el) {
     const media = mediaElements[viewportIndex]
       ? mediaElements[viewportIndex] : interactiveContainer.lastElementChild;
     media.classList.add(`${viewport}-media`);
-    removePTags(media);
-    const pictures = media.querySelectorAll('picture');
-    handleClick(pictures, clickConfig);
     if (defineDeviceByScreenSize() === viewport.toUpperCase()) {
+      removePTags(media);
+      const pictures = media.querySelectorAll('a');
+      handleClick(pictures, clickConfig);
       setTimeout(() => {
         startAutocycle(intervalTime, pictures, clickConfig);
       }, delayTime);
