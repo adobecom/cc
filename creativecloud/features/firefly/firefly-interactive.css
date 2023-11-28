@@ -13,8 +13,7 @@
 .firefly-prompt {
   position: absolute;
   top: 16px;
-  margin-inline-start: 16px;
-  margin-inline-end: 16px;
+  margin-inline: 16px;
 }
 
 .genfill-promptbar {
@@ -37,8 +36,7 @@
 @media screen and (min-width: 1200px) {
   .firefly-prompt {
     top: 40px;
-    margin-inline-start: 40px;
-    margin-inline-end: 40px;
+    margin-inline: 40px;
   }
 
   .genfill-promptbar {
@@ -51,8 +49,7 @@
 @media (min-width: 600px) and (max-width: 1199px) {
   .firefly-prompt {
     top: 32px;
-    margin-inline-start: 32px;
-    margin-inline-end: 32px;
+    margin-inline: 32px;
   }
 
   .genfill-promptbar {
@@ -63,8 +60,7 @@
 
   .firefly-selectortray {
     top: 0;
-    margin-inline-start: 42px;
-    margin-inline-end: 42px;
+    margin-inline: 42px;
     width: 80%;
   }
 
@@ -76,8 +72,7 @@
 @media (max-width: 600px) {
   .firefly-selectortray {
     min-width: 110%;
-    margin-inline-start: -22px;
-    margin-inline-end: 16px;
+    margin-inline-start: -22px 16px;
     justify-content: center;
     margin-top: -7px;
     margin-bottom: 24px;
@@ -126,12 +121,17 @@
 
 .blinking-cursor:not(:focus) {
   animation: blink 0.95s infinite;
-  border-inline-start: 1px solid #2C2C2C;
+  border-inline-start: 1px solid var(--text-color);;
   height: 1em;
   position: relative;
   top: 50%; 
   transform: translateY(-50%);
   padding-inline-start: 0;
+}
+
+.blinking-cursor.blink-light:not(:focus) {
+  animation: blinklight 0.95s infinite;
+  border-inline-start: 1px solid #dbdbdb;
 }
 @keyframes blink {
   0% {
@@ -139,7 +139,22 @@
   }
 
   50% {
-    border-inline-start-color: #2C2C2C;
+    border-inline-start-color: var(--text-color);
+    
+  }
+
+  100% {
+    border-inline-start-color: transparent;
+  }
+}
+
+@keyframes blinklight {
+  0% {
+    border-inline-start-color: transparent;
+  }
+
+  50% {
+    border-inline-start-color: #dbdbdb;
     
   }
 

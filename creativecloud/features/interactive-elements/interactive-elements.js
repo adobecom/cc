@@ -1,14 +1,12 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
-const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
-
-export function createPromptField(prompt, buttonText, mode, trackingValue = '') {
+export async function createPromptField(prompt, buttonText, mode, trackingValue = '') {
+  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+  const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
   const promptField = createTag('div', { id: 'promptbar', class: 'promptbar' });
   let promptInput = '';
-  if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt}`, maxlength: '250' });
-  const promptButton = createTag('button', { class: 'con-button blue button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText}`);
+  if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt.trim()}`, maxlength: '250' });
+  const promptButton = createTag('button', { class: 'con-button blue button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText.trim()}`);
   if (mode === 'light') {
     promptField.classList.add('light');
     promptInput.classList.add('light');
@@ -36,22 +34,25 @@ export function createPromptField(prompt, buttonText, mode, trackingValue = '') 
   return promptField;
 }
 
-export function createEnticement(enticementDetail, mode) {
+export async function createEnticement(enticementDetail, mode) {
+  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
   const enticementDiv = createTag('div');
   const svgImage = createTag('img', { class: 'enticement-arrow', alt: '' });
   let arrowText;
   [arrowText, svgImage.src] = enticementDetail.split('|');
-  const enticementText = createTag('h2', { class: 'enticement-text' }, arrowText);
+  const enticementText = createTag('h2', { class: 'enticement-text' }, arrowText.trim());
   enticementDiv.append(enticementText, svgImage);
   if (mode === 'light') enticementText.classList.add('light');
   return enticementDiv;
 }
 
-export function createSelectorTray(interactiveSelections, mode) {
+export async function createSelectorTray(interactiveSelections, mode) {
+  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+  const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
   const options = createTag('div', { class: 'selector-tray' });
   [...interactiveSelections].forEach(async (option) => {
-    const button = createTag('button', { class: 'options', id: `${option.id}`, 'daa-ll': `${option.analytics}` });
-    const span = createTag('span', { class: 'button-text' }, `${option.text}`);
+    const button = createTag('button', { class: 'options', id: `${option.id.trim()}`, 'daa-ll': `${option.analytics.trim()}` });
+    const span = createTag('span', { class: 'button-text' }, `${option.text.trim()}`);
     const svgButton = createTag('img', { alt: '', class: 'optionsvg' });
     svgButton.src = option.svg.trim();
     const device = defineDeviceByScreenSize();

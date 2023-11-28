@@ -2,13 +2,10 @@ import { setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
 
-const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
-function decorateText(el) {
+function decorateText(el, createTag) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
   const config = typeSizes;
@@ -39,7 +36,7 @@ function extendButtonsClass(text) {
   buttons.forEach((button) => { button.classList.add('button-justified-mobile'); });
 }
 
-function interactiveInit(el) {
+function interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle) {
   loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
@@ -68,14 +65,16 @@ function interactiveInit(el) {
   if (firstDivInForeground?.classList.contains('media')) el.classList.add('row-reversed');
 
   decorateButtons(text, 'button-l');
-  decorateText(text);
+  decorateText(text, createTag);
   extendButtonsClass(text);
 }
 
 export default async function init(el) {
+  const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
+  const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
     case el.classList.contains('firefly'): {
-      interactiveInit(el);
+      interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle);
       loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
       loadStyle('/creativecloud/features/firefly/firefly-interactive.css');
       const { default: setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');

@@ -1,11 +1,15 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import setInteractiveFirefly from '../../../creativecloud/features/firefly/firefly-interactive.js';
+import { setLibs } from '../../../creativecloud/scripts/utils.js';
+
+setLibs('/libs');
+
+const { default: setInteractiveFirefly } = await import('../../../creativecloud/features/firefly/firefly-interactive.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('firefly-marquee', async () => {
   const interactiveContainer = document.querySelector('.firefly');
-  setInteractiveFirefly(interactiveContainer);
+  await setInteractiveFirefly(interactiveContainer);
   it('Prompt should exist', () => {
     const promptbar = document.querySelector('.promptbar');
     expect(promptbar).to.exist;

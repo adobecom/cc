@@ -1,7 +1,6 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
-const miloLibs = setLibs('/libs');
-const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const config = getConfig();
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
