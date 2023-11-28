@@ -1,9 +1,9 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
 async function decorateText(el) {
-  const miloLibs = setLibs('/libs');
+  const miloLibs = getLibs();
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -37,7 +37,7 @@ function extendButtonsClass(text) {
 }
 
 async function interactiveInit(el) {
-  const miloLibs = setLibs('/libs');
+  const miloLibs = getLibs();
   const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
   const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 
@@ -74,10 +74,11 @@ async function interactiveInit(el) {
 }
 
 export default async function init(el) {
-  const miloLibs = setLibs('/libs');
+  const miloLibs = getLibs();
   const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
     case el.classList.contains('genfill'): {
+      loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
       await interactiveInit(el);
       const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
       await decorateGenfill(el);

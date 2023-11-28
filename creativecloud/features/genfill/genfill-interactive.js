@@ -1,11 +1,11 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 import { createEnticement } from '../interactive-elements/interactive-elements.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
-const miloLibs = setLibs('/libs');
+const miloLibs = getLibs();
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
-function handleTransition(index, pics) {
+function handleTransition(pics, index) {
   pics[index].style.display = 'none';
   const nextIndex = (index + 1) % pics.length;
   pics[nextIndex].style.display = 'block';
@@ -15,21 +15,21 @@ function handleTransition(index, pics) {
 function startAutocycle(interval, pics, clickConfig) {
   if (clickConfig.isImageClicked) return;
   clickConfig.autocycleInterval = setInterval(() => {
-    clickConfig.autocycleIndex = handleTransition(clickConfig.autocycleIndex, pics);
+    clickConfig.autocycleIndex = handleTransition(pics, clickConfig.autocycleIndex);
     if (clickConfig.autocycleIndex === pics.length - 1) {
       clearInterval(clickConfig.autocycleInterval);
     }
   }, interval);
 }
 
-function handleClick(pics, clickConfig) {
-  pics[0].style.display = 'block';
-  pics.forEach((pic, index) => {
-    pic.querySelector('img')?.removeAttribute('loading');
-    pic.addEventListener('click', () => {
+function handleClick(aTags, clickConfig) {
+  aTags[0].style.display = 'block';
+  aTags.forEach((a, i) => {
+    a.querySelector('img')?.removeAttribute('loading');
+    a.addEventListener('click', () => {
       clickConfig.isImageClicked = true;
       if (clickConfig.autocycleInterval) clearInterval(clickConfig.autocycleInterval);
-      handleTransition(index, pics);
+      handleTransition(aTags, i);
     });
   });
 }
@@ -46,15 +46,15 @@ function addEnticement(container, enticement, mode) {
   tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
 
-async function removePTags(media) {
+async function removePTags(media, vp) {
   const pics = media.querySelectorAll('picture');
   pics.forEach((pic, index) => {
-    if (pic.closest('p')) {
-      pic.closest('p').remove();
-    }
+    if (pic.closest('p')) pic.closest('p').remove();
     const a = createTag('a', { class: 'genfill-link' });
     const img = pic.querySelector('img');
-    const altTxt = img.alt ? `${img.alt}|Marquee|EveryoneCanPs` : `Image${index}|Marquee|EveryoneCanPs`;
+    const altTxt = img.alt
+      ? `${img.alt}|Marquee|EveryoneCanPs`
+      : `Image-${vp}-${index}|Marquee|EveryoneCanPs`;
     a.setAttribute('daa-ll', altTxt);
     a.appendChild(pic);
     media.appendChild(a);
@@ -67,38 +67,31 @@ export default async function decorateGenfill(el) {
     autocycleInterval: null,
     isImageClicked: false,
   };
-  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-  loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
   const interactiveContainer = el.querySelector('.interactive-container');
-  const allP = interactiveContainer.querySelectorAll('.media:first-child p:not(:empty)');
+  const allP = interactiveContainer.querySelectorAll('.media:first-child p');
   const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
   const [enticementMode, enticement, timer = null] = [...pMetadata];
-
   enticementMode.classList.add('enticement-mode');
   enticement.classList.add('enticement-detail');
   timer?.classList.add('timer');
   const mode = enticementMode.innerText.includes('light') ? 'light' : 'dark';
-
   const timerValues = timer ? timer.innerText.split('|') : null;
   const [intervalTime = 2000, delayTime = 1000] = (timerValues && timerValues.length > 1)
     ? timerValues : [2000];
-
-  enticementMode.remove();
-  enticement.remove();
-  timer?.remove();
-
+  [enticementMode, enticement, timer].forEach((i) => i?.remove());
   const viewports = ['mobile', 'tablet', 'desktop'];
   const mediaElements = interactiveContainer.querySelectorAll('.media');
-  viewports.forEach((viewport, viewportIndex) => {
-    const media = mediaElements[viewportIndex]
-      ? mediaElements[viewportIndex] : interactiveContainer.lastElementChild;
-    media.classList.add(`${viewport}-media`);
-    if (defineDeviceByScreenSize() === viewport.toUpperCase()) {
-      removePTags(media);
-      const pictures = media.querySelectorAll('a');
-      handleClick(pictures, clickConfig);
+  viewports.forEach((v, vi) => {
+    const media = mediaElements[vi]
+      ? mediaElements[vi]
+      : interactiveContainer.lastElementChild;
+    media.classList.add(`${v}-media`);
+    if (defineDeviceByScreenSize() === v.toUpperCase()) {
+      removePTags(media, v);
+      const aTags = media.querySelectorAll('a');
+      handleClick(aTags, clickConfig);
       setTimeout(() => {
-        startAutocycle(intervalTime, pictures, clickConfig);
+        startAutocycle(intervalTime, aTags, clickConfig);
       }, delayTime);
     }
   });
