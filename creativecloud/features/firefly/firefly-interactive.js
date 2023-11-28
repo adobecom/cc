@@ -2,10 +2,12 @@ import { getLibs } from '../../scripts/utils.js';
 
 function focusOnInput(media) {
   const input = media.querySelector('.prompt-text');
-  input?.focus();
-  input?.classList.add('blinking-cursor');
-  if (input.classList.contains('light')) input?.classList.add('blink-light');
-  input?.addEventListener('focusout', () => { input.classList.remove('blinking-cursor'); input.classList.remove('blink-light'); });
+  if (input) {
+    input.focus();
+    input.classList.add('blinking-cursor');
+    if (input.classList.contains('light')) input.classList.add('blink-light');
+    input.addEventListener('focusout', () => { input.classList.remove('blinking-cursor'); input.classList.remove('blink-light'); });
+  }
 }
 
 function eventOnGenerate(generateButton, media) {
@@ -18,8 +20,9 @@ function eventOnGenerate(generateButton, media) {
     const placeholderprompt = media.querySelector('.prompt-text')?.getAttribute('placeholder');
     const prompt = userprompt || placeholderprompt;
     const selected = media.querySelector('.selected');
-    if (Object.keys(btnConfigs).includes(selected.id)) {
-      const btnConfig = btnConfigs[selected.id];
+    const className = selected.getAttribute('class').split(' ')[1].trim();
+    if (Object.keys(btnConfigs).includes(className)) {
+      const btnConfig = btnConfigs[className];
       const dall = userprompt === '' ? btnConfig[0] : btnConfig[1];
       e.target.setAttribute('daa-ll', dall);
       const { signIn } = await import('./firefly-susi.js');
@@ -31,7 +34,7 @@ function eventOnGenerate(generateButton, media) {
 async function createGenFillPrompt(element) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
   const genfillPrompt = createTag('div', { class: 'genfill-prompt' });
-  const promptConfig = element?.innerText?.split('|')[0].split('[');
+  const promptConfig = element?.split('|')[0].split('[');
   const prompt = createTag('p', '', `${promptConfig[0]}`);
   const promptText = createTag('p', { class: 'genfill-promptused' }, `${promptConfig[1].replaceAll(']', '').trim()}`);
   genfillPrompt.append(prompt, promptText);
@@ -44,7 +47,7 @@ function hideRemoveElements(option, media, mediaP) {
   const selector = media.querySelector('.firefly-selectortray');
   let i = 0;
   [...selector.childNodes].forEach((el) => {
-    if (el.id === option.id) {
+    if (el.getAttribute('class') === option.getAttribute('class')) {
       el.querySelector('img').classList.add('svgselected');
       el.classList.add('selected');
       mediaP[i].classList.remove('hide');
@@ -57,10 +60,10 @@ function hideRemoveElements(option, media, mediaP) {
   });
 }
 
-async function eventOnSelectorOption(selOption, promptDet, allP, media, mediaP, createPromptField) {
+async function eventOnSelectorOption(selOption, promptDet, media, mediaP, createPromptField) {
   hideRemoveElements(selOption, media, mediaP);
-  const promptText = allP[promptDet.promptpos].innerText.split('|');
-  if (selOption.id === 'GenerativeFill') {
+  const promptText = promptDet.promptpos.split('|');
+  if (selOption.classList.contains('GenerativeFill')) {
     const genfilprompt = await createPromptField(`${promptText[0]}`, `${promptText[1]}`, promptDet.promptmode, 'SubmitGenerativeFill');
     media.appendChild(genfilprompt);
     genfilprompt.classList.add('genfill-promptbar');
@@ -85,8 +88,7 @@ export default async function setInteractiveFirefly(el) {
   const media = el.querySelector('.media');
   const allP = media.querySelectorAll('p:not(:empty)');
   const allAnchorTag = media.querySelectorAll('a');
-  [...allP].forEach((s) => { if (!s.querySelector('picture') && !s.querySelector('video')) s.remove(); });
-  const mediaP = media.querySelectorAll('p:not(:empty');
+
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
   const selectorTrayMode = allP[3].innerText.split('(')[1]?.replaceAll(')', '');
 
@@ -98,63 +100,59 @@ export default async function setInteractiveFirefly(el) {
   media.appendChild(enticementDiv, media.firstChild);
   // Set InteractiveSelection
   const selections = [];
-  let j = 5;
-  let k = 1;
-  for (let i = 4; i <= allP.length - 3; i += 6) {
-    const optionPromptMode = allP[j].innerText.split('(')[1]?.replaceAll(')', '');
-    const selectorValues = allP[i].innerText.split('|');
+  const ttiDetail = {};
+  const genfDetail = {};
+  const teDetail = {};
+  const allSelections = [...media.querySelectorAll('p:not(:empty)')].filter((p) => p.innerText.trim().toLowerCase().includes('interactive-selectors'));
+  allSelections.forEach((s) => {
+    const optionPromptMode = s.nextElementSibling.nextElementSibling.innerText.split('(')[1]?.replaceAll(')', '');
+    const selectorValues = s.nextElementSibling.innerText.split('|');
     const option = {
       id: `${selectorValues[0]}`,
-      text: `${allAnchorTag[k].textContent.trim()}`,
-      svg: `${allAnchorTag[k].href}`,
+      text: `${s.nextElementSibling.querySelector('a').textContent.trim()}`,
+      svg: `${s.nextElementSibling.querySelector('a').href}`,
       analytics: `Select${selectorValues[0]}`,
-      promptmode: `${optionPromptMode}`,
-      promptpos: i + 2,
     };
-    j += 6;
-    k += 1;
     selections.push(option);
-  }
-  const textToImageDetail = {};
-  const genFillDetail = {};
-  const textEffectDetail = {};
-  selections.forEach((item) => {
-    if (item.id === 'TextToImage') {
-      textToImageDetail.promptmode = item.promptmode;
-      textToImageDetail.promptpos = item.promptpos;
-    } else if (item.id === 'GenerativeFill') {
-      genFillDetail.promptmode = item.promptmode;
-      genFillDetail.promptpos = item.promptpos;
-    } else if (item.id === 'TextEffects') {
-      textEffectDetail.promptmode = item.promptmode;
-      textEffectDetail.promptpos = item.promptpos;
+    if (selectorValues[0] === 'TextToImage') {
+      ttiDetail.promptmode = optionPromptMode;
+      ttiDetail.promptpos = s.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+    } else if (selectorValues[0] === 'GenerativeFill') {
+      genfDetail.promptmode = optionPromptMode;
+      genfDetail.promptpos = s.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+    } else if (selectorValues[0] === 'TextEffects') {
+      teDetail.promptmode = optionPromptMode;
+      teDetail.promptpos = s.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
     }
   });
+
+  [...allP].forEach((s) => { if (!s.querySelector('picture') && !s.querySelector('video')) s.remove(); });
+  const mediaP = media.querySelectorAll('p:not(:empty)');
 
   const fireflyOptions = await createSelectorTray(selections, selectorTrayMode);
   fireflyOptions.classList.add('firefly-selectortray');
   media.append(fireflyOptions);
 
-  const ttiOption = media.querySelector('#TextToImage');
-  const genFillOption = media.querySelector('#GenerativeFill');
-  const teOption = media.querySelector('#TextEffects');
+  const ttiOption = media.querySelector('.TextToImage');
+  const genFillOption = media.querySelector('.GenerativeFill');
+  const teOption = media.querySelector('.TextEffects');
   const firstOption = media.querySelector('.selector-tray > button');
 
   hideRemoveElements(firstOption, media, mediaP);
 
-  const genfillPrompt = await createGenFillPrompt(allP[genFillDetail.promptpos]);
+  const genfillPrompt = await createGenFillPrompt(genfDetail.promptpos);
 
   // Create prompt field for first option on page load
   let fireflyPrompt = '';
   const firstOptionDetail = allP[6].innerText.split('|');
   const firstOptionPromptMode = allP[5].innerText.split('(')[1]?.replaceAll(')', '');
   fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, firstOptionPromptMode);
-  if (firstOption.getAttribute('id') === 'TextToImage' || firstOption.getAttribute('id') === 'TextEffects') {
+  if (firstOption.classList.contains('TextToImage') || firstOption.classList.contains('TextEffects')) {
     fireflyPrompt.classList.add('firefly-prompt');
     media.appendChild(fireflyPrompt);
     const generateButton = media.querySelector('#promptbutton');
     eventOnGenerate(generateButton, media);
-  } else if (firstOption.getAttribute('id') === 'GenerativeFill') {
+  } else if (firstOption.classList.contains('GenerativeFill')) {
     fireflyPrompt.classList.add('genfill-promptbar');
     media.append(genfillPrompt, fireflyPrompt);
     const genFillButton = media.querySelector('#genfill');
@@ -168,15 +166,15 @@ export default async function setInteractiveFirefly(el) {
   /* Handle action on click of each firefly option button */
 
   ttiOption.addEventListener('click', () => {
-    eventOnSelectorOption(ttiOption, textToImageDetail, allP, media, mediaP, createPromptField);
+    eventOnSelectorOption(ttiOption, ttiDetail, media, mediaP, createPromptField);
   });
 
   genFillOption.addEventListener('click', () => {
-    eventOnSelectorOption(genFillOption, genFillDetail, allP, media, mediaP, createPromptField);
+    eventOnSelectorOption(genFillOption, genfDetail, media, mediaP, createPromptField);
     media.appendChild(genfillPrompt);
   });
 
   teOption.addEventListener('click', () => {
-    eventOnSelectorOption(teOption, textEffectDetail, allP, media, mediaP, createPromptField);
+    eventOnSelectorOption(teOption, teDetail, media, mediaP, createPromptField);
   });
 }

@@ -51,7 +51,7 @@ export async function createSelectorTray(interactiveSelections, mode) {
   const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
   const options = createTag('div', { class: 'selector-tray' });
   [...interactiveSelections].forEach(async (option) => {
-    const button = createTag('button', { class: 'options', id: `${option.id.trim()}`, 'daa-ll': `${option.analytics.trim()}` });
+    const button = createTag('button', { class: `options ${option.id.trim()}`, 'daa-ll': `${option.analytics.trim()}` });
     const span = createTag('span', { class: 'button-text' }, `${option.text.trim()}`);
     const svgButton = createTag('img', { alt: '', class: 'optionsvg' });
     svgButton.src = option.svg.trim();
