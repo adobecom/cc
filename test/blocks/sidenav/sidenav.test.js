@@ -31,6 +31,7 @@ describe('Sidenav', () => {
     const sidenavEl = document.querySelector('.sidenav.categories');
     await init(sidenavEl);
     const newRoot = document.querySelector('merch-sidenav');
+    expect(newRoot.title).to.equal("REFINE YOUR RESULTS");
     const items = newRoot.querySelectorAll('sp-sidenav-item');
     expect(items.length).to.equal(24);
     const search = newRoot.querySelector('sp-search');

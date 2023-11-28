@@ -84,9 +84,9 @@ function appendResources(rootNav, resourceLink) {
 }
 
 export default async function init(el) {
-  const title = el.querySelector('h1')?.textContent.trim();
+  const title = el.querySelector('h2')?.textContent.trim();
   const rootNav = createTag('merch-sidenav', { title });
-  const searchText = el.querySelector('h2')?.textContent.trim();
+  const searchText = el.querySelector('p')?.textContent.trim();
   appendSearch(rootNav, searchText);
   const links = el.querySelectorAll('a');
   await appendFilters(rootNav, links[0]);
