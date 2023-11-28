@@ -47,15 +47,15 @@
   display: none;
   max-width: 30ch;
   position: absolute;
-  color: #000000;
   font-size: 28px;
   line-height: 35px;
   margin-left: -20px;
   top: -90px;
+  color: var(--color-white);
 }
 
 .enticement-text.light {
-  color: var(--color-white);
+  color: #000000;
 }
 
 .selector-tray {
