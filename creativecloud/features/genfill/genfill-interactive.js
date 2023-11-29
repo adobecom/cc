@@ -23,7 +23,6 @@ function startAutocycle(interval, pics, clickConfig) {
 }
 
 function handleClick(aTags, clickConfig) {
-  aTags[0].style.display = 'block';
   aTags.forEach((a, i) => {
     a.querySelector('img')?.removeAttribute('loading');
     a.addEventListener('click', () => {
@@ -40,8 +39,8 @@ function addEnticement(container, enticement, mode) {
   const entcmtEl = createEnticement(`${enticementText}|${svgUrl}`, mode);
   entcmtEl.classList.add('enticement');
   const n = container.children.length;
-  const desktopMedia = container.querySelector('.desktop-media');
-  const tabletMedia = (n > 2) ? container.querySelector('.tablet-media') : null;
+  const desktopMedia = container.querySelector('.desktop-only');
+  const tabletMedia = (n > 2) ? container.querySelector('.tablet-only') : null;
   desktopMedia.insertBefore(entcmtEl, desktopMedia.firstElementChild);
   tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
@@ -85,7 +84,7 @@ export default async function decorateGenfill(el) {
     const media = mediaElements[vi]
       ? mediaElements[vi]
       : interactiveContainer.lastElementChild;
-    media.classList.add(`${v}-media`);
+    media.classList.add(`${v}-only`);
     if (defineDeviceByScreenSize() === v.toUpperCase()) {
       removePTags(media, v);
       const aTags = media.querySelectorAll('a');

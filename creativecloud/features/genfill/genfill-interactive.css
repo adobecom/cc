@@ -1,6 +1,6 @@
-.genfill .desktop-media, 
-.genfill .tablet-media, 
-.genfill .mobile-media {
+.genfill .desktop-only, 
+.genfill .tablet-only, 
+.genfill .mobile-only {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   display: none;
@@ -12,12 +12,10 @@
   display: none;
 }
 
-.genfill .media a,
-.genfill .media picture {
+.genfill .media a {
   display: none;
 }
 
-/* Enticement */
 .enticement-arrow {
   display: none;
 }
@@ -28,18 +26,16 @@
 }
 
 .enticement-text.light {
-color: #FFFFFF;
+color: var(--color-white);
 }
 
 @media screen and (max-width: 600px) {
-  .genfill .mobile-media a,
-  .genfill .mobile-media picture {
+  .genfill .mobile-only a {
     display: none;
   }
 
-  .genfill .media.mobile-media, 
-  .genfill .media.mobile-media a:first-child,
-  .genfill .mobile-media picture:first-child {
+  .genfill .media.mobile-only, 
+  .genfill .media.mobile-only a:first-of-type {
     display: block;
   }
 
@@ -49,21 +45,18 @@ color: #FFFFFF;
 }
 
 @media screen and (min-width: 600px) and (max-width: 1200px) {
-  .genfill .tablet-media a,
-  .genfill .tablet-media picture {
+  .genfill .tablet-only a {
     display: none;
   }
 
-  .genfill .tablet-media, 
-  .genfill .tablet-media a:first-child,
-  .genfill .tablet-media picture:first-child {
+  .genfill .tablet-only, 
+  .genfill .tablet-only a:first-of-type {
     display: block;
   }
 
-  /* Enticement */
   .enticement-arrow {
-    width: 49px !important;
-    height: 73px !important;
+    width: 49px;
+    height: 73px;
     position: absolute;
     right: 575px;
     top: -45px;
@@ -76,31 +69,27 @@ color: #FFFFFF;
     top: -60px;
     width: 240px;
     display: block;
-    color: #111111;
-
+    color: var(--color-black);
   }
 
   .enticement-text.light {
-    color: #FFFFFF;
+    color: var(--color-white);
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .genfill .desktop-media a,
-  .genfill .desktop-media picture {
+  .genfill .desktop-only a {
     display: none;
   }
 
-  .genfill .desktop-media, 
-  .genfill .desktop-media a:first-child, 
-  .genfill .desktop-media picture:first-child {
+  .genfill .desktop-only, 
+  .genfill .desktop-only a:first-of-type {
     display: block;
   }
 
-   /* Enticement */
    .enticement-arrow {
-    width: 49px !important;
-    height: 73px !important;
+    width: 49px;
+    height: 73px;
     position: absolute;
     right: 575px;
     top: -45px;
@@ -113,7 +102,6 @@ color: #FFFFFF;
     top: -60px;
     width: 240px;
     display: block;
-    color: #000000;
-
+    color: var(--color-black);
   }
 }
