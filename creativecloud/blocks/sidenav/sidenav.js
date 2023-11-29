@@ -19,7 +19,7 @@ const createMerchList = (title, deeplink, variant) => {
 };
 
 const getCategories = (arrayCategories) => {
-  const { tag, merchTag } = createMerchList(null, 'categories', 'multilevel');
+  const { tag, merchTag } = createMerchList(undefined, 'categories', 'multilevel');
   const mapParents = {};
   arrayCategories.forEach((item) => {
     if (item.Name?.length > 0) {
@@ -52,17 +52,21 @@ const getTypes = (arrayTypes) => {
 
 const appendFilters = async (root, link) => {
   const payload = link.textContent.trim();
-  const resp = await fetch(payload);
-  if (resp.ok) {
-    const json = await resp.json();
-    const arrayCategories = json.data.filter((item) => item.Type === 'Categories');
-    if (arrayCategories.length > 0) {
-      root.append(getCategories(arrayCategories));
+  try {
+    const resp = await fetch(payload);
+    if (resp.ok) {
+      const json = await resp.json();
+      const arrayCategories = json.data.filter((item) => item.Type === 'Categories');
+      if (arrayCategories.length > 0) {
+        root.append(getCategories(arrayCategories));
+      }
+      const arrayTypes = json.data.filter((item) => item.Type === 'Types');
+      if (arrayTypes.length > 0) {
+        root.append(getTypes(arrayTypes));
+      }
     }
-    const arrayTypes = json.data.filter((item) => item.Type === 'Types');
-    if (arrayTypes.length > 0) {
-      root.append(getTypes(arrayTypes));
-    }
+  } catch (e) {
+    console.error(e);
   }
 };
 
@@ -78,7 +82,7 @@ function appendSearch(rootNav, searchText) {
 function appendResources(rootNav, resourceLink) {
   const literals = resourceLink.textContent.split(':');
   const title = literals[0].trim();
-  const { tag, merchTag } = createMerchList(title, null, null);
+  const { tag, merchTag } = createMerchList(title, undefined, undefined);
   const label = literals[1].trim();
   const link = createTag('sp-sidenav-item', { href: resourceLink.href });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
