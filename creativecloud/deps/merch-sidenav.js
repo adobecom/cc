@@ -1,7 +1,27 @@
-// Mon, 27 Nov 2023 17:34:21 GMT
+// Wed, 29 Nov 2023 13:00:32 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "./lit-all.min.js";
+
+// ../../node_modules/@spectrum-web-components/reactive-controllers/src/MatchMedia.js
+var MatchMediaController = class {
+  constructor(e, t) {
+    this.key = Symbol("match-media-key");
+    this.matches = false;
+    this.host = e, this.host.addController(this), this.media = window.matchMedia(t), this.matches = this.media.matches, this.onChange = this.onChange.bind(this), e.addController(this);
+  }
+  hostConnected() {
+    var e;
+    (e = this.media) == null || e.addEventListener("change", this.onChange);
+  }
+  hostDisconnected() {
+    var e;
+    (e = this.media) == null || e.removeEventListener("change", this.onChange);
+  }
+  onChange(e) {
+    this.matches !== e.matches && (this.matches = e.matches, this.host.requestUpdate(this.key, !this.matches));
+  }
+};
 
 // src/sidenav/merch-sidenav-heading.css.js
 import { css } from "./lit-all.min.js";
@@ -61,19 +81,20 @@ var MerchSearch = class extends LitElement {
   static styles = [
     css2`
             :host {
-                display: block;
-                contain: content;
+                display: contents;
             }
         `
   ];
-  getSearchComponent() {
+  get search() {
     return this.querySelector(`sp-search`);
   }
   connectedCallback() {
     super.connectedCallback();
     this.updateComplete.then(() => {
+      if (!this.search)
+        return;
       this.setState();
-      this.getSearchComponent().addEventListener("change", (e) => {
+      this.search.addEventListener("input", (e) => {
         pushStateFromComponent(this, e.target.value);
       });
     });
@@ -85,7 +106,7 @@ var MerchSearch = class extends LitElement {
     const state = parseState();
     const value = state[this.deeplink];
     if (value) {
-      this.getSearchComponent().value = value;
+      this.search.value = value;
     }
   }
   render() {
@@ -101,8 +122,16 @@ var MerchSidenavList = class extends LitElement2 {
     title: { type: String },
     label: { type: String },
     deeplink: { type: String },
-    selectedText: { type: String, reflect: true },
-    selectedValue: { type: String, reflect: true }
+    selectedText: {
+      type: String,
+      reflect: true,
+      attribute: "selected-text"
+    },
+    selectedValue: {
+      type: String,
+      reflect: true,
+      attribute: "selected-value"
+    }
   };
   static styles = [
     css3`
@@ -169,7 +198,7 @@ var MerchSidenavList = class extends LitElement2 {
    */
   selectionChanged({ target: { value, parentNode } }) {
     this.selectElement(
-      this.shadowRoot.querySelector(`sp-sidenav-item[value=${value}]`)
+      this.shadowRoot.querySelector(`sp-sidenav-item[value="${value}"]`)
     );
     pushStateFromComponent(this, value);
   }
@@ -292,26 +321,79 @@ customElements.define(
   MerchSidenavCheckboxGroup
 );
 
+// src/media.js
+var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
+var TABLET_DOWN = "(max-width: 1200px)";
+
 // src/sidenav/merch-sidenav.js
 var MerchSideNav = class extends LitElement4 {
   static properties = {
-    title: { type: String }
+    title: { type: String },
+    closeText: { type: String, attribute: "close-text" }
   };
   static styles = [
     css5`
             :host {
                 display: block;
-                contain: content;
                 max-width: 248px;
+            }
+
+            #sidenav {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                place-items: center;
+                min-height: 60vh;
             }
         `,
     headingStyles
   ];
+  mobileDevice = new MatchMediaController(this, SPECTRUM_MOBILE_LANDSCAPE);
+  mobileAndTablet = new MatchMediaController(this, TABLET_DOWN);
+  get filters() {
+    return this.querySelector("merch-sidenav-list");
+  }
   render() {
-    return html4`<sp-theme theme="spectrum" color="light" scale="medium">
-            <h2>${this.title}</h2>
-            <slot></slot>
-        </sp-theme>`;
+    return this.mobileAndTablet.matches ? this.asDialog : this.asAside;
+  }
+  get asDialog() {
+    return html4`
+            <sp-theme theme="spectrum" color="light" scale="medium">
+                <sp-dialog-wrapper
+                    slot="click-content"
+                    dismissable
+                    underlay
+                    no-divider
+                    cancel-label="${this.closeText || "Close"}"
+                    mode="${this.mobileDevice.matches ? "fullscreenTakeover" : void 0}"
+                >
+                    <div id="sidenav">
+                        <div>
+                            <h2>${this.title}</h2>
+                            <slot></slot>
+                        </div>
+                    </div>
+                </sp-dialog-wrapper>
+            </sp-theme>
+        `;
+  }
+  get asAside() {
+    return html4`<sp-theme theme="spectrum" color="light" scale="medium"
+            ><h2>${this.title}</h2>
+            <slot></slot
+        ></sp-theme>`;
+  }
+  async showModal({ target }) {
+    const content = this.shadowRoot.querySelector("sp-dialog-wrapper");
+    const options = {
+      trigger: target,
+      type: "modal"
+    };
+    const overlay = await window.__merch__spectrum_Overlay.open(
+      content,
+      options
+    );
+    this.shadowRoot.querySelector("sp-theme").append(overlay);
   }
 };
 customElements.define("merch-sidenav", MerchSideNav);

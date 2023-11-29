@@ -1,0 +1,15 @@
+.catalog.app {
+  display: flex;
+  gap: 36px;
+  justify-content: center;
+}
+
+.catalog > merch-sidenav {
+  order: 0;
+}
+
+.catalog > merch-cards {
+  order: 1;
+  align-self: baseline;
+  padding: 0;
+}
