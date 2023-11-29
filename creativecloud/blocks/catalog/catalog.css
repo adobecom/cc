@@ -1,7 +1,9 @@
-.catalog.app {
-  display: flex;
-  gap: 36px;
-  justify-content: center;
+@media screen and (min-width: 1200px) {
+  .catalog.app {
+    display: flex;
+    gap: 36px;
+    justify-content: center;
+  }
 }
 
 .catalog > merch-sidenav {
