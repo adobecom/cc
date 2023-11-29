@@ -88,17 +88,7 @@ export default async function setInteractiveFirefly(el) {
   const media = el.querySelector('.media');
   const allP = media.querySelectorAll('p:not(:empty)');
   const allAnchorTag = media.querySelectorAll('a');
-
-  const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
-  const selectorTrayMode = allP[3].innerText.split('(')[1]?.replaceAll(')', '');
-
-  const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
-  // Set Enticement
-  const enticementText = allAnchorTag[0].textContent.trim();
-  const enticementIcon = allAnchorTag[0].href;
-  const enticementDiv = await createEnticement(`${enticementText}|${enticementIcon}`, enticementMode);
-  media.appendChild(enticementDiv, media.firstChild);
-  // Set InteractiveSelection
+  // Get InteractiveSelection Value
   const selections = [];
   const ttiDetail = {};
   const genfDetail = {};
@@ -128,6 +118,16 @@ export default async function setInteractiveFirefly(el) {
 
   [...allP].forEach((s) => { if (!s.querySelector('picture') && !s.querySelector('video')) s.remove(); });
   const mediaP = media.querySelectorAll('p:not(:empty)');
+
+  const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
+  const selectorTrayMode = allP[3].innerText.split('(')[1]?.replaceAll(')', '');
+
+  const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
+  // Set Enticement
+  const enticementText = allAnchorTag[0].textContent.trim();
+  const enticementIcon = allAnchorTag[0].href;
+  const enticementDiv = await createEnticement(`${enticementText}|${enticementIcon}`, enticementMode);
+  media.appendChild(enticementDiv, media.firstChild);
 
   const fireflyOptions = await createSelectorTray(selections, selectorTrayMode);
   fireflyOptions.classList.add('firefly-selectortray');
