@@ -11,8 +11,15 @@ const getValueFromLabel = (content) => content
   .replace(/-/g, '')
   .replace(/\s+/g, '-');
 
+const createMerchList = (title, deeplink, variant) => {
+  const tag = createTag('sp-sidenav', { variant, manageTabIndex: true });
+  const merchTag = createTag('merch-sidenav-list', { title, deeplink });
+  merchTag.append(tag);
+  return { tag, merchTag };
+};
+
 const getCategories = (arrayCategories) => {
-  const tag = createTag('merch-sidenav-list', { deeplink: 'category' });
+  const { tag, merchTag } = createMerchList(null, 'categories', 'multilevel');
   const mapParents = {};
   arrayCategories.forEach((item) => {
     if (item.Name?.length > 0) {
@@ -28,7 +35,7 @@ const getCategories = (arrayCategories) => {
       }
     }
   });
-  return tag;
+  return merchTag;
 };
 
 const getTypes = (arrayTypes) => {
@@ -71,7 +78,7 @@ function appendSearch(rootNav, searchText) {
 function appendResources(rootNav, resourceLink) {
   const literals = resourceLink.textContent.split(':');
   const title = literals[0].trim();
-  const el = createTag('merch-sidenav-list', { title });
+  const { tag, merchTag } = createMerchList(title, null, null);
   const label = literals[1].trim();
   const link = createTag('sp-sidenav-item', { href: resourceLink.href });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
@@ -79,8 +86,8 @@ function appendResources(rootNav, resourceLink) {
     const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon' });
     link.append(icon);
   }
-  el.append(link);
-  rootNav.append(el);
+  tag.append(link);
+  rootNav.append(merchTag);
 }
 
 export default async function init(el) {
