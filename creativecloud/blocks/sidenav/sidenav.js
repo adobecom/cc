@@ -4,13 +4,14 @@ import('/creativecloud/deps/lit-all.min.js');
 import('/creativecloud/deps/merch-spectrum.min.js');
 import('/creativecloud/deps/merch-sidenav.js');
 
+const CATEGORY_TYPE = 'Categories';
+const TYPE_TYPE = 'Types';
 const getValueFromLabel = (content) => content
   .trim()
   .toLowerCase()
   .replace(/( and )/g, ' ')
   .replace(/-/g, '')
   .replace(/\s+/g, '-');
-
 
 const getCategories = (arrayCategories) => {
   const tag = createTag('sp-sidenav', { variant: 'multilevel', manageTabIndex: true });
@@ -52,11 +53,11 @@ const appendFilters = async (root, link) => {
     const resp = await fetch(payload);
     if (resp.ok) {
       const json = await resp.json();
-      const arrayCategories = json.data.filter((item) => item.Type === 'Categories');
+      const arrayCategories = json.data.filter((item) => item.Type === CATEGORY_TYPE);
       if (arrayCategories.length > 0) {
         root.append(getCategories(arrayCategories));
       }
-      const arrayTypes = json.data.filter((item) => item.Type === 'Types');
+      const arrayTypes = json.data.filter((item) => item.Type === TYPE_TYPE);
       if (arrayTypes.length > 0) {
         root.append(getTypes(arrayTypes));
       }
