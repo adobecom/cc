@@ -11,15 +11,11 @@ const getValueFromLabel = (content) => content
   .replace(/-/g, '')
   .replace(/\s+/g, '-');
 
-const createMerchList = (title, deeplink, variant) => {
-  const tag = createTag('sp-sidenav', { variant, manageTabIndex: true });
-  const merchTag = createTag('merch-sidenav-list', { title, deeplink });
-  merchTag.append(tag);
-  return { tag, merchTag };
-};
 
 const getCategories = (arrayCategories) => {
-  const { tag, merchTag } = createMerchList(undefined, 'categories', 'multilevel');
+  const tag = createTag('sp-sidenav', { variant: 'multilevel', manageTabIndex: true });
+  const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
+  merchTag.append(tag);
   const mapParents = {};
   arrayCategories.forEach((item) => {
     if (item.Name?.length > 0) {
@@ -82,7 +78,9 @@ function appendSearch(rootNav, searchText) {
 function appendResources(rootNav, resourceLink) {
   const literals = resourceLink.textContent.split(':');
   const title = literals[0].trim();
-  const { tag, merchTag } = createMerchList(title, undefined, undefined);
+  const tag = createTag('sp-sidenav', { manageTabIndex: true });
+  const merchTag = createTag('merch-sidenav-list', { title });
+  merchTag.append(tag);
   const label = literals[1].trim();
   const link = createTag('sp-sidenav-item', { href: resourceLink.href });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
