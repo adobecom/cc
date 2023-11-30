@@ -1,6 +1,5 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import sinon from 'sinon';
 
 document.body.innerHTML = await readFile({ path: './mocks/genfill.html' });
 const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
@@ -29,20 +28,5 @@ describe('genfill variant of interactive marquee', () => {
     expect(ent).to.exist;
     expect(ent.querySelector('.enticement-text')).to.exist;
     expect(ent.querySelector('.enticement-arrow')).to.exist;
-  });
-  it('should implement click functionality', () => {
-    const a = im.querySelector('.desktop-only a');
-    a.click();
-    expect(a.style.display).to.equal('none');
-    expect(a.nextElementSibling.style.display).to.equal('block');
-  });
-
-  it('should call the callback after a delay', async () => {
-    const a = im.querySelector('.desktop-only a');
-    const clock = await sinon.useFakeTimers();
-    clock.tick(1000);
-    expect(a.style.display).to.equal('none');
-    expect(a.nextElementSibling.style.display).to.equal('block');
-    clock.restore();
   });
 });

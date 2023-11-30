@@ -1,7 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
 
-const miloLibs = getLibs('/libs');
-
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
@@ -70,6 +68,7 @@ function interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadSt
 }
 
 export default async function init(el) {
+  const miloLibs = getLibs('/libs');
   const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
   const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
@@ -89,7 +88,7 @@ export default async function init(el) {
       break;
     }
     default:
-      await interactiveInit(el);
+      await interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle);
       break;
   }
 }
