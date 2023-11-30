@@ -96,7 +96,7 @@
 
 .optionsvg {
   width: 20px;
-  min-height: 20px;
+  height: 20px;
   display: block;
   margin-inline: auto;
   margin-bottom: 2px;
@@ -299,7 +299,7 @@
 
   .optionsvg {
     width: 40px;
-    min-height: 40px;
+    height: 40px;
     display: inline;
     margin-inline: 0 16px;
     margin-bottom: 0;
