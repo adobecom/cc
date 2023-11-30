@@ -1,25 +1,25 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
-const miloLibs = setLibs('/libs');
-const { getConfig } = await import(`${miloLibs}/utils/utils.js`);
+const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const config = getConfig();
 const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
-const env = window.origin.includes(config.prodDomains[1]) ? 'prod' : 'stage';
+const env = window.origin.includes(config.prodDomains[0]) ? 'prod' : 'stage';
 
 export function redirectWithParam() {
   const url = new URL(window.location.href);
   let prompt;
   let windowLocation = '';
+  const queryParam = 'ff_channel=adobe_com&ff_campaign=ffly_homepage&ff_source=firefly_seo';
   if (window.location.search.includes('goToFireflyGenFill')) {
-    windowLocation = env === 'prod' ? `${fireflyprod}/upload/inpaint` : `${fireflystage}/upload/inpaint`;
+    windowLocation = env === 'prod' ? `${fireflyprod}/upload/inpaint?${queryParam}` : `${fireflystage}/upload/inpaint?&${queryParam}`;
   } else if (window.location.search.includes('goToFireflyEffects')) {
     prompt = url.searchParams.get('goToFireflyEffects');
-    const effectsPath = `generate/font-styles?prompt=${prompt}`;
+    const effectsPath = `generate/font-styles?prompt=${prompt}&${queryParam}`;
     windowLocation = env === 'prod' ? `${fireflyprod}/${effectsPath}` : `${fireflystage}/${effectsPath}`;
   } else if (window.location.search.includes('goToFirefly')) {
     prompt = url.searchParams.get('goToFirefly');
-    const fireflyPath = `generate/images?prompt=${prompt}&modelInputVersion=v2&modelConfig=v2`;
+    const fireflyPath = `generate/images?prompt=${prompt}&${queryParam}&modelInputVersion=v2&modelConfig=v2`;
     windowLocation = env === 'prod' ? `${fireflyprod}/${fireflyPath}` : `${fireflystage}/${fireflyPath}`;
   }
   if (windowLocation) window.location = windowLocation;
@@ -29,6 +29,9 @@ export const signIn = (prompt, paramKey) => {
   const url = new URL(window.location.href);
   url.searchParams.delete('goToFirefly', 'goToFireflyEffects', 'goToFireflyGenFill');
   url.searchParams.set(paramKey, encodeURI(prompt));
+  url.searchParams.set('ff_channel', 'adobe_com');
+  url.searchParams.set('ff_campaign', 'ffly_homepage');
+  url.searchParams.set('ff_source', 'firefly_seo');
   if (paramKey === 'goToFirefly') {
     url.searchParams.set('modelInputVersion', 'v2');
     url.searchParams.set('modelConfig', 'v2');
