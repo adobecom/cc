@@ -1,8 +1,8 @@
 import { createTag } from '../../scripts/utils.js';
 
-import('/creativecloud/deps/lit-all.min.js');
-import('/creativecloud/deps/merch-spectrum.min.js');
-import('/creativecloud/deps/merch-sidenav.js');
+import '../../deps/lit-all.min.js';
+import '../../deps/merch-spectrum.min.js';
+import '../../deps/merch-sidenav.js';
 
 const getValueFromLabel = (content) => content
   .trim()
@@ -93,5 +93,17 @@ export default async function init(el) {
   if (links.length > 1) {
     appendResources(rootNav, links[1]);
   }
-  el.replaceWith(rootNav);
+  const appContainer = el.closest('main > div.section')?.firstElementChild;
+  if (appContainer?.classList.contains('app')) {
+    appContainer.appendChild(rootNav);
+    el.remove();
+    const merchCards = appContainer.querySelector('merch-cards');
+    if (merchCards) {
+      merchCards.sidenav = merchCards.sidenav || rootNav;
+      merchCards.requestUpdate();
+    }
+  } else {
+    el.replaceWith(rootNav);
+  }
+  return rootNav;
 }
