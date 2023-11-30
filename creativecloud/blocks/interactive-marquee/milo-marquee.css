@@ -56,6 +56,7 @@
 
 .interactive-marquee .icon-text {
   margin: auto var(--spacing-xs);
+  font-weight: 700;
 }
 
 .interactive-marquee .icon-area picture,
