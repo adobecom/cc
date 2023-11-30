@@ -35,7 +35,6 @@ describe('genfill variant of interactive marquee', () => {
     a.click();
     expect(a.style.display).to.equal('none');
     expect(a.nextElementSibling.style.display).to.equal('block');
-    console.log(im);
   });
 
   it('should call the callback after a delay', async () => {
