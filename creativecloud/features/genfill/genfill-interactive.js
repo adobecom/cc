@@ -21,7 +21,7 @@ function startAutocycle(interval, pics, clickConfig) {
 
 function handleClick(aTags, clickConfig) {
   aTags.forEach((a, i) => {
-    a.querySelector('img')?.removeAttribute('loading');
+    a.querySelector('img').removeAttribute('loading');
     a.addEventListener('click', () => {
       clickConfig.isImageClicked = true;
       if (clickConfig.autocycleInterval) clearInterval(clickConfig.autocycleInterval);
@@ -79,8 +79,8 @@ export default async function decorateGenfill(el) {
   [enticementMode, enticement, timer].forEach((i) => i?.remove());
   const viewports = ['mobile', 'tablet', 'desktop'];
   const mediaElements = interactiveContainer.querySelectorAll('.media');
-  mediaElements.forEach((mediaEl, index) => {
-    removePTags(mediaEl, index);
+  mediaElements.forEach(async (mediaEl, index) => {
+    await removePTags(mediaEl, index);
     const aTags = mediaEl.querySelectorAll('a');
     handleClick(aTags, clickConfig);
   });
@@ -90,8 +90,8 @@ export default async function decorateGenfill(el) {
       : interactiveContainer.lastElementChild;
     media.classList.add(`${v}-only`);
     if (defineDeviceByScreenSize() === v.toUpperCase()) {
-      const aTags = media.querySelectorAll('a');
       setTimeout(() => {
+        const aTags = media.querySelectorAll('a');
         startAutocycle(intervalTime, aTags, clickConfig);
       }, delayTime);
     }
