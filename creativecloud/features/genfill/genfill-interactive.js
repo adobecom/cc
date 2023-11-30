@@ -30,10 +30,10 @@ function handleClick(aTags, clickConfig) {
   });
 }
 
-function addEnticement(container, enticement, mode) {
+async function addEnticement(container, enticement, mode) {
   const svgUrl = enticement.querySelector('a').href;
   const enticementText = enticement.innerText;
-  const entcmtEl = createEnticement(`${enticementText}|${svgUrl}`, mode);
+  const entcmtEl = await createEnticement(`${enticementText}|${svgUrl}`, mode);
   entcmtEl.classList.add('enticement');
   const n = container.children.length;
   const desktopMedia = container.querySelector('.desktop-only');

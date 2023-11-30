@@ -18,15 +18,24 @@
 
 .enticement-arrow {
   display: none;
+  width: 49px;
+  height: 73px;
+  position: absolute;
 }
 
 .enticement-text {
   display: none;
   max-width: 30ch;
+  position: absolute;
+  font-size: 28px;
+  line-height: 35px;
+  margin-left: -20px;
+  top: -90px;
+  color: var(--color-white);
 }
 
 .enticement-text.light {
-color: var(--color-white);
+  color: var(--color-black);
 }
 
 @media screen and (max-width: 600px) {
@@ -54,26 +63,18 @@ color: var(--color-white);
     display: block;
   }
 
-  .enticement-arrow {
-    width: 49px;
-    height: 73px;
-    position: absolute;
+  .enticement-arrow {    
     right: 575px;
     top: -45px;
     display: block;
   }
 
   .enticement-text {
-    position: absolute;
-    right: 345px;
-    top: -60px;
-    width: 240px;
     display: block;
-    color: var(--color-black);
   }
 
-  .enticement-text.light {
-    color: var(--color-white);
+  [dir="rtl"] .enticement-text {
+    margin-right: 525px;
   }
 }
 
@@ -87,21 +88,17 @@ color: var(--color-white);
     display: block;
   }
 
-   .enticement-arrow {
-    width: 49px;
-    height: 73px;
-    position: absolute;
+  .enticement-arrow {
     right: 575px;
     top: -45px;
     display: block;
   }
 
   .enticement-text {
-    position: absolute;
-    right: 345px;
-    top: -60px;
-    width: 240px;
     display: block;
-    color: var(--color-black);
+  }
+
+  [dir="rtl"] .enticement-text {
+    margin-right: 510px;
   }
 }
