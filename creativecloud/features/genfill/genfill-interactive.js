@@ -2,9 +2,6 @@ import { getLibs } from '../../scripts/utils.js';
 import { createEnticement } from '../interactive-elements/interactive-elements.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
-const miloLibs = getLibs();
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-
 function handleTransition(pics, index) {
   pics[index].style.display = 'none';
   const nextIndex = (index + 1) % pics.length;
@@ -45,7 +42,9 @@ function addEnticement(container, enticement, mode) {
   tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
 
-async function removePTags(media, vp) {
+async function removePTags(media, vi) {
+  const miloLibs = getLibs();
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const pics = media.querySelectorAll('picture');
   pics.forEach((pic, index) => {
     if (pic.closest('p')) pic.closest('p').remove();
@@ -53,7 +52,7 @@ async function removePTags(media, vp) {
     const img = pic.querySelector('img');
     const altTxt = img.alt
       ? `${img.alt}|Marquee|EveryoneCanPs`
-      : `Image-${vp}-${index}|Marquee|EveryoneCanPs`;
+      : `Image-${vi}-${index}|Marquee|EveryoneCanPs`;
     a.setAttribute('daa-ll', altTxt);
     a.appendChild(pic);
     media.appendChild(a);
@@ -80,15 +79,18 @@ export default async function decorateGenfill(el) {
   [enticementMode, enticement, timer].forEach((i) => i?.remove());
   const viewports = ['mobile', 'tablet', 'desktop'];
   const mediaElements = interactiveContainer.querySelectorAll('.media');
+  mediaElements.forEach((mediaEl, index) => {
+    removePTags(mediaEl, index);
+    const aTags = mediaEl.querySelectorAll('a');
+    handleClick(aTags, clickConfig);
+  });
   viewports.forEach((v, vi) => {
     const media = mediaElements[vi]
       ? mediaElements[vi]
       : interactiveContainer.lastElementChild;
     media.classList.add(`${v}-only`);
     if (defineDeviceByScreenSize() === v.toUpperCase()) {
-      removePTags(media, v);
       const aTags = media.querySelectorAll('a');
-      handleClick(aTags, clickConfig);
       setTimeout(() => {
         startAutocycle(intervalTime, aTags, clickConfig);
       }, delayTime);
