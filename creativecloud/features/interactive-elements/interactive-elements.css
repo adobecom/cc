@@ -85,7 +85,7 @@
   margin-inline-end: 8px;
   font-weight: bold;
   background: var(--color-white);
-  height: 50px;
+  min-height: 50px;
 }
 
 .options.light {
@@ -205,7 +205,7 @@
   .options {
     margin-inline-end: 16px;
     padding: 7px;
-    height: 57px;
+    min-height: 57px;
     flex-direction: column;
     justify-content: flex-start;
     font-size: var(--type-body-xs-size);
