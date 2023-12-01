@@ -137,6 +137,9 @@ const eagerLoad = (img) => {
     import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
   } else if (firstDiv?.classList.contains('interactive-marquee')) {
     firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+    if (firstDiv?.classList.contains('firefly')) {
+      firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('img').forEach(async (img) => eagerLoad(img));
+    }
   } else {
     eagerLoad(document.querySelector('img'));
   }
