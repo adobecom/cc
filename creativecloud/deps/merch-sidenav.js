@@ -1,4 +1,4 @@
-// Fri, 01 Dec 2023 13:14:32 GMT
+// Fri, 01 Dec 2023 13:43:45 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "./lit-all.min.js";
@@ -171,7 +171,7 @@ var MerchSidenavList = class extends LitElement2 {
     super();
     this.handleClickDebounced = debounce(this.handleClick.bind(this));
   }
-  async selectElement(element, selected = true) {
+  selectElement(element, selected = true) {
     if (element.parentNode.tagName === "SP-SIDENAV-ITEM") {
       this.selectElement(element.parentNode, false);
     }
