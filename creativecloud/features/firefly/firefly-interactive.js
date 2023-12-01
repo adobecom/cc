@@ -6,7 +6,7 @@ function focusOnInput(media) {
     input.focus();
     input.classList.add('blinking-cursor');
     if (input.classList.contains('light')) input.classList.add('blink-light');
-    input.addEventListener('focusout', () => { input.classList.remove('blinking-cursor'); input.classList.remove('blink-light'); });
+    input.addEventListener('click', () => { input.classList.remove('blinking-cursor'); input.classList.remove('blink-light'); });
   }
 }
 
@@ -118,7 +118,7 @@ export default async function setInteractiveFirefly(el) {
 
   [...allP].forEach((s) => { if (!s.querySelector('picture') && !s.querySelector('video')) s.remove(); });
   const mediaP = media.querySelectorAll('p:not(:empty)');
-
+  [...mediaP].forEach((image) => { image.classList.add('hide'); });
   const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
   const selectorTrayMode = allP[3].innerText.split('(')[1]?.replaceAll(')', '');
 

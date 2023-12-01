@@ -117,12 +117,32 @@
   }
 }
 
+@keyframes blink {
+  0%, 100% {
+    border-inline-start-color: transparent;
+  }
+
+  50% {
+    border-inline-start-color: var(--text-color);
+  }
+}
+
+@keyframes blinklight {
+  0%, 100% {
+    border-inline-start-color: transparent;
+  }
+
+  50% {
+    border-inline-start-color: #dbdbdb;  
+  }
+}
+
 .blinking-cursor:not(:focus) {
   animation: blink 0.95s infinite;
-  border-inline-start: 1px solid var(--text-color);;
   height: 1em;
+  border-inline-start: 1px solid var(--text-color);;
   position: relative;
-  top: 50%; 
+  top: 50%;
   transform: translateY(-50%);
   padding-inline-start: 0;
 }
@@ -130,33 +150,4 @@
 .blinking-cursor.blink-light:not(:focus) {
   animation: blinklight 0.95s infinite;
   border-inline-start: 1px solid #dbdbdb;
-}
-@keyframes blink {
-  0% {
-    border-inline-start-color: transparent;
-  }
-
-  50% {
-    border-inline-start-color: var(--text-color);
-    
-  }
-
-  100% {
-    border-inline-start-color: transparent;
-  }
-}
-
-@keyframes blinklight {
-  0% {
-    border-inline-start-color: transparent;
-  }
-
-  50% {
-    border-inline-start-color: #dbdbdb;
-    
-  }
-
-  100% {
-    border-inline-start-color: transparent;
-  }
 }

@@ -123,9 +123,26 @@ const CONFIG = {
 };
 
 // Load LCP image immediately
+const eagerLoad = (img) => {
+  img?.setAttribute('loading', 'eager');
+  img?.setAttribute('fetchpriority', 'high');
+};
+
 (async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  lcpImg?.removeAttribute('loading');
+  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
+  if (firstDiv?.classList.contains('marquee')) {
+    firstDiv.querySelectorAll('img').forEach(eagerLoad);
+  } else if (firstDiv?.classList.contains('changebg')) {
+    firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+    import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+  } else if (firstDiv?.classList.contains('interactive-marquee')) {
+    firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+    if (firstDiv?.classList.contains('firefly')) {
+      firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('img').forEach(async (img) => eagerLoad(img));
+    }
+  } else {
+    eagerLoad(document.querySelector('img'));
+  }
 }());
 
 /*

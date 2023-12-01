@@ -34,8 +34,7 @@ function extendButtonsClass(text) {
   buttons.forEach((button) => { button.classList.add('button-justified-mobile'); });
 }
 
-function interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle) {
-  loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
+function interactiveInit(el, decorateButtons, decorateBlockBg, createTag) {
   const isLight = el.classList.contains('light');
   if (!isLight) el.classList.add('dark');
   const children = el.querySelectorAll(':scope > div');
@@ -73,22 +72,25 @@ export default async function init(el) {
   const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
     case el.classList.contains('genfill'): {
+      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
       loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
-      await interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle);
+      interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
       await decorateGenfill(el);
       break;
     }
     case el.classList.contains('firefly'): {
-      interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle);
+      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
       loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
       loadStyle('/creativecloud/features/firefly/firefly-interactive.css');
+      interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       const { default: setInteractiveFirefly } = await import('../../features/firefly/firefly-interactive.js');
-      setInteractiveFirefly(el);
+      await setInteractiveFirefly(el);
       break;
     }
     default:
-      await interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle);
+      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
+      interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       break;
   }
 }
