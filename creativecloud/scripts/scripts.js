@@ -142,9 +142,6 @@ const eagerLoad = (img) => {
     case firstDiv?.classList.contains('interactive-marquee'):
       firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
       fgDivs = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-      /* eslint-disable no-fallthrough */
-    case firstDiv?.classList.contains('firefly'):
-    case firstDiv?.classList.contains('genfill'):
       fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
       break;
     default:
