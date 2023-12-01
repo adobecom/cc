@@ -43,6 +43,9 @@ async function addEnticement(container, enticement, mode) {
 }
 
 async function removePTags(media, vi) {
+  const heading = media.closest('.foreground').querySelector('h2');
+  const hText = heading.id
+    .split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
   const miloLibs = getLibs();
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const pics = media.querySelectorAll('picture');
@@ -51,8 +54,8 @@ async function removePTags(media, vi) {
     const a = createTag('a', { class: 'genfill-link' });
     const img = pic.querySelector('img');
     const altTxt = img.alt
-      ? `${img.alt}|Marquee|EveryoneCanPs`
-      : `Image-${vi}-${index}|Marquee|EveryoneCanPs`;
+      ? `${img.alt}|Marquee|${hText}`
+      : `Image-${vi}-${index}|Marquee|${hText}`;
     a.setAttribute('daa-ll', altTxt);
     a.appendChild(pic);
     media.appendChild(a);
