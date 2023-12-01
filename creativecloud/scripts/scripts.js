@@ -1,3 +1,5 @@
+/* eslint-disable no-fallthrough */
+/* eslint-disable no-case-declarations */
 /*
  * Copyright 2023 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -130,23 +132,27 @@ const eagerLoad = (img) => {
 
 (async function loadLCPImage() {
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  if (firstDiv?.classList.contains('marquee')) {
-    firstDiv.querySelectorAll('img').forEach(eagerLoad);
-  } else if (firstDiv?.classList.contains('changebg')) {
-    firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-    import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
-  } else if (firstDiv?.classList.contains('interactive-marquee')) {
-    firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-    if (firstDiv?.classList.contains('firefly')) {
-      firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('img').forEach(async (img) => eagerLoad(img));
-    } else if (firstDiv?.classList.contains('genfill')) {
+  switch (true) {
+    case firstDiv?.classList.contains('changebg'):
+      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+      import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+      break;
+    case firstDiv?.classList.contains('marquee'):
+      firstDiv.querySelectorAll('img').forEach(eagerLoad);
+      break;
+    case firstDiv?.classList.contains('interactive-marquee'):
+      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+    case firstDiv?.classList.contains('firefly'):
+      const lcpImg = firstDiv.querySelector(':scope > div:nth-child(2)').querySelector('img');
+      if (lcpImg) eagerLoad(lcpImg);
+      break;
+    case firstDiv?.classList.contains('genfill'):
       const viewports = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-      viewports.forEach((vp) => {
-        eagerLoad(vp.querySelector('img'));
-      });
-    }
-  } else {
-    eagerLoad(document.querySelector('img'));
+      viewports.forEach((vp) => eagerLoad(vp.querySelector('img')));
+      break;
+    default:
+      eagerLoad(document.querySelector('img'));
+      break;
   }
 }());
 

@@ -43,7 +43,7 @@ async function addEnticement(container, enticement, mode) {
 }
 
 async function removePTags(media, vi) {
-  const heading = media.closest('.foreground').querySelector('h2');
+  const heading = media.closest('.foreground').querySelector('h1, h2, h3, h4, h5, h6');
   const hText = heading.id
     .split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
   const miloLibs = getLibs();
