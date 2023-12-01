@@ -1,5 +1,3 @@
-/* eslint-disable no-fallthrough */
-/* eslint-disable no-case-declarations */
 /*
  * Copyright 2023 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -132,6 +130,7 @@ const eagerLoad = (img) => {
 
 (async function loadLCPImage() {
   const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
+  let fgDivs = null;
   switch (true) {
     case firstDiv?.classList.contains('changebg'):
       firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
@@ -142,13 +141,11 @@ const eagerLoad = (img) => {
       break;
     case firstDiv?.classList.contains('interactive-marquee'):
       firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+      fgDivs = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
+      /* eslint-disable no-fallthrough */
     case firstDiv?.classList.contains('firefly'):
-      const lcpImg = firstDiv.querySelector(':scope > div:nth-child(2)').querySelector('img');
-      if (lcpImg) eagerLoad(lcpImg);
-      break;
     case firstDiv?.classList.contains('genfill'):
-      const viewports = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-      viewports.forEach((vp) => eagerLoad(vp.querySelector('img')));
+      fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
       break;
     default:
       eagerLoad(document.querySelector('img'));
