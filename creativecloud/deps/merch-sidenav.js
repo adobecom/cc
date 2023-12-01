@@ -1,4 +1,4 @@
-// Fri, 01 Dec 2023 10:41:20 GMT
+// Fri, 01 Dec 2023 13:14:32 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "./lit-all.min.js";
@@ -141,7 +141,7 @@ var MerchSidenavList = class extends LitElement2 {
   static properties = {
     title: { type: String },
     label: { type: String },
-    deeplink: { type: String },
+    deeplink: { type: String, attribute: "deeplink" },
     selectedText: {
       type: String,
       reflect: true,
@@ -171,18 +171,21 @@ var MerchSidenavList = class extends LitElement2 {
     super();
     this.handleClickDebounced = debounce(this.handleClick.bind(this));
   }
-  selectElement(element) {
+  async selectElement(element, selected = true) {
     if (element.parentNode.tagName === "SP-SIDENAV-ITEM") {
-      element.parentNode.expanded = true;
-      element.parentNode.selected = false;
+      this.selectElement(element.parentNode, false);
     }
-    if (element) {
-      element.selected = true;
+    if (element.firstElementChild?.tagName === "SP-SIDENAV-ITEM") {
       element.expanded = true;
     }
-    this.selectedElement = element;
-    this.selectedText = element.label;
-    this.selectedValue = element.value;
+    if (selected) {
+      this.selectedElement = element;
+      this.selectedText = element.label;
+      this.selectedValue = element.value;
+      setTimeout(() => {
+        element.selected = true;
+      }, 1);
+    }
   }
   /*
    * set the state of the sidenav based on the URL
@@ -191,10 +194,12 @@ var MerchSidenavList = class extends LitElement2 {
     const state = parseState();
     const value = state[this.deeplink];
     if (value) {
-      const element = this.querySelector(
-        `sp-sidenav-item[value=${value}], sp-sidenav-item`
-      );
-      this.selectElement(element);
+      const element = this.querySelector(`sp-sidenav-item[value="${value}"]`) ?? this.querySelector(`sp-sidenav-item`);
+      if (!element)
+        return;
+      this.updateComplete.then(() => {
+        this.selectElement(element);
+      });
     }
   }
   /**

@@ -106,12 +106,14 @@ export default async function init(el) {
   const appContainer = el.closest('main > div.section')?.firstElementChild;
   if (appContainer?.classList.contains('app')) {
     appContainer.appendChild(rootNav);
-    el.remove();
-    const merchCards = appContainer.querySelector('merch-cards');
-    if (merchCards) {
-      merchCards.sidenav = merchCards.sidenav || rootNav;
-      merchCards.requestUpdate();
-    }
+    rootNav.updateComplete.then(() => {
+      el.remove();
+      const merchCards = appContainer.querySelector('merch-cards');
+      if (merchCards) {
+        merchCards.sidenav = merchCards.sidenav || rootNav;
+        merchCards.requestUpdate();
+      }
+    });
   } else {
     el.replaceWith(rootNav);
   }
