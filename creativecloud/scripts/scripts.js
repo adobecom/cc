@@ -140,9 +140,9 @@ const eagerLoad = (img) => {
     if (firstDiv?.classList.contains('firefly')) {
       firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('img').forEach(async (img) => eagerLoad(img));
     } else if (firstDiv?.classList.contains('genfill')) {
-      const vpDivs = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-      vpDivs.forEach((vp) => {
-        eagerLoad(vp.querySelector('img')); // eagerly loaded 1st img of each vp
+      const viewports = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
+      viewports.forEach((vp) => {
+        eagerLoad(vp.querySelector('img'));
       });
     }
   } else {
