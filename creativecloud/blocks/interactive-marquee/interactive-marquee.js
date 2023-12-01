@@ -90,7 +90,7 @@ export default async function init(el) {
     }
     default:
       loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
-      interactiveInit(el, decorateButtons, decorateBlockBg, createTag, loadStyle);
+      interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       break;
   }
 }
