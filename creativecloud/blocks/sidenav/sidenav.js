@@ -4,6 +4,8 @@ import '../../deps/lit-all.min.js';
 import '../../deps/merch-spectrum.min.js';
 import '../../deps/merch-sidenav.js';
 
+const CATEGORY_TYPE = 'Categories';
+const TYPE_TYPE = 'Types';
 const getValueFromLabel = (content) => content
   .trim()
   .toLowerCase()
@@ -12,7 +14,9 @@ const getValueFromLabel = (content) => content
   .replace(/\s+/g, '-');
 
 const getCategories = (arrayCategories) => {
-  const tag = createTag('merch-sidenav-list', { deeplink: 'category' });
+  const tag = createTag('sp-sidenav', { variant: 'multilevel', manageTabIndex: true });
+  const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
+  merchTag.append(tag);
   const mapParents = {};
   arrayCategories.forEach((item) => {
     if (item.Name?.length > 0) {
@@ -28,7 +32,7 @@ const getCategories = (arrayCategories) => {
       }
     }
   });
-  return tag;
+  return merchTag;
 };
 
 const getTypes = (arrayTypes) => {
@@ -45,17 +49,21 @@ const getTypes = (arrayTypes) => {
 
 const appendFilters = async (root, link) => {
   const payload = link.textContent.trim();
-  const resp = await fetch(payload);
-  if (resp.ok) {
-    const json = await resp.json();
-    const arrayCategories = json.data.filter((item) => item.Type === 'Categories');
-    if (arrayCategories.length > 0) {
-      root.append(getCategories(arrayCategories));
+  try {
+    const resp = await fetch(payload);
+    if (resp.ok) {
+      const json = await resp.json();
+      const arrayCategories = json.data.filter((item) => item.Type === CATEGORY_TYPE);
+      if (arrayCategories.length > 0) {
+        root.append(getCategories(arrayCategories));
+      }
+      const arrayTypes = json.data.filter((item) => item.Type === TYPE_TYPE);
+      if (arrayTypes.length > 0) {
+        root.append(getTypes(arrayTypes));
+      }
     }
-    const arrayTypes = json.data.filter((item) => item.Type === 'Types');
-    if (arrayTypes.length > 0) {
-      root.append(getTypes(arrayTypes));
-    }
+  } catch (e) {
+    console.error(e);
   }
 };
 
@@ -71,7 +79,9 @@ function appendSearch(rootNav, searchText) {
 function appendResources(rootNav, resourceLink) {
   const literals = resourceLink.textContent.split(':');
   const title = literals[0].trim();
-  const el = createTag('merch-sidenav-list', { title });
+  const tag = createTag('sp-sidenav', { manageTabIndex: true });
+  const merchTag = createTag('merch-sidenav-list', { title });
+  merchTag.append(tag);
   const label = literals[1].trim();
   const link = createTag('sp-sidenav-item', { href: resourceLink.href });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
@@ -79,8 +89,8 @@ function appendResources(rootNav, resourceLink) {
     const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon' });
     link.append(icon);
   }
-  el.append(link);
-  rootNav.append(el);
+  tag.append(link);
+  rootNav.append(merchTag);
 }
 
 export default async function init(el) {

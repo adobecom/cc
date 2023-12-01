@@ -1,4 +1,4 @@
-// Wed, 29 Nov 2023 13:00:32 GMT
+// Fri, 01 Dec 2023 10:41:20 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "./lit-all.min.js";
@@ -73,6 +73,17 @@ function pushState(state) {
   window.location.hash = decodeURIComponent(hash.toString());
 }
 
+// src/utils.js
+function debounce(func, delay) {
+  let debounceTimer;
+  return function() {
+    const context = this;
+    const args = arguments;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func.apply(context, args), delay);
+  };
+}
+
 // src/merch-search.js
 var MerchSearch = class extends LitElement {
   static properties = {
@@ -88,21 +99,30 @@ var MerchSearch = class extends LitElement {
   get search() {
     return this.querySelector(`sp-search`);
   }
+  constructor() {
+    super();
+    this.handleInput = (e) => pushStateFromComponent(this, e.target.value);
+    this.handleInputDebounced = debounce(this.handleInput.bind(this));
+  }
   connectedCallback() {
     super.connectedCallback();
+    this.addEventListener("input", this.handleInputDebounced);
+    this.addEventListener("change", this.handleInputDebounced);
     this.updateComplete.then(() => {
       if (!this.search)
         return;
-      this.setState();
-      this.search.addEventListener("input", (e) => {
-        pushStateFromComponent(this, e.target.value);
-      });
+      this.setStateFromURL();
     });
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener("input", this.handleInputDebounced);
+    this.removeEventListener("change", this.handleInputDebounced);
   }
   /*
    * set the state of the search based on the URL
    */
-  setState() {
+  setStateFromURL() {
     const state = parseState();
     const value = state[this.deeplink];
     if (value) {
@@ -147,9 +167,14 @@ var MerchSidenavList = class extends LitElement2 {
         `,
     headingStyles
   ];
+  constructor() {
+    super();
+    this.handleClickDebounced = debounce(this.handleClick.bind(this));
+  }
   selectElement(element) {
     if (element.parentNode.tagName === "SP-SIDENAV-ITEM") {
       element.parentNode.expanded = true;
+      element.parentNode.selected = false;
     }
     if (element) {
       element.selected = true;
@@ -162,12 +187,12 @@ var MerchSidenavList = class extends LitElement2 {
   /*
    * set the state of the sidenav based on the URL
    */
-  setState() {
+  setStateFromURL() {
     const state = parseState();
     const value = state[this.deeplink];
     if (value) {
-      const element = this.shadowRoot.querySelector(
-        `sp-sidenav-item[value=${value}]`
+      const element = this.querySelector(
+        `sp-sidenav-item[value=${value}], sp-sidenav-item`
       );
       this.selectElement(element);
     }
@@ -198,39 +223,28 @@ var MerchSidenavList = class extends LitElement2 {
    */
   selectionChanged({ target: { value, parentNode } }) {
     this.selectElement(
-      this.shadowRoot.querySelector(`sp-sidenav-item[value="${value}"]`)
+      this.querySelector(`sp-sidenav-item[value="${value}"]`)
     );
     pushStateFromComponent(this, value);
   }
-  /**
-   * dub sidenav tree inside shadow dom's sp-sidenav element
-   */
-  dubSideNavTree() {
-    const sidenav = this.shadowRoot.querySelector("sp-sidenav");
-    this.querySelectorAll(":scope > sp-sidenav-item").forEach((item) => {
-      if (!item.hasAttribute("href")) {
-        item.addEventListener("click", this.handleClick.bind(this));
-      }
-      sidenav.appendChild(item);
-    });
-  }
   connectedCallback() {
     super.connectedCallback();
+    this.addEventListener("click", this.handleClickDebounced);
     this.updateComplete.then(() => {
-      this.dubSideNavTree();
-      this.setState();
+      this.setStateFromURL();
     });
   }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener("click", this.handleClickDebounced);
+  }
   render() {
-    return html2`<div aria-label="${this.label}">
+    return html2`<div
+            aria-label="${this.label}"
+            @change="${(e) => this.selectionChanged(e)}"
+        >
             ${this.title ? html2`<h2>${this.title}</h2>` : ""}
-            <sp-sidenav
-                variant="multilevel"
-                manageTabIndex="true"
-                @change="${this.selectionChanged}"
-                label="${this.label}"
-            >
-            </sp-sidenav>
+            <slot></slot>
         </div>`;
   }
 };
@@ -272,7 +286,7 @@ var MerchSidenavCheckboxGroup = class extends LitElement3 {
   /*
    * set the state of the sidenav based on the URL
    */
-  setState() {
+  setStateFromURL() {
     this.selectedValues = [];
     const { types: state } = parseState();
     if (state) {
@@ -304,13 +318,16 @@ var MerchSidenavCheckboxGroup = class extends LitElement3 {
   connectedCallback() {
     super.connectedCallback();
     this.updateComplete.then(async () => {
-      this.setState();
+      this.setStateFromURL();
     });
   }
   render() {
     return html3`<div aria-label="${this.label}">
             <h3>${this.title}</h3>
-            <div @change="${this.selectionChanged}" class="checkbox-group">
+            <div
+                @change="${(e) => this.selectionChanged(e)}"
+                class="checkbox-group"
+            >
                 <slot></slot>
             </div>
         </div>`;
