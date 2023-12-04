@@ -71,6 +71,11 @@ export default async function init(el) {
   const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
   const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
+    case el.classList.contains('changebg'): {
+      const { default: changeBg } = await import('../../features/changeBg/changeBg.js');
+      changeBg(el);
+      break;
+    }
     case el.classList.contains('genfill'): {
       loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
       loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
