@@ -160,6 +160,11 @@ const eagerLoad = (img) => {
   } else if (firstDiv?.classList.contains('changebg')) {
     firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
     import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+  } else if (firstDiv?.classList.contains('interactive-marquee')) {
+    firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+    if (firstDiv?.classList.contains('firefly')) {
+      firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('img').forEach(async (img) => eagerLoad(img));
+    }
   } else {
     eagerLoad(document.querySelector('img'));
   }
@@ -185,8 +190,17 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, loadIms } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
   await loadArea();
+  if ((window.location.search.includes('goToFirefly')
+  || window.location.search.includes('goToFireflyEffects')
+  || window.location.search.includes('goToFireflyGenFill'))) {
+    try { await loadIms(); } catch { return; }
+    if (window.adobeIMS?.isSignedInUser()) {
+      const { redirectWithParam } = await import('../features/firefly/firefly-susi.js');
+      redirectWithParam();
+    }
+  }
 }());
