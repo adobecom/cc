@@ -38,8 +38,8 @@
 
 .enticement-arrow {
   display: none;
-  width: 49px !important;
-  height: 73px !important;
+  width: 49px;
+  height: 73px;
   position: absolute;
 }
 
