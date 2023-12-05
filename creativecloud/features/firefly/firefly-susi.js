@@ -6,6 +6,12 @@ const fireflyprod = 'https://firefly.adobe.com';
 const fireflystage = 'https://firefly-stage.corp.adobe.com';
 const env = window.origin.includes(config.prodDomains[0]) ? 'prod' : 'stage';
 
+function generateRandomSeed() {
+  const min = 1;
+  const max = 100000;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export function redirectWithParam() {
   const url = new URL(window.location.href);
   let prompt;
@@ -19,7 +25,7 @@ export function redirectWithParam() {
     windowLocation = env === 'prod' ? `${fireflyprod}/${effectsPath}` : `${fireflystage}/${effectsPath}`;
   } else if (window.location.search.includes('goToFirefly')) {
     prompt = url.searchParams.get('goToFirefly');
-    const fireflyPath = `generate/images?prompt=${prompt}&${queryParam}&modelInputVersion=v2&modelConfig=v2`;
+    const fireflyPath = `generate/images?prompt=${prompt}&${queryParam}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&modelInputVersion=v2&modelConfig=v2`;
     windowLocation = env === 'prod' ? `${fireflyprod}/${fireflyPath}` : `${fireflystage}/${fireflyPath}`;
   }
   if (windowLocation) window.location = windowLocation;
