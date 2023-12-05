@@ -28,6 +28,7 @@
   position: relative;
   top: 63px; /* mobile */
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .interactive-marquee .text {
@@ -36,6 +37,10 @@
   padding: var(--spacing-m);
   margin: 0 0 0 auto;
   order: 2;
+}
+
+[dir="rtl"] .interactive-marquee .text {
+  margin: 0 auto 0 0;
 }
 
 .interactive-marquee .text p:last-of-type {

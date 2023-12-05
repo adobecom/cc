@@ -29,7 +29,7 @@
   position: absolute;
   font-size: 28px;
   line-height: 35px;
-  margin-left: -20px;
+  margin: 40px 0 16px -20px;
   top: -90px;
   color: var(--color-white);
 }
@@ -65,7 +65,7 @@
 
   .enticement-arrow {    
     right: 575px;
-    top: -45px;
+    top: -30px;
     display: block;
   }
 
@@ -74,7 +74,8 @@
   }
 
   [dir="rtl"] .enticement-text {
-    margin-right: 525px;
+    position: absolute;
+    left: var(--spacing-xxs);
   }
 }
 
@@ -90,7 +91,7 @@
 
   .enticement-arrow {
     right: 575px;
-    top: -45px;
+    top: -30px;
     display: block;
   }
 
@@ -99,6 +100,7 @@
   }
 
   [dir="rtl"] .enticement-text {
-    margin-right: 510px;
+    position: absolute;
+    left: var(--spacing-xxs);
   }
 }
