@@ -22,26 +22,17 @@
       "environments": [ "edit" ],
       "url": "https://main--milo--adobecom.hlx.page/tools/loc/index.html?project=cc--adobecom",
       "passReferrer": true,
+      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
-    },
-    {
-      "containerId": "tools",
-      "id": "localize-2",
-      "title": "Localize (V2)",
-      "environments": [ "edit" ],
-      "url": "https://main--cc--adobecom.hlx.page/tools/loc?milolibs=locui",
-      "passReferrer": true,
-      "passConfig": true,
-      "includePaths": [ "**.xlsx**" ]
     },
     {
       "containerId": "tools",
       "id": "floodgate",
       "title": "Floodgate",
       "environments": [ "edit" ],
-      "url": "https://main--cc--adobecom.hlx.page/tools/floodgate?milolibs=floodgateui",
+      "url": "https://main--milo--adobecom.hlx.page/tools/floodgate/index.html?project=cc--adobecom",
       "passReferrer": true,
-      "passConfig": true,
+      "excludePaths": [ "/**" ],
       "includePaths": [ "**/:x**" ]
     },
     {
@@ -87,18 +78,6 @@
     },
     {
       "containerId": "tools",
-      "id": "version-history",
-      "title": "Version History",
-      "environments": [ "edit" ],
-      "url": "https://milo.adobe.com/tools/version-history",
-      "isPalette": true,
-      "passReferrer": true,
-      "passConfig": true,
-      "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 498px; width: 460px;",
-      "includePaths": [ "**.docx**", "**.xlsx**" ]
-    },
-    {
-      "containerId": "tools",
       "id": "locales",
       "title": "Locales",
       "environments": [ "edit", "dev", "preview", "live" ],
@@ -108,33 +87,6 @@
       "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
       "url": "https://milo.adobe.com/tools/locale-nav",
       "includePaths": [ "**.docx**" ]
-    },
-    {
-      "containerId": "tools",
-      "title": "Tag Selector",
-      "id": "tag-selector",
-      "environments": ["edit"],
-      "url": "https://milo.adobe.com/tools/tag-selector",
-      "isPalette": true,
-      "paletteRect": "top: 100px; left: 7%; height: 675px; width: 85vw;"
-    },
-    {
-      "containerId": "tools",
-      "id": "caas-configurator",
-      "title": "CaaS Configurator",
-      "environments": [ "edit", "preview", "dev" ],
-      "url": "https://milo.adobe.com/tools/caas",
-      "isPalette": false,
-      "includePaths": [ "**.docx**"]
-    },
-    {
-      "containerId": "tools",
-      "id": "faas-configurator",
-      "title": "FaaS Configurator",
-      "environments": [ "edit", "preview", "dev" ],
-      "url": "https://milo.adobe.com/tools/faas",
-      "isPalette": false,
-      "includePaths": [ "**.docx**"]
     }
   ]
 }
