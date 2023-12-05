@@ -6,7 +6,7 @@ customElem.config = {
 };
 
 function getImageSrc(viewport, pic) {
-  let imageSrc = '';
+  let imageSrcs = '';
   if (viewport === 'mobile') imageSrc = pic.querySelector('source[type="image/webp"]:not([media])');
   else imageSrc = pic.querySelector('source[type="image/webp"][media]');
   return imageSrc.srcset;
