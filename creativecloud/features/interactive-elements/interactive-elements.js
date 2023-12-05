@@ -5,7 +5,7 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
   const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
   const promptField = createTag('div', { id: 'promptbar', class: 'promptbar' });
   let promptInput = '';
-  if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt.trim()}`, maxlength: '250' });
+  if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt.trim()}`, maxlength: '250', autofocus: 'true' });
   const promptButton = createTag('button', { class: 'con-button blue button-justified-mobile', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText.trim()}`);
   if (mode === 'light') {
     promptField.classList.add('light');
