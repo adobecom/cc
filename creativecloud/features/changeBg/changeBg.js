@@ -6,10 +6,10 @@ customElem.config = {
 };
 
 function getImageSrc(viewport, pic) {
-  let imageSrc = '';
-  if (viewport === 'mobile') imageSrc = pic.querySelector('source[type="image/webp"]:not([media])');
-  else imageSrc = pic.querySelector('source[type="image/webp"][media]');
-  return imageSrc.srcset;
+  let imageSrcset = '';
+  if (viewport === 'mobile') imageSrcset = pic.querySelector('source[type="image/webp"]:not([media])');
+  else imageSrcset = pic.querySelector('source[type="image/webp"][media]');
+  return imageSrcset.srcset;
 }
 
 function createLayer(viewport, property, layerConfig) {
