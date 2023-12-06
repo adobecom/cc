@@ -12,6 +12,10 @@
   width: 247px;
 }
 
+.promptbar > button:hover {
+  cursor: pointer;
+}
+
 .promptbar.light {
   background: #111111;
   border: 1px solid #323232;
@@ -122,6 +126,7 @@
 
 .options:hover {
   border: 1px solid #1473E6;
+  cursor: pointer;
 }
 
 .genfill-prompt {

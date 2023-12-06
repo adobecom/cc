@@ -16,6 +16,10 @@
   display: none;
 }
 
+.interactive-marquee.genfill .media {
+  cursor: pointer;
+}
+
 .enticement-arrow {
   display: none;
   width: 49px;
