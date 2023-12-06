@@ -83,7 +83,8 @@ async function eventOnSelectorOption(selOption, promptDet, media, mediaP, create
 }
 
 export default async function setInteractiveFirefly(el) {
-  const mode = el.classList.contains('light') ? 'light' : 'dark';
+  const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
+  const interactiveElemMode = el.classList.contains('light') ? 'dark' : 'light';
   const buttons = el.querySelectorAll('.con-button');
   [...buttons].forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
   const media = el.querySelector('.media');
@@ -96,7 +97,7 @@ export default async function setInteractiveFirefly(el) {
   const teDetail = {};
   const allSelections = [...media.querySelectorAll('p:not(:empty)')].filter((p) => p.innerText.trim().toLowerCase().includes('firefly.adobe.com'));
   allSelections.forEach((s) => {
-    const optionPromptMode = mode;
+    const optionPromptMode = interactiveElemMode;
     const selectorValues = s.innerText.split('|');
     let selectorOption = '';
     if (selectorValues[0].includes('generate/images')) {
@@ -124,8 +125,6 @@ export default async function setInteractiveFirefly(el) {
   [...allP].forEach((s) => { if (!s.querySelector('picture') && !s.querySelector('video')) s.remove(); });
   const mediaP = media.querySelectorAll('p:not(:empty)');
   [...mediaP].forEach((image) => { image.classList.add('hide'); });
-  const enticementMode = mode;
-  const selectorTrayMode = mode;
 
   const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
   // Set Enticement
@@ -134,7 +133,7 @@ export default async function setInteractiveFirefly(el) {
   const enticementDiv = await createEnticement(`${enticementText}|${enticementIcon}`, enticementMode);
   media.appendChild(enticementDiv, media.firstChild);
 
-  const fireflyOptions = await createSelectorTray(selections, selectorTrayMode);
+  const fireflyOptions = await createSelectorTray(selections, interactiveElemMode);
   fireflyOptions.classList.add('firefly-selectortray');
   media.append(fireflyOptions);
 
@@ -149,7 +148,7 @@ export default async function setInteractiveFirefly(el) {
 
   // Create prompt field for first option on page load
   const firstOptionDetail = allP[3].innerText.split('|');
-  const fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, mode);
+  const fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, interactiveElemMode);
   if (firstOption.classList.contains('TextToImage') || firstOption.classList.contains('TextEffects')) {
     fireflyPrompt.classList.add('firefly-prompt');
     media.appendChild(fireflyPrompt);
