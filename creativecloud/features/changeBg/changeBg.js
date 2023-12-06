@@ -9,7 +9,7 @@ function getImageSrc(viewport, pic) {
   let imageSrc = '';
   if (viewport === 'mobile') imageSrc = pic.querySelector('source[type="image/webp"]:not([media])');
   else imageSrc = pic.querySelector('source[type="image/webp"][media]');
-  return imageSrc.srcset.replace('./', '/');
+  return imageSrc.srcset;
 }
 
 function createLayer(viewport, property, layerConfig) {
