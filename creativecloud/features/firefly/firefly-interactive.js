@@ -83,6 +83,7 @@ async function eventOnSelectorOption(selOption, promptDet, media, mediaP, create
 }
 
 export default async function setInteractiveFirefly(el) {
+  const mode = el.classList.contains('light') ? 'light' : 'dark';
   const buttons = el.querySelectorAll('.con-button');
   [...buttons].forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
   const media = el.querySelector('.media');
@@ -93,34 +94,38 @@ export default async function setInteractiveFirefly(el) {
   const ttiDetail = {};
   const genfDetail = {};
   const teDetail = {};
-  const allSelections = [...media.querySelectorAll('p:not(:empty)')].filter((p) => p.innerText.trim().toLowerCase().includes('interactive-selectors'));
+  const allSelections = [...media.querySelectorAll('p:not(:empty)')].filter((p) => p.innerText.trim().toLowerCase().includes('firefly.adobe.com'));
   allSelections.forEach((s) => {
-    const optionPromptMode = s.nextElementSibling.nextElementSibling.innerText.split('(')[1]?.replaceAll(')', '');
-    const selectorValues = s.nextElementSibling.innerText.split('|');
+    const optionPromptMode = mode;
+    const selectorValues = s.innerText.split('|');
+    let selectorOption = '';
+    if (selectorValues[0].includes('generate/images')) {
+      ttiDetail.promptmode = optionPromptMode;
+      ttiDetail.promptpos = s.nextElementSibling.innerText;
+      selectorOption = 'TextToImage';
+    } else if (selectorValues[0].includes('upload/inpaint')) {
+      genfDetail.promptmode = 'genfill';
+      genfDetail.promptpos = s.nextElementSibling.innerText;
+      selectorOption = 'GenerativeFill';
+    } else if (selectorValues[0].includes('generate/font-styles')) {
+      teDetail.promptmode = optionPromptMode;
+      teDetail.promptpos = s.nextElementSibling.innerText;
+      selectorOption = 'TextEffects';
+    }
     const option = {
-      id: `${selectorValues[0]}`,
-      text: `${s.nextElementSibling.querySelector('a').textContent.trim()}`,
-      svg: `${s.nextElementSibling.querySelector('a').href}`,
-      analytics: `Select${selectorValues[0]}`,
+      id: `${selectorOption}`,
+      text: `${s.querySelectorAll('a')[1].textContent.trim()}`,
+      svg: `${s.querySelectorAll('a')[1].href}`,
+      analytics: `Select${selectorOption}`,
     };
     selections.push(option);
-    if (selectorValues[0] === 'TextToImage') {
-      ttiDetail.promptmode = optionPromptMode;
-      ttiDetail.promptpos = s.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-    } else if (selectorValues[0] === 'GenerativeFill') {
-      genfDetail.promptmode = optionPromptMode;
-      genfDetail.promptpos = s.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-    } else if (selectorValues[0] === 'TextEffects') {
-      teDetail.promptmode = optionPromptMode;
-      teDetail.promptpos = s.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-    }
   });
 
   [...allP].forEach((s) => { if (!s.querySelector('picture') && !s.querySelector('video')) s.remove(); });
   const mediaP = media.querySelectorAll('p:not(:empty)');
   [...mediaP].forEach((image) => { image.classList.add('hide'); });
-  const enticementMode = allP[0].innerText.split('(')[1]?.replaceAll(')', '');
-  const selectorTrayMode = allP[3].innerText.split('(')[1]?.replaceAll(')', '');
+  const enticementMode = mode;
+  const selectorTrayMode = mode;
 
   const { createSelectorTray, createEnticement, createPromptField } = await import('../interactive-elements/interactive-elements.js');
   // Set Enticement
@@ -143,10 +148,8 @@ export default async function setInteractiveFirefly(el) {
   const genfillPrompt = await createGenFillPrompt(genfDetail.promptpos);
 
   // Create prompt field for first option on page load
-  let fireflyPrompt = '';
-  const firstOptionDetail = allP[6].innerText.split('|');
-  const firstOptionPromptMode = allP[5].innerText.split('(')[1]?.replaceAll(')', '');
-  fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, firstOptionPromptMode);
+  const firstOptionDetail = allP[3].innerText.split('|');
+  const fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, mode);
   if (firstOption.classList.contains('TextToImage') || firstOption.classList.contains('TextEffects')) {
     fireflyPrompt.classList.add('firefly-prompt');
     media.appendChild(fireflyPrompt);
