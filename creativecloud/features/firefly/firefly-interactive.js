@@ -95,7 +95,10 @@ export default async function setInteractiveFirefly(el) {
   const ttiDetail = {};
   const genfDetail = {};
   const teDetail = {};
-  const allSelections = [...media.querySelectorAll('p:not(:empty)')].filter((p) => p.innerText.trim().toLowerCase().includes('firefly.adobe.com'));
+  const fireflyDomain = [
+    'firefly.adobe.com',
+  ];
+  const allSelections = [...media.querySelectorAll('p:not(:empty)')].filter((p) => p.innerText.trim().toLowerCase().includes(fireflyDomain[0]));
   allSelections.forEach((s) => {
     const optionPromptMode = interactiveElemMode;
     const selectorValues = s.innerText.split('|');
