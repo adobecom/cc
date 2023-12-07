@@ -24,6 +24,10 @@
   display: flex;
 }
 
+.genfill-promptbar > button:hover {
+  cursor: pointer;
+}
+
 .interactive-marquee .media {
   top: 72px;
 }
