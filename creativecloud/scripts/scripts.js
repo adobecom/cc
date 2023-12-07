@@ -116,6 +116,7 @@ const locales = {
   gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
 };
 
+// eslint-disable-next-line no-use-before-define
 const decorateArea = getDecorateAreaFn();
 
 // Add any config options.
@@ -160,7 +161,7 @@ function getDecorateAreaFn() {
     if (lcpImg) lcpImgSet = true;
   };
 
-  function loadLCPImage(area = document, { fragmentLink = null } = {} ) {
+  function loadLCPImage(area = document, { fragmentLink = null } = {}) {
     const firstBlock = area.querySelector('body > main > div > div');
     let fgDivs = null;
     switch (true) {
@@ -176,17 +177,20 @@ function getDecorateAreaFn() {
         fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
         fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
         break;
-      default:
-        if (window.document.querySelector('a.fragment') == fragmentLink && !window.document.querySelector('img[loading="eager"]')) {
+      case fragmentLink:
+        if (window.document.querySelector('a.fragment') === fragmentLink && !window.document.querySelector('img[loading="eager"]')) {
           eagerLoad(area.querySelector('img'));
         }
+        break;
+      default:
+        eagerLoad(area.querySelector('img'));
         break;
     }
   }
 
   return (area, options) => {
     if (!lcpImgSet) loadLCPImage(area, options);
-  }
+  };
 }
 decorateArea();
 
