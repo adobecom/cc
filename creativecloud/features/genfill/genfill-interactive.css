@@ -16,7 +16,7 @@
   display: none;
 }
 
-.interactive-marquee.genfill .media {
+.interactive-marquee .genfill-link {
   cursor: pointer;
 }
 
