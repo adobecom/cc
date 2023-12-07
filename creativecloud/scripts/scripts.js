@@ -116,6 +116,8 @@ const locales = {
   gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
 };
 
+const decorateArea = getDecorateAreaFn();
+
 // Add any config options.
 const CONFIG = {
   contentRoot: '/cc-shared',
@@ -124,6 +126,7 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
+  decorateArea,
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
@@ -147,33 +150,45 @@ const CONFIG = {
   },
 };
 
-// Load LCP image immediately
-const eagerLoad = (img) => {
-  img?.setAttribute('loading', 'eager');
-  img?.setAttribute('fetchpriority', 'high');
-};
+function getDecorateAreaFn() {
+  let lcpImgSet = false;
 
-(async function loadLCPImage() {
-  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  let fgDivs = null;
-  switch (true) {
-    case firstDiv?.classList.contains('changebg'):
-      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-      import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
-      break;
-    case firstDiv?.classList.contains('marquee'):
-      firstDiv.querySelectorAll('img').forEach(eagerLoad);
-      break;
-    case firstDiv?.classList.contains('interactive-marquee'):
-      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-      fgDivs = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-      fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
-      break;
-    default:
-      eagerLoad(document.querySelector('img'));
-      break;
+  // Load LCP image immediately
+  const eagerLoad = (lcpImg) => {
+    lcpImg?.setAttribute('loading', 'eager');
+    lcpImg?.setAttribute('fetchpriority', 'high');
+    if (lcpImg) lcpImgSet = true;
+  };
+
+  function loadLCPImage(area = document, { fragmentLink = null } = {} ) {
+    const firstBlock = area.querySelector('body > main > div > div');
+    let fgDivs = null;
+    switch (true) {
+      case firstBlock?.classList.contains('changebg'):
+        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+        import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+        break;
+      case firstBlock?.classList.contains('marquee'):
+        firstBlock.querySelectorAll('img').forEach(eagerLoad);
+        break;
+      case firstBlock?.classList.contains('interactive-marquee'):
+        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+        fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
+        fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
+        break;
+      default:
+        if (window.document.querySelector('a.fragment') == fragmentLink && !window.document.querySelector('img[loading="eager"]')) {
+          eagerLoad(area.querySelector('img'));
+        }
+        break;
+    }
   }
-}());
+
+  return (area, options) => {
+    if (!lcpImgSet) loadLCPImage(area, options);
+  }
+}
+decorateArea();
 
 /*
  * ------------------------------------------------------------
