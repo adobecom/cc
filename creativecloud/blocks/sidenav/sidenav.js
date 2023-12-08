@@ -4,14 +4,8 @@ import '../../deps/lit-all.min.js';
 import '../../deps/merch-spectrum.min.js';
 import '../../deps/merch-sidenav.js';
 
-const CATEGORY_TYPE = 'Categories';
-const TYPE_TYPE = 'Types';
-const getValueFromLabel = (content) => content
-  .trim()
-  .toLowerCase()
-  .replace(/( and )/g, ' ')
-  .replace(/-/g, '')
-  .replace(/\s+/g, '-');
+const CATEGORY_TYPE_PREFIX = 'categories/';
+const TYPE_TYPE_PREFIX = 'types/';
 
 const getCategories = (arrayCategories) => {
   const tag = createTag('sp-sidenav', { variant: 'multilevel', manageTabIndex: true });
@@ -19,16 +13,18 @@ const getCategories = (arrayCategories) => {
   merchTag.append(tag);
   const mapParents = {};
   arrayCategories.forEach((item) => {
-    if (item.Name?.length > 0) {
-      const parentName = item.Name.split('|')[0].trim();
-      if (!mapParents[parentName]) {
-        mapParents[parentName] = createTag('sp-sidenav-item', { label: parentName, value: getValueFromLabel(parentName) });
-        tag.append(mapParents[parentName]);
-      }
-      const childName = item.Name.split('|')[1]?.trim();
-      if (childName) {
-        const childNode = createTag('sp-sidenav-item', { label: childName, value: getValueFromLabel(childName) });
-        mapParents[parentName].append(childNode);
+    if (item.name?.length > 0) {
+      const id = item.id.slice(CATEGORY_TYPE_PREFIX.length);
+      const value = id.substring(id.lastIndexOf('/') + 1) || id;
+      const isParent = id.split('/').length === 1;
+      if (isParent) {
+        mapParents[item.name] = createTag('sp-sidenav-item', { label: item.name, value });
+        tag.append(mapParents[item.name]);
+      } else {
+        const parent = mapParents[id.substring(0, id.indexOf('/'))];
+        const container = parent || tag;
+        const childNode = createTag('sp-sidenav-item', { label: item.name, value });
+        container.append(childNode);
       }
     }
   });
@@ -38,9 +34,12 @@ const getCategories = (arrayCategories) => {
 const getTypes = (arrayTypes) => {
   const tag = createTag('merch-sidenav-checkbox-group', { title: 'Types', deeplink: 'types' });
   arrayTypes.forEach((item) => {
-    if (item.Name?.length > 0) {
-      const checkbox = createTag('sp-checkbox', { emphasized: '', name: getValueFromLabel(item.Name) });
-      checkbox.append(document.createTextNode(item.Name));
+    if (item.name?.length > 0) {
+      const checkbox = createTag('sp-checkbox', {
+        emphasized: '',
+        name: item.id.substring(item.id.lastIndexOf('/') + 1),
+      });
+      checkbox.append(document.createTextNode(item.name));
       tag.append(checkbox);
     }
   });
@@ -53,11 +52,11 @@ const appendFilters = async (root, link) => {
     const resp = await fetch(payload);
     if (resp.ok) {
       const json = await resp.json();
-      const arrayCategories = json.data.filter((item) => item.Type === CATEGORY_TYPE);
+      const arrayCategories = json.data.filter((item) => item.id?.startsWith(CATEGORY_TYPE_PREFIX));
       if (arrayCategories.length > 0) {
         root.append(getCategories(arrayCategories));
       }
-      const arrayTypes = json.data.filter((item) => item.Type === TYPE_TYPE);
+      const arrayTypes = json.data.filter((item) => item.id?.startsWith(TYPE_TYPE_PREFIX));
       if (arrayTypes.length > 0) {
         root.append(getTypes(arrayTypes));
       }
