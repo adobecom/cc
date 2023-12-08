@@ -10,6 +10,7 @@
   border: 1px solid #E6E6E6;
   justify-content: space-between;
   width: 247px;
+  box-sizing: content-box;
 }
 
 .promptbar > button:hover {
