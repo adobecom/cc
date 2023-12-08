@@ -24,12 +24,16 @@
   display: flex;
 }
 
-.interactive-marquee .media {
+.genfill-promptbar > button:hover {
+  cursor: pointer;
+}
+
+.interactive-marquee.firefly .media {
   top: 72px;
 }
 
-.interactive-marquee .media picture img,
-.interactive-marquee .media video {
+.interactive-marquee.firefly .media picture img,
+.interactive-marquee.firefly .media video {
   border-radius: 16px;
 }
 
@@ -42,11 +46,11 @@
     margin-bottom: 24px;
   }
 
-  .interactive-marquee .interactive-container {
+  .interactive-marquee.firefly .interactive-container {
     height: 430px;
   }
 
-  .interactive-marquee .media {
+  .interactive-marquee.firefly .media {
     top: 8px;
   }
 }
@@ -69,7 +73,7 @@
     width: 80%;
   }
 
-  .interactive-marquee .interactive-container {
+  .interactive-marquee.firefly .interactive-container {
     height: 813px;
   }
 }
