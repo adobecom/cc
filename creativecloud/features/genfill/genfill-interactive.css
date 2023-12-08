@@ -7,13 +7,16 @@
 }
 
 .genfill .enticement-detail,
-.genfill .enticement-mode,
 .genfill .timer {
   display: none;
 }
 
 .genfill .media a {
   display: none;
+}
+
+.interactive-marquee.genfill .media a {
+  cursor: pointer;
 }
 
 .enticement-arrow {

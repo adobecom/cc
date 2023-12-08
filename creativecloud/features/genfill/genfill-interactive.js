@@ -71,15 +71,14 @@ export default async function decorateGenfill(el) {
   const interactiveContainer = el.querySelector('.interactive-container');
   const allP = interactiveContainer.querySelectorAll('.media:first-child p');
   const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
-  const [enticementMode, enticement, timer = null] = [...pMetadata];
-  enticementMode.classList.add('enticement-mode');
+  const [enticement, timer = null] = [...pMetadata];
   enticement.classList.add('enticement-detail');
   timer?.classList.add('timer');
-  const mode = enticementMode.innerText.includes('light') ? 'light' : 'dark';
+  const mode = el.classList.contains('light') ? 'light' : 'dark';
   const timerValues = timer ? timer.innerText.split('|') : null;
   const [intervalTime = 2000, delayTime = 1000] = (timerValues && timerValues.length > 1)
     ? timerValues : [2000];
-  [enticementMode, enticement, timer].forEach((i) => i?.remove());
+  [enticement, timer].forEach((i) => i?.remove());
   const viewports = ['mobile', 'tablet', 'desktop'];
   const mediaElements = interactiveContainer.querySelectorAll('.media');
   mediaElements.forEach(async (mediaEl, index) => {
