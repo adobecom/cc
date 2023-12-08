@@ -70,6 +70,7 @@
   padding: 8px;
   justify-content: space-between;
   width: auto;
+  box-sizing: content-box;
 }
 
 .selector-tray.light {
