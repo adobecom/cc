@@ -1,18 +1,16 @@
 import { getLibs } from '../../scripts/utils.js';
 
-function focusOnInput(media, createTag, changeOfOption = false) {
+function focusOnInput(media, createTag) {
   const input = media.querySelector('.prompt-text');
   if (input) {
     input.focus();
-    if (!changeOfOption) {
-      input.addEventListener('focusout', () => {
-        if (document.querySelector('.locale-modal-v2')) {
-          const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
-          input.insertAdjacentElement('beforebegin', blinkingCursor);
-          if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
-        }
-      }, { once: true });
-    }
+    input.addEventListener('focusout', () => {
+      if (document.querySelector('.locale-modal-v2')) {
+        const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
+        input.insertAdjacentElement('beforebegin', blinkingCursor);
+        if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
+      }
+    }, { once: true });
     input.addEventListener('click', () => { document.querySelector('.blinking-cursor')?.remove(); });
   }
 }
@@ -84,7 +82,7 @@ async function eventOnSelectorOption(option, prompt, media, mediaP, createPrompt
     promptBar.classList.add('firefly-prompt');
     const generateButton = media.querySelector('#promptbutton');
     eventOnGenerate(generateButton, media);
-    focusOnInput(media, createTag, true);
+    focusOnInput(media, createTag);
   }
 }
 
