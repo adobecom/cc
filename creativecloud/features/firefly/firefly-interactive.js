@@ -4,17 +4,16 @@ function focusOnInput(media, createTag, changeOfOption = false) {
   const input = media.querySelector('.prompt-text');
   if (input) {
     input.focus();
-    const blinkingCursor = createTag('div');
     if (!changeOfOption) {
-      input.insertAdjacentElement('beforebegin', blinkingCursor);
       input.addEventListener('focusout', () => {
         if (document.querySelector('.locale-modal-v2')) {
-          blinkingCursor.classList.add('blinking-cursor');
+          const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
+          input.insertAdjacentElement('beforebegin', blinkingCursor);
           if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
         }
       }, { once: true });
     }
-    input.addEventListener('click', () => { blinkingCursor.classList.remove('blinking-cursor'); blinkingCursor.classList.remove('blink-light'); });
+    input.addEventListener('click', () => { document.querySelector('.blinking-cursor')?.remove(); });
   }
 }
 
