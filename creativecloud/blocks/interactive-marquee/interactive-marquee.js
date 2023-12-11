@@ -81,7 +81,7 @@ export default async function init(el) {
       loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
       interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
-      await decorateGenfill(el);
+      await decorateGenfill(el, { createTag });
       break;
     }
     case el.classList.contains('firefly'): {

@@ -1,4 +1,3 @@
-import { getLibs } from '../../scripts/utils.js';
 import { createEnticement } from '../interactive-elements/interactive-elements.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
@@ -33,8 +32,6 @@ function handleClick(aTags, clickConfig) {
 }
 
 function eagerLoad(img) {
-  // img.setAttribute('loading', 'eager');
-  // img.setAttribute('fetchpriority', 'high');
   (new Image()).src = img.src;
   img.decode();
 }
@@ -51,16 +48,14 @@ async function addEnticement(container, enticement, mode) {
   tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
 
-async function removePTags(media, vi) {
+function removePTags(media, vi, miloUtil) {
   const heading = media.closest('.foreground').querySelector('h1, h2, h3, h4, h5, h6');
   const hText = heading.id
     .split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-  const miloLibs = getLibs();
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const pics = media.querySelectorAll('picture');
   pics.forEach((pic, index) => {
     if (pic.closest('p')) pic.closest('p').remove();
-    const a = createTag('a', { class: 'genfill-link' });
+    const a = miloUtil.createTag('a', { class: 'genfill-link' });
     const img = pic.querySelector('img');
     const altTxt = img.alt
       ? `${img.alt}|Marquee|${hText}`
@@ -71,7 +66,7 @@ async function removePTags(media, vi) {
   });
 }
 
-export default async function decorateGenfill(el) {
+export default async function decorateGenfill(el, miloUtil) {
   const clickConfig = {
     autocycleIndex: 0,
     autocycleInterval: null,
@@ -91,13 +86,13 @@ export default async function decorateGenfill(el) {
   [enticement, timer].forEach((i) => i?.remove());
   const viewports = ['mobile', 'tablet', 'desktop'];
   const mediaElements = interactiveContainer.querySelectorAll('.media');
-  viewports.forEach(async (v, vi) => {
+  viewports.forEach((v, vi) => {
     const media = mediaElements[vi]
       ? mediaElements[vi]
       : interactiveContainer.lastElementChild;
     media.classList.add(`${v}-only`);
     if (mediaElements[vi]) {
-      await removePTags(mediaElements[vi], vi);
+      removePTags(mediaElements[vi], vi, miloUtil);
       const aTags = mediaElements[vi].querySelectorAll('a');
       handleClick(aTags, clickConfig);
     }
@@ -108,5 +103,5 @@ export default async function decorateGenfill(el) {
       }, delayTime);
     }
   });
-  addEnticement(interactiveContainer, enticement, mode);
+  await addEnticement(interactiveContainer, enticement, mode);
 }
