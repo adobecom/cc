@@ -13,16 +13,6 @@
   opacity: 1;
 }
 
-.prompt-text::-webkit-placeholder {
-  color: #2c2c2c;
-  opacity: 1;
-}
-
-.prompt-text.light::-webkit-placeholder {
-  color: #dbdbdb;
-  opacity: 1;
-}
-
 .prompt-text::placeholder {
   color: #2c2c2c;
 }
