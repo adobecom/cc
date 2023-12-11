@@ -3,9 +3,11 @@ import { createEnticement } from '../interactive-elements/interactive-elements.j
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
 function handleTransition(pics, index) {
-  pics[index].style.display = 'none';
+  pics[index].classList.remove('show');
+  pics[index].classList.add('hide');
   const nextIndex = (index + 1) % pics.length;
-  pics[nextIndex].style.display = 'block';
+  pics[nextIndex].classList.add('show');
+  pics[nextIndex].classList.remove('hide');
   return nextIndex;
 }
 
@@ -20,14 +22,21 @@ function startAutocycle(interval, pics, clickConfig) {
 }
 
 function handleClick(aTags, clickConfig) {
+  aTags[0].classList.add('show');
   aTags.forEach((a, i) => {
-    a.querySelector('img').removeAttribute('loading');
     a.addEventListener('click', () => {
       clickConfig.isImageClicked = true;
       if (clickConfig.autocycleInterval) clearInterval(clickConfig.autocycleInterval);
       handleTransition(aTags, i);
     });
   });
+}
+
+function eagerLoad(img) {
+  // img.setAttribute('loading', 'eager');
+  // img.setAttribute('fetchpriority', 'high');
+  (new Image()).src = img.src;
+  img.decode();
 }
 
 async function addEnticement(container, enticement, mode) {
@@ -68,6 +77,7 @@ export default async function decorateGenfill(el) {
     autocycleInterval: null,
     isImageClicked: false,
   };
+  el.querySelectorAll('.media img').forEach(eagerLoad);
   const interactiveContainer = el.querySelector('.interactive-container');
   const allP = interactiveContainer.querySelectorAll('.media:first-child p');
   const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
@@ -81,16 +91,16 @@ export default async function decorateGenfill(el) {
   [enticement, timer].forEach((i) => i?.remove());
   const viewports = ['mobile', 'tablet', 'desktop'];
   const mediaElements = interactiveContainer.querySelectorAll('.media');
-  mediaElements.forEach(async (mediaEl, index) => {
-    await removePTags(mediaEl, index);
-    const aTags = mediaEl.querySelectorAll('a');
-    handleClick(aTags, clickConfig);
-  });
-  viewports.forEach((v, vi) => {
+  viewports.forEach(async (v, vi) => {
     const media = mediaElements[vi]
       ? mediaElements[vi]
       : interactiveContainer.lastElementChild;
     media.classList.add(`${v}-only`);
+    if (mediaElements[vi]) {
+      await removePTags(mediaElements[vi], vi);
+      const aTags = mediaElements[vi].querySelectorAll('a');
+      handleClick(aTags, clickConfig);
+    }
     if (defineDeviceByScreenSize() === v.toUpperCase()) {
       setTimeout(() => {
         const aTags = media.querySelectorAll('a');
