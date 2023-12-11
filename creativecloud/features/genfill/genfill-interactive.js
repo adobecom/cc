@@ -2,11 +2,13 @@ import { createEnticement } from '../interactive-elements/interactive-elements.j
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
 function handleTransition(pics, index) {
-  pics[index].classList.remove('show');
-  pics[index].classList.add('hide');
   const nextIndex = (index + 1) % pics.length;
-  pics[nextIndex].classList.add('show');
-  pics[nextIndex].classList.remove('hide');
+  pics[nextIndex].querySelector('img').decode().then(() => {
+    pics[index].classList.remove('show');
+    pics[index].classList.add('hide');
+    pics[nextIndex].classList.add('show');
+    pics[nextIndex].classList.remove('hide');
+  });
   return nextIndex;
 }
 
@@ -29,11 +31,6 @@ function handleClick(aTags, clickConfig) {
       handleTransition(aTags, i);
     });
   });
-}
-
-function eagerLoad(img) {
-  (new Image()).src = img.src;
-  img.decode();
 }
 
 async function addEnticement(container, enticement, mode) {
@@ -72,7 +69,6 @@ export default async function decorateGenfill(el, miloUtil) {
     autocycleInterval: null,
     isImageClicked: false,
   };
-  el.querySelectorAll('.media img').forEach(eagerLoad);
   const interactiveContainer = el.querySelector('.interactive-container');
   const allP = interactiveContainer.querySelectorAll('.media:first-child p');
   const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
