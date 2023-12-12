@@ -13,21 +13,28 @@ async function addEnticement(container, enticement, mode) {
   });
 }
 
-function handleClick(a, viewport, deviceConfig) {
+function generateDaaLL(hText, alt, v) {
+  const altTxt = alt
+    ? `${alt}|Marquee|${hText}`
+    : `Image-${v}|Marquee|${hText}`;
+  return altTxt;
+}
+
+function handleClick(a, v, deviceConfig, hText) {
   const img = a.querySelector('img');
-  const currIndex = deviceConfig[viewport].index;
-  const nextIndex = (currIndex + 1) % deviceConfig[viewport].srcList.length;
-  img.src = deviceConfig[viewport].srcList[nextIndex];
-  img.alt = deviceConfig[viewport].altList[nextIndex];
-  a.setAttribute('daa-ll', img.alt);
-  deviceConfig[viewport].index = nextIndex;
+  const currIndex = deviceConfig[v].index;
+  const nextIndex = (currIndex + 1) % deviceConfig[v].srcList.length;
+  img.src = deviceConfig[v].srcList[nextIndex];
+  const alt = deviceConfig[v].altList[nextIndex];
+  a.setAttribute('daa-ll', generateDaaLL(hText, alt, v));
+  deviceConfig[v].index = nextIndex;
   return nextIndex;
 }
 
-function startAutocycle(a, autoCycleConfig, viewport, deviceConfig, interval) {
+function startAutocycle(a, autoCycleConfig, viewport, deviceConfig, interval, hText) {
   if (autoCycleConfig.isImageClicked) return;
   autoCycleConfig.autocycleInterval = setInterval(() => {
-    handleClick(a, viewport, deviceConfig);
+    handleClick(a, viewport, deviceConfig, hText);
     if (autoCycleConfig.isImageClicked
       || deviceConfig[viewport].index === deviceConfig[viewport].srcList.length - 1) {
       clearInterval(autoCycleConfig.autocycleInterval);
@@ -35,20 +42,21 @@ function startAutocycle(a, autoCycleConfig, viewport, deviceConfig, interval) {
   }, interval);
 }
 
-function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, viewport) {
-  const media = miloUtil.createTag('div', { class: `media ${viewport}-only` });
+function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText) {
+  const media = miloUtil.createTag('div', { class: `media ${v}-only` });
   const a = miloUtil.createTag('a', { class: 'genfill-link' });
   const img = miloUtil.createTag('img', { class: 'genfill-image' });
-  [img.alt] = [deviceConfig[viewport].altList];
-  [img.src] = [deviceConfig[viewport].srcList];
-  a.setAttribute('daa-ll', img.alt);
+  const alt = [deviceConfig[v].altList];
+  [img.alt] = generateDaaLL(hText, alt, v);
+  [img.src] = [deviceConfig[v].srcList];
+  a.setAttribute('daa-ll', generateDaaLL(hText, alt, v));
   a.appendChild(img);
   media.appendChild(a);
   ic.appendChild(media);
   a.addEventListener('click', () => {
     autoCycleConfig.isImageClicked = true;
     if (autoCycleConfig.autocycleInterval) clearInterval(autoCycleConfig.autocycleInterval);
-    handleClick(a, viewport, deviceConfig);
+    handleClick(a, v, deviceConfig, hText);
   });
 }
 
@@ -94,17 +102,14 @@ export default async function decorateGenfill(el, miloUtil) {
     [...media.querySelectorAll('picture')].forEach((pic, index) => {
       const src = getImgSrc(pic, v);
       deviceConfig[v].srcList.push(src);
-      const altTxt = pic.querySelector('img').alt
-        ? `${pic.querySelector('img').alt}|Marquee|${hText}`
-        : `Image-${v}-${index}|Marquee|${hText}`;
-      deviceConfig[v].altList.push(altTxt);
-      if (index === 0) processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v);
+      deviceConfig[v].altList.push(pic.querySelector('img').alt);
+      if (index === 0) processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText);
     });
   });
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
   setTimeout(() => {
     const aTag = ic.querySelector(`.${currentVP}-only a`);
-    startAutocycle(aTag, autoCycleConfig, currentVP, deviceConfig, intervalTime);
+    startAutocycle(aTag, autoCycleConfig, currentVP, deviceConfig, intervalTime, hText);
   }, delayTime);
   addEnticement(ic, enticement, mode);
 }
