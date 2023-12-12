@@ -47,6 +47,13 @@ function processMedia(ic, miloUtil, autoCycleConfig, deviceLinks, viewport) {
   });
 }
 
+function getImgSrc(pic, viewport) {
+  let source = '';
+  if (viewport === 'mobile') source = pic.querySelector('source[type="image/webp"]:not([media])');
+  else source = pic.querySelector('source[type="image/webp"][media]');
+  return source.srcset;
+}
+
 export default async function decorateGenfill(el, miloUtil) {
   const autoCycleConfig = {
     autocycleInterval: null,
@@ -76,7 +83,10 @@ export default async function decorateGenfill(el, miloUtil) {
     const media = mediaElements[vi]
       ? mediaElements[vi]
       : currentDom.lastElementChild;
-    [...media.querySelectorAll('img')].forEach((i) => { deviceLinks[v].srcList.push(i.src); });
+    [...media.querySelectorAll('picture')].forEach((pic) => {
+      const src = getImgSrc(pic, v);
+      deviceLinks[v].srcList.push(src);
+    });
     processMedia(ic, miloUtil, autoCycleConfig, deviceLinks, v);
   });
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
