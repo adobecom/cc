@@ -38,8 +38,6 @@ function processMedia(ic, miloUtil, autoCycleConfig, deviceLinks, viewport) {
   const a = miloUtil.createTag('a', { class: 'genfill-link' });
   const img = miloUtil.createTag('img', { class: 'genfill-image' });
   [img.src] = [deviceLinks[viewport].srcList];
-  img.setAttribute('loading', 'eager');
-  img.setAttribute('fetchpriority', 'high');
   a.appendChild(img);
   media.appendChild(a);
   ic.appendChild(media);
@@ -74,9 +72,6 @@ export default async function decorateGenfill(el, miloUtil) {
   [enticement, timer].forEach((i) => i?.remove());
   const currentDom = ic.cloneNode(true);
   ic.innerHTML = '';
-  [...ic.querySelectorAll('.media')].forEach((m) => {
-    ic.append(m.querySelector('img'));
-  });
   const viewports = ['mobile', 'tablet', 'desktop'];
   const deviceLinks = {
     mobile: { srcList: [], index: 0 },
