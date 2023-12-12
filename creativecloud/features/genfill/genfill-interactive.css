@@ -12,7 +12,6 @@
 }
 
 .genfill .media a {
-  /* opacity: 0; */
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -40,21 +39,6 @@
 .enticement-text.light {
   color: var(--color-black);
 }
-
-/* .genfill .media a,
-.genfill .media a img {
-  visibility: hidden;
-}
-
-.genfill .media a.show,
-.genfill .media a.show img {
-  visibility: visible;
-}
-
-.genfill .media a.hide,
-.genfill .media a.hide img {
-  visibility: hidden;
-} */
 
 @media screen and (max-width: 600px) {
   .genfill .mobile-only {
