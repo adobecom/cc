@@ -83,11 +83,11 @@ export default async function decorateGenfill(el, miloUtil) {
     const media = mediaElements[vi]
       ? mediaElements[vi]
       : currentDom.lastElementChild;
-    [...media.querySelectorAll('picture')].forEach((pic) => {
+    [...media.querySelectorAll('picture')].forEach((pic, index) => {
       const src = getImgSrc(pic, v);
       deviceLinks[v].srcList.push(src);
+      if (index === 0) processMedia(ic, miloUtil, autoCycleConfig, deviceLinks, v);
     });
-    processMedia(ic, miloUtil, autoCycleConfig, deviceLinks, v);
   });
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
   setTimeout(() => {
