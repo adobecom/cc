@@ -177,13 +177,13 @@ function getDecorateAreaFn() {
         fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
         fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
         break;
-      case fragmentLink:
+      case !!fragmentLink:
         if (window.document.querySelector('a.fragment') === fragmentLink && !window.document.querySelector('img[loading="eager"]')) {
           eagerLoad(area.querySelector('img'));
         }
         break;
       default:
-        eagerLoad(area.querySelector('img'));
+        if (!fragmentLink) eagerLoad(area.querySelector('img'));
         break;
     }
   }
