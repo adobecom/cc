@@ -8,7 +8,7 @@ async function addEnticement(container, enticement, mode) {
   entcmtEl.classList.add('enticement');
   const viewports = ['tablet', 'desktop'];
   viewports.forEach((v) => {
-    const mDiv = container.querySelector(`.${v}-only`);
+    const mDiv = container.querySelector(`.media.${v}-only`);
     mDiv.insertBefore(entcmtEl.cloneNode(true), mDiv.firstElementChild);
   });
 }
