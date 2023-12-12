@@ -1,38 +1,6 @@
 import { createEnticement } from '../interactive-elements/interactive-elements.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
-function handleTransition(pics, index) {
-  const nextIndex = (index + 1) % pics.length;
-  pics[nextIndex].querySelector('img').decode().then(() => {
-    pics[index].classList.remove('show');
-    pics[index].classList.add('hide');
-    pics[nextIndex].classList.add('show');
-    pics[nextIndex].classList.remove('hide');
-  });
-  return nextIndex;
-}
-
-function startAutocycle(interval, pics, clickConfig) {
-  if (clickConfig.isImageClicked) return;
-  clickConfig.autocycleInterval = setInterval(() => {
-    clickConfig.autocycleIndex = handleTransition(pics, clickConfig.autocycleIndex);
-    if (clickConfig.autocycleIndex === pics.length - 1) {
-      clearInterval(clickConfig.autocycleInterval);
-    }
-  }, interval);
-}
-
-function handleClick(aTags, clickConfig) {
-  aTags[0].classList.add('show');
-  aTags.forEach((a, i) => {
-    a.addEventListener('click', () => {
-      clickConfig.isImageClicked = true;
-      if (clickConfig.autocycleInterval) clearInterval(clickConfig.autocycleInterval);
-      handleTransition(aTags, i);
-    });
-  });
-}
-
 async function addEnticement(container, enticement, mode) {
   const svgUrl = enticement.querySelector('a').href;
   const enticementText = enticement.innerText;
@@ -45,32 +13,47 @@ async function addEnticement(container, enticement, mode) {
   tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
 }
 
-function removePTags(media, vi, miloUtil) {
-  const heading = media.closest('.foreground').querySelector('h1, h2, h3, h4, h5, h6');
-  const hText = heading.id
-    .split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-  const pics = media.querySelectorAll('picture');
-  pics.forEach((pic, index) => {
-    if (pic.closest('p')) pic.closest('p').remove();
-    const a = miloUtil.createTag('a', { class: 'genfill-link' });
-    const img = pic.querySelector('img');
-    const altTxt = img.alt
-      ? `${img.alt}|Marquee|${hText}`
-      : `Image-${vi}-${index}|Marquee|${hText}`;
-    a.setAttribute('daa-ll', altTxt);
-    a.appendChild(pic);
-    media.appendChild(a);
+function handleClick(a, viewport, deviceLinks) {
+  const img = a.querySelector('img');
+  const currIndex = deviceLinks[viewport].index;
+  const nextIndex = (currIndex + 1) % deviceLinks[viewport].srcList.length;
+  img.src = deviceLinks[viewport].srcList[nextIndex];
+  deviceLinks[viewport].index = nextIndex;
+  return nextIndex;
+}
+
+function startAutocycle(a, autoCycleConfig, viewport, deviceLinks, interval) {
+  if (autoCycleConfig.isImageClicked) return;
+  autoCycleConfig.autocycleInterval = setInterval(() => {
+    handleClick(a, viewport, deviceLinks);
+    if (autoCycleConfig.isImageClicked
+      || deviceLinks[viewport].index === deviceLinks[viewport].srcList.length - 1) {
+      clearInterval(autoCycleConfig.autocycleInterval);
+    }
+  }, interval);
+}
+
+function processMedia(ic, miloUtil, autoCycleConfig, deviceLinks, viewport) {
+  const media = miloUtil.createTag('div', { class: `media ${viewport}-only` });
+  const a = miloUtil.createTag('a', { class: 'genfill-link' });
+  const img = miloUtil.createTag('img', { class: 'genfill-image' });
+  [img.src] = [deviceLinks[viewport].srcList];
+  a.appendChild(img);
+  media.appendChild(a);
+  ic.appendChild(media);
+  a.addEventListener('click', () => {
+    autoCycleConfig.isImageClicked = true;
+    handleClick(a, viewport, deviceLinks);
   });
 }
 
 export default async function decorateGenfill(el, miloUtil) {
-  const clickConfig = {
-    autocycleIndex: 0,
+  const autoCycleConfig = {
     autocycleInterval: null,
     isImageClicked: false,
   };
-  const interactiveContainer = el.querySelector('.interactive-container');
-  const allP = interactiveContainer.querySelectorAll('.media:first-child p');
+  const ic = el.querySelector('.interactive-container');
+  const allP = ic.querySelectorAll('.media:first-child p');
   const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
   const [enticement, timer = null] = [...pMetadata];
   enticement.classList.add('enticement-detail');
@@ -80,24 +63,26 @@ export default async function decorateGenfill(el, miloUtil) {
   const [intervalTime = 2000, delayTime = 1000] = (timerValues && timerValues.length > 1)
     ? timerValues : [2000];
   [enticement, timer].forEach((i) => i?.remove());
+  const currentDom = ic.cloneNode(true);
+  ic.innerHTML = '';
   const viewports = ['mobile', 'tablet', 'desktop'];
-  const mediaElements = interactiveContainer.querySelectorAll('.media');
+  const deviceLinks = {
+    mobile: { srcList: [], index: 0 },
+    tablet: { srcList: [], index: 0 },
+    desktop: { srcList: [], index: 0 },
+  };
+  const mediaElements = currentDom.querySelectorAll('.media');
   viewports.forEach((v, vi) => {
     const media = mediaElements[vi]
       ? mediaElements[vi]
-      : interactiveContainer.lastElementChild;
-    media.classList.add(`${v}-only`);
-    if (mediaElements[vi]) {
-      removePTags(mediaElements[vi], vi, miloUtil);
-      const aTags = mediaElements[vi].querySelectorAll('a');
-      handleClick(aTags, clickConfig);
-    }
-    if (defineDeviceByScreenSize() === v.toUpperCase()) {
-      setTimeout(() => {
-        const aTags = media.querySelectorAll('a');
-        startAutocycle(intervalTime, aTags, clickConfig);
-      }, delayTime);
-    }
+      : currentDom.lastElementChild;
+    [...media.querySelectorAll('img')].forEach((i) => { deviceLinks[v].srcList.push(i.src); });
+    processMedia(ic, miloUtil, autoCycleConfig, deviceLinks, v);
   });
-  await addEnticement(interactiveContainer, enticement, mode);
+  const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
+  setTimeout(() => {
+    const aTag = ic.querySelector(`.${currentVP}-only a`);
+    startAutocycle(aTag, autoCycleConfig, currentVP, deviceLinks, intervalTime);
+  }, delayTime);
+  addEnticement(ic, enticement, mode);
 }
