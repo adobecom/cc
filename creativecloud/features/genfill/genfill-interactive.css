@@ -12,7 +12,7 @@
 }
 
 .genfill .media a {
-  opacity: 0;
+  /* opacity: 0; */
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -41,31 +41,20 @@
   color: var(--color-black);
 }
 
-.genfill .media a,
+/* .genfill .media a,
 .genfill .media a img {
-  opacity: 0;
-  height: 0;
+  visibility: hidden;
 }
 
-.genfill .media a.show {
-  opacity: 1;
-  height: auto;
-}
-
+.genfill .media a.show,
 .genfill .media a.show img {
-  opacity: 1;
-  height: 100%;
+  visibility: visible;
 }
 
-.genfill .media a.hide {
-  opacity: 0;
-  height: 0;
-}
-
+.genfill .media a.hide,
 .genfill .media a.hide img {
-  opacity: 0;
-  height: 0;
-}
+  visibility: hidden;
+} */
 
 @media screen and (max-width: 600px) {
   .genfill .mobile-only {
