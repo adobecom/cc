@@ -2,6 +2,7 @@
 .genfill .tablet-only, 
 .genfill .mobile-only {
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
   user-select: none;
   display: none;
 }
