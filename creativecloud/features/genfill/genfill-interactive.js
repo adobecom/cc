@@ -20,14 +20,21 @@ function generateDaaLL(hText, alt, v) {
   return altTxt;
 }
 
+function setImgAttrs(img, src, attrs) {
+  img.src = src;
+  if (attrs.alt) img.alt = attrs.alt;
+  if (attrs.w) img.width = attrs.w;
+  if (attrs.h) img.height = attrs.h;
+}
+
 function handleClick(a, v, deviceConfig, hText) {
   const img = a.querySelector('img');
   const currIndex = deviceConfig[v].index;
   const nextIndex = (currIndex + 1) % deviceConfig[v].srcList.length;
-  img.src = deviceConfig[v].srcList[nextIndex];
-  const alt = deviceConfig[v].altList[nextIndex];
-  if (alt) img.alt = alt;
-  a.setAttribute('daa-ll', generateDaaLL(hText, alt, v));
+  const src = deviceConfig[v].srcList[nextIndex];
+  const attrs = deviceConfig[v].attrList[nextIndex];
+  setImgAttrs(img, src, attrs);
+  a.setAttribute('daa-ll', generateDaaLL(hText, attrs.alt, v));
   deviceConfig[v].index = nextIndex;
   return nextIndex;
 }
@@ -47,10 +54,10 @@ function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText) {
   const media = miloUtil.createTag('div', { class: `media ${v}-only` });
   const a = miloUtil.createTag('a', { class: 'genfill-link' });
   const img = miloUtil.createTag('img', { class: 'genfill-image' });
-  const alt = [deviceConfig[v].altList];
-  if (alt) img.alt = alt;
-  [img.src] = [deviceConfig[v].srcList];
-  a.setAttribute('daa-ll', generateDaaLL(hText, alt, v));
+  const src = [deviceConfig[v].srcList];
+  const attrs = [deviceConfig[v].attrList];
+  setImgAttrs(img, src, attrs);
+  a.setAttribute('daa-ll', generateDaaLL(hText, attrs.alt, v));
   a.appendChild(img);
   media.appendChild(a);
   ic.appendChild(media);
@@ -91,9 +98,9 @@ export default async function decorateGenfill(el, miloUtil) {
   ic.innerHTML = '';
   const viewports = ['mobile', 'tablet', 'desktop'];
   const deviceConfig = {
-    mobile: { srcList: [], altList: [], index: 0 },
-    tablet: { srcList: [], altList: [], index: 0 },
-    desktop: { srcList: [], altList: [], index: 0 },
+    mobile: { srcList: [], attrList: [], index: 0 },
+    tablet: { srcList: [], attrList: [], index: 0 },
+    desktop: { srcList: [], attrList: [], index: 0 },
   };
   const mediaElements = currentDom.querySelectorAll('.media');
   viewports.forEach((v, vi) => {
@@ -103,7 +110,8 @@ export default async function decorateGenfill(el, miloUtil) {
     [...media.querySelectorAll('picture')].forEach((pic, index) => {
       const src = getImgSrc(pic, v);
       deviceConfig[v].srcList.push(src);
-      deviceConfig[v].altList.push(pic.querySelector('img').alt);
+      const img = pic.querySelector('img');
+      deviceConfig[v].attrList.push({ alt: img.alt, w: img.width, h: img.height});
       if (index === 0) processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText);
     });
   });
