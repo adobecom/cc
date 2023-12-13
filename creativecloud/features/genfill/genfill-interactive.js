@@ -26,6 +26,7 @@ function handleClick(a, v, deviceConfig, hText) {
   const nextIndex = (currIndex + 1) % deviceConfig[v].srcList.length;
   img.src = deviceConfig[v].srcList[nextIndex];
   const alt = deviceConfig[v].altList[nextIndex];
+  if (alt) img.alt = alt;
   a.setAttribute('daa-ll', generateDaaLL(hText, alt, v));
   deviceConfig[v].index = nextIndex;
   return nextIndex;
@@ -47,7 +48,7 @@ function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText) {
   const a = miloUtil.createTag('a', { class: 'genfill-link' });
   const img = miloUtil.createTag('img', { class: 'genfill-image' });
   const alt = [deviceConfig[v].altList];
-  [img.alt] = generateDaaLL(hText, alt, v);
+  if (alt) img.alt = alt;
   [img.src] = [deviceConfig[v].srcList];
   a.setAttribute('daa-ll', generateDaaLL(hText, alt, v));
   a.appendChild(img);
