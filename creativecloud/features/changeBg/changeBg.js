@@ -1,3 +1,5 @@
+import { getLibs } from '../../scripts/utils.js';
+
 const customElem = document.createElement('ft-changebackgroundmarquee');
 customElem.config = {
   mobile: { groups: [] },
@@ -9,7 +11,7 @@ function getImageSrc(viewport, pic) {
   let imageSrc = '';
   if (viewport === 'mobile') imageSrc = pic.querySelector('source[type="image/webp"]:not([media])');
   else imageSrc = pic.querySelector('source[type="image/webp"][media]');
-  return imageSrc.srcset.replace('./', '/');
+  return imageSrc.srcset;
 }
 
 function createLayer(viewport, property, layerConfig) {
@@ -53,8 +55,9 @@ function createGroups(vp, current, swatchArr, srcArr) {
 }
 
 export default async function changeBg(el) {
-  const { default: CONFIG } = await import('../../scripts/scripts.js');
-  if (window.location.host !== CONFIG.prodDomains[0]) {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const config = getConfig();
+  if (window.location.host !== config.prodDomains[0]) {
     const { default: debug } = await import('./author-feedback.js');
     debug(el);
   }

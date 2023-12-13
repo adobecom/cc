@@ -47,7 +47,7 @@ function analyze(el) {
     });
   }
 
-  function checkExnticement(rowIdx) {
+  function checkEnticement(rowIdx) {
     const row = rows[rowIdx];
     if (!row.querySelector('a') && rowIdx === 3) {
       errors.push(`Expecting tryit text and link at row${rowIdx}`);
@@ -111,7 +111,7 @@ function analyze(el) {
 
   // check Enticement
   enticement.forEach((ele) => {
-    checkExnticement(rowID, ele);
+    checkEnticement(rowID, ele);
     rowID += 1;
   });
 
@@ -122,7 +122,7 @@ function analyze(el) {
     }
     const dimensions = [...IMAGE_DIMENSIONS];
     const swtchDimention = [...THUMBNAILS_DIMENSIONS];
-    checkExnticement(rowID, '');
+    checkEnticement(rowID, '');
     if (rowID + 2 === temprowid) {
       checkImages3(rowID + 2, dimensions);
       checkImages3(rowID + 1, swtchDimention);
