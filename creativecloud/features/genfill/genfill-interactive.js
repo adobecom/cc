@@ -54,8 +54,8 @@ function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText) {
   const media = miloUtil.createTag('div', { class: `media ${v}-only` });
   const a = miloUtil.createTag('a', { class: 'genfill-link' });
   const img = miloUtil.createTag('img', { class: 'genfill-image' });
-  const src = [deviceConfig[v].srcList];
-  const attrs = [deviceConfig[v].attrList];
+  const src = deviceConfig[v].srcList[0];
+  const attrs = deviceConfig[v].attrList[0];
   setImgAttrs(img, src, attrs);
   a.setAttribute('daa-ll', generateDaaLL(hText, attrs.alt, v));
   a.appendChild(img);
@@ -111,7 +111,7 @@ export default async function decorateGenfill(el, miloUtil) {
       const src = getImgSrc(pic, v);
       deviceConfig[v].srcList.push(src);
       const img = pic.querySelector('img');
-      deviceConfig[v].attrList.push({ alt: img.alt, w: img.width, h: img.height});
+      deviceConfig[v].attrList.push({ alt: img.alt, w: img.width, h: img.height });
       if (index === 0) processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText);
     });
   });
