@@ -2,6 +2,7 @@
 .genfill .tablet-only, 
 .genfill .mobile-only {
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
   user-select: none;
   display: none;
 }
@@ -12,11 +13,10 @@
 }
 
 .genfill .media a {
-  display: none;
-}
-
-.interactive-marquee.genfill .media a {
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .enticement-arrow {
@@ -42,12 +42,7 @@
 }
 
 @media screen and (max-width: 600px) {
-  .genfill .mobile-only a {
-    display: none;
-  }
-
-  .genfill .media.mobile-only, 
-  .genfill .media.mobile-only a:first-of-type {
+  .genfill .mobile-only {
     display: block;
   }
 
@@ -57,12 +52,7 @@
 }
 
 @media screen and (min-width: 600px) and (max-width: 1200px) {
-  .genfill .tablet-only a {
-    display: none;
-  }
-
-  .genfill .tablet-only, 
-  .genfill .tablet-only a:first-of-type {
+  .genfill .tablet-only {
     display: block;
   }
 
@@ -83,12 +73,7 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .genfill .desktop-only a {
-    display: none;
-  }
-
-  .genfill .desktop-only, 
-  .genfill .desktop-only a:first-of-type {
+  .genfill .desktop-only {
     display: block;
   }
 

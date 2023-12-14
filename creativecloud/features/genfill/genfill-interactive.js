@@ -1,75 +1,90 @@
-import { getLibs } from '../../scripts/utils.js';
 import { createEnticement } from '../interactive-elements/interactive-elements.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
-
-function handleTransition(pics, index) {
-  pics[index].style.display = 'none';
-  const nextIndex = (index + 1) % pics.length;
-  pics[nextIndex].style.display = 'block';
-  return nextIndex;
-}
-
-function startAutocycle(interval, pics, clickConfig) {
-  if (clickConfig.isImageClicked) return;
-  clickConfig.autocycleInterval = setInterval(() => {
-    clickConfig.autocycleIndex = handleTransition(pics, clickConfig.autocycleIndex);
-    if (clickConfig.autocycleIndex === pics.length - 1) {
-      clearInterval(clickConfig.autocycleInterval);
-    }
-  }, interval);
-}
-
-function handleClick(aTags, clickConfig) {
-  aTags.forEach((a, i) => {
-    a.querySelector('img').removeAttribute('loading');
-    a.addEventListener('click', () => {
-      clickConfig.isImageClicked = true;
-      if (clickConfig.autocycleInterval) clearInterval(clickConfig.autocycleInterval);
-      handleTransition(aTags, i);
-    });
-  });
-}
 
 async function addEnticement(container, enticement, mode) {
   const svgUrl = enticement.querySelector('a').href;
   const enticementText = enticement.innerText;
   const entcmtEl = await createEnticement(`${enticementText}|${svgUrl}`, mode);
   entcmtEl.classList.add('enticement');
-  const n = container.children.length;
-  const desktopMedia = container.querySelector('.desktop-only');
-  const tabletMedia = (n > 2) ? container.querySelector('.tablet-only') : null;
-  desktopMedia.insertBefore(entcmtEl, desktopMedia.firstElementChild);
-  tabletMedia?.insertBefore(entcmtEl.cloneNode(true), tabletMedia.firstElementChild);
-}
-
-async function removePTags(media, vi) {
-  const heading = media.closest('.foreground').querySelector('h1, h2, h3, h4, h5, h6');
-  const hText = heading.id
-    .split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-  const miloLibs = getLibs();
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const pics = media.querySelectorAll('picture');
-  pics.forEach((pic, index) => {
-    if (pic.closest('p')) pic.closest('p').remove();
-    const a = createTag('a', { class: 'genfill-link' });
-    const img = pic.querySelector('img');
-    const altTxt = img.alt
-      ? `${img.alt}|Marquee|${hText}`
-      : `Image-${vi}-${index}|Marquee|${hText}`;
-    a.setAttribute('daa-ll', altTxt);
-    a.appendChild(pic);
-    media.appendChild(a);
+  const viewports = ['tablet', 'desktop'];
+  viewports.forEach((v) => {
+    const mDiv = container.querySelector(`.media.${v}-only`);
+    mDiv.insertBefore(entcmtEl.cloneNode(true), mDiv.firstElementChild);
   });
 }
 
-export default async function decorateGenfill(el) {
-  const clickConfig = {
-    autocycleIndex: 0,
+function generateDaaLL(hText, alt, v) {
+  const altTxt = alt
+    ? `${alt}|Marquee|${hText}`
+    : `Image-${v}|Marquee|${hText}`;
+  return altTxt;
+}
+
+function setImgAttrs(img, src, attrs) {
+  img.src = src;
+  if (attrs.alt) img.alt = attrs.alt;
+  if (attrs.w) img.width = attrs.w;
+  if (attrs.h) img.height = attrs.h;
+}
+
+function handleClick(a, v, deviceConfig, hText) {
+  const img = a.querySelector('img');
+  const currIndex = deviceConfig[v].index;
+  const nextIndex = (currIndex + 1) % deviceConfig[v].srcList.length;
+  const src = deviceConfig[v].srcList[nextIndex];
+  const attrs = deviceConfig[v].attrList[nextIndex];
+  setImgAttrs(img, src, attrs);
+  a.setAttribute('daa-ll', generateDaaLL(hText, attrs.alt, v));
+  deviceConfig[v].index = nextIndex;
+  return nextIndex;
+}
+
+function startAutocycle(a, autoCycleConfig, viewport, deviceConfig, interval, hText) {
+  if (autoCycleConfig.isImageClicked) return;
+  autoCycleConfig.autocycleInterval = setInterval(() => {
+    handleClick(a, viewport, deviceConfig, hText);
+    if (autoCycleConfig.isImageClicked
+      || deviceConfig[viewport].index === deviceConfig[viewport].srcList.length - 1) {
+      clearInterval(autoCycleConfig.autocycleInterval);
+    }
+  }, interval);
+}
+
+function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText) {
+  const media = miloUtil.createTag('div', { class: `media ${v}-only` });
+  const a = miloUtil.createTag('a', { class: 'genfill-link' });
+  const img = miloUtil.createTag('img', { class: 'genfill-image' });
+  const src = deviceConfig[v].srcList[0];
+  const attrs = deviceConfig[v].attrList[0];
+  setImgAttrs(img, src, attrs);
+  a.setAttribute('daa-ll', generateDaaLL(hText, attrs.alt, v));
+  a.appendChild(img);
+  media.appendChild(a);
+  ic.appendChild(media);
+  a.addEventListener('click', () => {
+    autoCycleConfig.isImageClicked = true;
+    if (autoCycleConfig.autocycleInterval) clearInterval(autoCycleConfig.autocycleInterval);
+    handleClick(a, v, deviceConfig, hText);
+  });
+}
+
+function getImgSrc(pic, viewport) {
+  let source = '';
+  if (viewport === 'mobile') source = pic.querySelector('source[type="image/webp"]:not([media])');
+  else source = pic.querySelector('source[type="image/webp"][media]');
+  return source.srcset;
+}
+
+export default async function decorateGenfill(el, miloUtil) {
+  const autoCycleConfig = {
     autocycleInterval: null,
     isImageClicked: false,
   };
-  const interactiveContainer = el.querySelector('.interactive-container');
-  const allP = interactiveContainer.querySelectorAll('.media:first-child p');
+  const ic = el.querySelector('.interactive-container');
+  const heading = ic.closest('.foreground').querySelector('h1, h2, h3, h4, h5, h6');
+  const hText = heading.id
+    .split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+  const allP = ic.querySelectorAll('.media:first-child p');
   const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
   const [enticement, timer = null] = [...pMetadata];
   enticement.classList.add('enticement-detail');
@@ -79,24 +94,31 @@ export default async function decorateGenfill(el) {
   const [intervalTime = 2000, delayTime = 1000] = (timerValues && timerValues.length > 1)
     ? timerValues : [2000];
   [enticement, timer].forEach((i) => i?.remove());
+  const currentDom = ic.cloneNode(true);
+  ic.innerHTML = '';
   const viewports = ['mobile', 'tablet', 'desktop'];
-  const mediaElements = interactiveContainer.querySelectorAll('.media');
-  mediaElements.forEach(async (mediaEl, index) => {
-    await removePTags(mediaEl, index);
-    const aTags = mediaEl.querySelectorAll('a');
-    handleClick(aTags, clickConfig);
-  });
+  const deviceConfig = {
+    mobile: { srcList: [], attrList: [], index: 0 },
+    tablet: { srcList: [], attrList: [], index: 0 },
+    desktop: { srcList: [], attrList: [], index: 0 },
+  };
+  const mediaElements = currentDom.querySelectorAll('.media');
   viewports.forEach((v, vi) => {
     const media = mediaElements[vi]
       ? mediaElements[vi]
-      : interactiveContainer.lastElementChild;
-    media.classList.add(`${v}-only`);
-    if (defineDeviceByScreenSize() === v.toUpperCase()) {
-      setTimeout(() => {
-        const aTags = media.querySelectorAll('a');
-        startAutocycle(intervalTime, aTags, clickConfig);
-      }, delayTime);
-    }
+      : currentDom.lastElementChild;
+    [...media.querySelectorAll('picture')].forEach((pic, index) => {
+      const src = getImgSrc(pic, v);
+      deviceConfig[v].srcList.push(src);
+      const img = pic.querySelector('img');
+      deviceConfig[v].attrList.push({ alt: img.alt, w: img.width, h: img.height });
+      if (index === 0) processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText);
+    });
   });
-  addEnticement(interactiveContainer, enticement, mode);
+  const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
+  setTimeout(() => {
+    const aTag = ic.querySelector(`.${currentVP}-only a`);
+    startAutocycle(aTag, autoCycleConfig, currentVP, deviceConfig, intervalTime, hText);
+  }, delayTime);
+  addEnticement(ic, enticement, mode);
 }

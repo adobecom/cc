@@ -29,4 +29,10 @@ describe('genfill variant of interactive marquee', () => {
     expect(ent.querySelector('.enticement-text')).to.exist;
     expect(ent.querySelector('.enticement-arrow')).to.exist;
   });
+  it('should implement click functionality and analytics', () => {
+    const a = im.querySelector('.desktop-only a');
+    expect(a.getAttribute('daa-ll').includes('Generate Jungle')).to.true;
+    a.click();
+    expect(a.getAttribute('daa-ll').includes('Generate Pond')).to.true;
+  });
 });
