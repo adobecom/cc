@@ -140,5 +140,5 @@ export default async function debug(el) {
   el.append(debugContainer);
   // el.parentElement.append(debugContainer);
   // debugContainer.append(el);
-  debugContainer.append(notificationsContainer);
+  el.append(notificationsContainer);
 }
