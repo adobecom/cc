@@ -1,7 +1,6 @@
-import { createTag } from '../../scripts/utils.js';
+import { createTag, getLibs } from '../../scripts/utils.js';
 
 import '../../deps/lit-all.min.js';
-import '../../deps/merch-spectrum.min.js';
 import '../../deps/merch-sidenav.js';
 
 const CATEGORY_TYPE = 'Categories';
@@ -94,6 +93,15 @@ function appendResources(rootNav, resourceLink) {
 }
 
 export default async function init(el) {
+  const libs = getLibs();
+  await Promise.all([
+    import(`${libs}/features/spectrum-web-components/dist/theme.js`),
+    import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
+    import(`${libs}/features/spectrum-web-components/dist/search.js`),
+    import(`${libs}/features/spectrum-web-components/dist/checkbox.js`),
+
+  ]);
+
   const title = el.querySelector('h2')?.textContent.trim();
   const rootNav = createTag('merch-sidenav', { title });
   const searchText = el.querySelector('p')?.textContent.trim();
@@ -104,6 +112,14 @@ export default async function init(el) {
     appendResources(rootNav, links[1]);
   }
   const appContainer = el.closest('main > div.section')?.firstElementChild;
+
+  // temporary workaround to delay loading dialog.js until an event/cb cased approach.
+  const originalShowModal = rootNav.showModal;
+  rootNav.showModal = async (args) => {
+    await import(`${libs}/features/spectrum-web-components/dist/dialog.js`);
+    originalShowModal.call(rootNav, args);
+  };
+
   if (appContainer?.classList.contains('app')) {
     appContainer.appendChild(rootNav);
     rootNav.updateComplete.then(() => {
