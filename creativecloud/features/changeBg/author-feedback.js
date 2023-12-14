@@ -137,7 +137,8 @@ export default async function debug(el) {
   await analyze(el);
   const debugContainer = document.createElement('div');
   debugContainer.className = 'debug';
-  el.parentElement.append(debugContainer);
-  debugContainer.append(el);
+  el.append(debugContainer);
+  // el.parentElement.append(debugContainer);
+  // debugContainer.append(el);
   debugContainer.append(notificationsContainer);
 }
