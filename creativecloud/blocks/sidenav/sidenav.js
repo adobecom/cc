@@ -1,6 +1,5 @@
 import { createTag, getLibs } from '../../scripts/utils.js';
 
-import '../../deps/lit-all.min.js';
 import '../../deps/merch-sidenav.js';
 
 const CATEGORY_TYPE = 'Categories';
