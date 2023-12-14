@@ -55,9 +55,8 @@ function createGroups(vp, current, swatchArr, srcArr) {
 }
 
 export default async function changeBg(el) {
-  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-  const config = getConfig();
-  if (window.location.host !== config.prodDomains[0]) {
+  const { host } = window.location;
+  if (host.includes('hlx.page')) {
     const { default: debug } = await import('./author-feedback.js');
     debug(el);
   }
