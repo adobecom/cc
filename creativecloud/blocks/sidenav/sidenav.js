@@ -4,31 +4,43 @@ import '../../deps/lit-all.min.js';
 import '../../deps/merch-spectrum.min.js';
 import '../../deps/merch-sidenav.js';
 
-const CATEGORY_TYPE = 'Categories';
-const TYPE_TYPE = 'Types';
-const getValueFromLabel = (content) => content
-  .trim()
-  .toLowerCase()
-  .replace(/( and )/g, ' ')
-  .replace(/-/g, '')
-  .replace(/\s+/g, '-');
+const CATEGORY_ID_PREFIX = 'categories/';
+const TYPE_ID_PREFIX = 'types/';
 
-const getCategories = (arrayCategories) => {
-  const tag = createTag('sp-sidenav', { variant: 'multilevel', manageTabIndex: true });
+const getIdLeaf = (id) => (id?.substring(id.lastIndexOf('/') + 1) || id);
+
+const getCategories = (items, isMultilevel, mapCategories) => {
+  const configuration = { manageTabIndex: true };
+  if (isMultilevel) {
+    configuration.variant = 'multilevel';
+  }
+  const mapParents = [];
+  const tag = createTag('sp-sidenav', configuration);
   const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
   merchTag.append(tag);
-  const mapParents = {};
-  arrayCategories.forEach((item) => {
-    if (item.Name?.length > 0) {
-      const parentName = item.Name.split('|')[0].trim();
-      if (!mapParents[parentName]) {
-        mapParents[parentName] = createTag('sp-sidenav-item', { label: parentName, value: getValueFromLabel(parentName) });
-        tag.append(mapParents[parentName]);
-      }
-      const childName = item.Name.split('|')[1]?.trim();
-      if (childName) {
-        const childNode = createTag('sp-sidenav-item', { label: childName, value: getValueFromLabel(childName) });
-        mapParents[parentName].append(childNode);
+  items.forEach((item) => {
+    if (item) {
+      let parent = tag;
+      const value = getIdLeaf(item.id);
+      // first token is type, second is parent category
+      const isParent = item.id.split('/').length <= 2;
+      const itemTag = createTag('sp-sidenav-item', { label: item.name, value });
+      if (isParent) {
+        mapParents[value] = itemTag;
+        tag.append(itemTag);
+      } else {
+        const parentId = getIdLeaf(item.id.substring(0, item.id.lastIndexOf('/')));
+        if (isMultilevel) {
+          if (!mapParents[parentId]) {
+            const parentItem = mapCategories[parentId];
+            if (parentItem) {
+              mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, parentId });
+              tag.append(mapParents[parentId]);
+            }
+          }
+          parent = mapParents[parentId];
+        }
+        parent?.append(itemTag);
       }
     }
   });
@@ -38,28 +50,52 @@ const getCategories = (arrayCategories) => {
 const getTypes = (arrayTypes) => {
   const tag = createTag('merch-sidenav-checkbox-group', { title: 'Types', deeplink: 'types' });
   arrayTypes.forEach((item) => {
-    if (item.Name?.length > 0) {
-      const checkbox = createTag('sp-checkbox', { emphasized: '', name: getValueFromLabel(item.Name) });
-      checkbox.append(document.createTextNode(item.Name));
+    if (item.name?.length > 0) {
+      const checkbox = createTag('sp-checkbox', {
+        emphasized: '',
+        name: getIdLeaf(item.id),
+      });
+      checkbox.append(item.name);
       tag.append(checkbox);
     }
   });
   return tag;
 };
 
-const appendFilters = async (root, link) => {
+const appendFilters = async (root, link, explicitCategoriesElt) => {
   const payload = link.textContent.trim();
   try {
     const resp = await fetch(payload);
     if (resp.ok) {
       const json = await resp.json();
-      const arrayCategories = json.data.filter((item) => item.Type === CATEGORY_TYPE);
-      if (arrayCategories.length > 0) {
-        root.append(getCategories(arrayCategories));
+      const mapCategories = {};
+      let categoryValues = [];
+      const types = [];
+      json.data.forEach((item) => {
+        if (item.id?.startsWith(CATEGORY_ID_PREFIX)) {
+          const value = getIdLeaf(item.id);
+          mapCategories[value] = item;
+          categoryValues.push(value);
+        } else if (item.id?.startsWith(TYPE_ID_PREFIX)) {
+          types.push(item);
+        }
+      });
+      if (explicitCategoriesElt) {
+        categoryValues = Array.from(explicitCategoriesElt.querySelectorAll('li'))
+          .map((item) => item.textContent.trim().toLowerCase());
       }
-      const arrayTypes = json.data.filter((item) => item.Type === TYPE_TYPE);
-      if (arrayTypes.length > 0) {
-        root.append(getTypes(arrayTypes));
+      let shallowCategories = true;
+      if (categoryValues.length > 0) {
+        const items = categoryValues.map((value) => mapCategories[value]);
+        const parentValues = new Set(items.map((value) => value?.id.split('/')[1]));
+        // all parent will always be here without children,
+        // so shallow is considered below 2 parents
+        shallowCategories = parentValues.size <= 2;
+        const categoryTags = getCategories(items, !shallowCategories, mapCategories);
+        root.append(categoryTags);
+      }
+      if (!shallowCategories && types.length > 0) {
+        root.append(getTypes(types));
       }
     }
   } catch (e) {
@@ -96,10 +132,11 @@ function appendResources(rootNav, resourceLink) {
 export default async function init(el) {
   const title = el.querySelector('h2')?.textContent.trim();
   const rootNav = createTag('merch-sidenav', { title });
-  const searchText = el.querySelector('p')?.textContent.trim();
+  const searchText = el.querySelector('p > strong')?.textContent.trim();
   appendSearch(rootNav, searchText);
   const links = el.querySelectorAll('a');
-  await appendFilters(rootNav, links[0]);
+  const explicitCategories = el.querySelector('ul');
+  await appendFilters(rootNav, links[0], explicitCategories);
   if (links.length > 1) {
     appendResources(rootNav, links[1]);
   }

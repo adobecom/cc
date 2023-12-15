@@ -27,16 +27,37 @@ describe('Sidenav', () => {
     window.fetch = sinon.stub().callsFake(() => mockedTaxonomy());
   });
 
-  it('does create nice categories sidenav', async () => {
-    const sidenavEl = document.querySelector('.sidenav.categories');
-    await init(sidenavEl);
-    const newRoot = document.querySelector('merch-sidenav');
-    expect(newRoot.title).to.equal("REFINE YOUR RESULTS");
+  const testCategorySidenav = async (selector, expectedItemCount, expectedChildItemCount) => {
+    const sidenavEl = document.querySelector(selector);
+    const newRoot = await init(sidenavEl);
+    expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
+    expect(newRoot.title).to.equal('REFINE YOUR RESULTS');
     const items = newRoot.querySelectorAll('sp-sidenav-item');
-    expect(items.length).to.equal(24);
+    expect(items.length).to.equal(expectedItemCount);
     const search = newRoot.querySelector('sp-search');
     expect(search.getAttribute('placeholder')).to.equal('Search all your products');
     expect(newRoot.querySelectorAll('sp-checkbox').length).to.equal(3);
+    const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
+    expect(nestedItems.length).to.equal(expectedChildItemCount);
     expect(newRoot.querySelector('sp-checkbox').textContent.trim()).to.equal('Desktop');
+  };
+
+  it('does create nice categories default sidenav', async () => {
+    await testCategorySidenav('.categories', 24, 18);
+  });
+
+  it('does create nice reordered categories sidenav', async () => {
+    await testCategorySidenav('.reordered-categories', 17, 11);
+  });
+
+  it('does create nice plans sidenav', async () => {
+    const sidenavEl = document.querySelector('.plans');
+    const newRoot = await init(sidenavEl);
+    expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
+    expect(newRoot.title).to.equal('REFINE YOUR RESULTS');
+    const search = newRoot.querySelector('sp-search');
+    expect(search).to.be.null;
+    const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
+    expect(nestedItems.length).to.equal(0);
   });
 });
