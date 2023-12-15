@@ -27,7 +27,7 @@ describe('Sidenav', () => {
     window.fetch = sinon.stub().callsFake(() => mockedTaxonomy());
   });
 
-  const categorySidenavTesting = async (selector, expectedNumber, expectedChildrenNumber) => {
+  const testCategorySidenav = async (selector, expectedNumber, expectedChildrenNumber) => {
     const sidenavEl = document.querySelector(selector);
     const newRoot = await init(sidenavEl);
     expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
@@ -43,11 +43,11 @@ describe('Sidenav', () => {
   };
 
   it('does create nice categories default sidenav', async () => {
-    await categorySidenavTesting('.categories', 24, 18);
+    await testCategorySidenav('.categories', 24, 18);
   });
 
   it('does create nice reordered categories sidenav', async () => {
-    await categorySidenavTesting('.reordered-categories', 17, 11);
+    await testCategorySidenav('.reordered-categories', 17, 11);
   });
 
   it('does create nice plans sidenav', async () => {
