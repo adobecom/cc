@@ -27,18 +27,18 @@ describe('Sidenav', () => {
     window.fetch = sinon.stub().callsFake(() => mockedTaxonomy());
   });
 
-  const testCategorySidenav = async (selector, expectedNumber, expectedChildrenNumber) => {
+  const testCategorySidenav = async (selector, expectedItemCount, expectedChildItemCount) => {
     const sidenavEl = document.querySelector(selector);
     const newRoot = await init(sidenavEl);
     expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
     expect(newRoot.title).to.equal('REFINE YOUR RESULTS');
     const items = newRoot.querySelectorAll('sp-sidenav-item');
-    expect(items.length).to.equal(expectedNumber);
+    expect(items.length).to.equal(expectedItemCount);
     const search = newRoot.querySelector('sp-search');
     expect(search.getAttribute('placeholder')).to.equal('Search all your products');
     expect(newRoot.querySelectorAll('sp-checkbox').length).to.equal(3);
     const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
-    expect(nestedItems.length).to.equal(expectedChildrenNumber);
+    expect(nestedItems.length).to.equal(expectedChildItemCount);
     expect(newRoot.querySelector('sp-checkbox').textContent.trim()).to.equal('Desktop');
   };
 
