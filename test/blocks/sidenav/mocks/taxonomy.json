@@ -1,169 +1,111 @@
 {
-  "total": 27,
+  "total": 26,
   "offset": 0,
-  "limit": 27,
+  "limit": 26,
   "data": [
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "",
-      "Name": ""
+      "name": "All",
+      "id": "categories/all"
     },
     {
-      "Type": "Categories",
-      "Level 1": "All",
-      "Level 2": "",
-      "Name": "All"
+      "name": "Creativity and Design",
+      "id": "categories/creativity-design"
     },
     {
-      "Type": "Categories",
-      "Level 1": "Creativity and Design",
-      "Level 2": "",
-      "Name": "Creativity and Design"
+      "name": "Photo",
+      "id": "categories/creativity-design/photo"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Photo",
-      "Name": "Creativity and Design | Photo"
+      "name": "Graphic Design",
+      "id": "categories/creativity-design/graphic-design"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Graphic Design",
-      "Name": "Creativity and Design | Graphic Design"
+      "name": "Video",
+      "id": "categories/creativity-design/video"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Video",
-      "Name": "Creativity and Design | Video"
+      "name": "Illustration",
+      "id": "categories/creativity-design/illustration"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Illustration",
-      "Name": "Creativity and Design | Illustration"
+      "name": "Acrobat and PDF",
+      "id": "categories/creativity-design/acrobat-pdf"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Acrobat and PDF",
-      "Name": "Creativity and Design | Acrobat and PDF"
+      "name": "3D and AR",
+      "id": "categories/creativity-design/3d-ar"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "3D and AR",
-      "Name": "Creativity and Design | 3D and AR"
+      "name": "Social Media",
+      "id": "categories/creativity-design/social-media"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Social Media",
-      "Name": "Creativity and Design | Social Media"
+      "name": "PDF and E-signatures",
+      "id": "categories/pdf-esignatures"
     },
     {
-      "Type": "Categories",
-      "Level 1": "PDF and E-signatures",
-      "Level 2": "",
-      "Name": "PDF and E-signatures"
+      "name": "PDF",
+      "id": "categories/pdf-esignatures/pdf"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "PDF",
-      "Name": "PDF and E-signatures | PDF"
+      "name": "E-signatures",
+      "id": "categories/pdf-esignatures/esignatures"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "E-signatures",
-      "Name": "PDF and E-signatures | E-signatures"
+      "name": "Marketing and Commerce",
+      "id": "categories/marketing-commerce"
     },
     {
-      "Type": "Categories",
-      "Level 1": "Marketing and Commerce",
-      "Level 2": "",
-      "Name": "Marketing and Commerce"
+      "name": "Insights and Audiences",
+      "id": "categories/marketing-commerce/insights-audiences"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Insights and Audiences",
-      "Name": "Marketing and Commerce | Insights and Audiences"
+      "name": "Content and Journeys",
+      "id": "categories/marketing-commerce/content-journeys"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Content and Journeys",
-      "Name": "Marketing and Commerce | Content and Journeys"
+      "name": "Channels and Engagement",
+      "id": "categories/marketing-commerce/channels-engagement"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Channels and Engagement",
-      "Name": "Marketing and Commerce | Channels and Engagement"
+      "name": "Commerce and Conversions",
+      "id": "categories/marketing-commerce/commerce-conversions"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Commerce and Conversions",
-      "Name": "Marketing and Commerce | Commerce and Conversions"
+      "name": "Optimization and Scale",
+      "id": "categories/marketing-commerce/optimization-scale"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Optimization and Scale",
-      "Name": "Marketing and Commerce | Optimization and Scale"
+      "name": "Additional Solutions",
+      "id": "categories/additional-solutions"
     },
     {
-      "Type": "Categories",
-      "Level 1": "Additional Solutions",
-      "Level 2": "",
-      "Name": "Additional Solutions"
+      "name": "ColdFusion",
+      "id": "categories/additional-solutions/coldFusion"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "ColdFusion",
-      "Name": "Additional Solutions | ColdFusion"
+      "name": "eLearning",
+      "id": "categories/additional-solutions/eLearning"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "eLearning",
-      "Name": "Additional Solutions | eLearning"
+      "name": "Print Imaging",
+      "id": "categories/additional-solutions/print-imaging"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Print Imaging",
-      "Name": "Additional Solutions | Print Imaging"
+      "name": "Technical Communication",
+      "id": "categories/additional-solutions/technical-communication"
     },
     {
-      "Type": "Categories",
-      "Level 1": "",
-      "Level 2": "Technical Communication",
-      "Name": "Additional Solutions | Technical Communication"
+      "name": "Desktop",
+      "id": "types/desktop"
     },
     {
-      "Type": "Types",
-      "Level 1": "Desktop",
-      "Level 2": "",
-      "Name": "Desktop"
+      "name": "Mobile",
+      "id": "types/mobile"
     },
     {
-      "Type": "Types",
-      "Level 1": "Mobile",
-      "Level 2": "",
-      "Name": "Mobile"
-    },
-    {
-      "Type": "Types",
-      "Level 1": "Web",
-      "Level 2": "",
-      "Name": "Web"
+      "name": "Web",
+      "id": "types/web"
     }
   ],
   ":type": "sheet"
