@@ -3,6 +3,7 @@
     display: flex;
     gap: 36px;
     justify-content: center;
+    min-height: 400px;
   }
 }
 
