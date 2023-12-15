@@ -190,5 +190,3 @@ const miloLibs = setLibs(LIBS);
   loadLana({ clientId: 'cc' });
   await loadArea();
 }());
-
-export default CONFIG;
