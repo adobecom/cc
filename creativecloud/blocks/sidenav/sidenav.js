@@ -1,4 +1,4 @@
-import { createTag, getLibs } from '../../scripts/utils.js';
+import { createTag, localizeLink, getLibs } from '../../scripts/utils.js';
 
 import '../../deps/merch-sidenav.js';
 
@@ -61,9 +61,8 @@ const getTypes = (arrayTypes) => {
 };
 
 const appendFilters = async (root, link, explicitCategoriesElt) => {
-  const payload = link.textContent.trim();
   try {
-    const resp = await fetch(payload);
+    const resp = await fetch(link);
     if (resp.ok) {
       const json = await resp.json();
       const mapCategories = {};
@@ -135,29 +134,26 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
     import(`${libs}/features/spectrum-web-components/dist/search.js`),
     import(`${libs}/features/spectrum-web-components/dist/checkbox.js`),
-
+    import(`${libs}/features/spectrum-web-components/dist/dialog.js`),
   ]);
 
   const title = el.querySelector('h2')?.textContent.trim();
   const rootNav = createTag('merch-sidenav', { title });
   const searchText = el.querySelector('p > strong')?.textContent.trim();
   appendSearch(rootNav, searchText);
-  const links = el.querySelectorAll('a');
-  const explicitCategories = el.querySelector('ul');
-  await appendFilters(rootNav, links[0], explicitCategories);
-  if (links.length > 1) {
-    appendResources(rootNav, links[1]);
+  // eslint-disable-next-line prefer-const
+  let [endpoint, resourcesLink] = el.querySelectorAll('a');
+  if (endpoint) {
+    endpoint = localizeLink(endpoint.textContent.trim(), null, true);
+    const explicitCategories = el.querySelector('ul');
+    await appendFilters(rootNav, endpoint, explicitCategories);
   }
-  const appContainer = el.closest('main > div.section')?.firstElementChild;
+  if (resourcesLink) {
+    appendResources(rootNav, resourcesLink);
+  }
 
-  // temporary workaround to delay loading dialog.js until an event/cb cased approach.
-  const originalShowModal = rootNav.showModal;
-  rootNav.showModal = async (args) => {
-    await import(`${libs}/features/spectrum-web-components/dist/dialog.js`);
-    originalShowModal.call(rootNav, args);
-  };
-
-  if (appContainer?.classList.contains('app')) {
+  const appContainer = document.querySelector('.merch.app');
+  if (appContainer) {
     appContainer.appendChild(rootNav);
     rootNav.updateComplete.then(() => {
       el.remove();
