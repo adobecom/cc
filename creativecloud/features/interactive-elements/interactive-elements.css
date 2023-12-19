@@ -186,13 +186,19 @@
     display: block;
   }
 
+  [dir="rtl"] .enticement-arrow { 
+    right: -54px;
+    transform: scaleX(-1);
+  }
+
   .enticement-text {
     display: block;
   }
 
   [dir="rtl"] .enticement-text {
     position: absolute;
-    left: var(--spacing-xxs);
+    right: var(--spacing-xxs);
+    margin: 40px -20px 16px 0;
   }
 
   .genfill-prompt {
@@ -263,13 +269,19 @@
     display: block;
   }
 
+  [dir="rtl"] .enticement-arrow { 
+    right: -54px;
+    transform: scaleX(-1);
+  }
+
   .enticement-text {
     display: block;
   }
 
   [dir="rtl"] .enticement-text {
     position: absolute;
-    left: var(--spacing-xxs);
+    right: var(--spacing-xxs);
+    margin: 40px -20px 16px 0;
   }
 
   .options {
