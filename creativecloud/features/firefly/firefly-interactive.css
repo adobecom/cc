@@ -125,6 +125,11 @@
     right: -122px;
   }
 
+  [dir="rtl"] .firefly-selectortray {
+    left: -122px;
+    right: 446px;
+  }
+
   .firefly-prompt {
     top: 40px;
     margin-inline: 40px;
@@ -138,25 +143,40 @@
 }
 
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
-  [dir="ltr"] .firefly-selectortray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: -85px;
   }
+
+  [dir="rtl"] .firefly-selectortray {
+    left: -85px;
+    right: 399px;
+  }
 }
 
 @media screen and (max-width: 1649px) and (min-width: 1438px) {
-  [dir="ltr"] .firefly-selectortray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: -35px;
   }
+
+  [dir="rtl"] .firefly-selectortray {
+    left: -35px;
+    right: 359px;
+  }
 }
 
 @media screen and (max-width: 1437px) and (min-width: 1200px) {
-  [dir="ltr"] .firefly-selectortray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: 5px;
+  }
+
+  [dir="rtl"] .firefly-selectortray {
+    left: 5px;
+    right: 319px;
   }
 }
