@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs } from './utils.js';
+import { setLibs, decorateArea } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -116,9 +116,6 @@ const locales = {
   gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
 };
 
-// eslint-disable-next-line no-use-before-define
-const decorateArea = getDecorateAreaFn();
-
 // Add any config options.
 const CONFIG = {
   contentRoot: '/cc-shared',
@@ -151,47 +148,6 @@ const CONFIG = {
   },
 };
 
-function getDecorateAreaFn() {
-  let lcpImgSet = false;
-
-  // Load LCP image immediately
-  const eagerLoad = (lcpImg) => {
-    lcpImg?.setAttribute('loading', 'eager');
-    lcpImg?.setAttribute('fetchpriority', 'high');
-    if (lcpImg) lcpImgSet = true;
-  };
-
-  function loadLCPImage(area = document, { fragmentLink = null } = {}) {
-    const firstBlock = area.querySelector('body > main > div > div');
-    let fgDivs = null;
-    switch (true) {
-      case firstBlock?.classList.contains('changebg'):
-        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-        import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
-        break;
-      case firstBlock?.classList.contains('marquee'):
-        firstBlock.querySelectorAll('img').forEach(eagerLoad);
-        break;
-      case firstBlock?.classList.contains('interactive-marquee'):
-        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-        fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-        fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
-        break;
-      case !!fragmentLink:
-        if (window.document.querySelector('a.fragment') === fragmentLink && !window.document.querySelector('img[loading="eager"]')) {
-          eagerLoad(area.querySelector('img'));
-        }
-        break;
-      default:
-        if (!fragmentLink) eagerLoad(area.querySelector('img'));
-        break;
-    }
-  }
-
-  return (area, options) => {
-    if (!lcpImgSet) loadLCPImage(area, options);
-  };
-}
 decorateArea();
 
 /*
