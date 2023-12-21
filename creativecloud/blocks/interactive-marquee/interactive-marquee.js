@@ -61,7 +61,7 @@ function interactiveInit(el, decorateButtons, decorateBlockBg, createTag) {
   const firstDivInForeground = foreground.querySelector(':scope > div');
   if (firstDivInForeground?.classList.contains('media')) el.classList.add('row-reversed');
 
-  decorateButtons(text, 'button-l');
+  decorateButtons(text, 'button-xl');
   decorateText(text, createTag);
   extendButtonsClass(text);
 }
