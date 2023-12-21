@@ -1,7 +1,7 @@
-// Fri, 01 Dec 2023 13:43:45 GMT
+// Wed, 20 Dec 2023 12:32:36 GMT
 
 // src/sidenav/merch-sidenav.js
-import { html as html4, css as css5, LitElement as LitElement4 } from "./lit-all.min.js";
+import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
 
 // ../../node_modules/@spectrum-web-components/reactive-controllers/src/MatchMedia.js
 var MatchMediaController = class {
@@ -24,7 +24,7 @@ var MatchMediaController = class {
 };
 
 // src/sidenav/merch-sidenav-heading.css.js
-import { css } from "./lit-all.min.js";
+import { css } from "/libs/deps/lit-all.min.js";
 var headingStyles = css`
     h2 {
         font-size: 11px;
@@ -39,7 +39,7 @@ var headingStyles = css`
 `;
 
 // src/merch-search.js
-import { html, LitElement, css as css2 } from "./lit-all.min.js";
+import { html, LitElement, css as css2 } from "/libs/deps/lit-all.min.js";
 
 // src/deeplink.js
 function parseState(hash = window.location.hash) {
@@ -101,23 +101,23 @@ var MerchSearch = class extends LitElement {
   }
   constructor() {
     super();
-    this.handleInput = (e) => pushStateFromComponent(this, e.target.value);
+    this.handleInput = () => pushStateFromComponent(this, this.search.value);
     this.handleInputDebounced = debounce(this.handleInput.bind(this));
   }
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener("input", this.handleInputDebounced);
-    this.addEventListener("change", this.handleInputDebounced);
+    if (!this.search)
+      return;
+    this.search.addEventListener("input", this.handleInputDebounced);
+    this.search.addEventListener("change", this.handleInputDebounced);
     this.updateComplete.then(() => {
-      if (!this.search)
-        return;
       this.setStateFromURL();
     });
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener("input", this.handleInputDebounced);
-    this.removeEventListener("change", this.handleInputDebounced);
+    this.search.removeEventListener("input", this.handleInputDebounced);
+    this.search.removeEventListener("change", this.handleInputDebounced);
   }
   /*
    * set the state of the search based on the URL
@@ -136,7 +136,7 @@ var MerchSearch = class extends LitElement {
 customElements.define("merch-search", MerchSearch);
 
 // src/sidenav/merch-sidenav-list.js
-import { html as html2, LitElement as LitElement2, css as css3 } from "./lit-all.min.js";
+import { html as html2, LitElement as LitElement2, css as css3 } from "/libs/deps/lit-all.min.js";
 var MerchSidenavList = class extends LitElement2 {
   static properties = {
     title: { type: String },
@@ -192,7 +192,7 @@ var MerchSidenavList = class extends LitElement2 {
    */
   setStateFromURL() {
     const state = parseState();
-    const value = state[this.deeplink];
+    const value = state[this.deeplink] ?? "all";
     if (value) {
       const element = this.querySelector(`sp-sidenav-item[value="${value}"]`) ?? this.querySelector(`sp-sidenav-item`);
       if (!element)
@@ -256,7 +256,7 @@ var MerchSidenavList = class extends LitElement2 {
 customElements.define("merch-sidenav-list", MerchSidenavList);
 
 // src/sidenav/merch-sidenav-checkbox-group.js
-import { html as html3, LitElement as LitElement3, css as css4 } from "./lit-all.min.js";
+import { html as html3, LitElement as LitElement3, css as css4 } from "/libs/deps/lit-all.min.js";
 var MerchSidenavCheckboxGroup = class extends LitElement3 {
   static properties = {
     title: { type: String },
@@ -348,6 +348,7 @@ var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
 var TABLET_DOWN = "(max-width: 1200px)";
 
 // src/sidenav/merch-sidenav.js
+var EVENT_OPEN_MODAL = "merch-sidenav:open-modal";
 var MerchSideNav = class extends LitElement4 {
   static properties = {
     title: { type: String },
@@ -406,6 +407,7 @@ var MerchSideNav = class extends LitElement4 {
         ></sp-theme>`;
   }
   async showModal({ target }) {
+    this.dispatchEvent(new Event(EVENT_OPEN_MODAL));
     const content = this.shadowRoot.querySelector("sp-dialog-wrapper");
     const options = {
       trigger: target,
