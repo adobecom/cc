@@ -114,6 +114,8 @@ const locales = {
   kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
   qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
   gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
+  vn_en: { ietf: 'en-GB', tk: 'hah7vzn.css' },
+  vn_vi: { ietf: 'vi', tk: 'qxw8hzm.css' },
 };
 
 // Add any config options.
