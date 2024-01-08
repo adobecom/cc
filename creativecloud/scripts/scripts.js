@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs } from './utils.js';
+import { setLibs, decorateArea } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -124,6 +124,7 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
+  decorateArea,
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
@@ -147,33 +148,7 @@ const CONFIG = {
   },
 };
 
-// Load LCP image immediately
-const eagerLoad = (img) => {
-  img?.setAttribute('loading', 'eager');
-  img?.setAttribute('fetchpriority', 'high');
-};
-
-(async function loadLCPImage() {
-  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  let fgDivs = null;
-  switch (true) {
-    case firstDiv?.classList.contains('changebg'):
-      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-      import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
-      break;
-    case firstDiv?.classList.contains('marquee'):
-      firstDiv.querySelectorAll('img').forEach(eagerLoad);
-      break;
-    case firstDiv?.classList.contains('interactive-marquee'):
-      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-      fgDivs = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-      fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
-      break;
-    default:
-      eagerLoad(document.querySelector('img'));
-      break;
-  }
-}());
+decorateArea();
 
 /*
  * ------------------------------------------------------------
