@@ -556,7 +556,7 @@ indices:
 
   merch-cards:
     include:
-      - /cc-shared/fragments/merch/**/cards/**
+      - /cc-shared/fragments/merch/**/merch-card/**
     target: /cc-shared/assets/query-index-cards.xslx
     properties:
       lastModified:
