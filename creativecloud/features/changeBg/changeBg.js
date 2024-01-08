@@ -1,5 +1,3 @@
-import { getLibs } from '../../scripts/utils.js';
-
 const customElem = document.createElement('ft-changebackgroundmarquee');
 customElem.config = {
   mobile: { groups: [] },

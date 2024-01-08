@@ -87,7 +87,7 @@ function analyze(el) {
           const ss = currentSrc.replace('./', '/');
           const img = new Image();
           img.src = `${ss}`;
-          img.onload = function () {
+          img.onload = () => {
             const { width } = img;
             const { height } = img;
             if (width !== dimensions[colIdx][0] || height !== dimensions[colIdx][1]) {
