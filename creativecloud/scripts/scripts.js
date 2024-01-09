@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs } from './utils.js';
+import { setLibs, decorateArea } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -42,7 +42,7 @@ const locales = {
   es: { ietf: 'es-ES', tk: 'oln4yqj.css' },
   fr: { ietf: 'fr-FR', tk: 'vrk5vyv.css' },
   gr_en: { ietf: 'en-GR', tk: 'pps7abe.css' },
-  ie: { ietf: 'en-IE', tk: 'pps7abe.css' },
+  ie: { ietf: 'en-GB', tk: 'pps7abe.css' },
   il_en: { ietf: 'en-IL', tk: 'pps7abe.css' },
   it: { ietf: 'it-IT', tk: 'bbf5pok.css' },
   lv: { ietf: 'lv-LV', tk: 'aaz7dvd.css' },
@@ -58,7 +58,7 @@ const locales = {
   pl: { ietf: 'pl-PL', tk: 'aaz7dvd.css' },
   pt: { ietf: 'pt-PT', tk: 'inq1xob.css' },
   ro: { ietf: 'ro-RO', tk: 'aaz7dvd.css' },
-  sa_en: { ietf: 'en-SA', tk: 'pps7abe.css' },
+  sa_en: { ietf: 'en', tk: 'pps7abe.css' },
   ch_de: { ietf: 'de-CH', tk: 'vin7zsi.css' },
   si: { ietf: 'sl-SI', tk: 'aaz7dvd.css' },
   sk: { ietf: 'sk-SK', tk: 'aaz7dvd.css' },
@@ -67,7 +67,7 @@ const locales = {
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
   ch_it: { ietf: 'it-CH', tk: 'bbf5pok.css' },
   tr: { ietf: 'tr-TR', tk: 'aaz7dvd.css' },
-  ae_en: { ietf: 'en-AE', tk: 'pps7abe.css' },
+  ae_en: { ietf: 'en', tk: 'pps7abe.css' },
   uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   at: { ietf: 'de-AT', tk: 'vin7zsi.css' },
   cz: { ietf: 'cs-CZ', tk: 'aaz7dvd.css' },
@@ -77,22 +77,22 @@ const locales = {
   il_he: { ietf: 'he', tk: 'nwq1mna.css', dir: 'rtl' },
   ae_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
   mena_ar: { ietf: 'ar', tk: 'dis2dpj.css', dir: 'rtl' },
-  sa_ar: { ietf: 'ar-SA', tk: 'nwq1mna.css', dir: 'rtl' },
+  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
   // Asia Pacific
   au: { ietf: 'en-AU', tk: 'pps7abe.css' },
   hk_en: { ietf: 'en-HK', tk: 'pps7abe.css' },
-  in: { ietf: 'en-IN', tk: 'pps7abe.css' },
-  id_id: { ietf: 'id-ID', tk: 'czc0mun.css' },
-  id_en: { ietf: 'en-ID', tk: 'pps7abe.css' },
-  my_ms: { ietf: 'ms-MY', tk: 'sxj4tvo.css' },
-  my_en: { ietf: 'en-MY', tk: 'pps7abe.css' },
-  nz: { ietf: 'en-NZ', tk: 'pps7abe.css' },
-  ph_en: { ietf: 'en-PH', tk: 'pps7abe.css' },
+  in: { ietf: 'en-GB', tk: 'pps7abe.css' },
+  id_id: { ietf: 'id', tk: 'czc0mun.css' },
+  id_en: { ietf: 'en', tk: 'pps7abe.css' },
+  my_ms: { ietf: 'ms', tk: 'sxj4tvo.css' },
+  my_en: { ietf: 'en-GB', tk: 'pps7abe.css' },
+  nz: { ietf: 'en-GB', tk: 'pps7abe.css' },
+  ph_en: { ietf: 'en', tk: 'pps7abe.css' },
   ph_fil: { ietf: 'fil-PH', tk: 'ict8rmp.css' },
   sg: { ietf: 'en-SG', tk: 'pps7abe.css' },
-  th_en: { ietf: 'en-TH', tk: 'pps7abe.css' },
-  in_hi: { ietf: 'hi-IN', tk: 'aaa8deh.css' },
-  th_th: { ietf: 'th-TH', tk: 'aaz7dvd.css' },
+  th_en: { ietf: 'en', tk: 'pps7abe.css' },
+  in_hi: { ietf: 'hi', tk: 'aaa8deh.css' },
+  th_th: { ietf: 'th', tk: 'aaz7dvd.css' },
   cn: { ietf: 'zh-CN', tk: 'puu3xkp' },
   hk_zh: { ietf: 'zh-HK', tk: 'jay0ecd' },
   tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
@@ -101,21 +101,21 @@ const locales = {
   // Langstore Support.
   langstore: { ietf: 'en-US', tk: 'hah7vzn.css' },
   // geo expansion MWPW-125686
-  za: { ietf: 'en-ZA', tk: 'pps7abe.css' }, // South Africa (GB English)
-  ng: { ietf: 'en-NG', tk: 'pps7abe.css' }, // Nigeria (GB English)
-  cr: { ietf: 'es-CR', tk: 'oln4yqj.css' }, // Costa Rica (Spanish Latin America)
-  ec: { ietf: 'es-EC', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
-  pr: { ietf: 'es-PR', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
-  gt: { ietf: 'es-GT', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
-  eg_ar: { ietf: 'ar-EG', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
-  kw_ar: { ietf: 'ar-KW', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
-  qa_ar: { ietf: 'ar-QA', tk: 'nwq1mna.css', dir: 'rtl' }, // Qatar (Arabic)
-  eg_en: { ietf: 'en-EG', tk: 'pps7abe.css' }, // Egypt (GB English)
-  kw_en: { ietf: 'en-KW', tk: 'pps7abe.css' }, // Kuwait (GB English)
-  qa_en: { ietf: 'en-QA', tk: 'pps7abe.css' }, // Qatar (GB English)
-  gr_el: { ietf: 'el-GR', tk: 'fnx0rsr.css' }, // Greece (Greek)
-  vn_en: { ietf: 'en-VN', tk: 'hah7vzn.css' },
-  vn_vi: { ietf: 'vi-VN', tk: 'qxw8hzm.css' },
+  za: { ietf: 'en-GB', tk: 'pps7abe.css' }, // South Africa (GB English)
+  ng: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Nigeria (GB English)
+  cr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Costa Rica (Spanish Latin America)
+  ec: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Ecuador (Spanish Latin America)
+  pr: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Puerto Rico (Spanish Latin America)
+  gt: { ietf: 'es-419', tk: 'oln4yqj.css' }, // Guatemala (Spanish Latin America)
+  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
+  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
+  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Qatar (Arabic)
+  eg_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Egypt (GB English)
+  kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
+  qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
+  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
+  vn_en: { ietf: ‘en-GB’, tk: ‘hah7vzn.css’ },
+  vn_vi: { ietf: ‘vi’, tk: ‘qxw8hzm.css’ },
 };
 
 // Add any config options.
@@ -126,6 +126,7 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
+  decorateArea,
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
@@ -149,33 +150,7 @@ const CONFIG = {
   },
 };
 
-// Load LCP image immediately
-const eagerLoad = (img) => {
-  img?.setAttribute('loading', 'eager');
-  img?.setAttribute('fetchpriority', 'high');
-};
-
-(async function loadLCPImage() {
-  const firstDiv = document.querySelector('body > main > div:nth-child(1) > div');
-  let fgDivs = null;
-  switch (true) {
-    case firstDiv?.classList.contains('changebg'):
-      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-      import(`${CONFIG.codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
-      break;
-    case firstDiv?.classList.contains('marquee'):
-      firstDiv.querySelectorAll('img').forEach(eagerLoad);
-      break;
-    case firstDiv?.classList.contains('interactive-marquee'):
-      firstDiv.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-      fgDivs = firstDiv.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
-      fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
-      break;
-    default:
-      eagerLoad(document.querySelector('img'));
-      break;
-  }
-}());
+decorateArea();
 
 /*
  * ------------------------------------------------------------
