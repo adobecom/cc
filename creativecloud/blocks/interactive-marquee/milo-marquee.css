@@ -13,27 +13,25 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  gap: var(--spacing-m);
+  padding: var(--spacing-xxl) 0;
 }
 
 .interactive-marquee .interactive-container {
-  order: 1;
-  width: 100%;
-  height: 425px; /* mobile */
+  height: 300px;
+  width: 300px;
+  margin: 0 auto;
   border: 4px;
 }
 
 .interactive-marquee .media {
   max-width: 300px;
   position: relative;
-  top: 63px; /* mobile */
-  margin: 0 auto;
 }
 
 .interactive-marquee .text {
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-m);
   margin: 0 0 0 auto;
   order: 2;
 }
@@ -61,6 +59,9 @@
 .interactive-marquee .icon-text {
   margin: auto var(--spacing-xs);
   font-weight: 700;
+  font-size: 18px;
+  line-height: 22.5px;
+  font-style: normal;
 }
 
 .interactive-marquee .icon-area picture,
@@ -125,12 +126,13 @@
   }
 
   .interactive-marquee .interactive-container {
-    height: 700px;
+    height: 604px;
+    width: 569px;
   }
 
   .interactive-marquee .media {
     max-width: 569px;
-    top: 91px;
+    top: 35px;
   }
 
   .interactive-marquee .action-area {
@@ -162,12 +164,19 @@
     flex-direction: row;
     align-items: center;
     order: unset;
+    width: 100%;
   }
 
   .interactive-marquee .interactive-container {
     order: unset;
     width: 50%;
     height: 100%;
+    margin: 0;
+  }
+
+  .interactive-marquee .media {
+    top: 91px;
+    margin: 0 auto;
   }
 
   .interactive-marquee .supplemental-text {
