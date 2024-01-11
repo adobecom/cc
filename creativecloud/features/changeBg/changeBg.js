@@ -52,7 +52,12 @@ function createGroups(vp, current, swatchArr, srcArr) {
   customElem.config[vp].groups.push(obj);
 }
 
-export default function changeBg(el) {
+export default async function changeBg(el) {
+  const { host } = window.location;
+  if (host.includes('hlx.page')) {
+    const { default: debug } = await import('./author-feedback.js');
+    debug(el);
+  }
   const layers = ['defaultBgSrc', 'marqueeTitleImgSrc', 'talentSrc'];
   const layerRows = [...el.querySelectorAll(':scope > div')];
   ['mobile', 'tablet', 'desktop'].forEach((vp, vi) => {
