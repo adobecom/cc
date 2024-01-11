@@ -327,7 +327,7 @@ sitemaps:
         source: /gt/cc-shared/assets/query-index.json
         alternate: /gt/{path}.html
         destination: /gt/cc-shared/assets/sitemap.xml
-        hreflang: fes-GT
+        hreflang: es-GT
 
       id_en:
         source: /id_en/cc-shared/assets/query-index.json
