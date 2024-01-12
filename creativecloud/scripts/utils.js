@@ -22,7 +22,11 @@
 export const [setLibs, getLibs] = (() => {
   let libs;
   return [
-    (prodLibs) => {
+    (prodLibs, force = false) => {
+      if (force) {
+        libs = prodLibs;
+        return libs;
+      }
       const { hostname } = window.location;
       if (!hostname.includes('hlx.page')
         && !hostname.includes('hlx.live')

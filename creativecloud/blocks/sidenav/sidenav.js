@@ -129,7 +129,6 @@ function appendResources(rootNav, resourceLink) {
 export default async function init(el) {
   const libs = getLibs();
   await Promise.all([
-    import(`${libs}/deps/lit-all.min.js`),
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
     import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
     import(`${libs}/features/spectrum-web-components/dist/search.js`),
