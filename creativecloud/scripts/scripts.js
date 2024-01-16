@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs } from './utils.js';
+import { setLibs, decorateArea } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -114,6 +114,8 @@ const locales = {
   kw_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Kuwait (GB English)
   qa_en: { ietf: 'en-GB', tk: 'pps7abe.css' }, // Qatar (GB English)
   gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
+  vn_en: { ietf: 'en-GB', tk: 'hah7vzn.css' },
+  vn_vi: { ietf: 'vi', tk: 'qxw8hzm.css' },
 };
 
 // Add any config options.
@@ -125,6 +127,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com'],
   queryIndexCardPath: '/cc-shared/assets/query-index-cards',
+  decorateArea,
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
@@ -148,11 +151,7 @@ const CONFIG = {
   },
 };
 
-// Load LCP image immediately
-(async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  lcpImg?.removeAttribute('loading');
-}());
+decorateArea();
 
 /*
  * ------------------------------------------------------------
@@ -174,8 +173,17 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana, loadIms } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
   await loadArea();
+  if ((window.location.search.includes('goToFirefly')
+  || window.location.search.includes('goToFireflyEffects')
+  || window.location.search.includes('goToFireflyGenFill'))) {
+    try { await loadIms(); } catch { return; }
+    if (window.adobeIMS?.isSignedInUser()) {
+      const { redirectWithParam } = await import('../features/firefly/firefly-susi.js');
+      redirectWithParam();
+    }
+  }
 }());
