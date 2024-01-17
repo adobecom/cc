@@ -41,6 +41,7 @@
     "stylelint-config-standard": "25.0.0"
   },
   "dependencies": {
-    "@adobecom/milo": "github:adobecom/milo#main"
+    "@adobecom/milo": "github:adobecom/milo#main",
+    "@web/test-runner-mocha": "^0.9.0"
   }
 }
