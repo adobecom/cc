@@ -1,0 +1,30 @@
+name: Nala Tests
+
+on:
+  pull_request:
+    types: [ labeled, opened, synchronize, reopened ]
+
+jobs:
+  action:
+    name: Running E2E & IT
+    if: contains(github.event.pull_request.labels.*.name, 'run-nala')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Run Nala
+        uses: adobecom/nala@main
+        env:
+          WORKFLOW_NAME: 'CC-PR-RUN'
+          PR_RUN: 'true'
+          labels: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+          branch: ${{ github.event.pull_request.head.ref }}
+          repoName: ${{ github.repository }}
+          prUrl: ${{ github.event.pull_request.head.repo.html_url }}
+          prOrg: ${{ github.event.pull_request.head.repo.owner.login }}
+          prRepo: ${{ github.event.pull_request.head.repo.name }}
+          prBranch: ${{ github.event.pull_request.head.ref }}
+          prBaseBranch: ${{ github.event.pull_request.base.ref }}
+          IMS_EMAIL: ${{ secrets.IMS_EMAIL }}
+          IMS_PASS: ${{ secrets.IMS_PASS }}
