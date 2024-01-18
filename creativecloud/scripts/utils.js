@@ -56,7 +56,7 @@ function getDecorateAreaFn() {
       case firstBlock?.classList.contains('changebg'): {
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-        import(`${getConfig().codeRoot}/creativecloud/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+        import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
         break;
       }
       case firstBlock?.classList.contains('marquee'):

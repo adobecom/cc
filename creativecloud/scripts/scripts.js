@@ -150,8 +150,6 @@ const CONFIG = {
   },
 };
 
-decorateArea();
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -159,6 +157,9 @@ decorateArea();
  */
 
 const miloLibs = setLibs(LIBS);
+const { loadArea, setConfig, loadLana, loadIms } = await import(`${miloLibs}/utils/utils.js`);
+setConfig({ ...CONFIG, miloLibs });
+decorateArea();
 
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];
@@ -172,8 +173,6 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, setConfig, loadLana, loadIms } = await import(`${miloLibs}/utils/utils.js`);
-  setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
   await loadArea();
   if ((window.location.search.includes('goToFirefly')
