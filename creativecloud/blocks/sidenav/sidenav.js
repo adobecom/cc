@@ -45,8 +45,8 @@ const getCategories = (items, isMultilevel, mapCategories) => {
   return merchTag;
 };
 
-const getTypes = (arrayTypes) => {
-  const tag = createTag('merch-sidenav-checkbox-group', { title: 'Types', deeplink: 'types' });
+const getTypes = (arrayTypes, typeText) => {
+  const tag = createTag('merch-sidenav-checkbox-group', { title: typeText, deeplink: 'types' });
   arrayTypes.forEach((item) => {
     if (item.name?.length > 0) {
       const checkbox = createTag('sp-checkbox', {
@@ -60,7 +60,7 @@ const getTypes = (arrayTypes) => {
   return tag;
 };
 
-const appendFilters = async (root, link, explicitCategoriesElt) => {
+const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
   try {
     const resp = await fetch(link);
     if (resp.ok) {
@@ -91,8 +91,8 @@ const appendFilters = async (root, link, explicitCategoriesElt) => {
         const categoryTags = getCategories(items, !shallowCategories, mapCategories);
         root.append(categoryTags);
       }
-      if (!shallowCategories && types.length > 0) {
-        root.append(getTypes(types));
+      if (typeText && types.length > 0) {
+        root.append(getTypes(types, typeText));
       }
     }
   } catch (e) {
@@ -139,13 +139,14 @@ export default async function init(el) {
   const title = el.querySelector('h2')?.textContent.trim();
   const rootNav = createTag('merch-sidenav', { title });
   const searchText = el.querySelector('p > strong')?.textContent.trim();
+  const typeText = el.querySelector('p > em')?.textContent.trim();
   appendSearch(rootNav, searchText);
   // eslint-disable-next-line prefer-const
   let [endpoint, resourcesLink] = el.querySelectorAll('a');
   if (endpoint) {
     endpoint = localizeLink(endpoint.textContent.trim(), null, true);
     const explicitCategories = el.querySelector('ul');
-    await appendFilters(rootNav, endpoint, explicitCategories);
+    await appendFilters(rootNav, endpoint, explicitCategories, typeText);
   }
   if (resourcesLink) {
     appendResources(rootNav, resourcesLink);
