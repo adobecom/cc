@@ -1,0 +1,112 @@
+{
+  "total": 26,
+  "offset": 0,
+  "limit": 26,
+  "data": [
+    {
+      "name": "All",
+      "id": "categories/all"
+    },
+    {
+      "name": "Creativity and Design",
+      "id": "categories/creativity-design"
+    },
+    {
+      "name": "Photo",
+      "id": "categories/creativity-design/photo"
+    },
+    {
+      "name": "Graphic Design",
+      "id": "categories/creativity-design/graphic-design"
+    },
+    {
+      "name": "Video",
+      "id": "categories/creativity-design/video"
+    },
+    {
+      "name": "Illustration",
+      "id": "categories/creativity-design/illustration"
+    },
+    {
+      "name": "Acrobat and PDF",
+      "id": "categories/creativity-design/acrobat-pdf"
+    },
+    {
+      "name": "3D and AR",
+      "id": "categories/creativity-design/3d-ar"
+    },
+    {
+      "name": "Social Media",
+      "id": "categories/creativity-design/social-media"
+    },
+    {
+      "name": "PDF and E-signatures",
+      "id": "categories/pdf-esignatures"
+    },
+    {
+      "name": "PDF",
+      "id": "categories/pdf-esignatures/pdf"
+    },
+    {
+      "name": "E-signatures",
+      "id": "categories/pdf-esignatures/esignatures"
+    },
+    {
+      "name": "Marketing and Commerce",
+      "id": "categories/marketing-commerce"
+    },
+    {
+      "name": "Insights and Audiences",
+      "id": "categories/marketing-commerce/insights-audiences"
+    },
+    {
+      "name": "Content and Journeys",
+      "id": "categories/marketing-commerce/content-journeys"
+    },
+    {
+      "name": "Channels and Engagement",
+      "id": "categories/marketing-commerce/channels-engagement"
+    },
+    {
+      "name": "Commerce and Conversions",
+      "id": "categories/marketing-commerce/commerce-conversions"
+    },
+    {
+      "name": "Optimization and Scale",
+      "id": "categories/marketing-commerce/optimization-scale"
+    },
+    {
+      "name": "Additional Solutions",
+      "id": "categories/additional-solutions"
+    },
+    {
+      "name": "ColdFusion",
+      "id": "categories/additional-solutions/coldFusion"
+    },
+    {
+      "name": "eLearning",
+      "id": "categories/additional-solutions/eLearning"
+    },
+    {
+      "name": "Print Imaging",
+      "id": "categories/additional-solutions/print-imaging"
+    },
+    {
+      "name": "Technical Communication",
+      "id": "categories/additional-solutions/technical-communication"
+    },
+    {
+      "name": "Desktop",
+      "id": "types/desktop"
+    },
+    {
+      "name": "Mobile",
+      "id": "types/mobile"
+    },
+    {
+      "name": "Web",
+      "id": "types/web"
+    }
+  ],
+  ":type": "sheet"
+}
