@@ -61,7 +61,7 @@ function interactiveInit(el, decorateButtons, decorateBlockBg, createTag) {
   const firstDivInForeground = foreground.querySelector(':scope > div');
   if (firstDivInForeground?.classList.contains('media')) el.classList.add('row-reversed');
 
-  decorateButtons(text, 'button-l');
+  decorateButtons(text, 'button-xl');
   decorateText(text, createTag);
   extendButtonsClass(text);
 }
@@ -81,7 +81,7 @@ export default async function init(el) {
       loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
       interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
-      await decorateGenfill(el);
+      await decorateGenfill(el, { createTag });
       break;
     }
     case el.classList.contains('firefly'): {
