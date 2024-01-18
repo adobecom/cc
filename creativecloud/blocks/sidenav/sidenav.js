@@ -61,38 +61,42 @@ const getTypes = (arrayTypes) => {
 };
 
 const appendFilters = async (root, link, explicitCategoriesElt) => {
-  const resp = await fetch(link);
-  if (resp.ok) {
-    const json = await resp.json();
-    const mapCategories = {};
-    let categoryValues = [];
-    const types = [];
-    json.data.forEach((item) => {
-      if (item.id?.startsWith(CATEGORY_ID_PREFIX)) {
-        const value = getIdLeaf(item.id);
-        mapCategories[value] = item;
-        categoryValues.push(value);
-      } else if (item.id?.startsWith(TYPE_ID_PREFIX)) {
-        types.push(item);
+  try {
+    const resp = await fetch(link);
+    if (resp.ok) {
+      const json = await resp.json();
+      const mapCategories = {};
+      let categoryValues = [];
+      const types = [];
+      json.data.forEach((item) => {
+        if (item.id?.startsWith(CATEGORY_ID_PREFIX)) {
+          const value = getIdLeaf(item.id);
+          mapCategories[value] = item;
+          categoryValues.push(value);
+        } else if (item.id?.startsWith(TYPE_ID_PREFIX)) {
+          types.push(item);
+        }
+      });
+      if (explicitCategoriesElt) {
+        categoryValues = Array.from(explicitCategoriesElt.querySelectorAll('li'))
+          .map((item) => item.textContent.trim().toLowerCase());
       }
-    });
-    if (explicitCategoriesElt) {
-      categoryValues = Array.from(explicitCategoriesElt.querySelectorAll('li'))
-        .map((item) => item.textContent.trim().toLowerCase());
+      let shallowCategories = true;
+      if (categoryValues.length > 0) {
+        const items = categoryValues.map((value) => mapCategories[value]);
+        const parentValues = new Set(items.map((value) => value?.id.split('/')[1]));
+        // all parent will always be here without children,
+        // so shallow is considered below 2 parents
+        shallowCategories = parentValues.size <= 2;
+        const categoryTags = getCategories(items, !shallowCategories, mapCategories);
+        root.append(categoryTags);
+      }
+      if (!shallowCategories && types.length > 0) {
+        root.append(getTypes(types));
+      }
     }
-    let shallowCategories = true;
-    if (categoryValues.length > 0) {
-      const items = categoryValues.map((value) => mapCategories[value]);
-      const parentValues = new Set(items.map((value) => value?.id.split('/')[1]));
-      // all parent will always be here without children,
-      // so shallow is considered below 2 parents
-      shallowCategories = parentValues.size <= 2;
-      const categoryTags = getCategories(items, !shallowCategories, mapCategories);
-      root.append(categoryTags);
-    }
-    if (!shallowCategories && types.length > 0) {
-      root.append(getTypes(types));
-    }
+  } catch (e) {
+    window.lana?.log(`unable to properly fetch sidenav data: ${e}`);
   }
 };
 
