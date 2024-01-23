@@ -102,7 +102,7 @@ function analyze(el) {
   // check LCP images
   LCP_SECTION_TITLES.forEach((lcp, lcpIdx) => {
     const dimensions = [...IMAGE_DIMENSIONS];
-    if (lcpIdx === 2) {
+    if (lcpIdx === 1) {
       dimensions[0] = [548, 334];
     }
     checkImages3(rowID, dimensions);
