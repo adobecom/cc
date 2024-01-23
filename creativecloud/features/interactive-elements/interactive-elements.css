@@ -10,6 +10,11 @@
   border: 1px solid #E6E6E6;
   justify-content: space-between;
   width: 247px;
+  box-sizing: content-box;
+}
+
+.promptbar > button:hover {
+  cursor: pointer;
 }
 
 .promptbar.light {
@@ -49,7 +54,7 @@
   position: absolute;
   font-size: 28px;
   line-height: 35px;
-  margin-left: -20px;
+  margin: 40px 0 16px -20px;
   top: -90px;
   color: var(--color-white);
 }
@@ -65,6 +70,7 @@
   padding: 8px;
   justify-content: space-between;
   width: auto;
+  box-sizing: content-box;
 }
 
 .selector-tray.light {
@@ -122,6 +128,7 @@
 
 .options:hover {
   border: 1px solid #1473E6;
+  cursor: pointer;
 }
 
 .genfill-prompt {
@@ -175,8 +182,13 @@
 
   .enticement-arrow {    
     right: 575px;
-    top: -45px;
+    top: -30px; 
     display: block;
+  }
+
+  [dir="rtl"] .enticement-arrow { 
+    right: -54px;
+    transform: scaleX(-1);
   }
 
   .enticement-text {
@@ -184,7 +196,9 @@
   }
 
   [dir="rtl"] .enticement-text {
-    margin-right: 525px;
+    position: absolute;
+    right: var(--spacing-xxs);
+    margin: 40px -20px 16px 0;
   }
 
   .genfill-prompt {
@@ -251,8 +265,13 @@
 
   .enticement-arrow {
     right: 575px;
-    top: -45px;
+    top: -30px;
     display: block;
+  }
+
+  [dir="rtl"] .enticement-arrow { 
+    right: -54px;
+    transform: scaleX(-1);
   }
 
   .enticement-text {
@@ -260,7 +279,9 @@
   }
 
   [dir="rtl"] .enticement-text {
-    margin-right: 510px;
+    position: absolute;
+    right: var(--spacing-xxs);
+    margin: 40px -20px 16px 0;
   }
 
   .options {

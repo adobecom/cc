@@ -1,5 +1,16 @@
+/* stylelint-disable selector-no-vendor-prefix */
 .hide {
   display: none
+}
+
+.prompt-text::-moz-placeholder {
+  color: #2c2c2c;
+  opacity: 1;
+}
+
+.prompt-text.light::-moz-placeholder {
+  color: #dbdbdb;
+  opacity: 1;
 }
 
 .prompt-text::placeholder {
@@ -24,13 +35,46 @@
   display: flex;
 }
 
-.interactive-marquee .media {
+.genfill-promptbar > button:hover {
+  cursor: pointer;
+}
+
+.interactive-marquee.firefly .media {
   top: 72px;
 }
 
-.interactive-marquee .media picture img,
-.interactive-marquee .media video {
+.interactive-marquee.firefly .media picture img,
+.interactive-marquee.firefly .media video {
   border-radius: 16px;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.blinking-cursor {
+  height: 1.2em;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-inline: 0;
+  width: 1px;
+  background: var(--text-color);
+  animation: blink 0.95s infinite;
+}
+
+.blinking-cursor ~ .prompt-text {
+  padding-inline-start: 0;
+}
+
+.blinking-cursor.blink-light:not(:focus) {
+  background: #dbdbdb;
 }
 
 @media (max-width: 600px) {
@@ -42,13 +86,13 @@
     margin-bottom: 24px;
   }
 
-  .interactive-marquee .interactive-container {
-    height: 430px;
+  .interactive-marquee.firefly .interactive-container {
+    height: 440px;
   }
 
-  .interactive-marquee .media {
+  .interactive-marquee.firefly .media {
     top: 8px;
-  }
+  }  
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {
@@ -69,7 +113,7 @@
     width: 80%;
   }
 
-  .interactive-marquee .interactive-container {
+  .interactive-marquee.firefly .interactive-container {
     height: 813px;
   }
 }
@@ -79,6 +123,11 @@
     top: 144px;
     position: absolute;
     right: -122px;
+  }
+
+  [dir="rtl"] .firefly-selectortray {
+    left: -122px;
+    right: 446px;
   }
 
   .firefly-prompt {
@@ -94,60 +143,40 @@
 }
 
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
-  [dir="ltr"] .firefly-selectortray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: -85px;
   }
+
+  [dir="rtl"] .firefly-selectortray {
+    left: -85px;
+    right: 399px;
+  }
 }
 
 @media screen and (max-width: 1649px) and (min-width: 1438px) {
-  [dir="ltr"] .firefly-selectortray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: -35px;
   }
+
+  [dir="rtl"] .firefly-selectortray {
+    left: -35px;
+    right: 359px;
+  }
 }
 
 @media screen and (max-width: 1437px) and (min-width: 1200px) {
-  [dir="ltr"] .firefly-selectortray {
+  .firefly-selectortray {
     top: 144px;
     position: absolute;
     right: 5px;
   }
-}
 
-@keyframes blink {
-  0%, 100% {
-    border-inline-start-color: transparent;
+  [dir="rtl"] .firefly-selectortray {
+    left: 5px;
+    right: 319px;
   }
-
-  50% {
-    border-inline-start-color: var(--text-color);
-  }
-}
-
-@keyframes blinklight {
-  0%, 100% {
-    border-inline-start-color: transparent;
-  }
-
-  50% {
-    border-inline-start-color: #dbdbdb;  
-  }
-}
-
-.blinking-cursor:not(:focus) {
-  animation: blink 0.95s infinite;
-  height: 1em;
-  border-inline-start: 1px solid var(--text-color);;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  padding-inline-start: 0;
-}
-
-.blinking-cursor.blink-light:not(:focus) {
-  animation: blinklight 0.95s infinite;
-  border-inline-start: 1px solid #dbdbdb;
 }
