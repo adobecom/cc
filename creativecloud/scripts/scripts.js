@@ -186,17 +186,8 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, setConfig, loadLana, loadIms } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   loadLana({ clientId: 'cc' });
   await loadArea();
-  if ((window.location.search.includes('goToFirefly')
-  || window.location.search.includes('goToFireflyEffects')
-  || window.location.search.includes('goToFireflyGenFill'))) {
-    try { await loadIms(); } catch { return; }
-    if (window.adobeIMS?.isSignedInUser()) {
-      const { redirectWithParam } = await import('../features/firefly/firefly-susi.js');
-      redirectWithParam();
-    }
-  }
 }());
