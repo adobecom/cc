@@ -149,6 +149,9 @@ const CONFIG = {
     version: '1.83',
     onDemand: false,
   },
+  htmlExclude: [
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
+  ],
 };
 
 /*
