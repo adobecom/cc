@@ -125,7 +125,7 @@ const CONFIG = {
   imsClientId: 'adobedotcom-cc',
   locales,
   geoRouting: 'on',
-  prodDomains: ['www.adobe.com'],
+  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   queryIndexCardPath: '/cc-shared/assets/query-index-cards',
   decorateArea,
   stage: {
