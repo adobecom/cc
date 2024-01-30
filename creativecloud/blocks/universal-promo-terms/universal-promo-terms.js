@@ -29,7 +29,7 @@ async function getTermsHTML(search) {
   const env = getEnv(search.env);
   let promoTerms
   if (!search.offer_selector_ids) {
-    const res = await fetch(`${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${search.offer_id}?${window.location.search}`);
+    const res = await fetch(`${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${search.offer_id}${window.location.search}`);
     if (!res.ok) return false;
     const json = await res.json();
     promoTerms = json[0]?.promo_terms;
