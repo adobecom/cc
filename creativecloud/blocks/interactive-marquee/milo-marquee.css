@@ -27,6 +27,7 @@
 .interactive-marquee .media {
   max-width: 300px;
   position: relative;
+  padding: 0;
 }
 
 .interactive-marquee .text {
