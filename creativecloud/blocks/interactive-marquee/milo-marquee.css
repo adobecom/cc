@@ -60,8 +60,8 @@
 .interactive-marquee .icon-text {
   margin: auto var(--spacing-xs);
   font-weight: 700;
-  font-size: 18px;
-  line-height: 22.5px;
+  font-size: var(--type-heading-m-size);
+  line-height: var(--type-heading-m-lh);
   font-style: normal;
 }
 
