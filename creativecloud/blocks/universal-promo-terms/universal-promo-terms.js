@@ -2,6 +2,7 @@ const OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
+const API_KEY = 'PlatformDocs';
 
 function searchToObject() {
   var pairs = window.location.search.substring(1).split("&"),
@@ -29,12 +30,14 @@ async function getTermsHTML(search) {
   const env = getEnv(search.env);
   let promoTerms
   if (!search.offer_selector_ids) {
-    const res = await fetch(`${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${search.offer_id}${window.location.search}`);
+    const fetchURL = `${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${search.offer_id}${window.location.search}${search.api_key ? '' : `&api_key=${API_KEY}`}`;
+    const res = await fetch(fetchURL);
     if (!res.ok) return false;
     const json = await res.json();
     promoTerms = json[0]?.promo_terms;
   } else {
-    const res = await fetch(`${env === 'stage' ? STAGE_SELECTOR_ID_API_BASE : SELECTOR_ID_API_BASE}${window.location.search}`);
+    const fetchURL = `${env === 'stage' ? STAGE_SELECTOR_ID_API_BASE : SELECTOR_ID_API_BASE}${window.location.search}${search.api_key ? '' : `&api_key=${API_KEY}`}`;
+    const res = await fetch(fetchURL);
     if (!res.ok) return false;
     const json = await res.json();
     promoTerms = json[0]?.offers[0]?.promo_terms;
