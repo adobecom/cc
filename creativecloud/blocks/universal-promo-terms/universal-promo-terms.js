@@ -2,7 +2,7 @@ const OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
-const API_KEY = 'PlatformDocs';
+const API_KEY = 'PlatformDocs'; // TOOD: update with unique API key once it is available
 
 function searchToObject() {
   var pairs = window.location.search.substring(1).split("&"),
