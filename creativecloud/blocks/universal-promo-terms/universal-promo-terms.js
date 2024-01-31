@@ -26,7 +26,7 @@ function getEnv(env) {
   return 'production';
 }
 
-async function getTermsHTML(search) {
+async function getTermsHTML(search, el) {
   const env = getEnv(search.env);
   let promoTerms
   if (!search.offer_selector_ids) {
@@ -46,13 +46,13 @@ async function getTermsHTML(search) {
   if (!promoTerms || !promoTerms.header || !promoTerms.text) {
     return false;
   }
-  return `<div class="container"><h1>${promoTerms.header}</h1><p>${promoTerms.text}</p></div>`;
+  return `<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${promoTerms.text}</p></div>`;
 }
 
 export default async function init(el) {
   const search = searchToObject();
   const env = getEnv(search.env);
-  const termsHTML = await getTermsHTML(search);
+  const termsHTML = await getTermsHTML(search, el);
   if(!termsHTML && env !== 'stage') {
     window.location = '404.html';
   } else {
