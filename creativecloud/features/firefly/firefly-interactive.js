@@ -30,7 +30,7 @@ function eventOnGenerate(generateButton, media) {
       const btnConfig = btnConfigs[className];
       const dall = userprompt === '' ? btnConfig[0] : btnConfig[1];
       e.target.setAttribute('daa-ll', dall);
-      const { signIn } = await import('./firefly-susi.js');
+      const { default: signIn } = await import('./firefly-susi.js');
       signIn(prompt, btnConfig[2]);
     }
   });
@@ -73,7 +73,7 @@ async function eventOnSelectorOption(option, prompt, media, mediaP, createPrompt
     genfilprompt.classList.add('genfill-promptbar');
     const genFillButton = media.querySelector('#genfill');
     genFillButton.addEventListener('click', async () => {
-      const { signIn } = await import('./firefly-susi.js');
+      const { default: signIn } = await import('./firefly-susi.js');
       signIn('', 'goToFireflyGenFill');
     });
   } else {
@@ -167,7 +167,7 @@ export default async function setInteractiveFirefly(el) {
     media.append(genfillPrompt, fireflyPrompt);
     const genFillButton = media.querySelector('#genfill');
     genFillButton.addEventListener('click', async () => {
-      const { signIn } = await import('./firefly-susi.js');
+      const { default: signIn } = await import('./firefly-susi.js');
       signIn('', 'goToFireflyGenFill');
     });
   }
