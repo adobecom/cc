@@ -92,7 +92,11 @@
 
   .interactive-marquee.firefly .media {
     top: 8px;
-  }  
+  }
+
+  .interactive-marquee.firefly .foreground {
+    padding-top: 0;
+  }
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {
@@ -115,6 +119,10 @@
 
   .interactive-marquee.firefly .interactive-container {
     height: 813px;
+  }
+
+  .interactive-marquee.firefly .foreground {
+    padding-top: 0;
   }
 }
 
