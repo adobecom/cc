@@ -70,6 +70,8 @@ export function decorateArea(area = document) {
     const mqImg = marquee.querySelector('img');
     console.log(mqImg);
     if (mqImg.alt.includes('.mp4')) {
+      const sources = mqImg.closest('picture').querySelectorAll('source');
+      sources.forEach((source) => { source.remove(); });
       const preTag = `<link rel="preload" as="image" href="${mqImg.src}">`;
       document.head.insertAdjacentHTML('beforeend', preTag);
     } else {
