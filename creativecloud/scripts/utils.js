@@ -58,22 +58,23 @@ function getDecorateAreaFn() {
     if (lcpImg) lcpImgSet = true;
   };
 
-async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
-    const firstBlock = area.querySelector('.marquee');
+ async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
+    const marquee = area.querySelector('.marquee');
+    const interactiveMarquee = area.querySelector('.interactive-marquee');
     let fgDivs = null;
     switch (true) {
-      case firstBlock:
-        firstBlock.querySelectorAll('img').forEach(eagerLoad);
+      case marquee:
+        eagerLoad(marquee.querySelector('img'));        
         break;
-      case firstBlock?.classList.contains('changebg'): {
-        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+      case interactiveMarquee?.classList.contains('changebg'): {
+        interactiveMarquee.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
         import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
         break;
       }
-      case firstBlock?.classList.contains('interactive-marquee'):
-        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
-        fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
+      case interactiveMarquee:
+        interactiveMarquee.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+        fgDivs = interactiveMarquee.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
         fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
         break;
       case !!fragmentLink:
