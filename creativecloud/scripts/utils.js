@@ -65,6 +65,15 @@ export function decorateArea(area = document) {
       marquee.querySelectorAll('img').forEach(eagerLoad);
       return;
     }
-    eagerLoad(marquee.querySelector('img'));
+
+    // Foreground video
+    const mqImg = marquee.querySelector('img');
+    console.log(mqImg);
+    if (mqImg.alt.includes('.mp4')) {
+      const preTag = `<link rel="preload" as="image" href="${mqImg.src}">`;
+      document.head.insertAdjacentHTML('beforeend', preTag);
+    } else {
+      eagerLoad(img);
+    }
   }());
 }
