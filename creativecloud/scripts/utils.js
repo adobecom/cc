@@ -68,7 +68,7 @@ export function decorateArea(area = document) {
 
     // Foreground video
     const mqImg = marquee.querySelector('img');
-    console.log(mqImg);
+    mqImg.src = mqImg.src.replace('format=jpeg', 'format=webply');
     if (mqImg.alt.includes('.mp4')) {
       const sources = mqImg.closest('picture').querySelectorAll('source');
       sources.forEach((source) => { source.remove(); });
