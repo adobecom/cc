@@ -58,19 +58,19 @@ function getDecorateAreaFn() {
     if (lcpImg) lcpImgSet = true;
   };
 
-  async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
-    const firstBlock = area.querySelector('body > main > div > div');
+async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
+    const firstBlock = area.querySelector('.marquee');
     let fgDivs = null;
     switch (true) {
+      case firstBlock:
+        firstBlock.querySelectorAll('img').forEach(eagerLoad);
+        break;
       case firstBlock?.classList.contains('changebg'): {
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
         import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
         break;
       }
-      case firstBlock?.classList.contains('marquee'):
-        firstBlock.querySelectorAll('img').forEach(eagerLoad);
-        break;
       case firstBlock?.classList.contains('interactive-marquee'):
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
