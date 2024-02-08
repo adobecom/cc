@@ -58,7 +58,7 @@ function getDecorateAreaFn() {
     if (lcpImg) lcpImgSet = true;
   };
 
- async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
+  async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
     const marquee = area.querySelector('.marquee');
     const interactiveMarquee = area.querySelector('.interactive-marquee');
     let fgDivs = null;
