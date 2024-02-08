@@ -64,7 +64,7 @@ function getDecorateAreaFn() {
     let fgDivs = null;
     switch (true) {
       case marquee != null:
-        eagerLoad(marquee.querySelector('img'));        
+        eagerLoad(marquee.querySelector('img'));
         break;
       case interactiveMarquee?.classList.contains('changebg'): {
         interactiveMarquee.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
