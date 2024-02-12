@@ -872,3 +872,129 @@ indices:
     include:
       - /vn_vi/cc-shared/fragments/merch/**/merch-card/**
     target: /vn_vi/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-dk:
+    <<: *def
+    include:
+      - /dk/creativecloud/**
+    target: /dk/cc-shared/assets/query-index.xlsx
+
+  creativecloud-fi:
+    <<: *def
+    include:
+      - /fi/creativecloud/**
+    target: /fi/cc-shared/assets/query-index.xlsx
+
+  creativecloud-no:
+    <<: *def
+    include:
+      - /no/creativecloud/**
+    target: /no/cc-shared/assets/query-index.xlsx
+
+  creativecloud-se:
+    <<: *def
+    include:
+      - /se/creativecloud/**
+    target: /se/cc-shared/assets/query-index.xlsx
+
+  creativecloud-la:
+    <<: *def
+    include:
+      - /la/creativecloud/**
+    target: /la/cc-shared/assets/query-index.xlsx
+
+  creativecloud-mx:
+    <<: *def
+    include:
+      - /mx/creativecloud/**
+    target: /mx/cc-shared/assets/query-index.xlsx
+
+  creativecloud-be_nl:
+    <<: *def
+    include:
+      - /be_nl/creativecloud/**
+    target: /be_nl/cc-shared/assets/query-index.xlsx
+
+  creativecloud-bg:
+    <<: *def
+    include:
+      - /bg/creativecloud/**
+    target: /bg/cc-shared/assets/query-index.xlsx
+
+  creativecloud-ch_it:
+    <<: *def
+    include:
+      - /ch_it/creativecloud/**
+    target: /ch_it/cc-shared/assets/query-index.xlsx
+
+  creativecloud-cz:
+    <<: *def
+    include:
+      - /cz/creativecloud/**
+    target: /cz/cc-shared/assets/query-index.xlsx
+
+  creativecloud-ee:
+    <<: *def
+    include:
+      - /ee/creativecloud/**
+    target: /ee/cc-shared/assets/query-index.xlsx
+
+  creativecloud-hu:
+    <<: *def
+    include:
+      - /hu/creativecloud/**
+    target: /hu/cc-shared/assets/query-index.xlsx
+
+  creativecloud-il_he:
+    <<: *def
+    include:
+      - /il_he/creativecloud/**
+    target: /il_he/cc-shared/assets/query-index.xlsx
+
+  creativecloud-lv:
+    <<: *def
+    include:
+      - /lv/creativecloud/**
+    target: /lv/cc-shared/assets/query-index.xlsx
+
+  creativecloud-mena_ar:
+    <<: *def
+    include:
+      - /mena_ar/creativecloud/**
+    target: /mena_ar/cc-shared/assets/query-index.xlsx
+
+  creativecloud-pt:
+    <<: *def
+    include:
+      - /pt/creativecloud/**
+    target: /pt/cc-shared/assets/query-index.xlsx
+
+  creativecloud-ro:
+    <<: *def
+    include:
+      - /ro/creativecloud/**
+    target: /ro/cc-shared/assets/query-index.xlsx
+
+  creativecloud-si:
+    <<: *def
+    include:
+      - /si/creativecloud/**
+    target: /si/cc-shared/assets/query-index.xlsx
+
+  creativecloud-sk:
+    <<: *def
+    include:
+      - /sk/creativecloud/**
+    target: /sk/cc-shared/assets/query-index.xlsx
+    
+  creativecloud-ua:
+    <<: *def
+    include:
+      - /ua/creativecloud/**
+    target: /ua/cc-shared/assets/query-index.xlsx
+
+  creativecloud-za:
+    <<: *def
+    include:
+      - /za/creativecloud/**
+    target: /za/cc-shared/assets/query-index.xlsx
