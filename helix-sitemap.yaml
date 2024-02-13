@@ -558,4 +558,10 @@ sitemaps:
         source: /za/cc-shared/assets/query-index.json
         alternate: /za/{path}.html
         destination: /za/cc-shared/assets/sitemap.xml
-        hreflang: en-ZA   
+        hreflang: en-ZA
+
+      sg:
+        source: /sg/cc-shared/assets/query-index.json
+        alternate: /sg/{path}.html
+        destination: /sg/cc-shared/assets/sitemap.xml
+        hreflang: en-SG   
