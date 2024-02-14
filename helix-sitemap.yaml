@@ -552,7 +552,7 @@ sitemaps:
         source: /ua/cc-shared/assets/query-index.json
         alternate: /ua/{path}.html
         destination: /ua/cc-shared/assets/sitemap.xml
-        hreflang: euk-UA
+        hreflang: uk-UA
 
       za:
         source: /za/cc-shared/assets/query-index.json
