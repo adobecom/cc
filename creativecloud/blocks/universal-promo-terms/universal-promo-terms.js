@@ -9,13 +9,10 @@ function searchToObject() {
   const obj = {};
   let pair;
 
-  for (const i in pairs) {
-    if (pairs[i] === '') continue;
-
-    pair = pairs[i].split('=');
+  pairs.forEach((p) => {
+    pair = p.split('=');
     obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-  }
-
+  });
   return obj;
 }
 
