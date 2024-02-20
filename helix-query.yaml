@@ -993,12 +993,6 @@ indices:
       - /ua/creativecloud/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
-  creativecloud-za:
-    <<: *def
-    include:
-      - /za/creativecloud/**
-    target: /za/cc-shared/assets/query-index.xlsx
-
   creativecloud-sg:
     <<: *def
     include:
