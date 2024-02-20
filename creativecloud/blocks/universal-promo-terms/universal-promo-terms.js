@@ -5,12 +5,11 @@ const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.sel
 const API_KEY = 'universalPromoTerm';
 
 function searchToObject() {
-  var pairs = window.location.search.substring(1).split("&"),
-    obj = {},
-    pair,
-    i;
+  const pairs = window.location.search.substring(1).split("&");
+  const obj = {};
+  let pair;
 
-  for ( i in pairs ) {
+  for (let i in pairs ) {
     if ( pairs[i] === "" ) continue;
 
     pair = pairs[i].split("=");
