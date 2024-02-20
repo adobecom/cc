@@ -24,7 +24,7 @@ function getEnv(env) {
 
 async function getTermsHTML(search, el) {
   const env = getEnv(search.env);
-  let promoTerms
+  let promoTerms;
   if (!search.offer_selector_ids) {
     const fetchURL = `${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${search.offer_id}${window.location.search}${search.api_key ? '' : `&api_key=${API_KEY}`}`;
     const res = await fetch(fetchURL);
