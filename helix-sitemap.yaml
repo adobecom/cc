@@ -554,12 +554,6 @@ sitemaps:
         destination: /ua/cc-shared/assets/sitemap.xml
         hreflang: uk-UA
 
-      za:
-        source: /za/cc-shared/assets/query-index.json
-        alternate: /za/{path}.html
-        destination: /za/cc-shared/assets/sitemap.xml
-        hreflang: en-ZA
-
       sg:
         source: /sg/cc-shared/assets/query-index.json
         alternate: /sg/{path}.html
