@@ -49,7 +49,7 @@ export default async function init(el) {
   const search = searchToObject();
   const env = getEnv(search.env);
   const termsHTML = await getTermsHTML(search, el);
-  if(!termsHTML && env !== 'stage') {
+  if (!termsHTML && env !== 'stage') {
     window.location = '404.html';
   } else {
     el.innerHTML = termsHTML;
