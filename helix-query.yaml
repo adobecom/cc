@@ -997,4 +997,10 @@ indices:
     <<: *def
     include:
       - /sg/creativecloud/**
-    target: /sg/cc-shared/assets/query-index.xlsx   
+    target: /sg/cc-shared/assets/query-index.xlsx
+
+  creativecloud-br:
+    <<: *def
+    include:
+      - /br/creativecloud/**
+    target: /br/cc-shared/assets/query-index.xlsx    
