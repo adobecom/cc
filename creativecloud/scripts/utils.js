@@ -63,7 +63,7 @@ function getDecorateAreaFn() {
     const interactiveMarquee = area.querySelector('.interactive-marquee');
     let fgDivs = null;
     switch (true) {
-      case !!marquee:
+      case marquee != null:
         eagerLoad(marquee.querySelector('img'));
         break;
       case interactiveMarquee?.classList.contains('changebg'): {
@@ -72,7 +72,7 @@ function getDecorateAreaFn() {
         import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
         break;
       }
-      case !!interactiveMarquee:
+      case interactiveMarquee != null:
         interactiveMarquee.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         fgDivs = interactiveMarquee.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
         fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
