@@ -4,35 +4,23 @@ const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
 const API_KEY = 'universalPromoTerm';
 
-function searchToObject() {
-  const pairs = window.location.search.substring(1).split('&');
-  const obj = {};
-  let pair;
-
-  pairs.forEach((p) => {
-    pair = p.split('=');
-    obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-  });
-  return obj;
-}
-
 function getEnv(env) {
   if (env) return env;
   if (window.location.origin.includes('localhost') || window.location.origin.includes('hlx')) return 'stage';
   return 'production';
 }
 
-async function getTermsHTML(search, el) {
-  const env = getEnv(search.env);
+async function getTermsHTML(params, el, env, search) {
+  const locationSearch = search ?? window.location.search;
   let promoTerms;
-  if (!search.offer_selector_ids) {
-    const fetchURL = `${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${search.offer_id}${window.location.search}${search.api_key ? '' : `&api_key=${API_KEY}`}`;
+  if (!params.get('offer_selector_ids')) {
+    const fetchURL = `${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${params.get('offer_id')}${locationSearch}${params.get('api_key') ? '' : `&api_key=${API_KEY}`}`;
     const res = await fetch(fetchURL);
     if (!res.ok) return false;
     const json = await res.json();
     promoTerms = json[0]?.promo_terms;
   } else {
-    const fetchURL = `${env === 'stage' ? STAGE_SELECTOR_ID_API_BASE : SELECTOR_ID_API_BASE}${window.location.search}${search.api_key ? '' : `&api_key=${API_KEY}`}`;
+    const fetchURL = `${env === 'stage' ? STAGE_SELECTOR_ID_API_BASE : SELECTOR_ID_API_BASE}${locationSearch}${params.get('api_key') ? '' : `&api_key=${API_KEY}`}`;
     const res = await fetch(fetchURL);
     if (!res.ok) return false;
     const json = await res.json();
@@ -45,10 +33,10 @@ async function getTermsHTML(search, el) {
   return `<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${promoTerms.text}</p></div>`;
 }
 
-export default async function init(el) {
-  const search = searchToObject();
-  const env = getEnv(search.env);
-  const termsHTML = await getTermsHTML(search, el);
+export default async function init(el, search) {
+  const params = new URLSearchParams(search ?? window.location.search);
+  const env = getEnv(params.get('env'));
+  const termsHTML = await getTermsHTML(params, el, env, search);
   if (!termsHTML && env !== 'stage') {
     window.location = '404.html';
   } else {
