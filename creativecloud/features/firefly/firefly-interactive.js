@@ -25,7 +25,7 @@ function eventOnGenerate(generateButton, media, fireflyfeature = '') {
     const placeholderprompt = media.querySelector('.prompt-text')?.getAttribute('placeholder');
     const prompt = userprompt || placeholderprompt;
     let className = '';
-    if(fireflyfeature === ''){
+    if (fireflyfeature === '') {
       const selected = media.querySelector('.selected');
       className = selected.getAttribute('class').split(' ')[1].trim();
     } else className = fireflyfeature;
