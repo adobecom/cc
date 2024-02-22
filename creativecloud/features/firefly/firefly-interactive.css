@@ -98,10 +98,7 @@
     padding-top: 0;
   }
 
-  .interactive-marquee.firefly.ff-text-effects .interactive-container {
-    height: 346px;
-  }
-
+  .interactive-marquee.firefly.ff-text-effects .interactive-container,
   .interactive-marquee.firefly.ff-text-to-image .interactive-container {
     height: 346px;
   }
@@ -133,10 +130,7 @@
     padding-top: 0;
   }
 
-  .interactive-marquee.firefly.ff-text-effects .interactive-container {
-    height: 662px;
-  }
-
+  .interactive-marquee.firefly.ff-text-effects .interactive-container,
   .interactive-marquee.firefly.ff-text-to-image .interactive-container {
     height: 662px;
   }
