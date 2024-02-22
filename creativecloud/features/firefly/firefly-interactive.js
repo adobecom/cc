@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 function focusOnInput(media, createTag) {
   const input = media.querySelector('.prompt-text');
   if (input) {
-    input.setAttribute('autofocus', true);
+    input.focus();
     input.addEventListener('focusout', () => {
       if (document.querySelector('.locale-modal-v2')) {
         const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
