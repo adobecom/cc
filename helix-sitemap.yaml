@@ -504,7 +504,7 @@ sitemaps:
         source: /il_he/cc-shared/assets/query-index.json
         alternate: /il_he/{path}.html
         destination: /il_he/cc-shared/assets/sitemap.xml
-        hreflang: he
+        hreflang: he-IL
 
       lv:
         source: /lv/cc-shared/assets/query-index.json
@@ -558,4 +558,10 @@ sitemaps:
         source: /sg/cc-shared/assets/query-index.json
         alternate: /sg/{path}.html
         destination: /sg/cc-shared/assets/sitemap.xml
-        hreflang: en-SG   
+        hreflang: en-SG
+
+      br:
+        source: /br/cc-shared/assets/query-index.json
+        alternate: /br/{path}.html
+        destination: /br/cc-shared/assets/sitemap.xml
+        hreflang: pt-BR  
