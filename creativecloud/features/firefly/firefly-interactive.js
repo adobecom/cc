@@ -5,8 +5,7 @@ function focusOnInput(media, createTag) {
   if (input) {
     input.focus();
     input.addEventListener('focusout', () => {
-      const device = defineDeviceByScreenSize();
-      if (document.querySelector('.locale-modal-v2') || device === 'MOBILE' || device === 'TABLET') {
+      if (document.querySelector('.locale-modal-v2')) {
         const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
         input.insertAdjacentElement('beforebegin', blinkingCursor);
         if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
