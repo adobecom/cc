@@ -504,7 +504,7 @@ sitemaps:
         source: /il_he/cc-shared/assets/query-index.json
         alternate: /il_he/{path}.html
         destination: /il_he/cc-shared/assets/sitemap.xml
-        hreflang: he_IL
+        hreflang: he-IL
 
       lv:
         source: /lv/cc-shared/assets/query-index.json
