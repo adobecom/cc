@@ -1,14 +1,19 @@
 import { getLibs } from '../../scripts/utils.js';
 
+const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
+
 function focusOnInput(media, createTag) {
   const input = media.querySelector('.prompt-text');
   if (input) {
-    input.focus();
+    const device = defineDeviceByScreenSize();
+    const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
+    if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
+    if (device === 'MOBILE' || device === 'TABLET') {
+      input.insertAdjacentElement('beforebegin', blinkingCursor);
+    } else input.focus();
     input.addEventListener('focusout', () => {
-      if (document.querySelector('.locale-modal-v2')) {
-        const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
+      if (document.querySelector('.locale-modal-v2') && device === 'DESKTOP') {
         input.insertAdjacentElement('beforebegin', blinkingCursor);
-        if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
       }
     }, { once: true });
     input.addEventListener('click', () => { document.querySelector('.blinking-cursor')?.remove(); });
