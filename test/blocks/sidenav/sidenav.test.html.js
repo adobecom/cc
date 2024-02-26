@@ -36,6 +36,9 @@ runTests(async () => {
       expect(newRoot.title).to.equal('REFINE YOUR RESULTS');
       const items = newRoot.querySelectorAll('sp-sidenav-item');
       expect(items.length).to.equal(expectedItemCount);
+      const found = Array.from(items).find((item) => item.getAttribute('label') === 'ColdFusion');
+      expect(found).to.not.be.undefined;
+      expect(found.getAttribute('value')).to.equal('coldfusion');
       const search = newRoot.querySelector('sp-search');
       expect(search.getAttribute('placeholder')).to.equal('Search all your products');
       expect(newRoot.querySelectorAll('sp-checkbox').length).to.equal(3);
@@ -49,7 +52,9 @@ runTests(async () => {
     });
 
     it('does create nice reordered categories sidenav', async () => {
-      await testCategorySidenav('.reordered-categories', 17, 11);
+      // 16 items from html requirements, 2 parents from taxonomy,
+      // and special-offer special case is 19
+      await testCategorySidenav('.reordered-categories', 19, 13);
     });
 
     it('does create nice plans sidenav', async () => {
