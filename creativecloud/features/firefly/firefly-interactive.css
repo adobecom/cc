@@ -39,12 +39,12 @@
   cursor: pointer;
 }
 
-.interactive-marquee.firefly .media {
+.interactive-marquee.firefly .asset {
   top: 72px;
 }
 
-.interactive-marquee.firefly .media picture img,
-.interactive-marquee.firefly .media video {
+.interactive-marquee.firefly .asset picture img,
+.interactive-marquee.firefly .asset video {
   border-radius: 16px;
 }
 
@@ -95,7 +95,7 @@
     height: 440px;
   }
 
-  .interactive-marquee.firefly .media {
+  .interactive-marquee.firefly .asset {
     top: 24px;
   }
 
