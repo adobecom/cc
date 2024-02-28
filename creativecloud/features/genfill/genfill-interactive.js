@@ -51,7 +51,7 @@ function startAutocycle(a, autoCycleConfig, viewport, deviceConfig, interval, hT
 }
 
 function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText) {
-  const media = miloUtil.createTag('div', { class: `media ${v}-only` });
+  const media = miloUtil.createTag('div', { class: `asset ${v}-only` });
   const a = miloUtil.createTag('a', { class: 'genfill-link' });
   const img = miloUtil.createTag('img', { class: 'genfill-image' });
   const src = deviceConfig[v].srcList[0];
