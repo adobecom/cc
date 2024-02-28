@@ -16,7 +16,7 @@ describe('universal-promo-terms', () => {
   });
 
   it('Get API from query parameters', async () => {
-    await init(block, '?offer_selector_ids=x-TQSF1eZiZ637gnd_GgfN1c7W0Ksj2FG7gJwxCHCjY&locale=en_US&promotion_code=COM_CCSN_STOCKPD&country=CY&service_providers=PROMO_TERMS&landscape=draft&env=stage');
+    await init(block, '?offer_id=1B365A793986BBEEE26F3E372BDAAB09&locale=de_DE&promotion_code=fixed_dis_20&country=DE&env=stage');
     expect(document.querySelector('.universal-promo-terms').textContent).to.not.equal('false');
   });
 });

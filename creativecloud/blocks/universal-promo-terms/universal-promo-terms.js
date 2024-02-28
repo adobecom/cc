@@ -3,6 +3,7 @@ const SELECTOR_ID_API_BASE = 'https://aos.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
 const API_KEY = 'universalPromoTerm';
+const SERVICE_PROVIDERS = 'PROMO_TERMS';
 
 function getEnv(env) {
   if (env) return env;
@@ -14,13 +15,19 @@ async function getTermsHTML(params, el, env, search) {
   const locationSearch = search ?? window.location.search;
   let promoTerms;
   if (!params.get('offer_selector_ids')) {
-    const fetchURL = `${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${params.get('offer_id')}${locationSearch}${params.get('api_key') ? '' : `&api_key=${API_KEY}`}`;
+    let fetchURL = `${env === 'stage' ? STAGE_OFFER_ID_API_BASE : OFFER_ID_API_BASE}${params.get('offer_id')}${locationSearch}`;
+    fetchURL += params.get('api_key') ? '' : `&api_key=${API_KEY}`;
+    fetchURL += params.get('service_providers') ? '' : `&service_providers=${SERVICE_PROVIDERS}`;
+
     const res = await fetch(fetchURL);
     if (!res.ok) return false;
     const json = await res.json();
     promoTerms = json[0]?.promo_terms;
   } else {
-    const fetchURL = `${env === 'stage' ? STAGE_SELECTOR_ID_API_BASE : SELECTOR_ID_API_BASE}${locationSearch}${params.get('api_key') ? '' : `&api_key=${API_KEY}`}`;
+    let fetchURL = `${env === 'stage' ? STAGE_SELECTOR_ID_API_BASE : SELECTOR_ID_API_BASE}${locationSearch}`;
+    fetchURL += params.get('api_key') ? '' : `&api_key=${API_KEY}`;
+    fetchURL += params.get('service_providers') ? '' : `&service_providers=${SERVICE_PROVIDERS}`;
+
     const res = await fetch(fetchURL);
     if (!res.ok) return false;
     const json = await res.json();
