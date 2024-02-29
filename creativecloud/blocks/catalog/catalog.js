@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 
 /** container block */
 export default async function init(el) {
-  el.classList.add('container');
+  el.classList.add('app');
   const libs = getLibs();
   const sidenavEl = el.querySelector('.sidenav');
   const merchCardsEl = el.querySelector('.merch-cards');

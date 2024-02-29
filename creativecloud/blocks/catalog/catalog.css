@@ -1,4 +1,4 @@
-.catalog.container {
+.catalog.app {
   display: flex;
   min-height: 400px;
   justify-content: center;
@@ -6,7 +6,7 @@
 
 
 @media screen and (min-width: 1200px) {
-  .catalog.container {
+  .catalog.app {
     display: grid;
     gap: 36px;
     grid-template-columns: 240px auto;
@@ -18,12 +18,12 @@
   }
 }
 
-.catalog.container > merch-sidenav {
+.catalog.app > merch-sidenav {
   grid-column: 1 / span 1;
   order: 0;
 }
 
-.catalog.container > merch-cards {
+.catalog.app > merch-cards {
   align-self: baseline;
   grid-column: 2 / span 1;
   order: 1;
