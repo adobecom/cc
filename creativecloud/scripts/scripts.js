@@ -167,7 +167,7 @@ const observer = new PerformanceObserver((list) => {
   });
 });
 
-observer.observe({ type: 'longtask', buffered: true });
+observer.observe({ entryTypes: ['longtask'] });
 
 const miloLibs = setLibs(LIBS);
 const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
