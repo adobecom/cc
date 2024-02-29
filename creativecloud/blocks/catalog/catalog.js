@@ -17,16 +17,16 @@ export default async function init(el) {
     el.append(merchCards);
     await merchCards.updateComplete;
   }
-  let sidenav;
   if (sidenavEl) {
     const { default: initSidenav } = await import('../sidenav/sidenav.js');
-    sidenav = await initSidenav(sidenavEl);
-    el.append(sidenav);
-    await sidenav.updateComplete;
-    if (merchCards) {
-      merchCards.sidenav = sidenav;
-      merchCards.requestUpdate();
-    }
+    initSidenav(sidenavEl).then(async (sidenav) => {
+      el.append(sidenav);
+      await sidenav.updateComplete;
+      if (merchCards) {
+        merchCards.sidenav = sidenav;
+        merchCards.requestUpdate();
+      }
+    });
   }
   return el;
 }
