@@ -23,6 +23,7 @@ export default async function init(el) {
     if (sidenav) {
       el.append(sidenav);
       if (merchCards) {
+        await merchCards.updateComplete;
         await sidenav.updateComplete;
         merchCards.sidenav = sidenav;
         merchCards.requestUpdate();
