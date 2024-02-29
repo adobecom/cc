@@ -21,8 +21,8 @@ export default async function init(el) {
     if (sidenavEl) {
       const { default: initSidenav } = await import('../sidenav/sidenav.js');
       const sidenav = await initSidenav(sidenavEl);
-      await sidenav.updateComplete;
       el.append(sidenav);
+      await sidenav.updateComplete;
       if (merchCards) {
         merchCards.sidenav = sidenav;
         merchCards.requestUpdate();
