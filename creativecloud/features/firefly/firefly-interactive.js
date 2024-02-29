@@ -169,6 +169,7 @@ export default async function setInteractiveFirefly(el) {
   }
   const fireflyOptions = await createSelectorTray(selections, interactiveElemMode);
   fireflyOptions.classList.add('firefly-selectortray');
+  if (selections.length === 3) fireflyOptions.classList.add('three-options');
   media.append(fireflyOptions);
   const ttiOption = media.querySelector('.TextToImage');
   const genFillOption = media.querySelector('.GenerativeFill');
@@ -195,14 +196,14 @@ export default async function setInteractiveFirefly(el) {
   }
   focusOnInput(media, createTag);
   /* Handle action on click of each firefly option button */
-  ttiOption.addEventListener('click', () => {
+  ttiOption?.addEventListener('click', () => {
     eventOnSelectorOption(ttiOption, ttiDetail, media, mediaP, createPromptField, createTag);
   });
-  genFillOption.addEventListener('click', () => {
+  genFillOption?.addEventListener('click', () => {
     eventOnSelectorOption(genFillOption, genfDetail, media, mediaP, createPromptField);
     media.appendChild(genfillPrompt);
   });
-  teOption.addEventListener('click', () => {
+  teOption?.addEventListener('click', () => {
     eventOnSelectorOption(teOption, teDetail, media, mediaP, createPromptField, createTag);
   });
 }
