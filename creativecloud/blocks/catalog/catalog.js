@@ -13,22 +13,20 @@ export default async function init(el) {
     merchCards = await initMerchCards(merchCardsEl);
   }
   el.innerHTML = '';
-  if (merchCards) el.append(merchCards);
-  requestIdleCallback(async () => {
-    let sidenav;
-    if (sidenavEl) {
-      const { default: initSidenav } = await import('../sidenav/sidenav.js');
-      sidenav = await initSidenav(sidenavEl);
+  if (merchCards) {
+    el.append(merchCards);
+    await merchCards.updateComplete;
+  }
+  let sidenav;
+  if (sidenavEl) {
+    const { default: initSidenav } = await import('../sidenav/sidenav.js');
+    sidenav = await initSidenav(sidenavEl);
+    el.append(sidenav);
+    await sidenav.updateComplete;
+    if (merchCards) {
+      merchCards.sidenav = sidenav;
+      merchCards.requestUpdate();
     }
-    if (sidenav) {
-      el.append(sidenav);
-      if (merchCards) {
-        await merchCards.updateComplete;
-        await sidenav.updateComplete;
-        merchCards.sidenav = sidenav;
-        merchCards.requestUpdate();
-      }
-    }
-  });
+  }
   return el;
 }
