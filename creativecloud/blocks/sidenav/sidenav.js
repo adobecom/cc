@@ -152,19 +152,12 @@ export default async function init(el) {
     appendResources(rootNav, resourcesLink);
   }
 
-  const appContainer = document.querySelector('.merch.app');
-  if (appContainer) {
-    appContainer.appendChild(rootNav);
-    rootNav.updateComplete.then(() => {
-      el.remove();
-      const merchCards = appContainer.querySelector('merch-cards');
-      if (merchCards) {
-        merchCards.sidenav = merchCards.sidenav || rootNav;
-        merchCards.requestUpdate();
-      }
-    });
-  } else {
-    el.replaceWith(rootNav);
+  el.replaceWith(rootNav);
+  const merchCards = el.previousElementSibling ?? el.nextElementSibling;
+  if (merchCards?.tagName === 'MERCH-CARDS') {
+    merchCards.sidenav = merchCards.sidenav || rootNav;
+    merchCards.requestUpdate();
   }
+
   return rootNav;
 }
