@@ -153,11 +153,5 @@ export default async function init(el) {
   }
 
   el.replaceWith(rootNav);
-  const merchCards = el.previousElementSibling ?? el.nextElementSibling;
-  if (merchCards?.tagName === 'MERCH-CARDS') {
-    merchCards.sidenav = merchCards.sidenav || rootNav;
-    merchCards.requestUpdate();
-  }
-
   return rootNav;
 }
