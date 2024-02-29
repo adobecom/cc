@@ -18,10 +18,9 @@ export default async function init(el) {
     await merchCards.updateComplete;
   }
   requestIdleCallback(async () => {
-    let sidenav;
     if (sidenavEl) {
       const { default: initSidenav } = await import('../sidenav/sidenav.js');
-      sidenav = await initSidenav(sidenavEl);
+      const sidenav = await initSidenav(sidenavEl);
       await sidenav.updateComplete;
       el.append(sidenav);
       if (merchCards) {
