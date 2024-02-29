@@ -1,9 +1,11 @@
 import { createTag, localizeLink, getLibs } from '../../scripts/utils.js';
 
-import '../../deps/merch-sidenav.js';
-
 const CATEGORY_ID_PREFIX = 'categories/';
 const TYPE_ID_PREFIX = 'types/';
+
+// allows improve TBT by returning control to the main thread.
+// eslint-disable-next-line no-promise-executor-return
+const makePause = async (timeout = 0) => new Promise((resolve) => setTimeout(resolve, timeout));
 
 const getIdLeaf = (id) => (id?.substring(id.lastIndexOf('/') + 1) || id).toLowerCase();
 
@@ -83,6 +85,7 @@ const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
       }
       let shallowCategories = true;
       if (categoryValues.length > 0) {
+        await makePause();
         const items = categoryValues.map((value) => mapCategories[value]);
         const parentValues = new Set(items.map((value) => value?.id.split('/')[1]));
         // all parent will always be here without children,
@@ -92,6 +95,7 @@ const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
         root.append(categoryTags);
       }
       if (typeText && types.length > 0) {
+        await makePause();
         root.append(getTypes(types, typeText));
       }
     }
@@ -128,43 +132,44 @@ function appendResources(rootNav, resourceLink) {
 
 export default async function init(el) {
   const libs = getLibs();
-  await Promise.all([
+  const merchSidenavDep = import('../../deps/merch-sidenav.js');
+  const deps = Promise.all([
+    merchSidenavDep,
+    // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
+    import('/libs/deps/lit-all.min.js'),
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
+    import(`${libs}/features/spectrum-web-components/dist/base.js`),
+    import(`${libs}/features/spectrum-web-components/dist/shared.js`),
     import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
     import(`${libs}/features/spectrum-web-components/dist/search.js`),
     import(`${libs}/features/spectrum-web-components/dist/checkbox.js`),
+    import(`${libs}/features/spectrum-web-components/dist/button.js`),
     import(`${libs}/features/spectrum-web-components/dist/dialog.js`),
+    import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
   ]);
 
-  const title = el.querySelector('h2')?.textContent.trim();
+  const title = el.querySelector('h2,h3')?.textContent.trim();
+  await merchSidenavDep;
   const rootNav = createTag('merch-sidenav', { title });
   const searchText = el.querySelector('p > strong')?.textContent.trim();
   const typeText = el.querySelector('p > em')?.textContent.trim();
+  await deps;
+  el.replaceWith(rootNav);
   appendSearch(rootNav, searchText);
   // eslint-disable-next-line prefer-const
   let [endpoint, resourcesLink] = el.querySelectorAll('a');
   if (endpoint) {
+    await makePause();
     endpoint = localizeLink(endpoint.textContent.trim(), null, true);
     const explicitCategories = el.querySelector('ul');
+    performance.mark('sidenav:appendFilters:start');
     await appendFilters(rootNav, endpoint, explicitCategories, typeText);
+    performance.mark('sidenav:appendFilters:end');
+    performance.measure('sidenav:appendFilters', 'sidenav:appendFilters:start', 'sidenav:appendFilters:end');
   }
   if (resourcesLink) {
+    await makePause();
     appendResources(rootNav, resourcesLink);
-  }
-
-  const appContainer = document.querySelector('.merch.app');
-  if (appContainer) {
-    appContainer.appendChild(rootNav);
-    rootNav.updateComplete.then(() => {
-      el.remove();
-      const merchCards = appContainer.querySelector('merch-cards');
-      if (merchCards) {
-        merchCards.sidenav = merchCards.sidenav || rootNav;
-        merchCards.requestUpdate();
-      }
-    });
-  } else {
-    el.replaceWith(rootNav);
   }
   return rootNav;
 }
