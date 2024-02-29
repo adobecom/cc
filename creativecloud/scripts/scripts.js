@@ -155,6 +155,14 @@ const CONFIG = {
   ],
 };
 
+const observer = new PerformanceObserver((list) => {
+  list.getEntries().forEach((entry) => {
+    console.log(entry);
+  });
+});
+
+observer.observe({ type: 'longtask', buffered: true });
+
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
