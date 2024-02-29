@@ -176,10 +176,11 @@ export default async function setInteractiveFirefly(el) {
   const teOption = media.querySelector('.TextEffects');
   const firstOption = media.querySelector('.selector-tray > button');
   hideRemoveElements(firstOption, media, mediaP);
-  const genfillPrompt = createGenFillPrompt(genfDetail.promptpos, createTag);
+
   // Create prompt field for first option on page load
   const firstOptionDetail = allP[3].innerText.split('|');
-  const fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, interactiveElemMode);
+  const mode = firstOption.classList.contains('GenerativeFill') ? 'genfill' : interactiveElemMode;
+  const fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, mode);
   if (firstOption.classList.contains('TextToImage') || firstOption.classList.contains('TextEffects')) {
     fireflyPrompt.classList.add('firefly-prompt');
     media.appendChild(fireflyPrompt);
@@ -187,6 +188,7 @@ export default async function setInteractiveFirefly(el) {
     eventOnGenerate(generateButton, media);
   } else if (firstOption.classList.contains('GenerativeFill')) {
     fireflyPrompt.classList.add('genfill-promptbar');
+    const genfillPrompt = createGenFillPrompt(genfDetail.promptpos, createTag);
     media.append(genfillPrompt, fireflyPrompt);
     const genFillButton = media.querySelector('#genfill');
     genFillButton.addEventListener('click', async () => {
@@ -201,6 +203,7 @@ export default async function setInteractiveFirefly(el) {
   });
   genFillOption?.addEventListener('click', () => {
     eventOnSelectorOption(genFillOption, genfDetail, media, mediaP, createPromptField);
+    const genfillPrompt = createGenFillPrompt(genfDetail.promptpos, createTag);
     media.appendChild(genfillPrompt);
   });
   teOption?.addEventListener('click', () => {
