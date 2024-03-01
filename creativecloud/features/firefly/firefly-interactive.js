@@ -169,16 +169,18 @@ export default async function setInteractiveFirefly(el) {
   }
   const fireflyOptions = await createSelectorTray(selections, interactiveElemMode);
   fireflyOptions.classList.add('firefly-selectortray');
+  if (selections.length === 3) fireflyOptions.classList.add('three-options');
   media.append(fireflyOptions);
   const ttiOption = media.querySelector('.TextToImage');
   const genFillOption = media.querySelector('.GenerativeFill');
   const teOption = media.querySelector('.TextEffects');
   const firstOption = media.querySelector('.selector-tray > button');
   hideRemoveElements(firstOption, media, mediaP);
-  const genfillPrompt = createGenFillPrompt(genfDetail.promptpos, createTag);
+
   // Create prompt field for first option on page load
   const firstOptionDetail = allP[3].innerText.split('|');
-  const fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, interactiveElemMode);
+  const mode = firstOption.classList.contains('GenerativeFill') ? 'genfill' : interactiveElemMode;
+  const fireflyPrompt = await createPromptField(`${firstOptionDetail[0]}`, `${firstOptionDetail[1]}`, mode);
   if (firstOption.classList.contains('TextToImage') || firstOption.classList.contains('TextEffects')) {
     fireflyPrompt.classList.add('firefly-prompt');
     media.appendChild(fireflyPrompt);
@@ -186,6 +188,7 @@ export default async function setInteractiveFirefly(el) {
     eventOnGenerate(generateButton, media);
   } else if (firstOption.classList.contains('GenerativeFill')) {
     fireflyPrompt.classList.add('genfill-promptbar');
+    const genfillPrompt = createGenFillPrompt(genfDetail.promptpos, createTag);
     media.append(genfillPrompt, fireflyPrompt);
     const genFillButton = media.querySelector('#genfill');
     genFillButton.addEventListener('click', async () => {
@@ -195,14 +198,15 @@ export default async function setInteractiveFirefly(el) {
   }
   focusOnInput(media, createTag);
   /* Handle action on click of each firefly option button */
-  ttiOption.addEventListener('click', () => {
+  ttiOption?.addEventListener('click', () => {
     eventOnSelectorOption(ttiOption, ttiDetail, media, mediaP, createPromptField, createTag);
   });
-  genFillOption.addEventListener('click', () => {
+  genFillOption?.addEventListener('click', () => {
     eventOnSelectorOption(genFillOption, genfDetail, media, mediaP, createPromptField);
+    const genfillPrompt = createGenFillPrompt(genfDetail.promptpos, createTag);
     media.appendChild(genfillPrompt);
   });
-  teOption.addEventListener('click', () => {
+  teOption?.addEventListener('click', () => {
     eventOnSelectorOption(teOption, teDetail, media, mediaP, createPromptField, createTag);
   });
 }
