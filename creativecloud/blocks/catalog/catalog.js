@@ -12,16 +12,15 @@ export default async function init(el) {
     const { default: initMerchCards } = await import(`${libs}/blocks/merch-cards/merch-cards.js`);
     merchCards = await initMerchCards(merchCardsEl);
   }
-  el.innerHTML = '<sp-theme>hello world</sp-theme>';
   if (merchCards) {
-    //el.append(merchCards);
+    el.append(merchCards);
     await merchCards.updateComplete;
   }
   if (sidenavEl) {
     (merchCards?.updateComplete ?? Promise.resolve()).then(async () => {
       const { default: initSidenav } = await import('../sidenav/sidenav.js');
       const sidenav = await initSidenav(sidenavEl);
-      //el.append(sidenav);
+      el.append(sidenav);
       await sidenav.updateComplete;
       if (merchCards) {
         merchCards.sidenav = sidenav;
