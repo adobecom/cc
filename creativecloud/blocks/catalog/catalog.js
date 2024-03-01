@@ -30,6 +30,6 @@ export default async function init(el) {
       }
     });
   }
-  await makePause(2000);
+  await makePause(1000);
   return el;
 }
