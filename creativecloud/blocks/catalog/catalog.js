@@ -17,8 +17,8 @@ export default async function init(el) {
     el.append(merchCards);
     await merchCards.updateComplete;
   }
-  requestIdleCallback(async () => {
-    if (sidenavEl) {
+  if (sidenavEl) {
+    (merchCards?.updateComplete ?? Promise.resolve()).then(async () => {
       const { default: initSidenav } = await import('../sidenav/sidenav.js');
       const sidenav = await initSidenav(sidenavEl);
       el.append(sidenav);
@@ -27,7 +27,7 @@ export default async function init(el) {
         merchCards.sidenav = sidenav;
         merchCards.requestUpdate();
       }
-    }
-  });
+    });
+  }
   return el;
 }
