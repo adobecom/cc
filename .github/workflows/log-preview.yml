@@ -4,6 +4,8 @@ on:
   repository_dispatch:
     types:
       - resource-previewed
+    branches:
+      - test-preview
 jobs:
   print:
     runs-on: ubuntu-latest
