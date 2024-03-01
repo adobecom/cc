@@ -1,5 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 
+const makePause = async (timeout = 0) => new Promise((resolve) => setTimeout(resolve, timeout));
+
 /** container block */
 export default async function init(el) {
   el.classList.add('app');
@@ -15,7 +17,6 @@ export default async function init(el) {
   el.innerHTML = '';
   if (merchCards) {
     el.append(merchCards);
-    await merchCards.updateComplete;
   }
   if (sidenavEl) {
     (merchCards?.updateComplete ?? Promise.resolve()).then(async () => {
@@ -29,5 +30,6 @@ export default async function init(el) {
       }
     });
   }
+  await makePause(2000);
   return el;
 }
