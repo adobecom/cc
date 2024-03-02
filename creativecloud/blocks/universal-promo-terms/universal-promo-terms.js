@@ -7,7 +7,9 @@ const SERVICE_PROVIDERS = 'PROMO_TERMS';
 
 function getEnv(env) {
   if (env) return env;
-  if (window.location.origin.includes('localhost') || window.location.origin.includes('hlx')) return 'stage';
+  if (window.location.origin.includes('localhost')
+  || window.location.origin.includes('hlx')
+  || window.location.origin.includes('stage')) return 'stage';
   return 'production';
 }
 
