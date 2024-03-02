@@ -7,8 +7,8 @@ const SERVICE_PROVIDERS = 'PROMO_TERMS';
 
 function getEnv(env) {
   if (env) return env;
-  if (window.location.origin.includes('localhost') || window.location.origin.includes('hlx')) return 'stage';
-  return 'production';
+  if (window.location.origin.hostname === 'www.adobe.com') return 'production';
+  return 'stage';
 }
 
 async function getTermsHTML(params, el, env, search) {
