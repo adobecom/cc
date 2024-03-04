@@ -116,6 +116,7 @@ const locales = {
   gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
   vn_en: { ietf: 'en-GB', tk: 'hah7vzn.css' },
   vn_vi: { ietf: 'vi', tk: 'qxw8hzm.css' },
+  cis_ru: { ietf: 'ru', tk: 'qxw8hzm.css' },
 };
 
 // Add any config options.
