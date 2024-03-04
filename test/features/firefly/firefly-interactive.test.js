@@ -64,3 +64,51 @@ describe('firefly-marquee', () => {
     expect(texteffectPrompt).to.exist;
   });
 });
+
+describe('firefly-text-effect-marquee', () => {
+  before(async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    await init(document.querySelector('.ff-text-effects'));
+  });
+
+  it('Prompt should exist', async () => {
+    const promptbar = await waitForElement('.promptbar');
+    expect(promptbar).to.exist;
+  });
+
+  it('Prompt should be placed at proper place in interactive container', async () => {
+    const fireflypromptbar = await waitForElement('.firefly-prompt');
+    expect(fireflypromptbar).to.exist;
+  });
+
+  it('Enticement should exist', async () => {
+    const enticementText = await waitForElement('.enticement-text');
+    const enticementArrow = await waitForElement('.enticement-arrow');
+    expect(enticementText).to.exist;
+    expect(enticementArrow).to.exist;
+  });
+});
+
+describe('firefly-text-to-image-marquee', () => {
+  before(async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    await init(document.querySelector('.ff-text-to-image'));
+  });
+
+  it('Prompt should exist', async () => {
+    const promptbar = await waitForElement('.promptbar');
+    expect(promptbar).to.exist;
+  });
+
+  it('Prompt should be placed at proper place in interactive container', async () => {
+    const fireflypromptbar = await waitForElement('.firefly-prompt');
+    expect(fireflypromptbar).to.exist;
+  });
+
+  it('Enticement should exist', async () => {
+    const enticementText = await waitForElement('.enticement-text');
+    const enticementArrow = await waitForElement('.enticement-arrow');
+    expect(enticementText).to.exist;
+    expect(enticementArrow).to.exist;
+  });
+});

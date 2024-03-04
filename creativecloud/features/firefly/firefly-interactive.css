@@ -79,11 +79,16 @@
 
 @media (max-width: 600px) {
   .firefly-selectortray {
-    min-width: 110%;
-    margin-inline: -22px 16px;
     justify-content: center;
     margin-top: -7px;
     margin-bottom: 24px;
+    width: 80%;
+    margin-inline-start: 20px;
+  }
+
+  .firefly-selectortray.three-options {
+    width: 110%;
+    margin-inline: -22px 16px;
   }
 
   .interactive-marquee.firefly .interactive-container {
@@ -91,11 +96,16 @@
   }
 
   .interactive-marquee.firefly .media {
-    top: 8px;
+    top: 24px;
   }
 
   .interactive-marquee.firefly .foreground {
     padding-top: 0;
+  }
+
+  .interactive-marquee.firefly.ff-text-effects .interactive-container,
+  .interactive-marquee.firefly.ff-text-to-image .interactive-container {
+    height: 346px;
   }
 }
 
@@ -113,6 +123,11 @@
 
   .firefly-selectortray {
     top: 0;
+    width: 50%;
+    margin-inline: 126px;
+  }
+
+  .firefly-selectortray.three-options {
     margin-inline: 42px;
     width: 80%;
   }
@@ -124,13 +139,22 @@
   .interactive-marquee.firefly .foreground {
     padding-top: 0;
   }
+
+  .interactive-marquee.firefly.ff-text-effects .interactive-container,
+  .interactive-marquee.firefly.ff-text-to-image .interactive-container {
+    height: 662px;
+  }
 }
 
 @media screen and (min-width: 1200px) {
   .firefly-selectortray {
-    top: 144px;
+    top: 187px;
     position: absolute;
     right: -122px;
+  }
+
+  .firefly-selectortray.three-options {
+    top: 144px;
   }
 
   [dir="rtl"] .firefly-selectortray {

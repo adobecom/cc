@@ -5,7 +5,7 @@ import '../../deps/merch-sidenav.js';
 const CATEGORY_ID_PREFIX = 'categories/';
 const TYPE_ID_PREFIX = 'types/';
 
-const getIdLeaf = (id) => (id?.substring(id.lastIndexOf('/') + 1) || id);
+const getIdLeaf = (id) => (id?.substring(id.lastIndexOf('/') + 1) || id).toLowerCase();
 
 const getCategories = (items, isMultilevel, mapCategories) => {
   const configuration = { manageTabIndex: true };
