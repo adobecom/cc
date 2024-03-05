@@ -22,7 +22,11 @@
 export const [setLibs, getLibs] = (() => {
   let libs;
   return [
-    (prodLibs) => {
+    (prodLibs, force = false) => {
+      if (force) {
+        libs = prodLibs;
+        return libs;
+      }
       const { hostname } = window.location;
       if (!hostname.includes('hlx.page')
         && !hostname.includes('hlx.live')
@@ -31,9 +35,61 @@ export const [setLibs, getLibs] = (() => {
         return libs;
       }
       const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
-      if (branch === 'local') return 'http://localhost:6456/libs';
-      if (branch.indexOf('--') > -1) return `https://${branch}.hlx.page/libs`;
-      return `https://${branch}--milo--adobecom.hlx.live/libs`;
+      if (branch === 'local') { libs = 'http://localhost:6456/libs'; return libs; }
+      if (branch.indexOf('--') > -1) { libs = `https://${branch}.hlx.live/libs`; return libs; }
+      libs = `https://${branch}--milo--adobecom.hlx.live/libs`;
+      return libs;
     }, () => libs,
   ];
 })();
+
+const miloLibs = setLibs('/libs');
+
+const { createTag, localizeLink } = await import(`${miloLibs}/utils/utils.js`);
+export { createTag, localizeLink };
+
+function getDecorateAreaFn() {
+  let lcpImgSet = false;
+
+  // Load LCP image immediately
+  const eagerLoad = (lcpImg) => {
+    lcpImg?.setAttribute('loading', 'eager');
+    lcpImg?.setAttribute('fetchpriority', 'high');
+    if (lcpImg) lcpImgSet = true;
+  };
+
+  async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
+    const firstBlock = area.querySelector('body > main > div > div');
+    let fgDivs = null;
+    switch (true) {
+      case firstBlock?.classList.contains('changebg'): {
+        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+        const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+        import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
+        break;
+      }
+      case firstBlock?.classList.contains('marquee'):
+        firstBlock.querySelectorAll('img').forEach(eagerLoad);
+        break;
+      case firstBlock?.classList.contains('interactive-marquee'):
+        firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
+        fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
+        fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
+        break;
+      case !!fragmentLink:
+        if (window.document.querySelector('a.fragment') === fragmentLink && !window.document.querySelector('img[loading="eager"]')) {
+          eagerLoad(area.querySelector('img'));
+        }
+        break;
+      default:
+        if (!fragmentLink) eagerLoad(area.querySelector('img'));
+        break;
+    }
+  }
+
+  return (area, options) => {
+    if (!lcpImgSet) loadLCPImage(area, options);
+  };
+}
+
+export const decorateArea = getDecorateAreaFn();

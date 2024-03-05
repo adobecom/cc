@@ -1,0 +1,18 @@
+.changebg {
+    position: relative;
+  }
+  
+  .notifications {
+    position: absolute;
+    top: 0;
+    background: white;
+  }
+  
+  .notifications > div {
+    padding: 5px;
+  }
+  
+  .error {
+    background: lightcoral;
+  }
+  

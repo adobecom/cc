@@ -10,7 +10,7 @@ indices:
       - '**/fragments/**'
     include:
       - /creativecloud/**
-      - /products/substance3d/**
+      - /products/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -31,94 +31,10 @@ indices:
       robots:
         select: head > meta[name="robots"]
         value: attribute(el, 'content')  
-
-  creativecloud-au:
-    <<: *def
+  
+  merch-cards: &merch-cards
     include:
-      - /au/creativecloud/**
-    target: /au/cc-shared/assets/query-index.xlsx
-
-  creativecloud-de:
-    <<: *def
-    include:
-      - /de/creativecloud/**
-    target: /de/cc-shared/assets/query-index.xlsx
-    
-  creativecloud-es:
-    <<: *def
-    include:
-      - /es/creativecloud/**
-    target: /es/cc-shared/assets/query-index.xlsx
-
-  creativecloud-fr:
-    <<: *def
-    include:
-      - /fr/creativecloud/**
-    target: /fr/cc-shared/assets/query-index.xlsx
-
-  creativecloud-it:
-    <<: *def
-    include:
-      - /it/creativecloud/**
-    target: /it/cc-shared/assets/query-index.xlsx
-
-  creativecloud-jp:
-    <<: *def
-    include:
-      - /jp/creativecloud/**
-    target: /jp/cc-shared/assets/query-index.xlsx
-
-  creativecloud-kr:
-    <<: *def
-    include:
-      - /kr/creativecloud/**
-    target: /kr/cc-shared/assets/query-index.xlsx
-
-  creativecloud-ru:
-    <<: *def
-    include:
-      - /ru/creativecloud/**
-    target: /ru/cc-shared/assets/query-index.xlsx
-
-  creativecloud-hk_zh:
-    <<: *def
-    include:
-      - /hk_zh/creativecloud/**
-    target: /hk_zh/cc-shared/assets/query-index.xlsx  
-
-  creativecloud-tw:
-    <<: *def
-    include:
-      - /tw/creativecloud/**
-    target: /tw/cc-shared/assets/query-index.xlsx  
-
-  creativecloud-nl:
-    <<: *def
-    include:
-      - /nl/creativecloud/**
-    target: /nl/cc-shared/assets/query-index.xlsx
-
-  creativecloud-pl:
-    <<: *def
-    include:
-      - /pl/creativecloud/**
-    target: /pl/cc-shared/assets/query-index.xlsx
-
-  creativecloud-tr:
-    <<: *def
-    include:
-      - /tr/creativecloud/**
-    target: /tr/cc-shared/assets/query-index.xlsx  
-
-  creativecloud-uk:
-    <<: *def
-    include:
-      - /uk/creativecloud/**
-    target: /uk/cc-shared/assets/query-index.xlsx     
-
-  merch-cards:
-    include:
-      - /cc-shared/fragments/merch/**/cards/**
+      - /cc-shared/fragments/merch/**/merch-card/**
     target: /cc-shared/assets/query-index-cards.xslx
     properties:
       lastModified:
@@ -139,3 +55,952 @@ indices:
       publicationDate:
         select: none
         value: parseTimestamp(headers["date"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+
+  creativecloud-au:
+    <<: *def
+    include:
+      - /au/creativecloud/**
+    target: /au/cc-shared/assets/query-index.xlsx
+  
+  cards-au:
+    <<: *merch-cards
+    include:
+      - /au/cc-shared/fragments/merch/**/merch-card/**
+    target: /au/cc-shared/assets/query-index-cards.xslx    
+
+  creativecloud-de:
+    <<: *def
+    include:
+      - /de/creativecloud/**
+    target: /de/cc-shared/assets/query-index.xlsx
+  
+  cards-de:
+    <<: *merch-cards
+    include:
+      - /de/cc-shared/fragments/merch/**/merch-card/**
+    target: /de/cc-shared/assets/query-index-cards.xslx    
+    
+  creativecloud-es:
+    <<: *def
+    include:
+      - /es/creativecloud/**
+    target: /es/cc-shared/assets/query-index.xlsx
+
+  cards-es:
+    <<: *merch-cards
+    include:
+      - /es/cc-shared/fragments/merch/**/merch-card/**
+    target: /es/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-fr:
+    <<: *def
+    include:
+      - /fr/creativecloud/**
+    target: /fr/cc-shared/assets/query-index.xlsx
+
+  cards-fr:
+    <<: *merch-cards
+    include:
+      - /fr/cc-shared/fragments/merch/**/merch-card/**
+    target: /fr/cc-shared/assets/query-index-cards.xslx    
+
+  creativecloud-it:
+    <<: *def
+    include:
+      - /it/creativecloud/**
+    target: /it/cc-shared/assets/query-index.xlsx
+  
+  cards-it:
+    <<: *merch-cards
+    include:
+      - /it/cc-shared/fragments/merch/**/merch-card/**
+    target: /it/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-jp:
+    <<: *def
+    include:
+      - /jp/creativecloud/**
+    target: /jp/cc-shared/assets/query-index.xlsx
+
+  cards-jp:
+    <<: *merch-cards
+    include:
+      - /jp/cc-shared/fragments/merch/**/merch-card/**
+    target: /jp/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-kr:
+    <<: *def
+    include:
+      - /kr/creativecloud/**
+    target: /kr/cc-shared/assets/query-index.xlsx
+
+  cards-kr:
+    <<: *merch-cards
+    include:
+      - /kr/cc-shared/fragments/merch/**/merch-card/**
+    target: /kr/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ru:
+    <<: *def
+    include:
+      - /ru/creativecloud/**
+    target: /ru/cc-shared/assets/query-index.xlsx
+
+  cards-ru:
+    <<: *merch-cards
+    include:
+      - /ru/cc-shared/fragments/merch/**/merch-card/**
+    target: /ru/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-hk_zh:
+    <<: *def
+    include:
+      - /hk_zh/creativecloud/**
+    target: /hk_zh/cc-shared/assets/query-index.xlsx
+
+  cards-hk_zh:
+    <<: *merch-cards
+    include:
+      - /hk_zh/cc-shared/fragments/merch/**/merch-card/**
+    target: /hk_zh/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-tw:
+    <<: *def
+    include:
+      - /tw/creativecloud/**
+    target: /tw/cc-shared/assets/query-index.xlsx  
+
+  cards-tw:
+    <<: *merch-cards
+    include:
+      - /tw/cc-shared/fragments/merch/**/merch-card/**
+    target: /tw/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-nl:
+    <<: *def
+    include:
+      - /nl/creativecloud/**
+    target: /nl/cc-shared/assets/query-index.xlsx
+
+  cards-nl:
+    <<: *merch-cards
+    include:
+      - /nl/cc-shared/fragments/merch/**/merch-card/**
+    target: /nl/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-pl:
+    <<: *def
+    include:
+      - /pl/creativecloud/**
+    target: /pl/cc-shared/assets/query-index.xlsx
+
+  cards-pl:
+    <<: *merch-cards
+    include:
+      - /pl/cc-shared/fragments/merch/**/merch-card/**
+    target: /pl/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-tr:
+    <<: *def
+    include:
+      - /tr/creativecloud/**
+    target: /tr/cc-shared/assets/query-index.xlsx  
+
+  cards-tr:
+    <<: *merch-cards
+    include:
+      - /tr/cc-shared/fragments/merch/**/merch-card/**
+    target: /tr/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-uk:
+    <<: *def
+    include:
+      - /uk/creativecloud/**
+    target: /uk/cc-shared/assets/query-index.xlsx
+
+  cards-uk:
+    <<: *merch-cards
+    include:
+      - /uk/cc-shared/fragments/merch/**/merch-card/**
+    target: /uk/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ca:
+    <<: *def
+    include:
+      - /ca/creativecloud/**
+    target: /ca/cc-shared/assets/query-index.xlsx
+
+  cards-ca:
+    <<: *merch-cards
+    include:
+      - /ca/cc-shared/fragments/merch/**/merch-card/**
+    target: /ca/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-cn:
+    <<: *def
+    include:
+      - /cn/creativecloud/**
+    target: /cn/cc-shared/assets/query-index.xlsx
+
+  cards-cn:
+    <<: *merch-cards
+    include:
+      - /cn/cc-shared/fragments/merch/**/merch-card/**
+    target: /cn/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ae_ar:
+    <<: *def
+    include:
+      - /ae_ar/creativecloud/**
+    target: /ae_ar/cc-shared/assets/query-index.xlsx
+
+  cards-ae_ar:
+    <<: *merch-cards
+    include:
+      - /ae_ar/cc-shared/fragments/merch/**/merch-card/**
+    target: /ae_ar/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ae_en:
+    <<: *def
+    include:
+      - /ae_en/creativecloud/**
+    target: /ae_en/cc-shared/assets/query-index.xlsx
+
+  cards-ae_en:
+    <<: *merch-cards
+    include:
+      - /ae_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /ae_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-at:
+    <<: *def
+    include:
+      - /at/creativecloud/**
+    target: /at/cc-shared/assets/query-index.xlsx
+
+  cards-at:
+    <<: *merch-cards
+    include:
+      - /at/cc-shared/fragments/merch/**/merch-card/**
+    target: /at/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-be_en:
+    <<: *def
+    include:
+      - /be_en/creativecloud/**
+    target: /be_en/cc-shared/assets/query-index.xlsx
+
+  cards-be_en:
+    <<: *merch-cards
+    include:
+      - /be_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /be_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-be_fr:
+    <<: *def
+    include:
+      - /be_fr/creativecloud/**
+    target: /be_fr/cc-shared/assets/query-index.xlsx
+
+  cards-be_fr:
+    <<: *merch-cards
+    include:
+      - /be_fr/cc-shared/fragments/merch/**/merch-card/**
+    target: /be_fr/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ca_fr:
+    <<: *def
+    include:
+      - /ca_fr/creativecloud/**
+    target: /ca_fr/cc-shared/assets/query-index.xlsx
+
+  cards-ca_fr:
+    <<: *merch-cards
+    include:
+      - /ca_fr/cc-shared/fragments/merch/**/merch-card/**
+    target: /ca_fr/cc-shared/assets/query-index-cards.xslx
+    
+  creativecloud-ch_de:
+    <<: *def
+    include:
+      - /ch_de/creativecloud/**
+    target: /ch_de/cc-shared/assets/query-index.xlsx
+
+  cards-ch_de:
+    <<: *merch-cards
+    include:
+      - /ch_de/cc-shared/fragments/merch/**/merch-card/**
+    target: /ch_de/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ch_fr:
+    <<: *def
+    include:
+      - /ch_fr/creativecloud/**
+    target: /ch_fr/cc-shared/assets/query-index.xlsx
+
+  cards-ch_fr:
+    <<: *merch-cards
+    include:
+      - /ch_fr/cc-shared/fragments/merch/**/merch-card/**
+    target: /ch_fr/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-cl:
+    <<: *def
+    include:
+      - /cl/creativecloud/**
+    target: /cl/cc-shared/assets/query-index.xlsx
+
+  cards-cl:
+    <<: *merch-cards
+    include:
+      - /cl/cc-shared/fragments/merch/**/merch-card/**
+    target: /cl/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-cy_en:
+    <<: *def
+    include:
+      - /cy_en/creativecloud/**
+    target: /cy_en/cc-shared/assets/query-index.xlsx
+
+  cards-cy_en:
+    <<: *merch-cards
+    include:
+      - /cy_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /cy_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-gr_en:
+    <<: *def
+    include:
+      - /gr_en/creativecloud/**
+    target: /gr_en/cc-shared/assets/query-index.xlsx  
+
+  cards-gr_en:
+    <<: *merch-cards
+    include:
+      - /gr_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /gr_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-hk_en:
+    <<: *def
+    include:
+      - /hk_en/creativecloud/**
+    target: /hk_en/cc-shared/assets/query-index.xlsx
+
+  cards-hk_en:
+    <<: *merch-cards
+    include:
+      - /hk_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /hk_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ie:
+    <<: *def
+    include:
+      - /ie/creativecloud/**
+    target: /ie/cc-shared/assets/query-index.xlsx  
+
+  cards-ie:
+    <<: *merch-cards
+    include:
+      - /ie/cc-shared/fragments/merch/**/merch-card/**
+    target: /ie/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-il_en:
+    <<: *def
+    include:
+      - /il_en/creativecloud/**
+    target: /il_en/cc-shared/assets/query-index.xlsx
+
+  cards-il_en:
+    <<: *merch-cards
+    include:
+      - /il_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /il_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-in:
+    <<: *def
+    include:
+      - /in/creativecloud/**
+    target: /in/cc-shared/assets/query-index.xlsx
+
+  cards-in:
+    <<: *merch-cards
+    include:
+      - /in/cc-shared/fragments/merch/**/merch-card/**
+    target: /in/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-lt:
+    <<: *def
+    include:
+      - /lt/creativecloud/**
+    target: /lt/cc-shared/assets/query-index.xlsx
+
+  cards-lt:
+    <<: *merch-cards
+    include:
+      - /lt/cc-shared/fragments/merch/**/merch-card/**
+    target: /lt/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-lu_de:
+    <<: *def
+    include:
+      - /lu_de/creativecloud/**
+    target: /lu_de/cc-shared/assets/query-index.xlsx
+
+  cards-lu_de:
+    <<: *merch-cards
+    include:
+      - /lu_de/cc-shared/fragments/merch/**/merch-card/**
+    target: /lu_de/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-lu_en:
+    <<: *def
+    include:
+      - /lu_en/creativecloud/**
+    target: /lu_en/cc-shared/assets/query-index.xlsx
+
+  cards-lu_en:
+    <<: *merch-cards
+    include:
+      - /lu_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /lu_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-lu_fr:
+    <<: *def
+    include:
+      - /lu_fr/creativecloud/**
+    target: /lu_fr/cc-shared/assets/query-index.xlsx
+
+  cards-lu_fr:
+    <<: *merch-cards
+    include:
+      - /lu_fr/cc-shared/fragments/merch/**/merch-card/**
+    target: /lu_fr/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-mena_en:
+    <<: *def
+    include:
+      - /mena_en/creativecloud/**
+    target: /mena_en/cc-shared/assets/query-index.xlsx
+
+  cards-mena_en:
+    <<: *merch-cards
+    include:
+      - /mena_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /mena_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-mt:
+    <<: *def
+    include:
+      - /mt/creativecloud/**
+    target: /mt/cc-shared/assets/query-index.xlsx  
+
+  cards-mt:
+    <<: *merch-cards
+    include:
+      - /mt/cc-shared/fragments/merch/**/merch-card/**
+    target: /mt/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-nz:
+    <<: *def
+    include:
+      - /nz/creativecloud/**
+    target: /nz/cc-shared/assets/query-index.xlsx
+
+  cards-nz:
+    <<: *merch-cards
+    include:
+      - /nz/cc-shared/fragments/merch/**/merch-card/**
+    target: /nz/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-sa_ar:
+    <<: *def
+    include:
+      - /sa_ar/creativecloud/**
+    target: /sa_ar/cc-shared/assets/query-index.xlsx  
+
+  cards-sa_ar:
+    <<: *merch-cards
+    include:
+      - /sa_ar/cc-shared/fragments/merch/**/merch-card/**
+    target: /sa_ar/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-sa_en:
+    <<: *def
+    include:
+      - /sa_en/creativecloud/**
+    target: /sa_en/cc-shared/assets/query-index.xlsx
+
+   cards-sa_en:
+    <<: *merch-cards
+    include:
+      - /sa_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /sa_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-th_en:
+    <<: *def
+    include:
+      - /th_en/creativecloud/**
+    target: /th_en/cc-shared/assets/query-index.xlsx
+
+  cards-th_en:
+    <<: *merch-cards
+    include:
+      - /th_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /th_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-th_th:
+    <<: *def
+    include:
+      - /th_th/creativecloud/**
+    target: /th_th/cc-shared/assets/query-index.xlsx
+
+  cards-th_th:
+    <<: *merch-cards
+    include:
+      - /th_th/cc-shared/fragments/merch/**/merch-card/**
+    target: /th_th/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-za:
+    <<: *def
+    include:
+      - /za/creativecloud/**
+    target: /za/cc-shared/assets/query-index.xlsx
+
+  cards-za:
+    <<: *merch-cards
+    include:
+      - /za/cc-shared/fragments/merch/**/merch-card/**
+    target: /za/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-africa:
+    <<: *def
+    include:
+      - /africa/creativecloud/**
+    target: /africa/cc-shared/assets/query-index.xlsx
+
+  cards-africa:
+    <<: *merch-cards
+    include:
+      - /africa/cc-shared/fragments/merch/**/merch-card/**
+    target: /africa/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ar:
+    <<: *def
+    include:
+      - /ar/creativecloud/**
+    target: /ar/cc-shared/assets/query-index.xlsx
+
+  cards-ar:
+    <<: *merch-cards
+    include:
+      - /ar/cc-shared/fragments/merch/**/merch-card/**
+    target: /ar/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-co:
+    <<: *def
+    include:
+      - /co/creativecloud/**
+    target: /co/cc-shared/assets/query-index.xlsx
+
+  cards-co:
+    <<: *merch-cards
+    include:
+      - /co/cc-shared/fragments/merch/**/merch-card/**
+    target: /co/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-cr:
+    <<: *def
+    include:
+      - /cr/creativecloud/**
+    target: /cr/cc-shared/assets/query-index.xlsx
+
+  cards-cr:
+    <<: *merch-cards
+    include:
+      - /cr/cc-shared/fragments/merch/**/merch-card/**
+    target: /cr/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ec:
+    <<: *def
+    include:
+      - /ec/creativecloud/**
+    target: /ec/cc-shared/assets/query-index.xlsx
+
+  cards-ec:
+    <<: *merch-cards
+    include:
+      - /ec/cc-shared/fragments/merch/**/merch-card/**
+    target: /ec/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-eg_ar:
+    <<: *def
+    include:
+      - /eg_ar/creativecloud/**
+    target: /eg_ar/cc-shared/assets/query-index.xlsx
+
+  cards-eg_ar:
+    <<: *merch-cards
+    include:
+      - /eg_ar/cc-shared/fragments/merch/**/merch-card/**
+    target: /eg_ar/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-eg_en:
+    <<: *def
+    include:
+      - /eg_en/creativecloud/**
+    target: /eg_en/cc-shared/assets/query-index.xlsx
+
+  cards-eg_en:
+    <<: *merch-cards
+    include:
+      - /eg_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /eg_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-gr_el:
+    <<: *def
+    include:
+      - /gr_el/creativecloud/**
+    target: /gr_el/cc-shared/assets/query-index.xlsx
+
+  cards-gr_el:
+    <<: *merch-cards
+    include:
+      - /gr_el/cc-shared/fragments/merch/**/merch-card/**
+    target: /gr_el/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-gt:
+    <<: *def
+    include:
+      - /gt/creativecloud/**
+    target: /gt/cc-shared/assets/query-index.xlsx
+
+  cards-gt:
+    <<: *merch-cards
+    include:
+      - /gt/cc-shared/fragments/merch/**/merch-card/**
+    target: /gt/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-id_en:
+    <<: *def
+    include:
+      - /id_en/creativecloud/**
+    target: /id_en/cc-shared/assets/query-index.xlsx
+
+  cards-id_en:
+    <<: *merch-cards
+    include:
+      - /id_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /id_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-id_id:
+    <<: *def
+    include:
+      - /id_id/creativecloud/**
+    target: /id_id/cc-shared/assets/query-index.xlsx
+
+  cards-id_id:
+    <<: *merch-cards
+    include:
+      - /id_id/cc-shared/fragments/merch/**/merch-card/**
+    target: /id_id/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-in_hi:
+    <<: *def
+    include:
+      - /in_hi/creativecloud/**
+    target: /in_hi/cc-shared/assets/query-index.xlsx
+
+
+  cards-in_hi:
+    <<: *merch-cards
+    include:
+      - /in_hi/cc-shared/fragments/merch/**/merch-card/**
+    target: /in_hi/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-kw_ar:
+    <<: *def
+    include:
+      - /kw_ar/creativecloud/**
+    target: /kw_ar/cc-shared/assets/query-index.xlsx
+
+  cards-kw_ar:
+    <<: *merch-cards
+    include:
+      - /kw_ar/cc-shared/fragments/merch/**/merch-card/**
+    target: /kw_ar/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-kw_en:
+    <<: *def
+    include:
+      - /kw_en/creativecloud/**
+    target: /kw_en/cc-shared/assets/query-index.xlsx
+
+  cards-kw_en:
+    <<: *merch-cards
+    include:
+      - /kw_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /kw_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-my_en:
+    <<: *def
+    include:
+      - /my_en/creativecloud/**
+    target: /my_en/cc-shared/assets/query-index.xlsx
+
+  cards-my_en:
+    <<: *merch-cards
+    include:
+      - /my_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /my_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-my_ms:
+    <<: *def
+    include:
+      - /my_ms/creativecloud/**
+    target: /my_ms/cc-shared/assets/query-index.xlsx
+
+  cards-my_ms:
+    <<: *merch-cards
+    include:
+      - /my_ms/cc-shared/fragments/merch/**/merch-card/**
+    target: /my_ms/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ng:
+    <<: *def
+    include:
+      - /ng/creativecloud/**
+    target: /ng/cc-shared/assets/query-index.xlsx  
+
+  cards-ng:
+    <<: *merch-cards
+    include:
+      - /ng/cc-shared/fragments/merch/**/merch-card/**
+    target: /ng/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-pe:
+    <<: *def
+    include:
+      - /pe/creativecloud/**
+    target: /pe/cc-shared/assets/query-index.xlsx  
+
+  cards-pe:
+    <<: *merch-cards
+    include:
+      - /pe/cc-shared/fragments/merch/**/merch-card/**
+    target: /pe/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ph_en:
+    <<: *def
+    include:
+      - /ph_en/creativecloud/**
+    target: /ph_en/cc-shared/assets/query-index.xlsx
+
+  cards-ph_en:
+    <<: *merch-cards
+    include:
+      - /ph_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /ph_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-ph_fil:
+    <<: *def
+    include:
+      - /ph_fil/creativecloud/**
+    target: /ph_fil/cc-shared/assets/query-index.xlsx
+
+  cards-ph_fil:
+    <<: *merch-cards
+    include:
+      - /ph_fil/cc-shared/fragments/merch/**/merch-card/**
+    target: /ph_fil/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-pr:
+    <<: *def
+    include:
+      - /pr/creativecloud/**
+    target: /pr/cc-shared/assets/query-index.xlsx  
+
+  cards-pr:
+    <<: *merch-cards
+    include:
+      - /pr/cc-shared/fragments/merch/**/merch-card/**
+    target: /pr/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-qa_ar:
+    <<: *def
+    include:
+      - /qa_ar/creativecloud/**
+    target: /qa_ar/cc-shared/assets/query-index.xlsx
+
+  cards-qa_ar:
+    <<: *merch-cards
+    include:
+      - /qa_ar/cc-shared/fragments/merch/**/merch-card/**
+    target: /qa_ar/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-qa_en:
+    <<: *def
+    include:
+      - /qa_en/creativecloud/**
+    target: /qa_en/cc-shared/assets/query-index.xlsx
+
+  cards-qa_en:
+    <<: *merch-cards
+    include:
+      - /qa_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /qa_en/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-vn_en:
+    <<: *def
+    include:
+      - /vn_en/creativecloud/**
+    target: /vn_en/cc-shared/assets/query-index.xlsx
+
+  cards-vn_en:
+    <<: *merch-cards
+    include:
+      - /vn_en/cc-shared/fragments/merch/**/merch-card/**
+    target: /vn_en/cc-shared/assets/query-index-cards.xslx
+    
+  creativecloud-vn_vi:
+    <<: *def
+    include:
+      - /vn_vi/creativecloud/**
+    target: /vn_vi/cc-shared/assets/query-index.xlsx 
+
+  cards-vn_vi:
+    <<: *merch-cards
+    include:
+      - /vn_vi/cc-shared/fragments/merch/**/merch-card/**
+    target: /vn_vi/cc-shared/assets/query-index-cards.xslx
+
+  creativecloud-dk:
+    <<: *def
+    include:
+      - /dk/creativecloud/**
+    target: /dk/cc-shared/assets/query-index.xlsx
+
+  creativecloud-fi:
+    <<: *def
+    include:
+      - /fi/creativecloud/**
+    target: /fi/cc-shared/assets/query-index.xlsx
+
+  creativecloud-no:
+    <<: *def
+    include:
+      - /no/creativecloud/**
+    target: /no/cc-shared/assets/query-index.xlsx
+
+  creativecloud-se:
+    <<: *def
+    include:
+      - /se/creativecloud/**
+    target: /se/cc-shared/assets/query-index.xlsx
+
+  creativecloud-la:
+    <<: *def
+    include:
+      - /la/creativecloud/**
+    target: /la/cc-shared/assets/query-index.xlsx
+
+  creativecloud-mx:
+    <<: *def
+    include:
+      - /mx/creativecloud/**
+    target: /mx/cc-shared/assets/query-index.xlsx
+
+  creativecloud-be_nl:
+    <<: *def
+    include:
+      - /be_nl/creativecloud/**
+    target: /be_nl/cc-shared/assets/query-index.xlsx
+
+  creativecloud-bg:
+    <<: *def
+    include:
+      - /bg/creativecloud/**
+    target: /bg/cc-shared/assets/query-index.xlsx
+
+  creativecloud-ch_it:
+    <<: *def
+    include:
+      - /ch_it/creativecloud/**
+    target: /ch_it/cc-shared/assets/query-index.xlsx
+
+  creativecloud-cz:
+    <<: *def
+    include:
+      - /cz/creativecloud/**
+    target: /cz/cc-shared/assets/query-index.xlsx
+
+  creativecloud-ee:
+    <<: *def
+    include:
+      - /ee/creativecloud/**
+    target: /ee/cc-shared/assets/query-index.xlsx
+
+  creativecloud-hu:
+    <<: *def
+    include:
+      - /hu/creativecloud/**
+    target: /hu/cc-shared/assets/query-index.xlsx
+
+  creativecloud-il_he:
+    <<: *def
+    include:
+      - /il_he/creativecloud/**
+    target: /il_he/cc-shared/assets/query-index.xlsx
+
+  creativecloud-lv:
+    <<: *def
+    include:
+      - /lv/creativecloud/**
+    target: /lv/cc-shared/assets/query-index.xlsx
+
+  creativecloud-mena_ar:
+    <<: *def
+    include:
+      - /mena_ar/creativecloud/**
+    target: /mena_ar/cc-shared/assets/query-index.xlsx
+
+  creativecloud-pt:
+    <<: *def
+    include:
+      - /pt/creativecloud/**
+    target: /pt/cc-shared/assets/query-index.xlsx
+
+  creativecloud-ro:
+    <<: *def
+    include:
+      - /ro/creativecloud/**
+    target: /ro/cc-shared/assets/query-index.xlsx
+
+  creativecloud-si:
+    <<: *def
+    include:
+      - /si/creativecloud/**
+    target: /si/cc-shared/assets/query-index.xlsx
+
+  creativecloud-sk:
+    <<: *def
+    include:
+      - /sk/creativecloud/**
+    target: /sk/cc-shared/assets/query-index.xlsx
+    
+  creativecloud-ua:
+    <<: *def
+    include:
+      - /ua/creativecloud/**
+    target: /ua/cc-shared/assets/query-index.xlsx
+
+  creativecloud-sg:
+    <<: *def
+    include:
+      - /sg/creativecloud/**
+    target: /sg/cc-shared/assets/query-index.xlsx
+
+  creativecloud-br:
+    <<: *def
+    include:
+      - /br/creativecloud/**
+    target: /br/cc-shared/assets/query-index.xlsx    
