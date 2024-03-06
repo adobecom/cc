@@ -565,3 +565,15 @@ sitemaps:
         alternate: /br/{path}.html
         destination: /br/cc-shared/assets/sitemap.xml
         hreflang: pt-BR  
+      
+      cis_en:
+        source: /cis_en/cc-shared/assets/query-index.json
+        alternate: /cis_en/{path}.html
+        destination: /cis_en/cc-shared/assets/sitemap.xml
+        hreflang: en-BY
+
+      cis_ru:
+        source: /cis_ru/cc-shared/assets/query-index.json
+        alternate: /cis_ru/{path}.html
+        destination: /cis_ru/cc-shared/assets/sitemap.xml
+        hreflang: ru-BY
