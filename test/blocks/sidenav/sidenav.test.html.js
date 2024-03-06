@@ -29,7 +29,13 @@ runTests(async () => {
       window.fetch = sinon.stub().callsFake(() => mockedTaxonomy());
     });
 
-    const testCategorySidenav = async (selector, expectedItemCount, expectedChildItemCount) => {
+    const testCategorySidenav = async (
+      selector,
+      expectedItemCount,
+      expectedParentCount,
+      expectedChildItemCount,
+      expectedCheckboxCount = 3,
+    ) => {
       const sidenavEl = document.querySelector(selector);
       const newRoot = await init(sidenavEl);
       expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
@@ -41,20 +47,31 @@ runTests(async () => {
       expect(found.getAttribute('value')).to.equal('coldfusion');
       const search = newRoot.querySelector('sp-search');
       expect(search.getAttribute('placeholder')).to.equal('Search all your products');
-      expect(newRoot.querySelectorAll('sp-checkbox').length).to.equal(3);
+      expect(newRoot.querySelectorAll('sp-checkbox').length).to.equal(expectedCheckboxCount);
+      if (expectedCheckboxCount > 0) {
+        expect(newRoot.querySelector('sp-checkbox').textContent.trim()).to.equal('Desktop');
+      }
+      const parents = newRoot.querySelectorAll('sp-sidenav > sp-sidenav-item');
+      expect(parents.length).to.equal(expectedParentCount);
       const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
       expect(nestedItems.length).to.equal(expectedChildItemCount);
-      expect(newRoot.querySelector('sp-checkbox').textContent.trim()).to.equal('Desktop');
+      return newRoot;
     };
 
     it('does create nice categories default sidenav', async () => {
-      await testCategorySidenav('.categories', 24, 18);
+      await testCategorySidenav('.categories', 24, 6, 18);
     });
 
     it('does create nice reordered categories sidenav', async () => {
       // 16 items from html requirements, 2 parents from taxonomy,
       // and special-offer special case is 19
-      await testCategorySidenav('.reordered-categories', 19, 13);
+      await testCategorySidenav('.reordered-categories', 19, 6, 13);
+    });
+
+    it('does put implicit at last position', async () => {
+      const root = await testCategorySidenav('.parent-generation', 6, 4, 2, 0);
+      const parents = root.querySelectorAll('sp-sidenav > sp-sidenav-item');
+      expect(parents[parents.length - 1].getAttribute('value')).to.equal('creativity-design');
     });
 
     it('does create nice plans sidenav', async () => {

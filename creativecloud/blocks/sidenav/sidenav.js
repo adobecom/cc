@@ -12,28 +12,29 @@ const getCategories = (items, isMultilevel, mapCategories) => {
   if (isMultilevel) {
     configuration.variant = 'multilevel';
   }
-  const mapParents = [];
-  const tag = createTag('sp-sidenav', configuration);
+  const mapParents = {};
+  const implicitParents = [];
+  const sidenav = createTag('sp-sidenav', configuration);
   const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
-  merchTag.append(tag);
+  merchTag.append(sidenav);
   items.forEach((item) => {
     if (item) {
-      let parent = tag;
+      let parent = sidenav;
       const value = getIdLeaf(item.id);
       // first token is type, second is parent category
       const isParent = item.id.split('/').length <= 2;
       const itemTag = createTag('sp-sidenav-item', { label: item.name, value });
       if (isParent) {
         mapParents[value] = itemTag;
-        tag.append(itemTag);
+        sidenav.append(itemTag);
       } else {
         const parentId = getIdLeaf(item.id.substring(0, item.id.lastIndexOf('/')));
         if (isMultilevel) {
           if (!mapParents[parentId]) {
             const parentItem = mapCategories[parentId];
             if (parentItem) {
-              mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, parentId });
-              tag.append(mapParents[parentId]);
+              mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, value: parentId });
+              implicitParents.push(mapParents[parentId]);
             }
           }
           parent = mapParents[parentId];
@@ -42,6 +43,9 @@ const getCategories = (items, isMultilevel, mapCategories) => {
       }
     }
   });
+  if (implicitParents.length > 0) {
+    implicitParents.forEach((item) => sidenav.append(item));
+  }
   return merchTag;
 };
 
