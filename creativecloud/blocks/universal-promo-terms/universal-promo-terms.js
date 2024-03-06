@@ -7,7 +7,7 @@ const SERVICE_PROVIDERS = 'PROMO_TERMS';
 
 function getEnv(env) {
   if (env) return env;
-  if (window.location.hostname === 'www.adobe.com') return 'production';
+  if (window.location.origin.hostname === 'www.adobe.com') return 'production';
   return 'stage';
 }
 
