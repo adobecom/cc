@@ -13,7 +13,6 @@ const getCategories = (items, isMultilevel, mapCategories) => {
     configuration.variant = 'multilevel';
   }
   const mapParents = {};
-  const implicitParents = [];
   const sidenav = createTag('sp-sidenav', configuration);
   const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
   merchTag.append(sidenav);
