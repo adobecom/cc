@@ -34,7 +34,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
             const parentItem = mapCategories[parentId];
             if (parentItem) {
               mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, value: parentId });
-              implicitParents.push(mapParents[parentId]);
+              sidenav.append(mapParents[parentId]);
             }
           }
           parent = mapParents[parentId];
@@ -43,9 +43,6 @@ const getCategories = (items, isMultilevel, mapCategories) => {
       }
     }
   });
-  if (implicitParents.length > 0) {
-    implicitParents.forEach((item) => sidenav.append(item));
-  }
   return merchTag;
 };
 

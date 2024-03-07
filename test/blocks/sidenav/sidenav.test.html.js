@@ -68,8 +68,8 @@ runTests(async () => {
       await testCategorySidenav('.reordered-categories', 19, 6, 13);
     });
 
-    it('when a parent is added implicitly (no parent explicitly configured, just its children), does push it to last position', async () => {
-      const root = await testCategorySidenav('.parent-generation', 6, 4, 2, 0);
+    it('parents should be re-orderable as well', async () => {
+      const root = await testCategorySidenav('.parent-reordered', 6, 4, 2, 0);
       const parents = root.querySelectorAll('sp-sidenav > sp-sidenav-item');
       expect(parents[parents.length - 1].getAttribute('value')).to.equal('creativity-design');
     });
