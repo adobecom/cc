@@ -66,7 +66,7 @@ function getDecorateAreaFn() {
     };
     resetAttributeBase('img', 'src');
     resetAttributeBase('source', 'srcset');
-  };
+  }
   
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
     replaceDotMedia();
