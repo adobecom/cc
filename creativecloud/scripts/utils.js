@@ -58,7 +58,7 @@ function getDecorateAreaFn() {
     if (lcpImg) lcpImgSet = true;
   };
 
-  async function replaceDotMedia(area = document) {
+  function replaceDotMedia(area = document) {
     const resetAttributeBase = (tag, attr) => {
       area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
         el[attr] = `${new URL(`${getConfig().contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
