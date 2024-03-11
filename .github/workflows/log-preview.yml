@@ -1,4 +1,4 @@
-name: Test Preivew
+name: Test Preview
 
 on: 
   repository_dispatch:
