@@ -10,4 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Path: ${{ github.event.client_payload.JSON }}"
+        echo "Payload: $JSON"
+      env: 
+        JSON: ${{ toJson(github.event.client_payload) }} | tr -d '\n'
