@@ -77,6 +77,7 @@ export default async function init(el) {
       break;
     }
     case el.classList.contains('genfill'): {
+      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
       loadStyle('/creativecloud/features/genfill/genfill-interactive.css');
       interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
@@ -84,6 +85,7 @@ export default async function init(el) {
       break;
     }
     case el.classList.contains('firefly'): {
+      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
       loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
       loadStyle('/creativecloud/features/firefly/firefly-interactive.css');
       interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
@@ -92,6 +94,7 @@ export default async function init(el) {
       break;
     }
     default:
+      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
       interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       break;
   }
