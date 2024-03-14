@@ -1,0 +1,13 @@
+name: Test Previews
+
+on: 
+  repository_dispatch:
+    types:
+      - resources-previewed
+      - resources-unpreviewed
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Path: ${{ github.event.client_payload.paths }}"
