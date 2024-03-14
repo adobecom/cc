@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Path: ${{ github.event.client_payload.paths }}"
+        echo "Path: ${{ github.event.client_payload.JSON }}"
