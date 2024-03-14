@@ -176,8 +176,6 @@
 
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
   .firefly-selectortray {
-    top: 144px;
-    position: absolute;
     right: -85px;
   }
 
@@ -189,8 +187,6 @@
 
 @media screen and (max-width: 1649px) and (min-width: 1438px) {
   .firefly-selectortray {
-    top: 144px;
-    position: absolute;
     right: -35px;
   }
 
@@ -202,8 +198,6 @@
 
 @media screen and (max-width: 1437px) and (min-width: 1200px) {
   .firefly-selectortray {
-    top: 144px;
-    position: absolute;
     right: 5px;
   }
 
