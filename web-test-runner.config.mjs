@@ -33,8 +33,8 @@ const swcImportMaps = Object.fromEntries([
 
 export default {
   coverageConfig: {
-    include: ['src/**'],
-    exclude: ['test/mocks/**', 'test/**', '**/node_modules/**'],
+    include: ['creativecloud/**'],
+    exclude: ['test/mocks/**', 'test/**', '**/node_modules/**', 'creativecloud/deps/**'],
   },
   debug: false,
   files: ['test/**/*.test.(js|html)'],
