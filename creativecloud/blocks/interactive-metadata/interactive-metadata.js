@@ -42,6 +42,8 @@ function handleLayerDisplay(target, stepInfo) {
   const prevStepIndex = getPrevStepIndex(stepInfo);
   const prevLayer = target.querySelector(`.layer-${prevStepIndex}`);
   prevLayer?.classList.remove('show-layer');
+  target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
+  target.classList.add(`step-${stepInfo.stepName}`);
   currLayer.classList.add('show-layer');
   handleNextStep(stepInfo);
 }
