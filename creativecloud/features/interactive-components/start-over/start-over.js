@@ -17,6 +17,9 @@ export default async function stepInit(data) {
       startOverCTA.innerHTML += p.textContent.trim();
     }
   });
+  startOverCTA.addEventListener('click', (e) => {
+    data.el.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+  });
   layer.append(startOverCTA);
   data.target.append(layer);
 }
