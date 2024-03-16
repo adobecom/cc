@@ -1,4 +1,4 @@
-import { getLibs, createTag } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
 function getNextStepIndex(stepInfo) {
   return (stepInfo.stepIndex + 1) % stepInfo.stepCount;
@@ -10,12 +10,13 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
-function handleNextStep(stepInfo) {
+async function handleNextStep(stepInfo) {
   const eagerLoad = (lcpImg) => {
     lcpImg?.setAttribute('loading', 'eager');
     lcpImg?.setAttribute('fetchpriority', 'high');
   };
   const nextStepIndex = getNextStepIndex(stepInfo);
+  stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
   const nextImgs = stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img');
   [...nextImgs].forEach(eagerLoad);
 }
@@ -47,20 +48,24 @@ function handleLayerDisplay(target, stepInfo) {
   currLayer.classList.add('show-layer');
 }
 
-async function implementWorkflow(el, target, stepInfo) {
+async function loadJSandCSS(stepName) {
   const miloLibs = getLibs('/libs');
   const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+  const stepJS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.js`;
+  const stepCSS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.css`;
+  loadStyle(stepCSS);
+  const { default: initFunc } = await import(stepJS);
+  return initFunc;
+}
+
+async function implementWorkflow(el, target, stepInfo) {
   const currLayer = target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
     handleLayerDisplay(target, stepInfo);
     handleNextStep(stepInfo);
     return;
   }
-  const stepJS = `${window.location.origin}/creativecloud/features/interactive-components/${stepInfo.stepName}/${stepInfo.stepName}.js`;
-  const stepCSS = `${window.location.origin}/creativecloud/features/interactive-components/${stepInfo.stepName}/${stepInfo.stepName}.css`;
-  loadStyle(stepCSS);
-  const { default: stepInit } = await import(stepJS);
-  await stepInit({
+  await stepInfo.stepInit({
     target,
     config: stepInfo.stepConfigs[stepInfo.stepIndex],
     stepIndex: stepInfo.stepIndex,
@@ -69,7 +74,7 @@ async function implementWorkflow(el, target, stepInfo) {
   handleLCPImage(target, stepInfo);
   handleLayerDisplay(target, stepInfo);
   nextStepEventListener(el, target, layerName, stepInfo);
-  handleNextStep(stepInfo);
+  await handleNextStep(stepInfo);
 }
 
 function nextStepEventListener(el, target, layerName, stepInfo) {
@@ -118,6 +123,7 @@ export default async function init(el) {
   if (!workflow.length) return;
   const targetAsset = getTargetArea(el);
   if (!targetAsset) return;
+  const stepInit = await loadJSandCSS(workflow[0]);
   const stepInfo = {
     stepIndex: 0,
     stepName: workflow[0],
@@ -125,6 +131,7 @@ export default async function init(el) {
     stepCount: workflow.length,
     stepConfigs: el.querySelectorAll(':scope > div'),
     handleImageTransition,
+    stepInit,
   };
   await implementWorkflow(el, targetAsset, stepInfo);
 }
