@@ -45,7 +45,6 @@ function handleLayerDisplay(target, stepInfo) {
   target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
   target.classList.add(`step-${stepInfo.stepName}`);
   currLayer.classList.add('show-layer');
-  handleNextStep(stepInfo);
 }
 
 async function implementWorkflow(el, target, stepInfo) {
@@ -54,6 +53,7 @@ async function implementWorkflow(el, target, stepInfo) {
   const currLayer = target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
     handleLayerDisplay(target, stepInfo);
+    handleNextStep(stepInfo);
     return;
   }
   const stepJS = `${window.location.origin}/creativecloud/features/interactive-components/${stepInfo.stepName}/${stepInfo.stepName}.js`;
@@ -69,6 +69,7 @@ async function implementWorkflow(el, target, stepInfo) {
   handleLCPImage(target, stepInfo);
   handleLayerDisplay(target, stepInfo);
   nextStepEventListener(el, target, layerName, stepInfo);
+  handleNextStep(stepInfo);
 }
 
 function nextStepEventListener(el, target, layerName, stepInfo) {
