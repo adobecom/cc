@@ -99,7 +99,7 @@ function getTargetArea(el) {
 function getWorkFlowInformation(el) {
   let wfName = '';
   const intWorkFlowConfig = {
-    'workflow-1': ['generate', 'crop', 'start-over'],
+    'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-2': ['crop', 'crop', 'start-over'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
