@@ -66,6 +66,7 @@ async function implementWorkflow(el, target, stepInfo) {
     return;
   }
   await stepInfo.stepInit({
+    el,
     target,
     config: stepInfo.stepConfigs[stepInfo.stepIndex],
     stepIndex: stepInfo.stepIndex,
@@ -73,19 +74,7 @@ async function implementWorkflow(el, target, stepInfo) {
   const layerName = `.layer-${stepInfo.stepIndex}`;
   handleLCPImage(target, stepInfo);
   handleLayerDisplay(target, stepInfo);
-  nextStepEventListener(el, target, layerName, stepInfo);
   await handleNextStep(stepInfo);
-}
-
-function nextStepEventListener(el, target, layerName, stepInfo) {
-  const nextSteps = target.querySelectorAll(`${layerName} .next-step`);
-  nextSteps.forEach((nextStep) => {
-    nextStep.addEventListener('click', async (e) => {
-      stepInfo.stepIndex = getNextStepIndex(stepInfo);
-      stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-      await implementWorkflow(el, target, stepInfo);
-    });
-  });
 }
 
 function getTargetArea(el) {
@@ -132,6 +121,14 @@ export default async function init(el) {
     stepConfigs: el.querySelectorAll(':scope > div'),
     handleImageTransition,
     stepInit,
+    nextStepEvent: 'cc:interactive-switch' 
   };
   await implementWorkflow(el, targetAsset, stepInfo);
+
+  el.addEventListener('cc:interactive-switch', async (e) => {
+    console.log('mathuria new event');
+    stepInfo.stepIndex = getNextStepIndex(stepInfo);
+    stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
+    await implementWorkflow(el, targetAsset, stepInfo);
+  });
 }

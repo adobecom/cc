@@ -16,6 +16,9 @@ export default async function stepInit(data) {
       generateCTA.innerHTML += p.textContent.trim();
     }
   });
+  generateCTA.addEventListener('click', (e) => {
+    data.el.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+  });
   layer.append(generateCTA);
   data.target.append(layer);
 }

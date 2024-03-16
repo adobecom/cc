@@ -5,17 +5,20 @@ export default async function stepInit(data) {
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const pTags = data.config.querySelectorAll('p');
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const generateCTA = createTag('a', { class: 'gray-button body-s next-step crop-button' });
+  const cropCTA = createTag('a', { class: 'gray-button body-s crop-button' });
   [...pTags].forEach((p) => {
     const img = p.querySelector('img');
     if (img) {
       const picClone = img.closest('picture').cloneNode(true);
-      if (img.src.includes('.svg')) generateCTA.prepend(picClone);
+      if (img.src.includes('.svg')) cropCTA.prepend(picClone);
       else data.target.querySelector('picture').replaceWith(picClone);
     } else {
-      generateCTA.innerHTML += p.textContent.trim();
+      cropCTA.innerHTML += p.textContent.trim();
     }
   });
-  layer.append(generateCTA);
+  cropCTA.addEventListener('click', (e) => {
+    data.el.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+  });
+  layer.append(cropCTA);
   data.target.append(layer);
 }
