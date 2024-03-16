@@ -1,0 +1,6 @@
+.gray-button.start-over-button {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: 32px;
+}
