@@ -18,7 +18,8 @@ function selectorTrayWithImgs(data, config, createTag) {
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
   const isHorizontal = config.querySelector('ul > li').querySelectorAll('img[src*="media_"')?.length > 2;
   if (isHorizontal) trayItems.classList.add('horizontal');
-  [...config.querySelectorAll('picture')].forEach((timg, idx) => {
+  const imgs = config.querySelectorAll('picture');
+  [...imgs].forEach((timg, idx) => {
     if (idx%2 === 0) return;
     timg.classList.add(`thumbnail-idx-${idx}`);
     imgs[idx - 1].classList.add(`display-idx-${idx}`);
