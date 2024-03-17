@@ -12,7 +12,8 @@ function setForegroundImage(a, config, target) {
   target.querySelector('picture').replaceWith(displayImg);
 }
 
-function selectorTrayWithImgs(data, config, selectorTray, createTag) {
+function selectorTrayWithImgs(data, config, createTag) {
+  const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const imgs = config.querySelectorAll('picture');
   data.handleImageTransition(data.target, data);
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
@@ -30,6 +31,7 @@ function selectorTrayWithImgs(data, config, selectorTray, createTag) {
     });
   });
   selectorTray.append(trayItems);
+  return selectorTray;
 }
 
 export default async function stepInit(data) {
@@ -38,15 +40,14 @@ export default async function stepInit(data) {
   data.target.classList.add('step-selector-tray');
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const title = config.querySelector('p:first-child');
-  if (title) {
-    const trayTitle = createTag('div', { class: 'body-xl tray-title' }, title.innerText.trim());
-    selectorTray.append(trayTitle);
-  }
+  let trayTitle = null;
+  if (title) trayTitle = createTag('div', { class: 'body-xl tray-title' }, title.innerText.trim());
   const trayConfig = config.querySelectorAll('ul > li');
   const isGenerateTray = [...trayConfig].filter(li => (li.querySelector('img[src*="media_"]').length >= 2));
-  if (isGenerateTray) selectorTrayWithImgs(data, config, selectorTray, createTag);
+  let selectorTray = null;
+  if (isGenerateTray) selectorTray = selectorTrayWithImgs(data, config, createTag);
+  if (title) selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
   data.target.append(layer);
 }
