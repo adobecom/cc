@@ -58,22 +58,17 @@ async function loadJSandCSS(stepName) {
   return initFunc;
 }
 
-async function implementWorkflow(el, target, stepInfo) {
-  const currLayer = target.querySelector(`.layer-${stepInfo.stepIndex}`);
+async function implementWorkflow(el, stepInfo) {
+  const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
-    handleLayerDisplay(target, stepInfo);
+    handleLayerDisplay(stepInfo.target, stepInfo);
     handleNextStep(stepInfo);
     return;
   }
-  await stepInfo.stepInit({
-    el,
-    target,
-    config: stepInfo.stepConfigs[stepInfo.stepIndex],
-    stepIndex: stepInfo.stepIndex,
-  });
+  await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
-  handleLCPImage(target, stepInfo);
-  handleLayerDisplay(target, stepInfo);
+  handleLCPImage(stepInfo.target, stepInfo);
+  handleLayerDisplay(stepInfo.target, stepInfo);
   await handleNextStep(stepInfo);
 }
 
@@ -114,6 +109,7 @@ export default async function init(el) {
   if (!targetAsset) return;
   const stepInit = await loadJSandCSS(workflow[0]);
   const stepInfo = {
+    el,
     stepIndex: 0,
     stepName: workflow[0],
     stepList: workflow,
@@ -121,14 +117,14 @@ export default async function init(el) {
     stepConfigs: el.querySelectorAll(':scope > div'),
     handleImageTransition,
     stepInit,
-    nextStepEvent: 'cc:interactive-switch' 
+    nextStepEvent: 'cc:interactive-switch',
+    target: targetAsset,
   };
-  await implementWorkflow(el, targetAsset, stepInfo);
-
+  await implementWorkflow(el, stepInfo);
   el.addEventListener('cc:interactive-switch', async (e) => {
     console.log('mathuria new event');
     stepInfo.stepIndex = getNextStepIndex(stepInfo);
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-    await implementWorkflow(el, targetAsset, stepInfo);
+    await implementWorkflow(el, stepInfo);
   });
 }

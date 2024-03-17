@@ -3,7 +3,7 @@ import { getLibs } from '../../../scripts/utils.js';
 export default async function stepInit(data) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const pTags = data.config.querySelectorAll('p');
+  const pTags = data.stepConfigs[data.stepIndex].querySelectorAll('p');
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const generateCTA = createTag('a', { class: 'gray-button body-s next-step generate-button' });
   [...pTags].forEach((p) => {
