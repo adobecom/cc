@@ -27,7 +27,7 @@ function selectorTrayWithImgs(data, config, createTag) {
     trayItems.append(a);
     a.addEventListener('click', (e) => {
       const aTag = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
-      setForegroundImage(e.target, config, data.target);
+      setForegroundImage(aTag, config, data.target);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
     });
   });
