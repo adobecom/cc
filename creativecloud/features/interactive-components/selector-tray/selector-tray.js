@@ -26,7 +26,7 @@ function selectorTrayWithImgs(data, config, createTag) {
     trayItems.append(a);
     a.addEventListener('click', (e) => {
       setForegroundImage(e.target, config, data.target);
-      data.el.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+      data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
     });
   });
   selectorTray.append(trayItems);
