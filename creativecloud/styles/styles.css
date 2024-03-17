@@ -23,3 +23,8 @@
   max-width: var(--grid-container-width);
   margin: 0 auto;
 }
+
+.interactive-enabled .foreground .asset img {
+  height: 570px;
+  width: 570px;
+}
