@@ -27,6 +27,10 @@
   gap: 16px
 }
 
+.interactive-enabled .asset .selector-tray .tray-items.horizontal {
+  flex-direction: column;
+}
+
 .selector-tray .tray-display-img {
   display: none;
 }

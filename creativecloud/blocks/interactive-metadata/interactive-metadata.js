@@ -21,30 +21,30 @@ async function handleNextStep(stepInfo) {
   [...nextImgs].forEach(eagerLoad);
 }
 
-function handleImageTransition(target, stepInfo) {
+function handleImageTransition(stepInfo) {
   const stepPic = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('picture');
   const hasStepPic = !stepPic.querySelector('img').src.includes('.svg');
   if (!hasStepPic) return;
   const stepPicClone = stepPic.cloneNode(true);
   stepPic.insertAdjacentElement('afterEnd', stepPicClone);
-  target.querySelector('picture').replaceWith(stepPic);
+  stepInfo.target.querySelector('picture').replaceWith(stepPic);
 }
 
-function handleLCPImage(target, stepInfo) {
+function handleLCPImage(stepInfo) {
   if (stepInfo.stepIndex !== 0) return;
-  const pic = target.querySelector('picture');
+  const pic = stepInfo.target.querySelector('picture');
   const picClone = pic.cloneNode(true);
   stepInfo.stepConfigs[0].querySelector('p').parentElement.prepend(picClone);
 }
 
-function handleLayerDisplay(target, stepInfo) {
-  handleImageTransition(target, stepInfo);
-  const currLayer = target.querySelector(`.layer-${stepInfo.stepIndex}`);
+function handleLayerDisplay(stepInfo) {
+  handleImageTransition(stepInfo);
+  const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
-  const prevLayer = target.querySelector(`.layer-${prevStepIndex}`);
+  const prevLayer = stepInfo.target.querySelector(`.layer-${prevStepIndex}`);
   prevLayer?.classList.remove('show-layer');
-  target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
-  target.classList.add(`step-${stepInfo.stepName}`);
+  stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
+  stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
   currLayer.classList.add('show-layer');
 }
 
@@ -61,14 +61,14 @@ async function loadJSandCSS(stepName) {
 async function implementWorkflow(el, stepInfo) {
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
-    handleLayerDisplay(stepInfo.target, stepInfo);
+    handleLayerDisplay(stepInfo);
     handleNextStep(stepInfo);
     return;
   }
   await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
-  handleLCPImage(stepInfo.target, stepInfo);
-  handleLayerDisplay(stepInfo.target, stepInfo);
+  handleLCPImage(stepInfo);
+  handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo);
 }
 

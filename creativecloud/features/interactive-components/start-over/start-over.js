@@ -8,14 +8,15 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const startOverCTA = createTag('a', { class: 'gray-button body-s next-step start-over-button' });
   [...pTags].forEach((p) => {
-    const img = p.querySelector('img');
-    if (img) {
-      const picClone = img.closest('picture').cloneNode(true);
-      if (img.src.includes('.svg')) startOverCTA.prepend(picClone);
-      else data.target.querySelector('picture').replaceWith(picClone);
-    } else {
+    const pic = p.querySelector('picture');
+    if (!pic) {
       startOverCTA.innerHTML += p.textContent.trim();
+      return;
     }
+    const picClone = pic.cloneNode(true);
+    const isSVG = pic.querySelector('img[src*=".svg"');
+    if (isSVG) startOverCTA.prepend(picClone);
+    else data.target.querySelector('picture').replaceWith(picClone);
   });
   startOverCTA.addEventListener('click', (e) => {
     data.el.dispatchEvent(new CustomEvent('cc:interactive-switch'));

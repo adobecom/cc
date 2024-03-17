@@ -13,20 +13,19 @@ function setForegroundImage(a, config, target) {
 }
 
 function selectorTrayWithImgs(data, config, createTag) {
+  data.handleImageTransition(data);
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
-  const imgs = config.querySelectorAll('picture');
-  data.handleImageTransition(data.target, data);
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
-  [...imgs].forEach((timg, idx) => {
+  const isHorizontal = config.querySelector('ul > li').querySelectorAll('img[src*="media_"')?.length > 2;
+  if (isHorizontal) trayItems.classList.add('horizontal');
+  [...config.querySelectorAll('picture')].forEach((timg, idx) => {
     if (idx%2 === 0) return;
     timg.classList.add(`thumbnail-idx-${idx}`);
     imgs[idx - 1].classList.add(`display-idx-${idx}`);
-    const a = createTag('a');
-    a.append(timg);
+    const a = createTag('a', {}, timg);
     trayItems.append(a);
     a.addEventListener('click', (e) => {
-      const aTag = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
-      setForegroundImage(aTag, config, data.target);
+      setForegroundImage(e.target, config, data.target);
       data.el.dispatchEvent(new CustomEvent('cc:interactive-switch'));
     });
   });

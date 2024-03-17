@@ -7,14 +7,15 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const cropCTA = createTag('a', { class: 'gray-button body-s crop-button' });
   [...pTags].forEach((p) => {
-    const img = p.querySelector('img');
-    if (img) {
-      const picClone = img.closest('picture').cloneNode(true);
-      if (img.src.includes('.svg')) cropCTA.prepend(picClone);
-      else data.target.querySelector('picture').replaceWith(picClone);
-    } else {
+    const pic = p.querySelector('picture');
+    if (!pic) {
       cropCTA.innerHTML += p.textContent.trim();
+      return;
     }
+    const picClone = pic.cloneNode(true);
+    const isSVG = pic.querySelector('img[src*=".svg"');
+    if (isSVG) cropCTA.prepend(picClone);
+    else data.target.querySelector('picture').replaceWith(picClone);
   });
   cropCTA.addEventListener('click', (e) => {
     data.el.dispatchEvent(new CustomEvent('cc:interactive-switch'));
