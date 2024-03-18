@@ -45,7 +45,7 @@ export const [setLibs, getLibs] = (() => {
 
 const miloLibs = setLibs('/libs');
 
-const { createTag, localizeLink } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLink, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 export { createTag, localizeLink };
 
 function getDecorateAreaFn() {
@@ -75,6 +75,7 @@ function getDecorateAreaFn() {
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
         fgDivs.forEach((d) => eagerLoad(d.querySelector('img')));
+        if (!firstBlock.classList.contains('changebg')) loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
         break;
       case !!fragmentLink:
         if (window.document.querySelector('a.fragment') === fragmentLink && !window.document.querySelector('img[loading="eager"]')) {
