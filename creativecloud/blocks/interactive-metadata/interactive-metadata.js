@@ -85,8 +85,7 @@ function getWorkFlowInformation(el) {
   let wfName = '';
   const intWorkFlowConfig = {
     'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
-    'workflow-2': ['crop', 'crop', 'start-over'],
-    'workflow-genfill': ['generate', 'start-over'],
+    'workflow-2': ['crop', 'crop', 'start-over']
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   const stepList = [];
@@ -99,10 +98,11 @@ function getWorkFlowInformation(el) {
       stepList.push(cn.split('-')[1]);
     }
   });
+
   if(wfName === 'workflow-genfill') {
-    const rows = el.childElementCount - 1;
-    const genArr = new Array(rows - 1).fill('generate');
-    intWorkFlowConfig[wfName] = genArr.concat(intWorkFlowConfig[wfName]);
+    const genArr = new Array(el.childElementCount - 1).fill('generate');
+    genArr.push('start-over');
+    return genArr;
   }
   if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
   if (stepList.length) return stepList;
