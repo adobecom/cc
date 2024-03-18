@@ -45,7 +45,7 @@ export const [setLibs, getLibs] = (() => {
 
 const miloLibs = setLibs('/libs');
 
-const { createTag, localizeLink, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLink, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 export { createTag, localizeLink };
 
 function getDecorateAreaFn() {
