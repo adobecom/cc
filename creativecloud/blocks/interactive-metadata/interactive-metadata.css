@@ -88,12 +88,14 @@
   display: flex;
   gap: 10px;
   padding: 8px;
-  background: #262626;
-  border: 2px solid #707070;
+  background: #323232;
   border-radius: 8px;
   text-decoration: none  !important;
   color: #fff !important;
   font-weight: bold;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .gray-button img {

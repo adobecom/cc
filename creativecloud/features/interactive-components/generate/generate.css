@@ -33,21 +33,13 @@
 }
 
 .generate {
-  display: flex;
-  flex:1;
-  background: #323232;
-  color: var(--color-white);
+  position: relative;
+  flex: 1;
   gap: 16px;
   padding: 0 24px;
   width: 202px;
   border-radius: 0px 8px 8px 0px;
   align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-  font-weight: bold;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 .generate:hover { 
@@ -79,7 +71,6 @@
     margin: 3px;
     font-size: 18px; /*body -m */
     line-height: 26px;
-    /* font-weight: bold; */
   }
 
   .generate img {
@@ -96,7 +87,7 @@
     padding: 0 16px;
   }
 
-  .mobile-genfill {
+  .layer {
     background: #272928;
     display: flex;
     align-items: center;
@@ -104,18 +95,7 @@
     border-radius: 0px 0px 8px 8px;
   }
 
-  .mobile-genfill.layer:not(.show-layer) {
+  .layer:not(.show-layer) {
     display: none;
   }
 }
-
-/* tab */
-@media screen and (min-width: 600px) {
-
-}
-
-/* desktop */
-@media screen and (min-width: 1200px) {
-
-}
-
