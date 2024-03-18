@@ -87,15 +87,17 @@
     padding: 0 16px;
   }
 
-  .layer {
+  .interactive-enabled .mobile-genfill.show-layer {
+    position: relative;
     background: #272928;
     display: flex;
     align-items: center;
     height: 60px;
     border-radius: 0px 0px 8px 8px;
+    width: 300px;
   }
 
-  .layer:not(.show-layer) {
+  .interactive-enabled .mobile-genfill.layer:not(.show-layer) {
     display: none;
   }
 }

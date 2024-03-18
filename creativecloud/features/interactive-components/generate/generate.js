@@ -11,7 +11,7 @@ export default async function stepInit(data) {
   const svg = config.querySelector('img[src*=svg]');
   const svgClone = svg.cloneNode(true);
   svg.insertAdjacentElement('afterEnd', svgClone);
-  const outerDiv = createTag('div', { class: `layer show-layer layer-${data.stepIndex}` });
+  const outerDiv = createTag('div', { class: `mobile-genfill layer show-layer layer-${data.stepIndex}` });
   const genfillDiv = createTag('div', { class: 'genfill-prompt body-s' });
   const searchBar = createTag('div', { class: 'genfill-search' }, `${searchText}`);
   const generateBtn = createTag('a', { class: `gray-button generate body-xl next-step` }, `${btnText}`);

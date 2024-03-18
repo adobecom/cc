@@ -20,55 +20,11 @@
   display: block;
 }
 
-/* .interactive-enabled .foreground .prompt-btn {
-  position: absolute;
-  cursor: pointer;
-  top: 70%;
-  left: 5%;
-  display: flex;
-  gap: 10px;
-  padding: 8px;
-  background: #262626;
-  border: 2px solid #707070;
-  border-radius: 8px;
-  text-decoration: none  !important;
-  color: #fff !important;
-  font-weight: bold;
-} */
-
 .interactive-enabled .asset {
   position: relative;
-  height: 570px;
-  width: 570px;
+  height: 360px;
+  width: 300px;
 }
-
-.interactive-enabled .asset img {
-  height: 570px;
-  width: 570px;
-}
-
-/* .gray-button img {
-  width: 20px !important; 
-  height: auto !important;
-  min-height: 20px !important;
-}
-
-
-.gray-button.start-over {
-  position: absolute;
-  cursor: pointer;
-  top: 70%;
-  left: 50%;
-  display: flex;
-  gap: 10px;
-  padding: 8px;
-  background: #262626;
-  border: 2px solid #707070;
-  border-radius: 8px;
-  text-decoration: none  !important;
-  color: #fff !important;
-  font-weight: bold;
-} */
 
 .layer {
   position: absolute;
@@ -78,20 +34,16 @@
   left: 0;
 }
 
-.step-crop {
-  position: relative;
-}
-
 .gray-button {
   position: absolute;
   cursor: pointer;
   display: flex;
   gap: 10px;
   padding: 8px;
-  background: #323232;
+  background: var(--prompt-btn-fill);
   border-radius: 8px;
   text-decoration: none  !important;
-  color: #fff !important;
+  color: var(--prompt-btn-text) !important;
   font-weight: bold;
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
@@ -99,7 +51,22 @@
 }
 
 .gray-button img {
-  width: 20px !important; 
+  width: 24px !important;
   height: auto !important;
   min-height: 20px !important;
 }
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled .asset {
+    position: relative;
+    height: 570px;
+    width: 570px;
+  }
+
+  .gray-button img {
+    width: 34px !important; 
+    height: auto !important;
+    min-height: 20px !important;
+  }
+}
+
