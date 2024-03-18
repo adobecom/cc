@@ -59,6 +59,7 @@ async function loadJSandCSS(stepName) {
 }
 
 async function implementWorkflow(el, stepInfo) {
+  console.log(stepInfo);
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
     handleLayerDisplay(stepInfo);
@@ -85,6 +86,7 @@ function getWorkFlowInformation(el) {
   const intWorkFlowConfig = {
     'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-2': ['crop', 'crop', 'start-over'],
+    'workflow-genfill': ['generate', 'start-over'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   const stepList = [];
@@ -97,15 +99,29 @@ function getWorkFlowInformation(el) {
       stepList.push(cn.split('-')[1]);
     }
   });
+  if(wfName === 'workflow-genfill') {
+    const rows = el.childElementCount - 1;
+    const genArr = new Array(rows - 1).fill('generate');
+    intWorkFlowConfig[wfName] = genArr.concat(intWorkFlowConfig[wfName]);
+  }
   if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
   if (stepList.length) return stepList;
   return [];
 }
 
+// function addAnimationToLayer() {
+    // const layerTypeIsBtn = fg.querySelector('.layer .gray-btn');
+    // const layerTypeIsSlider = fg.querySelector('.layer .gray-btn');
+    // if (layerTypeIsBtn) addBtnAnimation
+    // if (layerTypeIsSlider) addSlider
+// }
+
 export default async function init(el) {
   const workflow = getWorkFlowInformation(el);
+  console.log(workflow);
   if (!workflow.length) return;
   const targetAsset = getTargetArea(el);
+  console.log(targetAsset);
   if (!targetAsset) return;
   const stepInit = await loadJSandCSS(workflow[0]);
   const stepInfo = {
@@ -121,6 +137,7 @@ export default async function init(el) {
     target: targetAsset,
   };
   await implementWorkflow(el, stepInfo);
+  // Add animation to cta
   el.addEventListener('cc:interactive-switch', async (e) => {
     console.log('mathuria new event');
     stepInfo.stepIndex = getNextStepIndex(stepInfo);

@@ -1,6 +1,121 @@
-.generate-right .generate-button {
-  position: absolute;
-  left: 285px;
-  top: 300px;
-  width: 404px;
+.step-generate {
+  position: relative;
 }
+
+.genfill-prompt {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 461px;
+  left:83px;
+  width: 417px;
+  height: 64px;
+  background-color: #545454;
+  border-radius: 8px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+}
+
+.genfill-search {
+  box-sizing: border-box;
+  width:215px;
+  height: 52px;
+  margin: 6px;
+  background-color: #262626;
+  color:#D1D1D1;
+  font-size: 21px;
+  line-height: 39px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+}
+
+.generate {
+  display: flex;
+  flex:1;
+  background: #323232;
+  color: var(--color-white);
+  gap: 16px;
+  padding: 0 24px;
+  width: 202px;
+  border-radius: 0px 8px 8px 0px;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.generate:hover { 
+  outline: 3px solid #1273E6;
+  color: var(--color-white);
+  text-decoration: none;
+} 
+
+.generate img {
+  width: 34px !important; 
+  height: 34px !important;
+  min-height: 20px !important;
+}
+
+/* mobile */
+@media screen and (max-width: 600px) {
+  .genfill-prompt {
+    position: relative;
+    top: 0;
+    left:0;
+    width: 290px;
+    height: 48px;
+    margin: auto;
+  }
+
+  .genfill-search {
+    width: 159px;
+    height: 39px;
+    margin: 3px;
+    font-size: 18px; /*body -m */
+    line-height: 26px;
+    /* font-weight: bold; */
+  }
+
+  .generate img {
+    width: 24px !important; 
+    height: 24px !important;
+    min-height: 20px !important;
+  }
+
+  .generate {
+    font-size: 18px; /*body -m */
+    line-height: 22px;
+    font-weight: bold;
+    gap: 8px;
+    padding: 0 16px;
+  }
+
+  .mobile-genfill {
+    background: #272928;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-radius: 0px 0px 8px 8px;
+  }
+
+  .mobile-genfill.layer:not(.show-layer) {
+    display: none;
+  }
+}
+
+/* tab */
+@media screen and (min-width: 600px) {
+
+}
+
+/* desktop */
+@media screen and (min-width: 1200px) {
+
+}
+

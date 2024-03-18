@@ -38,6 +38,8 @@
 
 .interactive-enabled .asset {
   position: relative;
+  height: 570px;
+  width: 570px;
 }
 
 .interactive-enabled .asset img {

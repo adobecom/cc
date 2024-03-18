@@ -1,6 +1,66 @@
-.gray-button.start-over-button {
+.step-crop {
+  position: relative;
+}
+
+.gray-button {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  bottom: 32px;
+  cursor: pointer;
+  top: 70%;
+  left: 5%;
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  background: #262626;
+  border-radius: 8px;
+  text-decoration: none  !important;
+  font-weight: bold;
+}
+
+.gray-button img {
+  width: 34px !important; 
+  height: 34px !important;
+  min-height: 20px !important;
+}
+
+
+.gray-button.start-over {
+  position: absolute;
+  cursor: pointer;
+  top: 461px;
+  left: 190px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  background: #323232;
+  color: var(--color-white);
+  border-radius: 8px;
+  text-decoration: none  !important;
+  font-weight: bold;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.gray-button.start-over:hover {
+  outline: 3px solid #1273E6;
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+/* mobile */
+@media screen and (max-width: 600px) {
+
+  .mobile-genfill {
+    background: #272928;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-radius: 0px 0px 8px 8px;
+  }
+
+  .mobile-genfill.layer:not(.show-layer) {
+    display: none;
+  }
 }

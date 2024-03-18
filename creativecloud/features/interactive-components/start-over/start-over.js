@@ -5,8 +5,8 @@ export default async function stepInit(data) {
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   data.target.classList.add('step-crop');
   const pTags = data.stepConfigs[data.stepIndex].querySelectorAll('p');
-  const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const startOverCTA = createTag('a', { class: 'gray-button body-s next-step start-over-button' });
+  const layer = createTag('div', { class: `mobile-genfill layer layer-${data.stepIndex}` });
+  const startOverCTA = createTag('a', { class: 'gray-button start-over body-xl next-step' });
   [...pTags].forEach((p) => {
     const pic = p.querySelector('picture');
     if (!pic) {
@@ -24,3 +24,4 @@ export default async function stepInit(data) {
   layer.append(startOverCTA);
   data.target.append(layer);
 }
+
