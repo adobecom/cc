@@ -11,6 +11,7 @@ indices:
     include:
       - /creativecloud/**
       - /products/**
+      - /ai/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -61,6 +62,7 @@ indices:
     include:
       - /au/creativecloud/**
       - /au/products/**
+      - /au/ai/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -74,6 +76,7 @@ indices:
     include:
       - /de/creativecloud/**
       - /de/products/**
+      - /de/ai/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -87,6 +90,7 @@ indices:
     include:
       - /es/creativecloud/**
       - /es/products/**
+      - /es/ai/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -100,6 +104,7 @@ indices:
     include:
       - /fr/creativecloud/**
       - /fr/products/**
+      - /fr/ai/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -113,6 +118,7 @@ indices:
     include:
       - /it/creativecloud/**
       - /it/products/**
+      - /it/ai/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -126,6 +132,7 @@ indices:
     include:
       - /jp/creativecloud/**
       - /jp/products/**
+      - /jp/ai/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -139,6 +146,7 @@ indices:
     include:
       - /kr/creativecloud/**
       - /kr/products/**
+      - /kr/ai/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -152,6 +160,7 @@ indices:
     include:
       - /ru/creativecloud/**
       - /ru/products/**
+      - /ru/ai/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -165,6 +174,7 @@ indices:
     include:
       - /hk_zh/creativecloud/**
       - /hk_zh/products/**
+      - /hk_zh/ai/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -178,6 +188,7 @@ indices:
     include:
       - /tw/creativecloud/**
       - /tw/products/**
+      - /tw/ai/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -191,6 +202,7 @@ indices:
     include:
       - /nl/creativecloud/**
       - /nl/products/**
+      - /nl/ai/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -204,6 +216,7 @@ indices:
     include:
       - /pl/creativecloud/**
       - /pl/products/**
+      - /pl/ai/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -217,6 +230,7 @@ indices:
     include:
       - /tr/creativecloud/**
       - /tr/products/**
+      - /tr/ai/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -230,6 +244,7 @@ indices:
     include:
       - /uk/creativecloud/**
       - /uk/products/**
+      - /uk/ai/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -243,6 +258,7 @@ indices:
     include:
       - /ca/creativecloud/**
       - /ca/products/**
+      - /ca/ai/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -256,6 +272,7 @@ indices:
     include:
       - /cn/creativecloud/**
       - /cn/products/**
+      - /cn/ai/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -269,6 +286,7 @@ indices:
     include:
       - /ae_ar/creativecloud/**
       - /ae_ar/products/**
+      - /ae_ar/ai/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -282,6 +300,7 @@ indices:
     include:
       - /ae_en/creativecloud/**
       - /ae_en/products/**
+      - /ae_en/ai/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -295,6 +314,7 @@ indices:
     include:
       - /at/creativecloud/**
       - /at/products/**
+      - /at/ai/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -308,6 +328,7 @@ indices:
     include:
       - /be_en/creativecloud/**
       - /be_en/products/**
+      - /be_en/ai/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -321,6 +342,7 @@ indices:
     include:
       - /be_fr/creativecloud/**
       - /be_fr/products/**
+      - /be_fr/ai/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -334,6 +356,7 @@ indices:
     include:
       - /ca_fr/creativecloud/**
       - /ca_fr/products/**
+      - /ca_fr/ai/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -347,6 +370,7 @@ indices:
     include:
       - /ch_de/creativecloud/**
       - /ch_de/products/**
+      - /ch_de/ai/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -360,6 +384,7 @@ indices:
     include:
       - /ch_fr/creativecloud/**
       - /ch_fr/products/**
+      - /ch_fr/ai/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -373,6 +398,7 @@ indices:
     include:
       - /cl/creativecloud/**
       - /cl/products/**
+      - /cl/ai/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -386,6 +412,7 @@ indices:
     include:
       - /gr_en/creativecloud/**
       - /gr_en/products/**
+      - /gr_en/ai/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -399,6 +426,7 @@ indices:
     include:
       - /hk_en/creativecloud/**
       - /hk_en/products/**
+      - /hk_en/ai/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -412,6 +440,7 @@ indices:
     include:
       - /ie/creativecloud/**
       - /ie/products/**
+      - /ie/ai/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -425,6 +454,7 @@ indices:
     include:
       - /il_en/creativecloud/**
       - /il_en/products/**
+      - /il_en/ai/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -438,6 +468,7 @@ indices:
     include:
       - /in/creativecloud/**
       - /in/products/**
+      - /in/ai/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -451,6 +482,7 @@ indices:
     include:
       - /lt/creativecloud/**
       - /lt/products/**
+      - /lt/ai/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -464,6 +496,7 @@ indices:
     include:
       - /lu_de/creativecloud/**
       - /lu_de/products/**
+      - /lu_de/ai/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -477,6 +510,7 @@ indices:
     include:
       - /lu_en/creativecloud/**
       - /lu_en/products/**
+      - /lu_en/ai/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -490,6 +524,7 @@ indices:
     include:
       - /lu_fr/creativecloud/**
       - /lu_fr/products/**
+      - /lu_fr/ai/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -503,6 +538,7 @@ indices:
     include:
       - /mena_en/creativecloud/**
       - /mena_en/products/**
+      - /mena_en/ai/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -516,6 +552,7 @@ indices:
     include:
       - /nz/creativecloud/**
       - /nz/products/**
+      - /nz/ai/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -529,6 +566,7 @@ indices:
     include:
       - /sa_ar/creativecloud/**
       - /sa_ar/products/**
+      - /sa_ar/ai/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -542,6 +580,7 @@ indices:
     include:
       - /sa_en/creativecloud/**
       - /sa_en/products/**
+      - /sa_en/ai/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
    cards-sa_en:
@@ -555,6 +594,7 @@ indices:
     include:
       - /th_en/creativecloud/**
       - /th_en/products/**
+      - /th_en/ai/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -568,6 +608,7 @@ indices:
     include:
       - /th_th/creativecloud/**
       - /th_th/products/**
+      - /th_th/ai/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -581,6 +622,7 @@ indices:
     include:
       - /za/creativecloud/**
       - /za/products/**
+      - /za/ai/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -594,6 +636,7 @@ indices:
     include:
       - /africa/creativecloud/**
       - /africa/products/**
+      - /africa/ai/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -607,6 +650,7 @@ indices:
     include:
       - /ar/creativecloud/**
       - /ar/products/**
+      - /ar/ai/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -620,6 +664,7 @@ indices:
     include:
       - /co/creativecloud/**
       - /co/products/**
+      - /co/ai/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -633,6 +678,7 @@ indices:
     include:
       - /cr/creativecloud/**
       - /cr/products/**
+      - /cr/ai/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -646,6 +692,7 @@ indices:
     include:
       - /ec/creativecloud/**
       - /ec/products/**
+      - /ec/ai/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -659,6 +706,7 @@ indices:
     include:
       - /eg_ar/creativecloud/**
       - /eg_ar/products/**
+      - /eg_ar/ai/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -672,6 +720,7 @@ indices:
     include:
       - /eg_en/creativecloud/**
       - /eg_en/products/**
+      - /eg_en/ai/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -685,6 +734,7 @@ indices:
     include:
       - /gr_el/creativecloud/**
       - /gr_el/products/**
+      - /gr_el/ai/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -698,6 +748,7 @@ indices:
     include:
       - /gt/creativecloud/**
       - /gt/products/**
+      - /gt/ai/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -711,6 +762,7 @@ indices:
     include:
       - /id_en/creativecloud/**
       - /id_en/products/**
+      - /id_en/ai/**
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -724,6 +776,7 @@ indices:
     include:
       - /id_id/creativecloud/**
       - /id_id/products/**
+      - /id_id/ai/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -737,6 +790,7 @@ indices:
     include:
       - /in_hi/creativecloud/**
       - /in_hi/products/**
+      - /in_hi/ai/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -750,6 +804,7 @@ indices:
     include:
       - /kw_ar/creativecloud/**
       - /kw_ar/products/**
+      - /kw_ar/ai/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -763,6 +818,7 @@ indices:
     include:
       - /kw_en/creativecloud/**
       - /kw_en/products/**
+      - /kw_en/ai/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -776,6 +832,7 @@ indices:
     include:
       - /my_en/creativecloud/**
       - /my_en/products/**
+      - /my_en/ai/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -789,6 +846,7 @@ indices:
     include:
       - /my_ms/creativecloud/**
       - /my_ms/products/**
+      - /my_ms/ai/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -802,6 +860,7 @@ indices:
     include:
       - /ng/creativecloud/**
       - /ng/products/**
+      - /ng/ai/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -815,6 +874,7 @@ indices:
     include:
       - /pe/creativecloud/**
       - /pe/products/**
+      - /pe/ai/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -828,6 +888,7 @@ indices:
     include:
       - /ph_en/creativecloud/**
       - /ph_en/products/**
+      - /ph_en/ai/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -841,6 +902,7 @@ indices:
     include:
       - /ph_fil/creativecloud/**
       - /ph_fil/products/**
+      - /ph_fil/ai/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -854,6 +916,7 @@ indices:
     include:
       - /pr/creativecloud/**
       - /pr/products/**
+      - /pr/ai/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -867,6 +930,7 @@ indices:
     include:
       - /qa_ar/creativecloud/**
       - /qa_ar/products/**
+      - /qa_ar/ai/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -880,6 +944,7 @@ indices:
     include:
       - /qa_en/creativecloud/**
       - /qa_en/products/**
+      - /qa_en/ai/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -893,6 +958,7 @@ indices:
     include:
       - /vn_en/creativecloud/**
       - /vn_en/products/**
+      - /vn_en/ai/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -906,6 +972,7 @@ indices:
     include:
       - /vn_vi/creativecloud/**
       - /vn_vi/products/**
+      - /vn_vi/ai/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -919,6 +986,7 @@ indices:
     include:
       - /dk/creativecloud/**
       - /dk/products/**
+      - /dk/ai/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -932,6 +1000,7 @@ indices:
     include:
       - /fi/creativecloud/**
       - /fi/products/**
+      - /fi/ai/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -945,6 +1014,7 @@ indices:
     include:
       - /no/creativecloud/**
       - /no/products/**
+      - /no/ai/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -958,6 +1028,7 @@ indices:
     include:
       - /se/creativecloud/**
       - /se/products/**
+      - /se/ai/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -971,6 +1042,7 @@ indices:
     include:
       - /la/creativecloud/**
       - /la/products/**
+      - /la/ai/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -984,6 +1056,7 @@ indices:
     include:
       - /mx/creativecloud/**
       - /mx/products/**
+      - /mx/ai/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -997,6 +1070,7 @@ indices:
     include:
       - /be_nl/creativecloud/**
       - /be_nl/products/**
+      - /be_nl/ai/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -1010,6 +1084,7 @@ indices:
     include:
       - /bg/creativecloud/**
       - /bg/products/**
+      - /bg/ai/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -1023,6 +1098,7 @@ indices:
     include:
       - /ch_it/creativecloud/**
       - /ch_it/products/**
+      - /ch_it/ai/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -1036,6 +1112,7 @@ indices:
     include:
       - /cz/creativecloud/**
       - /cz/products/**
+      - /cz/ai/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -1049,6 +1126,7 @@ indices:
     include:
       - /ee/creativecloud/**
       - /ee/products/**
+      - /ee/ai/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -1062,6 +1140,7 @@ indices:
     include:
       - /hu/creativecloud/**
       - /hu/products/**
+      - /hu/ai/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -1075,6 +1154,7 @@ indices:
     include:
       - /il_he/creativecloud/**
       - /il_he/products/**
+      - /il_he/ai/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -1088,6 +1168,7 @@ indices:
     include:
       - /lv/creativecloud/**
       - /lv/products/**
+      - /lv/ai/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -1101,6 +1182,7 @@ indices:
     include:
       - /mena_ar/creativecloud/**
       - /mena_ar/products/**
+      - /mena_ar/ai/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -1114,6 +1196,7 @@ indices:
     include:
       - /pt/creativecloud/**
       - /pt/products/**
+      - /pt/ai/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -1127,6 +1210,7 @@ indices:
     include:
       - /ro/creativecloud/**
       - /ro/products/**
+      - /ro/ai/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -1140,6 +1224,7 @@ indices:
     include:
       - /si/creativecloud/**
       - /si/products/**
+      - /si/ai/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -1153,6 +1238,7 @@ indices:
     include:
       - /sk/creativecloud/**
       - /sk/products/**
+      - /sk/ai/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -1166,6 +1252,7 @@ indices:
     include:
       - /ua/creativecloud/**
       - /ua/products/**
+      - /ua/ai/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -1179,6 +1266,7 @@ indices:
     include:
       - /sg/creativecloud/**
       - /sg/products/**
+      - /sg/ai/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -1192,6 +1280,7 @@ indices:
     include:
       - /br/creativecloud/**
       - /br/products/**
+      - /br/ai/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -1205,6 +1294,7 @@ indices:
     include:
       - /cis_en/creativecloud/**
       - /cis_en/products/**
+      - /cis_en/ai/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -1218,6 +1308,7 @@ indices:
     include:
       - /cis_ru/creativecloud/**
       - /cis_ru/products/**
+      - /cis_ru/ai/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
