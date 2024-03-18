@@ -162,12 +162,6 @@ sitemaps:
         destination: /cl/cc-shared/assets/sitemap.xml
         hreflang: es-CL
 
-      cy_en:
-        source: /cy_en/cc-shared/assets/query-index.json
-        alternate: /cy_en/{path}.html
-        destination: /cy_en/cc-shared/assets/sitemap.xml
-        hreflang: en-CY
-
       gr_en:
         source: /gr_en/cc-shared/assets/query-index.json
         alternate: /gr_en/{path}.html
@@ -227,12 +221,6 @@ sitemaps:
         alternate: /mena_en/{path}.html
         destination: /mena_en/cc-shared/assets/sitemap.xml
         hreflang: en-DZ
-
-      mt:
-        source: /mt/cc-shared/assets/query-index.json
-        alternate: /mt/{path}.html
-        destination: /mt/cc-shared/assets/sitemap.xml
-        hreflang: en-MT
         
       nz:
         source: /nz/cc-shared/assets/query-index.json
