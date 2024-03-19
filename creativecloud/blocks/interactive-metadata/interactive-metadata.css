@@ -62,7 +62,7 @@
 .interactive-enabled .layer .gray-button img {
   width: 24px;
   height: auto;
-  min-height:auto
+  min-height:auto;
 }
 
 .interactive-enabled .layer .gray-button:hover { 
@@ -84,6 +84,12 @@
     background: none;
     height: 100%;
     width: 100%;
+  }
+
+  .interactive-enabled .layer .gray-button img {
+    width: 34px;
+    height: auto;
+    min-height:auto;
   }
 
   .interactive-enabled .asset img {

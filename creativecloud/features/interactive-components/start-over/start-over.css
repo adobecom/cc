@@ -1,16 +1,13 @@
-.step-crop {
-  position: relative;
+.interactive-enabled .step-start-over .layer .gray-button.start-over-button {
+  padding: 0 24px 0 16px;
+  height: 48px;
 }
 
-.step-start-over .gray-button.start-over {
-  position: relative;
-  padding-right: 24px;
-}
-
-@media screen and (min-width: 1200px) {
-  .step-start-over .gray-button.start-over {
-    position: absolute;
-    left: 194px;
+@media screen and (min-width: 768px) {
+  .interactive-enabled .step-start-over .layer .gray-button.start-over-button {
+    padding: 0 24px 0 24px;
+    height: 64px;
     bottom: 32px;
+    gap: 16px;
   }
 }
