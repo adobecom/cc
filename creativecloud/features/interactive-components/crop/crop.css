@@ -1,9 +1,25 @@
-.crop-button {
-  position: absolute;
-  bottom: 125px;
-  left: 47px;
-}
-
 .step-crop {
   position: relative;
+}
+
+.gray-button {
+  position: absolute;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  background: var(--prompt-btn-fill);
+  border-radius: 8px;
+  text-decoration: none  !important;
+  color: var(--prompt-btn-text) !important;
+  font-weight: bold;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.step-crop .crop-button {
+  position: relative;
+  gap: 8px;
+  padding: 12px 16px;
 }

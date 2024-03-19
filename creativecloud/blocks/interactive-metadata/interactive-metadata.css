@@ -36,25 +36,28 @@
 
 .gray-button {
   position: absolute;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 3px solid transparent;
   cursor: pointer;
   display: flex;
-  gap: 10px;
-  padding: 8px;
+  gap: 8px;
+  padding: 16px;
+  color: var(--prompt-btn-text);
   background: var(--prompt-btn-fill);
-  border-radius: 8px;
-  text-decoration: none  !important;
-  color: var(--prompt-btn-text) !important;
   font-weight: bold;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  user-select: none;
+  text-decoration: none;
 }
 
-.gray-button img {
-  width: 24px !important;
-  height: auto !important;
-  min-height: 20px !important;
+.gray-button a {
+  text-decoration: none;
+  color: inherit;
 }
+
+.generate:hover { 
+  border: 3px solid #1273E6;
+  text-decoration: none;
+} 
 
 @media screen and (min-width: 600px) {
   .interactive-enabled .asset {

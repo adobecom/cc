@@ -50,14 +50,6 @@
 }
 
 .generate {
-  font-size: 18px; 
-  line-height: 22px;
-  font-weight: bold;
-  gap: 8px;
-  padding: 0 16px;
-}
-
-.generate {
   position: relative;
   flex: 1;
   gap: 16px;
@@ -67,14 +59,7 @@
   align-items: center;
 }
 
-.generate:hover { 
-  outline: 3px solid #1273E6;
-  color: var(--color-white);
-  text-decoration: none;
-} 
-
 @media screen and (min-width: 1200px) {
-
   .interactive-enabled .step-generate .layer.show-layer {
     position: absolute;
   }
@@ -107,7 +92,7 @@
     display: inline-flex;
     align-items: center;
   }
-  
+
   .generate img {
     width: 34px !important; 
     height: 34px !important;
