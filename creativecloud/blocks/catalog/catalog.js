@@ -1,5 +1,11 @@
 import { getLibs } from '../../scripts/utils.js';
 
+const miloLibs = getLibs('/libs');
+const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+
+// for test purposes.
+loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
+
 /** container block */
 export default async function init(el) {
   el.classList.add('app');
