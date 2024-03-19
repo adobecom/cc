@@ -3,9 +3,10 @@
   --prompt-input-fill: #262626;
   --prompt-btn-fill: #323232;
   --prompt-text-color: #D1D1D1;
-  --prompt-text-border: #707070;
+  --prompt-text-border: #545454;
   --prompt-btn-text: #FFFFFF;
   --prompt-highlight-color: #1473E6;
+  --layer-background-fill: #272928;
 }
 
 .interactive-metadata {
@@ -18,25 +19,27 @@
 
 .interactive-enabled .layer.show-layer {
   display: block;
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-height: 60px;
+  background: var(--layer-background-fill);
+  display: flex;
+  align-items: center;
+  border-radius: 0px 0px 8px 8px;
 }
 
 .interactive-enabled .asset {
   position: relative;
   height: 360px;
   width: 300px;
+  border-radius: 16px;
 }
 
-.interactive-enabled .layer {
-  position: absolute;
-  top: auto;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  background: #272928;
-  display: flex;
-  align-items: center;
-  border-radius: 0px 0px 8px 8px;
+.interactive-enabled .asset img {
+  border-radius: 16px 16px 0 0;
 }
 
 .interactive-enabled .layer .gray-button {
@@ -61,21 +64,29 @@
   min-height:auto
 }
 
-.gray-button:hover { 
-  border: 3px solid #1273E6;
+.interactive-enabled .layer .gray-button:hover { 
+  border: 3px solid var(--prompt-highlight-color);
 } 
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 1200px) {
   .interactive-enabled .asset {
     position: relative;
     height: 570px;
     width: 570px;
   }
 
-  .interactive-enabled .layer {
+  .interactive-enabled .layer.show-layer {
+    display: flex;
     position: absolute;
     top: 0;
     left: 0;
+    background: none;
+    height: 100%;
+    width: 100%;
+  }
+
+  .interactive-enabled .asset img {
+    border-radius: 16px;
   }
 }
 

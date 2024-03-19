@@ -1,78 +1,66 @@
-.genfill-prompt {
-  width: 100%;
-  height: auto;
+.interactive-enabled .step-generate .generate-prompt-button {
+  width: 284px;
+  height: 36px;
+  background-color: var(--prompt-text-border);
   margin: auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  background-color: #545454;
-  border-radius: 8px;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
-}
-
-.genfill-search {
-  box-sizing: border-box;
-  background-color: #262626;
-  color:#D1D1D1;
-  padding: 0 16px;
-  border-radius: 8px;
+  margin-bottom: 9px;
   font-weight: bold;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  width: 159px;
-  height: 39px;
-  margin: 3px;
-  font-size: 18px; /*body -m */
-  line-height: 26px;
+  border-radius: 8px;
+  padding: 6px 0 6px 6px;
+  gap: 6px;
 }
 
-.step-generate .gray-button.generate {
-  flex: 1;
-  gap: 16px;
-  padding: 0 24px;
-  width: 202px;
-  border-radius: 0px 8px 8px 0px;
+.interactive-enabled .step-generate .generate-prompt-button .generate-text {
+  background-color: var(--prompt-input-fill);
+  color: var(--prompt-text-color);
+  display: flex;
   align-items: center;
+  justify-content: center;
+  height: 39px;
+  width: 159px;
+  min-width: 159px;
+  max-width: 159px;
+  border-radius: 3px 0 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  gap: 8px;
+  border-radius: 0 8px 8px 0;
 }
 
 @media screen and (min-width: 1200px) {
-  .interactive-enabled .step-generate .layer.show-layer {
-    position: absolute;
-    background: none;
-  }
-
-  .genfill-prompt {
-    position: absolute;
-    top: 461px;
-    left:83px;
-    width: 417px;
+  .interactive-enabled .step-generate .generate-prompt-button {
+    width: 216px;
     height: 64px;
-  }
-  
-  .generate-right .genfill-prompt {
+    padding: 0 6px;
+    gap: 6px;
+    margin: 0;
+    border-radius: 8px 0 0 8px;
+    position: absolute;
     left: 285px;
-    top: 300px;
-  }
-  
-  .genfill-search {
-    box-sizing: border-box;
-    width:215px;
-    height: 52px;
-    margin: 6px;
-    background-color: #262626;
-    color:#D1D1D1;
-    font-size: 21px;
-    line-height: 39px;
-    padding: 0 16px;
-    border-radius: 8px;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
+    bottom: 205px;
   }
 
-  .generate img {
-    width: 34px !important; 
-    height: 34px !important;
-    min-height: 20px !important;
+  .interactive-enabled .step-generate .generate-prompt-button .generate-text {
+    height: 52px;
+    width: 183px;
+    min-width: 183px;
+    max-width: 183px;
+    padding: 0 16px;
+    justify-content: flex-start;
+  }
+
+  .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+    height: 64px;
+    gap: 16px;
+    padding: 0 24px;
   }
 }

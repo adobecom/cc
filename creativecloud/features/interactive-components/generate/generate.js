@@ -13,9 +13,9 @@ export default async function stepInit(data) {
   svg.insertAdjacentElement('afterEnd', svgClone);
   const outerDiv = createTag('div', { class: `layer show-layer layer-${data.stepIndex}` });
   if (position) outerDiv.classList.add(`generate-${position.toLowerCase().trim()}`);
-  const genfillDiv = createTag('div', { class: 'genfill-prompt body-m' });
-  const searchBar = createTag('div', { class: 'genfill-search' }, `${searchText}`);
-  const generateBtn = createTag('a', { class: `gray-button generate next-step` }, `${btnText}`);
+  const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
+  const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
+  const generateBtn = createTag('a', { class: `gray-button generate-button next-step` }, `${btnText}`);
   generateBtn.prepend(svg);
   genfillDiv.appendChild(searchBar);
   genfillDiv.appendChild(generateBtn);
