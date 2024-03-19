@@ -5,11 +5,11 @@ export default async function init(el) {
   el.classList.add('app');
   const libs = getLibs();
   const sidenavEl = el.querySelector('.sidenav');
-  const merchCardsEl = el.querySelector('.merch-cards');
+  const merchCardsEl = el.querySelector('.merch-card-collection');
   let merchCards;
   if (merchCardsEl) {
     merchCardsEl.classList.add('four-merch-cards');
-    const { default: initMerchCards } = await import(`${libs}/blocks/merch-cards/merch-cards.js`);
+    const { default: initMerchCards } = await import(`${libs}/blocks/merch-card-collection/merch-card-collection.js`);
     merchCards = await initMerchCards(merchCardsEl);
   }
   el.innerHTML = '';
