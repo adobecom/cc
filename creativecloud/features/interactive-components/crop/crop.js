@@ -14,7 +14,11 @@ export default async function stepInit(data) {
     }
     const picClone = pic.cloneNode(true);
     const isSVG = pic.querySelector('img[src*=".svg"');
-    if (isSVG) cropCTA.prepend(picClone);
+    if (isSVG) {
+      const cropCTACont = createTag('div', { class: 'crop-icon-container' });
+      cropCTACont.append(picClone);
+      cropCTA.prepend(cropCTACont);
+    }
     else data.target.querySelector('picture').replaceWith(picClone);
   });
   cropCTA.addEventListener('click', (e) => {
