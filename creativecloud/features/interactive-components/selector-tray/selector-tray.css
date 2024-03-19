@@ -1,36 +1,74 @@
-.selector-tray {
+.interactive-enabled .step-selector-tray .selector-tray {
   position: absolute;
-  cursor: pointer;
-  padding: 16px;
-  padding-top: 24px;
+  bottom: 0;
+  left: 0;
+  padding: 0 16px 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  background: #262626;
-  border: 2px solid #707070;
-  border-radius: 8px;
-  text-decoration: none  !important;
-  color: #fff !important;
+  gap: 8px;
+  background: var(--prompt-input-fill);
+  border-radius: 0 0 8px 8px;
   font-weight: bold;
-  left: 318px;
-  bottom: 70px;
 }
 
-.interactive-enabled .asset .selector-tray img {
-  width: 80px;
-  height: auto;
-}
-
-.interactive-enabled .asset .selector-tray .tray-items {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items {
   display: flex;
   flex-direction: row;
-  gap: 16px
+  gap: 14px
 }
 
-.interactive-enabled .asset .selector-tray .tray-items.horizontal {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  height: 80px;
+  width: 80px;
+}
+
+.interactive-enabled .step-selector-tray .selector-tray .tray-items img:hover {
+  outline: 5px solid var(--prompt-highlight-color);
+  outline-offset: -5px;
+}
+
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a img {
+  position: absolute;
+  object-fit: cover;
+  object-position: center;
+  width: 80px;
+  height: auto;
+  border-radius: 3px;
+}
+
+.interactive-enabled .step-selector-tray .selector-tray .tray-items.horizontal {
   flex-direction: column;
 }
 
-.selector-tray .tray-display-img {
-  display: none;
+@media screen and (min-width: 768px) {
+  .interactive-enabled .step-selector-tray .selector-tray {
+    bottom: 70px;
+    left: 318px;
+    padding: 24px 16px 16px 16px;
+    gap: 16px;
+    border-radius: 9px;
+  }
+
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items {
+    gap: 16px
+  }
+
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a {
+    height: 119px;
+    width: 80px;
+  }
+
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a img {
+    width: auto;
+    height: 119px;
+  }
+
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items img:hover {
+    outline: 6px solid var(--prompt-highlight-color);
+    outline-offset: -6px;
+  }
 }
