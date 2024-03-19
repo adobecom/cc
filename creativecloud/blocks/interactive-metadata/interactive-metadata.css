@@ -34,6 +34,11 @@
   left: 0;
 }
 
+.layer .gray-button {
+  text-decoration: none;
+  color: var(--prompt-btn-text);
+}
+
 .gray-button {
   position: absolute;
   box-sizing: border-box;
@@ -46,17 +51,10 @@
   color: var(--prompt-btn-text);
   background: var(--prompt-btn-fill);
   font-weight: bold;
-  text-decoration: none;
-}
-
-.gray-button a {
-  text-decoration: none;
-  color: inherit;
 }
 
 .generate:hover { 
   border: 3px solid #1273E6;
-  text-decoration: none;
 } 
 
 @media screen and (min-width: 600px) {
