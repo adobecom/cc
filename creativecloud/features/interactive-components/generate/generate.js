@@ -8,7 +8,7 @@ export default async function stepInit(data) {
   const config = data.stepConfigs[data.stepIndex];
   const text = config.querySelector('p:not(:has(> picture))');
   const [searchText, btnText, position]= text.innerText.split('|');
-  const svg = config.querySelector('img[src*=svg]');
+  const svg = config.querySelector('img[src*=".svg"]').closest('picture');
   const svgClone = svg.cloneNode(true);
   svg.insertAdjacentElement('afterEnd', svgClone);
   const outerDiv = createTag('div', { class: `layer show-layer layer-${data.stepIndex}` });
