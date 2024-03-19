@@ -5,7 +5,7 @@ export default async function stepInit(data) {
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const pTags = data.stepConfigs[data.stepIndex].querySelectorAll('p');
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const cropCTA = createTag('a', { class: 'gray-button body-s crop-button' });
+  const cropCTA = createTag('a', { class: 'gray-button body-m crop-button' });
   [...pTags].forEach((p) => {
     const pic = p.querySelector('picture');
     if (!pic) {

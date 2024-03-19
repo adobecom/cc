@@ -2,41 +2,15 @@
   position: relative;
 }
 
-.gray-button.start-over {
-  top: 461px;
-  left: 190px;
-  height: 64px;
-  align-items: center;
-  gap: 16px;
-  padding: 0 24px;
+.step-start-over .gray-button.start-over {
+  position: relative;
+  padding-right: 24px;
 }
 
-.gray-button.start-over:hover {
-  outline: 3px solid #1273E6;
-  color: var(--color-white);
-  text-decoration: none;
-}
-
-/* mobile */
-@media screen and (max-width: 600px) {
-  .gray-button.start-over {
-    position: relative;
-    top: 0;
-    left:0;
-    height: 48px;
-    margin: auto;
-  }
-
-  .interactive-enabled .mobile-genfill.show-layer {
-    position: relative;
-    background: #272928;
-    display: flex;
-    align-items: center;
-    height: 60px;
-    border-radius: 0px 0px 8px 8px;
-  }
-
-  .interactive-enabled .mobile-genfill.layer:not(.show-layer) {
-    display: none;
+@media screen and (min-width: 1200px) {
+  .step-start-over .gray-button.start-over {
+    position: absolute;
+    left: 194px;
+    bottom: 32px;
   }
 }

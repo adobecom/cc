@@ -1,23 +1,6 @@
-.interactive-enabled .step-generate .layer {
-  display: none;
-}
-
-.interactive-enabled .step-generate .layer.show-layer {
-  position: relative;
-  background: #272928;
-  display: flex;
-  align-items: center;
-  height: 60px;
-  border-radius: 0px 0px 8px 8px;
-  width: 300px;
-}
-
 .genfill-prompt {
-  position: relative;
-  top: 0;
-  left:0;
-  width: 290px;
-  height: 48px;
+  width: 100%;
+  height: auto;
   margin: auto;
   box-sizing: border-box;
   display: flex;
@@ -43,14 +26,7 @@
   line-height: 26px;
 }
 
-.generate img {
-  width: 24px !important; 
-  height: 24px !important;
-  min-height: 20px !important;
-}
-
-.generate {
-  position: relative;
+.step-generate .gray-button.generate {
   flex: 1;
   gap: 16px;
   padding: 0 24px;
@@ -62,6 +38,7 @@
 @media screen and (min-width: 1200px) {
   .interactive-enabled .step-generate .layer.show-layer {
     position: absolute;
+    background: none;
   }
 
   .genfill-prompt {
