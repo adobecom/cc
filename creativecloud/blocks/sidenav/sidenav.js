@@ -128,6 +128,7 @@ function appendResources(rootNav, resourceLink) {
 
 export default async function init(el) {
   const libs = getLibs();
+  const rows = Array.from(el.children);
   await Promise.all([
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
     import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
@@ -135,17 +136,19 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/checkbox.js`),
     import(`${libs}/features/spectrum-web-components/dist/dialog.js`),
   ]);
-
-  const title = el.querySelector('h2')?.textContent.trim();
+  const mainRow = rows[0];
+  const title = mainRow?.querySelector('h2')?.textContent.trim();
   const rootNav = createTag('merch-sidenav', { title });
-  const searchText = el.querySelector('p > strong')?.textContent.trim();
-  const typeText = el.querySelector('p > em')?.textContent.trim();
+  const searchText = mainRow?.querySelector('p > strong')?.textContent.trim();
+  const typeText = mainRow?.querySelector('p > em')?.textContent.trim();
   appendSearch(rootNav, searchText);
   // eslint-disable-next-line prefer-const
-  let [endpoint, resourcesLink] = el.querySelectorAll('a');
+  const resourcesLink = mainRow?.querySelector('a');
+  const categoryRow = rows.length > 1 ? rows[1] : null;
+  let endpoint = categoryRow?.querySelector('a');
   if (endpoint) {
     endpoint = localizeLink(endpoint.textContent.trim(), null, true);
-    const explicitCategories = el.querySelector('ul');
+    const explicitCategories = categoryRow?.querySelector('ul');
     await appendFilters(rootNav, endpoint, explicitCategories, typeText);
   }
   if (resourcesLink) {
