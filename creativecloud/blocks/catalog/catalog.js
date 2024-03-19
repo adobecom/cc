@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 
-// for test purposes.
+// to report to feds team, helps with TBT.
 loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
 
 /** container block */
