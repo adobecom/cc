@@ -25,7 +25,8 @@ function selectorTrayWithImgs(data, config, createTag) {
     imgs[idx - 1].classList.add(`display-idx-${idx}`);
     const a = createTag('a', {}, timg);
     trayItems.append(a);
-    a.addEventListener('click', (e) => {
+    a.addEventListener('click', async (e) => {
+      await data.openForExecution;
       const aTag = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       setForegroundImage(aTag, config, data.target);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));

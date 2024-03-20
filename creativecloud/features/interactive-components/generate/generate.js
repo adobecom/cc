@@ -8,20 +8,19 @@ export default async function stepInit(data) {
   const config = data.stepConfigs[data.stepIndex];
   const text = config.textContent.trim();
   const [searchText, btnText, position] = text.split('|');
-  const svg = config.querySelector('img[src*=".svg"]').closest('picture');
-  const svgClone = svg.cloneNode(true);
-  svg.insertAdjacentElement('afterEnd', svgClone);
+  const svg = config.querySelector('img[src*=".svg"]')?.closest('picture');
   const outerDiv = createTag('div', { class: `layer show-layer layer-${data.stepIndex}` });
   if (position) outerDiv.classList.add(`generate-${position.toLowerCase().trim()}`);
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
   const generateBtn = createTag('a', { class: `gray-button generate-button next-step` }, `${btnText}`);
-  generateBtn.prepend(svg);
+  if (svg) generateBtn.prepend(svg);
   genfillDiv.appendChild(searchBar);
   genfillDiv.appendChild(generateBtn);
   outerDiv.append(genfillDiv);
   data.target.append(outerDiv);
-  generateBtn.addEventListener('click', (e) => {
+  generateBtn.addEventListener('click', async (e) => {
+    await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });
 }

@@ -18,7 +18,8 @@ export default async function stepInit(data) {
     if (isSVG) startOverCTA.prepend(picClone);
     else data.target.querySelector('picture').replaceWith(picClone);
   });
-  startOverCTA.addEventListener('click', (e) => {
+  startOverCTA.addEventListener('click', async (e) => {
+    await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });
   layer.append(startOverCTA);

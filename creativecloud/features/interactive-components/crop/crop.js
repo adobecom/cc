@@ -21,7 +21,8 @@ export default async function stepInit(data) {
     }
     else data.target.querySelector('picture').replaceWith(picClone);
   });
-  cropCTA.addEventListener('click', (e) => {
+  cropCTA.addEventListener('click', async (e) => {
+    await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });
   layer.append(cropCTA);

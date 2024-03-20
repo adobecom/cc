@@ -124,6 +124,15 @@ function addAnimationToLayer(ia) {
   if (ia.querySelector('.layer .gray-button')) addBtnAnimation(ia);
 }
 
+async function renderLayer(stepInfo) {
+  let pResolve = null;
+  stepInfo.openForExecution = new Promise( function(resolve, reject) { pResolve = resolve });
+  stepInfo.stepIndex = getNextStepIndex(stepInfo);
+  stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
+  await implementWorkflow(stepInfo.el, stepInfo);
+  pResolve();
+}
+
 export default async function init(el) {
   const workflow = getWorkFlowInformation(el);
   if (!workflow.length) return;
@@ -132,20 +141,20 @@ export default async function init(el) {
   const stepInit = await loadJSandCSS(workflow[0]);
   const stepInfo = {
     el,
-    stepIndex: 0,
+    stepIndex: -1,
     stepName: workflow[0],
     stepList: workflow,
     stepCount: workflow.length,
     stepConfigs: el.querySelectorAll(':scope > div'),
     handleImageTransition,
+    nextStepEvent: 'cc:interactive-switch',
     stepInit,
     target: targetAsset,
+    openForExecution: true,
   };
-  await implementWorkflow(el, stepInfo);
+  await renderLayer(stepInfo);
   addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {
-    stepInfo.stepIndex = getNextStepIndex(stepInfo);
-    stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-    await implementWorkflow(el, stepInfo);
+    await renderLayer(stepInfo);
   });
 }
