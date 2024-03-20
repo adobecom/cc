@@ -116,13 +116,19 @@ async function addBtnAnimation(ia) {
   [...btns].forEach(btn => {
     const circle = createTag('div', { class: 'ia-circle' });
     btn.append(circle);
-    circle.style.animation = 'circle-in 500ms ease-out 500ms, circle-out 400ms ease-out 800ms';
-    btn.style.animation = 'outline 800ms ease-out 500ms, fill-in 1500ms ease-in-out 800ms';
   });
 }
 
 function addAnimationToLayer(ia) {
   if (ia.querySelector('.layer .gray-button')) addBtnAnimation(ia);
+}
+
+function removeAnimation(ia) {
+  const btn = ia.querySelector('.layer .gray-button')
+  if (btn) {
+    btn.querySelector('.ia-circle').style.animation = 'none';
+    btn.style.animation = 'none';
+  }
 }
 
 export default async function init(el) {
@@ -149,6 +155,7 @@ export default async function init(el) {
   addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {
     console.log('mathuria new event');
+    removeAnimation(targetAsset);
     stepInfo.stepIndex = getNextStepIndex(stepInfo);
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
     await implementWorkflow(el, stepInfo);

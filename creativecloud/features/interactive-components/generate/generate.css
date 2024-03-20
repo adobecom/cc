@@ -36,6 +36,8 @@
   border-radius: 0 8px 8px 0;
   font-size: var(--type-body-m-size); 
   line-height: var(--type-body-m-lh);
+  padding: 0 var(--spacing-xs);
+  width: 121px;
 }
 
 @media screen and (min-width: 768px) {
