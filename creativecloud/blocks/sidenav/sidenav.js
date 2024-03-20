@@ -129,6 +129,12 @@ function appendResources(rootNav, resourceLink) {
 export default async function init(el) {
   const libs = getLibs();
   const rows = Array.from(el.children);
+  if (!rows || rows.length === 0) {
+    return;
+  }
+  const mainRow = rows[0];
+  const categoryRow = rows.length > 1 ? rows[1] : null;
+
   await Promise.all([
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
     import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
@@ -136,7 +142,6 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/checkbox.js`),
     import(`${libs}/features/spectrum-web-components/dist/dialog.js`),
   ]);
-  const mainRow = rows[0];
   const title = mainRow?.querySelector('h2')?.textContent.trim();
   const rootNav = createTag('merch-sidenav', { title });
   const searchText = mainRow?.querySelector('p > strong')?.textContent.trim();
@@ -144,7 +149,6 @@ export default async function init(el) {
   appendSearch(rootNav, searchText);
   // eslint-disable-next-line prefer-const
   const resourcesLink = mainRow?.querySelector('a');
-  const categoryRow = rows.length > 1 ? rows[1] : null;
   let endpoint = categoryRow?.querySelector('a');
   if (endpoint) {
     endpoint = localizeLink(endpoint.textContent.trim(), null, true);
