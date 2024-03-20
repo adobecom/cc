@@ -139,9 +139,13 @@ export default async function init(el) {
     stepConfigs: el.querySelectorAll(':scope > div'),
     handleImageTransition,
     stepInit,
-    nextStepEvent: 'cc:interactive-switch',
     target: targetAsset,
   };
   await implementWorkflow(el, stepInfo);
   addAnimationToLayer(targetAsset);
+  el.addEventListener('cc:interactive-switch', async (e) => {
+    stepInfo.stepIndex = getNextStepIndex(stepInfo);
+    stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
+    await implementWorkflow(el, stepInfo);
+  });
 }
