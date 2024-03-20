@@ -109,12 +109,19 @@ function getWorkFlowInformation(el) {
   return [];
 }
 
-// function addAnimationToLayer() {
-    // const layerTypeIsBtn = fg.querySelector('.layer .gray-btn');
-    // const layerTypeIsSlider = fg.querySelector('.layer .gray-btn');
-    // if (layerTypeIsBtn) addBtnAnimation
-    // if (layerTypeIsSlider) addSlider
-// }
+async function addBtnAnimation(ia) {
+  const miloLibs = getLibs('/libs');
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+  const btns = ia.querySelectorAll('.layer .gray-button');
+  [...btns].forEach(btn => {
+    const circle = createTag('div', { class: 'ia-circle' });
+    btn.append(circle);
+  });
+}
+
+function addAnimationToLayer(ia) {
+  if (ia.querySelector('.layer .gray-button')) addBtnAnimation(ia);
+}
 
 export default async function init(el) {
   const workflow = getWorkFlowInformation(el);
@@ -137,7 +144,7 @@ export default async function init(el) {
     target: targetAsset,
   };
   await implementWorkflow(el, stepInfo);
-  // Add animation to cta
+  addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {
     console.log('mathuria new event');
     stepInfo.stepIndex = getNextStepIndex(stepInfo);

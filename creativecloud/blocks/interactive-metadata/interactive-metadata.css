@@ -57,6 +57,58 @@
   background: var(--prompt-btn-fill);
   font-weight: bold;
   align-items: center;
+  animation: outline 800ms ease-out 500ms, fill-in 1500ms ease-in-out 800ms;
+}
+
+.interactive-enabled .layer .gray-button .ia-circle {
+  position: absolute;
+  left: 40%;
+  margin: 0 auto;
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  border: 8px solid var(--prompt-highlight-color);
+  border-radius: 50%;
+  opacity: 0;
+  animation: circle-in 500ms ease-out 500ms, circle-out 400ms ease-out 800ms;
+}
+
+@keyframes circle-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes circle-out {
+  from {
+  	transform: scale(100%);
+    opacity: 0.5;
+  }
+  to {
+  	transform: scale(50%);
+    opacity: 1;
+  }
+}
+
+@keyframes outline {
+  from {
+    border: none;
+  }
+  to {
+    border: 3px solid var(--prompt-highlight-color);
+  }
+}
+
+@keyframes fill-in {
+  from {
+  	background: var(--prompt-btn-fill);
+  }
+  to {
+  	background: var(--prompt-highlight-color);
+  }
 }
 
 .interactive-enabled .layer .gray-button img {
