@@ -6,8 +6,8 @@ export default async function stepInit(data) {
   data.target.classList.add('step-generate');
   data.handleImageTransition(data);
   const config = data.stepConfigs[data.stepIndex];
-  const text = config.querySelector('p:not(:has(> picture))');
-  const [searchText, btnText, position]= text.innerText.split('|');
+  const text = config.textContent.trim();
+  const [searchText, btnText, position] = text.split('|');
   const svg = config.querySelector('img[src*=".svg"]').closest('picture');
   const svgClone = svg.cloneNode(true);
   svg.insertAdjacentElement('afterEnd', svgClone);
