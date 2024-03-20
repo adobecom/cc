@@ -116,6 +116,8 @@ async function addBtnAnimation(ia) {
   [...btns].forEach(btn => {
     const circle = createTag('div', { class: 'ia-circle' });
     btn.append(circle);
+    circle.style.animation = 'circle-in 500ms ease-out 500ms, circle-out 400ms ease-out 800ms';
+    btn.style.animation = 'outline 800ms ease-out 500ms, fill-in 1500ms ease-in-out 800ms';
   });
 }
 

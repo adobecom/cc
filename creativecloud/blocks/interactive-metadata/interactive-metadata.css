@@ -57,7 +57,9 @@
   background: var(--prompt-btn-fill);
   font-weight: bold;
   align-items: center;
-  animation: outline 800ms ease-out 500ms, fill-in 1500ms ease-in-out 800ms;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .interactive-enabled .layer .gray-button .ia-circle {
@@ -70,7 +72,6 @@
   border: 8px solid var(--prompt-highlight-color);
   border-radius: 50%;
   opacity: 0;
-  animation: circle-in 500ms ease-out 500ms, circle-out 400ms ease-out 800ms;
 }
 
 @keyframes circle-in {
@@ -95,10 +96,10 @@
 
 @keyframes outline {
   from {
-    border: none;
+    border-color: transparent;
   }
   to {
-    border: 3px solid var(--prompt-highlight-color);
+    border-color: var(--prompt-highlight-color);
   }
 }
 
