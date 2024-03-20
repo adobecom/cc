@@ -73,5 +73,6 @@
     padding: 0 24px;
     font-size: var(--type-body-xl-size); 
     line-height: var(--type-body-xl-lh);
+    width: auto;
   }
 }
