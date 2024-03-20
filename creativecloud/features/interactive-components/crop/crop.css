@@ -29,6 +29,12 @@
     background-color: var(--prompt-input-fill);
   }
 
+
+  .interactive-enabled.light .step-crop .layer .gray-button.crop-button .crop-icon-container {
+    border: 3px solid var(--prompt-btn-fill-light);
+    background-color: var(--prompt-btn-fill-light);
+  }
+
   .interactive-enabled .step-crop .layer .gray-button.crop-button img {
     width: 34px;
     height: auto;

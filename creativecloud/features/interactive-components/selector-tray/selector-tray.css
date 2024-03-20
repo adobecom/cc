@@ -11,6 +11,10 @@
   font-weight: bold;
 }
 
+.interactive-enabled.light .step-selector-tray .selector-tray {
+  background: var(--prompt-btn-fill-light);
+}
+
 .interactive-enabled .step-selector-tray .selector-tray .tray-items {
   display: flex;
   flex-direction: row;

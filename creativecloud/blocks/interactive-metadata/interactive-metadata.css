@@ -7,6 +7,8 @@
   --prompt-btn-text: #FFFFFF;
   --prompt-highlight-color: #1473E6;
   --layer-background-fill: #272928;
+  --prompt-btn-fill-light: #ffff;
+  --prompt-text-color-light: #272928;
 }
 
 .interactive-metadata {
@@ -60,6 +62,11 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
+}
+
+.interactive-enabled.light .layer .gray-button {
+  color: var(--prompt-text-color-light);
+  background: var(--prompt-btn-fill-light);
 }
 
 .interactive-enabled .layer .gray-button .ia-circle {
