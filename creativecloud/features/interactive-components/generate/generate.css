@@ -56,7 +56,7 @@
     box-shadow: 0 10px 10px var(--color-black);
   }
 
-  .interactive-enabled .step-generate.generate-right .generate-prompt-button {
+  .interactive-enabled .step-generate .generate-right .generate-prompt-button {
     left: 285px;
     bottom: 205px;
   }
