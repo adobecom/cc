@@ -15,16 +15,17 @@
 .interactive-enabled .step-generate .generate-prompt-button .generate-text {
   background-color: var(--prompt-input-fill);
   color: var(--prompt-text-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
   height: 39px;
   width: 159px;
   min-width: 159px;
   max-width: 159px;
+  line-height: 39px;
   border-radius: 3px 0 0 3px;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 
 .interactive-enabled.light .step-generate .generate-prompt-button .generate-text {
@@ -65,8 +66,9 @@
     width: 183px;
     min-width: 183px;
     max-width: 183px;
+    line-height: 52px;
     padding: 0 16px;
-    justify-content: flex-start;
+    text-align: start;
   }
 
   .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
