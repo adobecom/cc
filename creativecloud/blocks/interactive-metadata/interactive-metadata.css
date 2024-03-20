@@ -116,6 +116,7 @@
   width: 24px;
   height: auto;
   min-height:auto;
+  border-radius: 0;
 }
 
 .interactive-enabled .layer .gray-button:hover { 
@@ -143,6 +144,7 @@
     width: 34px;
     height: auto;
     min-height:auto;
+    border-radius: 0;
   }
 
   .interactive-enabled .asset img {

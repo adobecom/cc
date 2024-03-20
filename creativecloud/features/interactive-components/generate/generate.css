@@ -34,6 +34,8 @@
   height: 48px;
   gap: 8px;
   border-radius: 0 8px 8px 0;
+  font-size: var(--type-body-m-size); 
+  line-height: var(--type-body-m-lh);
 }
 
 @media screen and (min-width: 768px) {
@@ -67,5 +69,7 @@
     height: 64px;
     gap: 16px;
     padding: 0 24px;
+    font-size: var(--type-body-xl-size); 
+    line-height: var(--type-body-xl-lh);
   }
 }
