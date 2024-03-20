@@ -55,6 +55,7 @@
     padding: 24px 16px 16px 16px;
     gap: 16px;
     border-radius: 9px;
+    box-shadow: 0 10px 10px var(--color-black);
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-items {
