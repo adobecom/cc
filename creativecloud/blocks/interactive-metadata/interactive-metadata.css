@@ -16,12 +16,11 @@
 }
 
 .interactive-enabled .layer {
-  opacity: 0;
+  display: none;
 }
 
 .interactive-enabled .layer.show-layer {
   display: block;
-  opacity: 1;
   position: absolute;
   top: auto;
   bottom: 0;
@@ -150,7 +149,7 @@
   }
 
   .interactive-enabled .layer .gray-button {
-    box-shadow: 0 10px 10px var(--color-black);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
   }
   
   .interactive-enabled .layer .gray-button picture,
