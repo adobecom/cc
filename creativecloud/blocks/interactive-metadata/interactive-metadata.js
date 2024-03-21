@@ -37,7 +37,7 @@ function handleLCPImage(stepInfo) {
   stepInfo.stepConfigs[0].querySelector(':scope > div').prepend(picClone);
 }
 
-function handleLayerDisplay(stepInfo) {
+async function handleLayerDisplay(stepInfo) {
   handleImageTransition(stepInfo);
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
@@ -46,6 +46,8 @@ function handleLayerDisplay(stepInfo) {
   stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
   currLayer.classList.add('show-layer');
+  const miloLibs = getLibs('/libs');
+  const { decorateDefaultLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
 }
 
 async function loadJSandCSS(stepName) {
@@ -61,14 +63,14 @@ async function loadJSandCSS(stepName) {
 async function implementWorkflow(el, stepInfo) {
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
-    handleLayerDisplay(stepInfo);
-    handleNextStep(stepInfo);
+    await handleLayerDisplay(stepInfo);
+    await handleNextStep(stepInfo);
     return;
   }
   await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
   handleLCPImage(stepInfo);
-  handleLayerDisplay(stepInfo);
+  await handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo);
 }
 
