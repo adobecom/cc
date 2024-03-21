@@ -6,7 +6,7 @@ export default async function stepInit(data) {
   data.target.classList.add('step-crop');
   const pTags = data.stepConfigs[data.stepIndex].querySelectorAll('p');
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-xl next-step' });
+  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-xl next-step', href: "#" });
   [...pTags].forEach((p) => {
     const pic = p.querySelector('picture');
     if (!pic) {

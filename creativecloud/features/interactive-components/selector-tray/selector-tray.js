@@ -24,7 +24,7 @@ function selectorTrayWithImgs(data, config, createTag) {
     timg.classList.add(`thumbnail-idx-${idx}`);
     imgs[idx - 1].classList.add(`display-idx-${idx}`);
     const trayLabel = createTag('div', { class: 'tray-item-label' }, `Generate variant ${timg.alt}`);
-    const a = createTag('a', {}, timg);
+    const a = createTag('a', { href: "#" }, timg);
     a.append(trayLabel);
     trayItems.append(a);
     a.addEventListener('click', async (e) => {

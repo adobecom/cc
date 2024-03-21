@@ -13,7 +13,7 @@ export default async function stepInit(data) {
   if (position) outerDiv.classList.add(`generate-${position.toLowerCase().trim()}`);
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
-  const generateBtn = createTag('a', { class: `gray-button generate-button next-step` }, `${btnText}`);
+  const generateBtn = createTag('a', { class: `gray-button generate-button next-step`, href: "#" }, `${btnText}`);
   if (svg) generateBtn.prepend(svg);
   genfillDiv.appendChild(searchBar);
   genfillDiv.appendChild(generateBtn);
