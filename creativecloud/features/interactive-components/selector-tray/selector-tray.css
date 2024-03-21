@@ -49,7 +49,7 @@
 
 .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img img {
   position: absolute;
-  width: auto;
+  min-width: 80px;
   min-height: 80px;
   top: 50%;
   left: 50%;
@@ -78,7 +78,7 @@
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img img {
-    width: auto;
+    min-width: 80px;
     min-height: 120px;
   }
 
