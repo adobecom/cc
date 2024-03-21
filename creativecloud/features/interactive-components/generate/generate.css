@@ -3,7 +3,6 @@
   height: 36px;
   background-color: var(--prompt-text-border);
   margin: auto;
-  margin-bottom: 9px;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -13,16 +12,17 @@
 }
 
 .interactive-enabled .step-generate .generate-prompt-button .generate-text {
+  box-sizing: border-box;
+  padding: 0 var(--spacing-xs);
   background-color: var(--prompt-input-fill);
   color: var(--prompt-text-color);
   display: flex;
   align-items: center;
-  justify-content: center;
   height: 39px;
   width: 159px;
   min-width: 159px;
   max-width: 159px;
-  border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px; /* check this */
   white-space: nowrap;
   overflow: hidden;
 }
@@ -34,8 +34,6 @@
   height: 48px;
   gap: 8px;
   border-radius: 0 8px 8px 0;
-  font-size: var(--type-body-m-size); 
-  line-height: var(--type-body-m-lh);
   padding: 0 var(--spacing-xs);
   width: 121px;
 }
@@ -47,7 +45,7 @@
     padding: 0 6px;
     gap: 6px;
     margin: 0;
-    border-radius: 8px 0 0 8px;
+    border-radius: 8px;
     position: absolute;
     left: 83px;
     bottom: 64px;
@@ -71,8 +69,6 @@
     height: 64px;
     gap: 16px;
     padding: 0 24px;
-    font-size: var(--type-body-xl-size); 
-    line-height: var(--type-body-xl-lh);
     width: auto;
   }
 }

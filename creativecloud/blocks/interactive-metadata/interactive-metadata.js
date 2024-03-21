@@ -78,7 +78,7 @@ function getTargetArea(el) {
   const previousSection = metadataSec.previousElementSibling;
   const tmb = previousSection.querySelector('.marquee, .aside');
   tmb?.classList.add('interactive-enabled');
-  return tmb.querySelector('.asset');
+  return tmb.querySelector('.asset, .image');
 }
 
 function getWorkFlowInformation(el) {
