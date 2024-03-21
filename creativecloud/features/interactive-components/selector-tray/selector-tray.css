@@ -21,35 +21,37 @@
   gap: 14px
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a {
-  box-sizing: border-box;
+.interactive-enabled .step-selector-tray .selector-tray .tray-items.horizontal {
+  flex-direction: column;
+}
+
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img {
   position: relative;
-  overflow: hidden;
   display: block;
   height: 80px;
   width: 80px;
+  overflow: hidden;
+  border-radius: 3px;
+  /* border: 5px solid transparent; */
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a .tray-item-label {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:hover {
+  /* border: 5px solid var(--prompt-highlight-color); */
+}
+
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .tray-item-label {
   display: none;
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items img:hover {
-  outline: 5px solid var(--prompt-highlight-color);
-  outline-offset: -5px;
-}
-
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a img {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img img {
   position: absolute;
-  object-fit: cover;
-  object-position: center;
-  width: 80px;
-  height: auto;
-  border-radius: 3px;
-}
-
-.interactive-enabled .step-selector-tray .selector-tray .tray-items.horizontal {
-  flex-direction: column;
+  width: auto;
+  height: 80px;
+  min-height: 80px;
+  max-height: 80px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media screen and (min-width: 768px) {
@@ -66,18 +68,20 @@
     gap: 16px
   }
 
-  .interactive-enabled .step-selector-tray .selector-tray .tray-items a {
-    height: 119px;
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img {
     width: 80px;
-  }
-
-  .interactive-enabled .step-selector-tray .selector-tray .tray-items a img {
-    width: auto;
     height: 119px;
+    min-height: 119px;
   }
 
-  .interactive-enabled .step-selector-tray .selector-tray .tray-items img:hover {
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:hover {
     outline: 6px solid var(--prompt-highlight-color);
     outline-offset: -6px;
+  }
+
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img img {
+    width: auto;
+    height: 119px;
+    min-height: 119px;
   }
 }

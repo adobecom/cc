@@ -12,8 +12,7 @@
 }
 
 .interactive-metadata {
-  opacity: 0;
-  height: 0;
+  display: none;
 }
 
 .interactive-enabled .layer {
