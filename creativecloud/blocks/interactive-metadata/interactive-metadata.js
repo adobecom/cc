@@ -45,9 +45,10 @@ async function handleLayerDisplay(stepInfo) {
   prevLayer?.classList.remove('show-layer');
   stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
-  currLayer.classList.add('show-layer');
   const miloLibs = getLibs('/libs');
   const { decorateDefaultLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
+  await decorateDefaultLinkAnalytics(currLayer);
+  currLayer.classList.add('show-layer');
 }
 
 async function loadJSandCSS(stepName) {
