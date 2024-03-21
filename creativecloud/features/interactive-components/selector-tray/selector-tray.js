@@ -13,7 +13,6 @@ function setForegroundImage(a, config, target) {
 }
 
 function selectorTrayWithImgs(data, config, createTag) {
-  data.handleImageTransition(data);
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
   const isHorizontal = config.querySelector('ul > li').querySelectorAll('img[src*="media_"')?.length > 2;
@@ -23,9 +22,12 @@ function selectorTrayWithImgs(data, config, createTag) {
     if (idx%2 === 0) return;
     timg.classList.add(`thumbnail-idx-${idx}`);
     imgs[idx - 1].classList.add(`display-idx-${idx}`);
-    const a = createTag('a', {}, timg);
+    const trayLabel = createTag('div', { class: 'tray-item-label' }, `Generate variant ${timg.alt}`);
+    const a = createTag('a', { class: 'tray-thumbnail-img', href: "#" }, timg);
+    a.append(trayLabel);
     trayItems.append(a);
-    a.addEventListener('click', (e) => {
+    a.addEventListener('click', async (e) => {
+      await data.openForExecution;
       const aTag = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       setForegroundImage(aTag, config, data.target);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
@@ -39,6 +41,7 @@ export default async function stepInit(data) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   data.target.classList.add('step-selector-tray');
+  data.handleImageTransition(data);
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const title = config.querySelector('p:first-child');

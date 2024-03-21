@@ -7,6 +7,8 @@
   --prompt-btn-text: #FFFFFF;
   --prompt-highlight-color: #1473E6;
   --layer-background-fill: #272928;
+  --prompt-btn-fill-light: #ffff;
+  --prompt-text-color-light: #272928;
 }
 
 .interactive-metadata {
@@ -14,6 +16,7 @@
 }
 
 .interactive-enabled .layer {
+  /* opacity: 0; */
   display: none;
 }
 
@@ -131,6 +134,7 @@
 .interactive-enabled .foreground.container .image .layer .gray-button img {
   width: 24px;
   height: 24px;
+  min-height: 24px;
   max-width: 24px;
   border-radius: 0;
 }
@@ -166,6 +170,7 @@
   .interactive-enabled .foreground.container .image .layer .gray-button img {
     width: 34px;
     height: 34px;
+    min-height: 34px;
     max-width: 34px;
     border-radius: 0;
   }

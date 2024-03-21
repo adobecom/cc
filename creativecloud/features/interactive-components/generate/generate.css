@@ -1,14 +1,15 @@
 .interactive-enabled .step-generate .generate-prompt-button {
-  width: 284px;
+  width: 290px;
   height: 36px;
   background-color: var(--prompt-text-border);
   margin: auto;
   font-weight: bold;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-radius: 8px;
-  padding: 6px 0 6px 6px;
-  gap: 6px;
+  padding: 5px 0 5px 5px;
+  gap: 5px;
 }
 
 .interactive-enabled .step-generate .generate-prompt-button .generate-text {
@@ -25,6 +26,13 @@
   border-radius: 3px 0 0 3px; /* check this */
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  padding-inline-start: 16px;
+}
+
+.interactive-enabled.light .step-generate .generate-prompt-button .generate-text {
+  background-color: var(--prompt-btn-fill-light);
+  color: var(--prompt-text-color-light);
 }
 
 .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
@@ -32,7 +40,7 @@
   align-items: center;
   justify-content: center;
   height: 48px;
-  gap: 8px;
+  gap: 2px;
   border-radius: 0 8px 8px 0;
   padding: 0 var(--spacing-xs);
   width: 121px;
@@ -49,9 +57,10 @@
     position: absolute;
     left: 83px;
     bottom: 64px;
+    /* box-shadow: 0 10px 10px var(--color-black); */
   }
 
-  .interactive-enabled .step-generate.generate-right .generate-prompt-button {
+  .interactive-enabled .step-generate .generate-right .generate-prompt-button {
     left: 285px;
     bottom: 205px;
   }
@@ -61,8 +70,10 @@
     width: 183px;
     min-width: 183px;
     max-width: 183px;
+    line-height: 52px;
     padding: 0 16px;
-    justify-content: flex-start;
+    text-align: start;
+    font-size: 21px;
   }
 
   .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {

@@ -10,34 +10,37 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
-async function handleNextStep(stepInfo) {
-  const eagerLoad = (lcpImg) => {
-    lcpImg?.setAttribute('loading', 'eager');
-    lcpImg?.setAttribute('fetchpriority', 'high');
-  };
+function eagerLoad(img) {
+  img?.setAttribute('loading', 'eager');
+  img?.setAttribute('fetchpriority', 'high');
+}
+
+async function handleNextStep(stepInfo, layerExists) {
   const nextStepIndex = getNextStepIndex(stepInfo);
-  stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
   const nextImgs = stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img');
-  [...nextImgs].forEach(eagerLoad);
+  [...nextImgs].forEach( (nextImg) => {
+    if (layerExists && nextImg.src.includes('.svg')) return;
+    eagerLoad(nextImg);
+  });
+  stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
 }
 
 function handleImageTransition(stepInfo) {
   const stepPic = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('picture');
-  const hasStepPic = !stepPic.querySelector('img').src.includes('.svg');
-  if (!hasStepPic) return;
+  if (!stepPic || stepPic.querySelector('img[src*=".svg"]')) return;
   const stepPicClone = stepPic.cloneNode(true);
   stepPic.insertAdjacentElement('afterEnd', stepPicClone);
   stepInfo.target.querySelector('picture').replaceWith(stepPic);
 }
 
-function handleLCPImage(stepInfo) {
+function handleFirstDisplayImage(stepInfo) {
   if (stepInfo.stepIndex !== 0) return;
   const pic = stepInfo.target.querySelector('picture');
   const picClone = pic.cloneNode(true);
-  stepInfo.stepConfigs[0].querySelector('p').parentElement.prepend(picClone);
+  stepInfo.stepConfigs[0].querySelector(':scope > div').prepend(picClone);
 }
 
-function handleLayerDisplay(stepInfo) {
+async function handleLayerDisplay(stepInfo) {
   handleImageTransition(stepInfo);
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
@@ -45,6 +48,9 @@ function handleLayerDisplay(stepInfo) {
   prevLayer?.classList.remove('show-layer');
   stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
+  const miloLibs = getLibs('/libs');
+  const { decorateDefaultLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
+  await decorateDefaultLinkAnalytics(currLayer);
   currLayer.classList.add('show-layer');
 }
 
@@ -59,18 +65,17 @@ async function loadJSandCSS(stepName) {
 }
 
 async function implementWorkflow(el, stepInfo) {
-  console.log(stepInfo);
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
-    handleLayerDisplay(stepInfo);
-    handleNextStep(stepInfo);
+    await handleLayerDisplay(stepInfo);
+    await handleNextStep(stepInfo, true);
     return;
   }
   await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
-  handleLCPImage(stepInfo);
-  handleLayerDisplay(stepInfo);
-  await handleNextStep(stepInfo);
+  handleFirstDisplayImage(stepInfo);
+  await handleLayerDisplay(stepInfo);
+  await handleNextStep(stepInfo, false);
 }
 
 function getTargetArea(el) {
@@ -123,6 +128,15 @@ function addAnimationToLayer(ia) {
   if (ia.querySelector('.layer .gray-button')) addBtnAnimation(ia);
 }
 
+async function renderLayer(stepInfo) {
+  let pResolve = null;
+  stepInfo.openForExecution = new Promise( function(resolve, reject) { pResolve = resolve });
+  stepInfo.stepIndex = getNextStepIndex(stepInfo);
+  stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
+  await implementWorkflow(stepInfo.el, stepInfo);
+  pResolve();
+}
+
 function removeAnimation(ia) {
   const btn = ia.querySelector('.layer .gray-button')
   if (btn) {
@@ -133,31 +147,26 @@ function removeAnimation(ia) {
 
 export default async function init(el) {
   const workflow = getWorkFlowInformation(el);
-  console.log(workflow);
   if (!workflow.length) return;
   const targetAsset = getTargetArea(el);
-  console.log(targetAsset);
   if (!targetAsset) return;
-  const stepInit = await loadJSandCSS(workflow[0]);
   const stepInfo = {
     el,
-    stepIndex: 0,
+    stepIndex: -1,
     stepName: workflow[0],
     stepList: workflow,
     stepCount: workflow.length,
     stepConfigs: el.querySelectorAll(':scope > div'),
     handleImageTransition,
-    stepInit,
     nextStepEvent: 'cc:interactive-switch',
     target: targetAsset,
+    openForExecution: true,
   };
-  await implementWorkflow(el, stepInfo);
+  await handleNextStep(stepInfo, false);
+  await renderLayer(stepInfo);
   addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {
-    console.log('mathuria new event');
     removeAnimation(targetAsset);
-    stepInfo.stepIndex = getNextStepIndex(stepInfo);
-    stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-    await implementWorkflow(el, stepInfo);
+    await renderLayer(stepInfo);
   });
 }
