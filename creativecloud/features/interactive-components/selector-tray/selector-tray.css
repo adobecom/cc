@@ -30,6 +30,10 @@
   width: 80px;
 }
 
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a .tray-item-label {
+  display: none;
+}
+
 .interactive-enabled .step-selector-tray .selector-tray .tray-items img:hover {
   outline: 5px solid var(--prompt-highlight-color);
   outline-offset: -5px;
