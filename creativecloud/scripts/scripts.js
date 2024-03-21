@@ -162,14 +162,6 @@ const CONFIG = {
  * ------------------------------------------------------------
  */
 
-const observer = new PerformanceObserver((list) => {
-  list.getEntries().forEach((entry) => {
-    console.log(entry);
-  });
-});
-
-observer.observe({ type: 'longtask', buffered: true });
-
 const miloLibs = setLibs(LIBS);
 const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
 setConfig({ ...CONFIG, miloLibs });
