@@ -34,7 +34,7 @@ function handleLCPImage(stepInfo) {
   if (stepInfo.stepIndex !== 0) return;
   const pic = stepInfo.target.querySelector('picture');
   const picClone = pic.cloneNode(true);
-  stepInfo.stepConfigs[0].querySelector('p').parentElement.prepend(picClone);
+  stepInfo.stepConfigs[0].querySelector(':scope > div').prepend(picClone);
 }
 
 function handleLayerDisplay(stepInfo) {
