@@ -17,15 +17,15 @@
   color: var(--prompt-text-color);
   display: inline-block;
   height: 39px;
-  width: 159px;
-  min-width: 159px;
-  max-width: 159px;
+  width: 143px;
+  min-width: 143px;
+  max-width: 143px;
   line-height: 39px;
   border-radius: 3px 0 0 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: center;
+  padding-inline-start: 16px;
 }
 
 .interactive-enabled.light .step-generate .generate-prompt-button .generate-text {
