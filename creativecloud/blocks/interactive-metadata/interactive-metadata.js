@@ -23,8 +23,7 @@ async function handleNextStep(stepInfo) {
 
 function handleImageTransition(stepInfo) {
   const stepPic = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('picture');
-  const hasStepPic = !stepPic.querySelector('img').src.includes('.svg');
-  if (!hasStepPic) return;
+  if (!stepPic || stepPic.querySelector('img[src*=".svg"]')) return;
   const stepPicClone = stepPic.cloneNode(true);
   stepPic.insertAdjacentElement('afterEnd', stepPicClone);
   stepInfo.target.querySelector('picture').replaceWith(stepPic);
