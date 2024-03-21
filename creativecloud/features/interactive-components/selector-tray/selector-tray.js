@@ -13,7 +13,6 @@ function setForegroundImage(a, config, target) {
 }
 
 function selectorTrayWithImgs(data, config, createTag) {
-  data.handleImageTransition(data);
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
   const isHorizontal = config.querySelector('ul > li').querySelectorAll('img[src*="media_"')?.length > 2;
@@ -42,6 +41,7 @@ export default async function stepInit(data) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   data.target.classList.add('step-selector-tray');
+  data.handleImageTransition(data);
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const title = config.querySelector('p:first-child');

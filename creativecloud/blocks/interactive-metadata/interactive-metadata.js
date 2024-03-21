@@ -15,18 +15,11 @@ function eagerLoad(img) {
   img?.setAttribute('fetchpriority', 'high');
 }
 
-function preloadSVGs(d) {
-  const svgs = d.querySelectorAll('img[src*=".svg"]');
-  [...svgs].forEach( (svg) => {
-    eagerLoad(svg);
-  });
-}
-
 async function handleNextStep(stepInfo, layerExists) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   const nextImgs = stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img');
   [...nextImgs].forEach( (nextImg) => {
-    if (layerExists && nextImg.querySelector('img[src*=".svg"]')) return;
+    if (layerExists && nextImg.src.includes('.svg')) return;
     eagerLoad(nextImg);
   });
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
@@ -40,7 +33,7 @@ function handleImageTransition(stepInfo) {
   stepInfo.target.querySelector('picture').replaceWith(stepPic);
 }
 
-function handleLCPImage(stepInfo) {
+function handleFirstDisplayImage(stepInfo) {
   if (stepInfo.stepIndex !== 0) return;
   const pic = stepInfo.target.querySelector('picture');
   const picClone = pic.cloneNode(true);
@@ -80,7 +73,7 @@ async function implementWorkflow(el, stepInfo) {
   }
   await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
-  handleLCPImage(stepInfo);
+  handleFirstDisplayImage(stepInfo);
   await handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo, false);
 }
@@ -147,12 +140,10 @@ async function renderLayer(stepInfo) {
 }
 
 export default async function init(el) {
-  preloadSVGs(el.querySelector(':scope > div'));
   const workflow = getWorkFlowInformation(el);
   if (!workflow.length) return;
   const targetAsset = getTargetArea(el);
   if (!targetAsset) return;
-  const stepInit = await loadJSandCSS(workflow[0]);
   const stepInfo = {
     el,
     stepIndex: -1,
@@ -160,12 +151,12 @@ export default async function init(el) {
     stepList: workflow,
     stepCount: workflow.length,
     stepConfigs: el.querySelectorAll(':scope > div'),
-    stepInit,
     handleImageTransition,
     nextStepEvent: 'cc:interactive-switch',
     target: targetAsset,
     openForExecution: true,
   };
+  await handleNextStep(stepInfo, false);
   await renderLayer(stepInfo);
   addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {
