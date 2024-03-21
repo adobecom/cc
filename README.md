@@ -47,3 +47,5 @@ If you need to lint just one file, you can run:
 ```sh
 npx eslint file1.js
 ```
+## Code merge process
+https://github.com/adobecom/cc/wiki
