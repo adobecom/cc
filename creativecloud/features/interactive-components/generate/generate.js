@@ -8,16 +8,20 @@ export default async function stepInit(data) {
   const config = data.stepConfigs[data.stepIndex];
   const text = config.textContent.trim();
   const [searchText, btnText, position] = text.split('|');
-  const svg = config.querySelector('img[src*=".svg"]')?.closest('picture');
   const outerDiv = createTag('div', { class: `layer show-layer layer-${data.stepIndex}` });
   if (position) outerDiv.classList.add(`generate-${position.toLowerCase().trim()}`);
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
-  const generateBtn = createTag('a', { class: `gray-button generate-button next-step`, href: "#" }, `${btnText}`);
-  if (svg) generateBtn.prepend(svg);
+  const generateBtn = createTag('a', { class: `gray-button generate-button next-step`, href: "#" });
+  const svg = config.querySelector('img[src*=".svg"]')?.closest('picture');
+  if (svg) generateBtn.appendChild(svg);
+  if (btnText) {
+    const textNode = document.createTextNode(btnText);
+    generateBtn.appendChild(textNode);
+  }
   genfillDiv.appendChild(searchBar);
   genfillDiv.appendChild(generateBtn);
-  outerDiv.append(genfillDiv);
+  outerDiv.appendChild(genfillDiv);
   data.target.append(outerDiv);
   generateBtn.addEventListener('click', async (e) => {
     await data.openForExecution;

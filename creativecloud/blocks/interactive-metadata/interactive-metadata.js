@@ -10,14 +10,25 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
-async function handleNextStep(stepInfo) {
-  const eagerLoad = (lcpImg) => {
-    lcpImg?.setAttribute('loading', 'eager');
-    lcpImg?.setAttribute('fetchpriority', 'high');
-  };
+function eagerLoad(img) {
+  img?.setAttribute('loading', 'eager');
+  img?.setAttribute('fetchpriority', 'high');
+}
+
+function preloadSVGs(d) {
+  const svgs = d.querySelectorAll('img[src*=".svg"]');
+  [...svgs].forEach( (svg) => {
+    eagerLoad(svg);
+  });
+}
+
+async function handleNextStep(stepInfo, layerExists) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   const nextImgs = stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img');
-  [...nextImgs].forEach(eagerLoad);
+  [...nextImgs].forEach( (nextImg) => {
+    if (layerExists && nextImg.querySelector('img[src*=".svg"]')) return;
+    eagerLoad(nextImg);
+  });
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
 }
 
@@ -64,14 +75,14 @@ async function implementWorkflow(el, stepInfo) {
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   if (currLayer) {
     await handleLayerDisplay(stepInfo);
-    await handleNextStep(stepInfo);
+    await handleNextStep(stepInfo, true);
     return;
   }
   await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
   handleLCPImage(stepInfo);
   await handleLayerDisplay(stepInfo);
-  await handleNextStep(stepInfo);
+  await handleNextStep(stepInfo, false);
 }
 
 function getTargetArea(el) {
@@ -136,6 +147,7 @@ async function renderLayer(stepInfo) {
 }
 
 export default async function init(el) {
+  preloadSVGs(el.querySelector(':scope > div'));
   const workflow = getWorkFlowInformation(el);
   if (!workflow.length) return;
   const targetAsset = getTargetArea(el);
@@ -148,9 +160,9 @@ export default async function init(el) {
     stepList: workflow,
     stepCount: workflow.length,
     stepConfigs: el.querySelectorAll(':scope > div'),
+    stepInit,
     handleImageTransition,
     nextStepEvent: 'cc:interactive-switch',
-    stepInit,
     target: targetAsset,
     openForExecution: true,
   };

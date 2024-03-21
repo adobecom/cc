@@ -8,9 +8,16 @@ export default async function stepInit(data) {
   const cropCTA = createTag('a', { class: 'gray-button body-m crop-button', href: "#" });
   const pic = config.querySelector('picture');
   if (!pic.querySelector('img[src*=".svg"]')) data.handleImageTransition(data);
-  const svg = config.querySelector('img[src*=".svg"');
-  if (svg) cropCTA.append(svg.closest('picture'));
-  cropCTA.innerHTML += config.textContent.trim();
+  const svg = config.querySelector('img[src*=".svg"')?.closest('picture');
+  if (svg) {
+    svg.parentElement.removeChild(svg);
+    cropCTA.appendChild(svg);
+  }
+  const textContent = config.textContent.trim();
+  if (textContent) {
+    const textNode = document.createTextNode(textContent);
+    cropCTA.appendChild(textNode);
+  }
   cropCTA.addEventListener('click', async (e) => {
     await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));

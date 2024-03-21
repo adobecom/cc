@@ -119,6 +119,7 @@
   }
 }
 
+.interactive-enabled .layer .gray-button picture,
 .interactive-enabled .layer .gray-button img {
   width: 24px;
   height: auto;
@@ -150,7 +151,8 @@
   .interactive-enabled .layer .gray-button {
     box-shadow: 0 10px 10px var(--color-black);
   }
-
+  
+  .interactive-enabled .layer .gray-button picture,
   .interactive-enabled .layer .gray-button img {
     width: 34px;
     height: auto;

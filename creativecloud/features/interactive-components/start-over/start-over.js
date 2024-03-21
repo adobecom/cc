@@ -11,7 +11,11 @@ export default async function stepInit(data) {
   if (!pic.querySelector('img[src*=".svg"]')) data.handleImageTransition(data);
   const svg = config.querySelector('img[src*=".svg"');
   if (svg) startOverCTA.append(svg.closest('picture'));
-  startOverCTA.innerHTML += config.textContent.trim();
+  const textContent = config.textContent.trim();
+  if (textContent) {
+    const textNode = document.createTextNode(textContent);
+    startOverCTA.appendChild(textNode);
+  }
   startOverCTA.addEventListener('click', async (e) => {
     await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
