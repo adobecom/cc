@@ -11,10 +11,7 @@
   --prompt-text-color-light: #272928;
 }
 
-.interactive-metadata {
-  display: none;
-}
-
+.interactive-metadata,
 .interactive-enabled .layer {
   display: none;
 }
@@ -162,7 +159,7 @@
     height: 100%;
     width: 100%;
   }
-
+  
   .interactive-enabled .foreground.container .image .layer .gray-button picture,
   .interactive-enabled .foreground.container .image .layer .gray-button img {
     width: 34px;

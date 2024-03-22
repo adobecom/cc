@@ -10,8 +10,8 @@ export default async function stepInit(data) {
   const cropCTA = createTag('a', { class: 'gray-button body-m crop-button', href: "#" });
   const svg = config.querySelector('img[src*=".svg"')?.closest('picture');
   if (svg) {
-    svg.parentElement.removeChild(svg);
-    cropCTA.appendChild(svg);
+    const cropIconContainer = createTag('div', { class: `crop-icon-container` }, svg);
+    cropCTA.appendChild(cropIconContainer);
   }
   const textContent = config.textContent.trim();
   if (textContent) {

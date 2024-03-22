@@ -1,5 +1,5 @@
 .interactive-enabled .step-crop .layer .gray-button.crop-button {
-  padding: 0 16px; 
+  padding: 0 13px; 
   height: 48px;
   margin: auto;
 }
@@ -12,10 +12,11 @@
 
   .interactive-enabled .step-crop .layer .gray-button.crop-button {
     height: 64px;
+    min-width: 145px;
     gap: 16px;
     margin: auto;
     padding: 6px;
-    padding-right: 24px;
+    padding-right: 13px;
   }
 
   .interactive-enabled .step-crop .layer .gray-button.crop-button .crop-icon-container {
@@ -24,8 +25,8 @@
     justify-content: center;
     height: 46px;
     width: 46px;
-    border: 3px solid var(--prompt-input-fill);
     border-radius: 3px;
+    border: 3px solid var(--prompt-input-fill);
     background-color: var(--prompt-input-fill);
   }
 

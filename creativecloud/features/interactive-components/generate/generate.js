@@ -8,7 +8,7 @@ export default async function stepInit(data) {
   const config = data.stepConfigs[data.stepIndex];
   const text = config.textContent.trim();
   const [searchText, btnText, position] = text.split('|');
-  const outerDiv = createTag('div', { class: `layer show-layer layer-${data.stepIndex}` });
+  const outerDiv = createTag('div', { class: `layer layer-${data.stepIndex}` });
   if (position) outerDiv.classList.add(`generate-${position.toLowerCase().trim()}`);
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
