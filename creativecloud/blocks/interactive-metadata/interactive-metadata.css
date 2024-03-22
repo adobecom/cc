@@ -18,7 +18,7 @@
 
 .interactive-enabled .layer.show-layer {
   display: block;
-  position: absolute;
+  position: relative;
   top: auto;
   bottom: 0;
   left: 0;
@@ -31,14 +31,15 @@
   border-radius: 0px 0px 8px 8px;
 }
 
-.interactive-enabled .asset {
+.interactive-enabled .image {
   position: relative;
+  flex-direction: column;
   height: 360px;
   width: 300px;
   border-radius: 16px;
 }
 
-.interactive-enabled .asset img {
+.interactive-enabled .image img {
   border-radius: 16px 16px 0 0;
 }
 
@@ -61,75 +62,89 @@
   user-select: none;
 }
 
-.interactive-enabled.light .layer .gray-button {
-  color: var(--prompt-text-color-light);
-  background: var(--prompt-btn-fill-light);
-}
-
-.interactive-enabled .layer .gray-button .ia-circle {
+.interactive-enabled .layer-0 .gray-button .ia-circle {
   position: absolute;
-  left: 40%;
+  left: 0;
+  right: 0;
   margin: 0 auto;
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
   box-sizing: border-box;
   border: 8px solid var(--prompt-highlight-color);
   border-radius: 50%;
   opacity: 0;
+  animation: circle 2700ms ease-in-out 500ms backwards infinite;
 }
 
-@keyframes circle-in {
-  from {
+.interactive-enabled .layer-0 .gray-button {
+  animation: outline-fill 2700ms 500ms forwards infinite;
+}
+
+@keyframes circle {
+  0% {
     opacity: 0;
   }
-  to {
+  18% {
+    transform: scale(100%);
     opacity: 0.5;
   }
-}
-
-@keyframes circle-out {
-  from {
-  	transform: scale(100%);
+  29% {
+    transform: scale(100%);
     opacity: 0.5;
   }
-  to {
-  	transform: scale(50%);
+  44% {
+    transform: scale(50%);
     opacity: 1;
   }
-}
-
-@keyframes outline {
-  from {
-    border-color: transparent;
-  }
-  to {
-    border-color: var(--prompt-highlight-color);
+  50% {
+    opacity: 0;
   }
 }
 
-@keyframes fill-in {
-  from {
-  	background: var(--prompt-btn-fill);
+@keyframes outline-fill {
+  0% {
+    border-color: transparent ;
+    background: var(--prompt-btn-fill);
   }
-  to {
-  	background: var(--prompt-highlight-color);
+  18% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-btn-fill);
+  }
+  24% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-btn-fill);
+  }
+  59% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-highlight-color);
+  }
+  90% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-btn-fill);
   }
 }
 
-.interactive-enabled .layer .gray-button picture,
-.interactive-enabled .layer .gray-button img {
+.interactive-enabled .foreground.container .image .layer .gray-button picture,
+.interactive-enabled .foreground.container .image .layer .gray-button img {
   width: 24px;
   height: auto;
-  min-height:auto;
+  min-height: 24px;
+  max-width: 24px;
   border-radius: 0;
 }
 
 .interactive-enabled .layer .gray-button:hover { 
   border: 3px solid var(--prompt-highlight-color);
+  background: var(--prompt-btn-fill);
+  animation-play-state: paused;
+} 
+
+.interactive-enabled .layer .gray-button:hover .ia-circle { 
+  display: none;
 } 
 
 @media screen and (min-width: 768px) {
-  .interactive-enabled .asset {
+  .interactive-enabled .image {
     position: relative;
     height: 570px;
     width: 570px;
@@ -144,21 +159,28 @@
     height: 100%;
     width: 100%;
   }
-
-  .interactive-enabled .layer .gray-button {
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
-  }
   
-  .interactive-enabled .layer .gray-button picture,
-  .interactive-enabled .layer .gray-button img {
+  .interactive-enabled .foreground.container .image .layer .gray-button picture,
+  .interactive-enabled .foreground.container .image .layer .gray-button img {
     width: 34px;
     height: auto;
-    min-height:auto;
+    min-height: 34px;
+    max-width: 34px;
     border-radius: 0;
   }
 
-  .interactive-enabled .asset img {
+  .interactive-enabled .image img {
     border-radius: 16px;
+  }
+
+  .interactive-enabled .layer .gray-button {
+    font-size: var(--type-body-xl-size); 
+    line-height: var(--type-body-xl-lh);
+  }
+
+  .interactive-enabled .layer-0 .gray-button .ia-circle {
+    width: 56px;
+    height: 56px;
   }
 }
 

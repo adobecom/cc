@@ -84,7 +84,7 @@ function getTargetArea(el) {
   const previousSection = metadataSec.previousElementSibling;
   const tmb = previousSection.querySelector('.marquee, .aside');
   tmb?.classList.add('interactive-enabled');
-  return tmb.querySelector('.asset');
+  return tmb.querySelector('.asset, .image');
 }
 
 function getWorkFlowInformation(el) {
@@ -122,8 +122,6 @@ async function addBtnAnimation(ia) {
   [...btns].forEach(btn => {
     const circle = createTag('div', { class: 'ia-circle' });
     btn.append(circle);
-    circle.style.animation = 'circle-in 500ms ease-out 500ms, circle-out 400ms ease-out 800ms';
-    btn.style.animation = 'outline 800ms ease-out 500ms, fill-in 1500ms ease-in-out 800ms';
   });
 }
 
@@ -138,6 +136,14 @@ async function renderLayer(stepInfo) {
   stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
   await implementWorkflow(stepInfo.el, stepInfo);
   pResolve();
+}
+
+function removeAnimation(ia) {
+  const btn = ia.querySelector('.layer .gray-button')
+  if (btn) {
+    btn.querySelector('.ia-circle').style.animation = 'none';
+    btn.style.animation = 'none';
+  }
 }
 
 export default async function init(el) {
@@ -161,6 +167,7 @@ export default async function init(el) {
   await renderLayer(stepInfo);
   addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {
+    removeAnimation(targetAsset);
     await renderLayer(stepInfo);
   });
 }

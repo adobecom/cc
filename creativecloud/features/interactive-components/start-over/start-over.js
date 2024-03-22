@@ -7,7 +7,7 @@ export default async function stepInit(data) {
   data.handleImageTransition(data);
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-xl next-step', href: "#" });
+  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: "#" });
   const svg = config.querySelector('img[src*=".svg"');
   if (svg) startOverCTA.append(svg.closest('picture'));
   const textContent = config.textContent.trim();
