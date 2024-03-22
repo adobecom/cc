@@ -11,10 +11,7 @@
   --prompt-text-color-light: #272928;
 }
 
-.interactive-metadata {
-  display: none;
-}
-
+.interactive-metadata,
 .interactive-enabled .layer {
   display: none;
 }

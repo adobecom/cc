@@ -51,6 +51,7 @@ async function handleLayerDisplay(stepInfo) {
   const miloLibs = getLibs('/libs');
   const { decorateDefaultLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
   await decorateDefaultLinkAnalytics(currLayer);
+  currLayer.classList.remove('ready-to-paint');
   currLayer.classList.add('show-layer');
 }
 
