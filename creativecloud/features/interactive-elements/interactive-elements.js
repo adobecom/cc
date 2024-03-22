@@ -40,7 +40,7 @@ export async function createEnticement(enticementDetail, mode) {
   const svgImage = createTag('img', { class: 'enticement-arrow', alt: '' });
   let arrowText;
   [arrowText, svgImage.src] = enticementDetail.split('|');
-  const enticementText = createTag('h2', { class: 'enticement-text' }, arrowText.trim());
+  const enticementText = createTag('p', { class: 'enticement-text' }, arrowText.trim());
   enticementDiv.append(enticementText, svgImage);
   if (mode === 'light') enticementText.classList.add('light');
   return enticementDiv;
