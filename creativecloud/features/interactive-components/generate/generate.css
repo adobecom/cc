@@ -57,7 +57,7 @@
     position: absolute;
     left: 83px;
     bottom: 64px;
-    /* box-shadow: 0 10px 10px var(--color-black); */
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
   }
 
   .interactive-enabled .step-generate .generate-right .generate-prompt-button {
