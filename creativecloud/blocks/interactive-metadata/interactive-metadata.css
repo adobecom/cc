@@ -80,6 +80,10 @@
   animation: outline-fill 2700ms 500ms forwards infinite;
 }
 
+.aside .foreground.container .image {
+  flex: 0 0 auto !important;
+}
+
 @keyframes circle {
   0% {
     opacity: 0;
@@ -183,4 +187,11 @@
     height: 56px;
   }
 }
+
+@media screen and (max-width: 1200px) {
+  .aside .foreground.container {
+    flex-direction: column-reverse !important;
+  }
+}
+
 
