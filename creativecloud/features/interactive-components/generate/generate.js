@@ -12,6 +12,7 @@ export default async function stepInit(data) {
   if (position) outerDiv.classList.add(`generate-${position.toLowerCase().trim()}`);
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
+  const searchBarContainer = createTag('div', { class: 'generate-text-container' }, searchBar);
   const generateBtn = createTag('a', { class: `gray-button generate-button next-step`, href: "#" });
   const svg = config.querySelector('img[src*=".svg"]')?.closest('picture');
   if (svg) generateBtn.appendChild(svg);
@@ -19,7 +20,7 @@ export default async function stepInit(data) {
     const textNode = document.createTextNode(btnText);
     generateBtn.appendChild(textNode);
   }
-  genfillDiv.appendChild(searchBar);
+  genfillDiv.appendChild(searchBarContainer);
   genfillDiv.appendChild(generateBtn);
   outerDiv.appendChild(genfillDiv);
   data.target.append(outerDiv);

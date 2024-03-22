@@ -180,6 +180,7 @@
   .interactive-enabled .layer .gray-button {
     font-size: var(--type-body-xl-size); 
     line-height: var(--type-body-xl-lh);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
   }
 
   .interactive-enabled .layer-0 .gray-button .ia-circle {
