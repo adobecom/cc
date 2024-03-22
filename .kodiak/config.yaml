@@ -12,16 +12,17 @@ notifications:
           risk_rating: R5
       fields:
         assignee:
-          name: seanchoi
+          name: sumanh
         customfield_11800: MWPW-140779 #epic link
         customfield_12900: 
-          value: 34413  # brahmos team
+          value: Brahmos
         watchers:
           - casalino
           - jmichnow
           - mauchley
           - saljain
           - mathuria
+          - dstrong
         labels:
           - "OriginatingProcess=Kodiak"
           - "security"
