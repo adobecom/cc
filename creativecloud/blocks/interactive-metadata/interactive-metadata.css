@@ -16,7 +16,6 @@
 }
 
 .interactive-enabled .layer {
-  /* opacity: 0; */
   display: none;
 }
 
@@ -52,8 +51,6 @@
   box-sizing: border-box;
   border-radius: 8px;
   border: 3px solid transparent;
-  font-size: var(--type-body-m-size); 
-  line-height: var(--type-body-m-lh);
   cursor: pointer;
   display: flex;
   gap: 8px;
@@ -133,7 +130,7 @@
 .interactive-enabled .foreground.container .image .layer .gray-button picture,
 .interactive-enabled .foreground.container .image .layer .gray-button img {
   width: 24px;
-  height: 24px;
+  height: auto;
   min-height: 24px;
   max-width: 24px;
   border-radius: 0;
@@ -169,7 +166,7 @@
   .interactive-enabled .foreground.container .image .layer .gray-button picture,
   .interactive-enabled .foreground.container .image .layer .gray-button img {
     width: 34px;
-    height: 34px;
+    height: auto;
     min-height: 34px;
     max-width: 34px;
     border-radius: 0;

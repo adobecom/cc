@@ -14,20 +14,17 @@
 
 .interactive-enabled .step-generate .generate-prompt-button .generate-text {
   box-sizing: border-box;
-  padding: 0 var(--spacing-xs);
   background-color: var(--prompt-input-fill);
   color: var(--prompt-text-color);
-  display: flex;
-  align-items: center;
+  display: inline-block;
   height: 39px;
-  width: 159px;
-  min-width: 159px;
-  max-width: 159px;
-  border-radius: 3px 0 0 3px; /* check this */
+  width: 100%;
+  line-height: 39px;
+  border-radius: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-inline-start: 16px;
+  padding: 0 13px;
 }
 
 .interactive-enabled.light .step-generate .generate-prompt-button .generate-text {
@@ -79,7 +76,7 @@
   .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
     height: 64px;
     gap: 16px;
-    padding: 0 24px;
+    padding: 0 21px;
     width: auto;
   }
 }
