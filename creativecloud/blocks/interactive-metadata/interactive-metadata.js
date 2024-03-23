@@ -10,34 +10,51 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
-function eagerLoad(img) {
-  img?.setAttribute('loading', 'eager');
-  img?.setAttribute('fetchpriority', 'high');
+function handleImageLayerTransition(target, idx) {
+  const layerIA = target.querySelector(`.interactive-area.ia-layer-${idx}`);
+  if (!layerIA.classList.contains('ia-hide')) return;
+  const visibleIA = target.querySelector('.interactive-area:not(.ia-hide)');
+  visibleIA?.classList.add('ia-hide');
+  layerIA?.classList.remove('ia-hide');
 }
+
+function handleImageTransition(stepInfo, idx = -1, switchImg = false) {
+  const layerIA = stepInfo.target.querySelector(`.interactive-area.ia-layer-${stepInfo.stepIndex}`);
+  if (switchImg) {
+    layerIA?.querySelector('.ia-active-asset')?.classList.remove('ia-active-asset');
+    layerIA?.children[idx]?.classList.add('ia-active-asset');
+    return;
+  }
+  handleImageLayerTransition(stepInfo.target, stepInfo.stepIndex);
+}
+
+function getDisplayAssets(config) {
+  return config.querySelectorAll(':scope > picture > img[src*="media_"], :scope > a[href*=".mp4"], :scope > ul > li picture:nth-child(1)')
+} 
 
 async function handleNextStep(stepInfo, layerExists) {
+  if (layerExists) return handleImageLayerTransition(stepInfo.target, stepInfo.stepIndex);
   const nextStepIndex = getNextStepIndex(stepInfo);
-  const nextImgs = stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img');
-  [...nextImgs].forEach( (nextImg) => {
-    if (layerExists && nextImg.src.includes('.svg')) return;
-    eagerLoad(nextImg);
-  });
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
-}
-
-function handleImageTransition(stepInfo) {
-  const stepPic = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('picture');
-  if (!stepPic || stepPic.querySelector('img[src*=".svg"]')) return;
-  const stepPicClone = stepPic.cloneNode(true);
-  stepPic.insertAdjacentElement('afterEnd', stepPicClone);
-  stepInfo.target.querySelector('picture').replaceWith(stepPic);
-}
-
-function handleFirstDisplayImage(stepInfo) {
-  if (stepInfo.stepIndex !== 0) return;
-  const pic = stepInfo.target.querySelector('picture');
-  const picClone = pic.cloneNode(true);
-  stepInfo.stepConfigs[0].querySelector(':scope > div').prepend(picClone);
+  let assetConfig = stepInfo.target;
+  if (stepInfo.stepIndex !== -1) assetConfig = stepInfo.stepConfigs[nextStepIndex].querySelector('div');
+  const assets = getDisplayAssets(assetConfig);
+  if (!assets.length) {
+    const ias = stepInfo.target.querySelectorAll('.interactive-area');
+    if (ias.length) ias[ias.length - 1]?.classList.add(`ia-layer-${nextStepIndex}`);
+    return;
+  }
+  const miloLibs = getLibs('/libs');
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+  const interactiveArea = createTag('div', { class: `interactive-area ia-layer-${nextStepIndex}`});
+  if (stepInfo.stepIndex !== -1) interactiveArea.classList.add('ia-hide');
+  interactiveArea.dataset.interactiveFlow = 0;
+  [...assets].forEach((asset) => {
+    if (asset.nodeName === "IMG") interactiveArea.append(asset.closest('picture'));
+    else interactiveArea.append(asset);
+  });
+  interactiveArea.children[0].classList.add('ia-active-asset');
+  stepInfo.target.append(interactiveArea);
 }
 
 async function handleLayerDisplay(stepInfo) {
@@ -45,14 +62,13 @@ async function handleLayerDisplay(stepInfo) {
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
   const prevLayer = stepInfo.target.querySelector(`.layer-${prevStepIndex}`);
-  prevLayer?.classList.remove('show-layer');
   stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
   const miloLibs = getLibs('/libs');
   const { decorateDefaultLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
   await decorateDefaultLinkAnalytics(currLayer);
-  currLayer.classList.remove('ready-to-paint');
   currLayer.classList.add('show-layer');
+  prevLayer?.classList.remove('show-layer');
 }
 
 async function loadJSandCSS(stepName) {
@@ -74,7 +90,6 @@ async function implementWorkflow(el, stepInfo) {
   }
   await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
-  handleFirstDisplayImage(stepInfo);
   await handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo, false);
 }

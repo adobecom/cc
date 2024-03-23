@@ -11,9 +11,38 @@
   --prompt-text-color-light: #272928;
 }
 
-.interactive-metadata,
-.interactive-enabled .layer {
+.interactive-metadata {
   display: none;
+}
+
+.interactive-enabled .foreground.container .interactive-area > *,
+.interactive-enabled .foreground.container .interactive-area.ia-hide > * {
+  display: block;
+  opacity: 0;
+  height: 0;
+}
+
+.interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
+  display: block;
+  opacity: 1;
+  height: 300px;
+  width: 300px;
+}
+
+.interactive-enabled .foreground.container .interactive-area.ia-hide > .ia-active-asset {
+  display: block;
+  opacity: 0;
+  height: 0;
+}
+
+.interactive-enabled .layer {
+  display: block;
+  height: 0;
+  min-height: 0px;
+}
+
+.interactive-enabled .layer * {
+  opacity: 0;
 }
 
 .interactive-enabled .layer.show-layer {
@@ -23,12 +52,17 @@
   bottom: 0;
   left: 0;
   width: 100%;
+  height: auto;
   min-height: 60px;
   background: var(--layer-background-fill);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0px 0px 8px 8px;
+}
+
+.interactive-enabled .layer.show-layer * {
+  opacity: 1;
 }
 
 .interactive-enabled .image {
@@ -152,6 +186,15 @@
     position: relative;
     height: 570px;
     width: 570px;
+  }
+
+  .interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
+    height: 570px;
+    width: 570px;
+  }
+
+  .interactive-enabled .foreground.container .interactive-area.ia-hide > .ia-active-asset {
+    height: 0;
   }
 
   .interactive-enabled .layer.show-layer {

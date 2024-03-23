@@ -4,7 +4,6 @@ export default async function stepInit(data) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   data.target.classList.add('step-start-over');
-  data.handleImageTransition(data);
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: "#" });

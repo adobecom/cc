@@ -4,7 +4,6 @@ export default async function stepInit(data) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   data.target.classList.add('step-generate');
-  data.handleImageTransition(data);
   const config = data.stepConfigs[data.stepIndex];
   const text = config.textContent.trim();
   const [searchText, btnText, position] = text.split('|');
