@@ -17,8 +17,6 @@
 
 .interactive-enabled .foreground .image {
   border-radius: 8px;
-  margin: 0;
-  padding: 0;
 }
 
 .interactive-enabled .foreground .image > picture img {
