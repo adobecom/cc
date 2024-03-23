@@ -149,11 +149,15 @@ async function addBtnAnimation(ia) {
   [...btns].forEach(btn => {
     const circle = createTag('div', { class: 'ia-circle' });
     btn.append(circle);
+    btn.addEventListener("mouseover", (e) => {
+      removeAnimation(ia);
+    });
   });
 }
 
 function addAnimationToLayer(ia) {
-  if (ia.querySelector('.layer .gray-button')) addBtnAnimation(ia);
+  const btn = ia.querySelector('.layer .gray-button');
+  if (btn) return addBtnAnimation(ia);
 }
 
 async function renderLayer(stepInfo) {
@@ -174,11 +178,10 @@ async function renderLayer(stepInfo) {
 }
 
 function removeAnimation(ia) {
-  const btn = ia.querySelector('.layer .gray-button')
-  if (btn) {
-    btn.querySelector('.ia-circle').style.animation = 'none';
-    btn.style.animation = 'none';
-  }
+  const btn = ia.querySelector('.layer .gray-button');
+  if (!btn) return;
+  btn.querySelector('.ia-circle').style.animation = 'none';
+  btn.style.animation = 'none';
 }
 
 export default async function init(el) {
