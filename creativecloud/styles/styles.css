@@ -1,13 +1,4 @@
-/* 
- * Put project specific base styles here.
- *
- * Note: The proect does not load this file.
- *       You will need to load these using scripts.js.
- * 
- *
- */
-
- .reading-width {
+.reading-width {
   max-width: 600px;
   margin: auto;
   padding: 20px;
@@ -24,15 +15,28 @@
   margin: 0 auto;
 }
 
+.interactive-enabled .foreground .image {
+  border-radius: 8px;
+  margin: 0;
+  padding: 0;
+}
+
 .interactive-enabled .foreground .image > picture img {
   height: 300px;
   width: 300px;
+  border-radius: 8px;
 }
 
 @media screen and (min-width: 768px) {
+  .interactive-enabled .foreground .image {
+    border-radius: 16px;
+    padding-inline-start: 60px;
+  }
+
   .interactive-enabled .foreground .image > picture img {
     height: 570px;
     width: 570px;
+    border-radius: 16px;
   }
 }
 
