@@ -61,7 +61,7 @@
 }
 
 .interactive-enabled .image img {
-  border-radius: 16px 16px 0 0;
+  border-radius: 8px 8px 0 0;
 }
 
 .interactive-enabled .layer .gray-button {
