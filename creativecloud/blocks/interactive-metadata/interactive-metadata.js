@@ -10,6 +10,16 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
+function loadStepSVG(img) {
+  if (!img) return;
+  return new Promise(res => {
+      img.loading = 'eager';
+      img.onload = () => res();
+      img.onerror = () => res();
+      setTimeout(() => res(), 1000);
+  });
+}
+
 function handleImageLayerTransition(target, idx) {
   const layerIA = target.querySelector(`.interactive-area.ia-layer-${idx}`);
   if (!layerIA.classList.contains('ia-hide')) return;
@@ -42,6 +52,7 @@ async function handleNextStep(stepInfo, layerExists) {
   if (!assets.length) {
     const ias = stepInfo.target.querySelectorAll('.interactive-area');
     if (ias.length) ias[ias.length - 1]?.classList.add(`ia-layer-${nextStepIndex}`);
+    await loadStepSVG(stepInfo.stepConfigs[nextStepIndex].querySelector('img[src*=".svg"'));
     return;
   }
   const miloLibs = getLibs('/libs');
@@ -55,6 +66,7 @@ async function handleNextStep(stepInfo, layerExists) {
   });
   interactiveArea.children[0].classList.add('ia-active-asset');
   stepInfo.target.append(interactiveArea);
+  await loadStepSVG(stepInfo.stepConfigs[nextStepIndex].querySelector('img[src*=".svg"'));
 }
 
 async function handleLayerDisplay(stepInfo) {
