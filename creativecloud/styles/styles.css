@@ -30,7 +30,7 @@
 @media screen and (min-width: 768px) {
   .interactive-enabled .foreground .image {
     border-radius: 16px;
-    padding-inline-start: 60px;
+    margin-inline-start: 60px;
   }
 
   .interactive-enabled .foreground .image > picture img {
