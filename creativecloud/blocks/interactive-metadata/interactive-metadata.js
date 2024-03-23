@@ -16,7 +16,7 @@ function loadStepSVG(img) {
       img.loading = 'eager';
       img.onload = () => res();
       img.onerror = () => res();
-      setTimeout(() => res(), 1000);
+      setTimeout(() => res(), 800);
   });
 }
 

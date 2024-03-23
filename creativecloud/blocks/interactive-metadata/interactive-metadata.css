@@ -11,7 +11,8 @@
   --prompt-text-color-light: #272928;
 }
 
-.interactive-metadata {
+.interactive-metadata,
+.interactive-enabled .layer {
   display: none;
 }
 
@@ -35,16 +36,6 @@
   height: 0;
 }
 
-.interactive-enabled .layer {
-  display: block;
-  height: 0;
-  min-height: 0px;
-}
-
-.interactive-enabled .layer * {
-  opacity: 0;
-}
-
 .interactive-enabled .layer.show-layer {
   display: block;
   position: relative;
@@ -59,10 +50,6 @@
   align-items: center;
   justify-content: center;
   border-radius: 0px 0px 8px 8px;
-}
-
-.interactive-enabled .layer.show-layer * {
-  opacity: 1;
 }
 
 .interactive-enabled .image {
