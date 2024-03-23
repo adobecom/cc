@@ -158,11 +158,19 @@ function addAnimationToLayer(ia) {
 
 async function renderLayer(stepInfo) {
   let pResolve = null;
-  stepInfo.openForExecution = new Promise( function(resolve, reject) { pResolve = resolve });
-  stepInfo.stepIndex = getNextStepIndex(stepInfo);
-  stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-  await implementWorkflow(stepInfo.el, stepInfo);
-  pResolve();
+  let pReject = null
+  stepInfo.openForExecution = new Promise( function(resolve, reject) { 
+    pResolve = resolve;
+    pReject = reject;
+  });
+  try {
+    stepInfo.stepIndex = getNextStepIndex(stepInfo);
+    stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
+    await implementWorkflow(stepInfo.el, stepInfo);
+    pResolve();
+  } catch (err) {
+    pReject();
+  }
 }
 
 function removeAnimation(ia) {
