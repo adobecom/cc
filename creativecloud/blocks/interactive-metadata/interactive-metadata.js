@@ -205,7 +205,6 @@ export default async function init(el) {
   await renderLayer(stepInfo);
   addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {
-    removeAnimation(targetAsset);
     await renderLayer(stepInfo);
   });
 }
