@@ -5,6 +5,7 @@
   justify-content: space-between;
   font-weight: bold;
   margin: auto;
+  max-width: 290px;
 }
 
 
@@ -17,6 +18,12 @@
   padding: 0 5px;
   background-color: var(--prompt-text-border);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+[dir="rtl"] .interactive-enabled .step-generate .generate-text-container {
+  border-radius: 0 8px 8px 0;
 }
 
 .interactive-enabled .step-generate .generate-prompt-button .generate-text {
@@ -26,11 +33,13 @@
   height: 39px;
   width: 100%;
   line-height: 39px;
+  padding: 0;
+  padding-inline-start: 16px;
+  padding-inline-end: 5px;
+  border-radius: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0 16px;
-  border-radius: 3px;
 }
 
 .interactive-enabled.light .step-generate .generate-prompt-button .generate-text {
@@ -46,7 +55,11 @@
   gap: 2px;
   border-radius: 0 8px 8px 0;
   padding: 0 var(--spacing-xs);
-  width: 121px;
+  min-width: 121px;
+}
+
+[dir="rtl"] .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+  border-radius: 8px 0 0 8px;
 }
 
 @media screen and (min-width: 768px) {
@@ -54,6 +67,7 @@
     position: absolute;
     left: 83px;
     bottom: 64px;
+    max-width: unset;
   }
 
   .interactive-enabled .step-generate .generate-right .generate-prompt-button {
@@ -64,6 +78,10 @@
 
   .interactive-enabled .step-generate .generate-text-container {
     height: 64px;
+  }
+
+  [dir="rtl"] .interactive-enabled .step-generate .generate-text-container {
+    border-radius: 0 8px 8px 0;
   }
 
   .interactive-enabled .step-generate .generate-prompt-button .generate-text {
@@ -82,5 +100,6 @@
     gap: 16px;
     padding: 0 21px;
     width: auto;
+    min-width: auto
   }
 }
