@@ -29,6 +29,7 @@ function selectorTrayWithImgs(data, config, createTag) {
       aTag.classList.add('thumbnail-selected');
       currSel?.classList.remove('thumbnail-selected');
       selectedOption = a.dataset.thumbnailIdx;
+      e.preventDefault();
       await data.openForExecution;
       data.handleImageTransition(data, idx, true);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));

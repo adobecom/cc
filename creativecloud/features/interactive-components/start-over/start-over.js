@@ -15,6 +15,7 @@ export default async function stepInit(data) {
     startOverCTA.appendChild(textNode);
   }
   startOverCTA.addEventListener('click', async (e) => {
+    e.preventDefault();
     await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });

@@ -18,6 +18,7 @@ export default async function stepInit(data) {
     cropCTA.appendChild(textNode);
   }
   cropCTA.addEventListener('click', async (e) => {
+    e.preventDefault();
     await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });

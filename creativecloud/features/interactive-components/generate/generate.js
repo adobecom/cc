@@ -24,6 +24,7 @@ export default async function stepInit(data) {
   outerDiv.appendChild(genfillDiv);
   data.target.append(outerDiv);
   generateBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
     await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });
