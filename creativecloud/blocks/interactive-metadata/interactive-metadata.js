@@ -24,7 +24,7 @@ function loadStepSVG(img) {
   });
 }
 
-function handleImageTransition(stepInfo, idx = 0, newStep = true) {
+function handleImageTransition(stepInfo, idx = -1) {
   const layerIA = stepInfo.target.querySelector(`.interactive-area.ia-layer-${stepInfo.stepIndex}`);
   if (!layerIA) return;
   if (layerIA.classList.contains('ia-hide')) {
@@ -32,10 +32,13 @@ function handleImageTransition(stepInfo, idx = 0, newStep = true) {
     visibleIA?.classList.add('ia-hide');
     layerIA?.classList.remove('ia-hide');
   }
-  layerIA
-    ?.querySelector('.ia-active-asset')
-    ?.classList.remove('ia-active-asset');
-  layerIA?.children[idx]?.classList.add('ia-active-asset');
+  if (idx === -1) {
+    idx = (stepInfo.displayPath >= 0 && layerIA.children.length >= stepInfo.displayPath) ? stepInfo.displayPath : 0;
+  }
+  const activeAsset = layerIA.querySelector('.ia-active-asset');
+  const targetAsset = layerIA.children[idx];
+  activeAsset.classList.remove('ia-active-asset');
+  targetAsset.classList.add('ia-active-asset');
 }
 
 function getDisplayAssets(config) {
@@ -47,12 +50,14 @@ function getDisplayAssets(config) {
   );
 }
 
-function handleDisplayAsset(asset) {
+function handleDisplayAsset(asset, createTag) {
   if (asset.nodeName === 'IMG') return asset.closest('picture');
-  else return asset;
+  if (asset.nodeName === 'PICTURE') return asset;
+  const aDiv = createTag('div', { class: 'ia-asset-container'}, asset);
+  return aDiv;
 }
 
-async function handleNextStep(stepInfo, layerExists) {
+async function handleNextStep(stepInfo) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
   let assetConfig = stepInfo.target;
@@ -71,16 +76,15 @@ async function handleNextStep(stepInfo, layerExists) {
     class: `interactive-area ia-layer-${nextStepIndex}`,
   });
   if (stepInfo.stepIndex !== -1) interactiveArea.classList.add('ia-hide');
-  // interactiveArea.dataset.interactiveFlow = 0;
   [...assets].forEach((asset) => {
-    // if (asset.nodeName === 'IMG')
-    //   interactiveArea.append(asset.closest('picture'));
-    // else interactiveArea.append(asset);
-    const assetDOM = handleDisplayAsset(asset);
+    const assetDOM = handleDisplayAsset(asset, createTag);
     interactiveArea.append(assetDOM);
-    console.log(assetDOM);
   });
-  interactiveArea.children[0].classList.add('ia-active-asset');
+  if (stepInfo.displayPath >= 0 && interactiveArea.children.length >= stepInfo.displayPath) {
+    interactiveArea.children[stepInfo.displayPath].classList.add('ia-active-asset');
+  } else {
+    interactiveArea.children[0].classList.add('ia-active-asset');
+  }
   stepInfo.target.append(interactiveArea);
   await loadStepSVG(
     stepInfo.stepConfigs[nextStepIndex].querySelector('img[src*=".svg"')
@@ -121,13 +125,13 @@ async function implementWorkflow(el, stepInfo) {
   );
   if (currLayer) {
     await handleLayerDisplay(stepInfo);
-    await handleNextStep(stepInfo, true);
+    await handleNextStep(stepInfo);
     return;
   }
   await stepInfo.stepInit(stepInfo);
   const layerName = `.layer-${stepInfo.stepIndex}`;
   await handleLayerDisplay(stepInfo);
-  await handleNextStep(stepInfo, false);
+  await handleNextStep(stepInfo);
 }
 
 function getTargetArea(el) {
@@ -165,6 +169,7 @@ async function renderLayer(stepInfo) {
   });
   try {
     stepInfo.stepIndex = getNextStepIndex(stepInfo);
+    if (stepInfo.stepIndex === 0) stepInfo.displayPath = 0;
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
     await implementWorkflow(stepInfo.el, stepInfo);
     pResolve();
@@ -225,8 +230,9 @@ export default async function init(el) {
     nextStepEvent: 'cc:interactive-switch',
     target: targetAsset,
     openForExecution: true,
+    displayPath: -1,
   };
-  await handleNextStep(stepInfo, false);
+  await handleNextStep(stepInfo);
   await renderLayer(stepInfo);
   addAnimationToLayer(targetAsset);
   el.addEventListener('cc:interactive-switch', async (e) => {

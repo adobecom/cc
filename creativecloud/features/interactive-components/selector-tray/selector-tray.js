@@ -17,21 +17,15 @@ function selectorTrayWithImgs(data, config, createTag) {
     trayItems.append(a);
 
     a.addEventListener('mouseover', (e) => {
-      const aTag = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
-      const currSel = aTag.parentElement.querySelector('.tray-thumbnail-img.thumbnail-selected');
-      currSel?.classList.remove('thumbnail-selected');
+      e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });
 
     a.addEventListener('click', async (e) => {
-      const aTag = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
-      if (aTag.classList.contains('thumbnail-selected')) return;
-      const currSel = aTag.parentElement.querySelector('.tray-thumbnail-img.thumbnail-selected');
-      aTag.classList.add('thumbnail-selected');
-      currSel?.classList.remove('thumbnail-selected');
-      selectedOption = a.dataset.thumbnailIdx;
       e.preventDefault();
+      e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
       await data.openForExecution;
-      data.handleImageTransition(data, idx+1, false);
+      data.displayPath = idx;
+      data.handleImageTransition(data, idx+1);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
     });
   });

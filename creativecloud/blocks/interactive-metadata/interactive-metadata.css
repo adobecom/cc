@@ -23,20 +23,24 @@
   height: 0;
 }
 
-.interactive-enabled .foreground.container .interactive-area > .ia-active-asset img,
-.interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
-  display: block;
-  opacity: 1;
-  height: 300px;
-  width: 300px;
-  object-fit: cover;
-  border-radius: 8px 8px 0 0;
-}
-
 .interactive-enabled .foreground.container .interactive-area.ia-hide > .ia-active-asset {
   display: block;
   opacity: 0;
   height: 0;
+}
+
+.interactive-enabled .foreground.container .interactive-area > .ia-active-asset video,
+.interactive-enabled .foreground.container .interactive-area > .ia-active-asset img,
+.interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
+  display: block;
+  height: 300px;
+  width: 300px;
+  border-radius: 8px 8px 0 0;
+  opacity: 1;
+}
+
+.interactive-enabled .foreground.container .interactive-area > .ia-active-asset video {
+  object-fit: cover;
 }
 
 .interactive-enabled .layer.show-layer {
@@ -175,7 +179,8 @@
   }
 
   .interactive-enabled .foreground.container .interactive-area > .ia-active-asset img,
-  .interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
+  .interactive-enabled .foreground.container .interactive-area > .ia-active-asset,
+  .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video{
     height: 570px;
     width: 570px;
     border-radius: 16px;
