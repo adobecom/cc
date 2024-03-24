@@ -27,10 +27,11 @@
   display: block;
   opacity: 0;
   height: 0;
+  transition: opacity 0.1s ease;
 }
 
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video,
-.interactive-enabled .foreground.container .interactive-area > .ia-active-asset img
+.interactive-enabled .foreground.container .interactive-area > .ia-active-asset img,
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
   display: block;
   opacity: 1;
