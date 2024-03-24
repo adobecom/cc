@@ -25,6 +25,7 @@
 .interactive-enabled .foreground .image > picture img {
   height: 300px;
   width: 300px;
+  min-width: 300px;
   border-radius: 8px 8px 0 0;
   margin: 0 auto;
 }
@@ -33,6 +34,7 @@
   .interactive-enabled .foreground .image {
     height: 570px;
     width: 570px;
+    min-width: 570px;
     border-radius: 16px;
     margin-inline-start: 60px;
   }
