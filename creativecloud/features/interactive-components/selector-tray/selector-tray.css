@@ -88,7 +88,8 @@
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img.thumbnail-selected,
-  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:hover {
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:hover,
+    .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:focus-visible {
     width: 68px;
     height: 108px;
     min-height: 108px;

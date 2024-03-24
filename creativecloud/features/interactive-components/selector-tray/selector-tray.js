@@ -20,6 +20,10 @@ function selectorTrayWithImgs(data, config, createTag) {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });
 
+    a.addEventListener('touchstart', (e) => {
+      e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
+    });
+
     a.addEventListener('click', async (e) => {
       e.preventDefault();
       e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
