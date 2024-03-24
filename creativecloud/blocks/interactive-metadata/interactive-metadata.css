@@ -17,7 +17,7 @@
 }
 
 .interactive-enabled .foreground.container .interactive-area > * {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
 }
@@ -45,7 +45,7 @@
 
 .interactive-enabled .layer.show-layer {
   display: block;
-  position: relative;
+  position: absolute;
   top: auto;
   bottom: 0;
   left: 0;
@@ -177,11 +177,13 @@
     position: relative;
     height: 570px;
     width: 570px;
+    min-width: 570px;
   }
 
   .interactive-enabled .foreground.container .interactive-area > .ia-active-asset img,
   .interactive-enabled .foreground.container .interactive-area > .ia-active-asset,
-  .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video{
+  .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video {
+    display: block;
     height: 570px;
     width: 570px;
     border-radius: 16px;
@@ -193,7 +195,7 @@
 
   .interactive-enabled .layer.show-layer {
     display: flex;
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
     background: none;
