@@ -21,6 +21,7 @@
   display: block;
   opacity: 0;
   height: 0;
+  transition: opacity 0.1s ease;
 }
 
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video,
@@ -31,6 +32,7 @@
   width: 300px;
   border-radius: 8px 8px 0 0;
   opacity: 1;
+  transition: opacity 0.1s ease;
 }
 
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video {
