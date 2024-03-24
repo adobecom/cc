@@ -4,7 +4,7 @@
   margin: auto;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 600px) {
   .interactive-enabled .step-crop .gray-button.crop-button {
     left: 47px;
     bottom: 125px;

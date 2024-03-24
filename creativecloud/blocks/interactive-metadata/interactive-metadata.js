@@ -51,9 +51,6 @@ async function handleNextStep(stepInfo, layerExists) {
     assetConfig = stepInfo.stepConfigs[nextStepIndex].querySelector('div');
   const assets = getDisplayAssets(assetConfig);
   if (!assets.length) {
-    // const ias = stepInfo.target.querySelectorAll('.interactive-area');
-    // if (ias.length)
-    //   ias[ias.length - 1]?.classList.add(`ia-layer-${nextStepIndex}`);
     await loadStepSVG(
       stepInfo.stepConfigs[nextStepIndex].querySelector('img[src*=".svg"')
     );
