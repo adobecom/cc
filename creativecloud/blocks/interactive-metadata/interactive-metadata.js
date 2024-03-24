@@ -14,6 +14,10 @@ function loadStepSVG(img) {
   if (!img) return;
   return new Promise((res) => {
     img.loading = 'eager';
+    if (img.complete) {
+      res();
+      return;
+    }
     img.onload = () => res();
     img.onerror = () => res();
     setTimeout(() => res(), 800);
@@ -43,6 +47,11 @@ function getDisplayAssets(config) {
   );
 }
 
+function handleDisplayAsset(asset) {
+  if (asset.nodeName === 'IMG') return asset.closest('picture');
+  else return asset;
+}
+
 async function handleNextStep(stepInfo, layerExists) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
@@ -62,11 +71,14 @@ async function handleNextStep(stepInfo, layerExists) {
     class: `interactive-area ia-layer-${nextStepIndex}`,
   });
   if (stepInfo.stepIndex !== -1) interactiveArea.classList.add('ia-hide');
-  interactiveArea.dataset.interactiveFlow = 0;
+  // interactiveArea.dataset.interactiveFlow = 0;
   [...assets].forEach((asset) => {
-    if (asset.nodeName === 'IMG')
-      interactiveArea.append(asset.closest('picture'));
-    else interactiveArea.append(asset);
+    // if (asset.nodeName === 'IMG')
+    //   interactiveArea.append(asset.closest('picture'));
+    // else interactiveArea.append(asset);
+    const assetDOM = handleDisplayAsset(asset);
+    interactiveArea.append(assetDOM);
+    console.log(assetDOM);
   });
   interactiveArea.children[0].classList.add('ia-active-asset');
   stepInfo.target.append(interactiveArea);
@@ -126,34 +138,6 @@ function getTargetArea(el) {
   return tmb.querySelector('.asset, .image');
 }
 
-function getWorkFlowInformation(el) {
-  let wfName = '';
-  const intWorkFlowConfig = {
-    'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
-    'workflow-2': ['crop', 'crop', 'start-over'],
-  };
-  const wfNames = Object.keys(intWorkFlowConfig);
-  const stepList = [];
-  [...el.classList].forEach((cn) => {
-    if (cn.match('workflow-')) {
-      wfName = cn;
-      return;
-    }
-    if (cn.match('step-')) {
-      stepList.push(cn.split('-')[1]);
-    }
-  });
-
-  if (wfName === 'workflow-genfill') {
-    const genArr = new Array(el.childElementCount - 1).fill('generate');
-    genArr.push('start-over');
-    return genArr;
-  }
-  if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
-  if (stepList.length) return stepList;
-  return [];
-}
-
 async function addBtnAnimation(ia) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
@@ -195,6 +179,34 @@ function removeAnimation(ia) {
   if (!btn) return;
   btn.querySelector('.ia-circle').style.animation = 'none';
   btn.style.animation = 'none';
+}
+
+function getWorkFlowInformation(el) {
+  let wfName = '';
+  const intWorkFlowConfig = {
+    'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
+    'workflow-2': ['crop', 'crop', 'start-over'],
+  };
+  const wfNames = Object.keys(intWorkFlowConfig);
+  const stepList = [];
+  [...el.classList].forEach((cn) => {
+    if (cn.match('workflow-')) {
+      wfName = cn;
+      return;
+    }
+    if (cn.match('step-')) {
+      stepList.push(cn.split('-')[1]);
+    }
+  });
+
+  if (wfName === 'workflow-genfill') {
+    const genArr = new Array(el.childElementCount - 1).fill('generate');
+    genArr.push('start-over');
+    return genArr;
+  }
+  if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
+  if (stepList.length) return stepList;
+  return [];
 }
 
 export default async function init(el) {
