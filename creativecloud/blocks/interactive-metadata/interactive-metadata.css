@@ -45,7 +45,7 @@
 
 .interactive-enabled .layer.show-layer {
   display: block;
-  position: absolute;
+  position: relative;
   top: auto;
   bottom: 0;
   left: 0;
@@ -193,7 +193,7 @@
 
   .interactive-enabled .layer.show-layer {
     display: flex;
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     background: none;
