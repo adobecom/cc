@@ -37,6 +37,7 @@ function handleImageTransition(stepInfo, idx = -1) {
   }
   const activeAsset = layerIA.querySelector('.ia-active-asset');
   const targetAsset = layerIA.children[idx];
+  if (activeAsset === targetAsset) return;
   targetAsset.classList.add('ia-active-asset');
   activeAsset.classList.remove('ia-active-asset');
 }
