@@ -93,7 +93,6 @@ async function handleNextStep(stepInfo) {
 }
 
 async function handleLayerDisplay(stepInfo) {
-  handleImageTransition(stepInfo);
   const currLayer = stepInfo.target.querySelector(
     `.layer-${stepInfo.stepIndex}`
   );
@@ -106,6 +105,7 @@ async function handleLayerDisplay(stepInfo) {
     `${miloLibs}/martech/attributes.js`
   );
   await decorateDefaultLinkAnalytics(currLayer);
+  handleImageTransition(stepInfo);
   currLayer.classList.add('show-layer');
   prevLayer?.classList.remove('show-layer');
 }
