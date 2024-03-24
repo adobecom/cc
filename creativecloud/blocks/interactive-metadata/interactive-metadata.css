@@ -16,23 +16,27 @@
   display: none;
 }
 
-.interactive-enabled .foreground.container .interactive-area > *:not(.ia-active-asset),
+.interactive-enabled .foreground.container .interactive-area > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.interactive-enabled .foreground.container .interactive-area > *:not(.ia-active-asset):not(.layer),
 .interactive-enabled .foreground.container .interactive-area.ia-hide > * {
   display: block;
   opacity: 0;
   height: 0;
-  transition: opacity 0.1s ease;
 }
 
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video,
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset img
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
   display: block;
+  opacity: 1;
   height: 300px;
   width: 300px;
   border-radius: 8px 8px 0 0;
-  opacity: 1;
-  transition: opacity 0.1s ease;
 }
 
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video {
@@ -41,7 +45,7 @@
 
 .interactive-enabled .layer.show-layer {
   display: block;
-  position: relative;
+  position: absolute;
   top: auto;
   bottom: 0;
   left: 0;
