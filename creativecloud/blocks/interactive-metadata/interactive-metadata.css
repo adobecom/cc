@@ -57,6 +57,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 0px 0px 8px 8px;
+  z-index: 3;
 }
 
 .interactive-enabled .image {
