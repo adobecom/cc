@@ -16,25 +16,29 @@
   display: none;
 }
 
+.interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
+  z-index: 2;
+  opacity: 1;
+}
+
 .interactive-enabled .foreground.container .interactive-area > * {
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
+  height: 300px;
+  width: 300px;
+  opacity: 0;
+  z-index: -1;
 }
 
-.interactive-enabled .foreground.container .interactive-area > *:not(.ia-active-asset):not(.layer),
 .interactive-enabled .foreground.container .interactive-area.ia-hide > * {
-  display: block;
   opacity: 0;
-  height: 0;
-  transition: opacity 0.1s ease;
 }
 
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video,
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset img,
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
-  display: block;
-  opacity: 1;
   height: 300px;
   width: 300px;
   border-radius: 8px 8px 0 0;
@@ -42,6 +46,10 @@
 
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset video {
   object-fit: cover;
+}
+
+.interactive-enabled .foreground.container .interactive-area.ia-hide > .ia-active-asset {
+  opacity: 0;
 }
 
 .interactive-enabled .layer.show-layer {
