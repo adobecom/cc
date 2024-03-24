@@ -146,24 +146,6 @@
   }
 }
 
-@keyframes fadeIn {
-  from {
-      opacity: 0;
-  }
-  to {
-      opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-      opacity: 1;
-  }
-  to {
-      opacity: 0;
-  }
-}
-
 .interactive-enabled .foreground.container .image .layer .gray-button picture,
 .interactive-enabled .foreground.container .image .layer .gray-button img {
   width: 24px;
