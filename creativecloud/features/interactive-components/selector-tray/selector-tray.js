@@ -31,7 +31,7 @@ function selectorTrayWithImgs(data, config, createTag) {
       selectedOption = a.dataset.thumbnailIdx;
       e.preventDefault();
       await data.openForExecution;
-      data.handleImageTransition(data, idx, true);
+      data.handleImageTransition(data, idx+1, false);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
     });
   });
