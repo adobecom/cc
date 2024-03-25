@@ -15,33 +15,33 @@
   margin: 0 auto;
 }
 
-.interactive-enabled .foreground .image > p + p {
-  width: 300px;
-  margin: auto;
-  height: 0;
-}
-
 .interactive-enabled .foreground .image > h1,
 .interactive-enabled .foreground .image > h2,
 .interactive-enabled .foreground .image > h3,
 .interactive-enabled .foreground .image > h4,
 .interactive-enabled .foreground .image > h5,
 .interactive-enabled .foreground .image > h6 {
+  display: none;
   font-size: 28px;
   line-height: 28px;
   margin: 0;
   padding-bottom: 24px;
 }
 
-.interactive-enabled .foreground .image > h2 + p,
-.interactive-enabled .foreground .image > p:nth-child(1) {
-  font-size: 28px;
-  line-height: 28px;
-  display: flex;
-  flex-direction: row;
-  font-weight: bold;
+.interactive-enabled .foreground .image > p {
   width: 300px;
   margin: auto;
+  height: 0;
+}
+
+.interactive-enabled .foreground .image > h2 + p,
+.interactive-enabled .foreground .image > p:nth-child(1) {
+  display: flex;
+  height: auto;
+  flex-direction: row;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 28px;
   margin-bottom: 16px;
 }
 
@@ -80,25 +80,10 @@
     margin-inline-start: 0;
     margin: auto;
   }
-  
-  .interactive-enabled .foreground .image > h1,
-  .interactive-enabled .foreground .image > h2,
-  .interactive-enabled .foreground .image > h3,
-  .interactive-enabled .foreground .image > h4,
-  .interactive-enabled .foreground .image > h5,
-  .interactive-enabled .foreground .image > h6 {
-    display: none;
-  }
 
-  .interactive-enabled .foreground .image > h2 + p,
-  .interactive-enabled .foreground .image > p:nth-child(1) {
-    width: 570px;
-  }
-
-  .interactive-enabled .foreground .image > p + p {
+  .interactive-enabled .foreground .image > p {
     width: 570px;
     margin: auto;
-    height: 0;
   }
 
   .interactive-enabled .foreground .image > p img[src*=".svg"] {
@@ -117,15 +102,6 @@
   .aside.interactive-enabled .foreground.container {
     padding-top: 0;
     padding-bottom: 0;
-  }
-
-  .interactive-enabled .foreground .image > h1,
-  .interactive-enabled .foreground .image > h2,
-  .interactive-enabled .foreground .image > h3,
-  .interactive-enabled .foreground .image > h4,
-  .interactive-enabled .foreground .image > h5,
-  .interactive-enabled .foreground .image > h6 {
-    display: none;
   }
 
   .interactive-enabled .foreground .image {

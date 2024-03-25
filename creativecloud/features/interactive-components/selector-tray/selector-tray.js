@@ -3,10 +3,11 @@ import { getLibs } from '../../../scripts/utils.js';
 function selectorTrayWithImgs(data, config, createTag) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
-  const isHorizontal = config.querySelector('ul > li').querySelectorAll('img[src*="media_"')?.length > 2;
-  if (isHorizontal) trayItems.classList.add('horizontal');
-  const imgs = config.querySelectorAll('picture');
-  let selectedOption = 0;
+  const dpth = data.displayPath;
+  let configUl = config.querySelector('ul');
+  const allUls = config.querySelectorAll('ul');
+  if (dpth >= 0 && allUls.length > dpth) configUl = allUls[dpth];
+  const imgs = configUl.querySelectorAll('picture');
   [...imgs].forEach((timg, idx) => {
     timg.classList.add(`thumbnail-idx-${idx}`);
     const trayLabel = createTag('div', { class: 'tray-item-label' }, `Generate variant ${timg.alt}`);
