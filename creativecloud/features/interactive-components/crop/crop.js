@@ -8,20 +8,13 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const cropCTA = createTag('a', { class: 'gray-button body-m crop-button', href: "#" });
   const svg = config.querySelector('img[src*=".svg"')?.closest('picture');
-  if (svg) {
-    const cropIconContainer = createTag('div', { class: `crop-icon-container` }, svg);
-    cropCTA.appendChild(cropIconContainer);
-  }
-  const textContent = config.textContent.trim();
-  if (textContent) {
-    const textNode = document.createTextNode(textContent);
-    cropCTA.appendChild(textNode);
-  }
+  if (svg) cropCTA.appendChild(createTag('div', { class: `crop-icon-container` }, svg));
+  if (config.textContent) cropCTA.appendChild(document.createTextNode(config.textContent.trim()));
   cropCTA.addEventListener('click', async (e) => {
     e.preventDefault();
     await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });
   layer.append(cropCTA);
-  data.target.append(layer);
+  return layer;
 }

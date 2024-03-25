@@ -1,7 +1,17 @@
 import { getLibs } from '../../scripts/utils.js';
+import { default as defineDeviceByScreenSize } from '../../scripts/decorate.js';
+
+function getImgSrc(pic) {
+  const viewport = defineDeviceByScreenSize() === 'MOBILE' ? 'mobile' : 'desktop';
+  let source = '';
+  if (viewport === 'mobile')
+    source = pic.querySelector('source[type="image/webp"]:not([media])');
+  else source = pic.querySelector('source[type="image/webp"][media]');
+  return source.srcset;
+}
 
 function getNextStepIndex(stepInfo) {
-  return (stepInfo.stepIndex + 1) % stepInfo.stepCount;
+  return (stepInfo.stepIndex + 1) % stepInfo.stepList.length;
 }
 
 function getPrevStepIndex(stepInfo) {
@@ -10,7 +20,7 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
-function loadStepSVG(img) {
+function loadImg(img) {
   if (!img) return;
   return new Promise((res) => {
     img.loading = 'eager';
@@ -24,88 +34,72 @@ function loadStepSVG(img) {
   });
 }
 
-function handleImageTransition(stepInfo, idx = -1) {
-  const layerIA = stepInfo.target.querySelector(`.interactive-area.ia-layer-${stepInfo.stepIndex}`);
-  if (!layerIA) return;
-  if (layerIA.classList.contains('ia-hide')) {
-    const visibleIA = stepInfo.target.querySelector('.interactive-area:not(.ia-hide)');
-    visibleIA?.classList.add('ia-hide');
-    layerIA?.classList.remove('ia-hide');
-  }
-  if (idx === -1) {
-    idx = (stepInfo.displayPath >= 0 && layerIA.children.length >= stepInfo.displayPath) ? stepInfo.displayPath : 0;
-  }
-  const activeAsset = layerIA.querySelector('.ia-active-asset');
-  const targetAsset = layerIA.children[idx];
-  if (activeAsset === targetAsset) return;
-  targetAsset.classList.add('ia-active-asset');
-  activeAsset.classList.remove('ia-active-asset');
+async function loadAllImgs(imgs) {
+  const promiseLst = [];
+  [...imgs].forEach((img) => {
+    promiseLst.push(loadImg(img));
+  });
+  await Promise.allSettled(promiseLst);
 }
 
-function getDisplayAssets(config) {
-  return config.querySelectorAll(
-    `:scope > picture > img[src*="media_"],
-    :scope > a[href*=".mp4"],
-    :scope > p > picture > img[src*="media_"],
-    :scope > p > a[href*=".mp4"], :scope > ul > li picture:nth-child(1)`
-  );
+async function createDisplayImg(target, replaceEl, src, alt) {
+  const miloLibs = getLibs('/libs');
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+  const img = createTag('img', { src: src, alt: alt });
+  const pic = createTag('picture', {}, img);
+  await loadImg(img);
+  replaceEl.replaceWith(pic);
+  target.classList.add('show-image');
+  target.classList.remove('show-video');
 }
 
-function handleDisplayAsset(asset, createTag) {
-  if (asset.nodeName === 'IMG') return asset.closest('picture');
-  if (asset.nodeName === 'PICTURE') return asset;
-  const aDiv = createTag('div', { class: 'ia-asset-container'}, asset);
-  return aDiv;
+async function createDisplayVideo(target, replaceEl, src) {
+  const miloLibs = getLibs('/libs');
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+  const source = createTag('source', { src: src, type: 'video/mp4' });
+  const video = createTag('video', {}, source);
+  video.load();
+  replaceEl.replaceWith(video);
+  target.classList.add('show-video');
+  target.classList.remove('show-image');
+  video.play();
+}
+
+async function handleImageTransition(stepInfo, transitionCfg = {}) {
+  const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
+  const trgtPic = stepInfo.target.querySelector(':scope > picture');
+  const trgtVideo = stepInfo.target.querySelector(':scope > video');
+  if (transitionCfg.useCfg) {
+    if (transitionCfg.src) await createDisplayImg(stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt);
+    else await createDisplayVideo(stepInfo.target, trgtVideo, transitionCfg.vsrc);
+    return
+  }
+  const displayPics = config.querySelectorAll(':scope > p > picture img[src*="media_"]');
+  const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"]');
+  const displayPath = stepInfo.displayPath;
+  if (displayPics.length) await createDisplayImg(stepInfo.target, trgtPic, getImgSrc(displayPics[displayPath].closest('picture')), displayPics[displayPath].alt);
+  else if (displayVideos.length) await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[displayPath].href);
 }
 
 async function handleNextStep(stepInfo) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
-  let assetConfig = stepInfo.target;
-  if (stepInfo.stepIndex !== -1)
-    assetConfig = stepInfo.stepConfigs[nextStepIndex].querySelector('div');
-  const assets = getDisplayAssets(assetConfig);
-  if (!assets.length) {
-    await loadStepSVG(
-      stepInfo.stepConfigs[nextStepIndex].querySelector('img[src*=".svg"')
-    );
-    return;
-  }
-  const miloLibs = getLibs('/libs');
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const interactiveArea = createTag('div', {
-    class: `interactive-area ia-layer-${nextStepIndex}`,
-  });
-  if (stepInfo.stepIndex !== -1) interactiveArea.classList.add('ia-hide');
-  [...assets].forEach((asset) => {
-    const assetDOM = handleDisplayAsset(asset, createTag);
-    interactiveArea.append(assetDOM);
-  });
-  if (stepInfo.displayPath >= 0 && interactiveArea.children.length >= stepInfo.displayPath) {
-    interactiveArea.children[stepInfo.displayPath].classList.add('ia-active-asset');
-  } else {
-    interactiveArea.children[0].classList.add('ia-active-asset');
-  }
-  stepInfo.target.append(interactiveArea);
-  await loadStepSVG(
-    stepInfo.stepConfigs[nextStepIndex].querySelector('img[src*=".svg"')
-  );
+  await loadAllImgs(stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img[src*="svg"]'));
 }
 
 async function handleLayerDisplay(stepInfo) {
-  const currLayer = stepInfo.target.querySelector(
-    `.layer-${stepInfo.stepIndex}`
-  );
+  const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
   const prevLayer = stepInfo.target.querySelector(`.layer-${prevStepIndex}`);
-  stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
-  stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
   const miloLibs = getLibs('/libs');
   const { decorateDefaultLinkAnalytics } = await import(
     `${miloLibs}/martech/attributes.js`
   );
+  await handleImageTransition(stepInfo);
+  await loadAllImgs(currLayer.querySelectorAll('img[src*="media_"]'));
   await decorateDefaultLinkAnalytics(currLayer);
-  handleImageTransition(stepInfo);
+  stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
+  stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
   currLayer.classList.add('show-layer');
   if (currLayer === prevLayer) return;
   prevLayer?.classList.remove('show-layer');
@@ -121,33 +115,35 @@ async function loadJSandCSS(stepName) {
   return initFunc;
 }
 
-async function implementWorkflow(el, stepInfo) {
-  const currLayer = stepInfo.target.querySelector(
-    `.layer-${stepInfo.stepIndex}`
-  );
-  if (currLayer) {
-    await handleLayerDisplay(stepInfo);
-    await handleNextStep(stepInfo);
-    return;
-  }
-  await stepInfo.stepInit(stepInfo);
-  const layerName = `.layer-${stepInfo.stepIndex}`;
+async function implementWorkflow(stepInfo) {
+  const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
+  const layer = await stepInfo.stepInit(stepInfo);
+  if (currLayer) layer.replaceWith(layer);
+  else stepInfo.target.append(layer);
   await handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo);
 }
 
 async function getTargetArea(el) {
-  const metadataSec = el.closest('.section');
-  const previousSection = metadataSec.previousElementSibling;
-  const tmb = previousSection.querySelector('.marquee, .aside');
-  tmb?.classList.add('interactive-enabled');
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const assetLoc = tmb.querySelector('.asset, .image');
-  const assets = assetLoc.querySelectorAll('picture, video');
-  const iArea = createTag('div', { class: `interactive-holder` });
-  iArea.append(assets[assets.length - 1]);
-  assetLoc.append(iArea);
+  const metadataSec = el.closest('.section');
+  const previousSection = metadataSec.previousElementSibling;
+  const intEnb = previousSection.querySelector('.marquee, .aside');
+  if (!intEnb) return
+  intEnb.classList.add('interactive-enabled');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture');
+  const iArea = createTag('div', { class: `interactive-holder show-image` });
+  const pic = assets[assets.length - 1];
+  const newPic = pic.cloneNode(true);
+  const p = createTag('p', {}, newPic);
+  el.querySelector(':scope > div > div').prepend(p);
+  pic.querySelector('img').src = getImgSrc(pic);
+  [...pic.querySelectorAll('source')].forEach((s) => s.remove());
+  const videoSource = createTag('source', { src: ''});
+  const video = createTag('video', {playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: "video/mp4"}, videoSource);
+  iArea.append(pic, video);
+  intEnb.querySelector('.asset, .image').append(iArea);
   return iArea;
 }
 
@@ -180,11 +176,11 @@ async function renderLayer(stepInfo) {
     stepInfo.stepIndex = getNextStepIndex(stepInfo);
     if (stepInfo.stepIndex === 0) stepInfo.displayPath = 0;
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-    await implementWorkflow(stepInfo.el, stepInfo);
+    await implementWorkflow(stepInfo);
     pResolve();
   } catch (err) {
-    pReject();
     window.lana.log(err);
+    pReject();
   }
 }
 
@@ -232,19 +228,21 @@ export default async function init(el) {
   const stepInfo = {
     el,
     stepIndex: -1,
-    stepName: workflow[0],
+    stepName: '',
     stepList: workflow,
-    stepCount: workflow.length,
     stepConfigs: el.querySelectorAll(':scope > div'),
-    handleImageTransition,
     nextStepEvent: 'cc:interactive-switch',
     target: targetAsset,
+    displayPath: 0,
     openForExecution: true,
-    displayPath: -1,
+    handleImageTransition,
+    getImgSrc,
   };
+
   await handleNextStep(stepInfo);
   await renderLayer(stepInfo);
   addAnimationToLayer(targetAsset);
+
   el.addEventListener('cc:interactive-switch', async (e) => {
     await renderLayer(stepInfo);
   });

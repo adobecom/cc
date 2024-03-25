@@ -1,21 +1,34 @@
 import { getLibs } from '../../../scripts/utils.js';
 
-function selectorTrayWithImgs(data, config, createTag) {
+function selectorTrayWithImgs(data, createTag) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
+  const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
   const dpth = data.displayPath;
-  let configUl = config.querySelector('ul');
-  const allUls = config.querySelectorAll('ul');
-  if (dpth >= 0 && allUls.length > dpth) configUl = allUls[dpth];
-  const imgs = configUl.querySelectorAll('picture');
-  [...imgs].forEach((timg, idx) => {
-    timg.classList.add(`thumbnail-idx-${idx}`);
-    const trayLabel = createTag('div', { class: 'tray-item-label' }, `Generate variant ${timg.alt}`);
-    const a = createTag('a', { class: 'tray-thumbnail-img', href: "#" }, timg);
-    a.dataset.thumbnailIdx = idx;
+  let pathIdx = 0;
+  let configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[allUls.length - 1];
+  if (dpth >= 0 && allUls.length > dpth) {
+    for (let i = 0; i< dpth; i+=1) pathIdx += allUls[i].querySelectorAll('li').length;
+  }
+  const pics = configUl.querySelectorAll('picture');
+  let displayImg = null;
+  [...pics].forEach((pic, idx) => {
+    if (idx % 2 === 0) { 
+      displayImg = [ data.getImgSrc(pic), pic.querySelector('img').alt ];
+      return;
+    }
+    const trayLabel = createTag('div', { class: 'tray-item-label' }, `${ pic.querySelector('img').alt }`);
+    const cfgImg = pic.querySelector('img');
+    const thmbImg = createTag('img', { src: cfgImg.src, alt: cfgImg.alt, loading: 'eager', fetchPriority: 'high' });
+    const thmbPic = createTag('picture', {}, thmbImg);
+    const a = createTag('a', { class: 'tray-thumbnail-img', href: "#" }, thmbPic);
+    if (pathIdx === 0) a.classList.add('thumbnail-selected');
+    a.dataset.dispSrc = displayImg[0];
+    a.dataset.dispAlt = displayImg[1];
+    a.dataset.dispPth = pathIdx;
     a.append(trayLabel);
-    if (idx === 0) a.classList.add('thumbnail-selected');
     trayItems.append(a);
+    pathIdx += 1;
 
     a.addEventListener('mouseover', (e) => {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
@@ -27,14 +40,14 @@ function selectorTrayWithImgs(data, config, createTag) {
 
     a.addEventListener('click', async (e) => {
       e.preventDefault();
+      const a = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
       await data.openForExecution;
-      data.displayPath = idx;
-      data.handleImageTransition(data, idx+1);
+      data.displayPath = parseInt(a.dataset.dispPth);
+      await data.handleImageTransition(data, {src: a.dataset.dispSrc, alt: a.dataset.dispAlt, useCfg: true});
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
     });
   });
-
   selectorTray.append(trayItems);
   return selectorTray;
 }
@@ -51,8 +64,8 @@ export default async function stepInit(data) {
   const trayConfig = config.querySelectorAll('ul > li');
   const isGenerateTray = [...trayConfig].filter(li => (li.querySelector('img[src*="media_"]').length >= 2));
   let selectorTray = null;
-  if (isGenerateTray) selectorTray = selectorTrayWithImgs(data, config, createTag);
+  if (isGenerateTray) selectorTray = selectorTrayWithImgs(data, createTag);
   if (title) selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
-  data.target.append(layer);
+  return layer;
 }
