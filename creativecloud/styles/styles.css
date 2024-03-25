@@ -51,9 +51,29 @@
   height: 69px;
   min-height: 69px;
   left: -32px;
-  top: -20px;
+  top: -28px;
   z-index: 3;
 } 
+
+@media screen and (max-width: 600px) {
+  .interactive-enabled.title-swap .foreground .image > h1,
+  .interactive-enabled.title-swap .foreground .image > h2,
+  .interactive-enabled.title-swap .foreground .image > h3,
+  .interactive-enabled.title-swap .foreground .image > h4,
+  .interactive-enabled.title-swap .foreground .image > h5,
+  .interactive-enabled.title-swap .foreground .image > h6 {
+    display: block;
+  }
+  
+  .interactive-enabled.title-swap .foreground .text > h1,
+  .interactive-enabled.title-swap .foreground .text > h2,
+  .interactive-enabled.title-swap .foreground .text > h3,
+  .interactive-enabled.title-swap .foreground .text > h4,
+  .interactive-enabled.title-swap .foreground .text > h5,
+  .interactive-enabled.title-swap .foreground .text > h6 {
+    display: none;
+  }
+}
 
 @media screen and (min-width: 600px) {
   .interactive-enabled .foreground .image {
@@ -87,7 +107,7 @@
     height: 69px;
     min-height: 69px;
     left: -32px;
-    top: -20px;
+    top: -28px;
     z-index: 3;
   } 
 }
