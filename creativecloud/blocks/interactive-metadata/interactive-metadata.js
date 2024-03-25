@@ -107,6 +107,7 @@ async function handleLayerDisplay(stepInfo) {
   await decorateDefaultLinkAnalytics(currLayer);
   handleImageTransition(stepInfo);
   currLayer.classList.add('show-layer');
+  if (currLayer === prevLayer) return;
   prevLayer?.classList.remove('show-layer');
 }
 
@@ -135,12 +136,19 @@ async function implementWorkflow(el, stepInfo) {
   await handleNextStep(stepInfo);
 }
 
-function getTargetArea(el) {
+async function getTargetArea(el) {
   const metadataSec = el.closest('.section');
   const previousSection = metadataSec.previousElementSibling;
   const tmb = previousSection.querySelector('.marquee, .aside');
   tmb?.classList.add('interactive-enabled');
-  return tmb.querySelector('.asset, .image');
+  const miloLibs = getLibs('/libs');
+  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+  const assetLoc = tmb.querySelector('.asset, .image');
+  const assets = assetLoc.querySelectorAll('picture, video');
+  const iArea = createTag('div', { class: `interactive-holder` });
+  iArea.append(assets[assets.length - 1]);
+  assetLoc.append(iArea);
+  return iArea;
 }
 
 async function addBtnAnimation(ia) {
@@ -218,7 +226,7 @@ function getWorkFlowInformation(el) {
 export default async function init(el) {
   const workflow = getWorkFlowInformation(el);
   if (!workflow.length) return;
-  const targetAsset = getTargetArea(el);
+  const targetAsset = await getTargetArea(el);
   if (!targetAsset) return;
   const stepInfo = {
     el,

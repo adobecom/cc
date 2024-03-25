@@ -16,6 +16,10 @@
   display: none;
 }
 
+.interactive-enabled .foreground.container .interactive-holder {
+  margin: auto;
+}
+
 .interactive-enabled .foreground.container .interactive-area > .ia-active-asset {
   z-index: 2;
   opacity: 1;
@@ -69,7 +73,7 @@
   z-index: 3;
 }
 
-.interactive-enabled .image {
+.interactive-enabled .interactive-holder {
   position: relative;
   flex-direction: column;
   height: 360px;
@@ -114,7 +118,7 @@
   animation: outline-fill 2700ms 500ms forwards infinite;
 }
 
-.aside .foreground.container .image {
+.aside .foreground.container .interactive-holder {
   flex: 0 0 auto !important;
 }
 
@@ -162,8 +166,8 @@
   }
 }
 
-.interactive-enabled .foreground.container .image .layer .gray-button picture,
-.interactive-enabled .foreground.container .image .layer .gray-button img {
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button img {
   width: 24px;
   height: auto;
   min-height: 24px;
@@ -182,11 +186,17 @@
 } 
 
 @media screen and (min-width: 600px) {
-  .interactive-enabled .image {
+  .interactive-enabled .interactive-holder {
     position: relative;
     height: 570px;
     width: 570px;
     min-width: 570px;
+  }
+
+  .interactive-enabled .foreground.container .interactive-area > * {
+    bottom: 0;
+    left: 0;
+    top: auto;
   }
 
   .interactive-enabled .foreground.container .interactive-area > .ia-active-asset img,
@@ -205,15 +215,16 @@
   .interactive-enabled .layer.show-layer {
     display: flex;
     position: absolute;
-    top: 0;
+    top: auto;
+    bottom: 0;
     left: 0;
     background: none;
     height: 570px;
     width: 570px;
   }
   
-  .interactive-enabled .foreground.container .image .layer .gray-button picture,
-  .interactive-enabled .foreground.container .image .layer .gray-button img {
+  .interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
+  .interactive-enabled .foreground.container .interactive-holder .layer .gray-button img {
     width: 34px;
     height: auto;
     min-height: 34px;
