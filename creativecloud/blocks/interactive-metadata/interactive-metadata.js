@@ -99,7 +99,9 @@ async function handleLayerDisplay(stepInfo) {
   await loadAllImgs(currLayer.querySelectorAll('img[src*="media_"]'));
   await decorateDefaultLinkAnalytics(currLayer);
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
-  stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
+  if (prevStepIndex) {
+    stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
+  }
   currLayer.classList.add('show-layer');
   if (currLayer === prevLayer) return;
   prevLayer?.classList.remove('show-layer');
@@ -197,6 +199,7 @@ function getWorkFlowInformation(el) {
     'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-2': ['crop', 'crop', 'start-over'],
     'workflow-3': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
+    'workflow-4': ['selector-tray'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   const stepList = [];
