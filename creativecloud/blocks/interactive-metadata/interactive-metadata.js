@@ -160,9 +160,7 @@ async function getTargetArea(el) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const metadataSec = el.closest('.section');
-  const previousSection = metadataSec.previousElementSibling;
-  const intEnb = previousSection.querySelector('.marquee, .aside');
-  if (!intEnb) return;
+  let intEnb = metadataSec.querySelector('.aside, .marquee');
   intEnb.classList.add('interactive-enabled');
   const assets = intEnb.querySelectorAll('.asset picture, .image picture');
   const iArea = createTag('div', { class: `interactive-holder show-image` });
@@ -188,7 +186,7 @@ async function getTargetArea(el) {
   const assetArea = intEnb.querySelector('.asset, .image');
   const placeholderLayer = createTag('div', { class: `layer placeholder-layer show-layer` });
   const container = pic.closest('p');
-  iArea.append(pic, video, placeholderLayer);
+  iArea.append(newPic, video, placeholderLayer);
   if (container) {
     container.replaceWith(iArea);
     container.remove();
