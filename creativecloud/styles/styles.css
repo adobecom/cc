@@ -131,7 +131,7 @@
     position: relative;
     border-radius: 16px;
     margin: 0;
-    margin-inline-start: 60px;
+    margin-inline-start: 60px !important;
     background: none;
     width: calc(var(--grid-container-width) - 20px);
   }
