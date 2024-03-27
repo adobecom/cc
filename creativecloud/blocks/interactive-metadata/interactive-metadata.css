@@ -252,14 +252,8 @@
 }
 
 @media screen and (min-width: 1200px) {
-  
-  .interactive-enabled .foreground.container .image .interactive-holder > picture img {
+  .interactive-enabled .foreground.container .interactive-holder {
     margin: 0;
-  }
-  
-  .interactive-enabled .foreground.container .image {
-    padding-bottom: 0;
-    margin-inline-start: 60px;
   }
 
   .interactive-enabled .foreground .image .enticement-arrow {
