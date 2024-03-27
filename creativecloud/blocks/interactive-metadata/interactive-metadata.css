@@ -252,11 +252,11 @@
 }
 
 @media screen and (min-width: 1200px) {
-
-  .interactive-enabled .foreground.container .image img {
+  
+  .interactive-enabled .foreground.container .image .interactive-holder > picture img {
     margin: 0;
   }
-
+  
   .interactive-enabled .foreground.container .image {
     padding-bottom: 0;
     margin-inline-start: 60px;
