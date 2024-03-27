@@ -266,7 +266,7 @@ function getWorkFlowInformation(el) {
       'crop',
       'start-over',
     ],
-    'workflow-4': ['selector-tray'],
+    'workflow-4': ['slider-tray'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   const stepList = [];
