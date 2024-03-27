@@ -45,14 +45,6 @@
   flex-direction: column;
 }
 
-.aside.interactive-enabled .foreground.container .image {
-  order: 1;
-}
-
-.aside.interactive-enabled .foreground.container .text {
-  order: 2;
-}
-
 @media screen and (max-width: 600px) {
   .interactive-enabled.heading-top .foreground .image > p > strong {
     display: block;
@@ -102,6 +94,16 @@
 
   .interactive-enabled .foreground .image > p img[src*=".svg"] {
     left: -62px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .aside.interactive-enabled .foreground.container .image {
+    order: 1;
+  }
+  
+  .aside.interactive-enabled .foreground.container .text {
+    order: 2;
   }
 }
 
