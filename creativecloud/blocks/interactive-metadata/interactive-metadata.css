@@ -76,7 +76,6 @@
   max-width: 30ch;
   font-size: 28px;
   line-height: 35px;
-  /* color: var(--color-white); */
 }
 
 .interactive-enabled .foreground .image .enticement-arrow {
@@ -89,6 +88,12 @@
   left: auto;
   z-index: 2;
   margin: 0;
+}
+
+[dir="rtl"] .interactive-enabled .foreground .image .enticement-arrow {
+  left: 30px;
+  right: auto;
+  transform: scaleX(-1);
 }
 
 .interactive-enabled .foreground .image > p > img[src*='svg'] {
@@ -296,6 +301,17 @@
     width: var(--grid-container-width);
     max-width: 570px;
     right: 30px;
+  }
+
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container {
+    right: auto;
+    left: 30px;
+  }
+
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-arrow {
+    right: auto;
+    left: 30px;
+    transform: scaleX(-1);
   }
 
   .interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
