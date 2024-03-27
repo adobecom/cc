@@ -189,18 +189,7 @@ async function getTargetArea(el) {
   pic.querySelector('img').src = getImgSrc(pic);
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   const videoSource = createTag('source', { src: '' });
-  const video = createTag(
-    'video',
-    {
-      playsinline: '',
-      autoplay: '',
-      muted: '',
-      loop: '',
-      src: '',
-      type: 'video/mp4',
-    },
-    videoSource
-  );
+  const video = createTag('video', { playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4', }, videoSource );
   const assetArea = intEnb.querySelector('.asset, .image');
   const placeholderLayer = createTag('div', { class: `layer placeholder-layer show-layer` });
   const container = pic.closest('p');
@@ -213,12 +202,12 @@ async function getTargetArea(el) {
   }
   const enticementArrow = assetArea.querySelector(':scope > p img[src*="svg"]');
   if (enticementArrow) {
-    const enticement = enticementArrow.closest('p');
-    const entTxt = createTag('div', { class: 'enticement-text' }, enticement.textContent);
-    enticement.innerHTML = '';
+    const entP = enticementArrow.closest('p')
+    const entTxt = createTag('div', { class: 'enticement-text' }, entP.textContent);
+    const enticement = createTag('div', { class: 'enticement-container' });
     enticementArrow.classList.add('enticement-arrow');
     enticement.append(entTxt, enticementArrow);
-    enticement.classList.add('enticement-container');
+    entP.replaceWith(enticement);
   }
   return iArea;
 }
@@ -274,14 +263,7 @@ function getWorkFlowInformation(el) {
   const intWorkFlowConfig = {
     'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-2': ['crop', 'crop', 'start-over'],
-    'workflow-3': [
-      'generate',
-      'selector-tray',
-      'generate',
-      'selector-tray',
-      'crop',
-      'start-over',
-    ],
+    'workflow-3': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-4': ['slider-tray'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);

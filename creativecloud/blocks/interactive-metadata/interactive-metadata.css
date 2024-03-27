@@ -11,6 +11,42 @@
   --prompt-text-color-light: #272928;
 }
 
+.interactive-enabled .foreground .image > p {
+  display: none;
+  margin: 0;
+}
+
+.interactive-enabled.heading-top  h1,
+.interactive-enabled.heading-top  h2,
+.interactive-enabled.heading-top  h3,
+.interactive-enabled.heading-top  h4,
+.interactive-enabled.heading-top  h5,
+.interactive-enabled.heading-top  h6 {
+  display: none;
+}
+
+.interactive-enabled.heading-top .foreground .image > p:nth-child(1) {
+  display: block;
+  margin-bottom: 24px;
+  font-size: 36px;
+  line-height: 45px;
+}
+
+.interactive-enabled .foreground.container .image {
+  flex-direction: column;
+}
+
+.aside.interactive-enabled .foreground.container {
+  margin: 40px auto 32px auto;
+  flex-direction: column;
+}
+
+.aside.interactive-enabled .foreground.container > div.image,
+.aside.interactive-enabled .foreground.container > div.text {
+  margin: 0;
+  padding: 0;
+}
+
 .interactive-metadata,
 .interactive-enabled .layer {
   display: none;
@@ -24,16 +60,14 @@
 .interactive-enabled .foreground .image .enticement-container {
   display: block;
   height: 28px;
-  margin-left: 0;
-  margin-right: 0;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 28px;
+  margin: 0 0 16px 0;
 }
 
 .interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
   display: none;
-}
-
-.interactive-enabled .foreground.container .image {
-  padding-bottom: 0;
 }
 
 .interactive-enabled .foreground .image .enticement-text {
@@ -201,6 +235,30 @@
 } 
 
 @media screen and (min-width: 600px) {
+  .interactive-enabled.heading-top  h1,
+  .interactive-enabled.heading-top  h2,
+  .interactive-enabled.heading-top  h3,
+  .interactive-enabled.heading-top  h4,
+  .interactive-enabled.heading-top  h5,
+  .interactive-enabled.heading-top  h6 {
+    display: block;
+  }
+
+  .interactive-enabled.heading-top .foreground.container .image > p,
+  .interactive-enabled .foreground.container .image > p {
+    display: none;
+  }
+
+  .interactive-enabled .foreground .image {
+    position: relative;
+    border-radius: 16px;
+    margin-inline-start: 0px;
+    background: none;
+    width: calc(var(--grid-container-width) - 20px);
+    max-width: 570px;
+    margin: 44px auto 42px;
+  }
+
   .interactive-enabled .interactive-holder {
     position: relative;
     max-width: 570px;
@@ -231,8 +289,12 @@
     background: none;
   }
   
-  .interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
+  .interactive-enabled .foreground.container .image .enticement-container {
     display: block;
+    position: relative;
+    width: var(--grid-container-width);
+    max-width: 570px;
+    right: 30px;
   }
 
   .interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
@@ -256,11 +318,33 @@
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .aside.interactive-enabled .foreground.container .image {
+    order: 1;
+  }
+  
+  .aside.interactive-enabled .foreground.container .text {
+    order: 2;
+  }
+}
+
 @media screen and (min-width: 1200px) {
-  .aside.interactive-enabled .image img,
-  .marquee.interactive-enabled .image img,
-  .interactive-enabled .foreground.container .interactive-holder {
+  .aside.interactive-enabled .foreground.container div.image,
+  .marquee.interactive-enabled .foreground.container div.image {
+    max-width: 570px;
+    margin-inline-start: 60px;
+  }
+
+  [dir="rtl"] .aside.interactive-enabled .foreground.container div.image,
+  .aside.interactive-enabled.row-reversed .foreground.container div.image {
     margin: 0;
+    margin-right: 60px;
+  }
+
+  .aside.interactive-enabled .foreground.container div.image,
+  [dir="rtl"] .aside.interactive-enabled.row-reversed .foreground.container div.image {
+    margin: 0;
+    margin-left: 60px;
   }
 
   .interactive-enabled .foreground .image .enticement-arrow {
@@ -270,6 +354,27 @@
     min-height: unset;
     height: 73px;
     width: 49px;
+  }
+  
+  .marquee.interactive-enabled .foreground.container,
+  .aside.interactive-enabled .foreground.container {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .aside.interactive-enabled .foreground.container {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .marquee.interactive-enabled .foreground.container,
+  .aside.interactive-enabled.row-reversed .foreground.container {
+    order: unset;
+    flex-direction: row;
+  }
+
+  .aside.interactive-enabled.row-reversed .foreground.container {
+    flex-direction: row-reverse;
   }
 }
 
