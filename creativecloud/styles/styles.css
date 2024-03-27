@@ -45,21 +45,21 @@
   flex-direction: column;
 }
 
+.interactive-enabled.heading-top  h1,
+.interactive-enabled.heading-top  h2,
+.interactive-enabled.heading-top  h3,
+.interactive-enabled.heading-top  h4,
+.interactive-enabled.heading-top  h5,
+.interactive-enabled.heading-top  h6 {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
   .interactive-enabled.heading-top .foreground .image > p > strong {
     display: block;
     font-size: 36px;
     line-height: 45px;
     margin-bottom: 24px;
-  }
-
-  .interactive-enabled.heading-top .foreground .text > h1,
-  .interactive-enabled.heading-top .foreground .text > h2,
-  .interactive-enabled.heading-top .foreground .text > h3,
-  .interactive-enabled.heading-top .foreground .text > h4,
-  .interactive-enabled.heading-top .foreground .text > h5,
-  .interactive-enabled.heading-top .foreground .text > h6 {
-    display: none !important;
   }
 
   .interactive-enabled .foreground.container .image {
@@ -83,6 +83,15 @@
 }
 
 @media screen and (min-width: 600px) {
+  .interactive-enabled.heading-top  h1,
+  .interactive-enabled.heading-top  h2,
+  .interactive-enabled.heading-top  h3,
+  .interactive-enabled.heading-top  h4,
+  .interactive-enabled.heading-top  h5,
+  .interactive-enabled.heading-top  h6 {
+    display: block;
+  }
+
   .interactive-enabled .foreground .image {
     position: relative;
     border-radius: 16px;
