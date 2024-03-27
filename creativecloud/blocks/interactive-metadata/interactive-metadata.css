@@ -197,9 +197,9 @@
     width: 100%;
   }
   
-  .interactive-enabled .foreground.container .interactive-holder > picture img,
-  .interactive-enabled .foreground.container .interactive-holder > picture,
-  .interactive-enabled .foreground.container .interactive-holder > video {
+  .interactive-enabled .foreground.container .image .interactive-holder > picture img,
+  .interactive-enabled .foreground.container .image .interactive-holder > picture,
+  .interactive-enabled .foreground.container .image .interactive-holder > video {
     position: relative;
     top: 0;
     left: 0;
