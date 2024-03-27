@@ -11,10 +11,12 @@
   font-weight: bold;
   box-sizing: border-box;
   width: 100%;
+  color: var(--color-white);
 }
 
 .interactive-enabled.light .step-selector-tray .selector-tray {
   background: var(--prompt-btn-fill-light);
+  color: var(--color-black);
 }
 
 .interactive-enabled .step-selector-tray .selector-tray .tray-items {
