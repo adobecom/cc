@@ -6,25 +6,24 @@ function selectorTrayWithImgs(data, createTag) {
   const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
   const dpth = data.displayPath;
   let pathIdx = 0;
-  let configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[allUls.length - 1];
+  const configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[allUls.length - 1];
   if (dpth >= 0 && allUls.length > dpth) {
-    for (let i = 0; i< dpth; i+=1) pathIdx += allUls[i].querySelectorAll('li').length;
+    for (let i = 0; i < dpth; i += 1) pathIdx += allUls[i].querySelectorAll('li').length;
   }
   const pics = configUl.querySelectorAll('picture');
   let displayImg = null;
   [...pics].forEach((pic, idx) => {
-    if (idx % 2 === 0) { 
-      displayImg = [ data.getImgSrc(pic), pic.querySelector('img').alt ];
+    if (idx % 2 === 0) {
+      displayImg = [data.getImgSrc(pic), pic.querySelector('img').alt];
       return;
     }
-    const trayLabel = createTag('div', { class: 'tray-item-label' }, `${ pic.querySelector('img').alt }`);
+    const trayLabel = createTag('div', { class: 'tray-item-label' }, pic.querySelector('img').alt);
     const src = data.getImgSrc(pic);
-    const outline = createTag('div', { class: 'tray-thumbnail-outline'});
-    const a = createTag('a', { class: 'tray-thumbnail-img', href: "#" }, outline);
+    const outline = createTag('div', { class: 'tray-thumbnail-outline' });
+    const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
     a.style.backgroundImage = `url(${src})`;
     if (pathIdx === 0) a.classList.add('thumbnail-selected');
-    a.dataset.dispSrc = displayImg[0];
-    a.dataset.dispAlt = displayImg[1];
+    [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
     a.dataset.dispPth = pathIdx;
     a.append(trayLabel);
     trayItems.append(a);
@@ -40,10 +39,10 @@ function selectorTrayWithImgs(data, createTag) {
 
     a.addEventListener('click', async (e) => {
       e.preventDefault();
-      const a = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
+      const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       await data.openForExecution;
-      data.displayPath = parseInt(a.dataset.dispPth);
-      await data.handleImageTransition(data, {src: a.dataset.dispSrc, alt: a.dataset.dispAlt, useCfg: true});
+      data.displayPath = parseInt(curra.dataset.dispPth, 10);
+      await data.handleImageTransition(data, { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true });
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
       e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
     });
@@ -62,7 +61,7 @@ export default async function stepInit(data) {
   let trayTitle = null;
   if (title) trayTitle = createTag('div', { class: 'body-xl tray-title' }, title.innerText.trim());
   const trayConfig = config.querySelectorAll('ul > li');
-  const isGenerateTray = [...trayConfig].filter(li => (li.querySelector('img[src*="media_"]').length >= 2));
+  const isGenerateTray = [...trayConfig].filter((li) => (li.querySelector('img[src*="media_"]').length >= 2));
   let selectorTray = null;
   if (isGenerateTray) selectorTray = selectorTrayWithImgs(data, createTag);
   if (title) selectorTray.prepend(trayTitle);

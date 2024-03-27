@@ -19,6 +19,16 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
+async function loadJSandCSS(stepName) {
+  const miloLibs = getLibs('/libs');
+  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+  const stepJS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.js`;
+  const stepCSS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.css`;
+  loadStyle(stepCSS);
+  const { default: initFunc } = await import(stepJS);
+  return initFunc;
+}
+
 function loadImg(img) {
   if (!img) return;
   return new Promise((res) => {
@@ -70,7 +80,7 @@ async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const trgtVideo = stepInfo.target.querySelector(':scope > video');
   if (transitionCfg.useCfg) {
     if (transitionCfg.src) {
-      await createDisplayImg( stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt );
+      await createDisplayImg(stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt);
     } else {
       await createDisplayVideo(stepInfo.target, trgtVideo, transitionCfg.vsrc);
     }
@@ -78,7 +88,7 @@ async function handleImageTransition(stepInfo, transitionCfg = {}) {
   }
   const displayPics = config.querySelectorAll(':scope > p > picture img[src*="media_"]');
   const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"]');
-  const displayPath = stepInfo.displayPath;
+  const {displayPath} = stepInfo;
   if (displayPics.length) {
     const picSrc = getImgSrc(displayPics[displayPath].closest('picture'));
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[displayPath].alt);
@@ -111,20 +121,8 @@ async function handleLayerDisplay(stepInfo) {
   prevLayer?.classList.remove('show-layer');
 }
 
-async function loadJSandCSS(stepName) {
-  const miloLibs = getLibs('/libs');
-  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-  const stepJS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.js`;
-  const stepCSS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.css`;
-  loadStyle(stepCSS);
-  const { default: initFunc } = await import(stepJS);
-  return initFunc;
-}
-
 async function implementWorkflow(stepInfo) {
-  const currLayer = stepInfo.target.querySelector(
-    `.layer-${stepInfo.stepIndex}`
-  );
+  const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const layer = await stepInfo.stepInit(stepInfo);
   if (currLayer) layer.replaceWith(layer);
   else stepInfo.target.append(layer);
@@ -134,8 +132,7 @@ async function implementWorkflow(stepInfo) {
 
 function checkRenderStatus(targetBlock, res) {
   if (targetBlock.querySelector('.text') && targetBlock.querySelector('.image')) res();
-  else  setTimeout(() => checkRenderStatus(targetBlock, res), 100); 
-  return false
+  else setTimeout(() => checkRenderStatus(targetBlock, res), 100);
 }
 
 function intEnbReendered(targetBlock) {
@@ -153,11 +150,11 @@ async function getTargetArea(el) {
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const metadataSec = el.closest('.section');
   const intEnb = metadataSec.querySelector('.marquee, .aside');
-  if (!intEnb) return;
+  if (!intEnb) return null;
   await intEnbReendered(intEnb);
   intEnb.classList.add('interactive-enabled');
   const assets = intEnb.querySelectorAll('.asset picture, .image picture');
-  const iArea = createTag('div', { class: `interactive-holder show-image` });
+  const iArea = createTag('div', { class: 'interactive-holder show-image' });
   const pic = assets[assets.length - 1];
   const newPic = pic.cloneNode(true);
   const p = createTag('p', {}, newPic);
@@ -165,16 +162,18 @@ async function getTargetArea(el) {
   pic.querySelector('img').src = getImgSrc(pic);
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   const videoSource = createTag('source', { src: '' });
-  const video = createTag('video', { playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4', }, videoSource );
+  const video = createTag('video', { 
+    playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4' 
+  }, videoSource);
   const assetArea = intEnb.querySelector('.asset, .image');
-  const placeholderLayer = createTag('div', { class: `layer placeholder-layer show-layer` });
+  const placeholderLayer = createTag('div', { class: 'layer placeholder-layer show-layer' });
   const container = pic.closest('p');
   iArea.append(pic, video, placeholderLayer);
   if (container) container.replaceWith(iArea);
   else assetArea.append(iArea);
   const enticementArrow = assetArea.querySelector(':scope > p img[src*="svg"]');
   if (enticementArrow) {
-    const entP = enticementArrow.closest('p')
+    const entP = enticementArrow.closest('p');
     const entTxt = createTag('div', { class: 'enticement-text' }, entP.textContent);
     const enticement = createTag('div', { class: 'enticement-container' });
     enticementArrow.classList.add('enticement-arrow');
@@ -182,6 +181,13 @@ async function getTargetArea(el) {
     entP.replaceWith(enticement);
   }
   return iArea;
+}
+
+function removeAnimation(ia) {
+  const btn = ia.querySelector('.layer .gray-button');
+  if (!btn) return;
+  btn.querySelector('.ia-circle').style.animation = 'none';
+  btn.style.animation = 'none';
 }
 
 async function addBtnAnimation(ia) {
@@ -193,7 +199,7 @@ async function addBtnAnimation(ia) {
     btn.append(circle);
     btn.style.animation = 'outline-fill 2700ms 500ms forwards 7';
     circle.style.animation = 'circle 2700ms ease-in-out 500ms backwards 7';
-    btn.addEventListener('mouseover', (e) => {
+    btn.addEventListener('mouseover', () => {
       removeAnimation(ia);
     });
   });
@@ -207,7 +213,7 @@ function addAnimationToLayer(ia) {
 async function renderLayer(stepInfo) {
   let pResolve = null;
   let pReject = null;
-  stepInfo.openForExecution = new Promise(function (resolve, reject) {
+  stepInfo.openForExecution = new Promise((resolve, reject) => {
     pResolve = resolve;
     pReject = reject;
   });
@@ -221,13 +227,6 @@ async function renderLayer(stepInfo) {
     window.lana.log(err);
     pReject();
   }
-}
-
-function removeAnimation(ia) {
-  const btn = ia.querySelector('.layer .gray-button');
-  if (!btn) return;
-  btn.querySelector('.ia-circle').style.animation = 'none';
-  btn.style.animation = 'none';
 }
 
 function getWorkFlowInformation(el) {
@@ -289,7 +288,7 @@ export default async function init(el) {
     options: { threshold: 1.0 },
   });
   if (workflow.length === 1) return;
-  el.addEventListener('cc:interactive-switch', async (e) => {
+  el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);
   });
 }

@@ -11,7 +11,7 @@ export default async function stepInit(data) {
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
   const searchBarContainer = createTag('div', { class: 'generate-text-container' }, searchBar);
-  const generateBtn = createTag('a', { class: `gray-button generate-button next-step`, href: "#" });
+  const generateBtn = createTag('a', { class: 'gray-button generate-button next-step', href: '#' });
   const svg = config.querySelector('img[src*=".svg"]')?.closest('picture');
   if (svg) generateBtn.appendChild(svg.cloneNode(true));
   if (btnText) generateBtn.appendChild(document.createTextNode(btnText));
