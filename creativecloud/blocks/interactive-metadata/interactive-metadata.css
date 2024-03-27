@@ -248,12 +248,14 @@
   }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (min-width: 1200px) {
   .interactive-enabled .foreground .image .enticement-arrow {
     display: flex;
     flex-direction: row-reverse;
     justify-content: start;
     min-height: unset;
+    height: 73px;
+    width: 49px;
   }
 }
 
