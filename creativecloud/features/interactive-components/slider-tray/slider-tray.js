@@ -10,9 +10,9 @@ export default async function stepInit(data) {
   console.log('data', data);
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   createSelectorTray(data, layer);
-  data.target.append(layer);
-  sliderEvent(data.target);
-  uploadImage(data.target);
+  sliderEvent(layer);
+  uploadImage(layer);
+  return layer;
 }
 
 function createSelectorTray(data, layer) {

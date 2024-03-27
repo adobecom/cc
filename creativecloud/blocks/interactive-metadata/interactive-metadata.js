@@ -320,6 +320,7 @@ export default async function init(el) {
     callback: addAnimationToLayer,
     options: { threshold: 1.0 },
   });
+  if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async (e) => {
     await renderLayer(stepInfo);
   });
