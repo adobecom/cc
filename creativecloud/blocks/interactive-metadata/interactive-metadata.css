@@ -53,6 +53,7 @@
   right: 30px;
   left: auto;
   z-index: 2;
+  margin: 0;
 }
 
 .interactive-enabled .foreground .image > p > img[src*='svg'] {
@@ -66,7 +67,6 @@
   opacity: 0;
   object-fit: cover;
   border-radius: 8px 8px 0 0;
-  margin: 0;
 }
 
 .interactive-enabled .foreground.container .image .interactive-holder.show-image > picture img,
@@ -252,6 +252,16 @@
 }
 
 @media screen and (min-width: 1200px) {
+
+  .interactive-enabled .foreground.container .image img {
+    margin: 0;
+  }
+
+  .interactive-enabled .foreground.container .image {
+    padding-bottom: 0;
+    margin-inline-start: 60px;
+  }
+
   .interactive-enabled .foreground .image .enticement-arrow {
     display: flex;
     flex-direction: row-reverse;

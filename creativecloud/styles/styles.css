@@ -134,7 +134,7 @@
     width: calc(var(--grid-container-width) - 20px);
   }
 
-  .marquee.interactive-enabled .foreground.container div.image img {
+  .interactive-enabled .foreground.container .image img[src*="media_"] {
     margin-inline-start: 60px;
   }
 
