@@ -18,6 +18,7 @@
 
 .interactive-enabled .foreground.container .interactive-holder {
   margin: auto;
+  aspect-ratio: 1;
 }
 
 .interactive-enabled .foreground .image .enticement-container {
@@ -72,6 +73,7 @@
 .interactive-enabled .foreground.container .image .interactive-holder.show-video > video {
   display: block;
   width: 100%;
+  aspect-ratio: 1;
   object-fit: cover;
   opacity: 1;
 }
