@@ -10,7 +10,7 @@ export default async function stepInit(data) {
   console.log('data', data);
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   createSelectorTray(data, layer);
-  sliderEvent(layer);
+  sliderEvent(data.target, layer);
   uploadImage(layer);
   return layer;
 }
@@ -116,11 +116,11 @@ function appendSVGToButton(picture, button) {
   }
 }
 
-function sliderEvent(media) {
+function sliderEvent(media, layer) {
   ['hue', 'saturation'].forEach((sel) => {
-    const sliderEl = media.querySelector(`.${sel.toLowerCase()}-input`);
+    const sliderEl = layer.querySelector(`.${sel.toLowerCase()}-input`);
     sliderEl.addEventListener('input', () => {
-      const image = media.querySelector('picture > img');
+      const image = media.querySelector('.interactive-holder picture > img');
       const { value } = sliderEl;
       const outerCircle = sliderEl.nextSibling;
       const rect = sliderEl.getBoundingClientRect();
