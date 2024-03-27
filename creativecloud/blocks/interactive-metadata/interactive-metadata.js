@@ -160,7 +160,9 @@ async function getTargetArea(el) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const metadataSec = el.closest('.section');
-  let intEnb = metadataSec.querySelector('.aside, .marquee');
+  const previousSection = metadataSec.previousElementSibling;
+  const intEnb = previousSection.querySelector('.marquee, .aside');
+  if (!intEnb) return;
   intEnb.classList.add('interactive-enabled');
   const assets = intEnb.querySelectorAll('.asset picture, .image picture');
   const iArea = createTag('div', { class: `interactive-holder show-image` });
