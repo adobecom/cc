@@ -196,7 +196,7 @@ async function getTargetArea(el) {
     assetArea.append(iArea);
   }
   const enticementArrow = assetArea.querySelector(':scope > p img[src*="svg"]');
-  if (!intEnb.classList.contains('mobile-hide-enticement') && enticementArrow) {
+  if (enticementArrow) {
     const enticement = enticementArrow.closest('p');
     const entTxt = createTag('div', { class: 'enticement-text' }, enticement.textContent);
     enticement.innerHTML = '';

@@ -20,13 +20,15 @@
   margin: auto;
 }
 
-.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
-  display: none;
-}
-
 .interactive-enabled .foreground .image .enticement-container {
   display: block;
   height: 28px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
+  display: none;
 }
 
 .interactive-enabled .foreground.container .image {
@@ -48,6 +50,7 @@
   height: 73px;
   top: -16px;
   right: 30px;
+  left: auto;
   z-index: 2;
 }
 
@@ -220,6 +223,10 @@
     background: none;
   }
   
+  .interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
+    display: block;
+  }
+
   .interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
   .interactive-enabled .foreground.container .interactive-holder .layer .gray-button img {
     width: 34px;
@@ -242,11 +249,12 @@
 }
 
 @media screen and (max-width: 1200px) {
-  /* .aside .foreground.container {
-    flex-direction: column-reverse !important;
-    We need this to be set to column as column reversed is messing up the stacking in aside
-    We can probably discuss if we need this but currently tests look good without this with proposed authoring
-  } */
+  .interactive-enabled .foreground .image .enticement-arrow {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    min-height: unset;
+  }
 }
 
 

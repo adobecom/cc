@@ -99,10 +99,6 @@
     margin: auto;
     right: 30px;
   }
-
-  .interactive-enabled .foreground .image > p img[src*=".svg"] {
-    left: -62px;
-  }
 }
 
 @media screen and (max-width: 1200px) {
@@ -134,11 +130,10 @@
   .interactive-enabled .foreground .image {
     position: relative;
     border-radius: 16px;
+    margin: 0;
     margin-inline-start: 60px;
     background: none;
-    margin-left: 60px;
     width: calc(var(--grid-container-width) - 20px);
-    margin: 0 auto;
   }
 
   .interactive-enabled .foreground.container .text,
