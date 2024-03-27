@@ -128,17 +128,17 @@
     min-width: unset !important;
   }
 
-  .aside.interactive-enabled .foreground.container .text,
-  .aside.interactive-enabled.row-reversed .foreground.container .image,
-  [dir="rtl"] .aside.interactive-enabled .foreground.container .image,
-  [dir="rtl"] .aside.interactive-enabled.row-reversed .foreground.container .text {
+  .interactive-enabled .foreground.container .text,
+  .interactive-enabled.row-reversed .foreground.container .image,
+  [dir="rtl"] .interactive-enabled .foreground.container .image,
+  [dir="rtl"] .interactive-enabled.row-reversed .foreground.container .text {
     order: 1;
   }
 
-  .aside.interactive-enabled .foreground.container .image,
-  .aside.interactive-enabled.row-reversed .foreground.container .text,
-  [dir="rtl"] .aside.interactive-enabled .foreground.container .text,
-  [dir="rtl"] .aside.interactive-enabled.row-reversed .foreground.container .image {
+  .interactive-enabled .foreground.container .image,
+  .interactive-enabled.row-reversed .foreground.container .text,
+  [dir="rtl"] .interactive-enabled .foreground.container .text,
+  [dir="rtl"] .interactive-enabled.row-reversed .foreground.container .image {
     order: 2;
   }
 }
