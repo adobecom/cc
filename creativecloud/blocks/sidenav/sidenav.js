@@ -17,12 +17,16 @@ const getCategories = (items, isMultilevel, mapCategories) => {
   const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
   merchTag.append(tag);
   items.forEach((item) => {
-    if (item) {
+    if (item?.id) {
       let parent = tag;
       const value = getIdLeaf(item.id);
       // first token is type, second is parent category
       const isParent = item.id.split('/').length <= 2;
       const itemTag = createTag('sp-sidenav-item', { label: item.name, value });
+      if (item.icon) {
+        item.icon.setAttribute('slot', 'icon');
+        itemTag.append(item.icon);
+      }
       if (isParent) {
         mapParents[value] = itemTag;
         tag.append(itemTag);
@@ -72,19 +76,22 @@ const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
         if (item.id?.startsWith(CATEGORY_ID_PREFIX)) {
           const value = getIdLeaf(item.id);
           mapCategories[value] = item;
-          categoryValues.push(value);
+          categoryValues.push({ value });
         } else if (item.id?.startsWith(TYPE_ID_PREFIX)) {
           types.push(item);
         }
       });
       if (explicitCategoriesElt) {
         categoryValues = Array.from(explicitCategoriesElt.querySelectorAll('li'))
-          .map((item) => item.textContent.trim().toLowerCase());
+          .map((item) => ({
+            value: item.textContent.trim().toLowerCase(),
+            icon: item.querySelector('picture'),
+          }));
       }
       let shallowCategories = true;
       if (categoryValues.length > 0) {
-        const items = categoryValues.map((value) => mapCategories[value]);
-        const parentValues = new Set(items.map((value) => value?.id.split('/')[1]));
+        const items = categoryValues.map(({ value, icon }) => ({ ...mapCategories[value], icon }));
+        const parentValues = new Set(items.map(({ id }) => id?.split('/')[1]));
         // all parent will always be here without children,
         // so shallow is considered below 2 parents
         shallowCategories = parentValues.size <= 2;
@@ -142,7 +149,8 @@ export default async function init(el) {
   const typeText = el.querySelector('p > em')?.textContent.trim();
   appendSearch(rootNav, searchText);
   // eslint-disable-next-line prefer-const
-  let [endpoint, resourcesLink] = el.querySelectorAll('a');
+  let endpoint = el.querySelector('a[href$=".json"]');
+  const resourcesLink = el.querySelector('a[href$=".html"]');
   if (endpoint) {
     endpoint = localizeLink(endpoint.textContent.trim(), null, true);
     const explicitCategories = el.querySelector('ul');
