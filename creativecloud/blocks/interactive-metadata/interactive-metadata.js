@@ -157,7 +157,6 @@ async function implementWorkflow(stepInfo) {
 }
 
 function checkRenderStatus(targetBlock, res) {
-  console.log('checking', targetBlock);
   if (targetBlock.querySelector('.text') && targetBlock.querySelector('.image')) res();
   else  setTimeout(() => checkRenderStatus(targetBlock, res), 100); 
   return false
@@ -177,7 +176,6 @@ async function getTargetArea(el) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const metadataSec = el.closest('.section');
-  const previousSection = metadataSec.previousElementSibling;
   const intEnb = metadataSec.querySelector('.marquee, .aside');
   if (!intEnb) return;
   await intEnbReendered(intEnb);
