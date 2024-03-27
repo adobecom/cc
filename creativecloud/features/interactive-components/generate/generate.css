@@ -123,7 +123,7 @@
     
     .interactive-enabled.row-reversed.generate-right .step-generate .generate-prompt-button, 
     .interactive-enabled.row-reversed .step-generate .generate-right .generate-prompt-button {
-      flex-direction: row-reverse;
+      flex-direction: row;
       left: -20%;
       right: auto;
     }
@@ -140,18 +140,29 @@
       right: -20%;
     }
 
-    .interactive-enabled.row-reversed .step-generate .generate-text-container,
+    /* [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-text-container,
+    .interactive-enabled.row-reversed .step-generate .generate-prompt-button .gray-button.generate-button,
     [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-generate .generate-text-container,
-    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-prompt-button .gray-button.generate-button,
-    [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-generate .generate-prompt-button .gray-button.generate-button,
-    [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-generate .generate-text-container {
+    [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-generate .generate-prompt-button .gray-button.generate-button {
       border-radius: 0 8px 8px 0;
     }
 
-    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-text-container,
+    .interactive-enabled.row-reversed .step-generate .generate-text-container,
+    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-prompt-button .gray-button.generate-button,
     .interactive-enabled:not(.row-reversed) .step-generate .generate-text-container,
-    .interactive-enabled.row-reversed .step-generate .generate-prompt-button .gray-button.generate-button,
     [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-generate .generate-prompt-button .gray-button.generate-button {
-      border-radius: 8px  0 0 8px;
+      border-radius: 8px 0 0 8px;
+    } */
+
+
+
+    [dir="rtl"] .interactive-enabled .step-generate .generate-text-container,
+    .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+      border-radius: 0 8px 8px 0;
+    }
+
+    .interactive-enabled .step-generate .generate-text-container,
+    [dir="rtl"] .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+      border-radius: 8px 0 0 8px;
     }
 }
