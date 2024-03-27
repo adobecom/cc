@@ -55,18 +55,18 @@
   display: block;
 }
 
-.interactive-enabled .foreground.container .interactive-holder > picture img,
-.interactive-enabled .foreground.container .interactive-holder > picture,
-.interactive-enabled .foreground.container .interactive-holder > video {
+.interactive-enabled .foreground.container .image .interactive-holder > picture img,
+.interactive-enabled .foreground.container .image .interactive-holder > picture,
+.interactive-enabled .foreground.container .image .interactive-holder > video {
   display: none;
   opacity: 0;
   object-fit: cover;
   border-radius: 8px 8px 0 0;
 }
 
-.interactive-enabled .foreground.container .interactive-holder.show-image > picture img,
-.interactive-enabled .foreground.container .interactive-holder.show-image > picture,
-.interactive-enabled .foreground.container .interactive-holder.show-video > video {
+.interactive-enabled .foreground.container .image .interactive-holder.show-image > picture img,
+.interactive-enabled .foreground.container .image .interactive-holder.show-image > picture,
+.interactive-enabled .foreground.container .image .interactive-holder.show-video > video {
   display: block;
   width: 100%;
   object-fit: cover;

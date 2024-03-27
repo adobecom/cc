@@ -65,6 +65,15 @@
   .interactive-enabled .foreground.container .image {
     padding-bottom: 60px;
   }
+
+  .aside.interactive-enabled.heading-top .foreground.container {
+    margin: 32px auto;
+  }
+  .aside.interactive-enabled.heading-top .foreground.container .image,
+  .aside.interactive-enabled.heading-top .foreground.container .text {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 @media screen and (min-width: 600px) {
