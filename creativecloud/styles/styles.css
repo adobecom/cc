@@ -67,7 +67,7 @@
   }
 
   .aside.interactive-enabled.heading-top .foreground.container {
-    margin: 32px auto;
+    margin: 40px auto 32px auto;
   }
   .aside.interactive-enabled.heading-top .foreground.container .image,
   .aside.interactive-enabled.heading-top .foreground.container .text {
@@ -84,7 +84,6 @@
     background: none;
     width: calc(var(--grid-container-width) - 20px);
     max-width: 570px;
-    max-height: 570px;
     margin: 44px auto 42px;
   }
 
