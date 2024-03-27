@@ -130,12 +130,11 @@
   .interactive-enabled .foreground.container div.image {
     position: relative;
     border-radius: 16px;
-    margin-inline-start: 60px;
     background: none;
     width: calc(var(--grid-container-width) - 20px);
   }
 
-  .marquee.interactive-enabled .foreground.container div.image {
+  .marquee.interactive-enabled .foreground.container div.image img {
     margin-inline-start: 60px;
   }
 
