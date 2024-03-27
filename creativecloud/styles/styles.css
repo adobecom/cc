@@ -127,7 +127,7 @@
     min-width: unset !important;
   }
 
-  .interactive-enabled .foreground .image {
+  .interactive-enabled .foreground.container div.image {
     position: relative;
     border-radius: 16px;
     margin: 0;
