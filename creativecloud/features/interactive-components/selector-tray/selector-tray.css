@@ -53,8 +53,8 @@
 @media screen and (min-width: 600px) {
   .interactive-enabled .step-selector-tray .selector-tray {
     bottom: 70px;
-    left: 318px;
-    right: auto;
+    left: auto;
+    right: -10%;
     padding: 24px 16px 16px 16px;
     gap: 16px;
     border-radius: 9px;

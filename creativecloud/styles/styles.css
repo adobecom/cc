@@ -82,8 +82,14 @@
 
 @media screen and (min-width: 600px) {
   .interactive-enabled .foreground .image {
-    margin-inline-start: 0;
-    margin: auto;
+    position: relative;
+    border-radius: 16px;
+    margin-inline-start: 0px;
+    background: none;
+    width: calc(var(--grid-container-width) - 20px);
+    max-width: 570px;
+    max-height: 570px;
+    margin: 44px auto 42px;
   }
 
   .interactive-enabled .foreground .image > p {
@@ -95,37 +101,34 @@
   }
 
   .interactive-enabled .foreground .image > p img[src*=".svg"] {
-    top: -30px;
+    left: -62px;
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .interactive-enabled .foreground .image {
-    margin-left: 60px
-  }
-
   .marquee.interactive-enabled .foreground.container,
   .aside.interactive-enabled .foreground.container {
     padding-top: 0;
     padding-bottom: 0;
   }
-
-  .interactive-enabled .foreground .image {
-    height: auto;
-    width: var(--grid-container-width);
-    max-width: 570px;
-    border-radius: 16px;
-    margin-inline-start: 60px;
-    background: none;
-    margin-bottom: 42px;
-  }
   
   .aside.interactive-enabled .foreground.container {
     flex-direction: row;
+    align-items: center;
   }
 
   .aside.interactive-enabled .foreground.container > div {
     min-width: unset !important;
+  }
+
+  .interactive-enabled .foreground .image {
+    position: relative;
+    border-radius: 16px;
+    margin-inline-start: 60px;
+    background: none;
+    margin-left: 60px;
+    width: calc(var(--grid-container-width) - 20px);
+    margin: 0 auto;
   }
 
   .interactive-enabled .foreground.container .text,

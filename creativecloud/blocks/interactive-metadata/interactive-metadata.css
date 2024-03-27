@@ -58,9 +58,8 @@
 .interactive-enabled .foreground.container .interactive-holder > picture img,
 .interactive-enabled .foreground.container .interactive-holder > picture,
 .interactive-enabled .foreground.container .interactive-holder > video {
-  display: block;
+  display: none;
   opacity: 0;
-  height: 0;
   object-fit: cover;
   border-radius: 8px 8px 0 0;
 }
@@ -68,8 +67,8 @@
 .interactive-enabled .foreground.container .interactive-holder.show-image > picture img,
 .interactive-enabled .foreground.container .interactive-holder.show-image > picture,
 .interactive-enabled .foreground.container .interactive-holder.show-video > video {
+  display: block;
   width: 100%;
-  height: 100%;
   object-fit: cover;
   opacity: 1;
 }
@@ -193,18 +192,19 @@
 @media screen and (min-width: 600px) {
   .interactive-enabled .interactive-holder {
     position: relative;
-    height: 570px;
-    width: 570px;
-    min-width: 570px;
+    max-width: 570px;
+    max-height: 570px;
+    width: 100%;
   }
   
   .interactive-enabled .foreground.container .interactive-holder > picture img,
   .interactive-enabled .foreground.container .interactive-holder > picture,
   .interactive-enabled .foreground.container .interactive-holder > video {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 16px;
@@ -213,12 +213,11 @@
   .interactive-enabled .layer.show-layer {
     display: flex;
     position: absolute;
-    top: auto;
+    top: 0;
     bottom: 0;
     left: 0;
+    right: 0;
     background: none;
-    height: 570px;
-    width: 570px;
   }
   
   .interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
