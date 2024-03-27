@@ -1,12 +1,10 @@
 import { getLibs } from '../../scripts/utils.js';
-import { default as defineDeviceByScreenSize } from '../../scripts/decorate.js';
+import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
 function getImgSrc(pic) {
-  const viewport =
-    defineDeviceByScreenSize() === 'MOBILE' ? 'mobile' : 'desktop';
+  const viewport = defineDeviceByScreenSize() === 'MOBILE' ? 'mobile' : 'desktop';
   let source = '';
-  if (viewport === 'mobile')
-    source = pic.querySelector('source[type="image/webp"]:not([media])');
+  if (viewport === 'mobile') source = pic.querySelector('source[type="image/webp"]:not([media])');
   else source = pic.querySelector('source[type="image/webp"][media]');
   return source.srcset;
 }
@@ -46,7 +44,7 @@ async function loadAllImgs(imgs) {
 async function createDisplayImg(target, replaceEl, src, alt) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const img = createTag('img', { src: src, alt: alt });
+  const img = createTag('img', { src, alt });
   const pic = createTag('picture', {}, img);
   await loadImg(img);
   replaceEl.replaceWith(pic);
@@ -57,7 +55,7 @@ async function createDisplayImg(target, replaceEl, src, alt) {
 async function createDisplayVideo(target, replaceEl, src) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const source = createTag('source', { src: src, type: 'video/mp4' });
+  const source = createTag('source', { src, type: 'video/mp4' });
   const video = createTag('video', {}, source);
   video.load();
   replaceEl.replaceWith(video);
@@ -71,64 +69,42 @@ async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const trgtPic = stepInfo.target.querySelector(':scope > picture');
   const trgtVideo = stepInfo.target.querySelector(':scope > video');
   if (transitionCfg.useCfg) {
-    if (transitionCfg.src)
-      await createDisplayImg(
-        stepInfo.target,
-        trgtPic,
-        transitionCfg.src,
-        transitionCfg.alt
-      );
-    else
+    if (transitionCfg.src) {
+      await createDisplayImg( stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt );
+    } else {
       await createDisplayVideo(stepInfo.target, trgtVideo, transitionCfg.vsrc);
+    }
     return;
   }
-  const displayPics = config.querySelectorAll(
-    ':scope > p > picture img[src*="media_"]'
-  );
+  const displayPics = config.querySelectorAll(':scope > p > picture img[src*="media_"]');
   const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"]');
   const displayPath = stepInfo.displayPath;
-  if (displayPics.length)
-    await createDisplayImg(
-      stepInfo.target,
-      trgtPic,
-      getImgSrc(displayPics[displayPath].closest('picture')),
-      displayPics[displayPath].alt
-    );
-  else if (displayVideos.length)
-    await createDisplayVideo(
-      stepInfo.target,
-      trgtVideo,
-      displayVideos[displayPath].href
-    );
+  if (displayPics.length) {
+    const picSrc = getImgSrc(displayPics[displayPath].closest('picture'));
+    await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[displayPath].alt);
+  } else if (displayVideos.length) {
+    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[displayPath].href);
+  }
 }
 
 async function handleNextStep(stepInfo) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
-  await loadAllImgs(
-    stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img[src*="svg"]')
-  );
+  await loadAllImgs(stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img[src*="svg"]'));
 }
 
 async function handleLayerDisplay(stepInfo) {
   const placeholderLayer = stepInfo.target.querySelector('.placeholder-layer');
   placeholderLayer?.remove();
-  const currLayer = stepInfo.target.querySelector(
-    `.layer-${stepInfo.stepIndex}`
-  );
+  const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
   const prevLayer = stepInfo.target.querySelector(`.layer-${prevStepIndex}`);
   const miloLibs = getLibs('/libs');
-  const { decorateDefaultLinkAnalytics } = await import(
-    `${miloLibs}/martech/attributes.js`
-  );
+  const { decorateDefaultLinkAnalytics } = await import(`${miloLibs}/martech/attributes.js`);
   await handleImageTransition(stepInfo);
   await loadAllImgs(currLayer.querySelectorAll('img[src*="media_"]'));
   await decorateDefaultLinkAnalytics(currLayer);
-  if (prevStepIndex)
-    stepInfo.target.classList.remove(
-      `step-${stepInfo.stepList[prevStepIndex]}`
-    );
+  if (prevStepIndex) stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
   currLayer.classList.add('show-layer');
   if (currLayer === prevLayer) return;
@@ -194,12 +170,8 @@ async function getTargetArea(el) {
   const placeholderLayer = createTag('div', { class: `layer placeholder-layer show-layer` });
   const container = pic.closest('p');
   iArea.append(pic, video, placeholderLayer);
-  if (container) {
-    container.replaceWith(iArea);
-    container.remove();
-  } else {
-    assetArea.append(iArea);
-  }
+  if (container) container.replaceWith(iArea);
+  else assetArea.append(iArea);
   const enticementArrow = assetArea.querySelector(':scope > p img[src*="svg"]');
   if (enticementArrow) {
     const entP = enticementArrow.closest('p')
@@ -310,9 +282,7 @@ export default async function init(el) {
   await handleNextStep(stepInfo);
   await renderLayer(stepInfo);
   const miloLibs = getLibs('/libs');
-  const { createIntersectionObserver } = await import(
-    `${miloLibs}/utils/utils.js`
-  );
+  const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
   createIntersectionObserver({
     el: targetAsset,
     callback: addAnimationToLayer,
