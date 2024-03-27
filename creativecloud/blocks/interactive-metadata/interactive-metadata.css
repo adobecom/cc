@@ -115,7 +115,12 @@
   user-select: none;
 }
 
-.interactive-enabled .layer-0 .gray-button .ia-circle {
+.interactive-enabled.light .layer .gray-button {
+  color: var(--prompt-text-color-light);
+  background: var(--prompt-btn-fill-light);
+}
+
+.interactive-enabled .layer .gray-button .ia-circle {
   position: absolute;
   left: 0;
   right: 0;
@@ -156,15 +161,12 @@
 @keyframes outline-fill {
   0% {
     border-color: transparent ;
-    background: var(--prompt-btn-fill);
   }
   18% {
     border-color: var(--prompt-highlight-color) ;
-    background: var(--prompt-btn-fill);
   }
   24% {
     border-color: var(--prompt-highlight-color) ;
-    background: var(--prompt-btn-fill);
   }
   59% {
     border-color: var(--prompt-highlight-color) ;
@@ -172,7 +174,6 @@
   }
   90% {
     border-color: var(--prompt-highlight-color) ;
-    background: var(--prompt-btn-fill);
   }
 }
 
@@ -189,6 +190,10 @@
   border: 3px solid var(--prompt-highlight-color);
   background: var(--prompt-btn-fill);
   animation-play-state: paused;
+} 
+
+.interactive-enabled.light .layer .gray-button:hover { 
+  background: var(--prompt-btn-fill-light);
 } 
 
 .interactive-enabled .layer .gray-button:hover .ia-circle { 
@@ -245,7 +250,7 @@
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
   }
 
-  .interactive-enabled .layer-0 .gray-button .ia-circle {
+  .interactive-enabled .layer .gray-button .ia-circle {
     width: 56px;
     height: 56px;
   }
