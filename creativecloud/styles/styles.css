@@ -67,7 +67,8 @@
   }
 
   .aside.interactive-enabled.heading-top .foreground.container {
-    margin: 40px auto 32px auto;
+    margin: 40px auto 32px;
+    gap: var(--spacing-m);
   }
 
   .aside.interactive-enabled.heading-top .foreground.container .image,
