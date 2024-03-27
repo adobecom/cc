@@ -29,7 +29,7 @@
 }
 
 .interactive-enabled .foreground .image > p {
-  width: 300px;
+  /* width: 300px; */
   margin: auto;
   height: 0;
 }
@@ -76,13 +76,14 @@
 }
 
 @media screen and (min-width: 600px) {
-  .interactive-enabled .foreground .image {
+  /* .interactive-enabled .foreground .image {
     margin-inline-start: 0;
     margin: auto;
-  }
+    margin-top: 88px;
+  } */
 
   .interactive-enabled .foreground .image > p {
-    width: 570px;
+    max-width: 570px;
     margin: auto;
   }
 
@@ -94,26 +95,6 @@
     left: -32px;
     top: -28px;
     z-index: 3;
-  } 
-}
-
-@media screen and (min-width: 1200px) {
-  .marquee.interactive-enabled .foreground.container,
-  .aside.interactive-enabled .foreground.container {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .interactive-enabled .foreground .image {
-    position: relative;
-    height: calc(100% - 42px);
-    width: 570px;
-    min-width: 570px;
-    border-radius: 16px;
-    margin-inline-start: 60px;
-    background: none;
-    margin-bottom: 42px;
-    top: 88px;
   }
 
   .interactive-enabled .foreground .image > h2 + p,
@@ -126,4 +107,53 @@
   .interactive-enabled .foreground .image > p img[src*=".svg"] {
     left: -62px;
   }
+
+  .interactive-enabled .foreground .image {
+    position: relative;
+    /* height: calc(100% - 42px); */
+    /* width: 570px; */
+    /* min-width: 570px; */
+    border-radius: 16px;
+    margin-inline-start: 0px;
+    background: none;
+    /* margin-bottom: 42px; */
+    /* top: 88px; */
+    width: calc(var(--grid-container-width) - 20px);
+    max-width: 570px;
+    max-height: 570px;
+    margin: 88px auto 0;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .marquee.interactive-enabled .foreground.container,
+  .aside.interactive-enabled .foreground.container {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .interactive-enabled .foreground .image {
+    position: relative;
+    /* height: calc(100% - 42px); */
+    /* width: 570px; */
+    /* min-width: 570px; */
+    border-radius: 16px;
+    margin-inline-start: 60px;
+    background: none;
+    margin-bottom: 42px;
+    /* top: 88px; */
+    margin-top: 88px;
+    width: calc(var(--grid-container-width) - 20px);
+  }
+
+  /* .interactive-enabled .foreground .image > h2 + p,
+  .interactive-enabled .foreground .image > p:nth-child(1) {
+    position: absolute;
+    top: -44px;
+    left: -30px;
+  }
+
+  .interactive-enabled .foreground .image > p img[src*=".svg"] {
+    left: -62px;
+  } */
 }

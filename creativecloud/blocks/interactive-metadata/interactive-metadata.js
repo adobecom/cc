@@ -199,7 +199,7 @@ function getWorkFlowInformation(el) {
     'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-2': ['crop', 'crop', 'start-over'],
     'workflow-3': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
-    'workflow-4': ['selector-tray'],
+    'workflow-4': ['slider-tray'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   const stepList = [];
