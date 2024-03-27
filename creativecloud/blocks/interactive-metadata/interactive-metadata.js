@@ -88,7 +88,7 @@ async function handleImageTransition(stepInfo, transitionCfg = {}) {
   }
   const displayPics = config.querySelectorAll(':scope > p > picture img[src*="media_"]');
   const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"]');
-  const {displayPath} = stepInfo;
+  const { displayPath } = stepInfo;
   if (displayPics.length) {
     const picSrc = getImgSrc(displayPics[displayPath].closest('picture'));
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[displayPath].alt);
@@ -163,7 +163,7 @@ async function getTargetArea(el) {
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   const videoSource = createTag('source', { src: '' });
   const video = createTag('video', { 
-    playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4' 
+    playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4',
   }, videoSource);
   const assetArea = intEnb.querySelector('.asset, .image');
   const placeholderLayer = createTag('div', { class: 'layer placeholder-layer show-layer' });
