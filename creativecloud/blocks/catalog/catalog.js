@@ -1,26 +1,36 @@
-/* eslint-disable chai-friendly/no-unused-expressions */
 import { getLibs } from '../../scripts/utils.js';
 
+const miloLibs = getLibs('/libs');
+const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+
+// Helps with TBT: MWPW-145127
+loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
+
+/** container block */
 export default async function init(el) {
-  const miloLibs = getLibs();
-  import(`${miloLibs}/deps/lit-all.min.js`);
-  import(`${miloLibs}/blocks/merch-cards/merch-cards.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/theme.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/button.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/icons/checkmark.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/icons/chevron.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/help-text.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/icon.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/icons-ui.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/icons-workflow.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/menu.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/overlay.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/popover.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/reactive-controllers.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/search.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/shared.js`);
-  import(`${miloLibs}/features/spectrum-web-components/dist/textfield.js`);
-  el.classList.add('merch', 'app');
+  el.classList.add('app');
+  const libs = getLibs();
+  const sidenavEl = el.querySelector('.sidenav');
+  const merchCardsEl = el.querySelector('.merch-card-collection');
   el.innerHTML = '';
+  let merchCards;
+  if (merchCardsEl) {
+    el.appendChild(merchCardsEl);
+    merchCardsEl.classList.add('four-merch-cards');
+    const { default: initMerchCards } = await import(`${libs}/blocks/merch-card-collection/merch-card-collection.js`);
+    merchCards = await initMerchCards(merchCardsEl);
+  }
+  if (sidenavEl) {
+    (merchCards?.updateComplete ?? Promise.resolve()).then(async () => {
+      const { default: initSidenav } = await import('../sidenav/sidenav.js');
+      const sidenav = await initSidenav(sidenavEl);
+      el.appendChild(sidenav);
+      await sidenav.updateComplete;
+      if (merchCards) {
+        merchCards.sidenav = sidenav;
+        merchCards.requestUpdate();
+      }
+    });
+  }
   return el;
 }

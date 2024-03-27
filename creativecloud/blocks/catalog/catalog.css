@@ -18,12 +18,12 @@
   }
 }
 
-.catalog > merch-sidenav {
+.catalog.app > merch-sidenav {
   grid-column: 1 / span 1;
   order: 0;
 }
 
-.catalog > merch-cards {
+.catalog.app > merch-card-collection {
   align-self: baseline;
   grid-column: 2 / span 1;
   order: 1;
