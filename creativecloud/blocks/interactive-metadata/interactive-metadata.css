@@ -1,0 +1,253 @@
+
+:root {
+  --prompt-input-fill: #262626;
+  --prompt-btn-fill: #323232;
+  --prompt-text-color: #D1D1D1;
+  --prompt-text-border: #545454;
+  --prompt-btn-text: #FFFFFF;
+  --prompt-highlight-color: #1473E6;
+  --layer-background-fill: #272928;
+  --prompt-btn-fill-light: #ffff;
+  --prompt-text-color-light: #272928;
+}
+
+.interactive-metadata,
+.interactive-enabled .layer {
+  display: none;
+}
+
+.interactive-enabled .foreground.container .interactive-holder {
+  margin: auto;
+}
+
+.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
+  display: none;
+}
+
+.interactive-enabled .foreground .image .enticement-container {
+  display: block;
+  height: 28px;
+}
+
+.interactive-enabled .foreground.container .image {
+  padding-bottom: 0;
+}
+
+.interactive-enabled .foreground .image .enticement-text {
+  display: block;
+  max-width: 30ch;
+  font-size: 28px;
+  line-height: 35px;
+  color: var(--color-white);
+}
+
+.interactive-enabled .foreground .image .enticement-arrow {
+  display: block;
+  position: relative;
+  width: 49px;
+  height: 73px;
+  top: -16px;
+  right: 30px;
+  z-index: 2;
+}
+
+.interactive-enabled .foreground .image > p > img[src*='svg'] {
+  display: block;
+}
+
+.interactive-enabled .foreground.container .interactive-holder > picture img,
+.interactive-enabled .foreground.container .interactive-holder > picture,
+.interactive-enabled .foreground.container .interactive-holder > video {
+  display: block;
+  opacity: 0;
+  height: 0;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.interactive-enabled .foreground.container .interactive-holder.show-image > picture img,
+.interactive-enabled .foreground.container .interactive-holder.show-image > picture,
+.interactive-enabled .foreground.container .interactive-holder.show-video > video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+}
+
+.interactive-enabled .layer.show-layer {
+  display: block;
+  position: relative;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  min-height: 60px;
+  background: var(--layer-background-fill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 0px 8px 8px;
+  z-index: 2;
+}
+
+.interactive-enabled .layer .gray-button {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  text-decoration: none;
+  color: var(--prompt-btn-text);
+  background: var(--prompt-btn-fill);
+  font-weight: bold;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.interactive-enabled .layer-0 .gray-button .ia-circle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 8px solid var(--prompt-highlight-color);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.aside.interactive-enabled .foreground.container .interactive-holder {
+  flex: 0 0 auto !important;
+}
+
+@keyframes circle {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    transform: scale(100%);
+    opacity: 0.5;
+  }
+  29% {
+    transform: scale(100%);
+    opacity: 0.5;
+  }
+  44% {
+    transform: scale(50%);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes outline-fill {
+  0% {
+    border-color: transparent ;
+    background: var(--prompt-btn-fill);
+  }
+  18% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-btn-fill);
+  }
+  24% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-btn-fill);
+  }
+  59% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-highlight-color);
+  }
+  90% {
+    border-color: var(--prompt-highlight-color) ;
+    background: var(--prompt-btn-fill);
+  }
+}
+
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button img {
+  width: 24px;
+  height: auto;
+  min-height: 24px;
+  max-width: 24px;
+  border-radius: 0;
+}
+
+.interactive-enabled .layer .gray-button:hover { 
+  border: 3px solid var(--prompt-highlight-color);
+  background: var(--prompt-btn-fill);
+  animation-play-state: paused;
+} 
+
+.interactive-enabled .layer .gray-button:hover .ia-circle { 
+  display: none;
+} 
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled .interactive-holder {
+    position: relative;
+    height: 570px;
+    width: 570px;
+    min-width: 570px;
+  }
+  
+  .interactive-enabled .foreground.container .interactive-holder > picture img,
+  .interactive-enabled .foreground.container .interactive-holder > picture,
+  .interactive-enabled .foreground.container .interactive-holder > video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+  .interactive-enabled .layer.show-layer {
+    display: flex;
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    background: none;
+    height: 570px;
+    width: 570px;
+  }
+  
+  .interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
+  .interactive-enabled .foreground.container .interactive-holder .layer .gray-button img {
+    width: 34px;
+    height: auto;
+    min-height: 34px;
+    max-width: 34px;
+    border-radius: 0;
+  }
+
+  .interactive-enabled .layer .gray-button {
+    font-size: var(--type-body-xl-size); 
+    line-height: var(--type-body-xl-lh);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+  }
+
+  .interactive-enabled .layer-0 .gray-button .ia-circle {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  /* .aside .foreground.container {
+    flex-direction: column-reverse !important;
+    We need this to be set to column as column reversed is messing up the stacking in aside
+    We can probably discuss if we need this but currently tests look good without this with proposed authoring
+  } */
+}
+
+
