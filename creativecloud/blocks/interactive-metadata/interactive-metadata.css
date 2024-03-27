@@ -76,7 +76,7 @@
   max-width: 30ch;
   font-size: 28px;
   line-height: 35px;
-  color: var(--color-white);
+  /* color: var(--color-white); */
 }
 
 .interactive-enabled .foreground .image .enticement-arrow {
