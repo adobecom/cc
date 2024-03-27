@@ -1,13 +1,4 @@
-/* 
- * Put project specific base styles here.
- *
- * Note: The proect does not load this file.
- *       You will need to load these using scripts.js.
- * 
- *
- */
-
- .reading-width {
+.reading-width {
   max-width: 600px;
   margin: auto;
   padding: 20px;
@@ -22,4 +13,132 @@
  .reading-width-footer-tag > .content {
   max-width: var(--grid-container-width);
   margin: 0 auto;
+}
+
+.interactive-enabled .foreground .image > p {
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 28px;
+  margin: 0;
+}
+
+.interactive-enabled:not(.heading-top) .foreground .image > p:nth-child(1), 
+.interactive-enabled.heading-top .foreground .image > p:nth-child(2) {
+  margin-bottom: 16px;
+}
+
+.interactive-enabled .foreground .image > p > strong,
+.interactive-enabled .foreground .image > picture img[src*="svg"],
+.interactive-enabled .foreground .image > p img[src*="svg"] {
+  display: none;
+}
+
+.interactive-enabled .foreground .image > p img[src*="media_"] {
+  width: 100%;
+  height: auto;
+  margin: auto;
+}
+
+.aside.interactive-enabled .foreground.container,
+.interactive-enabled .foreground.container .image {
+  display: flex;
+  flex-direction: column;
+}
+
+.aside.interactive-enabled .foreground.container .image {
+  order: 1;
+}
+
+.aside.interactive-enabled .foreground.container .text {
+  order: 2;
+}
+
+@media screen and (max-width: 600px) {
+  .interactive-enabled.heading-top .foreground .image > p > strong {
+    display: block;
+    font-size: 36px;
+    line-height: 45px;
+    margin-bottom: 24px;
+  }
+
+  .interactive-enabled.heading-top .foreground .text > h1,
+  .interactive-enabled.heading-top .foreground .text > h2,
+  .interactive-enabled.heading-top .foreground .text > h3,
+  .interactive-enabled.heading-top .foreground .text > h4,
+  .interactive-enabled.heading-top .foreground .text > h5,
+  .interactive-enabled.heading-top .foreground .text > h6 {
+    display: none !important;
+  }
+
+  .interactive-enabled.mobile-hide-enticement:not(.heading-top) .foreground .image > p:nth-child(1), 
+  .interactive-enabled.mobile-hide-enticement.heading-top .foreground .image > p:nth-child(2) {
+    display: none;
+  }
+
+  .interactive-enabled .foreground.container .image {
+    padding-bottom: 60px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled .foreground .image {
+    margin-inline-start: 0;
+    margin: auto;
+  }
+
+  .interactive-enabled .foreground .image > p {
+    position: relative;
+    width: var(--grid-container-width);
+    max-width: 570px;
+    margin: auto;
+    right: 30px;
+  }
+
+  .interactive-enabled .foreground .image > p img[src*=".svg"] {
+    top: -30px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .interactive-enabled .foreground .image {
+    margin-left: 60px
+  }
+
+  .marquee.interactive-enabled .foreground.container,
+  .aside.interactive-enabled .foreground.container {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .interactive-enabled .foreground .image {
+    height: auto;
+    width: var(--grid-container-width);
+    max-width: 570px;
+    border-radius: 16px;
+    margin-inline-start: 60px;
+    background: none;
+    margin-bottom: 42px;
+  }
+  
+  .aside.interactive-enabled .foreground.container {
+    flex-direction: row;
+  }
+
+  .aside.interactive-enabled .foreground.container > div {
+    min-width: unset !important;
+  }
+
+  .aside.interactive-enabled .foreground.container .text,
+  .aside.interactive-enabled.row-reversed .foreground.container .image,
+  [dir="rtl"] .aside.interactive-enabled .foreground.container .image,
+  [dir="rtl"] .aside.interactive-enabled.row-reversed .foreground.container .text {
+    order: 1;
+  }
+
+  .aside.interactive-enabled .foreground.container .image,
+  .aside.interactive-enabled.row-reversed .foreground.container .text,
+  [dir="rtl"] .aside.interactive-enabled .foreground.container .text,
+  [dir="rtl"] .aside.interactive-enabled.row-reversed .foreground.container .image {
+    order: 2;
+  }
 }
