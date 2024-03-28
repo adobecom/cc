@@ -40,6 +40,7 @@
   margin: 40px auto 32px;
   flex-direction: column;
   gap: var(--spacing-m);
+  padding: 0;
 }
 
 .aside.interactive-enabled .foreground.container > div.image,
@@ -351,22 +352,30 @@
 }
 
 @media screen and (min-width: 1200px) {
+  .aside.interactive-enabled .foreground.container > div {
+    min-width: unset;
+  }
+
   .aside.interactive-enabled .foreground.container div.image,
   .marquee.interactive-enabled .foreground.container div.image {
     max-width: 570px;
     margin-inline-start: 60px;
   }
+  
+  .interactive-enabled .foreground.container .interactive-holder {
+    margin: 0;
+  }
 
   [dir="rtl"] .aside.interactive-enabled .foreground.container div.image,
   .aside.interactive-enabled.row-reversed .foreground.container div.image {
-    margin: 0;
-    margin-right: 60px;
+    margin: 36px 60px 0 0;
+    height: 664px;
   }
 
   .aside.interactive-enabled .foreground.container div.image,
   [dir="rtl"] .aside.interactive-enabled.row-reversed .foreground.container div.image {
-    margin: 0;
-    margin-left: 60px;
+    height: 664px;
+    margin: 36px 0 0 60px;
   }
 
   .interactive-enabled .foreground .image .enticement-arrow {
@@ -387,6 +396,8 @@
   .aside.interactive-enabled .foreground.container {
     flex-direction: row;
     align-items: center;
+    margin: 0;
+    min-height: 700px;
   }
 
   .marquee.interactive-enabled .foreground.container,
