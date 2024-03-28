@@ -128,12 +128,7 @@ function appendResources(rootNav, resourceLink) {
 
 export default async function init(el) {
   const libs = getLibs();
-  const rows = Array.from(el.children);
-  if (!rows || rows.length === 0) {
-    return;
-  }
-  const mainRow = rows[0];
-  const categoryRow = rows.length > 1 ? rows[1] : null;
+  const [mainRow, categoryRow] = Array.from(el.children);
 
   await Promise.all([
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
