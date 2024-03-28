@@ -6,7 +6,7 @@ function selectorTrayWithImgs(data, createTag) {
   const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
   const dpth = data.displayPath;
   let pathIdx = 0;
-  const configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[allUls.length - 1];
+  const configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[0];
   if (dpth >= 0 && allUls.length > dpth) {
     for (let i = 0; i < dpth; i += 1) pathIdx += allUls[i].querySelectorAll('li').length;
   }
