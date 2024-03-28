@@ -244,9 +244,6 @@ function getWorkFlowInformation(el) {
       wfName = cn;
       return;
     }
-    if (cn.match('step-')) {
-      stepList.push(cn.split('-')[1]);
-    }
   });
 
   if (wfName === 'workflow-genfill') {
@@ -255,7 +252,15 @@ function getWorkFlowInformation(el) {
     return genArr;
   }
   if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
-  if (stepList.length) return stepList;
+  else if (wfName) {
+    const stepReplace = { selectortray: 'selector-tray', startover: 'start-over'}
+    const replaceNames = Object.keys(stepReplace);
+    const wfList = wfName.split('workflow-')[1].split('-');
+    wfList.forEach((w,i) => {
+      if (replaceNames.includes(w)) wfList[i] = stepReplace[w];
+    });
+    return wfList;
+  }
   return [];
 }
 
