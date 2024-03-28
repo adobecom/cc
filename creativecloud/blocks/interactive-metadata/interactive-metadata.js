@@ -253,7 +253,7 @@ function getWorkFlowInformation(el) {
   }
   if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
   else if (wfName) {
-    const stepReplace = { selectortray: 'selector-tray', startover: 'start-over'}
+    const stepReplace = { selectortray: 'selector-tray', startover: 'start-over' };
     const replaceNames = Object.keys(stepReplace);
     const wfList = wfName.split('workflow-')[1].split('-');
     wfList.forEach((w,i) => {
