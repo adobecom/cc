@@ -15,7 +15,7 @@
   border-radius: 0 0 8px 8px;
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 16px 16px;
+  padding: 6px 16px 24px;
   gap: 16px;
   display: flex;
   flex-direction: column;
@@ -23,6 +23,7 @@
   justify-content: space-between;
   color: var(--prompt-btn-fill-light);
   font-weight: bold;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
 }
   
 .step-slider-tray .sliderTray .menu label {
@@ -39,8 +40,12 @@
   top: -9px;
   inset-block-start: 50%;
   inset-inline-start: 50%;
-  transform: translate(-42%, -50%);
+  transform: translate(-50%, -50%);
   z-index: 1;
+}
+
+[dir="rtl"] .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
+  transform: translate(50%, -50%);
 }
   
 .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
@@ -56,6 +61,10 @@
   inline-size: 40px;
   box-shadow: 0 0 0 8px #3892f3; 
   opacity: 0;
+}
+
+[dir="rtl"] .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
+  transform: translate(50%, -50%);
 }
   
 .step-slider-tray .sliderTray .menu .saturation,
@@ -172,8 +181,13 @@
    gap: 15px;
    transform: translateY(-50%);
    width: 260px;
-   right: -100px;
+   right: -20%;
  }
+
+ [dir="rtl"] .step-slider-tray .sliderTray {
+  left: -20%;
+  right: auto;
+}
   
  .step-slider-tray .sliderTray .menu {
    border-radius: 8px;
