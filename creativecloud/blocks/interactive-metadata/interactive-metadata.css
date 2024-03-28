@@ -305,6 +305,7 @@
     width: var(--grid-container-width);
     max-width: 570px;
     right: 30px;
+    margin: 0 0 24px 0;
   }
 
   [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container {
