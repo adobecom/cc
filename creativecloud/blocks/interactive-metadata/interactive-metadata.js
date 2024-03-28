@@ -174,7 +174,7 @@ async function getTargetArea(el) {
   const enticementArrow = assetArea.querySelector(':scope > p img[src*="svg"]');
   if (enticementArrow) {
     const entP = enticementArrow.closest('p');
-    const entTxt = createTag('div', { class: 'enticement-text' }, entP.textContent);
+    const entTxt = createTag('div', { class: 'enticement-message' }, entP.textContent);
     const enticement = createTag('div', { class: 'enticement-container' });
     enticementArrow.classList.add('enticement-svg');
     enticement.append(entTxt, enticementArrow);

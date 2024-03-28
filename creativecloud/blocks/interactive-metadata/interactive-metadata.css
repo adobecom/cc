@@ -72,7 +72,7 @@
   display: none;
 }
 
-.interactive-enabled .foreground .image .enticement-text {
+.interactive-enabled .foreground .image .enticement-message {
   display: block;
   max-width: 30ch;
   font-size: 28px;
