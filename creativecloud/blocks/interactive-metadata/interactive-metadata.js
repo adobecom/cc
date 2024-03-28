@@ -66,12 +66,16 @@ async function createDisplayVideo(target, replaceEl, src) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const source = createTag('source', { src, type: 'video/mp4' });
-  const video = createTag('video', { playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4' }, source);
+  const video = createTag('video', { playsinline: '', autoplay: '', muted: '', loop: '', type: 'video/mp4' }, source);
   replaceEl.replaceWith(video);
-  video.load();
+  try {
+    video.load();
+    await video.play()
+  } catch (err) {
+    return;
+  }
   target.classList.add('show-video');
   target.classList.remove('show-image');
-  video.play();
 }
 
 async function handleImageTransition(stepInfo, transitionCfg = {}) {
