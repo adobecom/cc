@@ -1,5 +1,8 @@
+*.json
+!*/**/*.json
 .*
 *.md
 LICENSE
 test/*
-!tools/sidekick/config.json
+web-test-runner.config.mjs
+codecov.yaml
