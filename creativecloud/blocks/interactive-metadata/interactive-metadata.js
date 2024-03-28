@@ -244,9 +244,6 @@ function getWorkFlowInformation(el) {
       wfName = cn;
       return;
     }
-    if (cn.match('step-')) {
-      stepList.push(cn.split('-')[1]);
-    }
   });
 
   if (wfName === 'workflow-genfill') {
@@ -255,7 +252,12 @@ function getWorkFlowInformation(el) {
     return genArr;
   }
   if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
-  if (stepList.length) return stepList;
+  else if (wfName) {
+    wfName.replace('generate_selector-tray', 'generate');
+    wfName.replace('generate', 'generate_selector-tray');
+    const wfList = wfName.split('workflow-')[1].split('_');
+    return wfList;
+  }
   return [];
 }
 
