@@ -171,6 +171,14 @@ async function getTargetArea(el) {
   iArea.append(pic, video, placeholderLayer);
   if (container) container.replaceWith(iArea);
   else assetArea.append(iArea);
+  if (intEnb.classList.contains('heading-top')) {
+    const h = intEnb.querySelector('.text').querySelector('h1, h2, h3, h4, h5, h6');
+    if (h) {
+      const htxt = h.textContent;
+      const hTxtTop = createTag('div', { class: 'mobile-top-title' }, htxt);
+      intEnb.querySelector('.image').prepend(hTxtTop);
+    }
+  }
   const enticementArrow = assetArea.querySelector(':scope > p img[src*="svg"]');
   if (enticementArrow) {
     const entP = enticementArrow.closest('p');

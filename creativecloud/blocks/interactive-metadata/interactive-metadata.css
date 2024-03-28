@@ -21,15 +21,9 @@
 .interactive-enabled.heading-top  h3,
 .interactive-enabled.heading-top  h4,
 .interactive-enabled.heading-top  h5,
-.interactive-enabled.heading-top  h6 {
+.interactive-enabled.heading-top  h6,
+.interactive-enabled .foreground .image .mobile-top-title {
   display: none;
-}
-
-.interactive-enabled.heading-top .foreground .image > p:nth-child(1) {
-  display: block;
-  margin-bottom: 24px;
-  font-size: 36px;
-  line-height: 45px;
 }
 
 .interactive-enabled .foreground.container .image {
@@ -243,6 +237,16 @@
 
 .interactive-enabled .interactive-link-analytics-text {
   display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .interactive-enabled.heading-top .foreground .image .mobile-top-title {
+    display: block;
+    margin-bottom: 24px;
+    font-size: 36px;
+    line-height: 45px;
+    font-weight: bold;
+  }
 }
 
 @media screen and (min-width: 600px) {
