@@ -94,10 +94,12 @@ async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"]');
   const { displayPath } = stepInfo;
   if (displayPics.length) {
-    const picSrc = getImgSrc(displayPics[displayPath].closest('picture'));
-    await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[displayPath].alt);
+    const imgIdx = (displayPath < displayPics.length) ? displayPath : 0;
+    const picSrc = getImgSrc(displayPics[imgIdx].closest('picture'));
+    await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[imgIdx].alt);
   } else if (displayVideos.length) {
-    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[displayPath].href);
+    const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
+    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href);
   }
 }
 
