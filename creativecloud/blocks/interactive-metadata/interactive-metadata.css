@@ -79,7 +79,7 @@
   line-height: 35px;
 }
 
-.interactive-enabled .foreground .image .enticement-arrow {
+.interactive-enabled .foreground .image .enticement-svg {
   display: block;
   position: relative;
   width: 49px;
@@ -91,7 +91,7 @@
   margin: 0;
 }
 
-[dir="rtl"] .interactive-enabled .foreground .image .enticement-arrow {
+[dir="rtl"] .interactive-enabled .foreground .image .enticement-svg {
   left: 30px;
   right: auto;
   transform: scaleX(-1);
@@ -314,7 +314,7 @@
     left: 30px;
   }
 
-  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-arrow {
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-svg {
     right: auto;
     left: 30px;
     transform: scaleX(-1);
@@ -378,7 +378,7 @@
     margin: 36px 0 0 60px;
   }
 
-  .interactive-enabled .foreground .image .enticement-arrow {
+  .interactive-enabled .foreground .image .enticement-svg {
     display: flex;
     flex-direction: row-reverse;
     justify-content: start;

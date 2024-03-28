@@ -176,7 +176,7 @@ async function getTargetArea(el) {
     const entP = enticementArrow.closest('p');
     const entTxt = createTag('div', { class: 'enticement-text' }, entP.textContent);
     const enticement = createTag('div', { class: 'enticement-container' });
-    enticementArrow.classList.add('enticement-arrow');
+    enticementArrow.classList.add('enticement-svg');
     enticement.append(entTxt, enticementArrow);
     entP.replaceWith(enticement);
   }
