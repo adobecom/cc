@@ -118,7 +118,8 @@
 }
   @media screen and (min-width: 1200px) {
     .interactive-enabled.row-reversed .step-generate .generate-text-container {
-      width: 100%;
+      width: 218px;
+      max-width: 218px;
     }
     
     .interactive-enabled.row-reversed.generate-right .step-generate .generate-prompt-button, 
