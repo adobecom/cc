@@ -17,7 +17,7 @@ function selectorTrayWithImgs(data, createTag) {
       displayImg = [data.getImgSrc(pic), pic.querySelector('img').alt];
       return;
     }
-    const trayLabel = createTag('div', { class: 'tray-item-label' }, pic.querySelector('img').alt);
+    const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, pic.querySelector('img').alt);
     const src = data.getImgSrc(pic);
     const outline = createTag('div', { class: 'tray-thumbnail-outline' });
     const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
@@ -25,7 +25,7 @@ function selectorTrayWithImgs(data, createTag) {
     if (pathIdx === 0) a.classList.add('thumbnail-selected');
     [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
     a.dataset.dispPth = pathIdx;
-    a.append(trayLabel);
+    a.append(analyticsHolder);
     trayItems.append(a);
     pathIdx += 1;
 

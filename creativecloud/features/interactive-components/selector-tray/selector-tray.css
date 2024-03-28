@@ -35,10 +35,6 @@
   background-position: center;
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .tray-item-label {
-  display: none;
-}
-
 .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .tray-thumbnail-outline {
   display: none;
   height: calc(100% - 10px);

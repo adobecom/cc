@@ -12,9 +12,11 @@ export default async function stepInit(data) {
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
   const searchBarContainer = createTag('div', { class: 'generate-text-container' }, searchBar);
   const generateBtn = createTag('a', { class: 'gray-button generate-button next-step', href: '#' });
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${searchText} - `);;
   const svg = config.querySelector('img[src*=".svg"]')?.closest('picture');
   if (svg) generateBtn.appendChild(svg.cloneNode(true));
-  if (btnText) generateBtn.appendChild(document.createTextNode(btnText));
+  generateBtn.appendChild(analyticsHolder);
+  generateBtn.appendChild(document.createTextNode(btnText));
   genfillDiv.appendChild(searchBarContainer);
   genfillDiv.appendChild(generateBtn);
   layer.appendChild(genfillDiv);

@@ -240,6 +240,10 @@
   display: none;
 } 
 
+.interactive-enabled .interactive-link-analytics-text {
+  display: none;
+}
+
 @media screen and (min-width: 600px) {
   .interactive-enabled.heading-top  h1,
   .interactive-enabled.heading-top  h2,
