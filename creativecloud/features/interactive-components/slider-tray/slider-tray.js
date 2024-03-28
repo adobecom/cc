@@ -7,7 +7,6 @@ const miloLibs = getLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 export default async function stepInit(data) {
-  console.log('data', data);
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   createSelectorTray(data, layer);
   sliderEvent(data.target, layer);
@@ -79,7 +78,7 @@ function createSlider(details, menu, sliderTray, targets) {
   const l = createTag('label', { for: `${label}` }, label);
   const sliderContainer = createTag('div', { class: `sliderContainer ${label.toLowerCase()}` });
   const outerCircle = createTag('a', { class: 'outerCircle' });
-  const input = createTag('input', { type: 'range', min, max, value: `${label.toLowerCase === 'hue' ? '50' : '50'}`, class: `options ${label.toLowerCase()}-input` });
+  const input = createTag('input', { type: 'range', min, max, class: `options ${label.toLowerCase()}-input` });
   sliderContainer.append(input, outerCircle);
   menu.append(l, sliderContainer);
   sliderTray.append(menu);
@@ -126,7 +125,11 @@ function sliderEvent(media, layer) {
       const rect = sliderEl.getBoundingClientRect();
       const value1 = (value - sliderEl.min) / (sliderEl.max - sliderEl.min);
       const thumbOffset = value1 * (rect.width - outerCircle.offsetWidth);
-      outerCircle.style.left = `${thumbOffset + 8}px`;
+      if (document.dir === 'rtl') {
+        outerCircle.style.right = `${thumbOffset + 8}px`;
+      } else {
+        outerCircle.style.left = `${thumbOffset + 8}px`;
+      }
       switch (sel.toLowerCase()) {
         case ('hue'):
           image.style.filter = `hue-rotate(${value}deg)`;
@@ -180,11 +183,16 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
   let direction = 1;
   function stepAnimation() {
     const rect = slider.getBoundingClientRect();
-    current += step;
     slider.value = current;
+    current += step;
     const value = (slider.value - slider.min) / (slider.max - slider.min);
     const thumbOffset = value * (rect.width - outerCircle.offsetWidth);
-    outerCircle.style.left = `${thumbOffset + 8}px`;
+    // outerCircle.style.left = `${thumbOffset + 8}px`;
+    if (document.dir === 'rtl') {
+      outerCircle.style.right = `${thumbOffset + 8}px`;
+    } else {
+      outerCircle.style.left = `${thumbOffset + 8}px`;
+    }
     slider.dispatchEvent(new Event('input', { bubbles: true }));
     if ((step > 0 && current >= (start + 70)) || (step < 0 && current >= (start + 70))) {
       step = -step;
@@ -193,7 +201,7 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
       step = -step;
       setTimeout(stepAnimation, 10);
       direction = -1;
-    } else if (current >= start && direction === -1) {
+    } else if (current === start && direction === -1) {
       slider.value = current;
       const image = target.querySelector('picture > img');
       image.style.filter = `hue-rotate(${0}deg)`;
@@ -201,6 +209,7 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
         outerCircle.classList.remove('animate');
         outerCircle.classList.add('animateout');
       }, 500);
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
       return;
     } else {
       setTimeout(stepAnimation, 10);
