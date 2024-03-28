@@ -67,8 +67,8 @@ async function createDisplayVideo(target, replaceEl, src) {
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const source = createTag('source', { src, type: 'video/mp4' });
   const video = createTag('video', { playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4' }, source);
-  video.load();
   replaceEl.replaceWith(video);
+  video.load();
   target.classList.add('show-video');
   target.classList.remove('show-image');
   video.play();
