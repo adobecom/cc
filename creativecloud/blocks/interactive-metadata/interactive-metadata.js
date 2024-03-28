@@ -130,7 +130,7 @@ async function handleLayerDisplay(stepInfo) {
 async function implementWorkflow(stepInfo) {
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const layer = await stepInfo.stepInit(stepInfo);
-  if (currLayer) layer.replaceWith(layer);
+  if (currLayer) currLayer.replaceWith(layer);
   else stepInfo.target.append(layer);
   await handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo);
