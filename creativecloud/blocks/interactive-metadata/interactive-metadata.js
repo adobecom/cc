@@ -253,9 +253,12 @@ function getWorkFlowInformation(el) {
   }
   if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
   else if (wfName) {
-    wfName.replace('generate_selector-tray', 'generate');
-    wfName.replace('generate', 'generate_selector-tray');
-    const wfList = wfName.split('workflow-')[1].split('_');
+    const stepReplace = { selectortray: 'selector-tray', startover: 'start-over'}
+    const replaceNames = Object.keys(stepReplace);
+    const wfList = wfName.split('workflow-')[1].split('-');
+    wfList.forEach((w,i) => {
+      if (replaceNames.includes(w)) wfList[i] = stepReplace[w];
+    });
     return wfList;
   }
   return [];
