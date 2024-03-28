@@ -67,7 +67,7 @@ function handleIntersection(targets, menu) {
       if (entry.isIntersecting && entry.intersectionRatio === 1) {
         setTimeout(() => {
           animateSlider(menu, targets);
-        }, 1000);
+        }, 500);
       }
     });
   };
@@ -76,13 +76,17 @@ function handleIntersection(targets, menu) {
 function createSlider(details, menu, sliderTray, targets) {
   const [label, min, max] = details.split('|').map(item => item.trim());
   const l = createTag('label', { for: `${label}` }, label);
-  const sliderContainer = createTag('div', { class: `sliderContainer ${label.toLowerCase()}` });
-  const outerCircle = createTag('a', { class: 'outerCircle' });
+  const sliderContainer = createTag('div', { class: `sliderContainer ${label.toLowerCase()}`});
+  const outerCircle = createTag('a', { class: 'outerCircle', href: '#'});
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${label} slider`);
   const input = createTag('input', { type: 'range', min, max, class: `options ${label.toLowerCase()}-input` });
+  outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
   menu.append(l, sliderContainer);
   sliderTray.append(menu);
-  // setTimeout(() => animateSlider(menu, targets), 500)
+  outerCircle.addEventListener('click', (e) => {
+    e.preventDefault();
+  });
 }
 
 function createUploadButton(details, picture, sliderTray, menu) {
@@ -133,9 +137,11 @@ function sliderEvent(media, layer) {
       switch (sel.toLowerCase()) {
         case ('hue'):
           image.style.filter = `hue-rotate(${value}deg)`;
+          outerCircle.click();
           break;
         case ('saturation'):
           image.style.filter = `saturate(${value}%)`;
+          outerCircle.click();
           break;
         default:
           break;
@@ -187,7 +193,6 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
     current += step;
     const value = (slider.value - slider.min) / (slider.max - slider.min);
     const thumbOffset = value * (rect.width - outerCircle.offsetWidth);
-    // outerCircle.style.left = `${thumbOffset + 8}px`;
     if (document.dir === 'rtl') {
       outerCircle.style.right = `${thumbOffset + 8}px`;
     } else {
