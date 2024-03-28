@@ -1,13 +1,4 @@
-/* 
- * Put project specific base styles here.
- *
- * Note: The proect does not load this file.
- *       You will need to load these using scripts.js.
- * 
- *
- */
-
- .reading-width {
+.reading-width {
   max-width: 600px;
   margin: auto;
   padding: 20px;
