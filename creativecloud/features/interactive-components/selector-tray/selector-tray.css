@@ -51,8 +51,8 @@
 @media screen and (min-width: 600px) {
   .interactive-enabled .step-selector-tray .selector-tray {
     bottom: 70px;
-    left: auto;
-    right: -10%;
+    left: 56%;
+    right: auto;
     padding: 24px 16px 16px 16px;
     gap: 16px;
     border-radius: 9px;
@@ -63,7 +63,12 @@
 
   [dir="rtl"] .interactive-enabled .step-selector-tray .selector-tray {
     left: auto;
-    right: 318px;
+    right: 56%;
+  }
+
+  [dir="rtl"] .interactive-enabled.row-reversed .step-selector-tray .selector-tray {
+    right: auto;
+    left: 56%;
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-items {
