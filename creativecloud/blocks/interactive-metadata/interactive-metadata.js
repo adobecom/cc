@@ -33,13 +33,12 @@ function loadImg(img) {
   if (!img) return;
   return new Promise((res) => {
     img.loading = 'eager';
-    if (img.complete) {
-      res();
-      return;
+    img.fetchpriority = 'high';
+    if (img.complete) res();
+    else {
+      img.onload = () => res();
+      img.onerror = () => res();
     }
-    img.onload = () => res();
-    img.onerror = () => res();
-    setTimeout(() => res(), 800);
   });
 }
 
@@ -90,7 +89,7 @@ async function handleImageTransition(stepInfo, transitionCfg = {}) {
   if (transitionCfg.useCfg) {
     if (transitionCfg.src) {
       await createDisplayImg(stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt);
-    } else {
+    } else { 
       await createDisplayVideo(stepInfo.target, trgtVideo, transitionCfg.vsrc);
     }
     return;
@@ -115,8 +114,6 @@ async function handleNextStep(stepInfo) {
 }
 
 async function handleLayerDisplay(stepInfo) {
-  const placeholderLayer = stepInfo.target.querySelector('.placeholder-layer');
-  placeholderLayer?.remove();
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
   const prevLayer = stepInfo.target.querySelector(`.layer-${prevStepIndex}`);
@@ -148,11 +145,8 @@ function checkRenderStatus(targetBlock, res) {
 
 function intEnbReendered(targetBlock) {
   return new Promise((res, rej) => {
-    try {
-      checkRenderStatus(targetBlock, res);
-    } catch (err) {
-      rej();
-    }
+    try { checkRenderStatus(targetBlock, res); }
+    catch (err) { rej(); }
   });
 }
 
@@ -172,14 +166,10 @@ async function getTargetArea(el) {
   el.querySelector(':scope > div > div').prepend(p);
   pic.querySelector('img').src = getImgSrc(pic);
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
-  const videoSource = createTag('source', { src: '' });
-  const video = createTag('video', { 
-    playsinline: '', autoplay: '', muted: '', loop: '', src: '', type: 'video/mp4',
-  }, videoSource);
+  const video = createTag('video');
   const assetArea = intEnb.querySelector('.asset, .image');
-  const placeholderLayer = createTag('div', { class: 'layer placeholder-layer show-layer' });
   const container = pic.closest('p');
-  iArea.append(pic, video, placeholderLayer);
+  iArea.append(pic, video);
   if (container) container.replaceWith(iArea);
   else assetArea.append(iArea);
   if (intEnb.classList.contains('heading-top')) {
@@ -257,14 +247,7 @@ function getWorkFlowInformation(el) {
     'workflow-4': ['slider-tray'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
-  const stepList = [];
-  [...el.classList].forEach((cn) => {
-    if (cn.match('workflow-')) {
-      wfName = cn;
-      return;
-    }
-  });
-
+  [...el.classList].forEach((cn) => { if (cn.match('workflow-')) wfName = cn; });
   if (wfName === 'workflow-genfill') {
     const genArr = new Array(el.childElementCount - 1).fill('generate');
     genArr.push('start-over');
@@ -275,9 +258,7 @@ function getWorkFlowInformation(el) {
     const stepReplace = { selectortray: 'selector-tray', startover: 'start-over' };
     const replaceNames = Object.keys(stepReplace);
     const wfList = wfName.split('workflow-')[1].split('-');
-    wfList.forEach((w,i) => {
-      if (replaceNames.includes(w)) wfList[i] = stepReplace[w];
-    });
+    wfList.forEach((w, i) => { if (replaceNames.includes(w)) wfList[i] = stepReplace[w]; });
     return wfList;
   }
   return [];
@@ -309,7 +290,7 @@ export default async function init(el) {
   createIntersectionObserver({
     el: targetAsset,
     callback: addAnimationToLayer,
-    options: { threshold: 1.0 },
+    options: { threshold: 0.7 },
   });
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {

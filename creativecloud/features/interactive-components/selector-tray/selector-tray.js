@@ -42,7 +42,8 @@ function selectorTrayWithImgs(data, createTag) {
       const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       await data.openForExecution;
       data.displayPath = parseInt(curra.dataset.dispPth, 10);
-      await data.handleImageTransition(data, { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true });
+      const transitionObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
+      await data.handleImageTransition(data, transitionObj);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
       e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
     });
