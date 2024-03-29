@@ -86,11 +86,19 @@
 }
   
 .interactive-enabled .step-slider-tray .sliderTray .menu .saturation {
-  background: linear-gradient(to right, lightgray, red);
+  background: linear-gradient(to right, black, red);
+}
+
+[dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .saturation {
+  background: linear-gradient(to left, darkgray, red);
 }
   
 .interactive-enabled .step-slider-tray .sliderTray .menu .hue {
   background: linear-gradient(to right, red, yellow, lime, aqua, blue, fuchsia, red);
+}
+
+[dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .hue {
+  background: linear-gradient(to left, red, yellow, lime, aqua, blue, fuchsia, red);
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .options::-webkit-slider-thumb,

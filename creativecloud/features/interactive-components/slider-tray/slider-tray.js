@@ -7,7 +7,7 @@ const miloLibs = getLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 export default async function stepInit(data) {
-  document.dir = 'rtl';
+  // document.dir = 'rtl';
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   createSelectorTray(data, layer);
   sliderEvent(data.target, layer);
