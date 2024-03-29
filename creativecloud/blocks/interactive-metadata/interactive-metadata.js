@@ -65,12 +65,17 @@ async function createDisplayImg(target, replaceEl, src, alt) {
 async function createDisplayVideo(target, replaceEl, src) {
   const miloLibs = getLibs('/libs');
   const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-  const source = createTag('source', { src, type: 'video/mp4' });
-  const video = createTag('video', { playsinline: '', autoplay: '', muted: '', loop: '', type: 'video/mp4' }, source);
+  const { pathname, hash } = new URL(src);
+  const attrs = { playsinline: '', autoplay: '', muted: '' };
+  const isAutoplay = hash?.includes('autoplay');
+  const isAutoplayOnce = hash?.includes('autoplay1');
+  if (isAutoplay && !isAutoplayOnce) attrs.loop = '';
+  const source = createTag('source', { src: pathname, type: 'video/mp4' });
+  const video = createTag('video', attrs, source);
   replaceEl.replaceWith(video);
   try {
     video.load();
-    await video.play()
+    await video.play();
   } catch (err) {
     return;
   }
