@@ -7,6 +7,7 @@ const miloLibs = getLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 export default async function stepInit(data) {
+  document.dir = 'rtl';
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   createSelectorTray(data, layer);
   sliderEvent(data.target, layer);
@@ -57,17 +58,18 @@ function observeSliderTray(sliderTray, targets, menu) {
     rootMargin: '0px',
     threshold: 1.0,
   };
-  const observer = new IntersectionObserver(handleIntersection(targets, menu), options);
-  observer.observe(sliderTray);
+  const io = new IntersectionObserver(handleIntersection(targets, menu), options);
+  io.observe(sliderTray);
 }
 
 function handleIntersection(targets, menu) {
-  return function (entries) {
+  return function (entries, observer) {
     entries.forEach(entry => {
       if (entry.isIntersecting && entry.intersectionRatio === 1) {
         setTimeout(() => {
           animateSlider(menu, targets);
         }, 500);
+        observer.unobserve(entry.target);
       }
     });
   };
