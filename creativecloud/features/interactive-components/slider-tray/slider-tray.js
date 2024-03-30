@@ -10,7 +10,7 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   createSelectorTray(data, layer);
   sliderEvent(data.target, layer);
-  uploadImage(layer);
+  uploadImage(data.target, layer);
   return layer;
 }
 
@@ -57,17 +57,18 @@ function observeSliderTray(sliderTray, targets, menu) {
     rootMargin: '0px',
     threshold: 1.0,
   };
-  const observer = new IntersectionObserver(handleIntersection(targets, menu), options);
-  observer.observe(sliderTray);
+  const io = new IntersectionObserver(handleIntersection(targets, menu), options);
+  io.observe(sliderTray);
 }
 
 function handleIntersection(targets, menu) {
-  return function (entries) {
+  return function (entries, observer) {
     entries.forEach(entry => {
       if (entry.isIntersecting && entry.intersectionRatio === 1) {
         setTimeout(() => {
           animateSlider(menu, targets);
         }, 500);
+        observer.unobserve(entry.target);
       }
     });
   };
@@ -101,7 +102,7 @@ function createUploadButton(details, picture, sliderTray, menu) {
   sliderTray.append(labelBtn);
 }
 
-function createUploadPSButton(details, picture, layer) {
+async function createUploadPSButton(details, picture, layer) {
   const btn = createTag('a', { class: 'continueButton body-xl hide' }, details);
   appendSVGToButton(picture, btn);
   layer.append(btn);
@@ -112,9 +113,9 @@ function appendSVGToButton(picture, button) {
     const svg = picture.querySelector('img[src*=svg]');
     if (svg) {
       const svgClone = svg.cloneNode(true);
-      const cropCTACont = createTag('div', { class: 'crop-icon-container' });
-      cropCTACont.append(svgClone);
-      button.prepend(cropCTACont);
+      const svgCTACont = createTag('div', { class: 'svg-icon-container' });
+      svgCTACont.append(svgClone);
+      button.prepend(svgCTACont);
     }
   }
 }
@@ -129,7 +130,9 @@ function sliderEvent(media, layer) {
       const rect = sliderEl.getBoundingClientRect();
       const value1 = (value - sliderEl.min) / (sliderEl.max - sliderEl.min);
       const thumbOffset = value1 * (rect.width - outerCircle.offsetWidth);
-      if (document.dir === 'rtl') {
+      const marquee = media.closest('.marquee') || media.closest('.aside');
+      const isRowReversed = marquee.classList.contains('.row-reversed');
+      if ((document.dir === 'rtl' || isRowReversed)) {
         outerCircle.style.right = `${thumbOffset + 8}px`;
       } else {
         outerCircle.style.left = `${thumbOffset + 8}px`;
@@ -150,17 +153,17 @@ function sliderEvent(media, layer) {
   });
 }
 
-function uploadImage(media) {
-  media.querySelectorAll('.uploadButton').forEach((btn) => {
+function uploadImage(media, layer) {
+  layer.querySelectorAll('.uploadButton').forEach((btn) => {
     btn.addEventListener('change', function(event) {
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
       if (file) {
-        const sources = media.querySelectorAll('source');
+        const sources = image.querySelectorAll('source');
         sources.forEach(source => source.remove());
         const imageUrl = URL.createObjectURL(file);
         image.src = imageUrl;
-        const continueBtn = media.querySelector('.continueButton');
+        const continueBtn = layer.querySelector('.continueButton');
         if (continueBtn) {
             continueBtn.classList.remove('hide');
         }
@@ -193,8 +196,11 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
     current += step;
     const value = (slider.value - slider.min) / (slider.max - slider.min);
     const thumbOffset = value * (rect.width - outerCircle.offsetWidth);
-    if (document.dir === 'rtl') {
+    const marquee = target.closest('.marquee') || target.closest('.aside');
+    const isRowReversed = marquee.classList.contains('row-reversed');
+    if ((document.dir === 'rtl' || isRowReversed)) {
       outerCircle.style.right = `${thumbOffset + 8}px`;
+      outerCircle.style.left = `auto`;
     } else {
       outerCircle.style.left = `${thumbOffset + 8}px`;
     }
