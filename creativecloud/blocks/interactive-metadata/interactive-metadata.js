@@ -245,6 +245,9 @@ function getWorkFlowInformation(el) {
     'workflow-2': ['crop', 'crop', 'start-over'],
     'workflow-3': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-4': ['slider-tray'],
+    'workflow-generate-crop': ['generate', 'selector-tray', 'crop', 'start-over'],
+    'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
+    'workflow-hue-sat': ['slider-tray'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   [...el.classList].forEach((cn) => { if (cn.match('workflow-')) wfName = cn; });
