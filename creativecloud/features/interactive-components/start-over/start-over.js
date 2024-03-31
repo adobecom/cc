@@ -5,7 +5,7 @@ function btnLoadDelay(layer, button, delay, once = true) {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
         if (once) observer.unobserve(entry.target);
-        setTimeout(() => { button.style.opacity = 1 }, parseInt(delay, 10));
+        setTimeout(() => { button.style.opacity = 1; }, parseInt(delay, 10));
       }
     });
   });
