@@ -30,7 +30,6 @@ async function loadJSandCSS(stepName) {
 }
 
 function loadImg(img) {
-  if (!img) return;
   return new Promise((res) => {
     img.loading = 'eager';
     img.fetchpriority = 'high';
@@ -89,7 +88,7 @@ async function handleImageTransition(stepInfo, transitionCfg = {}) {
   if (transitionCfg.useCfg) {
     if (transitionCfg.src) {
       await createDisplayImg(stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt);
-    } else { 
+    } else {
       await createDisplayVideo(stepInfo.target, trgtVideo, transitionCfg.vsrc);
     }
     return;
@@ -145,8 +144,11 @@ function checkRenderStatus(targetBlock, res) {
 
 function intEnbReendered(targetBlock) {
   return new Promise((res, rej) => {
-    try { checkRenderStatus(targetBlock, res); }
-    catch (err) { rej(); }
+    try {
+      checkRenderStatus(targetBlock, res);
+    } catch (err) {
+      rej();
+    }
   });
 }
 
@@ -216,7 +218,7 @@ async function addBtnAnimation(ia) {
 
 function addAnimationToLayer(ia) {
   const btn = ia.querySelector('.layer .gray-button');
-  if (btn) return addBtnAnimation(ia);
+  if (btn) addBtnAnimation(ia);
 }
 
 async function renderLayer(stepInfo) {
@@ -256,8 +258,10 @@ function getWorkFlowInformation(el) {
     genArr.push('start-over');
     return genArr;
   }
-  if (wfNames.includes(wfName)) return intWorkFlowConfig[wfName];
-  else if (wfName) {
+  if (wfNames.includes(wfName)) {
+    return intWorkFlowConfig[wfName];
+  }
+  if (wfName) {
     const stepReplace = { selectortray: 'selector-tray', startover: 'start-over' };
     const replaceNames = Object.keys(stepReplace);
     const wfList = wfName.split('workflow-')[1].split('-');
