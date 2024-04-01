@@ -115,7 +115,6 @@
 }
 
 .interactive-enabled .layer.show-layer {
-  display: block;
   position: relative;
   top: auto;
   bottom: 0;
@@ -127,7 +126,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0px 0px 8px 8px;
+  border-radius: 0 0 8px 8px;
   z-index: 2;
 }
 
