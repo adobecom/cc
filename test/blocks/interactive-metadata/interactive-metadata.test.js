@@ -8,12 +8,17 @@ const { default: init } = await import('../../../creativecloud/blocks/interactiv
 describe('interactive metadata', () => {
   let im = null;
   let ib = null;
+  let genfillIm = null;
+  let genfillMarquee = null;
 
   before(async () => {
     setLibs('https://milo.adobe.com/libs');
     im = document.querySelector('.interactive-metadata');
     ib = document.querySelector('.marquee');
+    genfillIm = document.querySelector('.interactive-metadata.workflow-genfill');
+    genfillMarquee = genfillIm.closest('.section').querySelector('.marquee');
     await init(im);
+    await init(genfillIm);
   });
   it('interactive metadata should exist', () => {
     console.log(im);
@@ -51,5 +56,18 @@ describe('interactive metadata', () => {
     im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
     await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(ib.querySelector('.interactive-holder.step-generate')).to.exist;
+  });
+  it('Genfill: should render generate layer', () => {
+    expect(genfillMarquee.querySelector('.interactive-holder.step-generate')).to.exist;
+  });
+  it('Genfill: should render generate layer', async () => {
+    genfillIm.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+    await new Promise((res) => { setTimeout(() => { res(); }, 200); });
+    expect(genfillMarquee.querySelector('.interactive-holder.step-generate')).to.exist;
+  });
+  it('Genfill: should render start over layer', async () => {
+    genfillIm.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+    await new Promise((res) => { setTimeout(() => { res(); }, 200); });
+    expect(genfillMarquee.querySelector('.interactive-holder.step-start-over')).to.exist;
   });
 });
