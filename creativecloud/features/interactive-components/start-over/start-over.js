@@ -35,7 +35,7 @@ export default async function stepInit(data) {
     });
   }
   if (delay) btnLoadDelay(layer, startOverCTA, delay);
-  else startOverCTA.style.opacity = 1;
+  else startOverCTA.style.display = 'flex';
   layer.append(startOverCTA);
   return layer;
 }
