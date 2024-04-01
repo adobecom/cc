@@ -45,8 +45,7 @@ async function handleInput(option, targets, sliderTray, menu, layer) {
       createUploadPSButton(text, picture, layer);
       break;
     default:
-      // eslint-disable-next-line no-console
-      console.log(`Unknown input type: ${inputType}`);
+      window.lana.log(`Unknown input type: ${inputType}`);
       break;
   }
   observeSliderTray(sliderTray, targets, menu);
