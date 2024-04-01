@@ -19,7 +19,7 @@ function createSelectorTray(data, layer) {
   const menu = createTag('div', { class: 'menu' });
   const config = data.stepConfigs[data.stepIndex];
   const options = config.querySelectorAll(':scope > div .icon');
-  
+
   options.forEach((option) => {
     handleInput(option, data.target, sliderTray, menu, layer);
   });
@@ -27,16 +27,16 @@ function createSelectorTray(data, layer) {
 }
 
 async function handleInput(option, targets, sliderTray, menu, layer) {
-    const inputType = option.classList[1].split('icon-')[1];
-    const sibling = option.nextSibling;
-    const text = sibling.nodeValue.trim();
-    let picture = '';
-    if (sibling.nextSibling && sibling.nextSibling.tagName === 'PICTURE') {
-      picture = sibling.nextSibling;
-    }
+  const inputType = option.classList[1].split('icon-')[1];
+  const sibling = option.nextSibling;
+  const text = sibling.nodeValue.trim();
+  let picture = '';
+  if (sibling.nextSibling && sibling.nextSibling.tagName === 'PICTURE') {
+    picture = sibling.nextSibling;
+  }
   switch (inputType) {
     case 'slider':
-      createSlider(text, menu, sliderTray, targets);
+      createSlider(text, menu, sliderTray);
       break;
     case 'upload':
       createUploadButton(text, picture, sliderTray, menu);
@@ -62,8 +62,8 @@ function observeSliderTray(sliderTray, targets, menu) {
 }
 
 function handleIntersection(targets, menu) {
-  return function (entries, observer) {
-    entries.forEach(entry => {
+  return (entries, observer) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting && entry.intersectionRatio === 1) {
         setTimeout(() => {
           animateSlider(menu, targets);
@@ -74,16 +74,16 @@ function handleIntersection(targets, menu) {
   };
 }
 
-function createSlider(details, menu, sliderTray, targets) {
-  const [label, min, max] = details.split('|').map(item => item.trim());
-  const l = createTag('label', { for: `${label}` }, label);
+function createSlider(details, menu, sliderTray) {
+  const [label, min, max] = details.split('|').map((item) => item.trim());
+  const sliderLabel = createTag('label', { for: `${label}` }, label);
   const sliderContainer = createTag('div', { class: `sliderContainer ${label.toLowerCase()}`});
   const outerCircle = createTag('a', { class: 'outerCircle', href: '#'});
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${label} slider`);
   const input = createTag('input', { type: 'range', min, max, class: `options ${label.toLowerCase()}-input` });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
-  menu.append(l, sliderContainer);
+  menu.append(sliderLabel, sliderContainer);
   sliderTray.append(menu);
   outerCircle.addEventListener('click', (e) => {
     e.preventDefault();
@@ -130,8 +130,8 @@ function sliderEvent(media, layer) {
       const rect = sliderEl.getBoundingClientRect();
       const value1 = (value - sliderEl.min) / (sliderEl.max - sliderEl.min);
       const thumbOffset = value1 * (rect.width - outerCircle.offsetWidth);
-      const marquee = media.closest('.marquee') || media.closest('.aside');
-      const isRowReversed = marquee.classList.contains('.row-reversed');
+      const interactiveBlock = media.closest('.marquee') || media.closest('.aside');
+      const isRowReversed = interactiveBlock.classList.contains('.row-reversed');
       if ((document.dir === 'rtl' || isRowReversed)) {
         outerCircle.style.right = `${thumbOffset + 8}px`;
       } else {
@@ -155,17 +155,17 @@ function sliderEvent(media, layer) {
 
 function uploadImage(media, layer) {
   layer.querySelectorAll('.uploadButton').forEach((btn) => {
-    btn.addEventListener('change', function(event) {
+    btn.addEventListener('change', (event) => {
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
       if (file) {
         const sources = image.querySelectorAll('source');
-        sources.forEach(source => source.remove());
+        sources.forEach((source) => source.remove());
         const imageUrl = URL.createObjectURL(file);
         image.src = imageUrl;
         const continueBtn = layer.querySelector('.continueButton');
         if (continueBtn) {
-            continueBtn.classList.remove('hide');
+          continueBtn.classList.remove('hide');
         }
       }
     });
@@ -188,16 +188,16 @@ function animateSlider(menu, targets) {
 
 function sliderScroll(slider, start, end, duration, outerCircle, target) {
   let current = start;
-  let step = (end - start) / duration * 10;
+  let step = ((end - start) / duration) * 10;
   let direction = 1;
   function stepAnimation() {
-    const rect = slider.getBoundingClientRect();
     slider.value = current;
     current += step;
+    const rect = slider.getBoundingClientRect();
     const value = (slider.value - slider.min) / (slider.max - slider.min);
     const thumbOffset = value * (rect.width - outerCircle.offsetWidth);
-    const marquee = target.closest('.marquee') || target.closest('.aside');
-    const isRowReversed = marquee.classList.contains('row-reversed');
+    const interactiveBlock = target.closest('.marquee') || target.closest('.aside');
+    const isRowReversed = interactiveBlock.classList.contains('row-reversed');
     if ((document.dir === 'rtl' || isRowReversed)) {
       outerCircle.style.right = `${thumbOffset + 8}px`;
       outerCircle.style.left = `auto`;
