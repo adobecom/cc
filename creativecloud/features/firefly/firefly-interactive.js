@@ -109,7 +109,7 @@ export default async function setInteractiveFirefly(el) {
   const interactiveElemMode = el.classList.contains('light') ? 'dark' : 'light';
   const buttons = el.querySelectorAll('.con-button');
   [...buttons].forEach((button) => { if (button.innerText.includes('Firefly')) button.setAttribute('daa-ll', 'getfirefly'); });
-  const media = el.querySelector('.media');
+  const media = el.querySelector('.asset');
   const allP = media.querySelectorAll('p:not(:empty)');
   const allAnchorTag = media.querySelectorAll('a');
   // Get InteractiveSelection Value

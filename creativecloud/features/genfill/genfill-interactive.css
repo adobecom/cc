@@ -12,7 +12,7 @@
   display: none;
 }
 
-.genfill .media a {
+.genfill .asset a {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -35,6 +35,7 @@
   margin: 40px 0 16px -20px;
   top: -90px;
   color: var(--color-white);
+  font-weight: 700;
 }
 
 .enticement-text.light {

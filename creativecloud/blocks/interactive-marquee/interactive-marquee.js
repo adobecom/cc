@@ -52,14 +52,14 @@ function interactiveInit(el, decorateButtons, decorateBlockBg, createTag) {
   if (media) {
     const interactiveBox = createTag('div', { class: 'interactive-container' });
     mediaElements.forEach((mediaDiv) => {
-      mediaDiv.classList.add('media');
+      mediaDiv.classList.add('asset');
       interactiveBox.appendChild(mediaDiv);
     });
     foreground.appendChild(interactiveBox);
   }
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
-  if (firstDivInForeground?.classList.contains('media')) el.classList.add('row-reversed');
+  if (firstDivInForeground?.classList.contains('asset')) el.classList.add('row-reversed');
 
   decorateButtons(text, 'button-xl');
   decorateText(text, createTag);

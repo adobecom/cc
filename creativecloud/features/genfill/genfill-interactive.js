@@ -8,7 +8,7 @@ async function addEnticement(container, enticement, mode) {
   entcmtEl.classList.add('enticement');
   const viewports = ['tablet', 'desktop'];
   viewports.forEach((v) => {
-    const mDiv = container.querySelector(`.media.${v}-only`);
+    const mDiv = container.querySelector(`.asset.${v}-only`);
     mDiv.insertBefore(entcmtEl.cloneNode(true), mDiv.firstElementChild);
   });
 }
@@ -51,7 +51,7 @@ function startAutocycle(a, autoCycleConfig, viewport, deviceConfig, interval, hT
 }
 
 function processMedia(ic, miloUtil, autoCycleConfig, deviceConfig, v, hText) {
-  const media = miloUtil.createTag('div', { class: `media ${v}-only` });
+  const media = miloUtil.createTag('div', { class: `asset ${v}-only` });
   const a = miloUtil.createTag('a', { class: 'genfill-link' });
   const img = miloUtil.createTag('img', { class: 'genfill-image' });
   const src = deviceConfig[v].srcList[0];
@@ -84,7 +84,7 @@ export default async function decorateGenfill(el, miloUtil) {
   const heading = ic.closest('.foreground').querySelector('h1, h2, h3, h4, h5, h6');
   const hText = heading.id
     .split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-  const allP = ic.querySelectorAll('.media:first-child p');
+  const allP = ic.querySelectorAll('.asset:first-child p');
   const pMetadata = [...allP].filter((p) => !p.querySelector('picture'));
   const [enticement, timer = null] = [...pMetadata];
   enticement.classList.add('enticement-detail');
@@ -102,7 +102,7 @@ export default async function decorateGenfill(el, miloUtil) {
     tablet: { srcList: [], attrList: [], index: 0 },
     desktop: { srcList: [], attrList: [], index: 0 },
   };
-  const mediaElements = currentDom.querySelectorAll('.media');
+  const mediaElements = currentDom.querySelectorAll('.asset');
   viewports.forEach((v, vi) => {
     const media = mediaElements[vi]
       ? mediaElements[vi]
