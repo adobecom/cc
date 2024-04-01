@@ -285,4 +285,6 @@ export default async function init(el) {
   el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);
   });
+  // eslint-disable-next-line consistent-return
+  return stepInfo;
 }
