@@ -27,7 +27,9 @@ function createSelectorTray(data, layer) {
 }
 
 async function handleInput(option, targets, sliderTray, menu, layer) {
-  const inputType = option.classList[1].split('icon-')[1];
+  let inputType = option.classList[1].split('icon-')[1];
+  const sliderType = inputType.split('-')[0];
+  if (inputType.includes('slider')) inputType = 'slider';
   const sibling = option.nextSibling;
   const text = sibling.nodeValue.trim();
   let picture = '';
@@ -36,7 +38,7 @@ async function handleInput(option, targets, sliderTray, menu, layer) {
   }
   switch (inputType) {
     case 'slider':
-      createSlider(text, menu, sliderTray);
+      createSlider(sliderType, text, menu, sliderTray);
       break;
     case 'upload':
       createUploadButton(text, picture, sliderTray, menu);
@@ -74,13 +76,13 @@ function handleIntersection(targets, menu) {
   };
 }
 
-function createSlider(details, menu, sliderTray) {
+function createSlider(sliderType, details, menu, sliderTray) {
   const [label, min, max] = details.split('|').map((item) => item.trim());
-  const sliderLabel = createTag('label', { for: `${label}` }, label);
-  const sliderContainer = createTag('div', { class: `sliderContainer ${label.toLowerCase()}` });
+  const sliderLabel = createTag('label', { for: `${sliderType}` }, label);
+  const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
   const outerCircle = createTag('a', { class: 'outerCircle', href: '#' });
-  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${label} slider`);
-  const input = createTag('input', { type: 'range', min, max, class: `options ${label.toLowerCase()}-input` });
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
+  const input = createTag('input', { type: 'range', min, max, class: `options ${sliderType.toLowerCase()}-input` });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
   menu.append(sliderLabel, sliderContainer);
