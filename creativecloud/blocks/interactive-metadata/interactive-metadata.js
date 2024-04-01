@@ -194,31 +194,13 @@ async function getTargetArea(el) {
   return iArea;
 }
 
-function removeAnimation(ia) {
-  const btn = ia.querySelector('.layer .gray-button');
-  if (!btn) return;
-  btn.querySelector('.ia-circle').style.animation = 'none';
-  btn.style.animation = 'none';
-}
-
-async function addBtnAnimation(ia) {
-  const miloLibs = getLibs('/libs');
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+function animationCallback(ia) {
   const btns = ia.querySelectorAll('.layer .gray-button');
+  if (!btns.length) return;
   [...btns].forEach((btn) => {
-    const circle = createTag('div', { class: 'ia-circle' });
-    btn.append(circle);
-    btn.style.animation = 'outline-fill 2700ms 500ms forwards 7';
-    circle.style.animation = 'circle 2700ms ease-in-out 500ms backwards 7';
-    btn.addEventListener('mouseover', () => {
-      removeAnimation(ia);
-    });
+    btn.classList.add('animated');
+    btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
   });
-}
-
-function addAnimationToLayer(ia) {
-  const btn = ia.querySelector('.layer .gray-button');
-  if (btn) addBtnAnimation(ia);
 }
 
 async function renderLayer(stepInfo) {
@@ -296,7 +278,7 @@ export default async function init(el) {
   const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
   createIntersectionObserver({
     el: targetAsset,
-    callback: addAnimationToLayer,
+    callback: animationCallback,
     options: { threshold: 0.7 },
   });
   if (workflow.length === 1) return;
