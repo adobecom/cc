@@ -203,7 +203,7 @@ function animationCallback(ia) {
   });
 }
 
-export async function renderLayer(stepInfo) {
+async function renderLayer(stepInfo) {
   let pResolve = null;
   let pReject = null;
   stepInfo.openForExecution = new Promise((resolve, reject) => {
@@ -285,6 +285,4 @@ export default async function init(el) {
   el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);
   });
-  // eslint-disable-next-line consistent-return
-  return stepInfo;
 }

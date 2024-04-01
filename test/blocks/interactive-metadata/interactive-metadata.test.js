@@ -3,18 +3,17 @@ import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/interactive-metadata.html' });
 const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
-const { default: init, renderLayer } = await import('../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
+const { default: init } = await import('../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
 
 describe('interactive metadata', () => {
   let im = null;
   let ib = null;
-  let stepInfo = null;
 
   before(async () => {
     setLibs('https://milo.adobe.com/libs');
     im = document.querySelector('.interactive-metadata');
     ib = document.querySelector('.marquee');
-    stepInfo = await init(im);
+    await init(im);
   });
   it('interactive metadata should exist', () => {
     console.log(im);
@@ -34,19 +33,23 @@ describe('interactive metadata', () => {
     expect(hasWorkflowClass).to.be.true;
   });
   it('should render next selector tray', async () => {
-    await renderLayer(stepInfo);
+    im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+    await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(ib.querySelector('.interactive-holder.step-selector-tray')).to.exist;
   });
   it('should render next crop layer', async () => {
-    await renderLayer(stepInfo);
+    im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+    await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(ib.querySelector('.interactive-holder.step-crop')).to.exist;
   });
   it('should render next crop layer', async () => {
-    await renderLayer(stepInfo);
+    im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+    await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(ib.querySelector('.interactive-holder.step-start-over')).to.exist;
   });
   it('should render next generate layer', async () => {
-    await renderLayer(stepInfo);
+    im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+    await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(ib.querySelector('.interactive-holder.step-generate')).to.exist;
   });
 });
