@@ -25,6 +25,11 @@
   font-weight: bold;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
 }
+
+.interactive-enabled.light .step-slider-tray .sliderTray .menu {
+  background: var(--prompt-btn-fill-light);
+  color: var(--color-black);
+}
   
 .interactive-enabled .step-slider-tray .sliderTray .menu label {
   margin: 10px 0 0;
@@ -42,6 +47,10 @@
   inset-inline-start: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+}
+
+.interactive-enabled.light .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
+  background-color: var(--color-black);
 }
 
 [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle,
@@ -178,6 +187,12 @@
   align-items: center;
   max-height: 32px;
   align-items: center;
+
+}
+
+.interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
+  background: var(--prompt-btn-fill);
+  color: var(--prompt-btn-fill-light) !important;
 }
   
 .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile.hide {
@@ -232,6 +247,11 @@
    border: 3px solid transparent;
    box-sizing: border-box;
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+ }
+
+ .interactive-enabled.light .step-slider-tray .sliderTray .uploadButton {
+  background: var(--prompt-btn-fill-light);
+  color: var(--color-black);
  }
    
  .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
