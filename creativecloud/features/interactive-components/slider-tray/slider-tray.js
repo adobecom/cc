@@ -78,8 +78,8 @@ function handleIntersection(targets, menu) {
 function createSlider(details, menu, sliderTray) {
   const [label, min, max] = details.split('|').map((item) => item.trim());
   const sliderLabel = createTag('label', { for: `${label}` }, label);
-  const sliderContainer = createTag('div', { class: `sliderContainer ${label.toLowerCase()}`});
-  const outerCircle = createTag('a', { class: 'outerCircle', href: '#'});
+  const sliderContainer = createTag('div', { class: `sliderContainer ${label.toLowerCase()}` });
+  const outerCircle = createTag('a', { class: 'outerCircle', href: '#' });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${label} slider`);
   const input = createTag('input', { type: 'range', min, max, class: `options ${label.toLowerCase()}-input` });
   outerCircle.append(analyticsHolder);
