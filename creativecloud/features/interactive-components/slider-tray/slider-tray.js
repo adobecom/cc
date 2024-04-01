@@ -45,6 +45,7 @@ async function handleInput(option, targets, sliderTray, menu, layer) {
       createUploadPSButton(text, picture, layer);
       break;
     default:
+      // eslint-disable-next-line no-console
       console.log(`Unknown input type: ${inputType}`);
       break;
   }
@@ -178,8 +179,8 @@ function animateSlider(menu, targets) {
   outerCircle.classList.add('animate');
   outerCircle.addEventListener('transitionend', () => {
     setTimeout(() => {
-      const min = parseInt(option.min);
-      const max = parseInt(option.max);
+      const min = parseInt(option.min, 10);
+      const max = parseInt(option.max, 10);
       const middle = (min + max) / 2;
       sliderScroll(option, middle, max, 1200, outerCircle, targets);
     }, 500);
