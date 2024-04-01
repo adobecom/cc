@@ -203,7 +203,7 @@ function animationCallback(ia) {
   });
 }
 
-async function renderLayer(stepInfo) {
+export async function renderLayer(stepInfo) {
   let pResolve = null;
   let pReject = null;
   stepInfo.openForExecution = new Promise((resolve, reject) => {

@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/interactive-metadata.html' });
 const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
-const { default: init } = await import('../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
+const { default: init, renderLayer } = await import('../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
 
 describe('interactive metadata', () => {
   let im = null;
@@ -34,20 +34,19 @@ describe('interactive metadata', () => {
     expect(hasWorkflowClass).to.be.true;
   });
   it('should render next selector tray', async () => {
-    console.log(im);
-    await stepInfo.openForExecution;
-    im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+    await renderLayer(stepInfo);
     expect(ib.querySelector('.interactive-holder.step-selector-tray')).to.exist;
   });
-  it('should render next crop', async () => {
-    await stepInfo.openForExecution;
-    im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+  it('should render next crop layer', async () => {
+    await renderLayer(stepInfo);
     expect(ib.querySelector('.interactive-holder.step-crop')).to.exist;
   });
-  it('should render next start over', async () => {
-    console.log(stepInfo);
-    await stepInfo.openForExecution;
-    im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
+  it('should render next crop layer', async () => {
+    await renderLayer(stepInfo);
     expect(ib.querySelector('.interactive-holder.step-start-over')).to.exist;
+  });
+  it('should render next generate layer', async () => {
+    await renderLayer(stepInfo);
+    expect(ib.querySelector('.interactive-holder.step-generate')).to.exist;
   });
 });
