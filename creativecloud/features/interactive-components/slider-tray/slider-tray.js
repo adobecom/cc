@@ -221,6 +221,7 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
         outerCircle.classList.add('animateout');
       }, 500);
       slider.dispatchEvent(new Event('input', { bubbles: true }));
+      // eslint-disable-next-line no-useless-return
       return;
     } else {
       setTimeout(stepAnimation, 10);
