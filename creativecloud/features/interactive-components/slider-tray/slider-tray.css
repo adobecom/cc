@@ -21,7 +21,7 @@
   flex-direction: column;
   background: var(--prompt-input-fill);
   justify-content: space-between;
-  color: var(--prompt-btn-fill-light);
+  color: var(--color-white);
   font-weight: bold;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
 }
@@ -30,12 +30,21 @@
   background: var(--prompt-btn-fill-light);
   color: var(--color-black);
 }
-  
+
+.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu {
+  background: var(--prompt-input-fill);
+  color: var(--color-white);
+}
+
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu {
+  background: var(--prompt-btn-fill-light);
+  color: var(--color-black);
+}
+
 .interactive-enabled .step-slider-tray .sliderTray .menu label {
   margin: 10px 0 0;
 }
-  
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
   position: absolute;
   block-size: 20px;
@@ -53,11 +62,19 @@
   background-color: var(--color-black);
 }
 
+.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
+  background-color: var(--prompt-btn-fill-light);
+}
+
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
+  background-color: var(--color-black);
+}
+
 [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle,
 [dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
   transform: translate(50%, -50%);
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
   border-radius: 100%;
   content: "";
@@ -77,7 +94,7 @@
 [dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
   transform: translate(50%, -50%);
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .saturation,
 .interactive-enabled .step-slider-tray .sliderTray .menu .hue {
   position: relative;
@@ -93,7 +110,7 @@
   transition: color 0.05s linear;
   width: 100%;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .saturation {
   background: linear-gradient(to right, black, red);
 }
@@ -101,7 +118,7 @@
 [dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .saturation {
   background: linear-gradient(to left, darkgray, red);
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .hue {
   background: linear-gradient(to right, red, yellow, lime, aqua, blue, fuchsia, red);
 }
@@ -117,7 +134,7 @@
   position: relative;
   border-radius: 2em;
   -webkit-appearance: none;
-          appearance: none;
+  appearance: none;
   background: transparent;
   cursor: pointer;
   cursor: move;
@@ -125,7 +142,7 @@
   cursor: -webkit-grab;
   z-index: 2;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .options[type="range"]:focus {
   outline: none;
 }
@@ -147,7 +164,7 @@
   inline-size: 25px;
   block-size: 25px;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animateout::before,
 [dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animateout::before,
 .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .animateout::before {
@@ -156,31 +173,31 @@
   inline-size: 40px;
   block-size: 40px;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton:hover {
   border: 3px solid #1273E6;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton > input {
   opacity: 0;
   position: absolute;
   z-index: 2;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton {
   display: none;
 }
-  
+
 .interactive-enabled .step-slider-tray .continueButton {
   display: none;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
   display: inline-flex;
   box-sizing: content-box;
   margin: 16px auto 0;
   background: var(--prompt-btn-fill-light);
-  color: #000 !important;
+  color: var(--color-black) !important;
   width: auto;
   gap: 8px;
   padding: 8px 12px 8px 8px;
@@ -189,14 +206,23 @@
   align-items: center;
   max-height: 32px;
   align-items: center;
-
 }
 
 .interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile {
   background: var(--prompt-btn-fill);
-  color: var(--prompt-btn-fill-light) !important;
+  color: var(--color-white) !important;
 }
-  
+
+.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile {
+  background: var(--prompt-btn-fill-light);
+  color: var(--color-black) !important;
+}
+
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile {
+  background: var(--prompt-btn-fill);
+  color: var(--color-white) !important;
+}
+
 .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile.hide {
   display: none;
 }
@@ -205,7 +231,7 @@
   height: 18px;
   width: 18px;
 }
-  
+
 @media screen and (min-width: 600px) {
   .interactive-enabled .step-slider-tray .sliderTray,
   [dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray {
@@ -222,7 +248,7 @@
   left: -20%;
   right: auto;
 }
-  
+
 .interactive-enabled .step-slider-tray .sliderTray .menu {
    border-radius: 8px;
    padding: 14px 24px 28px;
@@ -231,7 +257,7 @@
    width: 260px;
    box-sizing: border-box;
  }
-   
+
  .interactive-enabled .step-slider-tray .sliderTray .uploadButton {
    cursor: pointer;
    top: 70%;
@@ -255,11 +281,21 @@
   background: var(--prompt-btn-fill-light);
   color: var(--color-black);
  }
-   
+
+ .interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .uploadButton {
+  background: var(--prompt-input-fill);
+  color: var(--color-white);
+ }
+
+ .interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .uploadButton {
+  background: var(--prompt-btn-fill-light);
+  color: var(--color-black);
+ }
+
  .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
    display: none;
  }
- 
+
  .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
    display: flex;
    align-items: center;
@@ -268,7 +304,7 @@
    width: 34px;
    border-radius: 3px;
  }
-     
+ 
  .interactive-enabled .step-slider-tray .sliderTray .continueButton {
    position: absolute;
    top: 85%;
