@@ -192,7 +192,7 @@
 
 }
 
-.interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
+.interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile {
   background: var(--prompt-btn-fill);
   color: var(--prompt-btn-fill-light) !important;
 }
