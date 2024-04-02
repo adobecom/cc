@@ -71,7 +71,7 @@ function handleIntersection(targets, menu) {
         outerCircle.classList.add('showOuterBorder');
         setTimeout(() => {
           animateSlider(menu, targets);
-        }, 500);
+        }, 800);
         observer.unobserve(entry.target);
       }
     });
@@ -79,7 +79,6 @@ function handleIntersection(targets, menu) {
 }
 
 function createSlider(sliderType, details, menu, sliderTray) {
-  let tabbing = false;
   const [label, min, max] = details.split('|').map((item) => item.trim());
   const sliderLabel = createTag('label', { for: `${sliderType}` }, label);
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
@@ -99,24 +98,10 @@ function createSlider(sliderType, details, menu, sliderTray) {
   outerCircle.addEventListener('click', (e) => {
     e.preventDefault();
   });
-  document.addEventListener('keydown', () => {
-    tabbing = true;
-    input.addEventListener('focus', () => {
-      if (tabbing) {
-        outerCircle.classList.add('focusOutercircle');
-      }
-    });
-    input.addEventListener('blur', () => {
-      outerCircle.classList.remove('focusOutercircle');
-    });
-  });
-  document.addEventListener('keyup', () => {
-    tabbing = false;
-  });
+  applyAccessibility(input, outerCircle);
 }
 
 function createUploadButton(details, picture, sliderTray, menu) {
-  let tabbing = false;
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
   const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
   const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
@@ -127,15 +112,20 @@ function createUploadButton(details, picture, sliderTray, menu) {
   clone.classList.add('uploadButtonMobile');
   menu.append(clone);
   sliderTray.append(labelBtn);
+  applyAccessibility(btn, labelBtn);
+}
+
+function applyAccessibility(inputEle,target) {
+  let tabbing = false;
   document.addEventListener('keydown', () => {
     tabbing = true;
-    btn.addEventListener('focus', () => {
+    inputEle.addEventListener('focus', () => {
       if (tabbing) {
-        labelBtn.classList.add('focusUploadButton');
+        target.classList.add('focusUploadButton');
       }
     });
-    btn.addEventListener('blur', () => {
-      labelBtn.classList.remove('focusUploadButton');
+    inputEle.addEventListener('blur', () => {
+      target.classList.remove('focusUploadButton');
     });
   });
   document.addEventListener('keyup', () => {
