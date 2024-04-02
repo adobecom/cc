@@ -142,7 +142,7 @@ async function handleLayerDisplay(stepInfo) {
   await loadAllImgs(currLayer.querySelectorAll('img[src*="media_"]'));
   await decorateDefaultLinkAnalytics(currLayer);
   if (prevStepIndex) stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
-  if (clsLayer) stepInfo.target.remove(clsLayer);
+  if (clsLayer) clsLayer.remove();
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
   currLayer.classList.add('show-layer');
   if (currLayer === prevLayer) return;
