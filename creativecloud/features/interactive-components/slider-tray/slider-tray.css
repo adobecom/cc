@@ -162,7 +162,9 @@
 }
   
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton > input {
-  display: none;
+  opacity: 0;
+  position: absolute;
+  z-index: 2;
 }
   
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton {
@@ -190,7 +192,7 @@
 
 }
 
-.interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
+.interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile {
   background: var(--prompt-btn-fill);
   color: var(--prompt-btn-fill-light) !important;
 }

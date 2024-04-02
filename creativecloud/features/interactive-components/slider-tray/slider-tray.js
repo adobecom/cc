@@ -94,9 +94,10 @@ function createSlider(sliderType, details, menu, sliderTray) {
 
 function createUploadButton(details, picture, sliderTray, menu) {
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
-  const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*', style: 'display: none;' });
-  const labelBtn = createTag('label', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
-  labelBtn.append(btn);
+  const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
+  const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
+  labelBtn.append(btn, analyticsHolder);
   appendSVGToButton(picture, labelBtn);
   const clone = labelBtn.cloneNode(true);
   clone.classList.add('uploadButtonMobile');
