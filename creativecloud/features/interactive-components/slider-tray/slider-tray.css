@@ -90,6 +90,10 @@
   opacity: 0;
 }
 
+.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .showOuterBorder::before {
+  opacity: 0.4;
+}
+
 [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before,
 [dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
   transform: translate(50%, -50%);

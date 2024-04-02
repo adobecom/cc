@@ -67,6 +67,8 @@ function handleIntersection(targets, menu) {
   return (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting && entry.intersectionRatio === 1) {
+        const outerCircle = menu.querySelector('.options').nextSibling;
+        outerCircle.classList.add('showOuterBorder');
         setTimeout(() => {
           animateSlider(menu, targets);
         }, 500);
