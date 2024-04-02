@@ -162,7 +162,9 @@
 }
   
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton > input {
-  display: none;
+  opacity: 0;
+  position: absolute;
+  z-index: 2;
 }
   
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton {
