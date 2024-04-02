@@ -19,6 +19,23 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
+function animationCallback(btn) {
+  btn.classList.add('animated');
+  btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
+}
+
+async function addLayerAnimation(asset) {
+  const ioEl = asset.querySelector('.gray-button');
+  if (!ioEl) return;
+  const miloLibs = getLibs('/libs');
+  const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+  createIntersectionObserver({
+    el: ioEl,
+    callback: animationCallback,
+    options: { threshold: 0.7 },
+  });
+}
+
 async function loadJSandCSS(stepName) {
   const miloLibs = getLibs('/libs');
   const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
@@ -132,7 +149,10 @@ async function implementWorkflow(stepInfo) {
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const layer = await stepInfo.stepInit(stepInfo);
   if (currLayer) currLayer.replaceWith(layer);
-  else stepInfo.target.append(layer);
+  else {
+    stepInfo.target.append(layer);
+    if (stepInfo.stepIndex === 0) await addLayerAnimation(stepInfo.target);
+  }
   await handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo);
 }
@@ -194,41 +214,20 @@ async function getTargetArea(el) {
   return iArea;
 }
 
-function animationCallback(ia) {
-  const btns = ia.querySelectorAll('.layer .gray-button');
-  if (!btns.length) return;
-  [...btns].forEach((btn) => {
-    btn.classList.add('animated');
-    btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
-  });
-}
-
 async function renderLayer(stepInfo) {
-  let pResolve = null;
-  let pReject = null;
   stepInfo.openForExecution = new Promise((resolve, reject) => {
-    pResolve = resolve;
-    pReject = reject;
-  });
-  try {
     stepInfo.stepIndex = getNextStepIndex(stepInfo);
     if (stepInfo.stepIndex === 0) stepInfo.displayPath = 0;
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-    await implementWorkflow(stepInfo);
-    pResolve();
-  } catch (err) {
-    window.lana.log(err);
-    pReject();
-  }
+    implementWorkflow(stepInfo)
+      .then(() => resolve())
+      .catch(() => reject());
+  });
 }
 
 function getWorkFlowInformation(el) {
   let wfName = '';
   const intWorkFlowConfig = {
-    'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
-    'workflow-2': ['crop', 'crop', 'start-over'],
-    'workflow-3': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
-    'workflow-4': ['slider-tray'],
     'workflow-generate-crop': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-hue-sat': ['slider-tray'],
@@ -267,20 +266,12 @@ export default async function init(el) {
     nextStepEvent: 'cc:interactive-switch',
     target: targetAsset,
     displayPath: 0,
-    openForExecution: true,
+    openForExecution: Promise.resolve(true),
     handleImageTransition,
     getImgSrc,
   };
-
   await handleNextStep(stepInfo);
   await renderLayer(stepInfo);
-  const miloLibs = getLibs('/libs');
-  const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
-  createIntersectionObserver({
-    el: targetAsset,
-    callback: animationCallback,
-    options: { threshold: 0.7 },
-  });
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);

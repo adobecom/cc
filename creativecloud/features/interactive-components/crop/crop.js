@@ -13,6 +13,8 @@ export default async function stepInit(data) {
   cropCTA.addEventListener('click', async (e) => {
     e.preventDefault();
     await data.openForExecution;
+    if (layer.classList.contains('disable-click')) return;
+    layer.classList.add('disable-click');
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });
   layer.append(cropCTA);

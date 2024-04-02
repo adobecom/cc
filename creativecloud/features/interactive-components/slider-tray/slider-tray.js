@@ -203,7 +203,7 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
     const isRowReversed = interactiveBlock.classList.contains('row-reversed');
     if ((document.dir === 'rtl' || isRowReversed)) {
       outerCircle.style.right = `${thumbOffset + 8}px`;
-      outerCircle.style.left = `auto`;
+      outerCircle.style.left = 'auto';
     } else {
       outerCircle.style.left = `${thumbOffset + 8}px`;
     }
