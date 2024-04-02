@@ -4,7 +4,7 @@
   --prompt-btn-fill: #323232;
   --prompt-text-color: #D1D1D1;
   --prompt-text-border: #545454;
-  --prompt-btn-text: #FFFFFF;
+  --prompt-btn-text: #FFF;
   --prompt-highlight-color: #1473E6;
   --layer-background-fill: #272928;
   --prompt-btn-fill-light: #FFFF;
@@ -59,7 +59,7 @@
   font-weight: bold;
   font-size: 28px;
   line-height: 28px;
-  margin: 0 0 16px 0;
+  margin: 0 0 16px;
 }
 
 .interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
@@ -189,47 +189,43 @@
 }
 
 @keyframes circle {
-  0% {
-    opacity: 0;
-  }
+  0% { opacity: 0; }
+
   18% {
     transform: scale(100%);
     opacity: 0.5;
   }
+
   29% {
     transform: scale(100%);
     opacity: 0.5;
   }
+
   44% {
     transform: scale(50%);
     opacity: 1;
   }
-  50% {
-    opacity: 0;
-  }
+
+  50% { opacity: 0; }
 }
 
 @keyframes outline-fill {
-  0% {
-    border-color: transparent ;
-  }
-  18% {
-    border-color: var(--prompt-highlight-color) ;
-  }
-  24% {
-    border-color: var(--prompt-highlight-color) ;
-  }
+  0% { border-color: transparent ; }
+
+  18% { border-color: var(--prompt-highlight-color); }
+
+  24% { border-color: var(--prompt-highlight-color); }
+
   59% {
-    border-color: var(--prompt-highlight-color) ;
+    border-color: var(--prompt-highlight-color);
     background: var(--prompt-highlight-color);
   }
-  90% {
-    border-color: var(--prompt-highlight-color) ;
-  }
+
+  90% { border-color: var(--prompt-highlight-color); }
 }
 
-.interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
-.interactive-enabled .foreground.container .interactive-holder .layer .gray-button img {
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button img,
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture {
   width: 24px;
   height: auto;
   min-height: 24px;
@@ -291,7 +287,7 @@
   .interactive-enabled .foreground .image {
     position: relative;
     border-radius: 16px;
-    margin-inline-start: 0px;
+    margin-inline-start: 0;
     background: none;
     width: calc(var(--grid-container-width) - 20px);
     max-width: 570px;
@@ -334,7 +330,7 @@
     width: var(--grid-container-width);
     max-width: 570px;
     right: 30px;
-    margin: 0 0 24px 0;
+    margin: 0 0 24px;
   }
 
   [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container {
@@ -360,7 +356,7 @@
   .interactive-enabled .layer .gray-button {
     font-size: var(--type-body-xl-size); 
     line-height: var(--type-body-xl-lh);
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 32%);
   }
 
   .interactive-enabled .layer .gray-button.animated::before {
