@@ -194,12 +194,21 @@ async function getTargetArea(el) {
   return iArea;
 }
 
-function animationCallback(ia) {
-  const btns = ia.querySelectorAll('.layer .gray-button');
-  if (!btns.length) return;
-  [...btns].forEach((btn) => {
-    btn.classList.add('animated');
-    btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
+function animationCallback(btn) {
+  if (!btn) return;
+  btn.classList.add('animated');
+  btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
+}
+
+async function addLayerAnimation(asset) {
+  const ioEl = asset.querySelector('.gray-button');
+  if (!ioEl) return;
+  const miloLibs = getLibs('/libs');
+  const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+  createIntersectionObserver({
+    el: ioEl,
+    callback: animationCallback,
+    options: { threshold: 0.7 },
   });
 }
 
@@ -259,17 +268,9 @@ export default async function init(el) {
     handleImageTransition,
     getImgSrc,
   };
-
   await handleNextStep(stepInfo);
   await renderLayer(stepInfo);
-  const miloLibs = getLibs('/libs');
-  const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
-  const ioEl = targetAsset.querySelector('.gray-button');
-  createIntersectionObserver({
-    el: ioEl,
-    callback: animationCallback,
-    options: { threshold: 0.7 },
-  });
+  await addLayerAnimation(targetAsset);
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);
