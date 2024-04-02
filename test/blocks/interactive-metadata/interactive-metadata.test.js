@@ -21,7 +21,6 @@ describe('interactive metadata', () => {
     await init(genfillIm);
   });
   it('interactive metadata should exist', () => {
-    console.log(im);
     expect(im).to.exist;
   });
   it('should make the previous block interactive-enabled', () => {
@@ -47,7 +46,7 @@ describe('interactive metadata', () => {
     await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(ib.querySelector('.interactive-holder.step-crop')).to.exist;
   });
-  it('should render next crop layer', async () => {
+  it('should render next start-over layer', async () => {
     im.dispatchEvent(new CustomEvent('cc:interactive-switch'));
     await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(ib.querySelector('.interactive-holder.step-start-over')).to.exist;
