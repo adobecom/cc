@@ -276,8 +276,9 @@ export default async function init(el) {
   await renderLayer(stepInfo);
   const miloLibs = getLibs('/libs');
   const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+  const ioEl = targetAsset.querySelector('.gray-button');
   createIntersectionObserver({
-    el: targetAsset,
+    el: ioEl,
     callback: animationCallback,
     options: { threshold: 0.7 },
   });
