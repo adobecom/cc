@@ -83,8 +83,13 @@ function createSlider(sliderType, details, menu, sliderTray) {
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
   const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1' });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
-  const input = createTag('input', { type: 'range', min, max, class: `options ${sliderType.toLowerCase()}-input`,
-  value: `${sliderType === 'hue' ? '0' : '180'}`});
+  const input = createTag('input', {
+    type: 'range',
+    min,
+    max,
+    class: `options ${sliderType.toLowerCase()}-input`,
+    value: `${sliderType === 'hue' ? '0' : '180'}`
+  });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
   menu.append(sliderLabel, sliderContainer);
@@ -92,18 +97,18 @@ function createSlider(sliderType, details, menu, sliderTray) {
   outerCircle.addEventListener('click', (e) => {
     e.preventDefault();
   });
-  document.addEventListener('keydown', (event) => {
+  document.addEventListener('keydown', () => {
     tabbing = true;
-      input.addEventListener('focus', () => {
-        if (tabbing) {
-          outerCircle.classList.add('focusOutercircle');
-        }
-      });
-      input.addEventListener('blur', () => {
-        outerCircle.classList.remove('focusOutercircle');
-      });
+    input.addEventListener('focus', () => {
+      if (tabbing) {
+        outerCircle.classList.add('focusOutercircle');
+      }
+    });
+    input.addEventListener('blur', () => {
+      outerCircle.classList.remove('focusOutercircle');
+    });
   });
-  document.addEventListener('keyup', (event) => {
+  document.addEventListener('keyup', () => {
     tabbing = false;
   });
 }
@@ -120,18 +125,18 @@ function createUploadButton(details, picture, sliderTray, menu) {
   clone.classList.add('uploadButtonMobile');
   menu.append(clone);
   sliderTray.append(labelBtn);
-  document.addEventListener('keydown', (event) => {
+  document.addEventListener('keydown', () => {
     tabbing = true;
-      btn.addEventListener('focus', () => {
-        if (tabbing) {
-          labelBtn.classList.add('focusUploadButton');
-        }
-      });
-      btn.addEventListener('blur', () => {
-        labelBtn.classList.remove('focusUploadButton');
-      });
+    btn.addEventListener('focus', () => {
+      if (tabbing) {
+        labelBtn.classList.add('focusUploadButton');
+      }
+    });
+    btn.addEventListener('blur', () => {
+      labelBtn.classList.remove('focusUploadButton');
+    });
   });
-  document.addEventListener('keyup', (event) => {
+  document.addEventListener('keyup', () => {
     tabbing = false;
   });
 }
