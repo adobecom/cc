@@ -133,6 +133,7 @@
 .interactive-enabled .layer .gray-button {
   position: absolute;
   box-sizing: border-box;
+  outline: none;
   border-radius: 8px;
   border: 3px solid transparent;
   cursor: pointer;
@@ -226,12 +227,14 @@
   border-radius: 0;
 }
 
+.interactive-enabled .layer .gray-button:focus-visible,
 .interactive-enabled .layer .gray-button:hover { 
   border: 3px solid var(--prompt-highlight-color);
   background: var(--prompt-btn-fill);
   animation-play-state: paused;
 } 
 
+.interactive-enabled.light .layer .gray-button:focus-visible,
 .interactive-enabled.light .layer .gray-button:hover { 
   background: var(--prompt-btn-fill-light);
 } 

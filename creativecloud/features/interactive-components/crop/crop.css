@@ -42,10 +42,12 @@
     height: auto;
   }
 
+  .interactive-enabled .step-crop .layer .gray-button.crop-button:focus-visible,
   .interactive-enabled .step-crop .layer .gray-button.crop-button:hover {
     border: 3px solid transparent;
   }
 
+  .interactive-enabled .step-crop .layer .gray-button.crop-button:focus-visible .crop-icon-container,
   .interactive-enabled .step-crop .layer .gray-button.crop-button:hover .crop-icon-container {
     border-color: var(--prompt-highlight-color);
   }

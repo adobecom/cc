@@ -28,11 +28,10 @@ function selectorTrayWithImgs(layer, data, createTag) {
     a.append(analyticsHolder);
     trayItems.append(a);
     pathIdx += 1;
-    a.addEventListener('mouseover', (e) => {
-      e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
-    });
-    a.addEventListener('touchstart', (e) => {
-      e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
+    ['mouseover', 'touchstart', 'focus'].forEach((event) => {
+      a.addEventListener(event, (e) => {
+        e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
+      });
     });
     a.addEventListener('click', async (e) => {
       e.preventDefault();
