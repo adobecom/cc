@@ -215,6 +215,7 @@
   align-items: center;
   max-height: 32px;
   align-items: center;
+  font-size: 21px;
 }
 
 .interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile {
@@ -284,6 +285,7 @@
    border: 3px solid transparent;
    box-sizing: border-box;
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+   font-size: 21px;
  }
 
  .interactive-enabled.light .step-slider-tray .sliderTray .uploadButton {
