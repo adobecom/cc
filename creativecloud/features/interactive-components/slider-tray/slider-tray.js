@@ -134,14 +134,6 @@ function createUploadButton(details, picture, sliderTray, menu) {
   document.addEventListener('keyup', (event) => {
     tabbing = false;
   });
-
-
-  // btn.addEventListener('focus', () => {
-  //   labelBtn.classList.add('focusUploadButton');
-  // });
-  // btn.addEventListener('blur', () => {
-  //   labelBtn.classList.remove('focusUploadButton');
-  // });
 }
 
 async function createUploadPSButton(details, picture, layer) {
