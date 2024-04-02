@@ -19,6 +19,23 @@ function getPrevStepIndex(stepInfo) {
     : stepInfo.stepList.length - 1;
 }
 
+function animationCallback(btn) {
+  btn.classList.add('animated');
+  btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
+}
+
+async function addLayerAnimation(asset) {
+  const ioEl = asset.querySelector('.gray-button');
+  if (!ioEl) return;
+  const miloLibs = getLibs('/libs');
+  const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+  createIntersectionObserver({
+    el: ioEl,
+    callback: animationCallback,
+    options: { threshold: 0.7 },
+  });
+}
+
 async function loadJSandCSS(stepName) {
   const miloLibs = getLibs('/libs');
   const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
@@ -132,7 +149,10 @@ async function implementWorkflow(stepInfo) {
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const layer = await stepInfo.stepInit(stepInfo);
   if (currLayer) currLayer.replaceWith(layer);
-  else stepInfo.target.append(layer);
+  else {
+    stepInfo.target.append(layer);
+    if (stepInfo.stepIndex === 0) await addLayerAnimation(stepInfo.target);
+  }
   await handleLayerDisplay(stepInfo);
   await handleNextStep(stepInfo);
 }
@@ -194,24 +214,6 @@ async function getTargetArea(el) {
   return iArea;
 }
 
-function animationCallback(btn) {
-  if (!btn) return;
-  btn.classList.add('animated');
-  btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
-}
-
-async function addLayerAnimation(asset) {
-  const ioEl = asset.querySelector('.gray-button');
-  if (!ioEl) return;
-  const miloLibs = getLibs('/libs');
-  const { createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
-  createIntersectionObserver({
-    el: ioEl,
-    callback: animationCallback,
-    options: { threshold: 0.7 },
-  });
-}
-
 async function renderLayer(stepInfo) {
   stepInfo.openForExecution = new Promise((resolve, reject) => {
     stepInfo.stepIndex = getNextStepIndex(stepInfo);
@@ -270,7 +272,6 @@ export default async function init(el) {
   };
   await handleNextStep(stepInfo);
   await renderLayer(stepInfo);
-  await addLayerAnimation(targetAsset);
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);
