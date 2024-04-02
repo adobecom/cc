@@ -1,6 +1,6 @@
 import { getLibs } from '../../../scripts/utils.js';
 
-function selectorTrayWithImgs(data, createTag) {
+function selectorTrayWithImgs(layer, data, createTag) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'body-xl tray-items' });
   const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
@@ -28,17 +28,16 @@ function selectorTrayWithImgs(data, createTag) {
     a.append(analyticsHolder);
     trayItems.append(a);
     pathIdx += 1;
-
     a.addEventListener('mouseover', (e) => {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });
-
     a.addEventListener('touchstart', (e) => {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });
-
     a.addEventListener('click', async (e) => {
       e.preventDefault();
+      if (layer.classList.contains('disable-click')) return;
+      layer.classList.add('disable-click');
       const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       await data.openForExecution;
       data.displayPath = parseInt(curra.dataset.dispPth, 10);
@@ -64,7 +63,7 @@ export default async function stepInit(data) {
   const trayConfig = config.querySelectorAll('ul > li');
   const isGenerateTray = [...trayConfig].filter((li) => (li.querySelector('img[src*="media_"]').length >= 2));
   let selectorTray = null;
-  if (isGenerateTray) selectorTray = selectorTrayWithImgs(data, createTag);
+  if (isGenerateTray) selectorTray = selectorTrayWithImgs(layer, data, createTag);
   if (title) selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
   return layer;

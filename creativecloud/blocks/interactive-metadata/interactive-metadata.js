@@ -204,31 +204,19 @@ function animationCallback(ia) {
 }
 
 async function renderLayer(stepInfo) {
-  let pResolve = null;
-  let pReject = null;
   stepInfo.openForExecution = new Promise((resolve, reject) => {
-    pResolve = resolve;
-    pReject = reject;
-  });
-  try {
     stepInfo.stepIndex = getNextStepIndex(stepInfo);
     if (stepInfo.stepIndex === 0) stepInfo.displayPath = 0;
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
-    await implementWorkflow(stepInfo);
-    pResolve();
-  } catch (err) {
-    window.lana.log(err);
-    pReject();
-  }
+    implementWorkflow(stepInfo)
+      .then(() => resolve())
+      .catch(() => reject());
+  });
 }
 
 function getWorkFlowInformation(el) {
   let wfName = '';
   const intWorkFlowConfig = {
-    'workflow-1': ['generate', 'selector-tray', 'crop', 'start-over'],
-    'workflow-2': ['crop', 'crop', 'start-over'],
-    'workflow-3': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
-    'workflow-4': ['slider-tray'],
     'workflow-generate-crop': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-hue-sat': ['slider-tray'],
@@ -267,7 +255,7 @@ export default async function init(el) {
     nextStepEvent: 'cc:interactive-switch',
     target: targetAsset,
     displayPath: 0,
-    openForExecution: true,
+    openForExecution: Promise.resolve(true),
     handleImageTransition,
     getImgSrc,
   };

@@ -22,6 +22,8 @@ export default async function stepInit(data) {
   layer.appendChild(genfillDiv);
   generateBtn.addEventListener('click', async (e) => {
     e.preventDefault();
+    if (layer.classList.contains('disable-click')) return;
+    layer.classList.add('disable-click');
     await data.openForExecution;
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
   });
