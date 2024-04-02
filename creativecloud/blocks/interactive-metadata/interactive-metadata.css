@@ -155,6 +155,16 @@
   background: var(--prompt-btn-fill-light);
 }
 
+.interactive-enabled .interactive-holder.dark .layer .gray-button {
+  color: var(--prompt-btn-text);
+  background: var(--prompt-btn-fill);
+}
+
+.interactive-enabled .interactive-holder.light .layer .gray-button {
+  color: var(--prompt-text-color-light);
+  background: var(--prompt-btn-fill-light);
+}
+
 .interactive-enabled .layer .gray-button.animated {
   animation: outline-fill 2700ms 500ms forwards 7;
 }
@@ -236,6 +246,16 @@
 
 .interactive-enabled.light .layer .gray-button:focus-visible,
 .interactive-enabled.light .layer .gray-button:hover { 
+  background: var(--prompt-btn-fill-light);
+} 
+
+.interactive-enabled .interactive-holder.dark .layer .gray-button:focus-visible,
+.interactive-enabled .interactive-holder.dark .layer .gray-button:hover { 
+  background: var(--prompt-btn-fill);
+} 
+
+.interactive-enabled .interactive-holder.light .layer .gray-button:focus-visible,
+.interactive-enabled .interactive-holder.light .layer .gray-button:hover { 
   background: var(--prompt-btn-fill-light);
 } 
 

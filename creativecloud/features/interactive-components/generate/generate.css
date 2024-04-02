@@ -9,7 +9,6 @@
   width: 100%;
 }
 
-
 .interactive-enabled .step-generate .generate-text-container {
   display: flex;
   align-items: center;
@@ -45,7 +44,17 @@
   text-overflow: ellipsis;
 }
 
-.interactive-enabled.light .step-generate .generate-prompt-button .generate-text {
+.interactive-enabled.light .generate-prompt-button .generate-text {
+  background-color: var(--prompt-btn-fill-light);
+  color: var(--prompt-text-color-light);
+}
+
+.interactive-enabled .interactive-holder.dark .layer .generate-prompt-button .generate-text {
+  background-color: var(--prompt-input-fill);
+  color: var(--prompt-text-color);
+}
+
+.interactive-enabled .interactive-holder.light .layer .generate-prompt-button .generate-text {
   background-color: var(--prompt-btn-fill-light);
   color: var(--prompt-text-color-light);
 }

@@ -213,6 +213,8 @@ async function getTargetArea(el) {
     enticement.append(entTxt, enticementArrow);
     entP.replaceWith(enticement);
   }
+  if (el.classList.contains('light')) iArea.classList.add('light');
+  if (el.classList.contains('dark')) iArea.classList.add('dark');
   return iArea;
 }
 

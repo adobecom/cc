@@ -19,6 +19,16 @@
   color: var(--color-black);
 }
 
+.interactive-enabled .interactive-holder.dark.step-selector-tray .selector-tray {
+  background: var(--prompt-input-fill);
+  color: var(--color-white);
+}
+
+.interactive-enabled .interactive-holder.light.step-selector-tray .selector-tray {
+  background: var(--prompt-btn-fill-light);
+  color: var(--color-black);
+}
+
 .interactive-enabled .step-selector-tray .selector-tray .tray-items {
   display: flex;
   flex-direction: row;
