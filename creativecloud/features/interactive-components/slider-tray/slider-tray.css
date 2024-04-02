@@ -173,9 +173,14 @@
   inline-size: 40px;
   block-size: 40px;
 }
-
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton:hover {
+  
+.interactive-enabled .step-slider-tray .sliderTray .uploadButton:hover,
+.interactive-enabled .step-slider-tray .sliderTray .uploadButton.focusUploadButton {
   border: 3px solid #1273E6;
+}
+
+.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle.focusOutercircle {
+  border: 4px solid #3892f3;
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton > input {
