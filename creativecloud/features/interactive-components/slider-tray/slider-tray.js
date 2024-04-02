@@ -77,12 +77,14 @@ function handleIntersection(targets, menu) {
 }
 
 function createSlider(sliderType, details, menu, sliderTray) {
+  let tabbing = false;
   const [label, min, max] = details.split('|').map((item) => item.trim());
   const sliderLabel = createTag('label', { for: `${sliderType}` }, label);
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
-  const outerCircle = createTag('a', { class: 'outerCircle', href: '#' });
+  const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1' });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
-  const input = createTag('input', { type: 'range', min, max, class: `options ${sliderType.toLowerCase()}-input` });
+  const input = createTag('input', { type: 'range', min, max, class: `options ${sliderType.toLowerCase()}-input`,
+  value: `${sliderType === 'hue' ? '0' : '180'}`});
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
   menu.append(sliderLabel, sliderContainer);
@@ -90,9 +92,24 @@ function createSlider(sliderType, details, menu, sliderTray) {
   outerCircle.addEventListener('click', (e) => {
     e.preventDefault();
   });
+  document.addEventListener('keydown', (event) => {
+    tabbing = true;
+      input.addEventListener('focus', () => {
+        if (tabbing) {
+          outerCircle.classList.add('focusOutercircle');
+        }
+      });
+      input.addEventListener('blur', () => {
+        outerCircle.classList.remove('focusOutercircle');
+      });
+  });
+  document.addEventListener('keyup', (event) => {
+    tabbing = false;
+  });
 }
 
 function createUploadButton(details, picture, sliderTray, menu) {
+  let tabbing = false;
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
   const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
   const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
@@ -103,6 +120,28 @@ function createUploadButton(details, picture, sliderTray, menu) {
   clone.classList.add('uploadButtonMobile');
   menu.append(clone);
   sliderTray.append(labelBtn);
+  document.addEventListener('keydown', (event) => {
+    tabbing = true;
+      btn.addEventListener('focus', () => {
+        if (tabbing) {
+          labelBtn.classList.add('focusUploadButton');
+        }
+      });
+      btn.addEventListener('blur', () => {
+        labelBtn.classList.remove('focusUploadButton');
+      });
+  });
+  document.addEventListener('keyup', (event) => {
+    tabbing = false;
+  });
+
+
+  // btn.addEventListener('focus', () => {
+  //   labelBtn.classList.add('focusUploadButton');
+  // });
+  // btn.addEventListener('blur', () => {
+  //   labelBtn.classList.remove('focusUploadButton');
+  // });
 }
 
 async function createUploadPSButton(details, picture, layer) {
@@ -163,7 +202,7 @@ function uploadImage(media, layer) {
     btn.addEventListener('change', (event) => {
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
-      if (file) {
+      if (file.length > 0) {
         const sources = image.querySelectorAll('source');
         sources.forEach((source) => source.remove());
         const imageUrl = URL.createObjectURL(file);
