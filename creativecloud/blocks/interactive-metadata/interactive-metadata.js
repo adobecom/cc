@@ -132,6 +132,7 @@ async function handleNextStep(stepInfo) {
 }
 
 async function handleLayerDisplay(stepInfo) {
+  const clsLayer = stepInfo.target.querySelector('.layer-placeholder');
   const currLayer = stepInfo.target.querySelector(`.layer-${stepInfo.stepIndex}`);
   const prevStepIndex = getPrevStepIndex(stepInfo);
   const prevLayer = stepInfo.target.querySelector(`.layer-${prevStepIndex}`);
@@ -141,6 +142,7 @@ async function handleLayerDisplay(stepInfo) {
   await loadAllImgs(currLayer.querySelectorAll('img[src*="media_"]'));
   await decorateDefaultLinkAnalytics(currLayer);
   if (prevStepIndex) stepInfo.target.classList.remove(`step-${stepInfo.stepList[prevStepIndex]}`);
+  if (clsLayer) stepInfo.target.remove(clsLayer);
   stepInfo.target.classList.add(`step-${stepInfo.stepName}`);
   currLayer.classList.add('show-layer');
   if (currLayer === prevLayer) return;
@@ -215,6 +217,8 @@ async function getTargetArea(el) {
   }
   if (el.classList.contains('light')) iArea.classList.add('light');
   if (el.classList.contains('dark')) iArea.classList.add('dark');
+  const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
+  iArea.append(clsLayer);
   return iArea;
 }
 
