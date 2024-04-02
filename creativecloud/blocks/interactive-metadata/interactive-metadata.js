@@ -161,18 +161,17 @@ async function implementWorkflow(stepInfo) {
   await handleNextStep(stepInfo);
 }
 
-function checkRenderStatus(targetBlock, res) {
+function checkRenderStatus(targetBlock, res, rej, etime, rtime) {
+  if (etime > 20000) { rej(); return; }
   if (targetBlock.querySelector('.text') && targetBlock.querySelector('.image')) res();
-  else setTimeout(() => checkRenderStatus(targetBlock, res), 100);
+  else setTimeout(() => checkRenderStatus(targetBlock, res, rej, etime + rtime), rtime);
 }
 
 function intEnbReendered(targetBlock) {
   return new Promise((res, rej) => {
     try {
-      checkRenderStatus(targetBlock, res);
-    } catch (err) {
-      rej();
-    }
+      checkRenderStatus(targetBlock, res, rej, 0, 100);
+    } catch (err) { rej(); }
   });
 }
 
@@ -182,7 +181,9 @@ async function getTargetArea(el) {
   const metadataSec = el.closest('.section');
   const intEnb = metadataSec.querySelector('.marquee, .aside');
   if (!intEnb) return null;
-  await intEnbReendered(intEnb);
+  try {
+    await intEnbReendered(intEnb);
+  } catch (err) { return null; }
   intEnb.classList.add('interactive-enabled');
   const assets = intEnb.querySelectorAll('.asset picture, .image picture');
   const iArea = createTag('div', { class: 'interactive-holder show-image' });

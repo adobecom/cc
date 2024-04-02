@@ -11,7 +11,7 @@
   --prompt-text-color-light: #272928;
 }
 
-.interactive-enabled .foreground .image > p {
+.interactive-enabled .foreground .image > p:first-child {
   display: none;
   margin: 0;
 }
@@ -279,8 +279,7 @@
     display: block;
   }
 
-  .interactive-enabled.heading-top .foreground.container .image > p,
-  .interactive-enabled .foreground.container .image > p {
+  .interactive-enabled .foreground.container .image > p:first-child {
     display: none;
   }
 
