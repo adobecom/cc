@@ -21,7 +21,9 @@ function getPrevStepIndex(stepInfo) {
 
 function animationCallback(btn) {
   btn.classList.add('animated');
-  btn.addEventListener('mouseover', () => { btn.classList.remove('animated'); });
+  ['mouseover', 'focus'].forEach((event) => {
+    btn.addEventListener(event, () => { btn.classList.remove('animated'); });
+  });
 }
 
 async function addLayerAnimation(asset) {
