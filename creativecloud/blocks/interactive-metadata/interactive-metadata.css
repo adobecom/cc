@@ -148,6 +148,7 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
+  white-space: nowrap;
 }
 
 .interactive-enabled.light .layer .gray-button {
