@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, createTag, loadStyle } from '../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
 function getImgSrc(pic) {
@@ -39,8 +39,6 @@ async function addLayerAnimation(asset) {
 }
 
 async function loadJSandCSS(stepName) {
-  const miloLibs = getLibs('/libs');
-  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   const stepJS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.js`;
   const stepCSS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.css`;
   loadStyle(stepCSS);
@@ -69,8 +67,6 @@ async function loadAllImgs(imgs) {
 }
 
 async function createDisplayImg(target, replaceEl, src, alt) {
-  const miloLibs = getLibs('/libs');
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const img = createTag('img', { src, alt });
   const pic = createTag('picture', {}, img);
   await loadImg(img);
@@ -80,8 +76,6 @@ async function createDisplayImg(target, replaceEl, src, alt) {
 }
 
 async function createDisplayVideo(target, replaceEl, src) {
-  const miloLibs = getLibs('/libs');
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const { pathname, hash } = new URL(src);
   const attrs = { playsinline: '', autoplay: '', muted: '' };
   const isAutoplay = hash?.includes('autoplay');
@@ -176,8 +170,6 @@ function intEnbReendered(targetBlock) {
 }
 
 async function getTargetArea(el) {
-  const miloLibs = getLibs('/libs');
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   const metadataSec = el.closest('.section');
   const intEnb = metadataSec.querySelector('.marquee, .aside');
   if (!intEnb) return null;

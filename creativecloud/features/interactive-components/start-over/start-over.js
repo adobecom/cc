@@ -1,4 +1,4 @@
-import { getLibs } from '../../../scripts/utils.js';
+import { createTag } from '../../../scripts/utils.js';
 
 function btnLoadDelay(layer, button, delay, once = true) {
   const io = new IntersectionObserver((entries, observer) => {
@@ -13,8 +13,6 @@ function btnLoadDelay(layer, button, delay, once = true) {
 }
 
 export default async function stepInit(data) {
-  const miloLibs = getLibs('/libs');
-  const { createTag } = await import(`${miloLibs}/utils/utils.js`);
   data.target.classList.add('step-start-over');
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
