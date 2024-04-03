@@ -1,32 +1,48 @@
 import { createTag } from '../../../scripts/utils.js';
 import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-metadata/interactive-metadata.js';
 
+function getTrayConfig(data) {
+  const dpth = data.displayPath;
+  const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
+  const configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[0];
+  return configUl;
+}
+
+function getStartingPathIdx(data) {
+  let pathIdx = 0;
+  const dpth = data.displayPath;
+  const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
+  if (allUls.length < dpth) return pathIdx;
+  for (let i = 0; i < dpth; i += 1) pathIdx += allUls[i].querySelectorAll('li').length;
+  return pathIdx;
+}
+
+function createSelectorThumbnail(pic, pathId, displayImg) {
+  const src = getImgSrc(pic);
+  const outline = createTag('div', { class: 'tray-thumbnail-outline' });
+  const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
+  a.style.backgroundImage = `url(${src})`;
+  [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
+  a.dataset.dispPth = pathId;
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, pic.querySelector('img').alt);
+  a.append(analyticsHolder);
+  if (pathId === 0) a.classList.add('thumbnail-selected');
+  return a;
+}
+
 function selectorTrayWithImgs(layer, data) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'tray-items' });
-  const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
-  const dpth = data.displayPath;
-  let pathIdx = 0;
-  const configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[0];
-  if (dpth >= 0 && allUls.length > dpth) {
-    for (let i = 0; i < dpth; i += 1) pathIdx += allUls[i].querySelectorAll('li').length;
-  }
+  const configUl = getTrayConfig(data);
   const pics = configUl.querySelectorAll('picture');
+  let pathIdx = getStartingPathIdx(data);
   let displayImg = null;
   [...pics].forEach((pic, idx) => {
     if (idx % 2 === 0) {
       displayImg = [getImgSrc(pic), pic.querySelector('img').alt];
       return;
     }
-    const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, pic.querySelector('img').alt);
-    const src = getImgSrc(pic);
-    const outline = createTag('div', { class: 'tray-thumbnail-outline' });
-    const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
-    a.style.backgroundImage = `url(${src})`;
-    if (pathIdx === 0) a.classList.add('thumbnail-selected');
-    [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
-    a.dataset.dispPth = pathIdx;
-    a.append(analyticsHolder);
+    const a = createSelectorThumbnail(pic, pathIdx, displayImg);
     trayItems.append(a);
     pathIdx += 1;
     ['mouseover', 'touchstart', 'focus'].forEach((event) => {
