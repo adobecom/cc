@@ -1,7 +1,7 @@
 import { getLibs, createTag, loadStyle } from '../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
-function getImgSrc(pic) {
+export function getImgSrc(pic) {
   const viewport = defineDeviceByScreenSize() === 'MOBILE' ? 'mobile' : 'desktop';
   let source = '';
   if (viewport === 'mobile') source = pic.querySelector('source[type="image/webp"]:not([media])');
@@ -94,7 +94,7 @@ async function createDisplayVideo(target, replaceEl, src) {
   target.classList.remove('show-image');
 }
 
-async function handleImageTransition(stepInfo, transitionCfg = {}) {
+export async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
   const trgtPic = stepInfo.target.querySelector(':scope > picture');
   const trgtVideo = stepInfo.target.querySelector(':scope > video');
@@ -277,8 +277,6 @@ export default async function init(el) {
     target: targetAsset,
     displayPath: 0,
     openForExecution: Promise.resolve(true),
-    handleImageTransition,
-    getImgSrc,
   };
   await handleNextStep(stepInfo);
   await renderLayer(stepInfo);

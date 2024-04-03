@@ -1,4 +1,5 @@
 import { createTag } from '../../../scripts/utils.js';
+import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-metadata/interactive-metadata.js';
 
 function selectorTrayWithImgs(layer, data) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
@@ -14,11 +15,11 @@ function selectorTrayWithImgs(layer, data) {
   let displayImg = null;
   [...pics].forEach((pic, idx) => {
     if (idx % 2 === 0) {
-      displayImg = [data.getImgSrc(pic), pic.querySelector('img').alt];
+      displayImg = [getImgSrc(pic), pic.querySelector('img').alt];
       return;
     }
     const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, pic.querySelector('img').alt);
-    const src = data.getImgSrc(pic);
+    const src = getImgSrc(pic);
     const outline = createTag('div', { class: 'tray-thumbnail-outline' });
     const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
     a.style.backgroundImage = `url(${src})`;
@@ -41,7 +42,7 @@ function selectorTrayWithImgs(layer, data) {
       await data.openForExecution;
       data.displayPath = parseInt(curra.dataset.dispPth, 10);
       const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
-      await data.handleImageTransition(data, trObj);
+      await handleImageTransition(data, trObj);
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
       e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
     });
