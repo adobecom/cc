@@ -2,7 +2,7 @@ import { getLibs } from '../../../scripts/utils.js';
 
 function selectorTrayWithImgs(layer, data, createTag) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
-  const trayItems = createTag('div', { class: 'body-xl tray-items' });
+  const trayItems = createTag('div', { class: 'tray-items' });
   const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
   const dpth = data.displayPath;
   let pathIdx = 0;
@@ -58,7 +58,7 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const title = config.querySelector('p:first-child');
   let trayTitle = null;
-  if (title) trayTitle = createTag('div', { class: 'body-xl tray-title' }, title.innerText.trim());
+  if (title) trayTitle = createTag('div', { class: 'tray-title' }, title.innerText.trim());
   const trayConfig = config.querySelectorAll('ul > li');
   const isGenerateTray = [...trayConfig].filter((li) => (li.querySelector('img[src*="media_"]').length >= 2));
   let selectorTray = null;

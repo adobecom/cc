@@ -87,15 +87,14 @@
   .interactive-enabled.generate-right .step-generate .generate-prompt-button,
   .interactive-enabled .step-generate .generate-right .generate-prompt-button {
     left: auto;
-    right: -20%;
-    bottom: calc(50% - 40px);
-    transform: translateY(50%);
+    right: -21.5%;
+    bottom: calc(50% - 80px);
   }
 
   [dir="rtl"] .interactive-enabled.generate-right .step-generate .generate-prompt-button, 
   [dir="rtl"] .interactive-enabled .step-generate .generate-right .generate-prompt-button {
     left: auto;
-    right: -20%;
+    right: -21.5%;
   }
 
   .interactive-enabled .step-generate .generate-text-container {
