@@ -115,7 +115,7 @@ function createUploadButton(details, picture, sliderTray, menu) {
   applyAccessibility(btn, labelBtn);
 }
 
-function applyAccessibility(inputEle,target) {
+function applyAccessibility(inputEle, target) {
   let tabbing = false;
   document.addEventListener('keydown', () => {
     tabbing = true;
