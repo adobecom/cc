@@ -180,7 +180,6 @@ function sliderEvent(media, layer) {
 function uploadImage(media, layer) {
   layer.querySelectorAll('.uploadButton').forEach((btn) => {
     btn.addEventListener('change', (event) => {
-      console.log('event', event);
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
       if (file.length > 0) {
