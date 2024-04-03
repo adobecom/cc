@@ -5,7 +5,7 @@
   justify-content: space-between;
   font-weight: bold;
   margin: auto;
-  padding: 0 10px;
+  padding: 0 5px;
   width: 100%;
 }
 
@@ -81,6 +81,7 @@
     bottom: 64px;
     width: auto;
     max-width: unset;
+    padding: 0;
   }
 
   .interactive-enabled.generate-right .step-generate .generate-prompt-button,
@@ -89,7 +90,6 @@
     right: -20%;
     bottom: calc(50% - 40px);
     transform: translateY(50%);
-    padding: 0 6px;
   }
 
   [dir="rtl"] .interactive-enabled.generate-right .step-generate .generate-prompt-button, 
@@ -122,7 +122,7 @@
     gap: 16px;
     padding: 0 21px;
     width: auto;
-    min-width: auto
+    min-width: auto;
   }
 }
   @media screen and (min-width: 1200px) {
