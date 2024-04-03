@@ -11,7 +11,6 @@ describe('hue-sat-marquee', () => {
   let ib = null;
 
   before(async () => {
-    console.log('marquee', document.querySelector('.interactive-metadata'));
     await init(document.querySelector('.interactive-metadata'));
     ib = document.querySelector('.marquee');
   });
