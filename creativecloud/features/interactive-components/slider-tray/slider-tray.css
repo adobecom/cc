@@ -72,7 +72,7 @@
 
 [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle,
 [dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
-  transform: translate(50%, -50%);
+  transform: translate(38%, -50%);
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
