@@ -91,7 +91,7 @@ const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
       let shallowCategories = true;
       if (categoryValues.length > 0) {
         const items = categoryValues.map(({ value, icon }) => ({ ...mapCategories[value], icon }));
-        const parentValues = new Set(items.map(({ value }) => value?.id.split('/')[1]));
+        const parentValues = new Set(items.map(({ id }) => id?.split('/')[1]));
         // all parent will always be here without children,
         // so shallow is considered below 2 parents
         shallowCategories = parentValues.size <= 2;
