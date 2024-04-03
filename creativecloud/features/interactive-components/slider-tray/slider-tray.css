@@ -191,6 +191,8 @@
   opacity: 0;
   position: absolute;
   z-index: 2;
+  top: 0;
+  bottom: 0;
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton {
@@ -271,7 +273,6 @@
  }
 
  .interactive-enabled .step-slider-tray .sliderTray .uploadButton {
-   cursor: pointer;
    top: 70%;
    display: flex;
    gap: 16px;
@@ -289,6 +290,7 @@
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
    font-size: 21px;
    height: 64px;
+   position: relative;
  }
 
  .interactive-enabled.light .step-slider-tray .sliderTray .uploadButton {
