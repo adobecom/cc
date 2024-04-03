@@ -23,6 +23,10 @@ const getCategories = (items, isMultilevel, mapCategories) => {
       // first token is type, second is parent category
       const isParent = item.id.split('/').length <= 2;
       const itemTag = createTag('sp-sidenav-item', { label: item.name, value });
+      if (item.icon) {
+        item.icon.setAttribute('slot', 'icon');
+        itemTag.append(item.icon);
+      }
       if (isParent) {
         mapParents[value] = itemTag;
         tag.append(itemTag);
@@ -72,19 +76,22 @@ const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
         if (item.id?.startsWith(CATEGORY_ID_PREFIX)) {
           const value = getIdLeaf(item.id);
           mapCategories[value] = item;
-          categoryValues.push(value);
+          categoryValues.push({ value });
         } else if (item.id?.startsWith(TYPE_ID_PREFIX)) {
           types.push(item);
         }
       });
       if (explicitCategoriesElt) {
         categoryValues = Array.from(explicitCategoriesElt.querySelectorAll('li'))
-          .map((item) => item.textContent.trim().toLowerCase());
+          .map((item) => ({
+            value: item.textContent.trim().toLowerCase(),
+            icon: item.querySelector('picture'),
+          }));
       }
       let shallowCategories = true;
       if (categoryValues.length > 0) {
-        const items = categoryValues.map((value) => mapCategories[value]);
-        const parentValues = new Set(items.map((value) => value?.id.split('/')[1]));
+        const items = categoryValues.map(({ value, icon }) => ({ ...mapCategories[value], icon }));
+        const parentValues = new Set(items.map(({ value }) => value?.id.split('/')[1]));
         // all parent will always be here without children,
         // so shallow is considered below 2 parents
         shallowCategories = parentValues.size <= 2;
