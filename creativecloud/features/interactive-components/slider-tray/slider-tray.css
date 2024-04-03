@@ -216,6 +216,8 @@
   max-height: 32px;
   align-items: center;
   font-size: 21px;
+  border: 2px solid;
+  text-decoration: none;
 }
 
 .interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile {
