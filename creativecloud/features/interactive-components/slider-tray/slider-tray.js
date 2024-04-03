@@ -179,21 +179,40 @@ function sliderEvent(media, layer) {
 
 function uploadImage(media, layer) {
   layer.querySelectorAll('.uploadButton').forEach((btn) => {
+    const analyticsBtn = btn.querySelector('.interactive-link-analytics-text');
+    btn.addEventListener('cancel', () => {
+      cancelAnalytics(btn);
+    });
     btn.addEventListener('change', (event) => {
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
-      if (file.length > 0) {
+      if (file) {
         const sources = image.querySelectorAll('source');
         sources.forEach((source) => source.remove());
         const imageUrl = URL.createObjectURL(file);
         image.src = imageUrl;
+        analyticsBtn.innerHTML = 'Upload Button';
         const continueBtn = layer.querySelector('.continueButton');
         if (continueBtn) {
           continueBtn.classList.remove('hide');
         }
+      } else {
+        cancelAnalytics(btn);
       }
     });
   });
+}
+
+function cancelAnalytics(btn) {
+  const x = (e) => {
+    e.preventDefault();
+  };
+  btn.addEventListener('click', x);
+  const cancelEvent = new Event('click', { detail: { message: 'Cancel button clicked in file dialog' } });
+  btn.setAttribute('daa-ll', 'Cancel Upload');
+  btn.dispatchEvent(cancelEvent);
+  btn.removeEventListener('click', x);
+  btn.setAttribute('daa-ll', 'Upload Image');
 }
 
 function animateSlider(menu, targets) {
