@@ -61,11 +61,14 @@ runTests(async () => {
       const sidenavEl = document.querySelector('.plans');
       const newRoot = await init(sidenavEl);
       expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
-      expect(newRoot.title).to.equal('REFINE YOUR RESULTS');
+      expect(newRoot.title).to.equal('CATEGORIES');
       const search = newRoot.querySelector('sp-search');
       expect(search).to.be.null;
       const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
       expect(nestedItems.length).to.equal(0);
+      const iconItem = newRoot.querySelector('sp-sidenav-item[value=all] > picture');
+      expect(iconItem).to.not.be.null;
+      expect(iconItem.getAttribute('slot')).to.equal('icon');
     });
   });
 });

@@ -17,7 +17,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
   const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
   merchTag.append(tag);
   items.forEach((item) => {
-    if (item) {
+    if (item?.id) {
       let parent = tag;
       const value = getIdLeaf(item.id);
       // first token is type, second is parent category
