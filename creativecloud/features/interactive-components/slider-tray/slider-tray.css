@@ -15,8 +15,8 @@
   border-radius: 0 0 8px 8px;
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 16px 24px;
-  gap: 16px;
+  padding: 6px 16px 16px;
+  gap: 12px;
   display: flex;
   flex-direction: column;
   background: var(--prompt-input-fill);
@@ -288,6 +288,7 @@
    box-sizing: border-box;
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
    font-size: 21px;
+   height: 64px;
  }
 
  .interactive-enabled.light .step-slider-tray .sliderTray .uploadButton {
