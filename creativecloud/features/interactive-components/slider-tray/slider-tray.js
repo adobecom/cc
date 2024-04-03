@@ -8,22 +8,24 @@ const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  createSelectorTray(data, layer);
+  await createSelectorTray(data, layer);
   sliderEvent(data.target, layer);
   uploadImage(data.target, layer);
   return layer;
 }
 
-function createSelectorTray(data, layer) {
+async function createSelectorTray(data, layer) {
   const sliderTray = createTag('div', { class: 'sliderTray' });
   const menu = createTag('div', { class: 'menu' });
   const config = data.stepConfigs[data.stepIndex];
   const options = config.querySelectorAll(':scope > div .icon');
-
+  const promiseLST = [];
   options.forEach((option) => {
-    handleInput(option, data.target, sliderTray, menu, layer);
+    promiseLST.push(handleInput(option, data.target, sliderTray, menu, layer));
   });
+  await Promise.all(promiseLST);
   layer.append(sliderTray);
+  observeSliderTray(sliderTray, data.target, menu);
 }
 
 async function handleInput(option, targets, sliderTray, menu, layer) {
@@ -50,32 +52,21 @@ async function handleInput(option, targets, sliderTray, menu, layer) {
       window.lana.log(`Unknown input type: ${inputType}`);
       break;
   }
-  observeSliderTray(sliderTray, targets, menu);
 }
 
-function observeSliderTray(sliderTray, targets, menu) {
-  const options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 1.0,
-  };
-  const io = new IntersectionObserver(handleIntersection(targets, menu), options);
-  io.observe(sliderTray);
-}
-
-function handleIntersection(targets, menu) {
-  return (entries, observer) => {
+function observeSliderTray(sliderTray, targets) {
+  const options = { threshold: 0.7 };
+  const io = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting && entry.intersectionRatio === 1) {
-        const outerCircle = menu.querySelector('.options').nextSibling;
-        outerCircle.classList.add('showOuterBorder');
-        setTimeout(() => {
-          animateSlider(menu, targets);
-        }, 800);
-        observer.unobserve(entry.target);
-      }
+      if (!entry.isIntersecting) return;
+      const menu = sliderTray.querySelector('.menu');
+      const outerCircle = menu.querySelector('.outerCircle');
+      outerCircle.classList.add('showOuterBorder');
+      setTimeout(() => { animateSlider(menu, targets); }, 800);
+      observer.unobserve(entry.target);
     });
-  };
+  }, options);
+  io.observe(sliderTray);
 }
 
 function createSlider(sliderType, details, menu, sliderTray) {
@@ -189,6 +180,7 @@ function sliderEvent(media, layer) {
 function uploadImage(media, layer) {
   layer.querySelectorAll('.uploadButton').forEach((btn) => {
     btn.addEventListener('change', (event) => {
+      console.log('event', event);
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
       if (file.length > 0) {
