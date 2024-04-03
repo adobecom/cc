@@ -17,8 +17,11 @@ export default async function stepInit(data) {
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#' });
-  const svg = config.querySelector('img[src*=".svg"');
-  if (svg) startOverCTA.append(svg.closest('picture').cloneNode(true));
+  const svg = config.querySelector('img[src*=".svg"]')?.closest('picture');
+  if (svg) {
+    svg.insertAdjacentElement('afterend', svg.cloneNode(true));
+    startOverCTA.append(svg.closest('picture').cloneNode(true));
+  }
   const lastp = config.querySelector(':scope > div > p:last-child');
   const btnConfig = lastp.textContent.trim();
   const btnLink = lastp.querySelector('a');
