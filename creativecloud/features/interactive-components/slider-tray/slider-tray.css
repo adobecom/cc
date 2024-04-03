@@ -218,7 +218,7 @@
   max-height: 32px;
   align-items: center;
   font-size: 21px;
-  border: 2px solid;
+  border: 3px solid;
   text-decoration: none;
 }
 
@@ -235,6 +235,11 @@
 .interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile {
   background: var(--prompt-btn-fill);
   color: var(--color-white) !important;
+}
+
+.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile:hover,
+.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile.focusUploadButton {
+  border: 3px solid #1273E6;
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile.hide {
