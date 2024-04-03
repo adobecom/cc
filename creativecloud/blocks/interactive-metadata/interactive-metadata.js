@@ -169,49 +169,58 @@ function intEnbReendered(targetBlock) {
   });
 }
 
-async function getTargetArea(el) {
-  const metadataSec = el.closest('.section');
-  const intEnb = metadataSec.querySelector('.marquee, .aside');
-  if (!intEnb) return null;
-  try {
-    await intEnbReendered(intEnb);
-  } catch (err) { return null; }
-  intEnb.classList.add('interactive-enabled');
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture');
+function decorateEnticementArrow(aa) {
+  const enticementArrow = aa.querySelector(':scope > p img[src*="svg"]');
+  if (!enticementArrow) return;
+  const entP = enticementArrow.closest('p');
+  const entTxt = createTag('div', { class: 'enticement-message' }, entP.textContent);
+  const enticement = createTag('div', { class: 'enticement-container' });
+  enticementArrow.classList.add('enticement-svg');
+  enticement.append(entTxt, enticementArrow);
+  entP.replaceWith(enticement);
+}
+
+function decorateMobileHeading(intEnb) {
+  if (!intEnb.classList.contains('heading-top')) return;
+  const h = intEnb.querySelector('.text').querySelector('h1, h2, h3, h4, h5, h6');
+  if (!h) return;
+  const htxt = h.textContent;
+  const hTxtTop = createTag('div', { class: 'mobile-top-title' }, htxt);
+  intEnb.querySelector('.image').prepend(hTxtTop);
+}
+
+function createInteractiveArea(el, pic) {
   const iArea = createTag('div', { class: 'interactive-holder show-image' });
-  const pic = assets[assets.length - 1];
   const newPic = pic.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
   pic.querySelector('img').src = getImgSrc(pic);
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   const video = createTag('video');
-  const assetArea = intEnb.querySelector('.asset, .image');
-  const container = pic.closest('p');
   iArea.append(pic, video);
-  if (container) container.replaceWith(iArea);
-  else assetArea.append(iArea);
-  if (intEnb.classList.contains('heading-top')) {
-    const h = intEnb.querySelector('.text').querySelector('h1, h2, h3, h4, h5, h6');
-    if (h) {
-      const htxt = h.textContent;
-      const hTxtTop = createTag('div', { class: 'mobile-top-title' }, htxt);
-      intEnb.querySelector('.image').prepend(hTxtTop);
-    }
-  }
-  const enticementArrow = assetArea.querySelector(':scope > p img[src*="svg"]');
-  if (enticementArrow) {
-    const entP = enticementArrow.closest('p');
-    const entTxt = createTag('div', { class: 'enticement-message' }, entP.textContent);
-    const enticement = createTag('div', { class: 'enticement-container' });
-    enticementArrow.classList.add('enticement-svg');
-    enticement.append(entTxt, enticementArrow);
-    entP.replaceWith(enticement);
-  }
-  if (el.classList.contains('light')) iArea.classList.add('light');
-  if (el.classList.contains('dark')) iArea.classList.add('dark');
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
+  if (el.classList.contains('light')) iArea.classList.add('light');
+  else if (el.classList.contains('dark')) iArea.classList.add('dark');
+  return iArea;
+}
+
+async function getTargetArea(el) {
+  const metadataSec = el.closest('.section');
+  const intEnb = metadataSec.querySelector('.marquee, .aside');
+  if (!intEnb) return null;
+  try {
+    intEnb.classList.add('interactive-enabled');
+    await intEnbReendered(intEnb);
+  } catch (err) { return null; }
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture');
+  const container = assets[assets.length - 1].closest('p');
+  const iArea = createInteractiveArea(el, assets[assets.length - 1]);
+  const assetArea = intEnb.querySelector('.asset, .image');
+  if (container) container.replaceWith(iArea);
+  else assetArea.append(iArea);
+  decorateMobileHeading(intEnb);
+  decorateEnticementArrow(assetArea);
   return iArea;
 }
 
