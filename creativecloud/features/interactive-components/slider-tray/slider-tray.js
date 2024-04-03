@@ -1,10 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-use-before-define */
-import { getLibs } from '../../../scripts/utils.js';
+import { createTag } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
-
-const miloLibs = getLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
