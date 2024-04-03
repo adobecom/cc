@@ -24,8 +24,9 @@ function createSelectorThumbnail(pic, pathId, displayImg) {
   a.style.backgroundImage = `url(${src})`;
   [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
   a.dataset.dispPth = pathId;
+  const img = createTag('img', { class: 'preload-img', src });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, pic.querySelector('img').alt);
-  a.append(analyticsHolder);
+  a.append(img, analyticsHolder);
   if (pathId === 0) a.classList.add('thumbnail-selected');
   return a;
 }
