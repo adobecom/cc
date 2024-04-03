@@ -30,6 +30,26 @@ function createSelectorThumbnail(pic, pathId, displayImg) {
   return a;
 }
 
+function attachThumbnailEvents(a, data, layer) {
+  ['mouseover', 'touchstart', 'focus'].forEach((event) => {
+    a.addEventListener(event, (e) => {
+      e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
+    });
+  });
+  a.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (layer.classList.contains('disable-click')) return;
+    layer.classList.add('disable-click');
+    const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
+    await data.openForExecution;
+    data.displayPath = parseInt(curra.dataset.dispPth, 10);
+    const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
+    await handleImageTransition(data, trObj);
+    data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
+    e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
+  });
+}
+
 function selectorTrayWithImgs(layer, data) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'tray-items' });
@@ -45,23 +65,7 @@ function selectorTrayWithImgs(layer, data) {
     const a = createSelectorThumbnail(pic, pathIdx, displayImg);
     trayItems.append(a);
     pathIdx += 1;
-    ['mouseover', 'touchstart', 'focus'].forEach((event) => {
-      a.addEventListener(event, (e) => {
-        e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
-      });
-    });
-    a.addEventListener('click', async (e) => {
-      e.preventDefault();
-      if (layer.classList.contains('disable-click')) return;
-      layer.classList.add('disable-click');
-      const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
-      await data.openForExecution;
-      data.displayPath = parseInt(curra.dataset.dispPth, 10);
-      const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
-      await handleImageTransition(data, trObj);
-      data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
-      e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
-    });
+    attachThumbnailEvents(a, data, layer);
   });
   selectorTray.append(trayItems);
   return selectorTray;
