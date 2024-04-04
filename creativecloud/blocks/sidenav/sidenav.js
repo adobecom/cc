@@ -36,7 +36,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
           if (!mapParents[parentId]) {
             const parentItem = mapCategories[parentId];
             if (parentItem) {
-              mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, parentId });
+              mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, value: parentId });
               tag.append(mapParents[parentId]);
             }
           }
