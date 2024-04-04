@@ -56,10 +56,14 @@ function observeSliderTray(sliderTray, targets) {
   const io = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
+      console.log('entry.isIntersecting', entry.isIntersecting);
       const menu = sliderTray.querySelector('.menu');
       const outerCircle = menu.querySelector('.outerCircle');
       outerCircle.classList.add('showOuterBorder');
-      setTimeout(() => { animateSlider(menu, targets); }, 800);
+      setTimeout(() => {
+        console.log('inside timeput');
+        animateSlider(menu, targets);
+      }, 800);
       observer.unobserve(entry.target);
     });
   }, options);
@@ -236,17 +240,6 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
   function stepAnimation() {
     slider.value = current;
     current += step;
-    const rect = slider.getBoundingClientRect();
-    const value = (slider.value - slider.min) / (slider.max - slider.min);
-    const thumbOffset = value * (rect.width - outerCircle.offsetWidth);
-    const interactiveBlock = target.closest('.marquee') || target.closest('.aside');
-    const isRowReversed = interactiveBlock.classList.contains('row-reversed');
-    if ((document.dir === 'rtl' || isRowReversed)) {
-      outerCircle.style.right = `${thumbOffset + 8}px`;
-      outerCircle.style.left = 'auto';
-    } else {
-      outerCircle.style.left = `${thumbOffset + 8}px`;
-    }
     slider.dispatchEvent(new Event('input', { bubbles: true }));
     if ((step > 0 && current >= (start + 70)) || (step < 0 && current >= (start + 70))) {
       step = -step;
