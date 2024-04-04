@@ -38,7 +38,7 @@
   }
 
   .interactive-enabled.light .step-crop .layer .gray-button.crop-button .crop-icon-container,
-  .interactive-enabled .interactive-holder.light .step-crop .layer .gray-button.crop-button .crop-icon-container {
+  .interactive-enabled .interactive-holder.light.step-crop .layer .gray-button.crop-button .crop-icon-container {
     border: 3px solid var(--prompt-input-fill-light);
     background-color: var(--prompt-input-fill-light);
   }
