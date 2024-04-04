@@ -16,7 +16,7 @@
 
 .interactive-enabled.light .step-selector-tray .selector-tray {
   background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
+  color: var(--prompt-text-color-light);
 }
 
 .interactive-enabled .interactive-holder.dark.step-selector-tray .selector-tray {
@@ -26,7 +26,7 @@
 
 .interactive-enabled .interactive-holder.light.step-selector-tray .selector-tray {
   background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
+  color: var(--prompt-text-color-light);
 }
 
 .interactive-enabled .step-selector-tray .selector-tray .tray-title {
