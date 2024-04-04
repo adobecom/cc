@@ -9,6 +9,7 @@
   --layer-background-fill: #272928;
   --prompt-btn-fill-light: #FFFF;
   --prompt-text-color-light: #272928;
+  --prompt-input-fill-light: #D5D5D5;
 }
 
 .interactive-enabled .foreground .image > p:first-child {
