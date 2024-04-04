@@ -13,4 +13,8 @@
     left: auto;
     gap: 16px;
   }
+  
+  .interactive-enabled.generate-right .step-start-over .layer .gray-button.start-over-button {
+    bottom: 32px;
+  }
 }
