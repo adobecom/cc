@@ -56,12 +56,10 @@ function observeSliderTray(sliderTray, targets) {
   const io = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      console.log('entry.isIntersecting', entry.isIntersecting);
       const menu = sliderTray.querySelector('.menu');
       const outerCircle = menu.querySelector('.outerCircle');
       outerCircle.classList.add('showOuterBorder');
       setTimeout(() => {
-        console.log('inside timeput');
         animateSlider(menu, targets);
       }, 800);
       observer.unobserve(entry.target);
