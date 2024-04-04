@@ -122,6 +122,7 @@
     padding: 0 21px;
     width: auto;
     min-width: auto;
+    max-width: unset;
   }
 }
   @media screen and (min-width: 1200px) {
