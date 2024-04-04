@@ -213,7 +213,7 @@
   color: var(--color-black) !important;
   width: auto;
   gap: 8px;
-  padding: 8px 12px 8px 8px;
+  padding: 5px 12px 5px 8px;
   max-width: fit-content;
   border-radius: 8px;
   align-items: center;
