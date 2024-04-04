@@ -1,0 +1,31 @@
+version: 1.0
+
+snow:
+  - id: 545562 # Milo CC
+
+notifications:
+  jira:
+    default:
+      project: MWPW # Mandatory
+      filters:
+        include:
+          risk_rating: R5
+      fields:
+        assignee:
+          name: sumanh
+        customfield_11800: MWPW-140779 #epic link
+        customfield_12900: 
+          value: Brahmos
+        watchers:
+          - casalino
+          - jmichnow
+          - mauchley
+          - saljain
+          - mathuria
+          - dstrong
+        labels:
+          - "OriginatingProcess=Kodiak"
+          - "security"
+          - "kodiak-ticket"
+        components:
+          - name: "DevOps Security" 
