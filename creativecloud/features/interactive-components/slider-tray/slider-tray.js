@@ -140,6 +140,8 @@ function appendSVGToButton(picture, button) {
 }
 
 function sliderEvent(media, layer) {
+  let hue = 0;
+  let saturation = 100;
   ['hue', 'saturation'].forEach((sel) => {
     const sliderEl = layer.querySelector(`.${sel.toLowerCase()}-input`);
     sliderEl.addEventListener('input', () => {
@@ -158,14 +160,15 @@ function sliderEvent(media, layer) {
       }
       switch (sel.toLowerCase()) {
         case ('hue'):
-          image.style.filter = `hue-rotate(${value}deg)`;
+          hue = value;
           break;
         case ('saturation'):
-          image.style.filter = `saturate(${value}%)`;
+          saturation = value;
           break;
         default:
           break;
       }
+      image.style.filter = `hue-rotate(${hue}deg) saturate(${saturation}%)`;
     });
     sliderEl.addEventListener('change', () => {
       const outerCircle = sliderEl.nextSibling;
