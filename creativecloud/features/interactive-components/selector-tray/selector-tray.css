@@ -80,6 +80,10 @@
     box-sizing: content-box;
     width: auto;
   }
+  .interactive-enabled.row-reversed .step-selector-tray .selector-tray {
+    left: auto;
+    right: 56%;
+  }
 
   [dir="rtl"] .interactive-enabled .step-selector-tray .selector-tray {
     left: auto;
