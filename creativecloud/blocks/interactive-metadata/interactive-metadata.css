@@ -264,6 +264,11 @@
 }
 
 @media screen and (max-width: 600px) {
+  .aside.interactive-enabled .foreground.container .image {
+    display: block;
+    width: 100%;
+  }
+
   .interactive-enabled.heading-top .foreground .image .mobile-top-title {
     display: block;
     margin-bottom: 24px;
