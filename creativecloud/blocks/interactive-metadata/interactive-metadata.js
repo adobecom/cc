@@ -67,10 +67,11 @@ async function loadAllImgs(imgs) {
 }
 
 async function createDisplayImg(target, replaceEl, src, alt) {
-  const img = createTag('img', { src, alt });
-  const pic = createTag('picture', {}, img);
-  await loadImg(img);
-  replaceEl.replaceWith(pic);
+  const newImg = createTag('img', { src, alt });
+  const img = replaceEl.querySelector('img');
+  await loadImg(newImg);
+  img.src = src;
+  img.alt = alt;
   target.classList.add('show-image');
   target.classList.remove('show-video');
 }
