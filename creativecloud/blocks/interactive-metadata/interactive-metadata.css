@@ -103,7 +103,7 @@
   min-height: unset;
   border-radius: 8px 8px 0 0;
   height: 0;
-  z-index: 1;
+  z-index: 0;
   opacity: 0;
 }
 
@@ -114,7 +114,7 @@
   aspect-ratio: 1;
   height: auto;
   opacity: 1;
-  z-index: 2;
+  z-index: 1;
 }
 
 .interactive-enabled .layer.show-layer {
