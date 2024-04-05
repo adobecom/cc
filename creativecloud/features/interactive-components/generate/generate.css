@@ -6,7 +6,7 @@
   font-weight: bold;
   margin: auto;
   padding: 0 5px;
-  width: 100%;
+  width: calc(100% - 10px);
 }
 
 .interactive-enabled .step-generate .generate-text-container {
