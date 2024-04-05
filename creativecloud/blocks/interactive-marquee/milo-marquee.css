@@ -191,3 +191,25 @@
     max-width: 500px;
   }
 }
+
+@media screen and (max-width: 600px) {
+
+  .interactive-marquee .text {
+    display: flex;
+    order: 1;
+  }
+
+  .interactive-marquee .body-xl {
+    display: flex;
+    order: 3;
+  }
+
+  .interactive-marquee .interactive-container {
+    order: 2;
+  }
+
+  .interactive-marquee .foreground {
+    padding: var(--spacing-xs) 0;
+  }
+  
+}

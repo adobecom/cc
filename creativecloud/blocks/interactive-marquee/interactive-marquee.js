@@ -7,11 +7,13 @@ function decorateText(el, createTag) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
   const config = typeSizes;
+  const screenSize = window.matchMedia("(max-width: 600px)")
   const decorate = (headingEl, typeSize) => {
     headingEl.classList.add(`heading-${typeSize[0]}`);
     const bodyEl = headingEl.nextElementSibling;
     bodyEl?.classList.add(`body-${typeSize[1]}`);
     bodyEl?.nextElementSibling?.classList.add(`body-${typeSize[1]}`, 'pricing');
+    moveTextToParent(screenSize,headingEl);
     const sib = headingEl.previousElementSibling;
     if (sib) {
       const className = sib.querySelector('img, .icon') ? 'icon-area' : `detail-${typeSize[2]}`;
@@ -24,6 +26,17 @@ function decorateText(el, createTag) {
     iconAreaElements?.classList.add('icon-area');
     iconText.innerText = (iconAreaElements.textContent.trim());
     iconText.previousSibling.textContent = '';
+
+    function moveTextToParent(screen) {
+      if (screen.matches) { // If media query matches
+        el.insertAdjacentElement('afterEnd', bodyEl)
+      }else{
+        headingEl.insertAdjacentElement('afterEnd',bodyEl)
+      }
+    }
+    screenSize.addEventListener("change", function () {
+      moveTextToParent(screenSize,headingEl);
+    });
   };
   decorate(heading, config);
 }
