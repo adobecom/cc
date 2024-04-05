@@ -76,21 +76,16 @@ async function createDisplayImg(target, replaceEl, src, alt) {
   target.classList.remove('show-video');
 }
 
-async function createDisplayVideo(target, replaceEl, src) {
+async function createDisplayVideo(target, video, src) {
   const { pathname, hash } = new URL(src);
-  const attrs = { playsinline: '', autoplay: '', muted: '' };
-  const isAutoplay = hash?.includes('autoplay');
-  const isAutoplayOnce = hash?.includes('autoplay1');
-  if (isAutoplay && !isAutoplayOnce) attrs.loop = '';
-  const source = createTag('source', { src: pathname, type: 'video/mp4' });
-  const video = createTag('video', attrs, source);
-  replaceEl.replaceWith(video);
+  const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
+  if (hash?.includes('autoplay1')) video.removeAttribute('loop');
+  else attrs.loop = '';
+  Object.keys(attrs).forEach((attr) => video.setAttribute(attr, attrs[attr]));
   try {
     video.load();
     await video.play();
-  } catch (err) {
-    return;
-  }
+  } catch (err) { return; }
   target.classList.add('show-video');
   target.classList.remove('show-image');
 }
