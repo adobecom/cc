@@ -64,9 +64,15 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .interactive-enabled.row-reversed .step-crop .gray-button.crop-button {
+  .interactive-enabled.row-reversed .step-crop .layer .gray-button.crop-button {
     left: auto;
     right: 47px;
+    bottom: 125px;
+  }
+
+  [dir="rtl"] .interactive-enabled.row-reversed .step-crop .layer .gray-button.crop-button {
+    left: 47px;
+    right: auto;
     bottom: 125px;
   }
 }
