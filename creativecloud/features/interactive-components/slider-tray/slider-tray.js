@@ -209,27 +209,35 @@ function cancelAnalytics(btn) {
   btn.setAttribute('daa-ll', 'Upload Image');
 }
 
-function animateSlider(menu, targets) {
+function animateSlider(menu, target) {
   const option = menu.querySelector('.options');
+  const aobj = { interrupted: false };
   const outerCircle = option.nextSibling;
   outerCircle.classList.add('animate');
+  ['mousedown', 'touchstart'].forEach((e) => {
+    option.addEventListener(e, () => {
+      aobj.interrupted = true;
+      outerCircle.classList.remove('showOuterBorder', 'animate', 'animateout');
+    }, { once: true });
+  });
   outerCircle.addEventListener('transitionend', () => {
     setTimeout(() => {
       const min = parseInt(option.min, 10);
       const max = parseInt(option.max, 10);
       const middle = (min + max) / 2;
-      sliderScroll(option, middle, max, 1200, outerCircle, targets);
+      sliderScroll(option, middle, max, 1200, outerCircle, target, aobj);
     }, 500);
   }, { once: true });
 }
 
-function sliderScroll(slider, start, end, duration, outerCircle, target) {
+function sliderScroll(slider, start, end, duration, outerCircle, target, aobj) {
   let current = start;
   let step = ((end - start) / duration) * 10;
   let direction = 1;
   function stepAnimation() {
     slider.value = current;
     current += step;
+    if (aobj.interrupted) return;
     slider.dispatchEvent(new Event('input', { bubbles: true }));
     if ((step > 0 && current >= (start + 70)) || (step < 0 && current >= (start + 70))) {
       step = -step;
