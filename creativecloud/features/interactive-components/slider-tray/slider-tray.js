@@ -55,9 +55,7 @@ function observeSliderTray(sliderTray, targets) {
       const menu = sliderTray.querySelector('.menu');
       const outerCircle = menu.querySelector('.outerCircle');
       outerCircle.classList.add('showOuterBorder');
-      setTimeout(() => {
-        animateSlider(menu, targets);
-      }, 800);
+      setTimeout(() => { animateSlider(menu, targets); }, 800);
       observer.unobserve(entry.target);
     });
   }, options);
