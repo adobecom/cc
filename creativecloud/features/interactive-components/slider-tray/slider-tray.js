@@ -16,16 +16,12 @@ async function createSelectorTray(data, layer) {
   const menu = createTag('div', { class: 'menu' });
   const config = data.stepConfigs[data.stepIndex];
   const options = config.querySelectorAll(':scope > div .icon');
-  const promiseLST = [];
-  options.forEach((option) => {
-    promiseLST.push(handleInput(option, data.target, sliderTray, menu, layer));
-  });
-  await Promise.all(promiseLST);
+  options.forEach((o) => { handleInput(o, sliderTray, menu, layer); });
   layer.append(sliderTray);
   observeSliderTray(sliderTray, data.target, menu);
 }
 
-async function handleInput(option, targets, sliderTray, menu, layer) {
+function handleInput(option, sliderTray, menu, layer) {
   let inputType = option.classList[1].split('icon-')[1];
   const sliderType = inputType.split('-')[0];
   if (inputType.includes('slider')) inputType = 'slider';
@@ -123,22 +119,20 @@ function applyAccessibility(inputEle, target) {
   });
 }
 
-async function createUploadPSButton(details, picture, layer) {
+function createUploadPSButton(details, picture, layer) {
   const btn = createTag('a', { class: 'continueButton body-xl hide' }, details);
   appendSVGToButton(picture, btn);
   layer.append(btn);
 }
 
 function appendSVGToButton(picture, button) {
-  if (picture) {
-    const svg = picture.querySelector('img[src*=svg]');
-    if (svg) {
-      const svgClone = svg.cloneNode(true);
-      const svgCTACont = createTag('div', { class: 'svg-icon-container' });
-      svgCTACont.append(svgClone);
-      button.prepend(svgCTACont);
-    }
-  }
+  if (!picture) return;
+  const svg = picture.querySelector('img[src*=svg]');
+  if (!svg) return;
+  const svgClone = svg.cloneNode(true);
+  const svgCTACont = createTag('div', { class: 'svg-icon-container' });
+  svgCTACont.append(svgClone);
+  button.prepend(svgCTACont);
 }
 
 function sliderEvent(media, layer) {
@@ -255,8 +249,6 @@ function sliderScroll(slider, start, end, duration, outerCircle, target) {
         outerCircle.classList.add('animateout');
       }, 500);
       slider.dispatchEvent(new Event('input', { bubbles: true }));
-      // eslint-disable-next-line no-useless-return
-      return;
     } else {
       setTimeout(stepAnimation, 10);
     }
