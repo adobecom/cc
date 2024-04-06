@@ -16,7 +16,7 @@ async function createSelectorTray(data, layer) {
   const menu = createTag('div', { class: 'menu' });
   const config = data.stepConfigs[data.stepIndex];
   const options = config.querySelectorAll(':scope > div .icon');
-  options.forEach((o) => { handleInput(o, sliderTray, menu, layer); });
+  [...options].forEach((o) => { handleInput(o, sliderTray, menu, layer); });
   layer.append(sliderTray);
   observeSliderTray(sliderTray, data.target, menu);
 }
