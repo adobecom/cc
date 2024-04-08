@@ -6,7 +6,7 @@ setLibs('/libs');
 
 const { default: init } = await import('../../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-
+window.lana = { log: (msg) => { console.log(msg); } };
 function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });
 }
@@ -34,7 +34,16 @@ describe('hue-sat-marquee', () => {
 
   it('Stopping animation', () => {
     ib.querySelector('.outerCircle').dispatchEvent(new Event('mousedown', { bubbles: true }));
-    expect(ib.querySelector('.sliderTray')).to.exist;
+    ib.querySelector('.outerCircle').dispatchEvent(new Event('click'));
+    expect(ib.querySelector('.sliderTray .animate')).to.not.exist;
+  });
+
+  it('Set Saturation', () => {
+    const saturationSlider = ib.querySelector('.saturation-input');
+    saturationSlider.value = 180;
+    saturationSlider.dispatchEvent(new Event('input'));
+    saturationSlider.value = 180;
+    saturationSlider.dispatchEvent(new Event('change'));
   });
 
   it('Tabbing on slider', () => {
@@ -47,7 +56,6 @@ describe('hue-sat-marquee', () => {
   it('Testing upload', async () => {
     const uploadBtn = ib.querySelector('.uploadButton');
     uploadBtn.files = ['./test/blocks/interactive-metadata/mocks/assets/media_.png'];
-    console.log(uploadBtn);
     uploadBtn.dispatchEvent(new Event('cancel'));
   });
 
