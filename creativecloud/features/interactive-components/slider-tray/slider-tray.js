@@ -215,7 +215,7 @@ function animateSlider(menu, target) {
   const outerCircle = option.nextSibling;
   outerCircle.classList.add('animate');
   ['mousedown', 'touchstart'].forEach((e) => {
-    option.addEventListener(e, () => {
+    option.closest('.sliderTray').addEventListener(e, () => {
       aobj.interrupted = true;
       outerCircle.classList.remove('showOuterBorder', 'animate', 'animateout');
     }, { once: true });
