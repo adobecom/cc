@@ -64,15 +64,13 @@ function preloadAsset(nextStepIndex, stepInfo) {
   if (!das.length) return;
   const { displayPath } = stepInfo;
   const daIdx = (displayPath < das.length) ? displayPath : 0;
-  let src = '';
   const da = das[daIdx];
   if (da.nodeName === 'A') {
     const { pathname } = new URL(da.href);
-    src = pathname;
-    const video = createTag('video', { src });
+    const video = createTag('video', { src: pathname });
     video.load();
   } else if (da.nodeName === 'IMG') {
-    src = getImgSrc(da.closest('picture'));
+    const src = getImgSrc(da.closest('picture'));
     fetch(src);
   }
 }
