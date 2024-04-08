@@ -55,8 +55,10 @@ describe('hue-sat-marquee', () => {
 
   it('Testing upload', async () => {
     const uploadBtn = ib.querySelector('.uploadButton');
-    uploadBtn.files = ['./test/blocks/interactive-metadata/mocks/assets/media_.png'];
     uploadBtn.dispatchEvent(new Event('cancel'));
+    const file = new File([''], 'media_.png', { lastModified: new Date(0), type: 'image/png' });
+    uploadBtn.files = [file];
+    uploadBtn.dispatchEvent(new Event('change'));
   });
 
   it('Running animation', async () => {
