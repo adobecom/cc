@@ -58,6 +58,25 @@ function loadImg(img) {
   });
 }
 
+function preloadAsset(nextStepIndex, stepInfo) {
+  const das = stepInfo.stepConfigs[nextStepIndex]
+    .querySelectorAll(':scope > div > p > picture img[src*="media_"], :scope > div > p > a[href*=".mp4"]');
+  if (!das.length) return;
+  const { displayPath } = stepInfo;
+  const daIdx = (displayPath < das.length) ? displayPath : 0;
+  let src = '';
+  const da = das[daIdx];
+  if (da.nodeName === 'A') {
+    const { pathname } = new URL(da.href);
+    src = pathname;
+    const video = createTag('video', { src });
+    video.load();
+  } else if (da.nodeName === 'IMG') {
+    src = getImgSrc(da.closest('picture'));
+    fetch(src);
+  }
+}
+
 async function loadAllImgs(imgs) {
   const promiseLst = [];
   [...imgs].forEach((img) => {
@@ -119,6 +138,7 @@ async function handleNextStep(stepInfo) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
   await loadAllImgs(stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img[src*="svg"]'));
+  preloadAsset(nextStepIndex, stepInfo);
 }
 
 async function handleLayerDisplay(stepInfo) {
