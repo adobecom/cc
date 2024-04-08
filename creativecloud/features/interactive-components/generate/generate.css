@@ -1,0 +1,162 @@
+.interactive-enabled .step-generate .generate-prompt-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  margin: auto;
+  padding: 0 5px;
+  width: calc(100% - 10px);
+}
+
+.interactive-enabled .step-generate .generate-text-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  border-radius: 8px 0 0 8px;
+  padding: 0 5px;
+  background-color: var(--prompt-text-border);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+[dir="rtl"] .interactive-enabled .step-generate .generate-text-container {
+  width: 100%;
+  border-radius: 0 8px 8px 0;
+}
+
+.interactive-enabled .step-generate .generate-prompt-button .generate-text {
+  background-color: var(--prompt-input-fill);
+  color: var(--prompt-text-color);
+  display: inline-block;
+  height: 39px;
+  width: 100%;
+  line-height: 39px;
+  padding: 0;
+  padding-inline-start: 16px;
+  padding-inline-end: 16px;
+  border-radius: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.interactive-enabled.light .generate-prompt-button .generate-text {
+  background-color: var(--prompt-btn-fill-light);
+  color: var(--prompt-text-color-light);
+}
+
+.interactive-enabled .interactive-holder.dark .layer .generate-prompt-button .generate-text {
+  background-color: var(--prompt-input-fill);
+  color: var(--prompt-text-color);
+}
+
+.interactive-enabled .interactive-holder.light .layer .generate-prompt-button .generate-text {
+  background-color: var(--prompt-btn-fill-light);
+  color: var(--prompt-text-color-light);
+}
+
+.interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  gap: 2px;
+  border-radius: 0 8px 8px 0;
+  padding: 0 13px;
+  max-width: 50%;
+}
+
+[dir="rtl"] .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+  border-radius: 8px 0 0 8px;
+}
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled .step-generate .generate-prompt-button {
+    position: absolute;
+    left: auto;
+    bottom: 64px;
+    width: auto;
+    max-width: unset;
+    padding: 0;
+  }
+
+  .interactive-enabled.generate-right .step-generate .generate-prompt-button,
+  .interactive-enabled .step-generate .generate-right .generate-prompt-button {
+    left: auto;
+    right: -21.5%;
+    bottom: calc(50% - 80px);
+  }
+
+  [dir="rtl"] .interactive-enabled.generate-right .step-generate .generate-prompt-button, 
+  [dir="rtl"] .interactive-enabled .step-generate .generate-right .generate-prompt-button {
+    left: auto;
+    right: -21.5%;
+  }
+
+  .interactive-enabled .step-generate .generate-text-container {
+    width: 215px;
+    min-width: 215px;
+    max-width: 215px;
+    height: 64px;
+  }
+
+  [dir="rtl"] .interactive-enabled .step-generate .generate-text-container {
+    border-radius: 0 8px 8px 0;
+  }
+
+  .interactive-enabled .step-generate .generate-prompt-button .generate-text {
+    height: 52px;
+    line-height: 52px;
+    padding: 0 16px;
+    text-align: start;
+    font-size: 21px;
+  }
+
+  .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+    height: 64px;
+    gap: 16px;
+    padding: 0 21px;
+    width: auto;
+    min-width: auto;
+    max-width: unset;
+  }
+}
+  @media screen and (min-width: 1200px) {
+    .interactive-enabled.row-reversed .step-generate .generate-text-container {
+      width: 218px;
+      max-width: 218px;
+    }
+    
+    .interactive-enabled.row-reversed.generate-right .step-generate .generate-prompt-button, 
+    .interactive-enabled.row-reversed .step-generate .generate-right .generate-prompt-button {
+      flex-direction: row;
+      left: -21.5%;
+      right: auto;
+    }
+
+    [dir="rtl"] .interactive-enabled.generate-right .step-generate .generate-prompt-button, 
+    [dir="rtl"] .interactive-enabled .step-generate .generate-right .generate-prompt-button {
+      left: -21.5%;
+      right: auto;
+    }
+
+    [dir="rtl"] .interactive-enabled.row-reversed.generate-right .step-generate .generate-prompt-button, 
+    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-right .generate-prompt-button {
+      left: auto;
+      right: -21.5%;
+    }
+    
+    [dir="rtl"] .interactive-enabled .step-generate .generate-text-container,
+    .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+      border-radius: 0 8px 8px 0;
+    }
+
+    .interactive-enabled .step-generate .generate-text-container,
+    [dir="rtl"] .interactive-enabled .step-generate .generate-prompt-button .gray-button.generate-button {
+      border-radius: 8px 0 0 8px;
+    }
+}
