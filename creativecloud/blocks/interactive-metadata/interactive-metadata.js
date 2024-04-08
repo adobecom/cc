@@ -166,6 +166,7 @@ async function implementWorkflow(stepInfo) {
     if (stepInfo.stepIndex === 0) await addLayerAnimation(stepInfo.target);
   }
   await handleLayerDisplay(stepInfo);
+  if (stepInfo.stepList.length === 1) return;
   await handleNextStep(stepInfo);
 }
 
