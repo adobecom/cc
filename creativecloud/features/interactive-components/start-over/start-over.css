@@ -1,0 +1,20 @@
+.interactive-enabled .step-start-over .layer .gray-button.start-over-button {
+  display: none;
+  padding: 0 21px 0 13px;
+  height: 48px;
+  transition: display 300ms;
+}
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled .step-start-over .layer .gray-button.start-over-button {
+    padding: 0 21px;
+    height: 64px;
+    bottom: 64px;
+    left: auto;
+    gap: 16px;
+  }
+  
+  .interactive-enabled.generate-right .step-start-over .layer .gray-button.start-over-button {
+    bottom: 32px;
+  }
+}

@@ -1,0 +1,439 @@
+
+:root {
+  --prompt-input-fill: #262626;
+  --prompt-btn-fill: #323232;
+  --prompt-text-color: #D1D1D1;
+  --prompt-text-border: #545454;
+  --prompt-btn-text: #FFF;
+  --prompt-highlight-color: #1473E6;
+  --layer-background-fill: #272928;
+  --prompt-btn-fill-light: #FFFF;
+  --prompt-text-color-light: #2C2C2C;
+  --prompt-input-fill-light: #D5D5D5;
+}
+
+.interactive-enabled .foreground .image > p:first-child {
+  display: none;
+  margin: 0;
+}
+
+.interactive-enabled.heading-top  h1,
+.interactive-enabled.heading-top  h2,
+.interactive-enabled.heading-top  h3,
+.interactive-enabled.heading-top  h4,
+.interactive-enabled.heading-top  h5,
+.interactive-enabled.heading-top  h6,
+.interactive-enabled .foreground .image .mobile-top-title {
+  display: none;
+}
+
+.interactive-enabled .foreground.container .image {
+  flex-direction: column;
+}
+
+.aside.interactive-enabled .foreground.container {
+  margin: 40px auto 32px;
+  flex-direction: column;
+  gap: var(--spacing-m);
+  padding: 0;
+}
+
+.aside.interactive-enabled .foreground.container > div.image,
+.aside.interactive-enabled .foreground.container > div.text {
+  margin: 0;
+  padding: 0;
+}
+
+.interactive-metadata,
+.interactive-enabled .layer {
+  display: none;
+}
+
+.interactive-enabled .foreground.container .interactive-holder {
+  margin: auto;
+  aspect-ratio: 1;
+}
+
+.interactive-enabled .foreground .image .enticement-container {
+  display: block;
+  height: 28px;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 28px;
+  margin: 0 0 16px;
+}
+
+.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
+  display: none;
+}
+
+.interactive-enabled .foreground .image .enticement-message {
+  display: block;
+  max-width: 30ch;
+  font-size: 28px;
+  line-height: 35px;
+}
+
+.interactive-enabled .foreground .image .enticement-svg {
+  display: block;
+  position: relative;
+  width: 49px;
+  height: 73px;
+  top: -16px;
+  right: 30px;
+  left: auto;
+  z-index: 2;
+  margin: 0;
+}
+
+[dir="rtl"] .interactive-enabled .foreground .image .enticement-svg {
+  left: 30px;
+  right: auto;
+  transform: scaleX(-1);
+}
+
+.interactive-enabled .foreground .image > p > img[src*='svg'] {
+  display: block;
+}
+
+.interactive-enabled .foreground.container .interactive-holder > picture img,
+.interactive-enabled .foreground.container .interactive-holder > picture,
+.interactive-enabled .foreground.container .interactive-holder > video {
+  object-fit: cover;
+  min-height: unset;
+  border-radius: 8px 8px 0 0;
+  height: 0;
+  z-index: 0;
+  opacity: 0;
+}
+
+.interactive-enabled .foreground.container .interactive-holder.show-image > picture img,
+.interactive-enabled .foreground.container .interactive-holder.show-image > picture,
+.interactive-enabled .foreground.container .interactive-holder.show-video > video {
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  opacity: 1;
+  z-index: 1;
+}
+
+.interactive-enabled .layer.show-layer {
+  position: relative;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  min-height: 60px;
+  background: var(--layer-background-fill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 8px 8px;
+  z-index: 2;
+}
+
+.interactive-enabled .layer .gray-button {
+  position: absolute;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 8px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  text-decoration: none;
+  color: var(--prompt-btn-text);
+  background: var(--prompt-btn-fill);
+  font-weight: bold;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.interactive-enabled.light .layer .gray-button {
+  color: var(--prompt-text-color-light);
+  background: var(--prompt-btn-fill-light);
+}
+
+.interactive-enabled .interactive-holder.dark .layer .gray-button {
+  color: var(--prompt-btn-text);
+  background: var(--prompt-btn-fill);
+}
+
+.interactive-enabled .interactive-holder.light .layer .gray-button {
+  color: var(--prompt-text-color-light);
+  background: var(--prompt-btn-fill-light);
+}
+
+.interactive-enabled .layer .gray-button.animated {
+  animation: outline-fill 2700ms 500ms forwards 7;
+}
+
+.interactive-enabled .layer .gray-button.animated::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 8px solid var(--prompt-highlight-color);
+  border-radius: 50%;
+  opacity: 0;
+  animation: circle 2700ms ease-in-out 500ms backwards 7;
+}
+
+.aside.interactive-enabled .foreground.container .interactive-holder {
+  flex: 0 0 auto !important;
+}
+
+@keyframes circle {
+  0% { opacity: 0; }
+
+  18% {
+    transform: scale(100%);
+    opacity: 0.5;
+  }
+
+  29% {
+    transform: scale(100%);
+    opacity: 0.5;
+  }
+
+  44% {
+    transform: scale(50%);
+    opacity: 1;
+  }
+
+  50% { opacity: 0; }
+}
+
+@keyframes outline-fill {
+  0% { border-color: transparent ; }
+
+  18% { border-color: var(--prompt-highlight-color); }
+
+  24% { border-color: var(--prompt-highlight-color); }
+
+  59% {
+    border-color: var(--prompt-highlight-color);
+    background: var(--prompt-highlight-color);
+  }
+
+  90% { border-color: var(--prompt-highlight-color); }
+}
+
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button img,
+.interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture {
+  width: 24px;
+  height: auto;
+  min-height: 24px;
+  max-width: 24px;
+  border-radius: 0;
+}
+
+.interactive-enabled .layer .gray-button:focus-visible,
+.interactive-enabled .layer .gray-button:hover { 
+  border: 3px solid var(--prompt-highlight-color);
+  background: var(--prompt-btn-fill);
+  animation-play-state: paused;
+} 
+
+.interactive-enabled.light .layer .gray-button:focus-visible,
+.interactive-enabled.light .layer .gray-button:hover { 
+  background: var(--prompt-btn-fill-light);
+} 
+
+.interactive-enabled .interactive-holder.dark .layer .gray-button:focus-visible,
+.interactive-enabled .interactive-holder.dark .layer .gray-button:hover { 
+  background: var(--prompt-btn-fill);
+} 
+
+.interactive-enabled .interactive-holder.light .layer .gray-button:focus-visible,
+.interactive-enabled .interactive-holder.light .layer .gray-button:hover { 
+  background: var(--prompt-btn-fill-light);
+} 
+
+.interactive-enabled .interactive-link-analytics-text {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .aside.interactive-enabled .foreground.container .image {
+    display: block;
+    width: 100%;
+  }
+
+  .interactive-enabled.heading-top .foreground .image .mobile-top-title {
+    display: block;
+    margin-bottom: 24px;
+    font-size: 36px;
+    line-height: 45px;
+    font-weight: bold;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled.heading-top  h1,
+  .interactive-enabled.heading-top  h2,
+  .interactive-enabled.heading-top  h3,
+  .interactive-enabled.heading-top  h4,
+  .interactive-enabled.heading-top  h5,
+  .interactive-enabled.heading-top  h6 {
+    display: block;
+  }
+
+  .interactive-enabled .foreground.container .image > p:first-child {
+    display: none;
+  }
+
+  .interactive-enabled .foreground .image {
+    position: relative;
+    border-radius: 16px;
+    margin-inline-start: 0;
+    background: none;
+    width: calc(var(--grid-container-width) - 20px);
+    max-width: 570px;
+    margin: 36px auto 42px;
+  }
+
+  .interactive-enabled .interactive-holder {
+    position: relative;
+    max-width: 570px;
+    max-height: 570px;
+    width: 100%;
+  }
+  
+  .interactive-enabled .foreground.container .image .interactive-holder > picture img,
+  .interactive-enabled .foreground.container .image .interactive-holder > picture,
+  .interactive-enabled .foreground.container .image .interactive-holder > video {
+    border-radius: 16px;
+  }
+
+  .interactive-enabled .layer.show-layer {
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: none;
+  }
+  
+  .interactive-enabled .foreground.container .image .enticement-container {
+    display: block;
+    position: relative;
+    width: var(--grid-container-width);
+    max-width: 570px;
+    right: 30px;
+    margin: 0 0 24px;
+  }
+
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container {
+    right: auto;
+    left: 30px;
+  }
+
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-svg {
+    right: auto;
+    left: 30px;
+    transform: scaleX(-1);
+  }
+
+  .interactive-enabled .foreground.container .interactive-holder .layer .gray-button picture,
+  .interactive-enabled .foreground.container .interactive-holder .layer .gray-button img {
+    width: 34px;
+    height: auto;
+    min-height: 34px;
+    max-width: 34px;
+    border-radius: 0;
+  }
+
+  .interactive-enabled .layer .gray-button {
+    font-size: var(--type-body-xl-size); 
+    line-height: var(--type-body-xl-lh);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 32%);
+  }
+
+  .interactive-enabled .layer .gray-button.animated::before {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .aside.interactive-enabled .foreground.container .image {
+    order: 1;
+  }
+  
+  .aside.interactive-enabled .foreground.container .text {
+    order: 2;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .aside.interactive-enabled .foreground.container > div {
+    min-width: unset;
+  }
+
+  .aside.interactive-enabled .foreground.container div.image,
+  .marquee.interactive-enabled .foreground.container div.image {
+    max-width: 570px;
+    margin-inline-start: 60px;
+  }
+  
+  .interactive-enabled .foreground.container .interactive-holder {
+    margin: 0;
+  }
+
+  [dir="rtl"] .aside.interactive-enabled .foreground.container div.image,
+  .aside.interactive-enabled.row-reversed .foreground.container div.image {
+    margin: 36px 60px 0 0;
+    height: 664px;
+  }
+
+  .aside.interactive-enabled .foreground.container div.image,
+  [dir="rtl"] .aside.interactive-enabled.row-reversed .foreground.container div.image {
+    height: 664px;
+    margin: 36px 0 0 60px;
+  }
+
+  .interactive-enabled .foreground .image .enticement-svg {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    min-height: unset;
+    height: 73px;
+    width: 49px;
+  }
+  
+  .marquee.interactive-enabled .foreground.container,
+  .aside.interactive-enabled .foreground.container {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .aside.interactive-enabled .foreground.container {
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    min-height: 700px;
+  }
+
+  .marquee.interactive-enabled .foreground.container,
+  .aside.interactive-enabled.row-reversed .foreground.container {
+    order: unset;
+    flex-direction: row;
+  }
+
+  .aside.interactive-enabled.row-reversed .foreground.container {
+    flex-direction: row-reverse;
+  }
+}
+
+
