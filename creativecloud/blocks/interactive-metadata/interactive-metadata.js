@@ -172,7 +172,7 @@ async function implementWorkflow(stepInfo) {
 
 function checkRenderStatus(targetBlock, res, rej, etime, rtime) {
   if (etime > 20000) { rej(); return; }
-  if (targetBlock.querySelector('.text') && targetBlock.querySelector('.image')) res();
+  if (targetBlock.querySelector('.text') && targetBlock.querySelector('.asset, .image')) res();
   else setTimeout(() => checkRenderStatus(targetBlock, res, rej, etime + rtime), rtime);
 }
 
