@@ -196,11 +196,11 @@ function decorateEnticementArrow(aa) {
 }
 
 function decorateMobileHeading(intEnb) {
-  if (!intEnb.classList.contains('heading-top')) return;
+  if (!intEnb.classList.contains('mobile-heading-top')) return;
   const h = intEnb.querySelector('.text').querySelector('h1, h2, h3, h4, h5, h6');
   if (!h) return;
   const htxt = h.textContent;
-  const hTxtTop = createTag('div', { class: 'mobile-top-title' }, htxt);
+  const hTxtTop = createTag('div', { class: 'mobile-heading-top' }, htxt);
   intEnb.querySelector('.image').prepend(hTxtTop);
 }
 
