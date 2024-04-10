@@ -47,7 +47,6 @@ function attachThumbnailEvents(a, data, layer) {
     const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
     await handleImageTransition(data, trObj);
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
-    e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
   });
 }
 
