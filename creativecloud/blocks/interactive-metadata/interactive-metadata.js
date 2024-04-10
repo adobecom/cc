@@ -172,7 +172,7 @@ async function implementWorkflow(stepInfo) {
 
 function checkRenderStatus(targetBlock, res, rej, etime, rtime) {
   if (etime > 20000) { rej(); return; }
-  if (targetBlock.querySelector('.text') && targetBlock.querySelector('.image')) res();
+  if (targetBlock.querySelector('.text') && targetBlock.querySelector('.asset, .image')) res();
   else setTimeout(() => checkRenderStatus(targetBlock, res, rej, etime + rtime), rtime);
 }
 
@@ -196,11 +196,11 @@ function decorateEnticementArrow(aa) {
 }
 
 function decorateMobileHeading(intEnb) {
-  if (!intEnb.classList.contains('heading-top')) return;
+  if (!intEnb.classList.contains('mobile-heading-top')) return;
   const h = intEnb.querySelector('.text').querySelector('h1, h2, h3, h4, h5, h6');
   if (!h) return;
   const htxt = h.textContent;
-  const hTxtTop = createTag('div', { class: 'mobile-top-title' }, htxt);
+  const hTxtTop = createTag('div', { class: 'mobile-heading-top' }, htxt);
   intEnb.querySelector('.image').prepend(hTxtTop);
 }
 
@@ -256,6 +256,9 @@ function getWorkFlowInformation(el) {
     'workflow-generate-crop': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-hue-sat': ['slider-tray'],
+    'workflow-generate-select-generate': ['generate', 'selector-tray', 'generate', 'crop', 'start-over'],
+    'workflow-generate-selector': ['generate', 'selector-tray', 'generate', 'start-over'],
+    'workflow-generate-triple-selector': ['generate', 'selector-tray', 'generate', 'selector-tray', 'generate', 'selector-tray', 'start-over'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   [...el.classList].forEach((cn) => { if (cn.match('workflow-')) wfName = cn; });
