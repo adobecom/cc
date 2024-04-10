@@ -84,15 +84,15 @@
     padding: 0;
   }
 
-  .interactive-enabled.generate-right .step-generate .generate-prompt-button,
-  .interactive-enabled .step-generate .generate-right .generate-prompt-button {
+  .interactive-enabled.generate-side .step-generate .generate-prompt-button,
+  .interactive-enabled .step-generate .generate-side .generate-prompt-button {
     left: auto;
     right: -21.5%;
     bottom: calc(50% - 80px);
   }
 
-  [dir="rtl"] .interactive-enabled.generate-right .step-generate .generate-prompt-button, 
-  [dir="rtl"] .interactive-enabled .step-generate .generate-right .generate-prompt-button {
+  [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
+  [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
     left: auto;
     right: -21.5%;
   }
@@ -131,21 +131,21 @@
       max-width: 218px;
     }
     
-    .interactive-enabled.row-reversed.generate-right .step-generate .generate-prompt-button, 
-    .interactive-enabled.row-reversed .step-generate .generate-right .generate-prompt-button {
+    .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
+    .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
       flex-direction: row;
       left: -21.5%;
       right: auto;
     }
 
-    [dir="rtl"] .interactive-enabled.generate-right .step-generate .generate-prompt-button, 
-    [dir="rtl"] .interactive-enabled .step-generate .generate-right .generate-prompt-button {
+    [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
+    [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
       left: -21.5%;
       right: auto;
     }
 
-    [dir="rtl"] .interactive-enabled.row-reversed.generate-right .step-generate .generate-prompt-button, 
-    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-right .generate-prompt-button {
+    [dir="rtl"] .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
+    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
       left: auto;
       right: -21.5%;
     }
