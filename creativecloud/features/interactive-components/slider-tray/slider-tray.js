@@ -105,7 +105,6 @@ function applyAccessibility(inputEle, target) {
   let tabbing = false;
   document.addEventListener('keydown', () => {
     tabbing = true;
-    console.log('inputEle', inputEle);
     inputEle.addEventListener('focus', () => {
       if (tabbing) {
         target.classList.add('focusUploadButton');
