@@ -219,6 +219,7 @@
   border-radius: 8px;
   align-items: center;
   max-height: 32px;
+  font-size: 18px;
   border: 1px solid #fff;
   text-decoration: none;
   position: relative;
@@ -238,7 +239,9 @@
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile:hover,
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile.focusUploadButton {
+.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile.focusUploadButton,
+.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton,
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton {
   border: 1px solid #1273E6;
 }
 

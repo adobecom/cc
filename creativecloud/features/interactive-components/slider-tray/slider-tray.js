@@ -94,15 +94,18 @@ function createUploadButton(details, picture, sliderTray, menu) {
   appendSVGToButton(picture, labelBtn);
   const clone = labelBtn.cloneNode(true);
   clone.classList.add('uploadButtonMobile');
+  const mobileInput = clone.querySelector('.inputFile');
   menu.append(clone);
   sliderTray.append(labelBtn);
   applyAccessibility(btn, labelBtn);
+  applyAccessibility(mobileInput, clone);
 }
 
 function applyAccessibility(inputEle, target) {
   let tabbing = false;
   document.addEventListener('keydown', () => {
     tabbing = true;
+    console.log('inputEle', inputEle);
     inputEle.addEventListener('focus', () => {
       if (tabbing) {
         target.classList.add('focusUploadButton');
