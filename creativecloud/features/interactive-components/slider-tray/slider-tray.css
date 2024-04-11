@@ -187,7 +187,8 @@
   border: 4px solid #3892f3;
 }
 
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton > input {
+.interactive-enabled .step-slider-tray .sliderTray .uploadButton > input,
+.interactive-enabled .step-slider-tray .sliderTray .uploadButtonMobile > input {
   opacity: 0;
   position: absolute;
   z-index: 2;
@@ -209,8 +210,8 @@
   display: inline-flex;
   box-sizing: content-box;
   margin: 16px auto 0;
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black) !important;
+  background: var(--prompt-input-fill);
+  color: var(--color-white) !important;
   width: auto;
   gap: 8px;
   padding: 5px 12px 5px 8px;
@@ -218,30 +219,32 @@
   border-radius: 8px;
   align-items: center;
   max-height: 32px;
-  font-size: 21px;
-  border: 3px solid;
+  font-size: 18px;
+  border: 1px solid #fff;
   text-decoration: none;
   position: relative;
 }
 
-.interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile {
-  background: var(--prompt-btn-fill);
-  color: var(--color-white) !important;
+.interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile,
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile {
+  background: var(--prompt-btn-fill-light);
+  color: var(--color-black) !important;
+  border: 1px solid #000;
 }
 
 .interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black) !important;
-}
-
-.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile {
-  background: var(--prompt-btn-fill);
+  background: var(--prompt-input-fill);
   color: var(--color-white) !important;
+  border: 1px solid #fff;
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile:hover,
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile.focusUploadButton {
-  border: 3px solid #1273E6;
+.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile:hover,
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile:hover,
+.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile.focusUploadButton,
+.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton,
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton {
+  border: 1px solid #1273E6;
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile.hide {
@@ -251,6 +254,7 @@
 .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
   height: 18px;
   width: 18px;
+  display: flex;
 }
 
 @media screen and (min-width: 600px) {
@@ -295,7 +299,6 @@
    border: 3px solid transparent;
    box-sizing: border-box;
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
-   font-size: 21px;
    height: 64px;
    position: relative;
  }
