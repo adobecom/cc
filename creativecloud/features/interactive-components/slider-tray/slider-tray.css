@@ -239,6 +239,8 @@
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile:hover,
+.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile:hover,
+.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile:hover,
 .interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile.focusUploadButton,
 .interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton,
 .interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton {
