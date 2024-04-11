@@ -250,6 +250,7 @@
 .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
   height: 18px;
   width: 18px;
+  display: flex;
 }
 
 @media screen and (min-width: 600px) {
