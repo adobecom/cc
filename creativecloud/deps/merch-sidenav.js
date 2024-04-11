@@ -1,4 +1,4 @@
-// Wed, 20 Dec 2023 12:32:36 GMT
+// Thu, 21 Mar 2024 10:55:19 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -348,12 +348,18 @@ var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
 var TABLET_DOWN = "(max-width: 1200px)";
 
 // src/sidenav/merch-sidenav.js
-var EVENT_OPEN_MODAL = "merch-sidenav:open-modal";
 var MerchSideNav = class extends LitElement4 {
   static properties = {
     title: { type: String },
-    closeText: { type: String, attribute: "close-text" }
+    closeText: { type: String, attribute: "close-text" },
+    modal: { type: Boolean, attribute: "modal", reflect: true }
   };
+  // modal target
+  #target;
+  constructor() {
+    super();
+    this.modal = false;
+  }
   static styles = [
     css5`
             :host {
@@ -380,6 +386,8 @@ var MerchSideNav = class extends LitElement4 {
     return this.mobileAndTablet.matches ? this.asDialog : this.asAside;
   }
   get asDialog() {
+    if (!this.modal)
+      return;
     return html4`
             <sp-theme theme="spectrum" color="light" scale="medium">
                 <sp-dialog-wrapper
@@ -406,18 +414,30 @@ var MerchSideNav = class extends LitElement4 {
             <slot></slot
         ></sp-theme>`;
   }
-  async showModal({ target }) {
-    this.dispatchEvent(new Event(EVENT_OPEN_MODAL));
-    const content = this.shadowRoot.querySelector("sp-dialog-wrapper");
-    const options = {
-      trigger: target,
-      type: "modal"
-    };
-    const overlay = await window.__merch__spectrum_Overlay.open(
-      content,
-      options
-    );
-    this.shadowRoot.querySelector("sp-theme").append(overlay);
+  openModal() {
+    this.updateComplete.then(async () => {
+      const content = this.shadowRoot.querySelector("sp-dialog-wrapper");
+      const options = {
+        trigger: this.#target,
+        type: "modal"
+      };
+      const overlay = await window.__merch__spectrum_Overlay.open(
+        content,
+        options
+      );
+      overlay.addEventListener("close", () => {
+        this.modal = false;
+      });
+      this.shadowRoot.querySelector("sp-theme").append(overlay);
+    });
+  }
+  updated() {
+    if (this.modal)
+      this.openModal();
+  }
+  showModal({ target }) {
+    this.#target = target;
+    this.modal = true;
   }
 };
 customElements.define("merch-sidenav", MerchSideNav);
