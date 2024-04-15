@@ -5,7 +5,7 @@ function btnLoadDelay(layer, button, delay, once = true) {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
         if (once) observer.unobserve(entry.target);
-        setTimeout(() => { button.style.display = 'flex'; }, parseInt(delay, 10));
+        setTimeout(() => { button.style.display = 'flex'; }, delay);
       }
     });
   });
@@ -37,8 +37,11 @@ export default async function stepInit(data) {
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
     });
   }
-  if (delay) btnLoadDelay(layer, startOverCTA, delay);
-  else startOverCTA.style.display = 'flex';
+  if (delay) {
+    const dInt = parseInt(delay, 10);
+    const normDelay = dInt > 99 ? dInt : (dInt * 1000);
+    btnLoadDelay(layer, startOverCTA, normDelay);
+  } else startOverCTA.style.display = 'flex';
   layer.append(startOverCTA);
   return layer;
 }
