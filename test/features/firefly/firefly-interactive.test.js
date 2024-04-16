@@ -4,7 +4,6 @@ import { setLibs } from '../../../creativecloud/scripts/utils.js';
 import waitForElement from '../../helpers/waitForElement.js';
 
 setLibs('/libs');
-
 const { default: init } = await import('../../../creativecloud/blocks/interactive-marquee/interactive-marquee.js');
 
 describe('firefly-marquee', () => {
@@ -62,6 +61,14 @@ describe('firefly-marquee', () => {
     button.click();
     const texteffectPrompt = await waitForElement('.promptbar');
     expect(texteffectPrompt).to.exist;
+  });
+
+  it('Clicking on text to image option in interactive selector should diplay text to image detail', async () => {
+    const selector = await waitForElement('.selector-tray');
+    const button = selector.querySelectorAll('.options')[0];
+    button.click();
+    const textToImg = await waitForElement('.promptbar');
+    expect(textToImg).to.exist;
   });
 
   it('Dispatching key codes to prompt input', async () => {
