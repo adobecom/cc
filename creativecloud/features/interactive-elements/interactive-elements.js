@@ -13,6 +13,11 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
   } else if (mode === 'genfill') {
     promptButton.setAttribute('id', 'genfill');
     promptField.classList.remove('promptbar');
+  } else if (mode === 'ff-masonry') {
+    promptField.classList.remove('promptbar');
+    promptField.classList.add('masonry-promptbar');
+    promptInput.classList.remove('prompt-text');
+    promptInput.classList.add('masonry-prompttext');
   }
   if (mode !== 'genfill') {
     promptField.append(promptInput);
@@ -29,18 +34,18 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
   }
   promptField.append(promptButton);
   const device = defineDeviceByScreenSize();
-  if (device === 'TABLET') promptButton.classList.add('button-l');
-  else if (device === 'DESKTOP') promptButton.classList.add('button-xl');
+  if (device === 'DESKTOP' || (device === 'TABLET' && mode === 'ff-masonry')) promptButton.classList.add('button-xl');
+  else if (device === 'TABLET') promptButton.classList.add('button-l');
   return promptField;
 }
 
 export async function createEnticement(enticementDetail, mode) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-  const enticementDiv = createTag('div');
+  const enticementDiv = createTag('div', { class: 'enticement-container' });
   const svgImage = createTag('img', { class: 'enticement-arrow', alt: '' });
   let arrowText;
   [arrowText, svgImage.src] = enticementDetail.split('|');
-  const enticementText = createTag('p', { class: 'enticement-text' }, arrowText.trim());
+  const enticementText = createTag('h2', { class: 'enticement-text' }, arrowText.trim());
   enticementDiv.append(enticementText, svgImage);
   if (mode === 'light') enticementText.classList.add('light');
   return enticementDiv;

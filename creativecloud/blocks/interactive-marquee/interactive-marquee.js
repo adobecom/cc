@@ -1,3 +1,4 @@
+
 import { getLibs } from '../../scripts/utils.js';
 
 // [headingSize, bodySize, detailSize, titlesize]
@@ -69,7 +70,7 @@ function interactiveInit(el, decorateButtons, decorateBlockBg, createTag) {
 export default async function init(el) {
   const miloLibs = getLibs('/libs');
   const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-  const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+  const { createTag, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
     case el.classList.contains('changebg'): {
       const { default: changeBg } = await import('../../features/changeBg/changeBg.js');
@@ -82,6 +83,15 @@ export default async function init(el) {
       interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
       const { default: decorateGenfill } = await import('../../features/genfill/genfill-interactive.js');
       await decorateGenfill(el, { createTag });
+      break;
+    }
+    case el.classList.contains('ff-masonry'): {
+      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
+      loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
+      loadStyle('/creativecloud/features/firefly/firefly-masonry.css');
+      interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
+      const { default: setMultiImageMarquee } = await import('../../features/firefly/firefly-masonry.js');
+      await setMultiImageMarquee(el, { createIntersectionObserver, createTag });
       break;
     }
     case el.classList.contains('firefly'): {

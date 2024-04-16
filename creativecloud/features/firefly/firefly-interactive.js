@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 
 const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
 
-function focusOnInput(media, createTag) {
+export function focusOnInput(media, createTag) {
   const input = media.querySelector('.prompt-text');
   if (input) {
     const device = defineDeviceByScreenSize();
