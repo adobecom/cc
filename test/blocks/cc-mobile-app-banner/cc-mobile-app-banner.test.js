@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
-import { delay } from '../../helpers/waitfor.js';
+import { delay } from '../../helpers/waitForElement.js';
 
 const { setConfig } = await import('../../../creativecloud/scripts/utils.js');
 
@@ -52,7 +52,7 @@ describe('cc-mobile-app-banner', () => {
 
   it('should init by adding branchio script', async () => {
     window.adobePrivacy = { hasUserProvidedConsent: () => true };
-    const module = await import('../../../creativecloud/blocks/mobile-app-banner/mobile-app-banner.js');
+    const module = await import('../../../creativecloud/blocks/cc-mobile-app-banner/cc-mobile-app-banner.js');
     const banner = document.body.querySelector('.cc-mobile-app-banner.product-test');
     await module.default(banner);
     window.dispatchEvent(new CustomEvent('adobePrivacy:PrivacyConsent'));

@@ -1,4 +1,4 @@
-import { getConfig } from '../../utils/utils.js';
+import { getConfig } from '../../scripts/utils.js';
 
 async function getKey(product) {
   const config = getConfig();
