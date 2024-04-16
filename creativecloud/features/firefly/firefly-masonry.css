@@ -391,6 +391,37 @@
   }
 }
 
+@media (min-width: 1201px) and (max-width: 1499px) {
+  .ff-masonry .grid-container {
+    width: 100%;
+  }
+
+  .ff-grid-span-4.image-container {
+    width: 97%;
+  }
+  
+  .ff-grid-span-8.image-container {
+    width: 97%;
+  }
+  
+  .ff-grid-span-12.image-container,
+  .ff-grid-full-width.image-container {
+    width: 97%;
+  }
+  
+  .ff-grid-span-6.image-container {
+    width: 97%;
+  }
+
+  .masonry-promptbar {
+    width: 78%;
+  }
+
+  .masonry-prompttext {
+    width: 67%;
+  }
+}
+
 @keyframes blink {
   0%, 100% {
     opacity: 1;
