@@ -4,7 +4,6 @@ import { setLibs } from '../../../creativecloud/scripts/utils.js';
 import waitForElement from '../../helpers/waitForElement.js';
 
 setLibs('/libs');
-
 const { default: init } = await import('../../../creativecloud/blocks/interactive-marquee/interactive-marquee.js');
 
 describe('firefly-marquee', () => {
@@ -63,6 +62,21 @@ describe('firefly-marquee', () => {
     const texteffectPrompt = await waitForElement('.promptbar');
     expect(texteffectPrompt).to.exist;
   });
+
+  it('Clicking on text to image option in interactive selector should diplay text to image detail', async () => {
+    const selector = await waitForElement('.selector-tray');
+    const button = selector.querySelectorAll('.options')[0];
+    button.click();
+    const textToImg = await waitForElement('.promptbar');
+    expect(textToImg).to.exist;
+  });
+
+  it('Dispatching key codes to prompt input', async () => {
+    const promptinput = document.querySelector('#promptinput');
+    promptinput.click();
+    const eventSpace = new KeyboardEvent('keydown', { key: 'Space', code: 'Space', which: 32, keyCode: 32 });
+    promptinput.dispatchEvent(eventSpace);
+  });
 });
 
 describe('firefly-text-effect-marquee', () => {
@@ -93,6 +107,7 @@ describe('firefly-text-to-image-marquee', () => {
   before(async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     await init(document.querySelector('.ff-text-to-image'));
+    await init(document.querySelector('.firefly.first-genfill'));
   });
 
   it('Prompt should exist', async () => {
@@ -110,5 +125,24 @@ describe('firefly-text-to-image-marquee', () => {
     const enticementArrow = await waitForElement('.enticement-arrow');
     expect(enticementText).to.exist;
     expect(enticementArrow).to.exist;
+  });
+});
+
+describe('firefly-genfill', () => {
+  before(async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+    await init(document.querySelector('.firefly.first-genfill'));
+  });
+
+  it('Enticement should exist', async () => {
+    const enticementText = await waitForElement('.enticement-text');
+    const enticementArrow = await waitForElement('.enticement-arrow');
+    expect(enticementText).to.exist;
+    expect(enticementArrow).to.exist;
+  });
+
+  it('Clicking on genfill redirects to susi', () => {
+    const ffmq = document.querySelector('.firefly.first-genfill');
+    ffmq.querySelector('#genfill').click();
   });
 });
