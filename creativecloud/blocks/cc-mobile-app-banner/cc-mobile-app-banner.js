@@ -17,9 +17,7 @@ async function getKey(product) {
 function branchInit(header, key) {
   let initValue = false;
   function initBranch() {
-    if (initValue) {
-      return;
-    }
+    if (initValue) return;
     initValue = true;
     (function (b, r, a, n, c, h, _, s, d, k) {
       if (!b[n] || !b[n]._q) {
@@ -62,8 +60,7 @@ function branchInit(header, key) {
 export default async function init(el) {
   const header = document.querySelector('.global-navigation');
   if (!header) return;
-  const classListArray = Array.from(el.classList);
-  const product = classListArray.find((token) => token.startsWith('product-')).split('-')[1];
+  const product = [...el.classList].find((token) => token.startsWith('product-')).split('-')[1];
   const key = await getKey(product);
   if (key) branchInit(header, key);
 }
