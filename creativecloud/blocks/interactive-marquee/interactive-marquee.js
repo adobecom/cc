@@ -12,8 +12,6 @@ function decorateText(el, createTag) {
     const bodyEl = headingEl.nextElementSibling;
     bodyEl?.classList.add(`body-${typeSize[1]}`);
     bodyEl?.nextElementSibling?.classList.add(`body-${typeSize[1]}`, 'pricing');
-    const bodyElClone = bodyEl?.cloneNode(true);
-    if (bodyEl) { el.insertAdjacentElement('afterEnd', bodyElClone); }
     const sib = headingEl.previousElementSibling;
     if (sib) {
       const className = sib.querySelector('img, .icon') ? 'icon-area' : `detail-${typeSize[2]}`;
@@ -26,6 +24,16 @@ function decorateText(el, createTag) {
     iconAreaElements?.classList.add('icon-area');
     iconText.innerText = (iconAreaElements.textContent.trim());
     iconText.previousSibling.textContent = '';
+    const foreground = el.parentElement;
+    const mwebContainer = document.createElement('div');
+    const actionItem = el.querySelector('.action-area');
+    mwebContainer.classList.add('mweb-container');
+    mwebContainer.append(
+      sib.cloneNode(true) || document.createElement('div'),
+      heading.cloneNode(true),
+      actionItem.cloneNode(true),
+    );
+    foreground.prepend(mwebContainer);
   };
   decorate(heading, config);
 }

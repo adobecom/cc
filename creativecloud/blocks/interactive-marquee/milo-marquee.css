@@ -46,6 +46,7 @@
 }
 
 .interactive-marquee .text .detail-l,
+.interactive-marquee .mweb-container .detail-l,
 .interactive-marquee .text .heading-xl,
 .interactive-marquee .text .heading-xxl {
   margin-bottom: var(--spacing-xs);
@@ -147,6 +148,10 @@
     align-items: center;
     gap: var(--spacing-s);
   }
+
+  .interactive-marquee .mweb-container {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 1200px) {
@@ -198,18 +203,15 @@
 }
 
 @media screen and (max-width: 600px) {
-  .interactive-marquee .text {
-    margin: 0;
-    order: 0;
+  .mweb-container .action-area {
+    text-align: center;
   }
-
-  .interactive-marquee .text 
-  p.body-xl:nth-last-child(2) {
+  
+  .interactive-marquee .text .detail-l,
+  .interactive-marquee .text .icon-area,
+  .interactive-marquee .text .action-area,
+  .interactive-marquee .text h1[class^="heading"]
+  {
     display: none;
-  }
-
-  .interactive-marquee > .container > .body-xl {
-    display:flex;
-    order:3;
   }
 }
