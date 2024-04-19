@@ -3,17 +3,17 @@ import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-me
 
 function getTrayConfig(data) {
   const dpth = data.displayPath;
-  const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
-  const configUl = (dpth >= 0 && allUls.length > dpth) ? allUls[dpth] : allUls[0];
-  return configUl;
+  const allTrays = data.stepConfigs[data.stepIndex].querySelectorAll('ul, ol');
+  const configTray = (dpth >= 0 && allTrays.length > dpth) ? allTrays[dpth] : allTrays[0];
+  return configTray;
 }
 
 function getStartingPathIdx(data) {
   let pathIdx = 0;
   const dpth = data.displayPath;
-  const allUls = data.stepConfigs[data.stepIndex].querySelectorAll('ul');
-  if (allUls.length < dpth) return pathIdx;
-  for (let i = 0; i < dpth; i += 1) pathIdx += allUls[i].querySelectorAll('li').length;
+  const allTrays = data.stepConfigs[data.stepIndex].querySelectorAll('ul, ol');
+  if (allTrays.length < dpth) return pathIdx;
+  for (let i = 0; i < dpth; i += 1) pathIdx += allTrays[i].querySelectorAll('li').length;
   return pathIdx;
 }
 
@@ -47,23 +47,20 @@ function attachThumbnailEvents(a, data, layer) {
     const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
     await handleImageTransition(data, trObj);
     data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
-    e.target.closest('.tray-items').querySelector('a.tray-thumbnail-img').classList.add('thumbnail-selected');
   });
 }
 
 function selectorTrayWithImgs(layer, data) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'tray-items' });
-  const configUl = getTrayConfig(data);
-  const pics = configUl.querySelectorAll('picture');
+  const configTray = getTrayConfig(data);
+  const options = configTray.querySelectorAll('li');
   let pathIdx = getStartingPathIdx(data);
   let displayImg = null;
-  [...pics].forEach((pic, idx) => {
-    if (idx % 2 === 0) {
-      displayImg = [getImgSrc(pic), pic.querySelector('img').alt];
-      return;
-    }
-    const a = createSelectorThumbnail(pic, pathIdx, displayImg);
+  [...options].forEach((o) => {
+    const [thumbnailPic, displayPic] = o.querySelectorAll('picture');
+    displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
+    const a = createSelectorThumbnail(thumbnailPic, pathIdx, displayImg);
     trayItems.append(a);
     pathIdx += 1;
     attachThumbnailEvents(a, data, layer);
@@ -79,10 +76,7 @@ export default async function stepInit(data) {
   const title = config.querySelector('p:first-child');
   let trayTitle = null;
   if (title) trayTitle = createTag('div', { class: 'tray-title' }, title.innerText.trim());
-  const trayConfig = config.querySelectorAll('ul > li');
-  const isGenerateTray = [...trayConfig].filter((li) => (li.querySelector('img[src*="media_"]').length >= 2));
-  let selectorTray = null;
-  if (isGenerateTray) selectorTray = selectorTrayWithImgs(layer, data);
+  const selectorTray = selectorTrayWithImgs(layer, data);
   if (title) selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
   return layer;

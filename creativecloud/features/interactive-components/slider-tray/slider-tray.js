@@ -15,7 +15,7 @@ async function createSelectorTray(data, layer) {
   const sliderTray = createTag('div', { class: 'sliderTray' });
   const menu = createTag('div', { class: 'menu' });
   const config = data.stepConfigs[data.stepIndex];
-  const options = config.querySelectorAll(':scope > div .icon');
+  const options = config.querySelectorAll(':scope > div ul .icon, :scope > div ol .icon');
   [...options].forEach((o) => { handleInput(o, sliderTray, menu, layer); });
   layer.append(sliderTray);
   observeSliderTray(sliderTray, data.target, menu);
@@ -94,9 +94,11 @@ function createUploadButton(details, picture, sliderTray, menu) {
   appendSVGToButton(picture, labelBtn);
   const clone = labelBtn.cloneNode(true);
   clone.classList.add('uploadButtonMobile');
+  const mobileInput = clone.querySelector('.inputFile');
   menu.append(clone);
   sliderTray.append(labelBtn);
   applyAccessibility(btn, labelBtn);
+  applyAccessibility(mobileInput, clone);
 }
 
 function applyAccessibility(inputEle, target) {

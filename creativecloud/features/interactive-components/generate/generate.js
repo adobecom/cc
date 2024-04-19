@@ -4,8 +4,8 @@ export default async function stepInit(data) {
   data.target.classList.add('step-generate');
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const [searchText, btnText, position] = config.textContent.trim().split('|');
-  if (position) layer.classList.add(`generate-${position.toLowerCase().trim()}`);
+  const lastp = config.querySelector(':scope > div > p:last-child');
+  const [searchText, btnText] = lastp.textContent.trim().split('|');
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
   const searchBarContainer = createTag('div', { class: 'generate-text-container' }, searchBar);
