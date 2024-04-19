@@ -24,15 +24,11 @@ function decorateText(el, createTag) {
     iconAreaElements?.classList.add('icon-area');
     iconText.innerText = (iconAreaElements.textContent.trim());
     iconText.previousSibling.textContent = '';
-    const foreground = el.parentElement;
-    const mwebContainer = document.createElement('div');
+    const foreground = el.closest('.foreground');
+    const mwebContainer = createTag('div', { class: 'mweb-container' });
     const actionItem = el.querySelector('.action-area');
-    mwebContainer.classList.add('mweb-container');
-    mwebContainer.append(
-      sib.cloneNode(true) || document.createElement('div'),
-      heading.cloneNode(true),
-      actionItem.cloneNode(true),
-    );
+    mwebContainer.append(heading.cloneNode(true), actionItem.cloneNode(true));
+    if (sib) mwebContainer.prepend(sib);
     foreground.prepend(mwebContainer);
   };
   decorate(heading, config);
