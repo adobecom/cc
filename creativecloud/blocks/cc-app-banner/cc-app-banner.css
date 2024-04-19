@@ -133,7 +133,8 @@
   -webkit-font-smoothing: antialiased;
   user-select: none;
   transition: all 00.25s ease;
-  position: sticky;
+  position: absolute;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .35);
   top: 0;
   left: 0;
   box-shadow: 0 0 5px #00000059;
