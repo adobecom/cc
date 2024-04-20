@@ -29,6 +29,18 @@ export function getMobileOperatingSystem() {
 let link = '';
 let mobileOS = getMobileOperatingSystem();
 
+function handleIntersection(entries) {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      // Element is not in viewport
+      document.body.classList.remove('has-app-banner');
+    } else {
+      // Element is in viewport
+      document.body.classList.add('has-app-banner');
+    }
+  });
+}
+
 function closeBanner() {
   const appBanner = document.querySelector('.app-banner');
   document.body.classList.remove('has-app-banner');
@@ -124,6 +136,8 @@ export default async function init(el) {
   bannerPlaceHolder.remove();
   document.body.classList.add('has-app-banner');
   document.body.prepend(appBanner);
+  const observer = new IntersectionObserver(handleIntersection);
+  observer.observe(appBanner);
 }
 
 export function setMobileOS(testOS) {
