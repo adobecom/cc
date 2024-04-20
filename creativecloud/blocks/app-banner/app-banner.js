@@ -18,8 +18,7 @@ export function getMobileOperatingSystem() {
     return 'Android';
   }
 
-  if (/iPad|iPhone|iPod/.test(navigator.platform) ||
-  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) && !window.MSStream) {
+  if (/iphone|ipad|ipod/.test(userAgent) && !window.MSStream) {
     return 'iOS';
   }
 
