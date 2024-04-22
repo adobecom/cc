@@ -1,11 +1,11 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setMobileOS, getMobileOperatingSystem } from '../../../acrobat/blocks/app-banner/app-banner.js';
-import { waitForElement } from '../../helpers/waitfor.js';
+import { setMobileOS, getMobileOperatingSystem } from '../../../creativecloud/blocks/app-banner/app-banner.js';
+import waitForElement from '../../helpers/waitForElement.js';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { default: init } = await import(
-  '../../../acrobat/blocks/app-banner/app-banner.js'
+  '../../../creativecloud/blocks/app-banner/app-banner.js'
 );
 
 describe('app-banner iOS block', () => {

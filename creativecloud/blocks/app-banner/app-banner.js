@@ -13,7 +13,6 @@ export function getMobileOperatingSystem() {
   if (/windows phone/i.test(userAgent)) {
     return 'Windows Phone';
   }
-
   if (/android/i.test(userAgent) || (/X11/i.test(userAgent) && navigator.maxTouchPoints > 0)) {
     return 'Android';
   }
@@ -28,7 +27,7 @@ let link = '';
 let mobileOS = getMobileOperatingSystem();
 
 function handleIntersection(entries) {
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     if (!entry.isIntersecting) {
       // Element is not in viewport
       document.body.classList.remove('has-app-banner');
