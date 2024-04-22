@@ -207,10 +207,10 @@
     text-align: center;
   }
   
-  .interactive-marquee .text .detail-l,
-  .interactive-marquee .text .icon-area,
-  .interactive-marquee .text .action-area,
-  .interactive-marquee .text h1[class^="heading"]
+  .interactive-marquee .text .detail-l.mobile-cta-top,
+  .interactive-marquee .text .icon-area.mobile-cta-top,
+  .interactive-marquee .text .action-area.mobile-cta-top,
+  .interactive-marquee .text h1[class^="heading"].mobile-cta-top
   {
     display: none;
   }
