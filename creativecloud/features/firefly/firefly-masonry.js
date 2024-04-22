@@ -4,7 +4,7 @@ function isTouchDevice() {
     || (navigator.msMaxTouchPoints > 0);
 }
 
-function handleTouchDevice(mediaContainer, delay) {
+export function handleTouchDevice(mediaContainer, delay) {
   let tapCount = 0;
   mediaContainer.querySelector('a').addEventListener('click', (e) => {
     e.preventDefault();
