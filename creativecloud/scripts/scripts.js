@@ -127,7 +127,7 @@ const CONFIG = {
   imsClientId: 'adobedotcom-cc',
   locales,
   geoRouting: 'on',
-  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
+  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com', 'adobe.com'],
   decorateArea,
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
