@@ -14,7 +14,7 @@ export function getMobileOperatingSystem() {
     return 'Windows Phone';
   }
 
-  if (/android/i.test(userAgent)) {
+  if (/android/i.test(userAgent) || (/X11/i.test(userAgent) && navigator.maxTouchPoints > 0)) {
     return 'Android';
   }
   if ((/iPad|iPhone|iPod/.test(userAgent) || (/Macintosh/.test(userAgent) && navigator.maxTouchPoints > 0)) && !window.MSStream) {
