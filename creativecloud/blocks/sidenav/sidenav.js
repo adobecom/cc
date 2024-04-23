@@ -169,7 +169,7 @@ export default async function init(el) {
   appendSearch(rootNav, searchText);
   if (endpoint) {
     await makePause();
-    endpoint = localizeLink(endpoint.textContent.trim(), null, t
+    endpoint = localizeLink(endpoint.textContent.trim(), null, true);
     const explicitCategories = categoryRow?.querySelector('ul');
     performance.mark('sidenav:appendFilters:start');
     await appendFilters(rootNav, endpoint, explicitCategories, typeText);
