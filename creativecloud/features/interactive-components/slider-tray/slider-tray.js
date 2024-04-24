@@ -4,10 +4,12 @@ import { createTag } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
 export default async function stepInit(data) {
+  const imgObj = {};
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   await createSelectorTray(data, layer);
-  sliderEvent(data.target, layer);
-  uploadImage(data.target, layer);
+  sliderEvent(data.target, layer, imgObj);
+  uploadImage(data.target, layer, imgObj);
+  continueToPs(layer, imgObj);
   return layer;
 }
 
@@ -63,15 +65,14 @@ function observeSliderTray(sliderTray, targets) {
 }
 
 function createSlider(sliderType, details, menu, sliderTray) {
-  const [label, min, max] = details.split('|').map((item) => item.trim());
-  const sliderLabel = createTag('label', { for: `${sliderType}` }, label);
+  const sliderLabel = createTag('label', { for: `${sliderType}` }, details.trim());
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
   const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1' });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
   const input = createTag('input', {
     type: 'range',
-    min,
-    max,
+    min: `${sliderType == 'hue' ? '-180' : '-100'}`,
+    max: `${sliderType == 'hue' ? '180' : '100'}`,
     class: `options ${sliderType.toLowerCase()}-input`,
     value: `${sliderType === 'hue' ? '0' : '180'}`,
   });
@@ -135,7 +136,7 @@ function appendSVGToButton(picture, button) {
   button.prepend(svgCTACont);
 }
 
-function sliderEvent(media, layer) {
+function sliderEvent(media, layer, imgObj) {
   let hue = 0;
   let saturation = 100;
   ['hue', 'saturation'].forEach((sel) => {
@@ -157,9 +158,11 @@ function sliderEvent(media, layer) {
       switch (sel.toLowerCase()) {
         case ('hue'):
           hue = value;
+          imgObj.hue = value;
           break;
         case ('saturation'):
-          saturation = value;
+          saturation = 100 + parseInt(value, 10);
+          imgObj.saturation = parseInt(value, 10);
           break;
         default:
           break;
@@ -173,7 +176,7 @@ function sliderEvent(media, layer) {
   });
 }
 
-function uploadImage(media, layer) {
+function uploadImage(media, layer, imgObj) {
   layer.querySelectorAll('.uploadButton').forEach((btn) => {
     const analyticsBtn = btn.querySelector('.interactive-link-analytics-text');
     btn.addEventListener('cancel', () => {
@@ -183,10 +186,12 @@ function uploadImage(media, layer) {
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
       if (file) {
+        imgObj.fileName = file.name;
         const sources = image.querySelectorAll('source');
         sources.forEach((source) => source.remove());
         const imageUrl = URL.createObjectURL(file);
         image.src = imageUrl;
+        imgObj.imgSrc = imageUrl;
         analyticsBtn.innerHTML = 'Upload Button';
         const continueBtn = layer.querySelector('.continueButton');
         if (continueBtn) {
@@ -195,6 +200,48 @@ function uploadImage(media, layer) {
       } else {
         cancelAnalytics(btn);
       }
+    });
+  });
+}
+
+function continueToPs(layer, imgObj) {
+  layer.querySelectorAll('.continueButton').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const actionJSONData = [
+        {
+          _obj: 'make',
+          _target: [{ _ref: 'adjustmentLayer' }],
+          using: {
+            _obj: 'adjustmentLayer',
+            type: {
+              _obj: 'hueSaturation',
+              adjustment: [
+                {
+                  _obj: 'hueSatAdjustmentV2',
+                  hue: Math.round(imgObj.hue || 0),
+                  lightness: 0,
+                  saturation: Math.round(imgObj.saturation || 0),
+                },
+              ],
+              colorize: false,
+              presetKind: {
+                _enum: 'presetKindType',
+                _value: 'presetKindCustom',
+              },
+            },
+          },
+        },
+      ];
+      const psurls = [
+        'https://photoshop.adobe.com',
+        'https://dev.photoshop.adobe.com',
+        'https://pr.photoshop.adobe.com/?PR=48898',
+        'https://localhost.corp.adobe.com:3000',
+      ]
+      console.log('actionJSONData', actionJSONData);
+      const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
+      const imageData = await (await fetch(imgObj.imgSrc)).blob(); 
+      openInPsWeb(psurls[1], imgObj.fileName, [{ filename: imgObj.fileName, imageData }], actionJSONData);
     });
   });
 }
