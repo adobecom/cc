@@ -1,9 +1,3 @@
-function isTouchDevice() {
-  return ('ontouchstart' in window)
-    || (navigator.maxTouchPoints > 0)
-    || (navigator.msMaxTouchPoints > 0);
-}
-
 function handleTouchDevice(mediaContainer, delay) {
   let tapCount = 0;
   mediaContainer.querySelector('a').addEventListener('touchstart', (e) => {
@@ -83,9 +77,7 @@ function processMasonryMedia(ic, miloUtil, allP, enticementMode, mediaDetail) {
     a.appendChild(imgPromptContainer);
     mediaContainer.appendChild(a);
     allMedia.push(mediaContainer);
-    if (isTouchDevice()) {
-      handleTouchDevice(mediaContainer, 2000);
-    }
+    handleTouchDevice(mediaContainer, 2000);
   }
   createImageLayout(allMedia, miloUtil.createTag, mediaDetail.spans, media);
   createEmbellishment(allP, media, ic, enticementMode, miloUtil.createTag);
@@ -156,9 +148,7 @@ function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail) {
       }, 1000);
     },
   });
-  if (isTouchDevice()) {
-    handleTouchDevice(mediaContainer, 1000);
-  }
+  handleTouchDevice(mediaContainer, 1000);
   createEmbellishment(allP, mediaMobile, ic, mode, miloUtil.createTag);
 }
 
