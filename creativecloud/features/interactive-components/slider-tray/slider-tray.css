@@ -361,7 +361,8 @@
   display: none;
 }
 
-.interactive-enabled .step-slider-tray .continueButton:hover {
+.interactive-enabled .step-slider-tray .continueButton:hover,
+.interactive-enabled .step-slider-tray .continueButton:focus {
   border: 2px solid var(--prompt-btn-fill-light);
 }
 }
