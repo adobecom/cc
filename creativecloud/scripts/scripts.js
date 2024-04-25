@@ -146,8 +146,8 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobenonacdcprod',
   },
   jarvis: {
-    id: 'ReimagineCC1',
-    version: '1',
+    id: 'adobedotcom2',
+    version: '1.83',
     onDemand: false,
   },
   htmlExclude: [
