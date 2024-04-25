@@ -1,6 +1,5 @@
 import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import sinon from 'sinon';
 import { setLibs } from '../../../creativecloud/scripts/utils.js';
 import waitForElement from '../../helpers/waitForElement.js';
 
@@ -13,17 +12,10 @@ function delay(ms) {
 }
 
 describe('firefly-masonry', () => {
-  //let clock;
   before(async () => {
     document.body.innerHTML = await readFile({ path: './mocks/masonry-body.html' });
-    //clock = sinon.useFakeTimers();
     await init(document.querySelector('.ff-masonry'));
   });
-
-  /*after(() => {
-    clock.restore();
-    sinon.restore();
-  });*/
 
   it('Prompt should exist', async () => {
     const promptbar = await waitForElement('.masonry-promptbar');
@@ -52,15 +44,30 @@ describe('firefly-masonry', () => {
     expect(enticementArrow).to.exist;
   });
 
-  it('should autocycle', async () => {
-    await setViewport({ width: 600, height: 100 });
-    await delay(1000);
-  });
+  it('media should autocycle in mobile view', async () => {
+    await setViewport({ width: 500, height: 800 });
+    while (!document.querySelector('.mobile-only a.preload')) {
+      // eslint-disable-next-line no-await-in-loop
+      await delay(500);
+    }
+  }).timeout(4500);
 
-  it('should change image content opacity and navigate to link after two tap for touch device', async () => {
+  it('should change image content opacity on one tap for touch device', async () => {
     await setViewport({ width: 599, height: 100 });
     const imageContainer = await waitForElement('.image-container');
     imageContainer.querySelector('a').dispatchEvent(new Event('touchstart'));
     expect(imageContainer.querySelector('.image-content').style.opacity).to.equal('1');
+  });
+
+  it('should navigate to link after two tap for touch device', async () => {
+    await setViewport({ width: 599, height: 100 });
+    const imageContainer = await waitForElement('.image-container');
+    imageContainer.querySelector('a').dispatchEvent(new Event('touchstart'));
+    imageContainer.querySelector('a').dispatchEvent(new Event('touchstart'));
+  });
+
+  it('verify click on generate button', async () => {
+    const promptButton = await waitForElement('#promptbutton');
+    promptButton.dispatchEvent(new Event('click'));
   });
 });
