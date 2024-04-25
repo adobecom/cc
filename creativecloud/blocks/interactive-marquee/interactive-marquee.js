@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
-function decorateText(el, createTag) {
+function decorateText(el, createTag, isMwebMarquee = false) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
   const config = typeSizes;
@@ -24,6 +24,19 @@ function decorateText(el, createTag) {
     iconAreaElements?.classList.add('icon-area');
     iconText.innerText = (iconAreaElements.textContent.trim());
     iconText.previousSibling.textContent = '';
+    if (isMwebMarquee) {
+      const foreground = el.closest('.foreground');
+      const mwebContainer = createTag('div', { class: 'mweb-container' });
+      const actionItem = el.querySelector('.action-area');
+      mwebContainer.append(heading.cloneNode(true), actionItem.cloneNode(true));
+      heading.classList.add('mobile-cta-top');
+      actionItem.classList.add('mobile-cta-top');
+      if (sib) {
+        mwebContainer.prepend(sib.cloneNode(true));
+        sib.classList.add('mobile-cta-top');
+      }
+      foreground.prepend(mwebContainer);
+    }
   };
   decorate(heading, config);
 }
@@ -60,9 +73,10 @@ function interactiveInit(el, decorateButtons, decorateBlockBg, createTag) {
 
   const firstDivInForeground = foreground.querySelector(':scope > div');
   if (firstDivInForeground?.classList.contains('asset')) el.classList.add('row-reversed');
+  const isMwebMarquee = el.classList.contains('mobile-cta-top');
 
   decorateButtons(text, 'button-xl');
-  decorateText(text, createTag);
+  decorateText(text, createTag, isMwebMarquee);
   extendButtonsClass(text);
 }
 
