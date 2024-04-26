@@ -2,8 +2,10 @@ import { getLibs } from '../../scripts/utils.js';
 
 const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
 
-export function focusOnInput(media, createTag) {
-  const input = media.querySelector('.prompt-text');
+export function focusOnInput(media, createTag, inputfield = null) {
+  let input = null;
+  if (inputfield === null) input = media.querySelector('.prompt-text');
+  else input = inputfield;
   if (input) {
     const device = defineDeviceByScreenSize();
     const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
