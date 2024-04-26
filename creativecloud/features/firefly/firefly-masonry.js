@@ -144,11 +144,11 @@ function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail) {
     options: { rootMargin: `${ROOT_MARGIN}px` },
     callback: (target) => {
       setTimeout(() => {
-        startAutocycle(target, imagePrompt, mediaDetail, 3000);
+        startAutocycle(target, imagePrompt, mediaDetail, 4000);
       }, 1000);
     },
   });
-  handleTouchDevice(mediaContainer, 1000);
+  handleTouchDevice(mediaContainer, 2000);
   createEmbellishment(allP, mediaMobile, ic, mode, miloUtil.createTag);
 }
 

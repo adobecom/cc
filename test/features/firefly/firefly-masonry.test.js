@@ -50,7 +50,7 @@ describe('firefly-masonry', () => {
       // eslint-disable-next-line no-await-in-loop
       await delay(500);
     }
-  }).timeout(4500);
+  }).timeout(5500);
 
   it('should change image content opacity on one tap for touch device', async () => {
     await setViewport({ width: 599, height: 100 });
