@@ -17,16 +17,6 @@ function handleTouchDevice(mediaContainer, delay) {
   });
 }
 
-function createImageLayout(allMedia, createTag, spans, media) {
-  const gridDiv = createTag('div', { class: 'grid-container' });
-  [...allMedia].forEach((img, i) => {
-    const spanWidth = spans[i] ? spans[i] : 'span-4';
-    img.classList.add(`ff-grid-${spanWidth.trim().replace(' ', '-')}`);
-    gridDiv.appendChild(img);
-  });
-  media.appendChild(gridDiv);
-}
-
 function getImgSrc(pic, viewport = '') {
   let source = '';
   if (viewport === 'mobile') source = pic.querySelector('source[type="image/webp"]:not([media])');
@@ -62,7 +52,7 @@ async function createEmbellishment(allP, media, ic, mode, createTag) {
   ic.appendChild(media);
 }
 
-function processMasonryMedia(allMedia, miloUtil, allP, mediaDetail) {
+function processMasonryMedia(gridDiv, miloUtil, allP, mediaDetail) {
   const lastIndex = mediaDetail.imgSrc.length - 1;
   const mediaContainer = miloUtil.createTag('div', { class: 'image-container' });
   const a = miloUtil.createTag('a', { href: `${mediaDetail.href[lastIndex]}` });
@@ -75,8 +65,11 @@ function processMasonryMedia(allMedia, miloUtil, allP, mediaDetail) {
   imgPromptContainer.appendChild(imgHoverIcon);
   a.appendChild(imgPromptContainer);
   mediaContainer.appendChild(a);
-  allMedia.push(mediaContainer);
   handleTouchDevice(mediaContainer, 2000);
+
+  const spanWidth = mediaDetail.spans[lastIndex];
+  mediaContainer.classList.add(`ff-grid-${spanWidth.trim().replace(' ', '-')}`);
+  gridDiv.appendChild(mediaContainer);
 }
 
 function setImgAttrs(a, imagePrompt, src, prompt, href) {
@@ -162,7 +155,7 @@ export default async function setMultiImageMarquee(el, miloUtil) {
   ic.innerHTML = '';
   const mediaDetail = { imgSrc: [], prompt: [], href: [], index: 0, spans: [] };
   const media = miloUtil.createTag('div', { class: 'asset grid-layout' });
-  const allMedia = [];
+  const gridDiv = miloUtil.createTag('div', { class: 'grid-container' });
   [...allP].forEach((s) => {
     if (s.querySelector('picture')) {
       const src = getImgSrc(s);
@@ -175,11 +168,11 @@ export default async function setMultiImageMarquee(el, miloUtil) {
       mediaDetail.href.push(href);
       mediaDetail.spans.push(span);
       // Desktop and Tablet
-      processMasonryMedia(allMedia, miloUtil, allP, mediaDetail);
+      processMasonryMedia(gridDiv, miloUtil, allP, mediaDetail);
     }
   });
   // For grid view
-  createImageLayout(allMedia, miloUtil.createTag, mediaDetail.spans, media);
+  media.appendChild(gridDiv);
   createEmbellishment(allP, media, ic, enticementMode, miloUtil.createTag);
   // For mobile view
   processMobileMedia(ic, miloUtil, allP, enticementMode, mediaDetail);
