@@ -1,4 +1,4 @@
-import { readFile } from '@web/test-runner-commands';
+import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
@@ -13,6 +13,8 @@ describe('Start Over', () => {
     setLibs('https://milo.adobe.com/libs');
     im = document.querySelector('.interactive-metadata');
     ib = document.querySelector('.marquee');
+    setViewport({ width: 1500, height: 1500 });
+    window.dispatchEvent(new Event('resize'));
     await init(im);
   });
   it('should render generate layer', () => {
