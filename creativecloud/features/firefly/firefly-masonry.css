@@ -1,3 +1,4 @@
+
 /* stylelint-disable property-no-vendor-prefix */
 /* stylelint-disable value-no-vendor-prefix */
 /* stylelint-disable selector-no-vendor-prefix */
@@ -182,7 +183,7 @@
     position: absolute;
     left: 50%;
     top: 112%;
-    transform: translate(-50%, -115%);
+    transform: translate(-50%, -112%);
   }
 
   .ff-masonry .mobile-only .image-prompt > p {
@@ -193,6 +194,7 @@
     margin-top: 0;
     font-size: var(--type-body-s-size);
     line-height: var(--type-body-s-lh);
+    color: var(--text-color);
   }
 
   .ff-masonry .mobile-only .image-content {
