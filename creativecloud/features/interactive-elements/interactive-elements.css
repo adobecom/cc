@@ -37,6 +37,11 @@
   border: 1px solid #323232;
 }
 
+.masonry-promptbar.light {
+  background: #111111;
+  border: 1px solid #323232;
+}
+
 .prompt-text {
   width: 142px;
   outline: none;
@@ -66,6 +71,11 @@
 }
 
 .prompt-text.light {
+  color: #DBDBDB;
+  background: #111111;
+}
+
+.masonry-prompttext.light {
   color: #DBDBDB;
   background: #111111;
 }

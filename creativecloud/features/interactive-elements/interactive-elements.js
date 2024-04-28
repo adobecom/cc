@@ -7,13 +7,14 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
   let promptInput = '';
   if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt.trim()}`, maxlength: '250', autofocus: 'true' });
   const promptButton = createTag('button', { class: 'con-button blue', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText.trim()}`);
-  if (mode === 'light') {
+  if (mode.includes('light')) {
     promptField.classList.add('light');
     promptInput.classList.add('light');
   } else if (mode === 'genfill') {
     promptButton.setAttribute('id', 'genfill');
     promptField.classList.remove('promptbar');
-  } else if (mode === 'ff-masonry') {
+  }
+  if (mode.includes('ff-masonry')) {
     promptField.classList.remove('promptbar');
     promptField.classList.add('masonry-promptbar');
     promptInput.classList.remove('prompt-text');
@@ -34,7 +35,7 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
   }
   promptField.append(promptButton);
   const device = defineDeviceByScreenSize();
-  if (device === 'DESKTOP' || (device === 'TABLET' && mode === 'ff-masonry')) promptButton.classList.add('button-xl');
+  if (device === 'DESKTOP' || (device === 'TABLET' && mode.includes('ff-masonry'))) promptButton.classList.add('button-xl');
   else if (device === 'TABLET') promptButton.classList.add('button-l');
   return promptField;
 }

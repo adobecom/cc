@@ -24,11 +24,11 @@ function getImgSrc(pic, viewport = '') {
   return source.srcset;
 }
 
-async function createEmbellishment(allP, media, ic, mode, createTag) {
+async function createEmbellishment(allP, media, ic, mode, createTag, interactiveElemMode) {
   const { createPromptField, createEnticement } = await import('../interactive-elements/interactive-elements.js');
   const { focusOnInput } = await import('./firefly-interactive.js');
   const [promptText, buttonText] = allP[4].innerText.split('|');
-  const fireflyPrompt = await createPromptField(`${promptText}`, `${buttonText}`, 'ff-masonry');
+  const fireflyPrompt = await createPromptField(`${promptText}`, `${buttonText}`, `ff-masonry, ${interactiveElemMode}`);
   fireflyPrompt.classList.add('ff-masonry-prompt');
   media.appendChild(fireflyPrompt);
   const input = fireflyPrompt.querySelector('.masonry-prompttext');
@@ -104,7 +104,7 @@ function startAutocycle(a, imagePrompt, mediaDetail, interval) {
   }, interval);
 }
 
-function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail) {
+function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail, interactiveElemMode) {
   const { imgSrc, href, prompt } = mediaDetail;
   const currentIndex = mediaDetail.index;
 
@@ -144,11 +144,12 @@ function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail) {
     },
   });
   handleTouchDevice(mediaContainer, 2000);
-  createEmbellishment(allP, mediaMobile, ic, mode, miloUtil.createTag);
+  createEmbellishment(allP, mediaMobile, ic, mode, miloUtil.createTag, interactiveElemMode);
 }
 
 export default async function setMultiImageMarquee(el, miloUtil) {
   const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
+  const interactiveElemMode = el.classList.contains('light') ? 'dark' : 'light';
   const ic = el.querySelector('.interactive-container');
   const mediaElements = el.querySelector('.asset');
   const allP = mediaElements.querySelectorAll('p:not(:empty)');
@@ -173,7 +174,7 @@ export default async function setMultiImageMarquee(el, miloUtil) {
   });
   // For grid view
   media.appendChild(gridDiv);
-  createEmbellishment(allP, media, ic, enticementMode, miloUtil.createTag);
+  createEmbellishment(allP, media, ic, enticementMode, miloUtil.createTag, interactiveElemMode);
   // For mobile view
-  processMobileMedia(ic, miloUtil, allP, enticementMode, mediaDetail);
+  processMobileMedia(ic, miloUtil, allP, enticementMode, mediaDetail, interactiveElemMode);
 }
