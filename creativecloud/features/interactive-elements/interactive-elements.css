@@ -14,7 +14,7 @@
 }
 
 .masonry-promptbar {
-  height: 30px;
+  height: 28px;
   background: var(--color-white);
   border-radius: 8px;
   display: flex;
@@ -215,12 +215,12 @@
   }
 
   .masonry-promptbar {
-    height: 50px;
+    height: 52px;
     padding-top: 7px;
     padding-bottom: 7px;
-    padding-inline-start: 19px;
-    padding-inline-end: 19px;
-    width: 517px;
+    padding-inline-start: 23px;
+    padding-inline-end: 23px;
+    width: 510px;
   }
 
   .masonry-prompttext {
@@ -313,12 +313,12 @@
   }
 
   .masonry-promptbar {
-    height: 50px;
+    height: 52px;
     padding-top: 7px;
     padding-bottom: 7px;
-    padding-inline-start: 19px;
-    padding-inline-end: 19px;
-    width: 517px;
+    padding-inline-start: 23px;
+    padding-inline-end: 23px;
+    width: 510px;
   }
 
   .masonry-prompttext {
