@@ -33,7 +33,7 @@ async function createEmbellishment(allP, media, ic, mode, createTag, interactive
   media.appendChild(fireflyPrompt);
   const input = fireflyPrompt.querySelector('.masonry-prompttext');
   focusOnInput(media, createTag, input);
-  const promptButton = fireflyPrompt.querySelector('#promptbutton');
+  const promptButton = fireflyPrompt.querySelector('.masonry-generate');
   promptButton.addEventListener('click', async (e) => {
     const userprompt = media.querySelector('.masonry-prompttext')?.value;
     const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';

@@ -19,6 +19,9 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
     promptField.classList.add('masonry-promptbar');
     promptInput.classList.remove('prompt-text');
     promptInput.classList.add('masonry-prompttext');
+    promptInput.removeAttribute('id');
+    promptButton.removeAttribute('id');
+    promptButton.classList.add('masonry-generate');
   }
   if (mode !== 'genfill') {
     promptField.append(promptInput);
