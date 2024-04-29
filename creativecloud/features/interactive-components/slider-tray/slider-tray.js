@@ -74,7 +74,8 @@ function createSlider(sliderType, details, menu, sliderTray) {
     min: `${sliderType == 'hue' ? '-180' : '-100'}`,
     max: `${sliderType == 'hue' ? '180' : '100'}`,
     class: `options ${sliderType.toLowerCase()}-input`,
-    value: `${sliderType === 'hue' ? '0' : '180'}`,
+    // value: `${sliderType === 'hue' ? '0' : '180'}`,
+    value: '0',
   });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
