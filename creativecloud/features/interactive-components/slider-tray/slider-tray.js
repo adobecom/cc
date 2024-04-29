@@ -121,7 +121,7 @@ function applyAccessibility(inputEle, target) {
 }
 
 function createUploadPSButton(details, picture, layer) {
-  const btn = createTag('a', { class: 'continueButton body-xl hide' }, details);
+  const btn = createTag('a', { class: 'continueButton body-xl hide', tabindex:"0" }, details);
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
   btn.append(analyticsHolder);
   appendSVGToButton(picture, btn);
