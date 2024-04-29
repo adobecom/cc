@@ -14,7 +14,7 @@
 }
 
 .masonry-promptbar {
-  height: 28px;
+  height: 30px;
   background: var(--color-white);
   border-radius: 8px;
   display: flex;
@@ -225,7 +225,7 @@
   }
 
   .masonry-promptbar {
-    height: 52px;
+    height: 50px;
     padding-top: 7px;
     padding-bottom: 7px;
     padding-inline-start: 23px;
@@ -323,7 +323,7 @@
   }
 
   .masonry-promptbar {
-    height: 52px;
+    height: 50px;
     padding-top: 7px;
     padding-bottom: 7px;
     padding-inline-start: 23px;
