@@ -163,7 +163,7 @@ export default async function setMultiImageMarquee(el, miloUtil) {
       const src = getImgSrc(s);
       const prompt = allP[[...allP].indexOf(s) + 1].innerText;
       const { href } = allP[[...allP].indexOf(s) + 1].querySelector('a');
-      let [x, alt, span] = s.querySelector('img').getAttribute('alt').split('|');
+      let [, alt, span] = s.querySelector('img').getAttribute('alt').split('|');
       if (!alt && !span) {
         alt = '';
         span = s.querySelector('img').getAttribute('alt');
