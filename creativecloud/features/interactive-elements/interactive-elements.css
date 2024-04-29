@@ -230,13 +230,13 @@
     padding-bottom: 7px;
     padding-inline-start: 23px;
     padding-inline-end: 23px;
-    width: 510px;
+    width: 500px;
   }
 
   .masonry-prompttext {
     font-size: var(--type-body-m-size);
     line-height: var(--type-body-m-lh);
-    width: 372px;
+    width: 364px;
   }
 
   .enticement-arrow {    
@@ -328,13 +328,13 @@
     padding-bottom: 7px;
     padding-inline-start: 23px;
     padding-inline-end: 23px;
-    width: 510px;
+    max-width: 508px;
   }
 
   .masonry-prompttext {
     font-size: var(--type-body-m-size);
     line-height: var(--type-body-m-lh);
-    width: 372px;
+    width: 364px;
   }
 
   .enticement-arrow {
