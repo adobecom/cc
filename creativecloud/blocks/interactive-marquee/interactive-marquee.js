@@ -99,12 +99,19 @@ export default async function init(el) {
       break;
     }
     case el.classList.contains('ff-masonry'): {
-      loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
-      loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
-      loadStyle('/creativecloud/features/firefly/firefly-masonry.css');
-      interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
-      const { default: setMultiImageMarquee } = await import('../../features/firefly/firefly-masonry.js');
-      await setMultiImageMarquee(el, { createIntersectionObserver, createTag });
+      try {
+        const stylePromise = new Promise((resolve) => {
+          loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css', resolve);
+          loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css', resolve);
+          loadStyle('/creativecloud/features/firefly/firefly-masonry.css', resolve);
+        });
+        await Promise.all([stylePromise]);
+        interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
+        const { default: setMultiImageMarquee } = await import('../../features/firefly/firefly-masonry.js');
+        await setMultiImageMarquee(el, { createIntersectionObserver, createTag });
+      } catch (err) {
+        window.lana?.log(`Failed to load firefly masonry: ${err}`);
+      }
       break;
     }
     case el.classList.contains('firefly'): {
