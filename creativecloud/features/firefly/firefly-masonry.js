@@ -56,13 +56,14 @@ function processMasonryMedia(gridDiv, miloUtil, allP, mediaDetail) {
   const lastIndex = mediaDetail.imgSrc.length - 1;
   const mediaContainer = miloUtil.createTag('div', { class: 'image-container' });
   const a = miloUtil.createTag('a', { href: `${mediaDetail.href[lastIndex]}` });
-  a.style.backgroundImage = `url(${mediaDetail.imgSrc[lastIndex]})`;
+  const img = miloUtil.createTag('img', { src: `${mediaDetail.imgSrc[lastIndex]}`, class: 'prompt-image', alt: '' });
   const imgPromptContainer = miloUtil.createTag('div', { class: 'image-content' });
   const imgPrompt = miloUtil.createTag('p', { }, mediaDetail.prompt[lastIndex].trim());
   const imgHoverIcon = miloUtil.createTag('img', { alt: '', class: 'hoversvg' });
   imgHoverIcon.src = allP[2].querySelector('a').href;
   imgPromptContainer.appendChild(imgPrompt);
   imgPromptContainer.appendChild(imgHoverIcon);
+  a.append(img);
   a.appendChild(imgPromptContainer);
   mediaContainer.appendChild(a);
   handleTouchDevice(mediaContainer, 2000);
@@ -76,7 +77,7 @@ function setImgAttrs(a, imagePrompt, src, prompt, href) {
   const image = new Image();
   image.src = src;
   image.onload = () => {
-    a.style.backgroundImage = `url(${src})`;
+    a.querySelector('img').src = src;
     imagePrompt.querySelector('p').innerText = prompt;
     a.href = href;
     a.classList.remove('preload');
@@ -111,7 +112,7 @@ function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail, interactiveEl
   const mediaMobile = miloUtil.createTag('div', { class: 'asset mobile-only' });
   const mediaContainer = miloUtil.createTag('div', { class: 'image-container' });
   const a = miloUtil.createTag('a', { href: `${href[currentIndex]}` });
-  a.style.backgroundImage = `url(${imgSrc[currentIndex]})`;
+  const img = miloUtil.createTag('img', { src: `${imgSrc[currentIndex]}`, class: 'prompt-image', alt: '' });
   const imageHover = miloUtil.createTag('div', { class: 'image-content' });
   const imgHoverText = miloUtil.createTag('p', { }, allP[2].innerText.trim());
   const imgHoverIcon = miloUtil.createTag('img', { alt: '', class: 'hoversvg' });
@@ -125,6 +126,7 @@ function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail, interactiveEl
   imgPrompt.appendChild(promptUsed);
   imgPrompt.appendChild(promptText);
 
+  a.append(img);
   a.appendChild(imageHover);
   mediaContainer.appendChild(a);
   mediaContainer.appendChild(imgPrompt);
