@@ -55,7 +55,7 @@ describe('firefly-masonry', () => {
   });
 
   it('verify click on generate button', async () => {
-    const promptButton = await waitForElement('#promptbutton');
+    const promptButton = await waitForElement('.masonry-generate');
     promptButton.dispatchEvent(new Event('click'));
   });
 });
