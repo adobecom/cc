@@ -5,7 +5,7 @@ function handleTouchDevice(mediaContainer, delay) {
   aTag.addEventListener('touchstart', (e) => {
     e.preventDefault();
     tapCount += 1;
-    if (tapCount === 2) window.location.href = aTag.href;
+    if (tapCount === 2) aTag.click();
     imgContent.style.opacity = 1;
     setTimeout(() => {
       tapCount = 0;
