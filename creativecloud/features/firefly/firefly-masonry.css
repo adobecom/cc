@@ -27,7 +27,6 @@
   grid-template-columns: repeat(12, 1fr);
   column-gap: var(--spacing-s);
   row-gap: var(--spacing-xs);
-  justify-content: center;
   transform: translateY(-50%);
 }
 
@@ -279,12 +278,6 @@
     max-width: 635px;
   }
 
-  .ff-masonry .grid-container {
-    width: auto;
-    left: 50%;
-    transform: translateY(-50%);
-  }
-
   .interactive-marquee.ff-masonry .interactive-container {
     width: 635px;
   }
@@ -346,25 +339,22 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .ff-masonry .grid-layout {
+  .interactive-marquee.ff-masonry .grid-layout {
     display: block;
-    margin-top: 180px;
+    margin-top: 112px;
     max-width: 635px;
   }
 
-  .ff-masonry .masonry-promptbar {
-    width: 100%
-  }
-
   .ff-masonry .grid-layout .grid-container {
-    margin-top: auto;
+    top: var(--spacing-xxl);
+    position: relative;
   }
 
   .interactive-marquee.ff-masonry .enticement-arrow {
     width: 49px;
     height: 73px;
     transform: rotate(310deg);
-    top: 260px;
+    top: 340px;
     margin-inline-start: 10px;
     position: absolute;
     right: auto;
@@ -380,7 +370,7 @@
     line-height: 35px;
     font-weight: bold;
     margin: 40px 0 16px;
-    top: 190px;
+    top: 270px;
   }
 
   [dir="rtl"] .interactive-marquee.ff-masonry .enticement-text {    
@@ -388,8 +378,9 @@
   }
 
   .ff-masonry-prompt {
-    top: 270px;
+    top: 350px;
     margin-inline-start: 80px;
+    width: 100%
   }
 
  .ff-masonry .interactive-container .image-content > p {
@@ -400,18 +391,16 @@
     max-height: 108px;
   }
 
-  [dir="ltr"] .ff-masonry .hoversvg {
+  .ff-masonry .hoversvg {
     right: 16px;
     bottom: 16px;
+    left: auto;
   }
 
   [dir="rtl"] .ff-masonry .hoversvg {
     left: 16px;
     bottom: 16px;
-  }
-
-  .interactive-marquee.ff-masonry .interactive-container .asset {
-    top: var(--spacing-xxl);
+    right: auto;
   }
 }
 
