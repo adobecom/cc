@@ -64,7 +64,7 @@ function observeSliderTray(sliderTray, targets) {
   io.observe(sliderTray);
 }
 
-async function createSlider(sliderType, details, menu, sliderTray) {
+function createSlider(sliderType, details, menu, sliderTray) {
   const sliderLabel = createTag('label', { for: `${sliderType}` }, details.trim());
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
   const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1' });
@@ -86,7 +86,7 @@ async function createSlider(sliderType, details, menu, sliderTray) {
   applyAccessibility(input, outerCircle);
 }
 
-async function createUploadButton(details, picture, sliderTray, menu) {
+function createUploadButton(details, picture, sliderTray, menu) {
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
   const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
   const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
@@ -120,7 +120,7 @@ function applyAccessibility(inputEle, target) {
   });
 }
 
-async function createUploadPSButton(details, picture, layer) {
+function createUploadPSButton(details, picture, layer) {
   const btn = createTag('a', { class: 'continueButton body-xl hide', tabindex:"0" }, details);
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
   btn.append(analyticsHolder);

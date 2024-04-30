@@ -179,7 +179,7 @@ function checkRenderStatus(targetBlock, res, rej, etime, rtime) {
 function intEnbReendered(targetBlock) {
   return new Promise((res, rej) => {
     try {
-      checkRenderStatus(targetBlock, res, rej, 0, 100);
+      checkRenderStatus(targetBlock, res, rej, 0, 20);
     } catch (err) { rej(); }
   });
 }
