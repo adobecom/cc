@@ -339,10 +339,15 @@
 }
 
 @media screen and (min-width: 1200px) {
+  .interactive-marquee.ff-masonry .foreground {
+    width: var(--grid-container-width);
+  }
+  
   .interactive-marquee.ff-masonry .grid-layout {
     display: block;
     margin-top: 112px;
     max-width: 635px;
+    margin-inline-start: calc((50vw - 635px) / 2);
   }
 
   .ff-masonry .grid-layout .grid-container {
@@ -380,7 +385,7 @@
   .ff-masonry-prompt {
     top: 350px;
     margin-inline-start: 80px;
-    width: 100%
+    width: auto;
   }
 
  .ff-masonry .interactive-container .image-content > p {
