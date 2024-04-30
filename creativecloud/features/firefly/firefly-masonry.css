@@ -348,7 +348,7 @@
 @media screen and (min-width: 1200px) {
   .ff-masonry .grid-layout {
     display: block;
-    margin-top: 203px;
+    margin-top: 183px;
     max-width: 635px;
   }
 
@@ -411,7 +411,7 @@
   }
 
   .interactive-marquee.ff-masonry .interactive-container .asset {
-    top: 72px;
+    top: var(--spacing-xxxl);
   }
 }
 
@@ -430,7 +430,7 @@
   }
 }
 
-@media (min-width: 601px) and (max-width: 750px) {
+@media (min-width: 601px) and (max-width: 767px) {
   .interactive-marquee.ff-masonry .interactive-container,
   .ff-masonry .asset.grid-layout,
   .ff-masonry .grid-container { 
