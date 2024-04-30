@@ -1,0 +1,1 @@
+class e{constructor(s,t){this.strategy=s,this.image=t}async init({preupload:s}){try{return s&&await this.strategy.upload(this.image),Promise.resolve()}catch(t){return Promise.reject(t)}}}class a extends e{async mask(){return this.strategy.mask(this.image)}}export{a as MaskProcessor};
