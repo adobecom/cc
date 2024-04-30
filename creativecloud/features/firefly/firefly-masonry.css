@@ -411,7 +411,7 @@
   }
 
   .interactive-marquee.ff-masonry .interactive-container .asset {
-    top: var(--spacing-xxxl);
+    top: var(--spacing-xxl);
   }
 }
 
