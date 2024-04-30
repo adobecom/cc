@@ -342,7 +342,7 @@
   .interactive-marquee.ff-masonry .foreground {
     width: var(--grid-container-width);
   }
-  
+
   .interactive-marquee.ff-masonry .grid-layout {
     display: block;
     margin-top: 112px;
@@ -410,6 +410,10 @@
 }
 
 @media (min-width: 1201px) and (max-width: 1499px) {
+  .interactive-marquee.ff-masonry .grid-layout {
+    margin-inline-start: calc((50vw - 569px) / 2);
+  }
+
   .ff-masonry .asset.grid-layout,
   .ff-masonry .grid-container { 
     width: 569px;
