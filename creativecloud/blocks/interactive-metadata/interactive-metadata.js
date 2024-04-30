@@ -257,8 +257,8 @@ function getWorkFlowInformation(el) {
     'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-hue-sat': ['slider-tray'],
     'workflow-generate-select-generate': ['generate', 'selector-tray', 'generate', 'crop', 'start-over'],
-    'workflow-generate-selector': ['generate', 'selector-tray', 'generate', 'start-over'],
     'workflow-generate-select': ['generate', 'selector-tray', 'start-over'],
+    'workflow-generate-selector': ['generate', 'selector-tray', 'generate', 'start-over'],
     'workflow-generate-triple-selector': ['generate', 'selector-tray', 'generate', 'selector-tray', 'generate', 'selector-tray', 'start-over'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
