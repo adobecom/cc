@@ -297,7 +297,7 @@ export default async function init(el) {
   await handleNextStep(stepInfo);
   const targetAsset = await getTargetArea(el);
   if (!targetAsset) return;
-  const stepInfo.target = targetAsset;
+  stepInfo.target = targetAsset;
   await renderLayer(stepInfo);
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {
