@@ -283,8 +283,6 @@ function getWorkFlowInformation(el) {
 export default async function init(el) {
   const workflow = getWorkFlowInformation(el);
   if (!workflow.length) return;
-  const targetAsset = await getTargetArea(el);
-  if (!targetAsset) return;
   const stepInfo = {
     el,
     stepIndex: -1,
@@ -292,11 +290,13 @@ export default async function init(el) {
     stepList: workflow,
     stepConfigs: el.querySelectorAll(':scope > div'),
     nextStepEvent: 'cc:interactive-switch',
-    target: targetAsset,
     displayPath: 0,
     openForExecution: Promise.resolve(true),
   };
   await handleNextStep(stepInfo);
+  const targetAsset = await getTargetArea(el);
+  if (!targetAsset) return;
+  stepInfo.target = targetAsset;
   await renderLayer(stepInfo);
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {
