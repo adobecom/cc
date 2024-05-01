@@ -200,7 +200,7 @@
   }
 
   .ff-masonry .hoversvg {
-    max-width: 120%;
+    max-width: 100%;
     position: relative;
     margin-inline-end: -32px;
     padding-inline-start: var(--spacing-s);;
