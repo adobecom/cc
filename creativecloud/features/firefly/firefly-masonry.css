@@ -390,7 +390,7 @@
     height: 50px;
     padding-inline-start: 23px;
     padding-inline-end: 23px;
-    max-width: 508px;
+    width: 508px;
   }
 
   .masonry-prompttext {
@@ -441,7 +441,6 @@
   .ff-masonry-prompt {
     top: 350px;
     margin-inline-start: 80px;
-    width: auto;
   }
 
  .ff-masonry .interactive-container .image-content > p {
