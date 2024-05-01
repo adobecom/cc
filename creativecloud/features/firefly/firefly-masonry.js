@@ -1,3 +1,6 @@
+const { focusOnInput } = await import('./firefly-interactive.js');
+const { createPromptField, createEnticement } = await import('../interactive-elements/interactive-elements.js');
+
 function handleTouchDevice(mediaContainer, delay) {
   let tapCount = 0;
   const aTag = mediaContainer.querySelector('a');
@@ -21,32 +24,32 @@ function getImgSrc(pic, viewport = '') {
   return source.srcset;
 }
 
-async function createEmbellishment(allP, media, ic, mode, createTag, interactiveElemMode) {
-  const { createPromptField, createEnticement } = await import('../interactive-elements/interactive-elements.js');
-  const { focusOnInput } = await import('./firefly-interactive.js');
+async function createEmbellishment(allP, media, mediaMobile, ic, mode, miloUtil, interactiveMode) {
   const [promptText, buttonText] = allP[4].innerText.split('|');
-  const fireflyPrompt = await createPromptField(`${promptText}`, `${buttonText}`, `ff-masonry, ${interactiveElemMode}`);
+  const fireflyPrompt = await createPromptField(`${promptText}`, `${buttonText}`, `ff-masonry, ${interactiveMode}`);
   fireflyPrompt.classList.add('ff-masonry-prompt');
-  media.appendChild(fireflyPrompt);
-  const input = fireflyPrompt.querySelector('.masonry-prompttext');
-  focusOnInput(media, createTag, input);
-  const promptButton = fireflyPrompt.querySelector('.masonry-generate');
-  promptButton.addEventListener('click', async (e) => {
-    const userprompt = media.querySelector('.masonry-prompttext')?.value;
-    const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';
-    e.target.setAttribute('daa-ll', dall);
-    if (userprompt === '') {
-      window.location.href = allP[4].querySelector('a').href;
-    } else {
-      const { default: signIn } = await import('./firefly-susi.js');
-      signIn(userprompt, 'goToFirefly');
-    }
-  });
   const enticementText = allP[0].textContent.trim();
   const enticementIcon = allP[0].querySelector('a').href;
   const enticementDiv = await createEnticement(`${enticementText}|${enticementIcon}`, mode);
-  media.appendChild(enticementDiv);
-  ic.appendChild(media);
+  const mediaDiv = [mediaMobile, media];
+  mediaDiv.forEach((div) => {
+    div.appendChild(fireflyPrompt.cloneNode(true));
+    div.appendChild(enticementDiv.cloneNode(true));
+    const promptButton = div.querySelector('.masonry-generate');
+    promptButton.addEventListener('click', async (e) => {
+      const userprompt = div.querySelector('.masonry-prompttext')?.value;
+      const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';
+      e.target.setAttribute('daa-ll', dall);
+      if (userprompt === '') {
+        window.location.href = allP[4].querySelector('a').href;
+      } else {
+        const { default: signIn } = await import('./firefly-susi.js');
+        signIn(userprompt, 'goToFirefly');
+      }
+    });
+    focusOnInput(null, miloUtil.createTag, div.querySelector('.masonry-prompttext'));
+    ic.appendChild(div);
+  });
 }
 
 function processMasonryMedia(gridDiv, miloUtil, allP, mediaDetail) {
@@ -102,11 +105,9 @@ function startAutocycle(a, imagePrompt, mediaDetail, interval) {
   }, interval);
 }
 
-function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail, interactiveElemMode) {
+function processMobileMedia(ic, mediaMobile, miloUtil, allP, mediaDetail) {
   const { imgSrc, href, prompt, alt } = mediaDetail;
   const currentIndex = mediaDetail.index;
-
-  const mediaMobile = miloUtil.createTag('div', { class: 'asset mobile-only' });
   const mediaContainer = miloUtil.createTag('div', { class: 'image-container' });
   const a = miloUtil.createTag('a', { href: `${href[currentIndex]}` });
   const img = miloUtil.createTag('img', { src: `${imgSrc[currentIndex]}`, class: 'prompt-image', alt: `${alt[currentIndex]}` });
@@ -143,12 +144,11 @@ function processMobileMedia(ic, miloUtil, allP, mode, mediaDetail, interactiveEl
     },
   });
   handleTouchDevice(mediaContainer, 2000);
-  createEmbellishment(allP, mediaMobile, ic, mode, miloUtil.createTag, interactiveElemMode);
 }
 
 export default async function setMultiImageMarquee(el, miloUtil) {
   const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
-  const interactiveElemMode = el.classList.contains('light') ? 'dark' : 'light';
+  const interactiveMode = el.classList.contains('light') ? 'dark' : 'light';
   const ic = el.querySelector('.interactive-container');
   const mediaElements = el.querySelector('.asset');
   const allP = mediaElements.querySelectorAll('p:not(:empty)');
@@ -157,6 +157,7 @@ export default async function setMultiImageMarquee(el, miloUtil) {
     imgSrc: [], prompt: [], href: [], index: 0, spans: [], alt: [],
   };
   const media = miloUtil.createTag('div', { class: 'asset grid-layout' });
+  const mediaMobile = miloUtil.createTag('div', { class: 'asset mobile-only' });
   const gridDiv = miloUtil.createTag('div', { class: 'grid-container' });
   [...allP].forEach((s) => {
     if (s.querySelector('picture')) {
@@ -179,7 +180,8 @@ export default async function setMultiImageMarquee(el, miloUtil) {
   });
   // For grid view
   media.appendChild(gridDiv);
-  createEmbellishment(allP, media, ic, enticementMode, miloUtil.createTag, interactiveElemMode);
   // For mobile view
-  processMobileMedia(ic, miloUtil, allP, enticementMode, mediaDetail, interactiveElemMode);
+  processMobileMedia(ic, mediaMobile, miloUtil, allP, mediaDetail);
+
+  createEmbellishment(allP, media, mediaMobile, ic, enticementMode, miloUtil, interactiveMode);
 }
