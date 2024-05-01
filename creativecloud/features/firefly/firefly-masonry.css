@@ -18,7 +18,7 @@
   padding-inline-end: 15px;
   border: 1px solid #E6E6E6;
   justify-content: space-between;
-  width: 93%;
+  width: calc((100vw * 0.834) - 24px);
   box-sizing: content-box;
 }
 
@@ -486,16 +486,16 @@
 @media (min-width: 601px) and (max-width: 767px) {
   .interactive-marquee.ff-masonry .interactive-container,
   .ff-masonry .asset.grid-layout,
-  .ff-masonry .grid-container { 
-    width: 569px;
+  .ff-masonry .grid-container {
+    width: calc(100vw * 0.834);
   }
 
   .ff-masonry .interactive-container .masonry-promptbar {
-    width: 441px;
+    width: calc((100vw * 0.834) - 128px);
   }
 
   .ff-masonry .interactive-container .masonry-prompttext {
-    width: 295px;
+    width: calc(100vw * 0.46);
   }
 }
 
