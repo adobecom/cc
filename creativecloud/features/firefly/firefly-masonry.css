@@ -146,6 +146,8 @@
 @media (max-width: 600px) {
   .ff-masonry .mobile-only {
     display: block;
+    height: 300px;
+    max-width: 100%;
   }
 
   .ff-masonry.mobile-hide-enticement .enticement-container {
@@ -251,23 +253,6 @@
   .interactive-marquee.ff-masonry .interactive-container {
     height: 444px;
     width: 100%;
-  }
-  
-  .interactive-marquee.ff-masonry .asset.mobile-only  {
-    height: 300px;
-    max-width: 100%;
-  }
-
-  [dir="rtl"] .ff-masonry .hoversvg {
-    top: 50%;
-    left: 66%;
-    transform: translate(-50%, -66%); 
-  }
-
-  [dir="rtl"] .ff-masonry .mobile-only .image-content > p {
-    top: 48%;
-    left: 42%;
-    transform: translate(-48%, -42%); 
   }
 }
 
