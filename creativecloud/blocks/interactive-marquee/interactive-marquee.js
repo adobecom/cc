@@ -101,7 +101,6 @@ export default async function init(el) {
     case el.classList.contains('ff-masonry'): {
       try {
         const stylePromise = new Promise((resolve) => {
-          loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css', resolve);
           loadStyle('/creativecloud/features/firefly/firefly-masonry.css', resolve);
         });
         await Promise.all([stylePromise]);
