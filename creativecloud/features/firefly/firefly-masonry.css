@@ -355,13 +355,6 @@
     position: relative;
   }
 
-  .ff-grid-span-4.image-container,
-  .ff-grid-span-8.image-container, 
-  .ff-grid-span-12.image-container,
-  .ff-grid-full-width.image-container {
-    max-width: 100%;
-  }
-
   .interactive-marquee.ff-masonry .enticement-arrow {
     width: 49px;
     height: 73px;
