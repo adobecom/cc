@@ -19,7 +19,7 @@ function redirectUrl(prompt, paramKey) {
     const effectsPath = `generate/font-styles?prompt=${encodeURI(prompt)}&${queryParam}`;
     windowLocation = env === 'prod' ? `${fireflyprod}/${effectsPath}` : `${fireflystage}/${effectsPath}`;
   } else if (paramKey === 'goToFirefly') {
-    const fireflyPath = `generate/images?prompt=${encodeURI(prompt)}&${queryParam}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&modelInputVersion=v2&modelConfig=v2`;
+    const fireflyPath = `generate/images?prompt=${encodeURI(prompt)}&${queryParam}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&seed=${generateRandomSeed()}&modelInputVersion=v3&modelConfig=v3`;
     windowLocation = env === 'prod' ? `${fireflyprod}/${fireflyPath}` : `${fireflystage}/${fireflyPath}`;
   }
   return windowLocation;
