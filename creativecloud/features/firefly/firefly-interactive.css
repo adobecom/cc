@@ -96,11 +96,7 @@
   }
 
   .interactive-marquee.firefly .asset {
-    top: 24px;
-  }
-
-  .interactive-marquee.firefly .foreground {
-    padding-top: 0;
+    top: 0;
   }
 
   .interactive-marquee.firefly.ff-text-effects .interactive-container,
