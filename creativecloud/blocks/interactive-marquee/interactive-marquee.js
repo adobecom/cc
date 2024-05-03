@@ -83,7 +83,7 @@ function interactiveInit(el, decorateButtons, decorateBlockBg, createTag) {
 export default async function init(el) {
   const miloLibs = getLibs('/libs');
   const { decorateButtons, decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-  const { createTag, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+  const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   switch (true) {
     case el.classList.contains('changebg'): {
       const { default: changeBg } = await import('../../features/changeBg/changeBg.js');
