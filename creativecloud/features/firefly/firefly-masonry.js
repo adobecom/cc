@@ -1,6 +1,19 @@
 const { focusOnInput } = await import('./firefly-interactive.js');
 const { createPromptField, createEnticement } = await import('../interactive-elements/interactive-elements.js');
 
+function addKeyEvent(promptInput, promptButton) {
+  promptInput.addEventListener('keydown', (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      promptButton.click();
+    }
+    if (event.target.value.length === 0 && event.keyCode === 32) {
+      if (event.preventDefault) event.preventDefault();
+      else event.returnValue = false;
+    }
+  });
+}
+
 function handleTouchDevice(mediaContainer, delay) {
   let tapCount = 0;
   const aTag = mediaContainer.querySelector('a');
@@ -36,8 +49,9 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, miloUtil,
     div.appendChild(fireflyPrompt.cloneNode(true));
     div.appendChild(enticementDiv.cloneNode(true));
     const promptButton = div.querySelector('.masonry-generate');
+    const promptInput = div.querySelector('.masonry-prompttext');
     promptButton.addEventListener('click', async (e) => {
-      const userprompt = div.querySelector('.masonry-prompttext')?.value;
+      const userprompt = promptText?.value;
       const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';
       e.target.setAttribute('daa-ll', dall);
       if (userprompt === '') {
@@ -47,7 +61,8 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, miloUtil,
         signIn(userprompt, 'goToFirefly');
       }
     });
-    focusOnInput(null, miloUtil.createTag, div.querySelector('.masonry-prompttext'));
+    focusOnInput(null, miloUtil.createTag, promptButton);
+    addKeyEvent(promptInput, promptButton);
     ic.appendChild(div);
   });
 }
