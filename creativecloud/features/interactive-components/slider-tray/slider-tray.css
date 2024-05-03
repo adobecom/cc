@@ -251,7 +251,7 @@
   display: none;
 }
 
-.interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
+.interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img {
   height: 18px;
   width: 18px;
   display: flex;
