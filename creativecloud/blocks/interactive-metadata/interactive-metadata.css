@@ -114,7 +114,7 @@
   left: 0;
   width: 100%;
   height: auto;
-  min-height: 210px;
+  min-height: 200px;
   background: var(--layer-background-fill);
   display: flex;
   align-items: center;
