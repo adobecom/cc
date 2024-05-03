@@ -123,7 +123,7 @@
   z-index: 2;
 }
 
-.interactive-enabled .layer.show-layer .sliderTray {
+.interactive-enabled .step-slider-tray .layer.show-layer {
   min-height: 200px;
 }
 
