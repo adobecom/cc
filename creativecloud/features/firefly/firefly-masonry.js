@@ -51,7 +51,7 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, miloUtil,
     const promptButton = div.querySelector('.masonry-generate');
     const promptInput = div.querySelector('.masonry-prompttext');
     promptButton.addEventListener('click', async (e) => {
-      const userprompt = promptText?.value;
+      const userprompt = promptInput?.value;
       const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';
       e.target.setAttribute('daa-ll', dall);
       if (userprompt === '') {
