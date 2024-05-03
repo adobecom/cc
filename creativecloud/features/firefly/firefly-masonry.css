@@ -519,7 +519,7 @@
   animation: blink 0.95s infinite;
 }
 
-.blinking-cursor ~ .interactive-marquee.ff-masonry .masonry-prompttext {
+.interactive-marquee.ff-masonry .blinking-cursor ~ .masonry-prompttext {
   padding-inline-start: 0;
 }
 
