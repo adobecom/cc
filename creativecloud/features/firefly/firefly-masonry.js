@@ -61,7 +61,7 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, miloUtil,
         signIn(userprompt, 'goToFirefly');
       }
     });
-    focusOnInput(null, miloUtil.createTag, promptButton);
+    focusOnInput(null, miloUtil.createTag, promptInput);
     addKeyEvent(promptInput, promptButton);
     ic.appendChild(div);
   });
