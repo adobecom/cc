@@ -103,10 +103,10 @@ export default async function init(el) {
         const stylePromise = new Promise((resolve) => {
           loadStyle('/creativecloud/features/firefly/firefly-masonry.css', resolve);
         });
-        await Promise.all([stylePromise]);
+        await stylePromise;
         interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
         const { default: setMultiImageMarquee } = await import('../../features/firefly/firefly-masonry.js');
-        await setMultiImageMarquee(el, { createIntersectionObserver, createTag });
+        await setMultiImageMarquee(el);
       } catch (err) {
         window.lana?.log(`Failed to load firefly masonry: ${err}`);
       }

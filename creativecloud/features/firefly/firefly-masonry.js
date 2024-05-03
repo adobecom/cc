@@ -1,3 +1,5 @@
+import { getLibs } from '../../scripts/utils.js';
+const { createTag, createIntersectionObserver } = await import(`${getLibs()}/utils/utils.js`);
 const { focusOnInput } = await import('./firefly-interactive.js');
 const { createPromptField, createEnticement } = await import('../interactive-elements/interactive-elements.js');
 
@@ -37,7 +39,7 @@ function getImgSrc(pic, viewport = '') {
   return source.srcset;
 }
 
-async function createEmbellishment(allP, media, mediaMobile, ic, mode, miloUtil, interactiveMode) {
+async function createEmbellishment(allP, media, mediaMobile, ic, mode, interactiveMode) {
   const [promptText, buttonText] = allP[4].innerText.split('|');
   const fireflyPrompt = await createPromptField(`${promptText}`, `${buttonText}`, `ff-masonry, ${interactiveMode}`);
   fireflyPrompt.classList.add('ff-masonry-prompt');
@@ -61,20 +63,20 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, miloUtil,
         signIn(userprompt, 'goToFirefly');
       }
     });
-    focusOnInput(null, miloUtil.createTag, promptInput);
+    focusOnInput(null, createTag, promptInput);
     addKeyEvent(promptInput, promptButton);
     ic.appendChild(div);
   });
 }
 
-function processMasonryMedia(gridDiv, miloUtil, allP, mediaDetail) {
+function processMasonryMedia(gridDiv, allP, mediaDetail) {
   const lastIndex = mediaDetail.imgSrc.length - 1;
-  const mediaContainer = miloUtil.createTag('div', { class: 'image-container' });
-  const a = miloUtil.createTag('a', { href: `${mediaDetail.href[lastIndex]}` });
-  const img = miloUtil.createTag('img', { src: `${mediaDetail.imgSrc[lastIndex]}`, class: 'prompt-image', alt: `${mediaDetail.alt[lastIndex]}` });
-  const imgPromptContainer = miloUtil.createTag('div', { class: 'image-content' });
-  const imgPrompt = miloUtil.createTag('p', { }, mediaDetail.prompt[lastIndex].trim());
-  const imgHoverIcon = miloUtil.createTag('img', { alt: '', class: 'hoversvg' });
+  const mediaContainer = createTag('div', { class: 'image-container' });
+  const a = createTag('a', { href: `${mediaDetail.href[lastIndex]}` });
+  const img = createTag('img', { src: `${mediaDetail.imgSrc[lastIndex]}`, class: 'prompt-image', alt: `${mediaDetail.alt[lastIndex]}` });
+  const imgPromptContainer = createTag('div', { class: 'image-content' });
+  const imgPrompt = createTag('p', { }, mediaDetail.prompt[lastIndex].trim());
+  const imgHoverIcon = createTag('img', { alt: '', class: 'hoversvg' });
   imgHoverIcon.src = allP[2].querySelector('a').href;
   imgPromptContainer.appendChild(imgPrompt);
   imgPromptContainer.appendChild(imgHoverIcon);
@@ -120,22 +122,22 @@ function startAutocycle(a, imagePrompt, mediaDetail, interval) {
   }, interval);
 }
 
-function processMobileMedia(ic, mediaMobile, miloUtil, allP, mediaDetail) {
+function processMobileMedia(ic, mediaMobile, allP, mediaDetail) {
   const { imgSrc, href, prompt, alt } = mediaDetail;
   const currentIndex = mediaDetail.index;
-  const mediaContainer = miloUtil.createTag('div', { class: 'image-container' });
-  const a = miloUtil.createTag('a', { href: `${href[currentIndex]}` });
-  const img = miloUtil.createTag('img', { src: `${imgSrc[currentIndex]}`, class: 'prompt-image', alt: `${alt[currentIndex]}` });
-  const imageHover = miloUtil.createTag('div', { class: 'image-content' });
-  const imgHoverText = miloUtil.createTag('p', { }, allP[2].innerText.trim());
-  const imgHoverIcon = miloUtil.createTag('img', { alt: '', class: 'hoversvg' });
+  const mediaContainer = createTag('div', { class: 'image-container' });
+  const a = createTag('a', { href: `${href[currentIndex]}` });
+  const img = createTag('img', { src: `${imgSrc[currentIndex]}`, class: 'prompt-image', alt: `${alt[currentIndex]}` });
+  const imageHover = createTag('div', { class: 'image-content' });
+  const imgHoverText = createTag('p', { }, allP[2].innerText.trim());
+  const imgHoverIcon = createTag('img', { alt: '', class: 'hoversvg' });
   imgHoverIcon.src = allP[2].querySelector('a').href;
   imageHover.prepend(imgHoverIcon);
   imageHover.appendChild(imgHoverText);
 
-  const imgPrompt = miloUtil.createTag('div', { class: 'image-prompt' });
-  const promptText = miloUtil.createTag('p', { }, prompt[currentIndex].trim());
-  const promptUsed = miloUtil.createTag('span', { class: 'prompt-used' }, allP[1].innerText.trim());
+  const imgPrompt = createTag('div', { class: 'image-prompt' });
+  const promptText = createTag('p', { }, prompt[currentIndex].trim());
+  const promptUsed = createTag('span', { class: 'prompt-used' }, allP[1].innerText.trim());
   imgPrompt.appendChild(promptUsed);
   imgPrompt.appendChild(promptText);
 
@@ -149,7 +151,7 @@ function processMobileMedia(ic, mediaMobile, miloUtil, allP, mediaDetail) {
   const aTag = ic.querySelector('.mobile-only a');
   const imagePrompt = ic.querySelector('.mobile-only .image-prompt');
   const ROOT_MARGIN = 1000;
-  miloUtil.createIntersectionObserver({
+  createIntersectionObserver({
     el: aTag,
     options: { rootMargin: `${ROOT_MARGIN}px` },
     callback: (target) => {
@@ -161,7 +163,7 @@ function processMobileMedia(ic, mediaMobile, miloUtil, allP, mediaDetail) {
   handleTouchDevice(mediaContainer, 2000);
 }
 
-export default async function setMultiImageMarquee(el, miloUtil) {
+export default async function setMultiImageMarquee(el) {
   const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
   const interactiveMode = el.classList.contains('light') ? 'dark' : 'light';
   const ic = el.querySelector('.interactive-container');
@@ -171,9 +173,9 @@ export default async function setMultiImageMarquee(el, miloUtil) {
   const mediaDetail = {
     imgSrc: [], prompt: [], href: [], index: 0, spans: [], alt: [],
   };
-  const media = miloUtil.createTag('div', { class: 'asset grid-layout' });
-  const mediaMobile = miloUtil.createTag('div', { class: 'asset mobile-only' });
-  const gridDiv = miloUtil.createTag('div', { class: 'grid-container' });
+  const media = createTag('div', { class: 'asset grid-layout' });
+  const mediaMobile = createTag('div', { class: 'asset mobile-only' });
+  const gridDiv = createTag('div', { class: 'grid-container' });
   [...allP].forEach((s) => {
     if (s.querySelector('picture')) {
       const src = getImgSrc(s);
@@ -190,13 +192,13 @@ export default async function setMultiImageMarquee(el, miloUtil) {
       mediaDetail.spans.push(span);
       mediaDetail.alt.push(alt);
       // Desktop and Tablet
-      processMasonryMedia(gridDiv, miloUtil, allP, mediaDetail);
+      processMasonryMedia(gridDiv, allP, mediaDetail);
     }
   });
   // For grid view
   media.appendChild(gridDiv);
   // For mobile view
-  processMobileMedia(ic, mediaMobile, miloUtil, allP, mediaDetail);
+  processMobileMedia(ic, mediaMobile, allP, mediaDetail);
 
-  createEmbellishment(allP, media, mediaMobile, ic, enticementMode, miloUtil, interactiveMode);
+  createEmbellishment(allP, media, mediaMobile, ic, enticementMode, interactiveMode);
 }
