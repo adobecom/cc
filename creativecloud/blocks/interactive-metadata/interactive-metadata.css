@@ -114,13 +114,17 @@
   left: 0;
   width: 100%;
   height: auto;
-  min-height: 200px;
+  min-height: 60px;
   background: var(--layer-background-fill);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0 0 8px 8px;
   z-index: 2;
+}
+
+.interactive-enabled .layer.show-layer .sliderTray {
+  min-height: 210px;
 }
 
 .interactive-enabled .layer .gray-button {

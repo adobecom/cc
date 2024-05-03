@@ -135,7 +135,6 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
 async function handleNextStep(stepInfo) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
-  // if (stepInfo.stepList.length === 1) return;
   await loadAllImgs(stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img[src*="svg"]'));
   preloadAsset(nextStepIndex, stepInfo);
 }
