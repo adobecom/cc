@@ -12,16 +12,7 @@ function appendSVGToButton(picture, button) {
   button.prepend(svgCTACont);
 }
 
-export async function createUploadButton(details, picture, layer) {
-  const miloLibs = getLibs('/libs');
-  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-  await loadStyle('/creativecloud/features/interactive-components/upload/upload.css');
-  const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
-  const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
-  const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
-  labelBtn.append(btn);
-  appendSVGToButton(picture, labelBtn);
-  layer.append(labelBtn);
+function handleUpload(btn, layer) {
   btn.addEventListener('change', (event) => {
     const pic = layer.querySelector('.fg-img');
     const image = pic.querySelector('img');
@@ -33,5 +24,19 @@ export async function createUploadButton(details, picture, layer) {
       image.src = imageUrl;
       // add loader
     }
+    // show PS button
   });
+}
+
+export async function createUploadButton(config, layer) {
+  const miloLibs = getLibs('/libs');
+  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+  await loadStyle('/creativecloud/features/interactive-components/upload/upload.css');
+  const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
+  const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
+  const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, config.text);
+  labelBtn.append(btn);
+  appendSVGToButton(config.svg, labelBtn);
+  layer.append(labelBtn);
+  handleUpload(btn, layer);
 }

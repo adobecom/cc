@@ -1,6 +1,7 @@
-import { createTag, loadStyle } from '../../../scripts/utils.js';
+import { createTag } from '../../../scripts/utils.js';
 import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-metadata/interactive-metadata.js';
 import { createUploadButton } from '../upload/upload.js';
+import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
 function createSelectorThumbnail(pic, displayImg, outline) {
   const src = getImgSrc(pic);
@@ -20,93 +21,141 @@ function toggleSubMenu(elem) {
   elem.style.display = 'flex';
 }
 
-function handleClick(elem, data, sbOption) {
-  elem.addEventListener('click', async (e) => {
-    e.preventDefault();
-    if (sbOption) {
-      toggleSubMenu(sbOption);
-    }
-    const curra = e.target.nodeName === 'A' ? e.target : e.target.querySelector('a');
-    const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
+async function handleClick(img, data) {
+    const trObj = { src: img.src, alt: img.alt, useCfg: true };
     await handleImageTransition(data, trObj);
-  });
-}
-
-function createStartOver(btnMetadata) {
-  const svg = btnMetadata.querySelector('picture');
-  const text = btnMetadata.firstElementChild.textContent;
-  const startOver = createTag('div', { class: 'tray-reset' });
-  startOver.append(svg, text);
-  startOver.addEventListener('click', async (e) => {
-    console.log("start over");
-  });
-  return startOver;
 }
 
 function createSubMenu(submenu, data, container) {
   const options = submenu.children;
+  console.log(options);
   let displayImg = null;
   [...options].forEach((op) => {
     const [thumbnailPic, displayPic] = op.children;
     displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
     const a = createSelectorThumbnail(thumbnailPic, displayImg, null);
+    a.addEventListener('click', async (e) => {
+      handleClick(displayPic.querySelector('img'), data);
+    });
     container.append(a);
-    handleClick(a, data, null);
   })
 }
 
-function createTrayOp(menu, data, trayItems, subMenuTray) {
-  const options = menu.children;
+function appendSVGToButton(picture, button) {
+  if (!picture) return;
+  const svg = picture.querySelector('img[src*=svg]');
+  if (!svg) return;
+  const svgClone = svg.cloneNode(true);
+  const svgCTACont = createTag('a', { class: 'tray-thumbnail-img' });
+  svgCTACont.append(svgClone);
+  button.prepend(svgCTACont);
+}
+
+function createButton(data, config, subMenuTray) {
+  const trayOption = createTag('div', { class: 'tray-option' });
+  trayOption.append(config.text);
+  appendSVGToButton(config.svg, trayOption);
+  trayOption.addEventListener('click', async (e) => {
+    e.preventDefault();
+    let img = null;
+    switch(config.type) {
+      case 'remove':
+        img = config.ul.querySelector('picture > img');
+        handleClick(img, data);
+        break;
+      case 'change':
+        img = config.ul.querySelectorAll('picture > img');
+        if(!subMenuTray.querySelector('.sb-option')) {
+          const sbOption = createTag('div', { class: 'sb-option' });
+          createSubMenu(config.ul, data, sbOption);
+          subMenuTray.append(sbOption);
+        }
+        break;
+      default:
+        break;
+    }
+  });
+  return trayOption;
+}
+
+function createTrayOp(data, menu, trayItems, subMenuTray) {
+  const options = menu.querySelectorAll(':scope > li');
+  console.log(options);
   let displayImg = null;
   [...options].forEach((o, i) => {
-    const [thumbnailPic, displayPic, subMenu = null] = o.children;
-    const optionText = o.textContent.trim();
-    displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
-    const a = createSelectorThumbnail(thumbnailPic, displayImg, null);
-    const trayOption = createTag('div', { class: 'tray-option' });
-    trayOption.append(a, optionText);
-    trayItems.append(trayOption);
-    let sbOption = null;
-    if(subMenu) {
-      sbOption = createTag('div', { class: 'submenu-option', id: `sub${i}` });
-      createSubMenu(subMenu, data, sbOption);
-      subMenuTray.append(sbOption);
+    const oConfig = {
+      text: o.textContent.trim(),
+      svg: o.querySelector(':scope > picture'),
+      ul: o.querySelector('ul'),
+      type: o.querySelector('span').classList[1].split('icon-')[1]
     }
-    handleClick(trayOption, data, sbOption);
+    const trayOption = createButton(data, oConfig, subMenuTray);
+    console.log(trayOption);
+    trayItems.append(trayOption);
   });
 }
 
-function changeBgSelectorTray(layer, data, config, media) {
+function handleUpload(btnMetadata, layer) {
+  const uploadConfig = {
+    svg: btnMetadata.children[1].querySelector('picture'),
+    text: btnMetadata.children[1].textContent.split('|')[0],
+    delay: btnMetadata.children[1].textContent.split('|')[1],
+  };
+  setTimeout(() => {
+    createUploadButton(uploadConfig, layer);
+  }, uploadConfig.delay);
+}
+
+function createStartOver(data, btnMetadata, config) {
+  const bgI = config.bgPic.querySelector('img');
+  const svg = btnMetadata.querySelector('picture');
+  const text = btnMetadata.firstElementChild.textContent;
+  const startOver = createTag('div', { class: 'tray-reset' });
+  startOver.append(svg, text);
+  startOver.addEventListener('click', async (e) => {
+    console.log(config);
+    // const oldFG = config.fgPic.cloneNode(true);
+    // oldFG.classList.add('fg-img');
+    // const obj = { src: bgI.src, alt: bgI.alt, useCfg: true };
+    // await handleImageTransition(data, obj);
+    // config.fgClone.replaceWith(oldFG);
+  });
+  return startOver;
+}
+
+function handleStartOver(bg, fg, fgClone, btnMetadata, data) {
+  const soConfig = {
+    bgPic: bg.querySelector('picture'),
+    fgPic: fg.querySelector('picture'),
+    fgClone: fgClone
+  };
+  return createStartOver(data, btnMetadata, soConfig);
+}
+
+function changeBgSelectorTray(layer, data, config) {
+  const [ bg, fg ] = config.querySelectorAll('p');
+  const fgClone = fg.querySelector('picture').cloneNode(true);
+  fgClone.classList.add('fg-img');
+  layer.append(fgClone);
   const selectorTray = createTag('div', { class: 'body-m selector-tray change-bg' });
   const trayItems = createTag('div', { class: 'tray-items' });
   const subMenuTray = createTag('div', { class: 'tray-items submenu' });
   const [ menu, btnMetadata ] = config.querySelectorAll('ol');
-  createTrayOp(menu, data, trayItems, subMenuTray);
-  // TODO: create uploadConfig
-  // TODO: create continue in PS
-  // TODO: start - over
-  // TODO: add delay in upload
-  // TODO: add loader
-  // TODO: handle mobile view
-  const uploadPic = btnMetadata.children[1].querySelector('picture');
-  const [ uploadText, uploadDelay ] = btnMetadata.children[1].textContent.split('|');
-  createUploadButton(uploadText, uploadPic, layer);
-  const startOver = createStartOver(btnMetadata);
+  console.log(menu);
+  createTrayOp(data, menu, trayItems, subMenuTray);
+  handleUpload(btnMetadata, layer);
+  const startOver = handleStartOver(bg, fg, fgClone, btnMetadata, data);
   trayItems.append(startOver);
+  
   selectorTray.append(trayItems, subMenuTray);
   return selectorTray;
 }
 
-
 export default async function stepInit(data) {
   data.target.classList.add('step-change-bg-tray');
   const config = data.stepConfigs[data.stepIndex];
-  const [ bg, fg ] = config.querySelectorAll('p');
-  const fgClone = fg.querySelector('picture').cloneNode(true);
-  fgClone.classList.add('fg-img');
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const selectorTray = changeBgSelectorTray(layer, data, config, fgClone);
+  const selectorTray = changeBgSelectorTray(layer, data, config);
   layer.append(selectorTray);
-  layer.append(fgClone);
   return layer;
 }

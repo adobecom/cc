@@ -108,6 +108,7 @@ async function createDisplayVideo(target, video, src) {
 }
 
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
+  console.log(stepInfo);
   const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
   const trgtPic = stepInfo.target.querySelector(':scope > picture');
   const trgtVideo = stepInfo.target.querySelector(':scope > video');
