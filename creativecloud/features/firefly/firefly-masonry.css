@@ -106,6 +106,7 @@
   line-height: var(--type-body-s-lh);
   margin: 0 0 24px;
   font-weight: 700;
+  box-sizing: content-box;
 }
 
 .interactive-marquee.ff-masonry .interactive-container .image-container:hover .image-content {
@@ -116,10 +117,6 @@
   width: 20px;
   height: 20px;
   position: absolute;
-  box-sizing: content-box;
-}
-
-.interactive-marquee.ff-masonry .interactive-container .image-content > p {
   box-sizing: content-box;
 }
 
