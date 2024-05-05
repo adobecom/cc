@@ -116,6 +116,11 @@
   width: 20px;
   height: 20px;
   position: absolute;
+  box-sizing: content-box;
+}
+
+.interactive-marquee.ff-masonry .interactive-container .image-content > p {
+  box-sizing: content-box;
 }
 
 .interactive-marquee.ff-masonry .ff-masonry-prompt {
