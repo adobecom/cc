@@ -45,8 +45,8 @@ export const [setLibs, getLibs] = (() => {
 
 const miloLibs = setLibs('/libs');
 
-const { createTag, localizeLink, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-export { createTag, loadStyle, localizeLink };
+const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+export { createTag, loadStyle, localizeLink, createIntersectionObserver };
 
 function getDecorateAreaFn() {
   let lcpImgSet = false;
