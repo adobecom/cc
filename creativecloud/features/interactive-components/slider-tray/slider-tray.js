@@ -187,20 +187,12 @@ function sliderEvent(media, layer, imgObj) {
   });
 }
 
-export function cssToPhotoshop(imgObj, adjustment, value) {
-  const unitValue = cssToUnit(adjustment, value);
-  imgObj[adjustment] = unitToPs(adjustment, unitValue);
+function cssToPhotoshop(imgObj, adjustment, value) {
+  const unitValue = convertToUnit(adjustment, value, CSSRanges);
+  imgObj[adjustment] = convertFromUnit(adjustment, unitValue, PsRanges);
 }
 
-export function cssToUnit(adjustment, value) {
-  return convertToUnit(adjustment, value, CSSRanges);
-}
-
-export function convertToUnit(
-  adjustment,
-  value,
-  ranges,
-) {
+function convertToUnit(adjustment, value, ranges ) {
   if (value < ranges[adjustment].min || value > ranges[adjustment].max) {
     throw new Error(`value out of range ${adjustment}:${value}`);
   }
@@ -213,15 +205,7 @@ export function convertToUnit(
   return (value - ranges[adjustment].zero) / spread;
 }
 
-export function unitToPs(adjustment, value) {
-  return convertFromUnit(adjustment, value, PsRanges);
-}
-
-export function convertFromUnit(
-  adjustment,
-  value,
-  ranges,
-) {
+function convertFromUnit(adjustment, value, ranges) {
   if (value < -1 || value > 1) {
     throw new Error(`value out of range ${adjustment}:${value}`);
   }
