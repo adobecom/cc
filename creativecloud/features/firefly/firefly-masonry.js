@@ -41,7 +41,7 @@ function getImgSrc(pic, viewport = '') {
 }
 
 async function createEmbellishment(allP, media, mediaMobile, ic, mode, interactiveMode) {
-  const [promptText, buttonText] = allP[4].innerText.split('|');
+  const [promptText, buttonText] = allP[3].innerText.split('|');
   const fireflyPrompt = await createPromptField(`${promptText}`, `${buttonText}`, `ff-masonry, ${interactiveMode}`);
   fireflyPrompt.classList.add('ff-masonry-prompt');
   const enticementText = allP[0].textContent.trim();
