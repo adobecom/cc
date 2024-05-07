@@ -1,4 +1,4 @@
-// Thu, 21 Mar 2024 10:55:19 GMT
+// branch: develop commit: 369516f3cda51fb1219ad0b3cf2c94c8f094c49b Tue, 07 May 2024 11:55:00 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -345,7 +345,7 @@ customElements.define(
 
 // src/media.js
 var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
-var TABLET_DOWN = "(max-width: 1200px)";
+var TABLET_DOWN = "(max-width: 1199px)";
 
 // src/sidenav/merch-sidenav.js
 var MerchSideNav = class extends LitElement4 {
@@ -365,6 +365,7 @@ var MerchSideNav = class extends LitElement4 {
             :host {
                 display: block;
                 max-width: 248px;
+                --mod-button-border-radius: 5px;
             }
 
             #sidenav {
