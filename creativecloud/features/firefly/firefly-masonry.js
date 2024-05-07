@@ -87,7 +87,7 @@ function processMasonryMedia(gridDiv, allP, mediaDetail) {
   handleTouchDevice(mediaContainer, 2000);
 
   const spanWidth = mediaDetail.spans[lastIndex];
-  const spanClass = spanWidth === undefined ? 'span-4' : `${spanWidth?.trim().replace(' ', '-')}`
+  const spanClass = spanWidth === undefined ? 'span-4' : `${spanWidth?.trim().replace(' ', '-')}`;
   mediaContainer.classList.add(`ff-grid-${spanClass}`);
   gridDiv.appendChild(mediaContainer);
 }
@@ -185,11 +185,10 @@ export default async function setMultiImageMarquee(el) {
       const { href } = allP[[...allP].indexOf(s) + 1].querySelector('a');
       const alt = s.querySelector('img').getAttribute('alt');
       const span = allP[[...allP].indexOf(s) - 1].querySelector('span')?.classList[1]?.split('icon-');
- 
       mediaDetail.imgSrc.push(src);
       mediaDetail.prompt.push(prompt);
       mediaDetail.href.push(href);
-      if(span?.length > 1)mediaDetail.spans.push(span[1]);
+      if (span?.length > 1)mediaDetail.spans.push(span[1]);
       mediaDetail.alt.push(alt);
       // Desktop and Tablet
       processMasonryMedia(gridDiv, allP, mediaDetail);
