@@ -2,22 +2,21 @@ import { getLibs } from '../../scripts/utils.js';
 
 const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
 
-function focusOnInput(media, createTag) {
-  const input = media.querySelector('.prompt-text');
-  if (input) {
-    const device = defineDeviceByScreenSize();
-    const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
-    if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
-    if (device === 'MOBILE' || device === 'TABLET') {
+export function focusOnInput(media, createTag, inputfield = null) {
+  const input = inputfield === null ? media.querySelector('.prompt-text') : inputfield;
+  if (!input) return;
+  const device = defineDeviceByScreenSize();
+  const blinkingCursor = createTag('div', { class: 'blinking-cursor' });
+  if (input.classList.contains('light')) blinkingCursor.classList.add('blink-light');
+  if (device === 'MOBILE' || device === 'TABLET') {
+    input.insertAdjacentElement('beforebegin', blinkingCursor);
+  } else input.focus();
+  input.addEventListener('focusout', () => {
+    if (document.querySelector('.locale-modal-v2') && device === 'DESKTOP') {
       input.insertAdjacentElement('beforebegin', blinkingCursor);
-    } else input.focus();
-    input.addEventListener('focusout', () => {
-      if (document.querySelector('.locale-modal-v2') && device === 'DESKTOP') {
-        input.insertAdjacentElement('beforebegin', blinkingCursor);
-      }
-    }, { once: true });
-    input.addEventListener('click', () => { document.querySelector('.blinking-cursor')?.remove(); });
-  }
+    }
+  }, { once: true });
+  input.addEventListener('click', () => { document.querySelector('.blinking-cursor')?.remove(); });
 }
 
 function eventOnGenerate(generateButton, media, fireflyfeature = '') {
