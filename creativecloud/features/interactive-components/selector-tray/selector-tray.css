@@ -57,6 +57,7 @@
 
 .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .tray-thumbnail-outline {
   display: none;
+  box-sizing: content-box;
   height: calc(100% - 10px);
   width: calc(100% - 10px);
   border: 5px solid var(--prompt-highlight-color);
