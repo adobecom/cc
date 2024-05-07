@@ -3,6 +3,16 @@
 import { createTag } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
+export const CSSRanges = {
+  hue: { min: -180, zero: 0, max: 180 },
+  saturation: { min: 0, zero: 100, max: 300 },
+};
+
+export const PsRanges = {
+  hue: { min: -180, zero: 0, max: 180 },
+  saturation: { min: -100, zero: 0, max: 100 },
+};
+
 export default async function stepInit(data) {
   const imgObj = {};
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
@@ -71,10 +81,10 @@ function createSlider(sliderType, details, menu, sliderTray) {
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
   const input = createTag('input', {
     type: 'range',
-    min: `${sliderType == 'hue' ? '-180' : '-100'}`,
-    max: `${sliderType == 'hue' ? '180' : '100'}`,
+    min: CSSRanges[sliderType].min,
+    max: CSSRanges[sliderType].max,
     class: `options ${sliderType.toLowerCase()}-input`,
-    value: '0',
+    value: CSSRanges[sliderType].zero,
   });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
@@ -160,22 +170,69 @@ function sliderEvent(media, layer, imgObj) {
       switch (sel.toLowerCase()) {
         case ('hue'):
           hue = value;
-          imgObj.hue = value;
           break;
         case ('saturation'):
-          saturation = 100 + parseInt(value, 10);
-          imgObj.saturation = parseInt(value, 10);
+          saturation = parseInt(value, 10);
           break;
         default:
           break;
       }
       image.style.filter = `hue-rotate(${hue}deg) saturate(${saturation}%)`;
+      cssToPhotoshop(imgObj, sel.toLowerCase(), value);
     });
     sliderEl.addEventListener('change', () => {
       const outerCircle = sliderEl.nextSibling;
       outerCircle.click();
     });
   });
+}
+
+export function cssToPhotoshop(imgObj, adjustment, value) {
+  const unitValue = cssToUnit(adjustment, value);
+  imgObj[adjustment] = unitToPs(adjustment, unitValue);
+}
+
+export function cssToUnit(adjustment, value) {
+  return convertToUnit(adjustment, value, CSSRanges);
+}
+
+export function convertToUnit(
+  adjustment,
+  value,
+  ranges,
+) {
+  if (value < ranges[adjustment].min || value > ranges[adjustment].max) {
+    throw new Error(`value out of range ${adjustment}:${value}`);
+  }
+
+  if (value < ranges[adjustment].zero) {
+    const spread = ranges[adjustment].zero - ranges[adjustment].min;
+    return (value - ranges[adjustment].min) / spread - 1;
+  }
+  const spread = ranges[adjustment].max - ranges[adjustment].zero;
+  return (value - ranges[adjustment].zero) / spread;
+}
+
+export function unitToPs(adjustment, value) {
+  return convertFromUnit(adjustment, value, PsRanges);
+}
+
+export function convertFromUnit(
+  adjustment,
+  value,
+  ranges,
+) {
+  if (value < -1 || value > 1) {
+    throw new Error(`value out of range ${adjustment}:${value}`);
+  }
+
+  if (value < 0) {
+    const spread = ranges[adjustment].zero - ranges[adjustment].min;
+    const t = value + 1;
+    return t * spread + ranges[adjustment].min;
+  }
+  const spread = ranges[adjustment].max - ranges[adjustment].zero;
+  return value * spread + ranges[adjustment].zero;
 }
 
 function uploadImage(media, layer, imgObj) {
