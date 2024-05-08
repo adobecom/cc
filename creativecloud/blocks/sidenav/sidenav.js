@@ -19,12 +19,16 @@ const getCategories = (items, isMultilevel, mapCategories) => {
   const merchTag = createTag('merch-sidenav-list', { deeplink: 'category' });
   merchTag.append(tag);
   items.forEach((item) => {
-    if (item) {
+    if (item?.id) {
       let parent = tag;
       const value = getIdLeaf(item.id);
       // first token is type, second is parent category
       const isParent = item.id.split('/').length <= 2;
       const itemTag = createTag('sp-sidenav-item', { label: item.name, value });
+      if (item.icon) {
+        item.icon.setAttribute('slot', 'icon');
+        itemTag.append(item.icon);
+      }
       if (isParent) {
         mapParents[value] = itemTag;
         tag.append(itemTag);
@@ -34,7 +38,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
           if (!mapParents[parentId]) {
             const parentItem = mapCategories[parentId];
             if (parentItem) {
-              mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, parentId });
+              mapParents[parentId] = createTag('sp-sidenav-item', { label: parentItem.name, value: parentId });
               tag.append(mapParents[parentId]);
             }
           }
@@ -74,20 +78,23 @@ const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
         if (item.id?.startsWith(CATEGORY_ID_PREFIX)) {
           const value = getIdLeaf(item.id);
           mapCategories[value] = item;
-          categoryValues.push(value);
+          categoryValues.push({ value });
         } else if (item.id?.startsWith(TYPE_ID_PREFIX)) {
           types.push(item);
         }
       });
       if (explicitCategoriesElt) {
         categoryValues = Array.from(explicitCategoriesElt.querySelectorAll('li'))
-          .map((item) => item.textContent.trim().toLowerCase());
+          .map((item) => ({
+            value: item.textContent.trim().toLowerCase(),
+            icon: item.querySelector('picture'),
+          }));
       }
       let shallowCategories = true;
       if (categoryValues.length > 0) {
         await makePause();
-        const items = categoryValues.map((value) => mapCategories[value]);
-        const parentValues = new Set(items.map((value) => value?.id.split('/')[1]));
+        const items = categoryValues.map(({ value, icon }) => ({ ...mapCategories[value], icon }));
+        const parentValues = new Set(items.map(({ id }) => id?.split('/')[1]));
         // all parent will always be here without children,
         // so shallow is considered below 2 parents
         shallowCategories = parentValues.size <= 2;
@@ -132,6 +139,7 @@ function appendResources(rootNav, resourceLink) {
 
 export default async function init(el) {
   const libs = getLibs();
+  const [mainRow, categoryRow] = Array.from(el.children);
   const merchSidenavDep = import('../../deps/merch-sidenav.js');
   const deps = Promise.all([
     merchSidenavDep,
@@ -148,20 +156,21 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
   ]);
 
-  const title = el.querySelector('h2,h3')?.textContent.trim();
+  const title = mainRow?.querySelector('h2,h3')?.textContent.trim();
+  const searchText = mainRow?.querySelector('p > strong')?.textContent.trim();
+  const typeText = mainRow?.querySelector('p > em')?.textContent.trim();
+  // eslint-disable-next-line prefer-const
+  const resourcesLink = mainRow?.querySelector('a');
+  let endpoint = categoryRow?.querySelector('a');
   await merchSidenavDep;
   const rootNav = createTag('merch-sidenav', { title });
-  const searchText = el.querySelector('p > strong')?.textContent.trim();
-  const typeText = el.querySelector('p > em')?.textContent.trim();
   await deps;
   el.replaceWith(rootNav);
   appendSearch(rootNav, searchText);
-  // eslint-disable-next-line prefer-const
-  let [endpoint, resourcesLink] = el.querySelectorAll('a');
   if (endpoint) {
     await makePause();
     endpoint = localizeLink(endpoint.textContent.trim(), null, true);
-    const explicitCategories = el.querySelector('ul');
+    const explicitCategories = categoryRow?.querySelector('ul');
     performance.mark('sidenav:appendFilters:start');
     await appendFilters(rootNav, endpoint, explicitCategories, typeText);
     performance.mark('sidenav:appendFilters:end');
