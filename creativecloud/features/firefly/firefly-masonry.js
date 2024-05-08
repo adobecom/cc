@@ -188,7 +188,7 @@ export default async function setMultiImageMarquee(el) {
       mediaDetail.imgSrc.push(src);
       mediaDetail.prompt.push(prompt);
       mediaDetail.href.push(href);
-      if (span?.length > 1)mediaDetail.spans.push(span[1]);
+      if (span?.length > 1) mediaDetail.spans.push(span[1]);
       mediaDetail.alt.push(alt);
       // Desktop and Tablet
       processMasonryMedia(gridDiv, allP, mediaDetail);
