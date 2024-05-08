@@ -287,7 +287,7 @@ function continueToPs(layer, imgObj) {
         psurls[1],
         imgObj.fileName,
         [{ filename: imgObj.fileName, imageData }],
-        actionJSONData
+        actionJSONData,
       );
     });
   });
