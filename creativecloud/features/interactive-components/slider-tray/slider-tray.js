@@ -131,7 +131,7 @@ function applyAccessibility(inputEle, target) {
 }
 
 function createUploadPSButton(details, picture, layer) {
-  const btn = createTag('a', { class: 'continueButton body-xl hide', tabindex:"0" }, details);
+  const btn = createTag('a', { class: 'continueButton body-xl hide', tabindex:'0' }, details);
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
   btn.append(analyticsHolder);
   appendSVGToButton(picture, btn);
@@ -192,7 +192,7 @@ function cssToPhotoshop(imgObj, adjustment, value) {
   imgObj[adjustment] = convertFromUnit(adjustment, unitValue, PsRanges);
 }
 
-function convertToUnit(adjustment, value, ranges ) {
+function convertToUnit(adjustment, value, ranges) {
   if (value < ranges[adjustment].min || value > ranges[adjustment].max) {
     throw new Error(`value out of range ${adjustment}:${value}`);
   }
@@ -249,7 +249,7 @@ function uploadImage(media, layer, imgObj) {
 
 function continueToPs(layer, imgObj) {
   layer.querySelectorAll('.continueButton').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
+    btn.addEventListener('click', async () => {
       const actionJSONData = [
         {
           _obj: 'make',
@@ -280,11 +280,14 @@ function continueToPs(layer, imgObj) {
         'https://dev.photoshop.adobe.com',
         'https://pr.photoshop.adobe.com/?PR=48898',
         'https://localhost.corp.adobe.com:3000',
-      ]
-      console.log('actionJSONData', actionJSONData);
+      ];
       const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
-      const imageData = await (await fetch(imgObj.imgSrc)).blob(); 
-      openInPsWeb(psurls[1], imgObj.fileName, [{ filename: imgObj.fileName, imageData }], actionJSONData);
+      const imageData = await (await fetch(imgObj.imgSrc)).blob();
+      openInPsWeb(psurls[1],
+        imgObj.fileName,
+        [{ filename: imgObj.fileName, imageData }],
+        actionJSONData
+      );
     });
   });
 }
