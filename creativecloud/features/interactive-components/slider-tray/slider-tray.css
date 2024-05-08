@@ -251,7 +251,7 @@
   display: none;
 }
 
-.interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img {
+.interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
   height: 18px;
   width: 18px;
   display: flex;
@@ -322,8 +322,7 @@
    display: none;
  }
 
- .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img,
- .interactive-enabled .step-slider-tray .continueButton .svg-icon-container img{
+ .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
    display: flex;
    align-items: center;
    justify-content: center;
