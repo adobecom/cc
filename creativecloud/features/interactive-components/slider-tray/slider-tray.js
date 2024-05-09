@@ -2,6 +2,7 @@
 /* eslint-disable no-use-before-define */
 import { createTag, getLibs } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
+
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const config = getConfig();
 const env = window.origin.includes(config.prodDomains[0]) ? 'prod' : 'stage';
@@ -277,12 +278,6 @@ function continueToPs(layer, imgObj) {
           },
         },
       ];
-      // const psurls = [
-      //   'https://photoshop.adobe.com',
-      //   'https://dev.photoshop.adobe.com',
-      //   'https://pr.photoshop.adobe.com/?PR=48898',
-      //   'https://localhost.corp.adobe.com:3000',
-      // ];
       const psurls = env === 'prod' ? 'https://photoshop.adobe.com' : 'https://dev.photoshop.adobe.com';
       const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
       const imageData = await (await fetch(imgObj.imgSrc)).blob();
