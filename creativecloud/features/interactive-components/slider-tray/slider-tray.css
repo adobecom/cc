@@ -337,7 +337,7 @@
 @media screen and (min-width: 1024px) {
   .interactive-enabled .step-slider-tray .continueButton {
     position: absolute;
-    bottom: 3%;
+    bottom: 4%;
     display: flex;
     gap: 16px;
     background: #1273E6;
