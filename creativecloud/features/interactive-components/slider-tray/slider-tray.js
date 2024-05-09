@@ -87,7 +87,6 @@ function createSlider(sliderType, details, menu, sliderTray) {
     min: CSSRanges[sliderType].min,
     max: CSSRanges[sliderType].max,
     class: `options ${sliderType.toLowerCase()}-input`,
-    value: `${sliderType === 'hue' ? '0' : '150'}`,
   });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
