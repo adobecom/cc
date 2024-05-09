@@ -4,8 +4,8 @@ import { createTag, getLibs } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-const config = getConfig();
-const env = window.origin.includes(config.prodDomains[0]) ? 'prod' : 'stage';
+const configSetting = getConfig();
+const env = window.origin.includes(configSetting.prodDomains[0]) ? 'prod' : 'stage';
 
 const CSSRanges = {
   hue: { min: -180, zero: 0, max: 180 },
