@@ -334,7 +334,7 @@
  }
 }
 
-@media screen and (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+@media screen and (min-width: 1024px) {
   .interactive-enabled .step-slider-tray .continueButton {
     position: absolute;
     bottom: 4%;
