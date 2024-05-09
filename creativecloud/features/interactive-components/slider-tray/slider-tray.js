@@ -231,6 +231,7 @@ function uploadImage(media, layer, imgObj) {
     btn.addEventListener('change', (event) => {
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
+      if (!file.type.startsWith('image/')) return;
       if (file) {
         imgObj.fileName = file.name;
         const sources = image.querySelectorAll('source');
