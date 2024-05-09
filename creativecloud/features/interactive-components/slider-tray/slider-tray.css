@@ -323,7 +323,7 @@
  }
 
  .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img,
- .interactive-enabled .step-slider-tray .continueButton .svg-icon-container img{
+ .interactive-enabled .step-slider-tray .continueButton .svg-icon-container img {
    display: flex;
    align-items: center;
    justify-content: center;
@@ -343,7 +343,7 @@
     background: #1273E6;
     border-radius: 8px;
     text-decoration: none;
-    color: var(--prompt-btn-fill-light) !important;
+    color: var(--prompt-btn-fill-light);
     font-weight: bold;
     padding: 0 56px;
     align-items: center;

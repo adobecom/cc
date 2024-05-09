@@ -1,14 +1,17 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-use-before-define */
-import { createTag } from '../../../scripts/utils.js';
+import { createTag, getLibs } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
+const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+const config = getConfig();
+const env = window.origin.includes(config.prodDomains[0]) ? 'prod' : 'stage';
 
-export const CSSRanges = {
+const CSSRanges = {
   hue: { min: -180, zero: 0, max: 180 },
   saturation: { min: 0, zero: 100, max: 300 },
 };
 
-export const PsRanges = {
+const PsRanges = {
   hue: { min: -180, zero: 0, max: 180 },
   saturation: { min: -100, zero: 0, max: 100 },
 };
@@ -84,7 +87,7 @@ function createSlider(sliderType, details, menu, sliderTray) {
     min: CSSRanges[sliderType].min,
     max: CSSRanges[sliderType].max,
     class: `options ${sliderType.toLowerCase()}-input`,
-    value: CSSRanges[sliderType].zero,
+    value: `${sliderType === 'hue' ? '0' : '180'}`,
   });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
@@ -194,7 +197,7 @@ function cssToPhotoshop(imgObj, adjustment, value) {
 
 function convertToUnit(adjustment, value, ranges) {
   if (value < ranges[adjustment].min || value > ranges[adjustment].max) {
-    throw new Error(`value out of range ${adjustment}:${value}`);
+    window.lana.log(`value out of range ${adjustment}:${value}`);
   }
 
   if (value < ranges[adjustment].zero) {
@@ -207,7 +210,7 @@ function convertToUnit(adjustment, value, ranges) {
 
 function convertFromUnit(adjustment, value, ranges) {
   if (value < -1 || value > 1) {
-    throw new Error(`value out of range ${adjustment}:${value}`);
+    window.lana.log(`value out of range ${adjustment}:${value}`);
   }
 
   if (value < 0) {
@@ -275,16 +278,17 @@ function continueToPs(layer, imgObj) {
           },
         },
       ];
-      const psurls = [
-        'https://photoshop.adobe.com',
-        'https://dev.photoshop.adobe.com',
-        'https://pr.photoshop.adobe.com/?PR=48898',
-        'https://localhost.corp.adobe.com:3000',
-      ];
+      // const psurls = [
+      //   'https://photoshop.adobe.com',
+      //   'https://dev.photoshop.adobe.com',
+      //   'https://pr.photoshop.adobe.com/?PR=48898',
+      //   'https://localhost.corp.adobe.com:3000',
+      // ];
+      const psurls = env === 'prod' ? 'https://photoshop.adobe.com' : 'https://dev.photoshop.adobe.com';
       const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
       const imageData = await (await fetch(imgObj.imgSrc)).blob();
       openInPsWeb(
-        psurls[1],
+        psurls,
         imgObj.fileName,
         [{ filename: imgObj.fileName, imageData }],
         actionJSONData,
