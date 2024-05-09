@@ -171,6 +171,15 @@ export default async function setMultiImageMarquee(el) {
   const ic = el.querySelector('.interactive-container');
   const mediaElements = el.querySelector('.asset');
   const allP = mediaElements.querySelectorAll('p:not(:empty)');
+  const allLi = el.querySelectorAll('li');
+  const spanElements = [];
+  [...allLi].forEach((li) => {
+    const allSpans = li.querySelectorAll('span');
+    [...allSpans].forEach((span) => {
+      const spanClass = span?.classList[1]?.split('icon-');
+      if (spanClass?.length > 1) spanElements.push(spanClass[1]);
+    });
+  });
   ic.innerHTML = '';
   const mediaDetail = {
     imgSrc: [], prompt: [], href: [], index: 0, spans: [], alt: [],
@@ -178,20 +187,21 @@ export default async function setMultiImageMarquee(el) {
   const media = createTag('div', { class: 'asset grid-layout' });
   const mediaMobile = createTag('div', { class: 'asset mobile-only' });
   const gridDiv = createTag('div', { class: 'grid-container' });
+  let spanCount = 0;
   [...allP].forEach((s) => {
     if (s.querySelector('picture')) {
       const src = getImgSrc(s);
       const prompt = allP[[...allP].indexOf(s) + 1].innerText;
       const { href } = allP[[...allP].indexOf(s) + 1].querySelector('a');
       const alt = s.querySelector('img').getAttribute('alt');
-      const span = allP[[...allP].indexOf(s) - 1].querySelector('span')?.classList[1]?.split('icon-');
       mediaDetail.imgSrc.push(src);
       mediaDetail.prompt.push(prompt);
       mediaDetail.href.push(href);
-      if (span?.length > 1) mediaDetail.spans.push(span[1]);
+      mediaDetail.spans.push(spanElements[spanCount]);
       mediaDetail.alt.push(alt);
       // Desktop and Tablet
       processMasonryMedia(gridDiv, allP, mediaDetail);
+      spanCount += 1;
     }
   });
   // For grid view
