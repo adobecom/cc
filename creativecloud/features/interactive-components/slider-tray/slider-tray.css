@@ -54,7 +54,7 @@
   top: -9px;
   inset-block-start: 50%;
   inset-inline-start: 50%;
-  transform: translate(-38%, -50%);
+  transform: translate(-50%, -50%);
   z-index: 1;
 }
 
@@ -155,8 +155,9 @@
   width: 100%;
   opacity: 0;
   position: absolute;
-  top: -9px;
+  top: -7px;
   z-index: 2;
+  margin: 0;
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animate::before,

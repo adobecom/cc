@@ -1,11 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-use-before-define */
-import { createTag, getLibs } from '../../../scripts/utils.js';
+import { createTag, getConfig } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
-
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-const configSetting = getConfig();
-const env = window.origin.includes(configSetting.prodDomains[0]) ? 'prod' : 'stage';
 
 const CSSRanges = {
   hue: { min: -180, zero: 0, max: 180 },
@@ -159,16 +155,16 @@ function sliderEvent(media, layer, imgObj) {
     sliderEl.addEventListener('input', () => {
       const image = media.querySelector('.interactive-holder picture > img');
       const { value } = sliderEl;
+      sliderEl.setAttribute('value', value);
       const outerCircle = sliderEl.nextSibling;
-      const rect = sliderEl.getBoundingClientRect();
       const value1 = (value - sliderEl.min) / (sliderEl.max - sliderEl.min);
-      const thumbOffset = value1 * (rect.width - outerCircle.offsetWidth);
+      let thumbPercent = 3 + (value1 * 94);
       const interactiveBlock = media.closest('.marquee') || media.closest('.aside');
       const isRowReversed = interactiveBlock.classList.contains('.row-reversed');
       if ((document.dir === 'rtl' || isRowReversed)) {
-        outerCircle.style.right = `${thumbOffset + 8}px`;
+        outerCircle.style.right = `${thumbPercent}%`;
       } else {
-        outerCircle.style.left = `${thumbOffset + 8}px`;
+        outerCircle.style.left = `${thumbPercent}%`;
       }
       switch (sel.toLowerCase()) {
         case ('hue'):
@@ -279,11 +275,12 @@ function continueToPs(layer, imgObj) {
           },
         },
       ];
-      const psurls = env === 'prod' ? 'https://photoshop.adobe.com' : 'https://dev.photoshop.adobe.com';
       const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
       const imageData = await (await fetch(imgObj.imgSrc)).blob();
+      const cs = getConfig();
+      const envConfig = cs.prodDomains.includes(window.location.host) ? cs.prod.psUrl : cs.stage.psUrl;
       openInPsWeb(
-        psurls,
+        envConfig,
         imgObj.fileName,
         [{ filename: imgObj.fileName, imageData }],
         actionJSONData,
