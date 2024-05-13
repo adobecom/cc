@@ -58,7 +58,7 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, interacti
       const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';
       e.target.setAttribute('daa-ll', dall);
       if (userprompt === '') {
-        window.location.href = allP[4].querySelector('a').href;
+        window.location.href = allP[3].querySelector('a').href;
       } else {
         const { default: signIn } = await import('./firefly-susi.js');
         signIn(userprompt, 'goToFirefly');
