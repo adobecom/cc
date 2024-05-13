@@ -256,7 +256,7 @@ async function renderLayer(stepInfo) {
 function getWorkFlowInformation(el) {
   let wfName = '';
   const intWorkFlowConfig = {
-    'workflow-change-bg': ['changeBG-tray'],
+    'workflow-change-bg': ['psapi-tray'],
     'workflow-generate-crop': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-hue-sat': ['slider-tray'],
