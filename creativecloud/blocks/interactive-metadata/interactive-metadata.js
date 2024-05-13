@@ -20,12 +20,9 @@ function getPrevStepIndex(stepInfo) {
 }
 
 function animationCallback(btn) {
-  let animationName = 'animated';
-  if (btn.dataset.animationcfg) animationName = btn.dataset.animationcfg;
-  if (!animationName) return;
-  btn.classList.add(animationName);
+  btn.classList.add('animated');
   ['mouseover', 'focus'].forEach((event) => {
-    btn.addEventListener(event, () => { btn.classList.remove(animationName); });
+    btn.addEventListener(event, () => { btn.classList.remove('animated'); });
   });
 }
 
