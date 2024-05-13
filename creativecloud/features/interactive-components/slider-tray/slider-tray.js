@@ -231,8 +231,6 @@ function uploadImage(media, layer, imgObj) {
       if (!file.type.startsWith('image/')) return;
       if (file) {
         imgObj.fileName = file.name;
-        const sources = image.querySelectorAll('source');
-        sources.forEach((source) => source.remove());
         const imageUrl = URL.createObjectURL(file);
         image.src = imageUrl;
         imgObj.imgSrc = imageUrl;
