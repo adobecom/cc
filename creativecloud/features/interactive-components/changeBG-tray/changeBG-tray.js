@@ -1,11 +1,5 @@
 import { createTag } from '../../../scripts/utils.js';
 import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-metadata/interactive-metadata.js';
-import defineDeviceByScreenSize from '../../../scripts/decorate.js';
-
-let currIndex = 0;
-let clicked = false;
-let timer = null;
-const mobileFlow = ['remove', 'change', 'upload', 'remove', 'change', 'start-over'];
 
 function createSelectorThumbnail(pic, displayImg, outline) {
   const src = getImgSrc(pic);
@@ -18,13 +12,53 @@ function createSelectorThumbnail(pic, displayImg, outline) {
   return a;
 }
 
-async function changeBG(img, data) {
-    const trObj = { src: img.src, alt: img.alt, useCfg: true };
+function continueInPs(uploadBtn, config) {
+  const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
+  if (!uploadCfg) return null;
+  const btnCfg = uploadCfg.querySelector('.icon-upload-ps')?.closest('li');
+  const btnText = btnCfg.textContent;
+  const btnSvg = btnCfg.querySelector('picture');
+  const btn = createTag('a', { class: `psgateway-handler continueps-btn body-xl` });
+  btn.append(btnSvg, btnText)
+  uploadBtn.replaceWith(btn);
+  btn.addEventListener('click', () => {
+    handleContinueInPs();
+  });
+  return btn;
+}
+
+function handleContinueInPs() {
+  console.log('continue in ps');
+}
+
+function renderMobileStep(layer, mobileStep, stepName = null) {
+  let i = mobileStep.activeStep;
+  if (stepName) {
+    const stepIdx = mobileStep.stepList.indexOf(stepName);
+    i = stepIdx !== -1 ? stepIdx : i;
+  }
+  mobileStep.activeStep = (i + 1) % mobileStep.stepList.length;
+  layer.querySelector('.show-btn')?.classList.remove('show-btn');
+  layer.querySelector('.show-submenu')?.classList.remove('show-submenu');
+  layer.querySelector('.mobile-updated')?.classList.remove('mobile-updated');
+  const showBtn = layer.querySelector(`.${mobileStep.stepList[mobileStep.activeStep]}-btn`);
+  showBtn.classList.add('show-btn');
+  if (showBtn.dataset?.submenu) layer.querySelector(`.${showBtn.dataset.submenu}`).classList.add('show-submenu');
+}
+
+async function handleChangeBg(layer, bgImg, data) {
+    const subjectImg = layer.querySelector(":scope > picture > img");
+    if (!subjectImg || !subjectImg.style.maskImage) {
+      await handleRemoveBg(layer);
+    }
+    const trObj = { src: bgImg.src, alt: bgImg.alt, useCfg: true };
     await handleImageTransition(data, trObj);
 }
 
-async function removeBG(layer, data) {
-  if (!layer.querySelector(':scope > picture')) {
+async function handleRemoveBg(layer, mobileStep) {
+  const layerImg = layer.querySelector(':scope > picture > img');
+  if (layerImg && layerImg.style.maskImage) return;
+  if (!layerImg) {
     const dimg = layer.closest('.foreground').querySelector('.interactive-holder > picture > img');
     const pic = createTag('picture', {}, dimg.cloneNode(true));
     layer.prepend(pic);
@@ -35,6 +69,7 @@ async function removeBG(layer, data) {
       background-size: 14px 14px;
     */
   }
+  /* To uncomment
   const img = layer.querySelector(":scope > picture > img");
   const { AperitifStrategy } = await import('../../../deps/export-to-ps/aperitifStrategy.js');
   const { MaskProcessor } = await import('../../../deps/export-to-ps/maskProcessor.js');
@@ -53,96 +88,46 @@ async function removeBG(layer, data) {
   img.style.maskImage = `url(${imageUrl})`;
   img.style.maskMode = 'luminance';
   img.style.maskSize = 'contain';
+  */
 }
 
-function createSubMenu(op, data) {
+function createSubMenu(op, layer, data, mobileStep) {
   const [thumbnailPic, displayPic] = op.children;
   const displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
   const a = createSelectorThumbnail(thumbnailPic, displayImg, null);
   a.classList.add('submenu-icon');
-  a.addEventListener('click', async (e) => {
-    changeBG(displayPic.querySelector('img'), data);
+  a.addEventListener('click', async () => {
+    await handleChangeBg(layer, displayPic.querySelector('img'), data);
+    if (!a.classList.contains('mobile-updated')) renderMobileStep(layer, mobileStep);
+    a.classList.add('mobile-updated');
   });
   return a;
 }
 
-// function implRemove(layer) {
-//   removeBG(layer);
-// }
-
-// function implChange(data, config, trayItems, outerDiv) {
-//   const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-//   const desktopBtn = trayItems.querySelector('.tray-option.change-btn');
-//   if(!outerDiv.querySelector('.sb-option')) {
-//     if (vp !== 'mobile') {
-//       outerDiv.style.display = 'flex';
-//       desktopBtn.classList.add('highlighted');
-//     }
-//     const sbOption = createTag('div', { class: 'sb-option' });
-//     createSubMenu(config.ul, data, sbOption, trayItems);
-//     outerDiv.append(sbOption);
-//   } else {
-//     const disp = outerDiv.style.display; 
-//     if (disp === 'flex') {
-//       outerDiv.style.display = 'none';
-//       desktopBtn.classList.remove('highlighted');
-//     } else {
-//       outerDiv.style.display = 'flex';
-//       desktopBtn.classList.add('highlighted');
-//     }
-//   }
-// }
-
-function implNextFlow(currEl, nextEl) {
-  currEl.style.display = 'none';
-  nextEl.style.display = 'flex';
-}
-
-function createTrayButton(btnText, btnSvg, btnType) {
+function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
   let btn = createTag('a', { class: `gray-button tray-option ${btnType}-btn` });
   btn.dataset.animationcfg = 'animated_v2';
   if (btnSvg) btn.append(btnSvg);
   const btnTxtCont = createTag('span', {class: `tray-item-text`}, btnText);
   btn.append(btnTxtCont);
-  btn.addEventListener('click', (e) => {
+  btn.addEventListener('click', async (e) => {
     e.preventDefault();
     switch(btnType) {
       case 'remove':
-        handleRemoveBg(layer);
-        break;
-      case 'change':
-        handleChangeBg(data, config, trayItems, trayOption);
+        await handleRemoveBg(layer);
+        renderMobileStep(layer, mobileStep);
         break;
       case 'start-over':
-        handleStartOver(data, config, trayItems, trayOption);
+        await handleStartOver(layer, data, mobileStep);
         break;
       default:
         break;
     }
-    // clicked = true;
-    // if(timer) clearTimeout(timer);
-    // handleUpload(btnMetadata, layer);
   });
   return btn;
 }
 
-function createUploadBtn(cfg) {
-  const [btnText, btnDelay = null] = cfg.textContent.split('|');
-  const btnSvg = cfg.querySelector('picture');
-  const btn = createTag('a', { class: `upload-btn body-xl` }, btnText);
-  const inputBtn = createTag('input', { class: 'inputFile', type: 'file'});
-  btn.append(btnSvg, inputBtn);
-  return btn;
-  // timer = setTimeout( async () => {
-  //   if(layer.querySelector('.upload-btn')) return;
-  //   const button = await createInteractiveButton(uploadConfig);
-  //   if (vp === 'mobile') button.classList.add('gray-button');
-  //   layer.append(button);
-  //   handleUploadClick(button, btnMetadata, layer);
-  // }, del);
-}
-
-function createTrayOptions(btnCfg, data) {
+function createTrayOptions(btnCfg, layer, data, mobileStep, idx) {
   const btnText = btnCfg.textContent.split('|')[0].trim();
   const btnSvg = btnCfg.querySelector(':scope > picture');
   const iconOption = [...btnCfg.querySelector('.icon').classList]?.filter((c) => c.match('icon-'));
@@ -152,126 +137,134 @@ function createTrayOptions(btnCfg, data) {
     icParts.shift();
     btnType = icParts.join('-');
   }
-  const btn = createTrayButton(btnText, btnSvg, btnType);
+  const btn = createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType);
   const subMenu = btnCfg.querySelector('ul');
   if (!subMenu) return [btn, null];
-  const subOpt = createTag('div', { class: 'sb-option' });
+  btn.dataset.submenu = `submenu-${idx}`;
+  const subOpt = createTag('div', { class: `sb-option submenu-${idx}` });
   const subItems = subMenu.querySelectorAll('li');
   [...subItems].forEach( (i) => {
-    const subItem = createSubMenu(i, data);
+    const subItem = createSubMenu(i, layer, data, mobileStep);
     subOpt.append(subItem);
   })
   return [btn, subOpt];
 }
 
-async function createPSflow(btnMetadata, layer) {
-  const psConfig = {
-    svg: btnMetadata.children[2].querySelector('picture'),
-    text: btnMetadata.children[2].textContent.split('|')[0],
-    type: 'PS'
-  };
-  const psBtn = await createInteractiveButton(psConfig);
-  psBtn.addEventListener('click', (e) => {
-    console.log('See more in PS');
-  });
-  layer.append(psBtn);
-}
+// async function createPSflow(btnMetadata, layer) {
+//   const psConfig = {
+//     svg: btnMetadata.children[2].querySelector('picture'),
+//     text: btnMetadata.children[2].textContent.split('|')[0],
+//     type: 'PS'
+//   };
+//   const psBtn = await createInteractiveButton(psConfig);
+//   psBtn.addEventListener('click', (e) => {
+//     console.log('See more in PS');
+//   });
+//   layer.append(psBtn);
+// }
 
-function handleUploadClick(btn, btnMetadata, layer) {
-  const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  btn.addEventListener('change', async (event) => {
-    const pic = layer.querySelector('picture');
-    const image = pic.querySelector('img');
+function handleUploadImage(layer, config, btn, mobileStep) {
+  btn.addEventListener('change', (event) => {
+    if (!layer.querySelector(':scope > picture > img')) {
+      const img = createTag('img', {});
+      const pic = createTag('picture', {}, img);
+      layer.prepend(pic);
+    }
+    const image = layer.querySelector(':scope > picture > img');
     const file = event.target.files[0];
     if (file) {
-      const sources = pic.querySelectorAll('source');
-      sources.forEach((source) => source.remove());
       const imageUrl = URL.createObjectURL(file);
       image.src = imageUrl;
-    }
-    btn.style.display = 'none';
-    if (vp === 'mobile') {
-      currIndex = (currIndex + 1) % 6;
-      const nextEl = (layer.querySelector(`.${mobileFlow[currIndex]}-btn`));
-      implNextFlow(btn, nextEl);
-    } else {
-      createPSflow(btnMetadata, layer);
+      if (!navigator.userAgentData.mobile) {
+        continueInPs(btn, config);
+      }
+      renderMobileStep(layer, mobileStep, 'upload');
     }
   });
 }
 
-function handleStartOver(layer, data, config, btnMetadata) {
-  const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  const svg = btnMetadata.querySelector('picture');
-  const text = btnMetadata.firstElementChild.textContent;
-  const startOver = createTag('div', { class: 'start-over' });
-  startOver.append(svg, text);
-  startOver.addEventListener('click', async (e) => {
-    const [ bg, fg ] = config.querySelectorAll('p > picture');
-    const currfgPic = layer.querySelector('picture');
-    const bgI = bg.querySelector('img');
-    const oldFG = fg.cloneNode(true);
-    const obj = { src: bgI.src, alt: bgI.alt, useCfg: true };
-    await handleImageTransition(data, obj);
-    currfgPic.replaceWith(oldFG);
-    if (vp === 'mobile') {
-      currIndex = (currIndex + 1) % 6;
-      const nextEl = (layer.querySelector(`.${mobileFlow[currIndex]}-btn`));
-      implNextFlow(startOver, nextEl);
-    }
-  });
-  return startOver;
-}
-
-function addForegroundImg(layer, config) {
-  const fg = [...config.querySelectorAll('p')][1];
-  const fgClone = fg.querySelector('picture').cloneNode(true);
-  layer.append(fgClone);
+async function handleStartOver(layer, data, mobileStep) {
+  const defaultCfg = data.stepConfigs[data.stepIndex];
+  const defaultPic = defaultCfg.querySelector('picture');
+  const src = getImgSrc(defaultPic);
+  const alt = defaultPic.querySelector('img').alt;
+  const obj = { src, alt, useCfg: true };
+  await handleImageTransition(data, obj);
+  layer.querySelector(':scope > picture').style.opacity = 0;
+  layer.querySelector(':scope > picture')?.remove();
+  renderMobileStep(layer, mobileStep, 'start-over');
 }
 
 function handleMenuClick(btn, submenu) {
   btn.addEventListener('click', () => {
-    if (submenu.style.display === 'flex') submenu.style.display = 'none';
-    else submenu.style.display = 'flex';
+    if (submenu.classList.contains('show-dsubmenu')) submenu.classList.remove('show-dsubmenu');
+    else submenu.classList.add('show-dsubmenu');
   });
 }
 
-function changeBgSelectorTray(data, config) {
+function changeBgSelectorTray(data, layer, config, mobileStep) {
   const selectorTray = createTag('div', { class: 'heading-xs changeBG-tray' });
   const trayItems = createTag('div', { class: 'tray-items' });
   const subMenuTray = createTag('div', { class: 'tray-items submenu' });
 
   const traycfg = config.querySelector('ol').querySelectorAll(':scope > li');
   [...traycfg].forEach( (btncfg, idx) => {
-    const [btn, subMenu] = createTrayOptions(btncfg, data);
-    handleMenuClick(btn, subMenu);
+    const [btn, subMenu] = createTrayOptions(btncfg, layer, data, mobileStep, idx);
     trayItems.append(btn);
-    if (subMenu) subMenuTray.append(subMenu);
+    if (subMenu) {
+      handleMenuClick(btn, subMenu);
+      subMenuTray.append(subMenu);
+    }
   });
-  selectorTray.append(trayItems, subMenuTray);
+  selectorTray.append(subMenuTray, trayItems);
   return selectorTray;
 }
 
-function changeBgUpload(config) {
+function changeBgUpload(layer, config, mobileStep) {
   const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
   if (!uploadCfg) return null;
-  const btnCfg = createUploadBtn(uploadCfg.querySelector('.icon-upload')?.closest('li'));
+  const btnCfg = uploadCfg.querySelector('.icon-upload')?.closest('li');
   const [btnText, btnDelay = null] = btnCfg.textContent.split('|');
   const btnSvg = btnCfg.querySelector('picture');
-  const btn = createTag('a', { class: `upload-btn body-xl` });
+  const btn = createTag('a', { class: `psgateway-handler upload-btn body-xl` });
   const inputBtn = createTag('input', { class: 'inputFile', type: 'file'});
   btn.append(btnSvg, btnText, inputBtn);
+  btn.addEventListener('click', () => {
+    handleUploadImage(layer, config, btn, mobileStep);
+  });
   return btn;
+}
+
+function createStepList(config) {
+  const excludeIcon = ['upload', 'start-over', 'upload-ps'];
+  const spans = config.querySelectorAll('li .icon');
+  const iAllClass = [...spans].map((s) => { 
+    const ic = [...s.classList].filter((c) => c.match('icon-'))[0].split('-');
+    ic.shift();
+    return ic.join('-');
+  });
+  const hasUpload = iAllClass.includes('upload');
+  const hasStartOver = iAllClass.includes('start-over');
+  const iMobileClass = iAllClass.filter( (iac) => !excludeIcon.includes(iac));
+  let steps = iMobileClass.slice();
+  if (hasUpload) steps = steps.concat(['upload'], iMobileClass);
+  if (hasStartOver) steps = steps.concat(['start-over']);
+  return steps
 }
 
 export default async function stepInit(data) {
   data.target.classList.add('step-change-bg-tray');
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const selectorTray = changeBgSelectorTray(data, config);
-  const uploadBtn = changeBgUpload(config);
+  const mobileStep = {
+    activeStep: -1,
+    stepList: createStepList(config),
+  };
+  const selectorTray = changeBgSelectorTray(data, layer, config, mobileStep);
+  const uploadBtn = changeBgUpload(layer, config, mobileStep);
   selectorTray.append(uploadBtn);
   layer.append(selectorTray);
   if (uploadBtn) layer.append(uploadBtn);
+  renderMobileStep(layer, mobileStep);
   return layer;
 }
