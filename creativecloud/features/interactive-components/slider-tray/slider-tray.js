@@ -1,13 +1,25 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-use-before-define */
-import { createTag } from '../../../scripts/utils.js';
+import { createTag, getConfig } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
+const CSSRanges = {
+  hue: { min: -180, zero: 0, max: 180 },
+  saturation: { min: 0, zero: 100, max: 300 },
+};
+
+const PsRanges = {
+  hue: { min: -180, zero: 0, max: 180 },
+  saturation: { min: -100, zero: 0, max: 100 },
+};
+
 export default async function stepInit(data) {
+  const imgObj = {};
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   await createSelectorTray(data, layer);
-  sliderEvent(data.target, layer);
-  uploadImage(data.target, layer);
+  sliderEvent(data.target, layer, imgObj);
+  uploadImage(data.target, layer, imgObj);
+  continueToPs(layer, imgObj);
   return layer;
 }
 
@@ -17,7 +29,7 @@ async function createSelectorTray(data, layer) {
   const config = data.stepConfigs[data.stepIndex];
   const options = config.querySelectorAll(':scope > div ul .icon, :scope > div ol .icon');
   [...options].forEach((o) => { handleInput(o, sliderTray, menu, layer); });
-  layer.append(sliderTray);
+  layer.prepend(sliderTray);
   observeSliderTray(sliderTray, data.target, menu);
 }
 
@@ -63,17 +75,16 @@ function observeSliderTray(sliderTray, targets) {
 }
 
 function createSlider(sliderType, details, menu, sliderTray) {
-  const [label, min, max] = details.split('|').map((item) => item.trim());
-  const sliderLabel = createTag('label', { for: `${sliderType}` }, label);
+  const sliderLabel = createTag('label', { for: `${sliderType}` }, details.trim());
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
   const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1' });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
   const input = createTag('input', {
     type: 'range',
-    min,
-    max,
+    min: CSSRanges[sliderType].min,
+    max: CSSRanges[sliderType].max,
     class: `options ${sliderType.toLowerCase()}-input`,
-    value: `${sliderType === 'hue' ? '0' : '180'}`,
+    value: `${sliderType === 'hue' ? '0' : '150'}`,
   });
   outerCircle.append(analyticsHolder);
   sliderContainer.append(input, outerCircle);
@@ -120,7 +131,9 @@ function applyAccessibility(inputEle, target) {
 }
 
 function createUploadPSButton(details, picture, layer) {
-  const btn = createTag('a', { class: 'continueButton body-xl hide' }, details);
+  const btn = createTag('a', { class: 'continueButton body-xl hide', tabindex: '0' }, details);
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
+  btn.append(analyticsHolder);
   appendSVGToButton(picture, btn);
   layer.append(btn);
 }
@@ -135,7 +148,7 @@ function appendSVGToButton(picture, button) {
   button.prepend(svgCTACont);
 }
 
-function sliderEvent(media, layer) {
+function sliderEvent(media, layer, imgObj) {
   let hue = 0;
   let saturation = 100;
   ['hue', 'saturation'].forEach((sel) => {
@@ -143,28 +156,29 @@ function sliderEvent(media, layer) {
     sliderEl.addEventListener('input', () => {
       const image = media.querySelector('.interactive-holder picture > img');
       const { value } = sliderEl;
+      sliderEl.setAttribute('value', value);
       const outerCircle = sliderEl.nextSibling;
-      const rect = sliderEl.getBoundingClientRect();
       const value1 = (value - sliderEl.min) / (sliderEl.max - sliderEl.min);
-      const thumbOffset = value1 * (rect.width - outerCircle.offsetWidth);
+      const thumbPercent = 3 + (value1 * 94);
       const interactiveBlock = media.closest('.marquee') || media.closest('.aside');
       const isRowReversed = interactiveBlock.classList.contains('.row-reversed');
       if ((document.dir === 'rtl' || isRowReversed)) {
-        outerCircle.style.right = `${thumbOffset + 8}px`;
+        outerCircle.style.right = `${thumbPercent}%`;
       } else {
-        outerCircle.style.left = `${thumbOffset + 8}px`;
+        outerCircle.style.left = `${thumbPercent}%`;
       }
       switch (sel.toLowerCase()) {
         case ('hue'):
           hue = value;
           break;
         case ('saturation'):
-          saturation = value;
+          saturation = parseInt(value, 10);
           break;
         default:
           break;
       }
       image.style.filter = `hue-rotate(${hue}deg) saturate(${saturation}%)`;
+      cssToPhotoshop(imgObj, sel.toLowerCase(), value);
     });
     sliderEl.addEventListener('change', () => {
       const outerCircle = sliderEl.nextSibling;
@@ -173,7 +187,39 @@ function sliderEvent(media, layer) {
   });
 }
 
-function uploadImage(media, layer) {
+function cssToPhotoshop(imgObj, adjustment, value) {
+  const unitValue = convertToUnit(adjustment, value, CSSRanges);
+  imgObj[adjustment] = convertFromUnit(adjustment, unitValue, PsRanges);
+}
+
+function convertToUnit(adjustment, value, ranges) {
+  if (value < ranges[adjustment].min || value > ranges[adjustment].max) {
+    window.lana.log(`value out of range ${adjustment}:${value}`);
+  }
+
+  if (value < ranges[adjustment].zero) {
+    const spread = ranges[adjustment].zero - ranges[adjustment].min;
+    return (value - ranges[adjustment].min) / spread - 1;
+  }
+  const spread = ranges[adjustment].max - ranges[adjustment].zero;
+  return (value - ranges[adjustment].zero) / spread;
+}
+
+function convertFromUnit(adjustment, value, ranges) {
+  if (value < -1 || value > 1) {
+    window.lana.log(`value out of range ${adjustment}:${value}`);
+  }
+
+  if (value < 0) {
+    const spread = ranges[adjustment].zero - ranges[adjustment].min;
+    const t = value + 1;
+    return t * spread + ranges[adjustment].min;
+  }
+  const spread = ranges[adjustment].max - ranges[adjustment].zero;
+  return value * spread + ranges[adjustment].zero;
+}
+
+function uploadImage(media, layer, imgObj) {
   layer.querySelectorAll('.uploadButton').forEach((btn) => {
     const analyticsBtn = btn.querySelector('.interactive-link-analytics-text');
     btn.addEventListener('cancel', () => {
@@ -182,11 +228,12 @@ function uploadImage(media, layer) {
     btn.addEventListener('change', (event) => {
       const image = media.querySelector('picture > img');
       const file = event.target.files[0];
+      if (!file.type.startsWith('image/')) return;
       if (file) {
-        const sources = image.querySelectorAll('source');
-        sources.forEach((source) => source.remove());
+        imgObj.fileName = file.name;
         const imageUrl = URL.createObjectURL(file);
         image.src = imageUrl;
+        imgObj.imgSrc = imageUrl;
         analyticsBtn.innerHTML = 'Upload Button';
         const continueBtn = layer.querySelector('.continueButton');
         if (continueBtn) {
@@ -195,6 +242,48 @@ function uploadImage(media, layer) {
       } else {
         cancelAnalytics(btn);
       }
+    });
+  });
+}
+
+function continueToPs(layer, imgObj) {
+  layer.querySelectorAll('.continueButton').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const actionJSONData = [
+        {
+          _obj: 'make',
+          _target: [{ _ref: 'adjustmentLayer' }],
+          using: {
+            _obj: 'adjustmentLayer',
+            type: {
+              _obj: 'hueSaturation',
+              adjustment: [
+                {
+                  _obj: 'hueSatAdjustmentV2',
+                  hue: Math.round(imgObj.hue || 0),
+                  lightness: 0,
+                  saturation: Math.round(imgObj.saturation || 0),
+                },
+              ],
+              colorize: false,
+              presetKind: {
+                _enum: 'presetKindType',
+                _value: 'presetKindCustom',
+              },
+            },
+          },
+        },
+      ];
+      const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
+      const imageData = await (await fetch(imgObj.imgSrc)).blob();
+      const cs = getConfig();
+      const enConf = cs.prodDomains.includes(window.location.host) ? cs.prod.psUrl : cs.stage.psUrl;
+      openInPsWeb(
+        enConf,
+        imgObj.fileName,
+        [{ filename: imgObj.fileName, imageData }],
+        actionJSONData,
+      );
     });
   });
 }
@@ -216,7 +305,7 @@ function animateSlider(menu, target) {
   const aobj = { interrupted: false };
   const outerCircle = option.nextSibling;
   outerCircle.classList.add('animate');
-  ['mousedown', 'touchstart'].forEach((e) => {
+  ['mousedown', 'touchstart', 'keyup'].forEach((e) => {
     option.closest('.sliderTray').addEventListener(e, () => {
       aobj.interrupted = true;
       outerCircle.classList.remove('showOuterBorder', 'animate', 'animateout');
