@@ -49,6 +49,18 @@
   border: 3px solid #1273E6;
 }
 
+.interactive-enabled .step-change-bg-tray .layer .gray-button.animated {
+  animation: changeBg 1200ms ease-in-out 500ms forwards 3;
+}
+
+.interactive-enabled .step-change-bg-tray .layer .gray-button.animated::before {
+  animation: none;
+}
+
+@keyframes changeBg {
+  50% { background: var(--prompt-highlight-color); }
+}
+
 @media screen and (max-width: 600px) {
   .interactive-enabled .step-change-bg-tray .layer > picture {
     position: absolute;
