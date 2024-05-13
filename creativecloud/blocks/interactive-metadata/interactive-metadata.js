@@ -20,9 +20,12 @@ function getPrevStepIndex(stepInfo) {
 }
 
 function animationCallback(btn) {
-  btn.classList.add('animated');
+  let animationName = 'animated';
+  if (btn.dataset.animationcfg) animationName = btn.dataset.animationcfg;
+  if (!animationName) return;
+  btn.classList.add(animationName);
   ['mouseover', 'focus'].forEach((event) => {
-    btn.addEventListener(event, () => { btn.classList.remove('animated'); });
+    btn.addEventListener(event, () => { btn.classList.remove(animationName); });
   });
 }
 
@@ -246,7 +249,10 @@ async function renderLayer(stepInfo) {
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
     implementWorkflow(stepInfo)
       .then(() => resolve())
-      .catch(() => reject());
+      .catch((e) => { 
+        console.log(e);
+        reject()
+      });
   });
 }
 

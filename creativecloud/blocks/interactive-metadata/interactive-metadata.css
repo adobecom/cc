@@ -10,6 +10,7 @@
   --prompt-btn-fill-light: #FFFF;
   --prompt-text-color-light: #2C2C2C;
   --prompt-input-fill-light: #D5D5D5;
+  --selector-option-border: #6D6D6D;
 }
 
 .interactive-enabled .foreground .image > p:first-child {
@@ -167,6 +168,10 @@
   animation: outline-fill 2700ms 500ms forwards 7;
 }
 
+.interactive-enabled .step-changebg-tray .layer .gray-button.animated_v2 {
+  animation: changeBg 1200ms ease-in-out 500ms forwards 3;
+}
+
 .interactive-enabled .layer .gray-button.animated::before {
   content: '';
   position: absolute;
@@ -220,6 +225,18 @@
   }
 
   90% { border-color: var(--prompt-highlight-color); }
+}
+
+@keyframes changeBg {
+  0% {
+    background:#222221;
+  }
+  50% {
+    background: var(--prompt-highlight-color);
+  }
+  100% {
+    background: #222221;
+  }
 }
 
 .interactive-enabled .foreground.container .interactive-holder .layer .gray-button img,

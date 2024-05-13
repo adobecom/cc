@@ -1,6 +1,5 @@
 import { createTag } from '../../../scripts/utils.js';
 import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-metadata/interactive-metadata.js';
-import { createInteractiveButton } from '../upload/upload.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
 let currIndex = 0;
@@ -56,115 +55,113 @@ async function removeBG(layer, data) {
   img.style.maskSize = 'contain';
 }
 
-function createSubMenu(submenu, data, container, trayItems) {
-  const options = submenu.children;
-  let displayImg = null;
-  [...options].forEach((op) => {
-    const [thumbnailPic, displayPic] = op.children;
-    displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
-    const a = createSelectorThumbnail(thumbnailPic, displayImg, null);
-    a.classList.add('submenu-icon');
-    a.addEventListener('click', async (e) => {
-      changeBG(displayPic.querySelector('img'), data);
-    });
-    container.append(a);
-  })
+function createSubMenu(op, data) {
+  const [thumbnailPic, displayPic] = op.children;
+  const displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
+  const a = createSelectorThumbnail(thumbnailPic, displayImg, null);
+  a.classList.add('submenu-icon');
+  a.addEventListener('click', async (e) => {
+    changeBG(displayPic.querySelector('img'), data);
+  });
+  return a;
 }
 
-// TODO: make this a separate function
-function appendSVGToButton(picture, button) {
-  if (!picture) return;
-  const svg = picture.querySelector('img[src*=svg]');
-  if (!svg) return;
-  const svgClone = svg.cloneNode(true);
-  const svgCTACont = createTag('a', { class: 'tray-thumbnail-img' });
-  svgCTACont.append(svgClone);
-  button.prepend(svgCTACont);
-}
+// function implRemove(layer) {
+//   removeBG(layer);
+// }
 
-function implRemove(layer) {
-  // const img = config.ul.querySelector('picture > img');
-  // changeBG(img, data);
-  removeBG(layer);
-}
-
-function implChange(data, config, trayItems, outerDiv) {
-  const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  const desktopBtn = trayItems.querySelector('.tray-option.change-btn');
-  if(!outerDiv.querySelector('.sb-option')) {
-    if (vp !== 'mobile') {
-      outerDiv.style.display = 'flex';
-      desktopBtn.classList.add('highlighted');
-    }
-    const sbOption = createTag('div', { class: 'sb-option' });
-    createSubMenu(config.ul, data, sbOption, trayItems);
-    outerDiv.append(sbOption);
-  } else {
-    const disp = outerDiv.style.display; 
-    if (disp === 'flex') {
-      outerDiv.style.display = 'none';
-      desktopBtn.classList.remove('highlighted');
-    } else {
-      outerDiv.style.display = 'flex';
-      desktopBtn.classList.add('highlighted');
-    }
-  }
-}
+// function implChange(data, config, trayItems, outerDiv) {
+//   const vp = defineDeviceByScreenSize().toLocaleLowerCase();
+//   const desktopBtn = trayItems.querySelector('.tray-option.change-btn');
+//   if(!outerDiv.querySelector('.sb-option')) {
+//     if (vp !== 'mobile') {
+//       outerDiv.style.display = 'flex';
+//       desktopBtn.classList.add('highlighted');
+//     }
+//     const sbOption = createTag('div', { class: 'sb-option' });
+//     createSubMenu(config.ul, data, sbOption, trayItems);
+//     outerDiv.append(sbOption);
+//   } else {
+//     const disp = outerDiv.style.display; 
+//     if (disp === 'flex') {
+//       outerDiv.style.display = 'none';
+//       desktopBtn.classList.remove('highlighted');
+//     } else {
+//       outerDiv.style.display = 'flex';
+//       desktopBtn.classList.add('highlighted');
+//     }
+//   }
+// }
 
 function implNextFlow(currEl, nextEl) {
   currEl.style.display = 'none';
   nextEl.style.display = 'flex';
 }
 
-function createTrayButton(data, config, trayItems, subMenuTray, btnMetadata, layer) {
-  const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  let trayOption = (vp === 'mobile') ? createTag('a', { class: `gray-button ${config.type}-btn` }) : createTag('div', { class: `tray-option ${config.type}-btn` });
-  trayOption.append(config.text);
-  appendSVGToButton(config.svg, trayOption);
-  if(vp === 'mobile' && config.type === 'change') {
-    implChange(data, config, trayItems, trayOption);
-  }
-  trayOption.addEventListener('click', async (e) => {
+function createTrayButton(btnText, btnSvg, btnType) {
+  let btn = createTag('a', { class: `gray-button tray-option ${btnType}-btn` });
+  btn.dataset.animationcfg = 'animated_v2';
+  if (btnSvg) btn.append(btnSvg);
+  const btnTxtCont = createTag('span', {class: `tray-item-text`}, btnText);
+  btn.append(btnTxtCont);
+  btn.addEventListener('click', (e) => {
     e.preventDefault();
-    switch(config.type) {
+    switch(btnType) {
       case 'remove':
-        implRemove(layer);
-        currIndex = (currIndex + 1) % 6;
-        if (vp === 'mobile') implNextFlow(trayOption, trayItems.querySelector(`.${mobileFlow[currIndex]}-btn`));
+        handleRemoveBg(layer);
         break;
       case 'change':
-        if(vp === 'mobile') { 
-          implChange(data, config, trayItems, trayOption);
-          currIndex = (currIndex + 1) % 6;
-          const nextEl = (trayItems.closest('.layer').querySelector(`.${mobileFlow[currIndex]}-btn`));
-          implNextFlow(trayOption, nextEl);
-        }
-        else implChange(data, config, trayItems, subMenuTray);
+        handleChangeBg(data, config, trayItems, trayOption);
+        break;
+      case 'start-over':
+        handleStartOver(data, config, trayItems, trayOption);
         break;
       default:
-        window.lana.log(`Unknown input type: ${config.type}`);
         break;
     }
-    clicked = true;
-    if(timer) clearTimeout(timer);
-    handleUpload(btnMetadata, layer);
+    // clicked = true;
+    // if(timer) clearTimeout(timer);
+    // handleUpload(btnMetadata, layer);
   });
-  return trayOption;
+  return btn;
 }
 
-function createTrayOptions(data, menu, trayItems, subMenuTray, btnMetadata, layer) {
-  const options = menu.querySelectorAll(':scope > li');
-  [...options].forEach(async (o, i) => {
-    const oConfig = {
-      text: o.textContent.split('|')[0].trim(),
-      svg: o.querySelector(':scope > picture'),
-      ul: o.querySelector('ul'),
-      type: o.querySelector('span').classList[1].split('icon-')[1],
-    }
-    const trayOption = createTrayButton(data, oConfig, trayItems, subMenuTray, btnMetadata, layer);
-    if (i === 0) trayOption.style.display = 'flex';
-    trayItems.append(trayOption);
-  });
+function createUploadBtn(cfg) {
+  const [btnText, btnDelay = null] = cfg.textContent.split('|');
+  const btnSvg = cfg.querySelector('picture');
+  const btn = createTag('a', { class: `upload-btn body-xl` }, btnText);
+  const inputBtn = createTag('input', { class: 'inputFile', type: 'file'});
+  btn.append(btnSvg, inputBtn);
+  return btn;
+  // timer = setTimeout( async () => {
+  //   if(layer.querySelector('.upload-btn')) return;
+  //   const button = await createInteractiveButton(uploadConfig);
+  //   if (vp === 'mobile') button.classList.add('gray-button');
+  //   layer.append(button);
+  //   handleUploadClick(button, btnMetadata, layer);
+  // }, del);
+}
+
+function createTrayOptions(btnCfg, data) {
+  const btnText = btnCfg.textContent.split('|')[0].trim();
+  const btnSvg = btnCfg.querySelector(':scope > picture');
+  const iconOption = [...btnCfg.querySelector('.icon').classList]?.filter((c) => c.match('icon-'));
+  let btnType = '';
+  if (iconOption.length) {
+    const icParts = iconOption[0].split('-');
+    icParts.shift();
+    btnType = icParts.join('-');
+  }
+  const btn = createTrayButton(btnText, btnSvg, btnType);
+  const subMenu = btnCfg.querySelector('ul');
+  if (!subMenu) return [btn, null];
+  const subOpt = createTag('div', { class: 'sb-option' });
+  const subItems = subMenu.querySelectorAll('li');
+  [...subItems].forEach( (i) => {
+    const subItem = createSubMenu(i, data);
+    subOpt.append(subItem);
+  })
+  return [btn, subOpt];
 }
 
 async function createPSflow(btnMetadata, layer) {
@@ -203,24 +200,6 @@ function handleUploadClick(btn, btnMetadata, layer) {
   });
 }
 
-function handleUpload(btnMetadata, layer) {
-  const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  const uploadConfig = {
-    svg: btnMetadata.children[1].querySelector('picture'),
-    text: btnMetadata.children[1].textContent.split('|')[0],
-    delay: btnMetadata.children[1].textContent.split('|')[1],
-    type: 'upload',
-  };
-  const del = (vp === 'mobile' || clicked) ? 0 : uploadConfig.delay;
-  timer = setTimeout( async () => {
-    if(layer.querySelector('.upload-btn')) return;
-    const button = await createInteractiveButton(uploadConfig);
-    if (vp === 'mobile') button.classList.add('gray-button');
-    layer.append(button);
-    handleUploadClick(button, btnMetadata, layer);
-  }, del);
-}
-
 function handleStartOver(layer, data, config, btnMetadata) {
   const vp = defineDeviceByScreenSize().toLocaleLowerCase();
   const svg = btnMetadata.querySelector('picture');
@@ -250,32 +229,49 @@ function addForegroundImg(layer, config) {
   layer.append(fgClone);
 }
 
-function changeBgSelectorTray(layer, data, config) {
-  const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  // addForegroundImg(layer, config);
+function handleMenuClick(btn, submenu) {
+  btn.addEventListener('click', () => {
+    if (submenu.style.display === 'flex') submenu.style.display = 'none';
+    else submenu.style.display = 'flex';
+  });
+}
 
-  const selectorTray = createTag('div', { class: 'body-m changeBG-tray' });
+function changeBgSelectorTray(data, config) {
+  const selectorTray = createTag('div', { class: 'heading-xs changeBG-tray' });
   const trayItems = createTag('div', { class: 'tray-items' });
   const subMenuTray = createTag('div', { class: 'tray-items submenu' });
 
-  const [ menu, btnMetadata ] = config.querySelectorAll('ol');
-  const startOver = handleStartOver(layer, data, config, btnMetadata);
-  createTrayOptions(data, menu, trayItems, subMenuTray, btnMetadata, layer);
-  handleUpload(btnMetadata, layer);
-  if (vp === 'mobile') {
-    startOver.classList.remove('start-over');
-    startOver.classList.add('gray-button', 'start-over-btn');
-  }
-  trayItems.appendChild(startOver);
+  const traycfg = config.querySelector('ol').querySelectorAll(':scope > li');
+  [...traycfg].forEach( (btncfg, idx) => {
+    const [btn, subMenu] = createTrayOptions(btncfg, data);
+    handleMenuClick(btn, subMenu);
+    trayItems.append(btn);
+    if (subMenu) subMenuTray.append(subMenu);
+  });
   selectorTray.append(trayItems, subMenuTray);
   return selectorTray;
+}
+
+function changeBgUpload(config) {
+  const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
+  if (!uploadCfg) return null;
+  const btnCfg = createUploadBtn(uploadCfg.querySelector('.icon-upload')?.closest('li'));
+  const [btnText, btnDelay = null] = btnCfg.textContent.split('|');
+  const btnSvg = btnCfg.querySelector('picture');
+  const btn = createTag('a', { class: `upload-btn body-xl` });
+  const inputBtn = createTag('input', { class: 'inputFile', type: 'file'});
+  btn.append(btnSvg, btnText, inputBtn);
+  return btn;
 }
 
 export default async function stepInit(data) {
   data.target.classList.add('step-change-bg-tray');
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const selectorTray = changeBgSelectorTray(layer, data, config);
+  const selectorTray = changeBgSelectorTray(data, config);
+  const uploadBtn = changeBgUpload(config);
+  selectorTray.append(uploadBtn);
   layer.append(selectorTray);
+  if (uploadBtn) layer.append(uploadBtn);
   return layer;
 }
