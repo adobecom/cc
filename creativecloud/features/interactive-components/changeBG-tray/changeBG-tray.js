@@ -24,6 +24,38 @@ async function changeBG(img, data) {
     await handleImageTransition(data, trObj);
 }
 
+async function removeBG(layer, data) {
+  if (!layer.querySelector(':scope > picture')) {
+    const dimg = layer.closest('.foreground').querySelector('.interactive-holder > picture > img');
+    const pic = createTag('picture', {}, dimg.cloneNode(true));
+    layer.prepend(pic);
+    dimg.src = 'data:,';
+    dimg.alt = '';
+    /*
+      background: linear-gradient(90deg, #000, #000 7px, #FFF 7px, #FFF 14px), linear-gradient(180deg, #fff, #fff 7px, #000 7px, #000 14px);
+      background-size: 14px 14px;
+    */
+  }
+  const img = layer.querySelector(":scope > picture > img");
+  const { AperitifStrategy } = await import('../../../deps/export-to-ps/aperitifStrategy.js');
+  const { MaskProcessor } = await import('../../../deps/export-to-ps/maskProcessor.js');
+  await AperitifStrategy.init(
+    'https://image-stage.adobe.io/utils/aperitif',
+    '6LecjOQZAAAAAO2g37NFPwnIPA6URMXdAzBFZTpZ',
+    'nurture-acom-first-touch',
+  );
+  const strategy = new AperitifStrategy();
+  const response = await fetch(img.src.split('?')[0]);
+  const blob = await response.blob();
+  const file = new File([blob], 'dot.png', blob);
+  const maskProcessor = new MaskProcessor(strategy, file);
+  const maskBlob = await maskProcessor.mask();
+  const imageUrl = URL.createObjectURL(maskBlob);
+  img.style.maskImage = `url(${imageUrl})`;
+  img.style.maskMode = 'luminance';
+  img.style.maskSize = 'contain';
+}
+
 function createSubMenu(submenu, data, container, trayItems) {
   const options = submenu.children;
   let displayImg = null;
@@ -50,9 +82,10 @@ function appendSVGToButton(picture, button) {
   button.prepend(svgCTACont);
 }
 
-function implRemove(data, config) {
-  const img = config.ul.querySelector('picture > img');
-  changeBG(img, data);
+function implRemove(layer) {
+  // const img = config.ul.querySelector('picture > img');
+  // changeBG(img, data);
+  removeBG(layer);
 }
 
 function implChange(data, config, trayItems, outerDiv) {
@@ -95,7 +128,7 @@ function createTrayButton(data, config, trayItems, subMenuTray, btnMetadata, lay
     e.preventDefault();
     switch(config.type) {
       case 'remove':
-        implRemove(data, config);
+        implRemove(layer);
         currIndex = (currIndex + 1) % 6;
         if (vp === 'mobile') implNextFlow(trayOption, trayItems.querySelector(`.${mobileFlow[currIndex]}-btn`));
         break;
@@ -219,7 +252,7 @@ function addForegroundImg(layer, config) {
 
 function changeBgSelectorTray(layer, data, config) {
   const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  addForegroundImg(layer, config);
+  // addForegroundImg(layer, config);
 
   const selectorTray = createTag('div', { class: 'body-m changeBG-tray' });
   const trayItems = createTag('div', { class: 'tray-items' });
