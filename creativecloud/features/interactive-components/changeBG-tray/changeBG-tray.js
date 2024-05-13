@@ -1,10 +1,17 @@
 import { createTag } from '../../../scripts/utils.js';
 import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-metadata/interactive-metadata.js';
+import defineDeviceByScreenSize from '../../../scripts/decorate.js';
+
+function isDeviceMobile() {
+  const MOBILE_SIZE = 600;
+  let screenWidth = window.innerWidth;
+  if (screen.orientation.type.startsWith('landscape')) screenWidth = window.innerHeight;
+  return screenWidth <= MOBILE_SIZE ? true : false;
+}
 
 function createSelectorThumbnail(pic, displayImg, outline) {
   const src = getImgSrc(pic);
   const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
-  a.style.backgroundImage = `url(${src})`;
   [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
   const img = createTag('img', { class: 'preload-img', src });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, pic.querySelector('img').alt);
@@ -40,7 +47,6 @@ function renderMobileStep(layer, mobileStep, stepName = null) {
   mobileStep.activeStep = (i + 1) % mobileStep.stepList.length;
   layer.querySelector('.show-btn')?.classList.remove('show-btn');
   layer.querySelector('.show-submenu')?.classList.remove('show-submenu');
-  layer.querySelector('.mobile-updated')?.classList.remove('mobile-updated');
   const showBtn = layer.querySelector(`.${mobileStep.stepList[mobileStep.activeStep]}-btn`);
   showBtn.classList.add('show-btn');
   if (showBtn.dataset?.submenu) layer.querySelector(`.${showBtn.dataset.submenu}`).classList.add('show-submenu');
@@ -64,12 +70,7 @@ async function handleRemoveBg(layer, mobileStep) {
     layer.prepend(pic);
     dimg.src = 'data:,';
     dimg.alt = '';
-    /*
-      background: linear-gradient(90deg, #000, #000 7px, #FFF 7px, #FFF 14px), linear-gradient(180deg, #fff, #fff 7px, #000 7px, #000 14px);
-      background-size: 14px 14px;
-    */
   }
-  /* To uncomment
   const img = layer.querySelector(":scope > picture > img");
   const { AperitifStrategy } = await import('../../../deps/export-to-ps/aperitifStrategy.js');
   const { MaskProcessor } = await import('../../../deps/export-to-ps/maskProcessor.js');
@@ -88,7 +89,6 @@ async function handleRemoveBg(layer, mobileStep) {
   img.style.maskImage = `url(${imageUrl})`;
   img.style.maskMode = 'luminance';
   img.style.maskSize = 'contain';
-  */
 }
 
 function createSubMenu(op, layer, data, mobileStep) {
@@ -98,8 +98,6 @@ function createSubMenu(op, layer, data, mobileStep) {
   a.classList.add('submenu-icon');
   a.addEventListener('click', async () => {
     await handleChangeBg(layer, displayPic.querySelector('img'), data);
-    if (!a.classList.contains('mobile-updated')) renderMobileStep(layer, mobileStep);
-    a.classList.add('mobile-updated');
   });
   return a;
 }
@@ -150,19 +148,6 @@ function createTrayOptions(btnCfg, layer, data, mobileStep, idx) {
   return [btn, subOpt];
 }
 
-// async function createPSflow(btnMetadata, layer) {
-//   const psConfig = {
-//     svg: btnMetadata.children[2].querySelector('picture'),
-//     text: btnMetadata.children[2].textContent.split('|')[0],
-//     type: 'PS'
-//   };
-//   const psBtn = await createInteractiveButton(psConfig);
-//   psBtn.addEventListener('click', (e) => {
-//     console.log('See more in PS');
-//   });
-//   layer.append(psBtn);
-// }
-
 function handleUploadImage(layer, config, btn, mobileStep) {
   btn.addEventListener('change', (event) => {
     if (!layer.querySelector(':scope > picture > img')) {
@@ -175,9 +160,7 @@ function handleUploadImage(layer, config, btn, mobileStep) {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       image.src = imageUrl;
-      if (!navigator.userAgentData.mobile) {
-        continueInPs(btn, config);
-      }
+      if (!isDeviceMobile()) continueInPs(btn, config);
       renderMobileStep(layer, mobileStep, 'upload');
     }
   });
@@ -197,8 +180,14 @@ async function handleStartOver(layer, data, mobileStep) {
 
 function handleMenuClick(btn, submenu) {
   btn.addEventListener('click', () => {
-    if (submenu.classList.contains('show-dsubmenu')) submenu.classList.remove('show-dsubmenu');
-    else submenu.classList.add('show-dsubmenu');
+    if (defineDeviceByScreenSize() === 'MOBILE') {
+      if (submenu.classList.contains('show-submenu')) submenu.classList.remove('show-submenu');
+      else submenu.classList.add('show-submenu');
+    }
+    else {
+      if (submenu.classList.contains('show-desktop-submenu')) submenu.classList.remove('show-desktop-submenu');
+      else submenu.classList.add('show-desktop-submenu');
+    }
   });
 }
 
