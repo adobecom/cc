@@ -103,7 +103,7 @@ function implChange(data, config, trayItems, outerDiv) {
     const disp = outerDiv.style.display; 
     if (disp === 'flex') {
       outerDiv.style.display = 'none';
-      desktopBtn.classList.remove('highlighted');
+      if (desktopBtn) desktopBtn.classList.remove('highlighted');
     } else {
       outerDiv.style.display = 'flex';
       desktopBtn.classList.add('highlighted');
