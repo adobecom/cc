@@ -108,7 +108,6 @@ async function createDisplayVideo(target, video, src) {
 }
 
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
-  console.log(stepInfo);
   const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
   const trgtPic = stepInfo.target.querySelector(':scope > picture');
   const trgtVideo = stepInfo.target.querySelector(':scope > video');
@@ -254,7 +253,6 @@ async function renderLayer(stepInfo) {
 function getWorkFlowInformation(el) {
   let wfName = '';
   const intWorkFlowConfig = {
-    'workflow-change-bg-old': ['old-change'],
     'workflow-change-bg': ['changeBG-tray'],
     'workflow-generate-crop': ['generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],

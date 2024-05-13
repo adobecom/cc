@@ -4,6 +4,8 @@ import { createInteractiveButton } from '../upload/upload.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
 let currIndex = 0;
+let clicked = false;
+let timer = null;
 const mobileFlow = ['remove', 'change', 'upload', 'remove', 'change', 'start-over'];
 
 function createSelectorThumbnail(pic, displayImg, outline) {
@@ -24,7 +26,6 @@ async function changeBG(img, data) {
 
 function createSubMenu(submenu, data, container, trayItems) {
   const options = submenu.children;
-  console.log(options);
   let displayImg = null;
   [...options].forEach((op) => {
     const [thumbnailPic, displayPic] = op.children;
@@ -55,13 +56,25 @@ function implRemove(data, config) {
 }
 
 function implChange(data, config, trayItems, outerDiv) {
+  const vp = defineDeviceByScreenSize().toLocaleLowerCase();
+  const desktopBtn = trayItems.querySelector('.tray-option.change-btn');
   if(!outerDiv.querySelector('.sb-option')) {
+    if (vp !== 'mobile') {
+      outerDiv.style.display = 'flex';
+      desktopBtn.classList.add('highlighted');
+    }
     const sbOption = createTag('div', { class: 'sb-option' });
     createSubMenu(config.ul, data, sbOption, trayItems);
     outerDiv.append(sbOption);
   } else {
-    // TODO: toggle submenu
-    console.log('toggle submenu');
+    const disp = outerDiv.style.display; 
+    if (disp === 'flex') {
+      outerDiv.style.display = 'none';
+      desktopBtn.classList.remove('highlighted');
+    } else {
+      outerDiv.style.display = 'flex';
+      desktopBtn.classList.add('highlighted');
+    }
   }
 }
 
@@ -70,9 +83,9 @@ function implNextFlow(currEl, nextEl) {
   nextEl.style.display = 'flex';
 }
 
-function createTrayButton(data, config, trayItems, subMenuTray) {
+function createTrayButton(data, config, trayItems, subMenuTray, btnMetadata, layer) {
   const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  let trayOption = (vp === 'mobile') ? createTag('a', { class: `gray-button ${config.type}-btn` }) : createTag('div', { class: 'tray-option' });
+  let trayOption = (vp === 'mobile') ? createTag('a', { class: `gray-button ${config.type}-btn` }) : createTag('div', { class: `tray-option ${config.type}-btn` });
   trayOption.append(config.text);
   appendSVGToButton(config.svg, trayOption);
   if(vp === 'mobile' && config.type === 'change') {
@@ -96,15 +109,18 @@ function createTrayButton(data, config, trayItems, subMenuTray) {
         else implChange(data, config, trayItems, subMenuTray);
         break;
       default:
+        window.lana.log(`Unknown input type: ${config.type}`);
         break;
     }
+    clicked = true;
+    if(timer) clearTimeout(timer);
+    handleUpload(btnMetadata, layer);
   });
   return trayOption;
 }
 
-function createTrayOptions(data, menu, trayItems, subMenuTray) {
+function createTrayOptions(data, menu, trayItems, subMenuTray, btnMetadata, layer) {
   const options = menu.querySelectorAll(':scope > li');
-  console.log(options.length);
   [...options].forEach(async (o, i) => {
     const oConfig = {
       text: o.textContent.split('|')[0].trim(),
@@ -112,8 +128,7 @@ function createTrayOptions(data, menu, trayItems, subMenuTray) {
       ul: o.querySelector('ul'),
       type: o.querySelector('span').classList[1].split('icon-')[1],
     }
-    const trayOption = createTrayButton(data, oConfig, trayItems, subMenuTray);
-    console.log(trayOption);
+    const trayOption = createTrayButton(data, oConfig, trayItems, subMenuTray, btnMetadata, layer);
     if (i === 0) trayOption.style.display = 'flex';
     trayItems.append(trayOption);
   });
@@ -139,11 +154,6 @@ function handleUploadClick(btn, btnMetadata, layer) {
     const image = pic.querySelector('img');
     const file = event.target.files[0];
     if (file) {
-      const fileSize = file.size/1000000; // ask
-      if (fileSize > 25) {
-        console.log('ADD TOAST NOTIFICATION');
-        return;
-      }
       const sources = pic.querySelectorAll('source');
       sources.forEach((source) => source.remove());
       const imageUrl = URL.createObjectURL(file);
@@ -162,15 +172,15 @@ function handleUploadClick(btn, btnMetadata, layer) {
 
 function handleUpload(btnMetadata, layer) {
   const vp = defineDeviceByScreenSize().toLocaleLowerCase();
-  const tItems = layer.querySelector('.tray-items');
   const uploadConfig = {
     svg: btnMetadata.children[1].querySelector('picture'),
     text: btnMetadata.children[1].textContent.split('|')[0],
     delay: btnMetadata.children[1].textContent.split('|')[1],
     type: 'upload',
   };
-  const del = (vp === 'mobile') ? 0 : uploadConfig.delay;
-  setTimeout( async () => {
+  const del = (vp === 'mobile' || clicked) ? 0 : uploadConfig.delay;
+  timer = setTimeout( async () => {
+    if(layer.querySelector('.upload-btn')) return;
     const button = await createInteractiveButton(uploadConfig);
     if (vp === 'mobile') button.classList.add('gray-button');
     layer.append(button);
@@ -217,7 +227,7 @@ function changeBgSelectorTray(layer, data, config) {
 
   const [ menu, btnMetadata ] = config.querySelectorAll('ol');
   const startOver = handleStartOver(layer, data, config, btnMetadata);
-  createTrayOptions(data, menu, trayItems, subMenuTray);
+  createTrayOptions(data, menu, trayItems, subMenuTray, btnMetadata, layer);
   handleUpload(btnMetadata, layer);
   if (vp === 'mobile') {
     startOver.classList.remove('start-over');

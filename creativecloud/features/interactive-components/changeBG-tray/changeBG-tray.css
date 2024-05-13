@@ -3,6 +3,12 @@
   bottom: 100%;
 }
 
+.interactive-enabled .step-change-bg-tray .layer > picture img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  opacity: 1;
+}
+
 .interactive-enabled .step-change-bg-tray > .layer {
   height: 114px;
   border-radius: 0px 0px 16px 16px;
@@ -13,25 +19,30 @@
   position: relative;
   height: 54px;
   background: #000000;
+  color: var(--color-white);
+}
+
+.interactive-enabled .step-change-bg-tray .layer .gray-button:hover {
+  background: #000000;
 }
 
 .interactive-enabled .step-change-bg-tray .layer .gray-button.animated {
-  animation: changeBg 1200ms ease-in-out 500ms forwards 3;
+  animation: changeBgMobile 1200ms ease-in-out 500ms forwards 3;
 }
 
 .interactive-enabled .step-change-bg-tray .layer .gray-button.animated::before {
   animation: none;
 }
 
-@keyframes changeBg {
+@keyframes changeBgMobile {
   0% {
-    background:#000000 0% 0% no-repeat padding-box;
+    background:#000000;
   }
   50% {
     background: var(--prompt-highlight-color);
   }
   100% {
-    background: #000000 0% 0% no-repeat padding-box;
+    background: #000000;
   }
 }
 
@@ -70,11 +81,6 @@
   min-height: unset;
 }
 
-.interactive-enabled.light .step-change-bg-tray .changeBG-tray {
-  background: var(--prompt-btn-fill-light);
-  color: var(--prompt-text-color-light);
-}
-
 .interactive-enabled .interactive-holder.dark.step-change-bg-tray .changeBG-tray {
   background: var(--prompt-input-fill);
   color: var(--color-white);
@@ -85,18 +91,6 @@
   color: var(--prompt-text-color-light);
 }
 
-.interactive-enabled .step-change-bg-tray .changeBG-tray .tray-title {
-  font-size: var(--type-body-m-size);
-  line-height: var(--type-body-m-lh);
-}
-/* 
-.interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items {
-  display: flex;
-  flex-direction: row;
-  gap: 14px;
-  justify-content: space-between;
-} */
-
 .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-option {
   display: flex;
   flex-direction: row;
@@ -104,39 +98,28 @@
   color: white;
   align-items: center;
   border-radius: 4px;
-  outline: 1px solid var(--Container-Fill, #6D6D6D);
-  background: var(--Container-fill, #222221);
+  outline: 1px solid #6D6D6D;
+  background: #222221;
   line-height: var(--type-heading-xs-lh);
   font-size: var(--type-heading-xs-size);
   cursor: pointer;
 }
 
-.interactive-enabled .step-change-bg-tray .changeBG-tray .tray-option {
-  display: flex;
-  flex-direction: row;
-  width: 210px;
-  color: white;
-  align-items: center;
-  border-radius: 4px;
-  outline: 1px solid var(--Container-Fill, #6D6D6D);
-  background: var(--Container-fill, #222221);
-  line-height: var(--type-heading-xs-lh);
-  font-size: var(--type-heading-xs-size);
-  cursor: pointer;
+.interactive-enabled .step-change-bg-tray .changeBG-tray .tray-option:active,
+.interactive-enabled .step-change-bg-tray .changeBG-tray .tray-option:focus {
+  background: var(--prompt-highlight-color); /* 1473e6 */
 }
 
-.interactive-enabled .step-change-bg-tray .changeBG-tray .change-btn {
+.interactive-enabled .step-change-bg-tray .changeBG-tray .gray-button.change-btn {
   background: var(--prompt-highlight-color);
 }
 
-.interactive-enabled .step-change-bg-tray .changeBG-tray .change-btn .sb-option {
+.interactive-enabled .step-change-bg-tray .changeBG-tray .gray-button.change-btn .sb-option {
   display: flex;
   position: absolute;
   bottom: 59px;
   flex-direction: row;
   gap: 16px;
-  /* padding-left: 16px; */
-  /* justify-content: flex-start; */
 }
 
 .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items a.tray-thumbnail-img.submenu-icon {
@@ -210,12 +193,13 @@
   .interactive-enabled .step-change-bg-tray .changeBG-tray {
     position: absolute;
     font-weight: bold;
-    background: var(--prompt-input-fill);
+    background: #111111;
     color: var(--color-white);
     display: flex;
     flex-direction: row;
     padding: 16px;
-    bottom: 158px;
+    bottom: auto;
+    transform: translateY(13px);
     left: 85%;
     right: auto;
     gap: 0px;
@@ -225,16 +209,15 @@
     width: auto;
   }
 
-  [dir="rtl"] .interactive-enabled .step-change-bg-tray .changeBG-tray {
-    left: auto;
-    right: 56%;
-  }
-
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items {
     display: flex;
     flex-direction: column;
     gap: 16px;
     justify-content: flex-start;
+  }
+
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-option.change-btn.highlighted {
+    background: var(--prompt-highlight-color);
   }
 
   .interactive-enabled.selector-vertical .step-change-bg-tray .changeBG-tray .tray-items,
@@ -279,16 +262,37 @@
     padding-left: 16px;
     justify-content: flex-start;
   }
-}
 
-@media screen and (min-width: 1200px) {
+  .interactive-enabled.row-reversed .step-change-bg-tray .changeBG-tray .tray-items.submenu .sb-option,
+  [dir="rtl"] .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu .sb-option {
+    padding-left: 0;
+    padding-right: 16px;
+  }
+
   .interactive-enabled.row-reversed .step-change-bg-tray .changeBG-tray {
     left: auto;
-    right: 56%;
+    right: 76%;
   }
 
-  [dir="rtl"] .interactive-enabled.row-reversed .step-change-bg-tray .changeBG-tray {
-    right: auto;
-    left: 56%;
+  [dir="rtl"] .interactive-enabled .step-change-bg-tray .changeBG-tray {
+    left: auto;
+    right: 76%;
   }
+
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items:not(.submenu) > :first-child {
+    animation: changeBg 1200ms ease-in-out 500ms forwards 3;
+  }
+
+  @keyframes changeBg {
+    0% {
+      background:#222221;
+    }
+    50% {
+      background: var(--prompt-highlight-color);
+    }
+    100% {
+      background: #222221;
+    }
+  }
+  
 }

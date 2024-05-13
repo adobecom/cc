@@ -48,7 +48,7 @@
     transform: translateY(21px);
     display: flex;
     gap: 16px;
-    background: var(--prompt-input-fill);
+    background: #111111;
     border-radius: 8px;
     text-decoration: none;
     color: var(--prompt-btn-fill-light);
