@@ -158,7 +158,7 @@ function sliderEvent(media, layer, imgObj) {
       sliderEl.setAttribute('value', value);
       const outerCircle = sliderEl.nextSibling;
       const value1 = (value - sliderEl.min) / (sliderEl.max - sliderEl.min);
-      let thumbPercent = 3 + (value1 * 94);
+      const thumbPercent = 3 + (value1 * 94);
       const interactiveBlock = media.closest('.marquee') || media.closest('.aside');
       const isRowReversed = interactiveBlock.classList.contains('.row-reversed');
       if ((document.dir === 'rtl' || isRowReversed)) {
@@ -278,9 +278,9 @@ function continueToPs(layer, imgObj) {
       const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
       const imageData = await (await fetch(imgObj.imgSrc)).blob();
       const cs = getConfig();
-      const envConfig = cs.prodDomains.includes(window.location.host) ? cs.prod.psUrl : cs.stage.psUrl;
+      const enConf = cs.prodDomains.includes(window.location.host) ? cs.prod.psUrl : cs.stage.psUrl;
       openInPsWeb(
-        envConfig,
+        enConf,
         imgObj.fileName,
         [{ filename: imgObj.fileName, imageData }],
         actionJSONData,
