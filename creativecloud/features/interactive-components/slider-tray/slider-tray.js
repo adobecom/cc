@@ -29,7 +29,7 @@ async function createSelectorTray(data, layer) {
   const config = data.stepConfigs[data.stepIndex];
   const options = config.querySelectorAll(':scope > div ul .icon, :scope > div ol .icon');
   [...options].forEach((o) => { handleInput(o, sliderTray, menu, layer); });
-  layer.append(sliderTray);
+  layer.prepend(sliderTray);
   observeSliderTray(sliderTray, data.target, menu);
 }
 
