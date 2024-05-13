@@ -104,7 +104,6 @@ function createSubMenu(op, layer, data, mobileStep) {
 
 function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
   let btn = createTag('a', { class: `gray-button tray-option ${btnType}-btn` });
-  btn.dataset.animationcfg = 'animated_v2';
   if (btnSvg) btn.append(btnSvg);
   const btnTxtCont = createTag('span', {class: `tray-item-text`}, btnText);
   btn.append(btnTxtCont);
