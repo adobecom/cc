@@ -23,15 +23,23 @@ function handleContinueInPs() {
   console.log('continue in ps');
 }
 
-function continueInPs(uploadBtn, config) {
+function continueInPs(uploadBtn, layer, config) {
+  const psBtn = layer.querySelector('.continueps-btn');
+  // toggle between upload and ps button if it already exists
+  if (psBtn) {
+    uploadBtn.classList.remove('show-desktop-upload');
+    psBtn.classList.add('show-desktop-ps');
+    return psBtn;
+  }
   const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
   if (!uploadCfg) return null;
   const btnCfg = uploadCfg.querySelector('.icon-upload-ps')?.closest('li');
   const btnText = btnCfg.textContent;
   const btnSvg = btnCfg.querySelector('picture');
-  const btn = createTag('a', { class: 'psgateway-handler continueps-btn body-xl' });
+  const btn = createTag('a', { class: 'psgateway-handler continueps-btn body-xl show-desktop-ps' });
   btn.append(btnSvg, btnText);
-  uploadBtn.replaceWith(btn);
+  uploadBtn.classList.remove('show-desktop-upload');
+  layer.append(btn);
   btn.addEventListener('click', () => {
     handleContinueInPs();
   });
@@ -123,7 +131,9 @@ function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
   const btnTxtCont = createTag('span', { class: 'tray-item-text' }, btnText);
   btn.append(btnTxtCont);
   btn.addEventListener('click', async (e) => {
-    layer.querySelector('.upload-btn').classList.add('show-desktop-upload');
+    const upBtn = layer.querySelector('.upload-btn');
+    const psBtn = layer.querySelector('.continueps-btn');
+    if (!psBtn) upBtn.classList.add('show-desktop-upload');
     e.preventDefault();
     switch (btnType) {
       case 'remove':
@@ -132,6 +142,8 @@ function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
         break;
       case 'start-over':
         await handleStartOver(layer, data, mobileStep);
+        psBtn.classList.remove('show-desktop-ps');
+        upBtn.classList.add('show-desktop-upload');
         break;
       default:
         break;
@@ -175,7 +187,7 @@ function handleUploadImage(layer, config, btn, mobileStep) {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       image.src = imageUrl;
-      if (!isDeviceMobile()) continueInPs(btn, config);
+      if (!isDeviceMobile()) continueInPs(btn, layer, config);
       renderMobileStep(layer, mobileStep, 'upload');
     }
   });

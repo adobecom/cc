@@ -1,3 +1,8 @@
+.interactive-enabled .interactive-holder .layer > picture > img {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
 .interactive-enabled .interactive-holder .layer .psgateway-handler {
   display: none;
   gap: 8px;
@@ -32,6 +37,10 @@
 
 .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button {
   position: relative;
+}
+
+.interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button:active {
+  background: var(--prompt-highlight-color);
 }
 
 .interactive-enabled .upload-btn {
@@ -72,7 +81,7 @@
   }
 
   .interactive-enabled .step-change-bg-tray .layer > picture img {
-    object-fit: contain;
+    object-fit: cover;
     opacity: 1;
     height: 100%;
     border-radius: 8px 8px 0 0;
@@ -139,6 +148,10 @@
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button.m-highlighted {
     background: var(--prompt-highlight-color);
   }
+
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button:hover {
+    border: 3px solid transparent;
+  }
 }
 
 @media screen and (min-width: 600px) {
@@ -183,6 +196,10 @@
     width: 210px;
     background: var(--selector-tray-fill);
     gap: 16px;
+  }
+
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button:hover {
+    border: 1px solid var(--selector-option-border);;
   }
 
   .interactive-enabled .foreground .step-change-bg-tray .changeBG-tray .tray-items .gray-button picture,
@@ -304,7 +321,7 @@
   }
  
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu .sb-option.show-desktop-submenu,
-  .interactive-enabled .interactive-holder .layer .psgateway-handler.continueps-btn,
+  .interactive-enabled .interactive-holder .layer .psgateway-handler.continueps-btn.show-desktop-ps,
   .interactive-enabled .step-change-bg-tray .layer .psgateway-handler.upload-btn.show-desktop-upload {
     display: flex;
   }
