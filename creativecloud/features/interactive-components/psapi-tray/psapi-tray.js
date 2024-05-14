@@ -6,7 +6,7 @@ function isDeviceMobile() {
   const MOBILE_SIZE = 600;
   let screenWidth = window.innerWidth;
   if (screen.orientation.type.startsWith('landscape')) screenWidth = window.innerHeight;
-  return screenWidth <= MOBILE_SIZE ? true : false;
+  return screenWidth <= MOBILE_SIZE;
 }
 
 function createSelectorThumbnail(pic, displayImg, outline) {
@@ -19,23 +19,23 @@ function createSelectorThumbnail(pic, displayImg, outline) {
   return a;
 }
 
+function handleContinueInPs() {
+  console.log('continue in ps');
+}
+
 function continueInPs(uploadBtn, config) {
   const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
   if (!uploadCfg) return null;
   const btnCfg = uploadCfg.querySelector('.icon-upload-ps')?.closest('li');
   const btnText = btnCfg.textContent;
   const btnSvg = btnCfg.querySelector('picture');
-  const btn = createTag('a', { class: `psgateway-handler continueps-btn body-xl` });
-  btn.append(btnSvg, btnText)
+  const btn = createTag('a', { class: 'psgateway-handler continueps-btn body-xl' });
+  btn.append(btnSvg, btnText);
   uploadBtn.replaceWith(btn);
   btn.addEventListener('click', () => {
     handleContinueInPs();
   });
   return btn;
-}
-
-function handleContinueInPs() {
-  console.log('continue in ps');
 }
 
 function renderMobileStep(layer, mobileStep, stepName = null) {
@@ -53,7 +53,7 @@ function renderMobileStep(layer, mobileStep, stepName = null) {
 }
 
 async function handleChangeBg(layer, bgImg, data) {
-    const subjectImg = layer.querySelector(":scope > picture > img");
+    const subjectImg = layer.querySelector(':scope > picture > img');
     if (!subjectImg || !subjectImg.style.maskImage) {
       await handleRemoveBg(layer);
     }
@@ -61,7 +61,7 @@ async function handleChangeBg(layer, bgImg, data) {
     await handleImageTransition(data, trObj);
 }
 
-async function handleRemoveBg(layer, mobileStep) {
+async function handleRemoveBg(layer) {
   const layerImg = layer.querySelector(':scope > picture > img');
   if (layerImg && layerImg.style.maskImage) return;
   if (!layerImg) {
@@ -71,7 +71,7 @@ async function handleRemoveBg(layer, mobileStep) {
     dimg.src = 'data:,';
     dimg.alt = '';
   }
-  const img = layer.querySelector(":scope > picture > img");
+  const img = layer.querySelector(':scope > picture > img');
   const { AperitifStrategy } = await import('../../../deps/export-to-ps/aperitifStrategy.js');
   const { MaskProcessor } = await import('../../../deps/export-to-ps/maskProcessor.js');
   await AperitifStrategy.init(
@@ -91,7 +91,7 @@ async function handleRemoveBg(layer, mobileStep) {
   img.style.maskSize = 'contain';
 }
 
-function createSubMenu(op, layer, data, mobileStep) {
+function createSubMenu(op, layer, data) {
   const [thumbnailPic, displayPic] = op.children;
   const displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
   const a = createSelectorThumbnail(thumbnailPic, displayImg, null);
@@ -102,14 +102,26 @@ function createSubMenu(op, layer, data, mobileStep) {
   return a;
 }
 
+async function handleStartOver(layer, data, mobileStep) {
+  const defaultCfg = data.stepConfigs[data.stepIndex];
+  const defaultPic = defaultCfg.querySelector('picture');
+  const src = getImgSrc(defaultPic);
+  const { alt } = defaultPic.querySelector('img');
+  const obj = { src, alt, useCfg: true };
+  await handleImageTransition(data, obj);
+  layer.querySelector(':scope > picture').style.opacity = 0;
+  layer.querySelector(':scope > picture')?.remove();
+  renderMobileStep(layer, mobileStep, 'start-over');
+}
+
 function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
-  let btn = createTag('a', { class: `gray-button tray-option ${btnType}-btn` });
+  const btn = createTag('a', { class: `gray-button tray-option ${btnType}-btn` });
   if (btnSvg) btn.append(btnSvg);
-  const btnTxtCont = createTag('span', {class: `tray-item-text`}, btnText);
+  const btnTxtCont = createTag('span', { class: 'tray-item-text' }, btnText);
   btn.append(btnTxtCont);
   btn.addEventListener('click', async (e) => {
     e.preventDefault();
-    switch(btnType) {
+    switch (btnType) {
       case 'remove':
         await handleRemoveBg(layer);
         renderMobileStep(layer, mobileStep);
@@ -140,10 +152,10 @@ function createTrayOptions(btnCfg, layer, data, mobileStep, idx) {
   btn.dataset.submenu = `submenu-${idx}`;
   const subOpt = createTag('div', { class: `sb-option submenu-${idx}` });
   const subItems = subMenu.querySelectorAll('li');
-  [...subItems].forEach( (i) => {
-    const subItem = createSubMenu(i, layer, data, mobileStep);
+  [...subItems].forEach((i) => {
+    const subItem = createSubMenu(i, layer, data);
     subOpt.append(subItem);
-  })
+  });
   return [btn, subOpt];
 }
 
@@ -165,28 +177,15 @@ function handleUploadImage(layer, config, btn, mobileStep) {
   });
 }
 
-async function handleStartOver(layer, data, mobileStep) {
-  const defaultCfg = data.stepConfigs[data.stepIndex];
-  const defaultPic = defaultCfg.querySelector('picture');
-  const src = getImgSrc(defaultPic);
-  const alt = defaultPic.querySelector('img').alt;
-  const obj = { src, alt, useCfg: true };
-  await handleImageTransition(data, obj);
-  layer.querySelector(':scope > picture').style.opacity = 0;
-  layer.querySelector(':scope > picture')?.remove();
-  renderMobileStep(layer, mobileStep, 'start-over');
-}
-
 function handleMenuClick(btn, submenu) {
   btn.addEventListener('click', () => {
     if (defineDeviceByScreenSize() === 'MOBILE') {
       if (submenu.classList.contains('show-submenu')) submenu.classList.remove('show-submenu');
       else submenu.classList.add('show-submenu');
+      return;
     }
-    else {
-      if (submenu.classList.contains('show-desktop-submenu')) submenu.classList.remove('show-desktop-submenu');
-      else submenu.classList.add('show-desktop-submenu');
-    }
+    if (submenu.classList.contains('show-desktop-submenu')) submenu.classList.remove('show-desktop-submenu');
+    else submenu.classList.add('show-desktop-submenu');
   });
 }
 
@@ -196,7 +195,7 @@ function changeBgSelectorTray(data, layer, config, mobileStep) {
   const subMenuTray = createTag('div', { class: 'tray-items submenu' });
 
   const traycfg = config.querySelector('ol').querySelectorAll(':scope > li');
-  [...traycfg].forEach( (btncfg, idx) => {
+  [...traycfg].forEach((btncfg, idx) => {
     const [btn, subMenu] = createTrayOptions(btncfg, layer, data, mobileStep, idx);
     trayItems.append(btn);
     if (subMenu) {

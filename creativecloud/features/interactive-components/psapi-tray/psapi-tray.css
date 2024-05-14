@@ -139,6 +139,10 @@
     border-radius: 16px;
   }
 
+  .interactive-enabled .interactive-holder .layer > picture > img {
+    border-radius: 16px;
+  }
+
   .interactive-enabled .step-change-bg-tray .changeBG-tray {
     box-sizing: content-box;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
