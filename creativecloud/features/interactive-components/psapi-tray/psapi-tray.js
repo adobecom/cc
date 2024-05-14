@@ -65,7 +65,6 @@ async function handleChangeBg(layer, bgImg, data) {
 }
 
 async function handleRemoveBg(layer) {
-async function handleRemoveBg(layer) {
   const layerImg = layer.querySelector(':scope > picture > img');
   if (layerImg && layerImg.style.maskImage) return;
   if (!layerImg) {
