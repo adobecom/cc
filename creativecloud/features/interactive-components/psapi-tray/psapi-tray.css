@@ -34,6 +34,10 @@
   position: relative;
 }
 
+.interactive-enabled .upload-btn {
+  display: none;
+}
+
 .interactive-enabled .upload-btn input {
   opacity: 0;
   position: absolute;
@@ -46,7 +50,7 @@
 }
 
 .interactive-enabled .psgateway-handler:hover {
-  border: 3px solid #1273E6;
+  border: 3px solid var(--prompt-highlight-color);
 }
 
 .interactive-enabled .step-change-bg-tray .layer .gray-button.animated {
@@ -105,7 +109,6 @@
   }
 
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu .sb-option {
-    /* display: flex; */
     flex-direction: row;
     gap: 16px;
     height: 0;
@@ -132,6 +135,10 @@
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items a.tray-thumbnail-img.submenu-icon img {
     border-radius: 4px;
   }
+
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button.m-highlighted {
+    background: var(--prompt-highlight-color);
+  }
 }
 
 @media screen and (min-width: 600px) {
@@ -144,7 +151,7 @@
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
     position: absolute;
     font-weight: bold;
-    background: #111111;
+    background: var(--color-black);
     color: var(--color-white);
     display: flex;
     flex-direction: row-reverse;
@@ -166,10 +173,19 @@
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button {
     font-size: var(--type-heading-xs-size);
     line-height: var(--type-heading-xs-lh);
-    border: 1px solid #6D6D6D;
+    border: 1px solid var(--selector-option-border);
     box-sizing: border-box;
     max-width: 210px;
     width: 210px;
+    background: var(--selector-tray-fill);
+    gap: 16px;
+  }
+
+  .interactive-enabled .foreground .step-change-bg-tray .changeBG-tray .tray-items .gray-button picture,
+  .interactive-enabled .foreground .step-change-bg-tray .changeBG-tray .tray-items .gray-button img {
+    width: 40px;
+    height: 40px;
+    max-width: 40px;
   }
 
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .tray-item-text {
@@ -232,6 +248,7 @@
     background-color: var(--color-black);
     border: none;
     box-sizing: content-box;
+    gap: 6px;
   }
 
   .interactive-enabled .foreground.container .step-change-bg-tray .layer .gray-button.start-over-btn picture,
@@ -244,7 +261,6 @@
   .interactive-enabled .interactive-holder .layer .psgateway-handler {
     bottom: 0px;
     transform: translateY(21px);
-    display: flex;
     gap: 16px;
     background: #111111;
     border-radius: 8px;
@@ -283,7 +299,13 @@
     min-height: 34px;
   }
  
-  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu .sb-option.show-desktop-submenu {
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu .sb-option.show-desktop-submenu,
+  .interactive-enabled .interactive-holder .layer .psgateway-handler.continueps-btn,
+  .interactive-enabled .step-change-bg-tray .layer .psgateway-handler.upload-btn.show-desktop-upload {
     display: flex;
+  }
+
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button.d-highlighted {
+    background: var(--prompt-highlight-color);
   }
 }

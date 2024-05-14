@@ -49,7 +49,10 @@ function renderMobileStep(layer, mobileStep, stepName = null) {
   layer.querySelector('.show-submenu')?.classList.remove('show-submenu');
   const showBtn = layer.querySelector(`.${mobileStep.stepList[mobileStep.activeStep]}-btn`);
   showBtn.classList.add('show-btn');
-  if (showBtn.dataset?.submenu) layer.querySelector(`.${showBtn.dataset.submenu}`).classList.add('show-submenu');
+  if (showBtn.dataset?.submenu) {
+    layer.querySelector(`.${showBtn.dataset.submenu}`).classList.add('show-submenu');
+    showBtn.classList.add('m-highlighted');
+  }
 }
 
 async function handleChangeBg(layer, bgImg, data) {
@@ -61,7 +64,7 @@ async function handleChangeBg(layer, bgImg, data) {
     await handleImageTransition(data, trObj);
 }
 
-async function handleRemoveBg(layer, mobileStep) {
+async function handleRemoveBg(layer) {
   const layerImg = layer.querySelector(':scope > picture > img');
   if (layerImg && layerImg.style.maskImage) return;
   if (!layerImg) {
@@ -108,6 +111,7 @@ function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
   const btnTxtCont = createTag('span', {class: `tray-item-text`}, btnText);
   btn.append(btnTxtCont);
   btn.addEventListener('click', async (e) => {
+    layer.querySelector('.upload-btn').classList.add('show-desktop-upload');
     e.preventDefault();
     switch(btnType) {
       case 'remove':
@@ -179,14 +183,11 @@ async function handleStartOver(layer, data, mobileStep) {
 
 function handleMenuClick(btn, submenu) {
   btn.addEventListener('click', () => {
-    if (defineDeviceByScreenSize() === 'MOBILE') {
-      if (submenu.classList.contains('show-submenu')) submenu.classList.remove('show-submenu');
-      else submenu.classList.add('show-submenu');
-    }
-    else {
-      if (submenu.classList.contains('show-desktop-submenu')) submenu.classList.remove('show-desktop-submenu');
-      else submenu.classList.add('show-desktop-submenu');
-    }
+    const isMobile = defineDeviceByScreenSize() === 'MOBILE';
+    const showClass = isMobile ? 'show-submenu' : 'show-desktop-submenu';
+    const showBtnClass = isMobile ? 'm-highlighted' : 'd-highlighted';
+    submenu.classList.toggle(showClass);
+    btn.classList.toggle(showBtnClass);
   });
 }
 
@@ -212,15 +213,18 @@ function changeBgUpload(layer, config, mobileStep) {
   const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
   if (!uploadCfg) return null;
   const btnCfg = uploadCfg.querySelector('.icon-upload')?.closest('li');
-  const [btnText, btnDelay = null] = btnCfg.textContent.split('|');
+  const [btnText, btnDelay = 0] = btnCfg.textContent.split('|');
   const btnSvg = btnCfg.querySelector('picture');
   const btn = createTag('a', { class: `psgateway-handler upload-btn body-xl` });
   const inputBtn = createTag('input', { class: 'inputFile', type: 'file'});
   btn.append(btnSvg, btnText, inputBtn);
+  if(btn) layer.append(btn);
+  setTimeout(() => {
+    btn.classList.add('show-desktop-upload');
+  }, btnDelay);
   btn.addEventListener('click', () => {
     handleUploadImage(layer, config, btn, mobileStep);
   });
-  return btn;
 }
 
 function createStepList(config) {
@@ -249,10 +253,8 @@ export default async function stepInit(data) {
     stepList: createStepList(config),
   };
   const selectorTray = changeBgSelectorTray(data, layer, config, mobileStep);
-  const uploadBtn = changeBgUpload(layer, config, mobileStep);
-  selectorTray.append(uploadBtn);
+  changeBgUpload(layer, config, mobileStep);
   layer.append(selectorTray);
-  if (uploadBtn) layer.append(uploadBtn);
   renderMobileStep(layer, mobileStep);
   return layer;
 }
