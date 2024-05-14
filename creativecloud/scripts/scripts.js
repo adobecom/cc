@@ -134,7 +134,7 @@ const CONFIG = {
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
     pdfViewerClientId: '9f7f19a46bd542e2b8548411e51eb4d4',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
-    psUrl: 'https://dev.photoshop.adobe.com',
+    psUrl: 'https://stage.photoshop.adobe.com',
   },
   live: {
     pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
