@@ -1,4 +1,4 @@
-// branch: MWPW-147678 commit: 4bf0e77f2d7b0109bafc425c1416e6c818912b31 Mon, 13 May 2024 08:56:46 GMT
+// branch: catalog-fixes-1 commit: 257cc84394c0214dda61d348ab61b7ea57b20cc5 Wed, 15 May 2024 20:03:05 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -509,8 +509,9 @@ var MerchSideNav = class extends LitElement4 {
       );
       overlay.addEventListener("close", () => {
         this.modal = false;
+        document.documentElement.style.overflow = "initial";
+        document.documentElement.style.scrollbarGutter = "initial";
       });
-      this.search.setStateFromURL();
       this.shadowRoot.querySelector("sp-theme").append(overlay);
     });
   }
@@ -521,6 +522,8 @@ var MerchSideNav = class extends LitElement4 {
   showModal({ target }) {
     this.#target = target;
     this.modal = true;
+    document.documentElement.style.overflow = "clip";
+    document.documentElement.style.scrollbarGutter = "stable";
   }
 };
 customElements.define("merch-sidenav", MerchSideNav);
