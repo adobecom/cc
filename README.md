@@ -1,5 +1,5 @@
 # CC x Milo
-The Franklin based project for creative cloud pages on www.adobe.com. Based off of milo-college.
+The Franklin based project for creative cloud pages on www.adobe.com. Based off of milo-college
 
 ## Code merge process
 https://github.com/adobecom/cc/wiki
