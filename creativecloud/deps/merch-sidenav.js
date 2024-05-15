@@ -1,4 +1,4 @@
-// branch: MWPW-147678 commit: fbb1414f120b648a648ac25f7f47b4fdc5498d94 Fri, 10 May 2024 16:05:11 GMT
+// branch: MWPW-147678 commit: 4bf0e77f2d7b0109bafc425c1416e6c818912b31 Mon, 13 May 2024 08:56:46 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -63,15 +63,24 @@ function pushStateFromComponent(component, value) {
 }
 function pushState(state) {
   const hash = new URLSearchParams(window.location.hash.slice(1));
-  Object.entries(state).forEach(([key, value]) => {
-    if (value) {
-      hash.set(key, value);
+  Object.entries(state).forEach(([key, value2]) => {
+    if (value2) {
+      hash.set(key, value2);
     } else {
       hash.delete(key);
     }
   });
   hash.sort();
-  window.location.hash = hash.toString();
+  const value = hash.toString();
+  if (value) {
+    window.location.hash = value;
+  } else {
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname + window.location.search
+    );
+  }
 }
 function deeplink(callback) {
   const handler = (e) => {
@@ -217,7 +226,9 @@ var MerchSidenavList = class extends LitElement2 {
     const state = parseState();
     const value = state[this.deeplink] ?? "all";
     if (value) {
-      const element = this.querySelector(`sp-sidenav-item[value="${value}"]`) ?? this.querySelector(`sp-sidenav-item`);
+      const element = this.querySelector(
+        `sp-sidenav-item[value="${value}"]`
+      );
       if (!element)
         return;
       this.updateComplete.then(() => {
@@ -331,7 +342,8 @@ var MerchSidenavCheckboxGroup = class extends LitElement3 {
    * leaf level item change handler
    * @param {*} event
    */
-  selectionChanged({ target }) {
+  selectionChanged(event) {
+    const { target } = event;
     const name = target.getAttribute("name");
     if (name) {
       const index = this.selectedValues.indexOf(name);
@@ -407,15 +419,10 @@ var MerchSideNav = class extends LitElement4 {
                 display: none;
             }
 
-            sp-dialog-base[mode='fullscreenTakeover'] #content {
-                margin-top: 16px;
-            }
-
             #sidenav {
                 display: flex;
                 flex-direction: column;
                 max-width: 248px;
-                max-height: 80dvh;
                 overflow-y: auto;
                 place-items: center;
                 position: relative;
@@ -426,6 +433,8 @@ var MerchSideNav = class extends LitElement4 {
             sp-dialog-base #sidenav {
                 padding-top: 16px;
                 max-width: 300px;
+                max-height: 80dvh;
+                min-height: min(500px, 80dvh);
                 background: #ffffff 0% 0% no-repeat padding-box;
                 box-shadow: 0px 1px 4px #00000026;
                 border-radius: 5px;
@@ -460,7 +469,6 @@ var MerchSideNav = class extends LitElement4 {
                     dismissable
                     underlay
                     no-divider
-                    mode="${this.mobileDevice.matches ? "fullscreenTakeover" : void 0}"
                 >
                     <div id="content">
                         <div id="sidenav">
