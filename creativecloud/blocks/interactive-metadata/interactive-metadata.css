@@ -123,6 +123,10 @@
   z-index: 2;
 }
 
+.interactive-enabled .step-slider-tray .layer.show-layer {
+  min-height: 205px;
+}
+
 .interactive-enabled .layer .gray-button {
   position: absolute;
   box-sizing: border-box;

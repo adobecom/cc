@@ -32,7 +32,7 @@ function createSelectorThumbnail(pic, pathId, displayImg) {
 }
 
 function attachThumbnailEvents(a, data, layer) {
-  ['mouseover', 'touchstart', 'focus'].forEach((event) => {
+  ['mouseover', 'touchstart', 'focus', 'keyup'].forEach((event) => {
     a.addEventListener(event, (e) => {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });

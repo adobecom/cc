@@ -54,7 +54,7 @@
   top: -9px;
   inset-block-start: 50%;
   inset-inline-start: 50%;
-  transform: translate(-38%, -50%);
+  transform: translate(-50%, -50%);
   z-index: 1;
 }
 
@@ -155,8 +155,9 @@
   width: 100%;
   opacity: 0;
   position: absolute;
-  top: -9px;
+  top: -7px;
   z-index: 2;
+  margin: 0;
 }
 
 .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animate::before,
@@ -251,7 +252,7 @@
   display: none;
 }
 
-.interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
+.interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img {
   height: 18px;
   width: 18px;
   display: flex;
@@ -322,40 +323,50 @@
    display: none;
  }
 
- .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container {
+ .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img,
+ .interactive-enabled .step-slider-tray .continueButton .svg-icon-container img {
    display: flex;
    align-items: center;
    justify-content: center;
    height: 34px;
    width: 34px;
    border-radius: 3px;
+   flex-shrink: 0;
  }
- 
- .interactive-enabled .step-slider-tray .sliderTray .continueButton {
-   position: absolute;
-   top: 85%;
-   display: flex;
-   gap: 16px;
-   background: #1273E6;
-   border-radius: 8px;
-   text-decoration: none;
-   color: var(--prompt-btn-fill-light) !important;
-   font-weight: bold;
-   padding: 12px 24px;
-   align-items: center;
-   justify-content: center;
-   width: 60%;
-   left: 50%;
-   transform: translateX(-50%);
-   cursor: pointer;
- }
+}
 
- .interactive-enabled .step-slider-tray .sliderTray .continueButton.hide {
-   display: none;
- }
-
- .interactive-enabled .step-slider-tray .sliderTray .continueButton:hover {
-   color: #1273E6 !important;
-   background: var(--prompt-btn-fill-light);
- }
+@media screen and (min-width: 1024px) {
+  .interactive-enabled .step-slider-tray .continueButton {
+    position: absolute;
+    bottom: 4%;
+    display: flex;
+    gap: 16px;
+    background: #1273E6;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--prompt-btn-fill-light);
+    font-weight: bold;
+    padding: 0 56px;
+    align-items: center;
+    justify-content: center;
+    width: 47%;
+    left: 50%;
+    max-height: 64px;
+    transform: translateX(-50%);
+    cursor: pointer;
+    border: 2px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 64px;
+  }
+  
+  .interactive-enabled .step-slider-tray .continueButton.hide {
+    display: none;
+  }
+  
+  .interactive-enabled .step-slider-tray .continueButton:hover,
+  .interactive-enabled .step-slider-tray .continueButton:focus {
+    border: 2px solid var(--prompt-btn-fill-light);
+  }
 }
