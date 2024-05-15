@@ -257,6 +257,7 @@ function getWorkFlowInformation(el) {
     'workflow-generate-repeat-crop': ['generate', 'selector-tray', 'generate', 'selector-tray', 'crop', 'start-over'],
     'workflow-hue-sat': ['slider-tray'],
     'workflow-generate-select-generate': ['generate', 'selector-tray', 'generate', 'crop', 'start-over'],
+    'workflow-generate-select': ['generate', 'selector-tray', 'start-over'],
     'workflow-generate-selector': ['generate', 'selector-tray', 'generate', 'start-over'],
     'workflow-generate-triple-selector': ['generate', 'selector-tray', 'generate', 'selector-tray', 'generate', 'selector-tray', 'start-over'],
   };
@@ -283,8 +284,6 @@ function getWorkFlowInformation(el) {
 export default async function init(el) {
   const workflow = getWorkFlowInformation(el);
   if (!workflow.length) return;
-  const targetAsset = await getTargetArea(el);
-  if (!targetAsset) return;
   const stepInfo = {
     el,
     stepIndex: -1,
@@ -292,11 +291,13 @@ export default async function init(el) {
     stepList: workflow,
     stepConfigs: el.querySelectorAll(':scope > div'),
     nextStepEvent: 'cc:interactive-switch',
-    target: targetAsset,
     displayPath: 0,
     openForExecution: Promise.resolve(true),
   };
   await handleNextStep(stepInfo);
+  const targetAsset = await getTargetArea(el);
+  if (!targetAsset) return;
+  stepInfo.target = targetAsset;
   await renderLayer(stepInfo);
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {

@@ -98,6 +98,20 @@ export default async function init(el) {
       await decorateGenfill(el, { createTag });
       break;
     }
+    case el.classList.contains('ff-masonry'): {
+      try {
+        const stylePromise = new Promise((resolve) => {
+          loadStyle('/creativecloud/features/firefly/firefly-masonry.css', resolve);
+        });
+        await stylePromise;
+        interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
+        const { default: setMultiImageMarquee } = await import('../../features/firefly/firefly-masonry.js');
+        await setMultiImageMarquee(el);
+      } catch (err) {
+        window.lana?.log(`Failed to load firefly masonry: ${err}`);
+      }
+      break;
+    }
     case el.classList.contains('firefly'): {
       loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
       loadStyle('/creativecloud/features/interactive-elements/interactive-elements.css');
