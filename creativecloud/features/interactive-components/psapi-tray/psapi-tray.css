@@ -199,7 +199,8 @@
   }
 
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button:hover {
-    border: 1px solid var(--selector-option-border);;
+    border: 4px solid var(--prompt-highlight-color);
+    padding: 13px;
   }
 
   .interactive-enabled .foreground .step-change-bg-tray .changeBG-tray .tray-items .gray-button picture,
@@ -227,10 +228,19 @@
     padding-right: 16px;
   }
 
-  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu a.tray-thumbnail-img {
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu a.tray-thumbnail-img,
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items a.tray-thumbnail-img img {
     width: 56px;
     height: 56px;
-    border-radius: 8px;
+    min-height: auto;
+    border-radius: 4px;
+  }
+
+  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu a.tray-thumbnail-img img:hover {
+    /* box-sizing: border-box; */
+    border: 4px solid var(--prompt-highlight-color);
+    width: 48px;
+    height: 48px;
   }
 
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items a.tray-thumbnail-img {
@@ -241,13 +251,6 @@
     background-size: cover;
     background-position: center;
     outline: none;
-  }
-
-  .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items a.tray-thumbnail-img img{
-    width: 56px;
-    height: 56px;
-    min-height: auto;
-    border-radius: 4px;
   }
 
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items a.tray-thumbnail-img .tray-thumbnail-outline {
@@ -299,6 +302,10 @@
     cursor: pointer;
   }
 
+  .interactive-enabled .interactive-holder .layer .psgateway-handler:hover {
+    border: 3px solid var(--prompt-highlight-color);
+  }
+
   .interactive-enabled.light .interactive-holder .layer .psgateway-handler {
    background: var(--prompt-btn-fill-light);
    color: var(--color-black);
@@ -314,7 +321,8 @@
    color: var(--color-black);
   }
 
-  .interactive-enabled .interactive-holder .layer .psgateway-handler img {
+  .interactive-enabled .interactive-holder .layer .psgateway-handler img,
+  .interactive-enabled.aside .foreground.container .image .psgateway-handler picture {
     width: 34px;
     height: 34px;
     min-height: 34px;
@@ -328,5 +336,17 @@
 
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items .gray-button.d-highlighted {
     background: var(--prompt-highlight-color);
+  }
+
+  .interactive-enabled.row-reversed .step-change-bg-tray .changeBG-tray,
+  [dir="rtl"] .interactive-enabled .step-change-bg-tray .changeBG-tray {
+    left: auto;
+    right: 85%;
+    flex-direction: row;
+  }
+
+  [dir="rtl"] .interactive-enabled.row-reversed .step-change-bg-tray .changeBG-tray {
+    left: 85%;
+    right: auto;
   }
 }
