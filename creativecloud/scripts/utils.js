@@ -72,8 +72,10 @@ export function handleFedsMedia() {
     // eslint-disable-next-line no-restricted-syntax
     for (const mutation of mutationList) replaceDotMedia(mutation.target);
   };
+  const footer = document.querySelector('footer');
+  if (!footer) return;
   const observer = new MutationObserver(observeCallback);
-  observer.observe(document.querySelector('footer'), { childList: true, subtree: true });
+  observer.observe(footer, { childList: true, subtree: true });
 }
 
 function getDecorateAreaFn() {
