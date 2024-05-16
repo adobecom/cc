@@ -1,4 +1,4 @@
-// branch: catalog-fixes-1 commit: 6107b87917ef534d374155a9909ec53fb025a11c Thu, 16 May 2024 15:22:01 GMT
+// branch: catalog-fixes-1 commit: fdc1e9694b9a2636ae7f83986d7dd4830f52b93f Thu, 16 May 2024 16:21:49 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -431,7 +431,6 @@ var MerchSideNav = class extends LitElement4 {
                 min-height: min(500px, 80dvh);
                 background: #ffffff 0% 0% no-repeat padding-box;
                 box-shadow: 0px 1px 4px #00000026;
-                border-radius: 5px;
             }
 
             sp-link {

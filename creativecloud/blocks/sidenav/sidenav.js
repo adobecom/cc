@@ -150,7 +150,6 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
     import(`${libs}/features/spectrum-web-components/dist/search.js`),
     import(`${libs}/features/spectrum-web-components/dist/checkbox.js`),
-    import(`${libs}/features/spectrum-web-components/dist/button.js`),
     import(`${libs}/features/spectrum-web-components/dist/dialog.js`),
     import(`${libs}/features/spectrum-web-components/dist/link.js`),
     import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
