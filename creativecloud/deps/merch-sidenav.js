@@ -1,4 +1,4 @@
-// branch: catalog-fixes-1 commit: 257cc84394c0214dda61d348ab61b7ea57b20cc5 Wed, 15 May 2024 20:03:05 GMT
+// branch: catalog-fixes-1 commit: 8da661628502a2480874044e9b5d29e4eb4b272f Thu, 16 May 2024 12:11:26 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -72,18 +72,12 @@ function pushState(state) {
   });
   hash.sort();
   const value = hash.toString();
-  if (value) {
-    window.location.hash = value;
-  } else {
-    window.history.replaceState(
-      {},
-      document.title,
-      window.location.pathname + window.location.search
-    );
-  }
+  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+  window.location.hash = value;
+  window.scrollTo(0, lastScrollTop);
 }
 function deeplink(callback) {
-  const handler = (e) => {
+  const handler = () => {
     const state = parseState(window.location.hash);
     callback(state);
   };
