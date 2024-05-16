@@ -49,32 +49,41 @@ const miloLibs = setLibs('/libs');
 const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
 export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
 
+function isRootPage() {
+  const currUrl = new URL(window.location);
+  const pathSeg = currUrl.pathname.split('/').length;
+  const locale = getConfig().locale?.prefix;
+  return (locale === '' && pathSeg < 3) || (locale !== '' && pathSeg < 4);
+}
+
+function replaceDotMedia(area = document) {
+  const resetAttributeBase = (tag, attr) => {
+    area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
+      el[attr] = `${new URL(`${getConfig().contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
+    });
+  };
+  resetAttributeBase('img', 'src');
+  resetAttributeBase('source', 'srcset');
+}
+
+export function handleFedsMedia() {
+  if (!isRootPage()) return;
+  const observeCallback = (mutationList) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const mutation of mutationList) replaceDotMedia(mutation.target);
+  };
+  const observer = new MutationObserver(observeCallback);
+  observer.observe(document.querySelector('footer'), { childList: true, subtree: true });
+}
+
 function getDecorateAreaFn() {
   let lcpImgSet = false;
 
-  // Load LCP image immediately
   const eagerLoad = (lcpImg) => {
     lcpImg?.setAttribute('loading', 'eager');
     lcpImg?.setAttribute('fetchpriority', 'high');
     if (lcpImg) lcpImgSet = true;
   };
-
-  function isRootPage() {
-    const currUrl = new URL(window.location);
-    const pathSeg = currUrl.pathname.split('/').length;
-    const locale = getConfig().locale?.prefix;
-    return (locale === '' && pathSeg < 3) || (locale !== '' && pathSeg < 4);
-  }
-
-  function replaceDotMedia(area = document) {
-    const resetAttributeBase = (tag, attr) => {
-      area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
-        el[attr] = `${new URL(`${getConfig().contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
-      });
-    };
-    resetAttributeBase('img', 'src');
-    resetAttributeBase('source', 'srcset');
-  }
 
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
     const firstBlock = area.querySelector('body > main > div > div');
@@ -106,18 +115,7 @@ function getDecorateAreaFn() {
   }
 
   return (area, options) => {
-    if (isRootPage()) {
-      replaceDotMedia();
-      const observeCallback = (mutationList) => {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const mutation of mutationList) {
-          replaceDotMedia(mutation.target);
-        }
-      };
-      const observer = new MutationObserver(observeCallback);
-      observer.observe(document.querySelector('header'), { childList: true, subtree: true });
-      observer.observe(document.querySelector('footer'), { childList: true, subtree: true });
-    }
+    if (isRootPage()) replaceDotMedia();
     if (!lcpImgSet) loadLCPImage(area, options);
   };
 }

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea } from './utils.js';
+import { setLibs, decorateArea, handleFedsMedia } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -168,6 +168,7 @@ const miloLibs = setLibs(LIBS);
 const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
 setConfig({ ...CONFIG, miloLibs });
 decorateArea();
+handleFedsMedia();
 
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];
