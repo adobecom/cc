@@ -19,6 +19,7 @@
 /**
  * The decision engine for where to get Milo's libs from.
  */
+
 export const [setLibs, getLibs] = (() => {
   let libs;
   return [
@@ -58,10 +59,14 @@ function getDecorateAreaFn() {
     if (lcpImg) lcpImgSet = true;
   };
 
-  function replaceDotMedia(area = document) {
+  function isRootPage() {
     const currUrl = new URL(window.location);
     const pathSeg = currUrl.pathname.split('/').length;
-    if (pathSeg >= 3) return;
+    const locale = getConfig().locale?.prefix;
+    return (locale === '' && pathSeg < 3) || (locale !== '' && pathSeg < 4);
+  }
+
+  function replaceDotMedia(area = document) {
     const resetAttributeBase = (tag, attr) => {
       area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
         el[attr] = `${new URL(`${getConfig().contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
@@ -101,7 +106,18 @@ function getDecorateAreaFn() {
   }
 
   return (area, options) => {
-    replaceDotMedia();
+    if (isRootPage()) {
+      replaceDotMedia();
+      const observeCallback = (mutationList) => {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const mutation of mutationList) {
+          replaceDotMedia(mutation.target);
+        }
+      };
+      const observer = new MutationObserver(observeCallback);
+      observer.observe(document.querySelector('header'), { childList: true, subtree: true });
+      observer.observe(document.querySelector('footer'), { childList: true, subtree: true });
+    }
     if (!lcpImgSet) loadLCPImage(area, options);
   };
 }
