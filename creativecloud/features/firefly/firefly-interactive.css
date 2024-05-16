@@ -173,7 +173,7 @@
 
 @media screen and (min-width: 1200px) and (max-width: 1300px) {
   .firefly-prompt {
-    margin-inline: 18px;
+    margin-inline: 14px;
     padding-inline: 30px 7px;
   } 
 }
