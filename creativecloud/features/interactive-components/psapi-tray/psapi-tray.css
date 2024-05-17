@@ -61,6 +61,13 @@
   50% { background: var(--prompt-highlight-color); }
 }
 
+.interactive-enabled .interactive-holder .layer > picture > img {
+  position: relative;
+  top: 50%;
+  left: 0;
+  object-fit: contain;
+}
+
 @media screen and (max-width: 600px) {
   .interactive-enabled .step-change-bg-tray .layer > picture {
     position: absolute;
@@ -136,10 +143,6 @@
 
 @media screen and (min-width: 600px) {
   .interactive-enabled .interactive-holder {
-    border-radius: 16px;
-  }
-
-  .interactive-enabled .interactive-holder .layer > picture > img {
     border-radius: 16px;
   }
 
@@ -286,8 +289,33 @@
     height: 34px;
     min-height: 34px;
   }
- 
+
+  .interactive-enabled .interactive-holder .layer .psgateway-handler.upload-btn,
+  .interactive-enabled .interactive-holder .layer .psgateway-handler.continueps-btn {
+    display: none;
+  }
+
+  .interactive-enabled .interactive-holder .layer.show-upload .psgateway-handler.upload-btn,
+  .interactive-enabled .interactive-holder .layer.show-continueps .psgateway-handler.continueps-btn,
   .interactive-enabled .step-change-bg-tray .changeBG-tray .tray-items.submenu .sb-option.show-desktop-submenu {
     display: flex;
+  }
+
+  .interactive-enabled .layer .loader-curtain {
+    height: 100%;
+    width: 100%;
+    display: none;
+    background: black;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+    border-radius: 16px;
+  }
+
+  .interactive-enabled .layer > *:not(.loader-curtain)::after {
+    /* content: '';
+    height: 100%;
+    width: 100%;
+    background: black; */
   }
 }

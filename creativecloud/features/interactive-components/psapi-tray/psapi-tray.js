@@ -1,6 +1,7 @@
-import { createTag } from '../../../scripts/utils.js';
+import { createTag, getConfig } from '../../../scripts/utils.js';
 import { handleImageTransition, getImgSrc } from '../../../blocks/interactive-metadata/interactive-metadata.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
+import createprogressCircle from '../../progress-circle/progress-circle.js';
 
 function isDeviceMobile() {
   const MOBILE_SIZE = 600;
@@ -31,7 +32,9 @@ function continueInPs(uploadBtn, config) {
   const btnSvg = btnCfg.querySelector('picture');
   const btn = createTag('a', { class: 'psgateway-handler continueps-btn body-xl' });
   btn.append(btnSvg, btnText);
-  uploadBtn.replaceWith(btn);
+  uploadBtn.insertAdjacentElement('afterend', btn);
+  uploadBtn.closest('.layer').classList.remove('show-upload');
+  uploadBtn.closest('.layer').classList.add('show-continueps');
   btn.addEventListener('click', () => {
     handleContinueInPs();
   });
@@ -74,11 +77,9 @@ async function handleRemoveBg(layer) {
   const img = layer.querySelector(':scope > picture > img');
   const { AperitifStrategy } = await import('../../../deps/export-to-ps/aperitifStrategy.js');
   const { MaskProcessor } = await import('../../../deps/export-to-ps/maskProcessor.js');
-  await AperitifStrategy.init(
-    'https://image-stage.adobe.io/utils/aperitif',
-    '6LecjOQZAAAAAO2g37NFPwnIPA6URMXdAzBFZTpZ',
-    'nurture-acom-first-touch',
-  );
+  const envCfg = getConfig();
+  const psApiCfg = envCfg.prodDomains.includes(window.location.host) ? envCfg.prod : envCfg.stage;
+  await AperitifStrategy.init(psApiCfg.psStorage, psApiCfg.psGuid, 'adobedotcom-cc'); // psApiCfg.psClient);
   const strategy = new AperitifStrategy();
   const response = await fetch(img.src.split('?')[0]);
   const blob = await response.blob();
@@ -88,16 +89,17 @@ async function handleRemoveBg(layer) {
   const imageUrl = URL.createObjectURL(maskBlob);
   img.style.maskImage = `url(${imageUrl})`;
   img.style.maskMode = 'luminance';
-  img.style.maskSize = 'contain';
+  img.style.maskSize = 'cover';
 }
 
-function createSubMenu(op, layer, data) {
+function createSubMenu(op, layer, data, mobileStep) {
   const [thumbnailPic, displayPic] = op.children;
   const displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
   const a = createSelectorThumbnail(thumbnailPic, displayImg, null);
   a.classList.add('submenu-icon');
   a.addEventListener('click', async () => {
     await handleChangeBg(layer, displayPic.querySelector('img'), data);
+    if (isDeviceMobile) renderMobileStep(layer, mobileStep);
   });
   return a;
 }
@@ -109,9 +111,13 @@ async function handleStartOver(layer, data, mobileStep) {
   const { alt } = defaultPic.querySelector('img');
   const obj = { src, alt, useCfg: true };
   await handleImageTransition(data, obj);
-  layer.querySelector(':scope > picture').style.opacity = 0;
-  layer.querySelector(':scope > picture')?.remove();
+  layer.classList.add('show-upload');
+  layer.classList.remove('show-continueps');
   renderMobileStep(layer, mobileStep, 'start-over');
+  const subjectImg = layer.querySelector(':scope > picture');
+  if (!subjectImg) return;
+  subjectImg.style.opacity = 0;
+  subjectImg.remove();
 }
 
 function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
@@ -153,7 +159,7 @@ function createTrayOptions(btnCfg, layer, data, mobileStep, idx) {
   const subOpt = createTag('div', { class: `sb-option submenu-${idx}` });
   const subItems = subMenu.querySelectorAll('li');
   [...subItems].forEach((i) => {
-    const subItem = createSubMenu(i, layer, data);
+    const subItem = createSubMenu(i, layer, data, mobileStep);
     subOpt.append(subItem);
   });
   return [btn, subOpt];
@@ -216,6 +222,7 @@ function changeBgUpload(layer, config, mobileStep) {
   const btn = createTag('a', { class: `psgateway-handler upload-btn body-xl` });
   const inputBtn = createTag('input', { class: 'inputFile', type: 'file'});
   btn.append(btnSvg, btnText, inputBtn);
+  layer.classList.add('show-upload');
   btn.addEventListener('click', () => {
     handleUploadImage(layer, config, btn, mobileStep);
   });
@@ -253,5 +260,9 @@ export default async function stepInit(data) {
   layer.append(selectorTray);
   if (uploadBtn) layer.append(uploadBtn);
   renderMobileStep(layer, mobileStep);
+
+  const prgDom = await createprogressCircle();
+  const curtain = createTag('div', { class: 'loader-curtain' }, prgDom);
+  layer.append(curtain);
   return layer;
 }
