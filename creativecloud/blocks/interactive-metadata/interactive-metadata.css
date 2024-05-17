@@ -11,6 +11,7 @@
   --prompt-text-color-light: #2C2C2C;
   --prompt-input-fill-light: #D5D5D5;
   --selector-option-border: #6D6D6D;
+  --selector-tray-fill: #222221;
 }
 
 .interactive-enabled .foreground .image > p:first-child {

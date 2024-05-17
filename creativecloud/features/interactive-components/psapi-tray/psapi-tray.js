@@ -24,13 +24,20 @@ function handleContinueInPs() {
   console.log('continue in ps');
 }
 
-function continueInPs(uploadBtn, config) {
+function continueInPs(uploadBtn, layer, config) {
+  const psBtn = layer.querySelector('.continueps-btn');
+  // toggle between upload and ps button if it already exists
+  if (psBtn) {
+    uploadBtn.classList.remove('show-desktop-upload');
+    psBtn.classList.add('show-desktop-ps');
+    return psBtn;
+  }
   const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
   if (!uploadCfg) return null;
   const btnCfg = uploadCfg.querySelector('.icon-upload-ps')?.closest('li');
   const btnText = btnCfg.textContent;
   const btnSvg = btnCfg.querySelector('picture');
-  const btn = createTag('a', { class: 'psgateway-handler continueps-btn body-xl' });
+  const btn = createTag('a', { class: 'psgateway-handler continueps-btn body-xl show-desktop-ps' });
   btn.append(btnSvg, btnText);
   uploadBtn.insertAdjacentElement('afterend', btn);
   uploadBtn.closest('.layer').classList.remove('show-upload');
@@ -52,7 +59,10 @@ function renderMobileStep(layer, mobileStep, stepName = null) {
   layer.querySelector('.show-submenu')?.classList.remove('show-submenu');
   const showBtn = layer.querySelector(`.${mobileStep.stepList[mobileStep.activeStep]}-btn`);
   showBtn.classList.add('show-btn');
-  if (showBtn.dataset?.submenu) layer.querySelector(`.${showBtn.dataset.submenu}`).classList.add('show-submenu');
+  if (showBtn.dataset?.submenu) {
+    layer.querySelector(`.${showBtn.dataset.submenu}`).classList.add('show-submenu');
+    showBtn.classList.add('m-highlighted');
+  }
 }
 
 async function handleChangeBg(layer, bgImg, data) {
@@ -126,6 +136,9 @@ function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
   const btnTxtCont = createTag('span', { class: 'tray-item-text' }, btnText);
   btn.append(btnTxtCont);
   btn.addEventListener('click', async (e) => {
+    const upBtn = layer.querySelector('.upload-btn');
+    const psBtn = layer.querySelector('.continueps-btn');
+    if (!psBtn) upBtn.classList.add('show-desktop-upload');
     e.preventDefault();
     switch (btnType) {
       case 'remove':
@@ -134,6 +147,8 @@ function createTrayButton(layer, data, mobileStep, btnText, btnSvg, btnType) {
         break;
       case 'start-over':
         await handleStartOver(layer, data, mobileStep);
+        psBtn.classList.remove('show-desktop-ps');
+        upBtn.classList.add('show-desktop-upload');
         break;
       default:
         break;
@@ -177,7 +192,7 @@ function handleUploadImage(layer, config, btn, mobileStep) {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       image.src = imageUrl;
-      if (!isDeviceMobile()) continueInPs(btn, config);
+      if (!isDeviceMobile()) continueInPs(btn, layer, config);
       renderMobileStep(layer, mobileStep, 'upload');
     }
   });
@@ -185,13 +200,11 @@ function handleUploadImage(layer, config, btn, mobileStep) {
 
 function handleMenuClick(btn, submenu) {
   btn.addEventListener('click', () => {
-    if (defineDeviceByScreenSize() === 'MOBILE') {
-      if (submenu.classList.contains('show-submenu')) submenu.classList.remove('show-submenu');
-      else submenu.classList.add('show-submenu');
-      return;
-    }
-    if (submenu.classList.contains('show-desktop-submenu')) submenu.classList.remove('show-desktop-submenu');
-    else submenu.classList.add('show-desktop-submenu');
+    const isMobile = defineDeviceByScreenSize() === 'MOBILE';
+    const showClass = isMobile ? 'show-submenu' : 'show-desktop-submenu';
+    const showBtnClass = isMobile ? 'm-highlighted' : 'd-highlighted';
+    submenu.classList.toggle(showClass);
+    btn.classList.toggle(showBtnClass);
   });
 }
 
@@ -217,7 +230,7 @@ function changeBgUpload(layer, config, mobileStep) {
   const uploadCfg = config.querySelectorAll('ol').length > 1 ? config.querySelectorAll('ol')[1] : null;
   if (!uploadCfg) return null;
   const btnCfg = uploadCfg.querySelector('.icon-upload')?.closest('li');
-  const [btnText, btnDelay = null] = btnCfg.textContent.split('|');
+  const [btnText, btnDelay = 0] = btnCfg.textContent.split('|');
   const btnSvg = btnCfg.querySelector('picture');
   const btn = createTag('a', { class: `psgateway-handler upload-btn body-xl` });
   const inputBtn = createTag('input', { class: 'inputFile', type: 'file'});
@@ -226,7 +239,6 @@ function changeBgUpload(layer, config, mobileStep) {
   btn.addEventListener('click', () => {
     handleUploadImage(layer, config, btn, mobileStep);
   });
-  return btn;
 }
 
 function createStepList(config) {
@@ -255,10 +267,8 @@ export default async function stepInit(data) {
     stepList: createStepList(config),
   };
   const selectorTray = changeBgSelectorTray(data, layer, config, mobileStep);
-  const uploadBtn = changeBgUpload(layer, config, mobileStep);
-  selectorTray.append(uploadBtn);
+  changeBgUpload(layer, config, mobileStep);
   layer.append(selectorTray);
-  if (uploadBtn) layer.append(uploadBtn);
   renderMobileStep(layer, mobileStep);
 
   const prgDom = await createprogressCircle();
