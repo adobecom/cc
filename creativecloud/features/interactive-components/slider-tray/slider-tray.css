@@ -302,7 +302,7 @@
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
    height: 64px;
    position: relative;
-   word-break: normal;
+   word-break: normal !important;
    overflow-wrap: normal !important;
  }
 
