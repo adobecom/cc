@@ -100,9 +100,21 @@ function getDecorateAreaFn() {
     }
   }
 
+  async function savePrimaryProduct() {
+    const LAST_PRIMARY_PRODUCT = 'last_primary_product';
+    const { getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+    const primaryProduct = getMetadata('primaryproduct');
+    if (primaryProduct) {
+      window.sessionStorage.setItem(LAST_PRIMARY_PRODUCT, primaryProduct);
+    } else {
+      window.sessionStorage.removeItem(LAST_PRIMARY_PRODUCT);
+    }
+  }
+
   return (area, options) => {
     replaceDotMedia();
     if (!lcpImgSet) loadLCPImage(area, options);
+    savePrimaryProduct();
   };
 }
 
