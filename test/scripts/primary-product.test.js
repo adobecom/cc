@@ -15,7 +15,7 @@ describe('Scripts for existing meta', () => {
 
 describe('Scripts for non-existing meta', () => {
   before(async () => {
-    window.sessionStorage.setItem('last_primary_product', 'photoshop')
+    window.sessionStorage.setItem('last_primary_product', 'photoshop');
     document.head.innerHTML = await readFile({ path: './mocks/nometa.html' });
     decorateArea();
   });
