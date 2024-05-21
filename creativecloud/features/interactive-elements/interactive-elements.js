@@ -7,12 +7,21 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
   let promptInput = '';
   if (mode !== 'genfill') promptInput = createTag('input', { class: 'prompt-text', id: 'promptinput', placeholder: `${prompt.trim()}`, maxlength: '250', autofocus: 'true' });
   const promptButton = createTag('button', { class: 'con-button blue', id: 'promptbutton', 'daa-ll': trackingValue }, `${buttonText.trim()}`);
-  if (mode === 'light') {
+  if (mode.includes('light')) {
     promptField.classList.add('light');
     promptInput.classList.add('light');
   } else if (mode === 'genfill') {
     promptButton.setAttribute('id', 'genfill');
     promptField.classList.remove('promptbar');
+  }
+  if (mode.includes('ff-masonry')) {
+    promptField.classList.remove('promptbar');
+    promptField.classList.add('masonry-promptbar');
+    promptInput.classList.remove('prompt-text');
+    promptInput.classList.add('masonry-prompttext');
+    promptInput.removeAttribute('id');
+    promptButton.removeAttribute('id');
+    promptButton.classList.add('masonry-generate');
   }
   if (mode !== 'genfill') {
     promptField.append(promptInput);
@@ -29,14 +38,14 @@ export async function createPromptField(prompt, buttonText, mode, trackingValue 
   }
   promptField.append(promptButton);
   const device = defineDeviceByScreenSize();
-  if (device === 'TABLET') promptButton.classList.add('button-l');
-  else if (device === 'DESKTOP') promptButton.classList.add('button-xl');
+  if (device === 'DESKTOP' || (device === 'TABLET' && mode.includes('ff-masonry'))) promptButton.classList.add('button-xl');
+  else if (device === 'TABLET') promptButton.classList.add('button-l');
   return promptField;
 }
 
 export async function createEnticement(enticementDetail, mode) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-  const enticementDiv = createTag('div');
+  const enticementDiv = createTag('div', { class: 'enticement-container' });
   const svgImage = createTag('img', { class: 'enticement-arrow', alt: '' });
   let arrowText;
   [arrowText, svgImage.src] = enticementDetail.split('|');

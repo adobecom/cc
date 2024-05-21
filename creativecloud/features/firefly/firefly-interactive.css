@@ -96,11 +96,7 @@
   }
 
   .interactive-marquee.firefly .asset {
-    top: 24px;
-  }
-
-  .interactive-marquee.firefly .foreground {
-    padding-top: 0;
+    top: 0;
   }
 
   .interactive-marquee.firefly.ff-text-effects .interactive-container,
@@ -172,6 +168,14 @@
     margin-inline-start: 40px;
     height: 50px;
   }
+}
+
+
+@media screen and (min-width: 1200px) and (max-width: 1300px) {
+  .firefly-prompt {
+    margin-inline: 14px;
+    padding-inline: 30px 7px;
+  } 
 }
 
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
