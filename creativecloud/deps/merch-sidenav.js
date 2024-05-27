@@ -1,4 +1,4 @@
-// branch: catalog-regressions-4 commit: d3bd85e73193a2d92ab306f9363c2a2cb2f0a003 Mon, 27 May 2024 11:32:34 GMT
+// branch: catalog-regressions-4 commit: d3bd85e73193a2d92ab306f9363c2a2cb2f0a003 Mon, 27 May 2024 11:38:02 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -506,12 +506,8 @@ var MerchSideNav = class extends LitElement4 {
         this.dialog,
         options
       );
-      document.documentElement.style.overflow = "clip";
-      document.documentElement.style.scrollbarGutter = "stable";
       overlay.addEventListener("close", () => {
         this.modal = false;
-        document.documentElement.style.overflow = "initial";
-        document.documentElement.style.scrollbarGutter = "initial";
       });
       this.shadowRoot.querySelector("sp-theme").append(overlay);
     });
@@ -525,6 +521,18 @@ var MerchSideNav = class extends LitElement4 {
     this.modal = true;
   }
 };
+document.addEventListener("sp-opened", (e) => {
+  if (e.detail.interaction !== "modal" && e.detail.interaction !== "page")
+    return;
+  document.documentElement.style.overflow = "clip";
+  document.documentElement.style.scrollbarGutter = "stable";
+});
+document.addEventListener("sp-closed", (e) => {
+  if (e.detail.interaction !== "modal" && e.detail.interaction !== "page")
+    return;
+  document.documentElement.style.overflow = "initial";
+  document.documentElement.style.scrollbarGutter = "initial";
+});
 customElements.define("merch-sidenav", MerchSideNav);
 export {
   MerchSideNav
