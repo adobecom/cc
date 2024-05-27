@@ -1,4 +1,4 @@
-// branch: catalog-regressions-4 commit: d3bd85e73193a2d92ab306f9363c2a2cb2f0a003 Mon, 27 May 2024 12:30:54 GMT
+// branch: catalog-regressions-4 commit: d3bd85e73193a2d92ab306f9363c2a2cb2f0a003 Mon, 27 May 2024 12:51:11 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -382,6 +382,9 @@ var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
 var TABLET_DOWN = "(max-width: 1199px)";
 
 // src/sidenav/merch-sidenav.js
+function preventDefault(e) {
+  e.preventDefault();
+}
 var MerchSideNav = class extends LitElement4 {
   static properties = {
     title: { type: String },
@@ -509,11 +512,15 @@ var MerchSideNav = class extends LitElement4 {
       overlay.addEventListener("close", () => {
         document.documentElement.style.overflow = "initial";
         document.documentElement.style.scrollbarGutter = "initial";
+        document.body.removeEventListener("touchmove", preventDefault);
         this.modal = false;
       });
       this.shadowRoot.querySelector("sp-theme").append(overlay);
       document.documentElement.style.overflow = "clip";
       document.documentElement.style.scrollbarGutter = "stable";
+      document.body.addEventListener("touchmove", preventDefault, {
+        passive: false
+      });
     });
   }
   updated() {
