@@ -1,4 +1,4 @@
-// branch: develop commit: 7ff521873f6595e470276881ccfda07dbb8263ac Tue, 21 May 2024 12:10:24 GMT
+// branch: catalog-regressions-4 commit: d3bd85e73193a2d92ab306f9363c2a2cb2f0a003 Mon, 27 May 2024 11:32:34 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -118,6 +118,7 @@ var MerchSearch = class extends LitElement {
       return;
     this.search.addEventListener("input", this.handleInputDebounced);
     this.search.addEventListener("change", this.handleInputDebounced);
+    this.search.addEventListener("submit", this.handleInputSubmit);
     this.updateComplete.then(() => {
       this.setStateFromURL();
     });
@@ -127,6 +128,7 @@ var MerchSearch = class extends LitElement {
     super.disconnectedCallback();
     this.search.removeEventListener("input", this.handleInputDebounced);
     this.search.removeEventListener("change", this.handleInputDebounced);
+    this.search.removeEventListener("submit", this.handleInputSubmit);
     this.stopDeeplink?.();
   }
   /*
@@ -143,6 +145,9 @@ var MerchSearch = class extends LitElement {
     this.stopDeeplink = deeplink(({ search }) => {
       this.search.value = search ?? "";
     });
+  }
+  handleInputSubmit(event) {
+    event.preventDefault();
   }
   render() {
     return html`<slot></slot>`;
@@ -501,6 +506,8 @@ var MerchSideNav = class extends LitElement4 {
         this.dialog,
         options
       );
+      document.documentElement.style.overflow = "clip";
+      document.documentElement.style.scrollbarGutter = "stable";
       overlay.addEventListener("close", () => {
         this.modal = false;
         document.documentElement.style.overflow = "initial";
@@ -516,8 +523,6 @@ var MerchSideNav = class extends LitElement4 {
   showModal({ target }) {
     this.#target = target;
     this.modal = true;
-    document.documentElement.style.overflow = "clip";
-    document.documentElement.style.scrollbarGutter = "stable";
   }
 };
 customElements.define("merch-sidenav", MerchSideNav);
