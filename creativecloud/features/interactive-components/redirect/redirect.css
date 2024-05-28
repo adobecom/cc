@@ -9,25 +9,16 @@
 }
 
 .interactive-enabled .step-redirect .redirect-button .svg-icon-container img {
-  height: 18px;
-  width: 18px;
+  height: auto;
+  width: 34px;
+  min-height: 34px;
+  max-width: 34px;
+  border-radius: 3px;
   display: flex;
+  flex-shrink: 0;
 }
 
-@media screen and (min-width: 600px) {
- .interactive-enabled .step-redirect .redirect-button .svg-icon-container img {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   height: 34px;
-   width: 34px;
-   border-radius: 3px;
-   flex-shrink: 0;
- }
-}
-
-@media screen and (min-width: 1024px) {
-  .interactive-enabled .step-redirect .layer .redirect-button {
+.interactive-enabled .step-redirect .layer .redirect-button {
     position: absolute;
     bottom: 4%;
     display: flex;
@@ -52,12 +43,7 @@
     height: 64px;
   }
   
-  .interactive-enabled .step-redirect .layer .redirect-button.hide {
-    display: none;
-  }
-  
   .interactive-enabled .step-redirect .layer .redirect-button:hover,
   .interactive-enabled .step-redirect .layer .redirect-button:focus {
     border: 2px solid var(--prompt-btn-fill-light);
   }
-}
