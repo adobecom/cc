@@ -1,4 +1,4 @@
-// branch: catalog-regressions-4 commit: 6bf3062bc07fa4f4a3391312cf2e061c64722785 Mon, 27 May 2024 14:46:44 GMT
+// branch: catalog-regressions-4 commit: ab285e235582b1d2f3083e9fbdc6d7fa27208612 Tue, 28 May 2024 08:52:23 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -382,13 +382,11 @@ var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
 var TABLET_DOWN = "(max-width: 1199px)";
 
 // src/sidenav/merch-sidenav.js
-document.addEventListener("sp-opened", (e) => {
-  document.documentElement.style.overflow = "clip";
-  document.documentElement.style.scrollbarGutter = "stable";
+document.addEventListener("sp-opened", () => {
+  document.body.classList.add("merch-modal");
 });
-document.addEventListener("sp-closed", (e) => {
-  document.documentElement.style.overflow = "initial";
-  document.documentElement.style.scrollbarGutter = "initial";
+document.addEventListener("sp-closed", () => {
+  document.body.classList.remove("merch-modal");
 });
 var MerchSideNav = class extends LitElement4 {
   static properties = {
@@ -535,4 +533,3 @@ customElements.define("merch-sidenav", MerchSideNav);
 export {
   MerchSideNav
 };
-//# sourceMappingURL=merch-sidenav.js.map
