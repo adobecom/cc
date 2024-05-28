@@ -1,0 +1,63 @@
+.interactive-enabled .step-redirect .layer .redirect-button {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 34px;
+   width: 34px;
+   border-radius: 3px;
+   flex-shrink: 0;
+}
+
+.interactive-enabled .step-redirect .redirect-button .svg-icon-container img {
+  height: 18px;
+  width: 18px;
+  display: flex;
+}
+
+@media screen and (min-width: 600px) {
+ .interactive-enabled .step-redirect .redirect-button .svg-icon-container img {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 34px;
+   width: 34px;
+   border-radius: 3px;
+   flex-shrink: 0;
+ }
+}
+
+@media screen and (min-width: 1024px) {
+  .interactive-enabled .step-redirect .layer .redirect-button {
+    position: absolute;
+    bottom: 4%;
+    display: flex;
+    gap: 16px;
+    background: #1273E6;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--prompt-btn-fill-light);
+    font-weight: bold;
+    padding: 0 56px;
+    align-items: center;
+    justify-content: center;
+    width: 47%;
+    left: 50%;
+    max-height: 64px;
+    transform: translateX(-50%);
+    cursor: pointer;
+    border: 2px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 64px;
+  }
+  
+  .interactive-enabled .step-redirect .layer .redirect-button.hide {
+    display: none;
+  }
+  
+  .interactive-enabled .step-redirect .layer .redirect-button:hover,
+  .interactive-enabled .step-redirect .layer .redirect-button:focus {
+    border: 2px solid var(--prompt-btn-fill-light);
+  }
+}
