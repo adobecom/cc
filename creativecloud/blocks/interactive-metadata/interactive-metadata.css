@@ -46,6 +46,7 @@
 
 .interactive-enabled .foreground .image .enticement-container {
   display: block;
+  position: relative;
 /*   height: 28px; */
   font-weight: bold;
   font-size: 28px;
@@ -66,7 +67,7 @@
 
 .interactive-enabled .foreground .image .enticement-svg {
   display: block;
-  position: relative;
+  position: absolute;
   width: 49px;
   height: 73px;
   top: -16px;
