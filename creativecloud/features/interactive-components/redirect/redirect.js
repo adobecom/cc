@@ -5,7 +5,6 @@ export default async function stepInit(data) {
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const RedirectCTA = createTag('a', { class: 'redirect-button body-xl', href: '#' });
-  console.log(config.innerHTML);
   const svg = config.querySelector('img[src*=".svg"]');
   if (svg) {
     const svgClone = svg.cloneNode(true);
