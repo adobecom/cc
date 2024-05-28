@@ -46,11 +46,11 @@
 
 .interactive-enabled .foreground .image .enticement-container {
   display: block;
-  height: 28px;
+/*   height: 28px; */
   font-weight: bold;
   font-size: 28px;
   line-height: 28px;
-  margin: 0 0 16px;
+  margin: 0 0 12px;
 }
 
 .interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
@@ -330,7 +330,7 @@
     width: var(--grid-container-width);
     max-width: 570px;
     right: 30px;
-    margin: 0 0 24px;
+    margin: 0 0 17px;
   }
 
   [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container {
