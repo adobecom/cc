@@ -1,372 +1,354 @@
-.interactive-enabled .step-slider-tray .sliderTray {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  transform: none;
-  border-radius: 0;
-  top: 0;
-  width: 100%;
-}
-  
-.interactive-enabled .step-slider-tray .sliderTray .menu {
-  border-radius: 0 0 8px 8px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 6px 16px 16px;
-  gap: 12px;
-  display: flex;
-  flex-direction: column;
-  background: var(--prompt-input-fill);
-  justify-content: space-between;
-  color: var(--color-white);
-  font-weight: bold;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
+/* eslint-disable no-case-declarations */
+/* eslint-disable no-use-before-define */
+import { createTag, getConfig } from '../../../scripts/utils.js';
+import defineDeviceByScreenSize from '../../../scripts/decorate.js';
+
+const CSSRanges = {
+  hue: { min: -180, zero: 0, max: 180 },
+  saturation: { min: 0, zero: 100, max: 300 },
+};
+
+const PsRanges = {
+  hue: { min: -180, zero: 0, max: 180 },
+  saturation: { min: -100, zero: 0, max: 100 },
+};
+
+export default async function stepInit(data) {
+  const imgObj = {};
+  const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
+  await createSelectorTray(data, layer);
+  sliderEvent(data.target, layer, imgObj);
+  uploadImage(data.target, layer, imgObj);
+  continueToPs(layer, imgObj);
+  return layer;
 }
 
-.interactive-enabled.light .step-slider-tray .sliderTray .menu {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
+async function createSelectorTray(data, layer) {
+  const sliderTray = createTag('div', { class: 'sliderTray' });
+  const menu = createTag('div', { class: 'menu' });
+  const config = data.stepConfigs[data.stepIndex];
+  const options = config.querySelectorAll(':scope > div ul .icon, :scope > div ol .icon');
+  [...options].forEach((o) => { handleInput(o, sliderTray, menu, layer); });
+  layer.prepend(sliderTray);
+  observeSliderTray(sliderTray, data.target, menu);
 }
 
-.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu {
-  background: var(--prompt-input-fill);
-  color: var(--color-white);
-}
-
-.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu label {
-  margin: 10px 0 0;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
-  position: absolute;
-  block-size: 20px;
-  inline-size: 20px;
-  background-color: var(--prompt-btn-fill-light);
-  border-radius: 50%;
-  top: -9px;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-}
-
-.interactive-enabled.light .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
-  background-color: var(--color-black);
-}
-
-.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
-  background-color: var(--prompt-btn-fill-light);
-}
-
-.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
-  background-color: var(--color-black);
-}
-
-[dir="rtl"] .interactive-enabled:not(.row-reversed) .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle,
-[dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle {
-  transform: translate(38%, -50%);
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
-  border-radius: 100%;
-  content: "";
-  display: block;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  transition: box-shadow 300ms ease-out 0s, inline-size 300ms ease-out 0s, block-size 300ms ease-out 0s, opacity 300ms ease-out 0s;
-  block-size: 40px;
-  inline-size: 40px;
-  box-shadow: 0 0 0 8px #3892f3; 
-  opacity: 0;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .showOuterBorder::before {
-  opacity: 0.4;
-}
-
-[dir="rtl"] .interactive-enabled:not(.row-reversed) .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before,
-[dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle::before {
-  transform: translate(50%, -50%);
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .saturation,
-.interactive-enabled .step-slider-tray .sliderTray .menu .hue {
-  position: relative;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: 0.5em;
-  border: none;
-  background-color: rgba(0, 0, 0, 0.1);
-  height: 3px;
-  display: block;
-  outline: none;
-  transition: color 0.05s linear;
-  width: 100%;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .saturation {
-  background: linear-gradient(to right, black, red);
-}
-
-[dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .saturation {
-  background: linear-gradient(to left, darkgray, red);
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .hue {
-  background: linear-gradient(to right, red, yellow, lime, aqua, blue, fuchsia, red);
-}
-
-[dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .hue {
-  background: linear-gradient(to left, red, yellow, lime, aqua, blue, fuchsia, red);
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .options::-webkit-slider-thumb,
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .options::-webkit-slider-thumb {
-  height: 20px;
-  width: 20px;
-  position: relative;
-  border-radius: 2em;
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  cursor: move;
-  cursor: grab;
-  cursor: -webkit-grab;
-  z-index: 2;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .options[type="range"]:focus {
-  outline: none;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .options {
-  width: 100%;
-  opacity: 0;
-  position: absolute;
-  top: -7px;
-  z-index: 2;
-  margin: 0;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animate::before,
-[dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animate::before,
-.interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .animate::before,
-[dir='rtl'] .interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .animate::before {
-  opacity: 1;
-  box-shadow: 0 0 0 4px #3892f3;
-  inline-size: 25px;
-  block-size: 25px;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animateout::before,
-[dir='rtl'] .interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .animateout::before,
-.interactive-enabled.row-reversed .step-slider-tray .sliderTray .menu .sliderContainer .animateout::before {
-  opacity: 0;
-  box-shadow: 0 0 0 8px #3892f3;
-  inline-size: 40px;
-  block-size: 40px;
-}
-  
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton:hover,
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton.focusUploadButton {
-  border: 3px solid #1273E6;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .sliderContainer .outerCircle.focusUploadButton {
-  border: 4px solid #3892f3;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton > input,
-.interactive-enabled .step-slider-tray .sliderTray .uploadButtonMobile > input {
-  opacity: 0;
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton {
-  display: none;
-}
-
-.interactive-enabled .step-slider-tray .continueButton {
-  display: none;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
-  display: inline-flex;
-  box-sizing: content-box;
-  margin: 16px auto 0;
-  background: var(--prompt-input-fill);
-  color: var(--color-white) !important;
-  width: auto;
-  gap: 8px;
-  padding: 5px 12px 5px 8px;
-  max-width: fit-content;
-  border-radius: 8px;
-  align-items: center;
-  max-height: 32px;
-  font-size: 18px;
-  border: 1px solid #fff;
-  text-decoration: none;
-  position: relative;
-}
-
-.interactive-enabled.light .step-slider-tray .sliderTray .menu .uploadButtonMobile,
-.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black) !important;
-  border: 1px solid #000;
-}
-
-.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile {
-  background: var(--prompt-input-fill);
-  color: var(--color-white) !important;
-  border: 1px solid #fff;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile:hover,
-.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile:hover,
-.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile:hover,
-.interactive-enabled .step-slider-tray .sliderTray .uploadButton.uploadButtonMobile.focusUploadButton,
-.interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton,
-.interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .menu .uploadButtonMobile.focusUploadButton {
-  border: 1px solid #1273E6;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile.hide {
-  display: none;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img {
-  height: 18px;
-  width: 18px;
-  display: flex;
-}
-
-@media screen and (min-width: 600px) {
-  .interactive-enabled .step-slider-tray .sliderTray,
-  [dir="rtl"] .interactive-enabled.row-reversed .step-slider-tray .sliderTray {
-   position: absolute;
-   top: 45%;
-   gap: 15px;
-   transform: translateY(-50%);
-   width: 260px;
-   right: -20%;
- }
-
- [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-slider-tray .sliderTray,
- .interactive-enabled.row-reversed .step-slider-tray .sliderTray {
-  left: -20%;
-  right: auto;
-}
-
-.interactive-enabled .step-slider-tray .sliderTray .menu {
-   border-radius: 8px;
-   padding: 14px 24px 28px;
-   bottom: inherit;
-   gap: 12px;
-   width: 260px;
-   box-sizing: border-box;
- }
-
- .interactive-enabled .step-slider-tray .sliderTray .uploadButton {
-   top: 70%;
-   display: flex;
-   gap: 16px;
-   background: var(--prompt-input-fill);
-   border-radius: 8px;
-   text-decoration: none;
-   color: var(--prompt-btn-fill-light);
-   font-weight: bold;
-   padding: 6px 21px;
-   align-items: center;
-   justify-content: center;
-   width: 260px;
-   border: 3px solid transparent;
-   box-sizing: border-box;
-   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
-   height: 64px;
-   position: relative;
- }
-
- .interactive-enabled.light .step-slider-tray .sliderTray .uploadButton {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
- }
-
- .interactive-enabled .interactive-holder.dark.step-slider-tray .sliderTray .uploadButton {
-  background: var(--prompt-input-fill);
-  color: var(--color-white);
- }
-
- .interactive-enabled .interactive-holder.light.step-slider-tray .sliderTray .uploadButton {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
- }
-
- .interactive-enabled .step-slider-tray .sliderTray .menu .uploadButtonMobile {
-   display: none;
- }
-
- .interactive-enabled .step-slider-tray .sliderTray .svg-icon-container img,
- .interactive-enabled .step-slider-tray .continueButton .svg-icon-container img {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   height: 34px;
-   width: 34px;
-   border-radius: 3px;
-   flex-shrink: 0;
- }
-}
-
-@media screen and (min-width: 1024px) {
-  .interactive-enabled .step-slider-tray .continueButton {
-    position: absolute;
-    bottom: 4%;
-    display: flex;
-    gap: 16px;
-    background: #1273E6;
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--prompt-btn-fill-light);
-    font-weight: bold;
-    padding: 0 56px;
-    align-items: center;
-    justify-content: center;
-    width: 47%;
-    left: 50%;
-    max-height: 64px;
-    transform: translateX(-50%);
-    cursor: pointer;
-    border: 2px solid transparent;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    height: 64px;
+function handleInput(option, sliderTray, menu, layer) {
+  let inputType = option.classList[1].split('icon-')[1];
+  const sliderType = inputType.split('-')[0];
+  if (inputType.includes('slider')) inputType = 'slider';
+  const sibling = option.nextSibling;
+  const text = sibling.nodeValue.trim();
+  let picture = '';
+  if (sibling.nextSibling && sibling.nextSibling.tagName === 'PICTURE') {
+    picture = sibling.nextSibling;
   }
-  
-  .interactive-enabled .step-slider-tray .continueButton.hide {
-    display: none;
+  switch (inputType) {
+    case 'slider':
+      createSlider(sliderType, text, menu, sliderTray);
+      break;
+    case 'upload':
+      createUploadButton(text, picture, sliderTray, menu);
+      break;
+    case 'upload-ps':
+      createUploadPSButton(text, picture, layer);
+      break;
+    default:
+      window.lana.log(`Unknown input type: ${inputType}`);
+      break;
   }
-  
-  .interactive-enabled .step-slider-tray .continueButton:hover,
-  .interactive-enabled .step-slider-tray .continueButton:focus {
-    border: 2px solid var(--prompt-btn-fill-light);
+}
+
+function observeSliderTray(sliderTray, targets) {
+  const options = { threshold: 0.7 };
+  const io = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const menu = sliderTray.querySelector('.menu');
+      const outerCircle = menu.querySelector('.outerCircle');
+      outerCircle.classList.add('showOuterBorder');
+      setTimeout(() => { animateSlider(menu, targets); }, 800);
+      observer.unobserve(entry.target);
+    });
+  }, options);
+  io.observe(sliderTray);
+}
+
+function createSlider(sliderType, details, menu, sliderTray) {
+  const sliderLabel = createTag('label', { for: `${sliderType}` }, details.trim());
+  const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
+  const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1' });
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
+  const input = createTag('input', {
+    type: 'range',
+    min: CSSRanges[sliderType].min,
+    max: CSSRanges[sliderType].max,
+    class: `options ${sliderType.toLowerCase()}-input`,
+    value: `${sliderType === 'hue' ? '0' : '150'}`,
+  });
+  outerCircle.append(analyticsHolder);
+  sliderContainer.append(input, outerCircle);
+  menu.append(sliderLabel, sliderContainer);
+  sliderTray.append(menu);
+  outerCircle.addEventListener('click', (e) => {
+    e.preventDefault();
+  });
+  applyAccessibility(input, outerCircle);
+}
+
+function createUploadButton(details, picture, sliderTray, menu) {
+  const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
+  const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
+  const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
+  labelBtn.append(btn, analyticsHolder);
+  appendSVGToButton(picture, labelBtn);
+  const clone = labelBtn.cloneNode(true);
+  clone.classList.add('uploadButtonMobile');
+  const mobileInput = clone.querySelector('.inputFile');
+  menu.append(clone);
+  sliderTray.append(labelBtn);
+  applyAccessibility(btn, labelBtn);
+  applyAccessibility(mobileInput, clone);
+}
+
+function applyAccessibility(inputEle, target) {
+  let tabbing = false;
+  document.addEventListener('keydown', () => {
+    tabbing = true;
+    inputEle.addEventListener('focus', () => {
+      if (tabbing) {
+        target.classList.add('focusUploadButton');
+      }
+    });
+    inputEle.addEventListener('blur', () => {
+      target.classList.remove('focusUploadButton');
+    });
+  });
+  document.addEventListener('keyup', () => {
+    tabbing = false;
+  });
+}
+
+function createUploadPSButton(details, picture, layer) {
+  const btn = createTag('a', { class: 'continueButton body-xl hide', tabindex: '0' }, details);
+  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
+  btn.append(analyticsHolder);
+  appendSVGToButton(picture, btn);
+  layer.append(btn);
+}
+
+function appendSVGToButton(picture, button) {
+  if (!picture) return;
+  const svg = picture.querySelector('img[src*=svg]');
+  if (!svg) return;
+  const svgClone = svg.cloneNode(true);
+  const svgCTACont = createTag('div', { class: 'svg-icon-container' });
+  svgCTACont.append(svgClone);
+  button.prepend(svgCTACont);
+}
+
+function sliderEvent(media, layer, imgObj) {
+  let hue = 0;
+  let saturation = 100;
+  ['hue', 'saturation'].forEach((sel) => {
+    const sliderEl = layer.querySelector(`.${sel.toLowerCase()}-input`);
+    sliderEl.addEventListener('input', () => {
+      const image = media.querySelector('.interactive-holder picture > img');
+      const { value } = sliderEl;
+      sliderEl.setAttribute('value', value);
+      const outerCircle = sliderEl.nextSibling;
+      const value1 = (value - sliderEl.min) / (sliderEl.max - sliderEl.min);
+      const thumbPercent = 3 + (value1 * 94);
+      const interactiveBlock = media.closest('.marquee') || media.closest('.aside');
+      const isRowReversed = interactiveBlock.classList.contains('.row-reversed');
+      if ((document.dir === 'rtl' || isRowReversed)) {
+        outerCircle.style.right = `${thumbPercent}%`;
+      } else {
+        outerCircle.style.left = `${thumbPercent}%`;
+      }
+      switch (sel.toLowerCase()) {
+        case ('hue'):
+          hue = value;
+          break;
+        case ('saturation'):
+          saturation = parseInt(value, 10);
+          break;
+        default:
+          break;
+      }
+      image.style.filter = `hue-rotate(${hue}deg) saturate(${saturation}%)`;
+      cssToPhotoshop(imgObj, sel.toLowerCase(), value);
+    });
+    sliderEl.addEventListener('change', () => {
+      const outerCircle = sliderEl.nextSibling;
+      outerCircle.click();
+    });
+  });
+}
+
+function cssToPhotoshop(imgObj, adjustment, value) {
+  const unitValue = convertToUnit(adjustment, value, CSSRanges);
+  imgObj[adjustment] = convertFromUnit(adjustment, unitValue, PsRanges);
+}
+
+function convertToUnit(adjustment, value, ranges) {
+  if (value < ranges[adjustment].min || value > ranges[adjustment].max) {
+    window.lana.log(`value out of range ${adjustment}:${value}`);
   }
+
+  if (value < ranges[adjustment].zero) {
+    const spread = ranges[adjustment].zero - ranges[adjustment].min;
+    return (value - ranges[adjustment].min) / spread - 1;
+  }
+  const spread = ranges[adjustment].max - ranges[adjustment].zero;
+  return (value - ranges[adjustment].zero) / spread;
+}
+
+function convertFromUnit(adjustment, value, ranges) {
+  if (value < -1 || value > 1) {
+    window.lana.log(`value out of range ${adjustment}:${value}`);
+  }
+
+  if (value < 0) {
+    const spread = ranges[adjustment].zero - ranges[adjustment].min;
+    const t = value + 1;
+    return t * spread + ranges[adjustment].min;
+  }
+  const spread = ranges[adjustment].max - ranges[adjustment].zero;
+  return value * spread + ranges[adjustment].zero;
+}
+
+function uploadImage(media, layer, imgObj) {
+  layer.querySelectorAll('.uploadButton').forEach((btn) => {
+    const analyticsBtn = btn.querySelector('.interactive-link-analytics-text');
+    btn.addEventListener('cancel', () => {
+      cancelAnalytics(btn);
+    });
+    btn.addEventListener('change', (event) => {
+      const image = media.querySelector('picture > img');
+      const file = event.target.files[0];
+      if (!file.type.startsWith('image/')) return;
+      if (file) {
+        imgObj.fileName = file.name;
+        const imageUrl = URL.createObjectURL(file);
+        image.src = imageUrl;
+        imgObj.imgSrc = imageUrl;
+        analyticsBtn.innerHTML = 'Upload Button';
+        const continueBtn = layer.querySelector('.continueButton');
+        if (continueBtn) {
+          continueBtn.classList.remove('hide');
+        }
+      } else {
+        cancelAnalytics(btn);
+      }
+    });
+  });
+}
+
+function continueToPs(layer, imgObj) {
+  layer.querySelectorAll('.continueButton').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const actionJSONData = [
+        {
+          _obj: 'make',
+          _target: [{ _ref: 'adjustmentLayer' }],
+          using: {
+            _obj: 'adjustmentLayer',
+            type: {
+              _obj: 'hueSaturation',
+              adjustment: [
+                {
+                  _obj: 'hueSatAdjustmentV2',
+                  hue: Math.round(imgObj.hue || 0),
+                  lightness: 0,
+                  saturation: Math.round(imgObj.saturation || 0),
+                },
+              ],
+              colorize: false,
+              presetKind: {
+                _enum: 'presetKindType',
+                _value: 'presetKindCustom',
+              },
+            },
+          },
+        },
+      ];
+      const { openInPsWeb } = await import('../../../deps/openInPsWeb/openInPsWeb.js');
+      const imageData = await (await fetch(imgObj.imgSrc)).blob();
+      const cs = getConfig();
+      const enConf = cs.prodDomains.includes(window.location.host) ? cs.prod.psUrl : cs.stage.psUrl;
+      openInPsWeb(
+        enConf,
+        imgObj.fileName,
+        [{ filename: imgObj.fileName, imageData }],
+        actionJSONData,
+      );
+    });
+  });
+}
+
+function cancelAnalytics(btn) {
+  const x = (e) => {
+    e.preventDefault();
+  };
+  btn.addEventListener('click', x);
+  const cancelEvent = new Event('click', { detail: { message: 'Cancel button clicked in file dialog' } });
+  btn.setAttribute('daa-ll', 'Cancel Upload');
+  btn.dispatchEvent(cancelEvent);
+  btn.removeEventListener('click', x);
+  btn.setAttribute('daa-ll', 'Upload Image');
+}
+
+function animateSlider(menu, target) {
+  const option = menu.querySelector('.options');
+  const aobj = { interrupted: false };
+  const outerCircle = option.nextSibling;
+  outerCircle.classList.add('animate');
+  ['mousedown', 'touchstart', 'keyup'].forEach((e) => {
+    option.closest('.sliderTray').addEventListener(e, () => {
+      aobj.interrupted = true;
+      outerCircle.classList.remove('showOuterBorder', 'animate', 'animateout');
+    }, { once: true });
+  });
+  outerCircle.addEventListener('transitionend', () => {
+    setTimeout(() => {
+      const min = parseInt(option.min, 10);
+      const max = parseInt(option.max, 10);
+      const middle = (min + max) / 2;
+      sliderScroll(option, middle, max, 1200, outerCircle, target, aobj);
+    }, 500);
+  }, { once: true });
+}
+
+function sliderScroll(slider, start, end, duration, outerCircle, target, aobj) {
+  let current = start;
+  let step = ((end - start) / duration) * 10;
+  let direction = 1;
+  function stepAnimation() {
+    slider.value = current;
+    current += step;
+    if (aobj.interrupted) return;
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+    if ((step > 0 && current >= (start + 70)) || (step < 0 && current >= (start + 70))) {
+      step = -step;
+      setTimeout(stepAnimation, 10);
+    } else if ((step > 0 && current <= (start - 70)) || (step < 0 && current <= (start - 70))) {
+      step = -step;
+      setTimeout(stepAnimation, 10);
+      direction = -1;
+    } else if (current === start && direction === -1) {
+      slider.value = current;
+      const image = target.querySelector('picture > img');
+      image.style.filter = `hue-rotate(${0}deg)`;
+      setTimeout(() => {
+        outerCircle.classList.remove('animate');
+        outerCircle.classList.add('animateout');
+      }, 500);
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+      setTimeout(stepAnimation, 10);
+    }
+  }
+  setTimeout(stepAnimation, 10);
 }
