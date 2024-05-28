@@ -66,7 +66,7 @@
 }
 
 .interactive-enabled .foreground .image .enticement-svg {
-  display: block;
+/*   display: block;
   position: absolute;
   width: 49px;
   height: 73px;
@@ -74,7 +74,17 @@
   right: 30px;
   left: auto;
   z-index: 2;
-  margin: 0;
+  margin: 0; */
+      display: block;
+    position: absolute;
+    width: 49px;
+    height: 73px;
+    top: 75%;
+    /* right: 30px; */
+    left: 0;
+    z-index: 2;
+    margin: 0;
+    transform: translate(-31px, 0);
 }
 
 [dir="rtl"] .interactive-enabled .foreground .image .enticement-svg {
