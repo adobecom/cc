@@ -1,3 +1,7 @@
+.interactive-holder.show-image.step-redirect > picture {
+  display: none;
+}
+
 .interactive-enabled .step-redirect .layer .redirect-button {
    display: flex;
    align-items: center;
@@ -20,7 +24,7 @@
 
 .interactive-enabled .step-redirect .layer .redirect-button {
     position: absolute;
-    bottom: 4%;
+    bottom: 50%;
     display: flex;
     gap: 16px;
     background: #1273E6;
@@ -46,4 +50,14 @@
   .interactive-enabled .step-redirect .layer .redirect-button:hover,
   .interactive-enabled .step-redirect .layer .redirect-button:focus {
     border: 2px solid var(--prompt-btn-fill-light);
+  }
+
+  @media screen and (max-width: 600px) {
+    .interactive-enabled .interactive-holder.step-redirect .layer.show-layer {
+      background: none;
+    }
+
+    .interactive-enabled .step-redirect .layer .redirect-button {
+      bottom: 0%;
+    }
   }
