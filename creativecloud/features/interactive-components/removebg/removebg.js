@@ -76,6 +76,7 @@ function loadImg(img) {
 /*-------------- Remove Background --------------*/
 
 function removeBgButton(data) {
+  const btnText = data.stepConfigs[data.stepIndex].querySelector('ul li').innerText;
   let image = null;
   const removeBgCTA = createTag('div', { class: 'gray-button start-over-button body-m', href: '#' });
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
@@ -83,7 +84,7 @@ function removeBgButton(data) {
   <path fill-rule="evenodd" clip-rule="evenodd" d="M30.2828 0.223145L29.44 6.60702C29.3677 7.15425 29.5475 7.70473 29.9289 8.10374L33.9883 12.3505L28.125 11.9718C27.5742 11.9362 27.0372 12.1523 26.6645 12.5593L22.3159 17.3087L23.1513 10.9187C23.2227 10.3726 23.0431 9.8235 22.6629 9.42511L18.6099 5.17946L24.4666 5.55625C25.0164 5.59161 25.5525 5.37624 25.9252 4.97042L30.2828 0.223145Z" fill="white"/>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M18.7656 14.3374L18.283 17.9922C18.2164 18.4963 18.3821 19.0034 18.7334 19.3709L21.0412 21.7853L17.7078 21.57C17.2004 21.5371 16.7056 21.7362 16.3623 22.1111L13.8727 24.8302L14.3511 21.171C14.4169 20.668 14.2514 20.1622 13.9011 19.7952L11.5967 17.3813L14.9266 17.5955C15.433 17.6281 15.927 17.4297 16.2702 17.0558L18.7656 14.3374Z" fill="white"/>
   </svg>`;
-  removeBgCTA.innerHTML = `${svg} Remove Background`;
+  removeBgCTA.innerHTML = `${svg} ${btnText}`;
   removeBgCTA.addEventListener('click', async (e) => {
     if (e.target.closest('.disable-click')) {
       console.log('click disabled');
@@ -132,13 +133,14 @@ function removeBgButton(data) {
 
 /*-------------- Upload Button --------------*/
 function uploadButton(data) {
+  const btnText = data.stepConfigs[data.stepIndex].querySelectorAll('ul li')[1]?.innerText;
   const uploadCTA = createTag('div', { class: 'gray-button start-over-button upload-button body-m', href: '#' });
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="12" cy="12" r="10" stroke="#fff"/>
   <polyline points="16 12 12 8 8 12" stroke="#fff"/>
   <line stroke="#fff" x1="12" y1="16" x2="12" y2="8"/>
 </svg>`;
-  uploadCTA.innerHTML = `<label id="file-input-label" for="file-input">${svg} <span> Upload an Image </span><span></span></label>
+  uploadCTA.innerHTML = `<label id="file-input-label" for="file-input">${svg} <span> ${btnText} </span><span></span></label>
                         <input type='file' class='upload-file' id="file-input" name="file-input" />`;
   uploadCTA.querySelector('.upload-file').addEventListener('change', async (e) => {
     if (e.target.closest('.disable-click')) {
