@@ -98,7 +98,7 @@ function removeBgButton(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': window.unityAccessToken,
+        'Authorization': `Bearer ${window.unityAccessToken}`,
         'x-api-key': 'leo',
       }
     };
@@ -110,7 +110,7 @@ function removeBgButton(data) {
     const options2 = {
       method: 'POST',
       headers: {
-        Authorization: window.unityAccessToken,
+        Authorization: `Bearer ${window.unityAccessToken}`,
         'Content-Type': 'application/json',
         'x-api-key': 'leo'
       },
@@ -166,11 +166,8 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const trayTitle = createTag('div', { class: 'tray-title' }, 'Powered by Photoshop');
   const selectorTray = selectorTrayWithImgs(layer, data);
-  // const uploadCTA = uploadButton(data);
   selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
-  // const waitDiv = createTag('div', { class: `wait-div` });
   layer.append(selectorTray);
-  // preUploadDisplay(data.target);
   return layer;
 }
