@@ -1,4 +1,4 @@
-// branch: catalog-regressions-4 commit: ab285e235582b1d2f3083e9fbdc6d7fa27208612 Tue, 28 May 2024 08:52:23 GMT
+// branch: catalog-regressions-4 commit: 90641e42ad012c2386133cbd2df855f468842b2d Wed, 29 May 2024 12:05:08 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -399,7 +399,6 @@ var MerchSideNav = class extends LitElement4 {
   constructor() {
     super();
     this.modal = false;
-    document.addEventListener("sp-closed", console.log);
   }
   static styles = [
     css5`
