@@ -1,4 +1,5 @@
 import { createTag } from '../../../scripts/utils.js';
+import createprogressCircle from '../../progress-circle/progress-circle.js';
 
 function toDataURL(url) {
   let pass = null;
@@ -25,17 +26,14 @@ function toDataURL(url) {
 }
 
 async function getImageBlobData(e, elem = null) {
-  let image = null;
-  if (!elem) {
-    image = e.target.closest('.foreground').querySelector('.interactive-holder > picture > img').src;
-  } else {
-    image = elem.querySelector(':scope > picture > img').src;
+  const image = elem.querySelector(':scope > picture > img').src;
+  let base64img = null;
+  if (!image.includes('data:image/jpeg')) {
+    const url = new URL(image);
+    base64img = await toDataURL(`${url.origin}${url.pathname}`);
   }
-  console.log(image);
-  const url = new URL(image);
-  const base64img = await toDataURL(`${url.origin}${url.pathname}`);
-  let binary = image.includes('data:image/jpeg') ? image : atob(base64img.split(',')[1]);
-  console.log(binary);
+  else base64img = image;
+  let binary = atob(base64img.split(',')[1]);
   let array = [];
   for (let i = 0; i < binary.length; i++) {
     array.push(binary.charCodeAt(i));
@@ -63,11 +61,22 @@ function selectorTrayWithImgs(layer, data) {
   return selectorTray;
 }
 
+function loadImg(img) {
+  return new Promise((res) => {
+    img.loading = 'eager';
+    img.fetchpriority = 'high';
+    if (img.complete) res();
+    else {
+      img.onload = () => res();
+      img.onerror = () => res();
+    }
+  });
+}
+
 /*-------------- Remove Background --------------*/
 
 function removeBgButton(data) {
   let image = null;
-  const accessToken = ``;
   const removeBgCTA = createTag('div', { class: 'gray-button start-over-button body-m', href: '#' });
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
   <path fill-rule="evenodd" clip-rule="evenodd" d="M28.2429 16.4186L26.4445 18.3827V26.4443C26.4445 27.4875 25.5988 28.3332 24.5556 28.3332H9.4445C8.4013 28.3332 7.55561 27.4875 7.55561 26.4443V11.3332C7.55561 10.29 8.4013 9.44428 9.4445 9.44428H17.9205L14.3155 5.6665H9.4445C6.31489 5.6665 3.77783 8.20357 3.77783 11.3332V26.4443C3.77783 29.5738 6.31489 32.111 9.4445 32.111H24.5556C27.6851 32.111 30.2223 29.5738 30.2223 26.4443V16.1926L29.0002 16.1138C28.7146 16.0954 28.4361 16.2075 28.2429 16.4186Z" fill="white"/>
@@ -76,11 +85,20 @@ function removeBgButton(data) {
   </svg>`;
   removeBgCTA.innerHTML = `${svg} Remove Background`;
   removeBgCTA.addEventListener('click', async (e) => {
+    if (e.target.closest('.disable-click')) {
+      console.log('click disabled');
+      return;
+    }
+    const circle = await createprogressCircle();
+    data.target.appendChild(circle);
+    data.target.querySelector('.tray-items').classList.add('disable-click');
+
+    data.target.classList.add('loading');
     const options1 = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': accessToken,
+        'Authorization': window.unityAccessToken,
         'x-api-key': 'leo',
       }
     };
@@ -92,7 +110,7 @@ function removeBgButton(data) {
     const options2 = {
       method: 'POST',
       headers: {
-        Authorization: accessToken,
+        Authorization: window.unityAccessToken,
         'Content-Type': 'application/json',
         'x-api-key': 'leo'
       },
@@ -101,7 +119,12 @@ function removeBgButton(data) {
     
     const res2 = await fetch('https://assistant-int.adobe.io/api/v1/providers/PhotoshopRemoveBackground', options2);
     const { outputUrl } = await res2.json();
-    document.querySelector('.interactive-holder > picture > img').src = outputUrl;
+    const img = document.querySelector('.interactive-holder > picture > img');
+    img.src = outputUrl;
+    await loadImg(img);
+    data.target.classList.remove('loading');
+    circle.remove();
+    data.target.querySelector('.tray-items').classList.remove('disable-click');
   });
   return removeBgCTA;
 }
@@ -118,6 +141,10 @@ function uploadButton(data) {
   uploadCTA.innerHTML = `<label id="file-input-label" for="file-input">${svg} <span> Upload an Image </span><span></span></label>
                         <input type='file' class='upload-file' id="file-input" name="file-input" />`;
   uploadCTA.querySelector('.upload-file').addEventListener('change', async (e) => {
+    if (e.target.closest('.disable-click')) {
+      console.log('click disabled');
+      return;
+    }
     const layer = e.target.closest('.layer');
     const file = e.target.files[0];
     if (!file) return;

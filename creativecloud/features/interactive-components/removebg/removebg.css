@@ -14,6 +14,9 @@
   color: var(--color-white);
   z-index: 4;
 }
+.interactive-enabled .step-selector-tray-edits .layer-0 {
+  z-index: 5;
+}
 
 .interactive-enabled.light .step-selector-tray-edits .selector-tray {
   background: var(--prompt-btn-fill-light);
@@ -83,7 +86,7 @@
 @media screen and (min-width: 600px) {
   .interactive-enabled .step-selector-tray-edits .selector-tray {
     /* top: 40px; */
-    left: 70%;
+    left: 80%;
     right: auto;
     bottom: auto;
     padding: 24px 16px 16px;
@@ -100,16 +103,16 @@
   }
 
   .interactive-enabled .step-selector-tray-edits .selector-tray .tray-items {
-    gap: 16px
+    gap: 8px
   }
 
   .interactive-enabled .step-selector-tray-edits .selector-tray .tray-items .gray-button.start-over-button{
-    min-width: 310px;
+    min-width: 200px;
   }
 
   .interactive-enabled .step-selector-tray-edits .selector-tray .tray-title {
-    font-size: var(--type-body-xl-size);
-    line-height: var(--type-body-xl-lh);
+    font-size: var(--type-body-l-size);
+    line-height: var(--type-body-l-lh);
   }
 
   .interactive-enabled.selector-vertical .step-selector-tray-edits .selector-tray .tray-items,
@@ -155,7 +158,7 @@
     display: flex;
     padding: 0 21px;
     height: 64px;
-    gap: 16px;
+    gap: 8px;
   }
 }
 
@@ -257,4 +260,14 @@
   background-size: 25px 25px;
   background-position:0 0, 12.5px 0, 12.5px -12.5px, 0px 12.5px;
   border-radius: 16px 
+}
+
+.interactive-enabled .step-selector-tray-edits .tray-items svg {
+  height: 30px;
+  width: 30px;
+}
+
+.interactive-enabled .step-selector-tray-edits .tray-items .gray-button {
+  font-size: 18px;
+  line-height: 21px;
 }

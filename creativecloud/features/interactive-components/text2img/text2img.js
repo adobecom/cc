@@ -36,7 +36,6 @@ export default async function stepInit(data) {
     const circle = await createprogressCircle();
     data.target.appendChild(circle);
     data.target.classList.add('loading');
-    console.log(data.target.querySelector('.generate-text').value);
     const payload = `{
       "surfaceId":"Unity",
       "query": "${data.target.querySelector('.generate-text').value}",
@@ -49,14 +48,13 @@ export default async function stepInit(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': ``,
+        'Authorization': window.unityAccessToken,
         'x-api-key': 'leo',
       },
       body: payload,
     };
     const res = await fetch('https://assistant-int.adobe.io/api/v1/providers/Text2Template', options);
     const d = await res.json();
-    console.log(d);
     data.target.querySelector(':scope > picture img').src = `data:image/jpeg;base64,${d['images'][0]['base64']}`;
     data.target.classList.remove('loading');
     circle.remove();
