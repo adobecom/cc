@@ -248,7 +248,7 @@ async function renderLayer(stepInfo) {
       .then(() => resolve())
       .catch((e) => {
         console.log(e);
-        reject()
+        reject();
       });
   });
 }
@@ -265,6 +265,7 @@ function getWorkFlowInformation(el) {
     'workflow-generate-selector': ['generate', 'selector-tray', 'generate', 'start-over'],
     'workflow-generate-triple-selector': ['generate', 'selector-tray', 'generate', 'selector-tray', 'generate', 'selector-tray', 'start-over'],
     'workflow-redirect': ['redirect'],
+    'workflow-compress-pdf': ['compress'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   [...el.classList].forEach((cn) => { if (cn.match('workflow-')) wfName = cn; });
