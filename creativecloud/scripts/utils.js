@@ -61,7 +61,7 @@ function getDecorateAreaFn() {
   function replaceDotMedia(area = document) {
     const currUrl = new URL(window.location);
     const pathSeg = currUrl.pathname.split('/').length;
-    if (pathSeg >= 3) return;
+    if (pathSeg >= 4) return;
     const resetAttributeBase = (tag, attr) => {
       area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
         el[attr] = `${new URL(`${getConfig().contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
