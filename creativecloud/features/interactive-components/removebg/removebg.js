@@ -99,7 +99,7 @@ function removeBgButton(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${window.unityAccessToken}`,
+        'Authorization': window.unityAccessToken,
         'x-api-key': 'leo',
       }
     };
@@ -111,7 +111,7 @@ function removeBgButton(data) {
     const options2 = {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${window.unityAccessToken}`,
+        Authorization: window.unityAccessToken,
         'Content-Type': 'application/json',
         'x-api-key': 'leo'
       },
