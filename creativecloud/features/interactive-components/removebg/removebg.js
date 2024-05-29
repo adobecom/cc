@@ -166,9 +166,9 @@ export default async function stepInit(data) {
   data.target.classList.add('step-selector-tray-edits');
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const trayTitle = createTag('div', { class: 'tray-title' }, 'Powered by Photoshop');
+  // const trayTitle = createTag('div', { class: 'tray-title' }, 'Powered by Photoshop');
   const selectorTray = selectorTrayWithImgs(layer, data);
-  selectorTray.prepend(trayTitle);
+  // selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
   layer.append(selectorTray);
   return layer;
