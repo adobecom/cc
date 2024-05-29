@@ -164,7 +164,7 @@
 }
 
 .interactive-enabled .layer .gray-button.animated {
-  animation: outline-fill 2700ms 500ms forwards 7;
+  animation: outline-fill 2700ms 500ms forwards 2;
 }
 
 .interactive-enabled .layer .gray-button.animated::before {
@@ -179,7 +179,7 @@
   border: 8px solid var(--prompt-highlight-color);
   border-radius: 50%;
   opacity: 0;
-  animation: circle 2700ms ease-in-out 500ms backwards 7;
+  animation: circle 2700ms ease-in-out 500ms backwards 2;
 }
 
 .aside.interactive-enabled .foreground.container .interactive-holder {

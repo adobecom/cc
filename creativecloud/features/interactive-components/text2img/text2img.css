@@ -1,0 +1,147 @@
+.interactive-enabled .step-generate-t2im .generate-prompt-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  margin: auto;
+  padding: 0 5px;
+  width: 80%;
+  padding: 5px;
+  background-color: var(--color-white);
+  border-radius: 70px;
+}
+
+.interactive-enabled.light .step-generate-t2im .generate-prompt-button .generate-button,
+.interactive-enabled.dark .step-generate-t2im .generate-prompt-button .generate-button,
+.interactive-enabled .interactive-holder.light .step-generate-t2im .generate-prompt-button .generate-button,
+.interactive-enabled .interactive-holder.dark .step-generate-t2im .generate-prompt-button .generate-button,
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-button {
+  background-color: var(--prompt-highlight-color);
+  color: white !important;
+}
+
+.interactive-enabled.light .step-generate-t2im .generate-prompt-button .generate-button:hover,
+.interactive-enabled.dark .step-generate-t2im .generate-prompt-button .generate-button:hover,
+.interactive-enabled .interactive-holder.light .step-generate-t2im .generate-prompt-button .generate-button:hover,
+.interactive-enabled .interactive-holder.dark .step-generate-t2im .generate-prompt-button .generate-button:hover,
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-button:hover {
+  background-color: var(--prompt-highlight-color);
+  color: white !important;
+}
+
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text {
+  background-color: var(--color-white);
+  color: black
+}
+
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text:focus,
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text::placeholder {
+  color: black
+}
+
+.interactive-enabled .step-generate-t2im .generate-text-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  border-radius: 40px;
+  padding: 0 5px;
+  background-color: var(--color-white);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+[dir="rtl"] .interactive-enabled .step-generate-t2im .generate-text-container {
+  width: 100%;
+}
+
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text {
+  color: var(--color-black);
+  display: inline-block;
+  height: 39px;
+  width: 100%;
+  line-height: 39px;
+  padding: 0;
+  padding-inline-start: 16px;
+  padding-inline-end: 16px;
+  border: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text-container .generate-text:hover,
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text-container .generate-text:focus-visible,
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text-container .generate-text:active {
+  outline: none;
+  border: none;
+}
+
+.interactive-enabled .step-generate-t2im .generate-prompt-button .gray-button.generate-button {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  gap: 2px;
+  border-radius: 32px;
+  padding: 0 13px;
+  max-width: 50%;
+}
+
+[dir="rtl"] .interactive-enabled .step-generate-t2im .generate-prompt-button .gray-button.generate-button {
+  border-radius: 8px 0 0 8px;
+}
+
+.interactive-enabled .step-generate-t2im .generate-prompt-button .generate-button span {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled .step-generate-t2im .generate-prompt-button {
+    position: absolute;
+    left: auto;
+    bottom: 32px;
+    max-width: unset;
+  }
+
+  .interactive-enabled .step-generate-t2im .generate-prompt-button .generate-button span {
+    display: block;
+  }
+
+  .interactive-enabled .step-generate-t2im .generate-text-container {
+    height: 64px;
+  }
+
+  [dir="rtl"] .interactive-enabled .step-generate-t2im .generate-text-container {
+    border-radius: 50px;
+  }
+
+  .interactive-enabled .step-generate-t2im .generate-prompt-button .generate-text {
+    height: 52px;
+    line-height: 52px;
+    padding: 0 16px;
+    text-align: start;
+    font-size: 21px;
+  }
+
+  .interactive-enabled .step-generate-t2im .generate-prompt-button .gray-button.generate-button {
+    height: 64px;
+    gap: 16px;
+    width: auto;
+    min-width: auto;
+    max-width: unset;
+  }
+}
+  @media screen and (min-width: 1200px) {
+    .interactive-enabled.row-reversed .step-generate-t2im .generate-text-container {
+      width: 218px;
+      max-width: 218px;
+    }
+    
+    .interactive-enabled.row-reversed.generate-side .step-generate-t2im .generate-prompt-button,
+    .interactive-enabled.row-reversed .step-generate-t2im .generate-side .generate-prompt-button {
+      flex-direction: row;
+    }
+}
