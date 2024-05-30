@@ -48,7 +48,7 @@ export default async function stepInit(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': window.unityAccessToken,
+        'Authorization': `Bearer ${window.bearerToken}`,
         'x-api-key': 'leo',
       },
       body: payload,

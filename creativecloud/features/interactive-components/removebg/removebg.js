@@ -1,6 +1,11 @@
 import { createTag } from '../../../scripts/utils.js';
 import createprogressCircle from '../../progress-circle/progress-circle.js';
 
+
+
+// 1. Fix generate button color in firefly
+// 2. Change authtoken to match Sanjay’s token name
+
 function toDataURL(url) {
   let pass = null;
   let fail = null;
@@ -99,7 +104,7 @@ function removeBgButton(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': window.unityAccessToken,
+        'Authorization': `Bearer ${window.bearerToken}`,
         'x-api-key': 'leo',
       }
     };
@@ -111,7 +116,7 @@ function removeBgButton(data) {
     const options2 = {
       method: 'POST',
       headers: {
-        Authorization: window.unityAccessToken,
+        Authorization: `Bearer ${window.bearerToken}`,
         'Content-Type': 'application/json',
         'x-api-key': 'leo'
       },
