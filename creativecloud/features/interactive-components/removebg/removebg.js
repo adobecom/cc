@@ -1,11 +1,6 @@
 import { createTag } from '../../../scripts/utils.js';
 import createprogressCircle from '../../progress-circle/progress-circle.js';
 
-
-
-// 1. Fix generate button color in firefly
-// 2. Change authtoken to match Sanjay’s token name
-
 function toDataURL(url) {
   let pass = null;
   let fail = null;
