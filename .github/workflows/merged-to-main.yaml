@@ -2,11 +2,9 @@ name: Merged to Main
 
 on:
   # Triggered when a pull request is closed and merged into the main branch
-  pull_request:
+  push:
     branches:
-      - main
-    types:
-      - closed
+      - mwpw-140115
   # Manually triggered workflow with inputs for title and body
   workflow_dispatch:
     inputs:
