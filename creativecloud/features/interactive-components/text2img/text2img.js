@@ -1,5 +1,6 @@
 import { createTag } from '../../../scripts/utils.js';
 import createprogressCircle from '../../progress-circle/progress-circle.js';
+import { getBearerToken } from '../../../blocks/unity/unity.js';
 
 export default async function stepInit(data) {
   data.target.classList.add('step-generate-t2im');
@@ -33,6 +34,7 @@ export default async function stepInit(data) {
   });
 
   generateBtn.addEventListener('click', async (e) => {
+    console.log('mathuria', getBearerToken());
     const circle = await createprogressCircle();
     data.target.appendChild(circle);
     data.target.classList.add('loading');
@@ -48,7 +50,7 @@ export default async function stepInit(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${window.bearerToken}`,
+        'Authorization': getBearerToken(),
         'x-api-key': 'leo',
       },
       body: payload,

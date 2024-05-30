@@ -287,6 +287,13 @@ function getWorkFlowInformation(el) {
   return [];
 }
 
+export function getBearerToken() {
+  const { bearerToken } = window;
+  const tkn = bearerToken?.trim();
+  if (tkn?.includes('Bearer')) return tkn;
+  return `Bearer ${tkn}`;
+}
+
 export default async function init(el) {
   el.classList.add('interactive-metadata');
   const workflow = getWorkFlowInformation(el);

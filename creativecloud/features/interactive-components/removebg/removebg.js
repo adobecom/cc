@@ -1,5 +1,6 @@
 import { createTag } from '../../../scripts/utils.js';
 import createprogressCircle from '../../progress-circle/progress-circle.js';
+import { getBearerToken } from '../../../blocks/unity/unity.js';
 
 function toDataURL(url) {
   let pass = null;
@@ -99,7 +100,7 @@ function removeBgButton(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${window.bearerToken}`,
+        'Authorization': getBearerToken(),
         'x-api-key': 'leo',
       }
     };
@@ -111,7 +112,7 @@ function removeBgButton(data) {
     const options2 = {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${window.bearerToken}`,
+        Authorization: getBearerToken(),
         'Content-Type': 'application/json',
         'x-api-key': 'leo'
       },
