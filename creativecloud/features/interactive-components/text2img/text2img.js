@@ -34,7 +34,6 @@ export default async function stepInit(data) {
   });
 
   generateBtn.addEventListener('click', async (e) => {
-    console.log('mathuria', getBearerToken());
     const circle = await createprogressCircle();
     data.target.appendChild(circle);
     data.target.classList.add('loading');
