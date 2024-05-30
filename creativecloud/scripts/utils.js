@@ -57,7 +57,7 @@ function getDecorateAreaFn() {
     lcpImg?.setAttribute('fetchpriority', 'high');
     if (lcpImg) lcpImgSet = true;
   };
-  
+
   function isRootPage() {
     const currUrl = new URL(window.location);
     const pathSeg = currUrl.pathname.split('/').length;
