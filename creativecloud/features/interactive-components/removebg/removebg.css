@@ -85,10 +85,10 @@
 }
 
 @media screen and (min-width: 600px) {
-  .marquee.split.interactive-enabled .asset.bleed {
-    overflow: hidden;
+  .marquee.split.interactive-enabled .asset img {
+    max-height: 560px;
   }
-  
+
   .interactive-enabled .interactive-holder.step-selector-tray-edits.step-removebg {
     max-width: 100%;
     max-height: 560px;
@@ -115,10 +115,6 @@
 
   .interactive-enabled .step-selector-tray-edits .selector-tray .tray-items {
     gap: 12px
-  }
-
-  .interactive-enabled .step-selector-tray-edits .selector-tray .tray-items .gray-button.start-over-button{
-    min-width: 200px;
   }
 
   .interactive-enabled .step-selector-tray-edits .selector-tray .tray-title {
@@ -210,6 +206,7 @@
 .interactive-enabled .step-selector-tray-edits .layer .gray-button.start-over-button.upload-button {
   z-index: 4;
   cursor: pointer;
+  max-width: 190px;
 }
 
 .interactive-enabled .step-selector-tray-edits .upload-button label {
@@ -290,6 +287,5 @@
   font-size: 18px;
   line-height: 21px;
   border:1px solid #CCC; 
-  border-width:1px;
   box-shadow: none;
 }
