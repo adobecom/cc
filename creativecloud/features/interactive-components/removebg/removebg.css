@@ -117,14 +117,10 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .interactive-enabled.marquee.split {
-    min-height: 700px !important;
-  } 
-  
   .interactive-enabled
     .interactive-holder.step-selector-tray-edits.step-removebg {
     max-width: 100%;
-    max-height: 700px;
+    max-height: 560px;
     object-fit: fill;
   }
 
@@ -189,7 +185,7 @@
 
 @media screen and (min-width: 1200px) {
   .marquee.split.interactive-enabled .asset img {
-    max-height: 700px;
+    max-height: 560px;
   }
 
   .interactive-enabled.row-reversed .step-selector-tray-edits .selector-tray {
