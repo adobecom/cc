@@ -43,6 +43,24 @@ export const [setLibs, getLibs] = (() => {
   ];
 })();
 
+function isSupportedBrowser() {
+  const { userAgent } = window.navigator;
+  if ((!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime))) {
+    return true;
+  } if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
+    return true;
+  } if (userAgent.includes('Firefox') && typeof InstallTrigger !== 'undefined') {
+    return true;
+  } if (userAgent.includes('Edg') && !!window.styleMedia) {
+    return true;
+  }
+  return false;
+}
+
+if (!isSupportedBrowser()) {
+  window.location.assign('https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html');
+}
+
 const miloLibs = setLibs('/libs');
 
 const { createTag, localizeLink, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
