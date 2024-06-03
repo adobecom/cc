@@ -4,7 +4,7 @@ on:
   # Triggered when a pull request is closed and merged into the main branch
   pull_request:
     branches:
-      - main
+      - test-ghwf-release_notes
     types:
       - closed
   # Manually triggered workflow with inputs for title and body
