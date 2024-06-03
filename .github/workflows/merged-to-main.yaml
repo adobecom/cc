@@ -33,7 +33,8 @@ jobs:
   merged_to_main:
     runs-on: ubuntu-latest
     # Run the job when a pull request is merged into main and not triggered manually
-    if: ${{ github.event_name != 'workflow_dispatch' && github.event.pull_request.merged }}
+    # #TODO: add github.event.pull_request.merged this condition
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     environment: cc_pr_merge
     env:
       # Environment variable to store pull request details
@@ -47,8 +48,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const sendSlackMessage = require('./.github/workflows/src/send-slack.js')
-            sendSlackMessage(process.env.EVENT_PR,process.env.CC_SLACK_WEBHOOK)
+            const {sendReleaseNotes} = require('./.github/workflows/src/send-slack.js')
+            sendReleaseNotes(process.env.EVENT_PR,process.env.CC_SLACK_WEBHOOK)
   # Job to handle manually triggered workflow_dispatch events
   workflow_dispatch_event:
     runs-on: ubuntu-latest
