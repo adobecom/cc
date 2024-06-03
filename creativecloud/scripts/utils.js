@@ -45,7 +45,7 @@ export const [setLibs, getLibs] = (() => {
 
 function isSupportedBrowser() {
   const { userAgent } = window.navigator;
-  if ((!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime))) {
+  if ((!!window.chrome)) {
     return true;
   } if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
     return true;
