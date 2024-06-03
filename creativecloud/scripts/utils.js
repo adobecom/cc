@@ -45,12 +45,14 @@ export const [setLibs, getLibs] = (() => {
 
 function isSupportedBrowser() {
   const { userAgent } = window.navigator;
+  window.alert(userAgent);
   if(/HeadlessChrome/.test(userAgent)){
   return true;
   }
-  if ((!!window.chrome)) {
-    return true;
-  } if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
+  // if ((!!window.chrome)) {
+  //   return true;
+  // } 
+  if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
     return true;
   } if (userAgent.includes('Firefox') && typeof InstallTrigger !== 'undefined') {
     return true;
