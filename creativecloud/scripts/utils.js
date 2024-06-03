@@ -44,18 +44,20 @@ export const [setLibs, getLibs] = (() => {
 })();
 
 function isSupportedBrowser() {
-  // const { userAgent } = window.navigator;
-  // if ((!!window.chrome)) {
-  //   return true;
-  // } if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
-  //   return true;
-  // } if (userAgent.includes('Firefox') && typeof InstallTrigger !== 'undefined') {
-  //   return true;
-  // } if (userAgent.includes('Edg') && !!window.styleMedia) {
-  //   return true;
-  // }
-  // return false;
+  const { userAgent } = window.navigator;
+  if(/HeadlessChrome/.test(userAgent)){
   return true;
+  }
+  if ((!!window.chrome)) {
+    return true;
+  } if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
+    return true;
+  } if (userAgent.includes('Firefox') && typeof InstallTrigger !== 'undefined') {
+    return true;
+  } if (userAgent.includes('Edg') && !!window.styleMedia) {
+    return true;
+  }
+  return false;
 }
 
 if (!isSupportedBrowser()) {
