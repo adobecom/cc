@@ -55,7 +55,7 @@ function isSupportedBrowser() {
   //   return true;
   // }
   // return false;
-  return false;
+  return true;
 }
 
 if (!isSupportedBrowser()) {
