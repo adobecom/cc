@@ -48,8 +48,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const sendSlackMessage = require('./.github/workflows/src/send-slack.js')
-            sendSlackMessage(process.env.EVENT_PR,process.env.CC_SLACK_WEBHOOK)
+            const {sendReleaseNotes} = require('./.github/workflows/src/send-slack.js')
+            sendReleaseNotes(process.env.EVENT_PR,process.env.CC_SLACK_WEBHOOK)
   # Job to handle manually triggered workflow_dispatch events
   workflow_dispatch_event:
     runs-on: ubuntu-latest
