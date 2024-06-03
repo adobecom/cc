@@ -33,7 +33,7 @@ jobs:
   merged_to_main:
     runs-on: ubuntu-latest
     # Run the job when a pull request is merged into main and not triggered manually
-    # #TODO: add github.event.pull_request.merged this condition
+    # #TODO: add github.event.pull_request.merged this condition before the stage PR
     if: ${{ github.event_name != 'workflow_dispatch' }}
     environment: cc_pr_merge
     env:
