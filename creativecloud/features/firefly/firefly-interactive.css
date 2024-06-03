@@ -170,6 +170,14 @@
   }
 }
 
+
+@media screen and (min-width: 1200px) and (max-width: 1300px) {
+  .firefly-prompt {
+    margin-inline: 14px;
+    padding-inline: 30px 7px;
+  } 
+}
+
 @media screen and (max-width: 1799px) and (min-width: 1650px) {
   .firefly-selectortray {
     right: -85px;
