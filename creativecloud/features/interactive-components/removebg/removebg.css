@@ -120,7 +120,7 @@
   .interactive-enabled
     .interactive-holder.step-selector-tray-edits.step-removebg {
     max-width: 100%;
-    max-height: 560px;
+    max-height: 700px;
     object-fit: fill;
   }
 
@@ -185,7 +185,7 @@
 
 @media screen and (min-width: 1200px) {
   .marquee.split.interactive-enabled .asset img {
-    max-height: 560px;
+    max-height: 700px;
   }
 
   .interactive-enabled.row-reversed .step-selector-tray-edits .selector-tray {
