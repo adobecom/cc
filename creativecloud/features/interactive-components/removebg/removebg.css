@@ -1,3 +1,4 @@
+
 .interactive-enabled .step-selector-tray-edits .selector-tray {
   position: absolute;
   bottom: 0;
@@ -116,7 +117,7 @@
   width: 0;
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) {  
   .interactive-enabled
     .interactive-holder.step-selector-tray-edits.step-removebg {
     max-width: 100%;
@@ -375,13 +376,61 @@
 
 @media (min-width: 600px) and (max-width: 1199px) {
   .marquee.split.interactive-enabled .asset img {
-    height: 381px !important;
+    height: 360px !important;
+  }
+
+  .interactive-enabled .step-selector-tray-edits .selector-tray {
+    padding-top: 8px;
+    border-radius: 8px;
+    width: 90%;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+
+  .interactive-enabled .step-selector-tray-edits .tray-items .gray-button {
+    font-size: 16px;
+    line-height: 18px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+
+  .interactive-enabled .step-selector-tray-edits .layer .gray-button.start-over-button {
+    padding: 8px;
+  }
+
+  .interactive-enabled .step-selector-tray-edits .layer .gray-button.start-over-button.upload-button { 
+    padding: 8px;
+    max-width: 150px;
   }
 }
 
-@media screen and (min-width: 600px) {
-  .interactive-enabled .step-selector-tray-edits .selector-tray .tray-items {
+@media screen and (max-width: 600px) {
+  /*.interactive-enabled .step-selector-tray-edits .selector-tray .tray-items {
     flex-direction: row;
+  }*/
+
+  .interactive-enabled .step-selector-tray-edits .selector-tray {
+    padding-top: 8px;
+    border-radius: 8px;
+    width: 99.5%;
+  }
+
+  .interactive-enabled .step-selector-tray-edits .tray-items .gray-button {
+    font-size: 16px;
+    line-height: 18px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+
+  .interactive-enabled .step-selector-tray-edits .layer .gray-button.start-over-button {
+    padding: 5px;
+  }
+
+  .interactive-enabled .step-selector-tray-edits .layer .gray-button.start-over-button.upload-button { 
+    padding: 5px;
+    max-width: 142px;
   }
 }
 
