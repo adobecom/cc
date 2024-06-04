@@ -45,7 +45,7 @@ export const [setLibs, getLibs] = (() => {
 
 function isSupportedBrowser() {
   const { userAgent } = window.navigator;
-  if (window.navigator?.userAgentData?.brands.find((browser) => browser.brand === 'Google Chrome')) {
+  if (window.navigator?.userAgentData?.brands.find((browser) => browser.brand === 'Google Chrome') || /\bHeadlessChrome\//.test(navigator.userAgent)) {
     return true;
   } if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
     return true;
