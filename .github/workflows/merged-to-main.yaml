@@ -4,7 +4,7 @@ on:
   # Triggered when a pull request is closed and merged into the main branch
   pull_request:
     branches:
-      - main
+      - test-ghwf-target
     types:
       - closed
   # Manually triggered workflow with inputs for title and body
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: cc_pr_merge
     # Run the job when a pull request is merged into main and not triggered manually
-    if: ${{ github.event_name != 'workflow_dispatch' && github.event.pull_request.merged }}
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     env:
       # Environment variable to store pull request details
       EVENT_PR: ${{ toJson(github.event.pull_request) }}
