@@ -45,6 +45,9 @@ export const [setLibs, getLibs] = (() => {
 
 function isSupportedBrowser() {
   const { userAgent } = window.navigator;
+  if(!window.chrome && window.navigator?.userAgentData?.brands.find(ele=>ele.brand=='Google Chrome')) {
+    return true;
+  }
   if ((!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime))) {
     return true;
   } if (!userAgent.includes('Chrome') && userAgent.includes('Safari')) {
