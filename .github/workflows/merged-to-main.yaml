@@ -34,6 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: cc_pr_merge
     # Run the job when a pull request is merged into main and not triggered manually
+    # removed github.event.pull_request.merged condition in below line for testing
     if: ${{ github.event_name != 'workflow_dispatch' }}
     env:
       # Environment variable to store pull request details
