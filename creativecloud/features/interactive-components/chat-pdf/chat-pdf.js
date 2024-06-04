@@ -155,47 +155,51 @@ const encodeBlobUrl = (url = {}) => {
   return encodedBlobUrl.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
 
-async function chatPDF() {
+async function chatPDF(layer, pdfObj) {
+  layer.querySelectorAll('.continueButton').forEach((btn) => {
+  const analyticsBtn = btn.querySelector('.interactive-link-analytics-text');
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const res1 = await getAnonymousToken();
+    const data1 = await res1.json();
+    const token = data1.access_token;
+    const expr = data1.discovery.expiry;
 
-  const res1 = await getAnonymousToken();
-  const data1 = await res1.json();
-  const token = data1.access_token;
-  const expr = data1.discovery.expiry;
+    const file = pdfObj.pdfFile;
+    const filename = pdfObj.fileName;
 
-  const fileInput = document.getElementById('.inputFile');
-  const file = fileInput.files[0];
-  const filename = file.name;
+    const formData = new FormData();
+    formData.append('file', file);
 
-  const formData = new FormData();
-  formData.append('file', file);
+    const res2 = await fetch(`https://pdfnow-stage.adobe.io/${expr}/assets`, {
+        method: 'POST',
+        body: formData,
+        "method": "POST",
+        "mode": "cors",
+        "headers": {
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+    const data2 = await res2.json();
+    const uri = data2.uri;
 
-  const res2 = await fetch(`https://pdfnow-stage.adobe.io/${expr}/assets`, {
-      method: 'POST',
-      body: formData,
-      "method": "POST",
-      "mode": "cors",
-      "headers": {
-          "Authorization": `Bearer ${token}`,
-      },
+    const res3 = await fetch(`https://pdfnow-stage.adobe.io/${expr}/assets/download_uri?asset_uri=${encodeURIComponent(uri)}`, {
+        "headers": {
+            "Accept": "*/*",
+            "Authorization": `Bearer ${token}`,
+        },
+        "method": "GET",
+        "mode": "cors"
+    });
+    const data3 = await res3.json();
+
+    const blobUrlStructure = { source: 'signed-uri', itemName: filename, itemType: 'application/pdf' };
+    const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
+    const l =`https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${uri}#${data3.uri}`;
+
+    window.location = l;
   });
-  const data2 = await res2.json();
-  const uri = data2.uri;
-
-  const res3 = await fetch(`https://pdfnow-stage.adobe.io/${expr}/assets/download_uri?asset_uri=${encodeURIComponent(uri)}`, {
-      "headers": {
-          "Accept": "*/*",
-          "Authorization": `Bearer ${token}`,
-      },
-      "method": "GET",
-      "mode": "cors"
-  });
-  const data3 = await res3.json();
-
-  const blobUrlStructure = { source: 'signed-uri', itemName: filename, itemType: 'application/pdf' };
-  const encodedBlobUrl = encodeBlobUrl(blobUrlStructure);
-  const l =`https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${uri}#${data3.uri}`;
-
-  window.location = l;
+});
 }
 
 function uploadPdf(media, layer, pdfObj) {
@@ -240,4 +244,3 @@ export default async function stepInit(data) {
   chatPDF(layer, pdfObj);
   return layer;
 }
-
