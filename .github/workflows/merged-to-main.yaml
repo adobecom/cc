@@ -24,29 +24,26 @@ on:
         default: 'TEST | Description of the *PR*'
         required: true
 
+env:
+  # Slack webhook secret
+  CC_RELEASE_SLACK_WH: ${{ secrets.CC_RELEASE_SLACK_WH }}
+
 jobs:
   # Job to handle merged pull requests
   merged_to_main:
     runs-on: ubuntu-latest
     environment: cc_pr_merge
     # Run the job when a pull request is merged into main and not triggered manually
-    # #TODO: add github.event.pull_request.merged this condition before the stage PR
+    # removed github.event.pull_request.merged condition in below line for testing
     if: ${{ github.event_name != 'workflow_dispatch' }}
     env:
       # Environment variable to store pull request details
       EVENT_PR: ${{ toJson(github.event.pull_request) }}
-      CC_RELEASE_SLACK_WH: ${{ secrets.CC_RELEASE_SLACK_WH }}
     steps:
       # Checkout repository action
       - name: Checkout repository
         uses: actions/checkout@v4
       # Sending release notes to cc-changelog channel
-      - name: Print all Secrets
-        env:
-          ALLSECRETS: ${{ toJSON(secrets) }}
-        run: |
-          echo "$ALLSECRETS"
-        shell: bash
       - name: Sending Release Notes to cc-changelog slack channel
         uses: actions/github-script@v7
         with:
@@ -72,7 +69,6 @@ jobs:
           PR_NUMBER: ${{github.event.inputs.pr_number}}
           PR_TITLE: ${{github.event.inputs.title}}
           PR_DESC: ${{github.event.inputs.body}}
-          CC_SLACK_WEBHOOK: ${{ secrets.CC_RELEASE_SLACK_WH }}
         with:
           script: |
             const {sendReleaseNotes} = require('./.github/workflows/src/send-slack.js')
@@ -81,4 +77,4 @@ jobs:
               html_url:process.env.REPO_URL+"/pull/"+process.env.PR_NUMBER, 
               title:process.env.PR_TITLE, 
               body:process.env.PR_DESC
-            }),process.env.CC_SLACK_WEBHOOK)
+            }),process.env.CC_RELEASE_SLACK_WH)
