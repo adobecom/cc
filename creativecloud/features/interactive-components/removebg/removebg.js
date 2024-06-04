@@ -193,7 +193,7 @@ function uploadButton(data) {
     const reader = new FileReader();
     reader.onload = async function(e) {
       if (!e.target.result.includes('data:image/jpeg')) return alert('Wrong file type - JPEG only.');
-      const img = layer.closest('.foreground').querySelector('.interactive-holder > picture > img');
+      const img = layer.closest('.asset.image.bleed').querySelector('.interactive-holder > picture > img');
       img.src = e.target.result;
     };
     reader.readAsDataURL(file);
