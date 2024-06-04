@@ -8,25 +8,22 @@ function convertMarkdownToSlackFormat(markdown) {
   // markdown = markdown.replace(/\*(.*?)\*/gim, "_$1_");
 
   // Convert bold text to slack format
-  markdown = markdown.replace(/\*\*(.*?)\*\*/gim, "*$1*");
+  markdown = markdown.replace(/\*\*(.*?)\*\*/gim, '*$1*');
 
   // Convert inline code to slack format
-  markdown = markdown.replace(/`([^`]+)`/g, "```$1```");
+  markdown = markdown.replace(/`([^`]+)`/g, '```$1```');
 
   // Convert block quotes to slack format
-  markdown = markdown.replace(/^> (.*$)/gim, "_$1_");
+  markdown = markdown.replace(/^> (.*$)/gim, '_$1_');
 
   // Convert unordered lists to slack format
-  markdown = markdown.replace(/^\s*[-+*]\s+(.*$)/gim, "\t• $1");
+  markdown = markdown.replace(/^\s*[-+*]\s+(.*$)/gim, '\t• $1');
 
   // Convert ordered lists to slack format
-  markdown = markdown.replace(/^\s*\d+\.\s+(.*$)/gim, "\t1. $1");
+  markdown = markdown.replace(/^\s*\d+\.\s+(.*$)/gim, '\t1. $1');
 
   // Convert headings to slack format
-  markdown = markdown.replace(/^(#+) (.*$)/gim, "*$2*");
-
-  // Convert newlines to break lines to slack format
-  markdown = markdown.replace(/\n/g, "\n");
+  markdown = markdown.replace(/^(#+) (.*$)/gim, '*$2*');
 
   return markdown.trim();
 }
