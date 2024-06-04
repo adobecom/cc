@@ -184,3 +184,42 @@ decorateArea();
   loadLana({ clientId: 'cc' });
   await loadArea();
 }());
+
+(async function listenAndReload() {
+  let currPageUrl = '';
+  window.addEventListener("message", async (event) => {
+    const { pageUrl, marquee, unity } = JSON.parse(event.data);
+    const d = document.querySelector('main > div');
+    if ((currPageUrl != pageUrl) || !document.querySelector('.marquee .interactive-holder')) {
+      currPageUrl = pageUrl;
+      d.innerHTML = marquee;
+      d.innerHTML += unity;
+      decorateArea();
+      await loadArea();
+    } else {
+      const h = document.querySelector('.marquee .interactive-holder');
+      const u = document.querySelector('.unity');
+      const parser = new DOMParser();
+      const ih = parser.parseFromString(unity, "text/html");
+      [...ih.querySelectorAll('a')].forEach((a) => {
+        if (a.innerText.includes('.svg') && a.href.includes('.svg') && !u.classList.contains('workflow-compress-pdf')) {
+          const x = document.createElement('img');
+          x.src = a.href;
+          a.replaceWith(x);
+        }
+      });
+      const ihu = ih.querySelector('.unity')
+      if (ihu.classList.contains('light')) {
+        h.classList.remove('dark');
+        h.classList.add('light');
+      } else {
+        h.classList.remove('light');
+        h.classList.add('dark');
+      }
+      u.innerHTML = ih.querySelector('.unity').innerHTML;
+      const { default: init } = await import('../blocks/unity/unity.js');
+      init(u);
+    }
+  });
+}());
+
