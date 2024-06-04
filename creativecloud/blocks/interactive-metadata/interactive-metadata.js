@@ -223,6 +223,10 @@ function createInteractiveArea(el, pic) {
 async function getTargetArea(el) {
   const metadataSec = el.closest('.section');
   const intEnb = metadataSec.querySelector('.marquee, .aside');
+  if (intEnb?.querySelector('.interactive-holder')) {
+    intEnb.querySelector('.interactive-holder .layer-0').remove();
+    return intEnb.querySelector('.interactive-holder');
+  }
   if (!intEnb) return null;
   try {
     intEnb.classList.add('interactive-enabled');
