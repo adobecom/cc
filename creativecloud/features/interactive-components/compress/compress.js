@@ -1,5 +1,6 @@
 import { createTag } from '../../../scripts/utils.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
+import { getBearerToken } from '../../../blocks/unity/unity.js';
 
 function applyAccessibility(inputEle, target) {
   let tabbing = false;
@@ -116,7 +117,7 @@ async function createAsset(pdfObj) {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${bearerToken}`,
+      Authorization: getBearerToken(),
       'Content-Type': 'application/json',
       'x-api-key': 'leo',
       'x-gw-ims-client-id': 'leo',
@@ -191,7 +192,7 @@ function compressPdf(layer, pdfObj) {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${bearerToken}`,
+          Authorization: getBearerToken(),
           'Content-Type': 'application/json',
           'x-api-key': 'leo',
           'x-gw-ims-client-id': 'leo',
