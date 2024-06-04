@@ -217,6 +217,7 @@
      display: none;
    }
   
+    .interactive-enabled .step-compress .panel .svg-icon-container svg,
    .interactive-enabled .step-compress .panel .svg-icon-container img,
    .interactive-enabled .step-compress .continueButton .svg-icon-container img,
    .interactive-enabled .step-compress .downloadButton .svg-icon-container img{
