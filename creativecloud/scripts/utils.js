@@ -63,8 +63,8 @@ if (!isSupportedBrowser()) {
 
 const miloLibs = setLibs('/libs');
 
-const { createTag, localizeLink, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-export { createTag, localizeLink };
+const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
 
 function getDecorateAreaFn() {
   let lcpImgSet = false;
@@ -76,10 +76,14 @@ function getDecorateAreaFn() {
     if (lcpImg) lcpImgSet = true;
   };
 
-  function replaceDotMedia(area = document) {
+  function isRootPage() {
     const currUrl = new URL(window.location);
     const pathSeg = currUrl.pathname.split('/').length;
-    if (pathSeg >= 3) return;
+    const locale = getConfig().locale?.prefix;
+    return (locale === '' && pathSeg < 3) || (locale !== '' && pathSeg < 4);
+  }
+
+  function replaceDotMedia(area = document) {
     const resetAttributeBase = (tag, attr) => {
       area.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((el) => {
         el[attr] = `${new URL(`${getConfig().contentRoot}${el.getAttribute(attr).substring(1)}`, window.location).href}`;
@@ -119,7 +123,7 @@ function getDecorateAreaFn() {
   }
 
   return (area, options) => {
-    replaceDotMedia();
+    if (isRootPage()) replaceDotMedia();
     if (!lcpImgSet) loadLCPImage(area, options);
   };
 }
