@@ -266,6 +266,7 @@ function getWorkFlowInformation(el) {
     'workflow-generate-triple-selector': ['generate', 'selector-tray', 'generate', 'selector-tray', 'generate', 'selector-tray', 'start-over'],
     'workflow-redirect': ['redirect'],
     'workflow-compress-pdf': ['compress'],
+    'workflow-chat-pdf': ['chat-pdf'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   [...el.classList].forEach((cn) => { if (cn.match('workflow-')) wfName = cn; });
