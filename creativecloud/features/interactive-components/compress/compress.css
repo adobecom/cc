@@ -141,12 +141,12 @@
     animation: spinner .6s linear infinite;
   }
 
-  .interactive-enabled .dark .sliderTray .uploadButton .svg-icon-container svg * {
+  .interactive-enabled .dark .uploadButton .svg-icon-container svg * {
     fill: white;
     stroke: white;
   }
 
-  .interactive-enabled .light .sliderTray .uploadButton .svg-icon-container svg * {
+  .interactive-enabled .light .uploadButton .svg-icon-container svg * {
     fill: black;
     stroke: black;
   }
