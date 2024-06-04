@@ -145,6 +145,11 @@
     fill: white;
     stroke: white;
   }
+
+  .interactive-enabled .light .sliderTray .uploadButton .svg-icon-container svg * {
+    fill: black;
+    stroke: black;
+  }
   
   @media screen and (min-width: 600px) {
     .interactive-enabled .step-compress .panel,
