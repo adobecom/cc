@@ -113,7 +113,6 @@ function cancelAnalytics(btn) {
 
 async function createAsset(pdfObj) {
   const url = 'https://assistant-int.adobe.io/api/v1/asset';
-  const { bearerToken } = window;
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -187,7 +186,6 @@ function compressPdf(layer, pdfObj) {
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
       const url = 'https://assistant-int.adobe.io/api/v1/providers/AcrobatCompressPDF';
-      const { bearerToken } = window;
       btn.classList.add('loading');
       const response = await fetch(url, {
         method: 'POST',
