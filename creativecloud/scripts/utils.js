@@ -58,7 +58,7 @@ function isSupportedBrowser() {
 }
 
 if (!isSupportedBrowser()) {
-  // window.location.assign('https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html');
+  window.location.href = 'https://helpx.adobe.com/x-productkb/global/adobe-supported-browsers.html';
 }
 
 const miloLibs = setLibs('/libs');
