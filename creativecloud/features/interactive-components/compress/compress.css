@@ -140,6 +140,11 @@
     border-top-color: #333;
     animation: spinner .6s linear infinite;
   }
+
+  .interactive-enabled .dark .sliderTray .uploadButton .svg-icon-container svg * {
+    fill: white;
+    stroke: white;
+  }
   
   @media screen and (min-width: 600px) {
     .interactive-enabled .step-compress .panel,
