@@ -10,12 +10,10 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea } from './utils.js';
+import { setLibs, decorateArea, acomsisCookieHandler } from './utils.js';
 
 // For CN home's acomsis cookie handler
 const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
-const COOKIE_SIGNED_IN = 'acomsis';
-const COOKIE_SIGNED_IN_STAGE = 'acomsis_stage';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -168,54 +166,6 @@ const CONFIG = {
  * Edit below at your own risk
  * ------------------------------------------------------------
  */
-
-async function acomsisCookieHandler(miloLibs) {
-  const getCookie = (name) => document.cookie
-    .split('; ')
-    .find((row) => row.startsWith(`${name}=`))
-    ?.split('=')[1];
-
-  async function imsCheck() {
-    const { loadIms } = await import(`${miloLibs}/utils/utils.js`);
-    let isSignedInUser = false;
-    try {
-      await loadIms();
-      if (window.adobeIMS?.isSignedInUser()) {
-        await window.adobeIMS.validateToken();
-        // validate token rejects and falls into the following catch block.
-        isSignedInUser = true;
-      }
-    } catch (e) {
-      window.lana?.log('Homepage IMS check failed', e);
-    }
-    if (!isSignedInUser) {
-      document.getElementById('ims-body-style')?.remove();
-    }
-    return isSignedInUser;
-  }
-  imsCheck().then((isSignedInUser) => {
-    const isStage = window.location.host.includes('stage');
-    const acomsisCokie = isStage ? getCookie(COOKIE_SIGNED_IN_STAGE) : getCookie(COOKIE_SIGNED_IN);
-    if (isSignedInUser && !acomsisCokie) {
-      const date = new Date();
-      date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-      document.cookie = `${isStage ? COOKIE_SIGNED_IN_STAGE : COOKIE_SIGNED_IN}=1;path=/;expires=${date.toUTCString()};domain=${isStage ? 'www.stage.' : ''}adobe.com;`;
-      window.location.reload();
-    }
-    if (!isSignedInUser && acomsisCokie) {
-      if (!isStage) {
-        document.cookie = `${COOKIE_SIGNED_IN}=;path=/;expires=${new Date(0).toUTCString()};`;
-        document.cookie = `${COOKIE_SIGNED_IN}=;path=/;expires=${new Date(0).toUTCString()};domain=adobe.com;`;
-      } else {
-        document.cookie = `${COOKIE_SIGNED_IN_STAGE}=;path=/;expires=${new Date(0).toUTCString()};domain='www.stage.adobe.com;`;
-      }
-      window.location.reload();
-    }
-    if (acomsisCokie && isSignedInUser && !window.location.href.includes('/fragments/')) {
-      window.location.reload();
-    }
-  });
-}
 
 const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
 const miloLibs = setLibs(LIBS);
