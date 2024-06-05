@@ -171,7 +171,7 @@ const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOM
 const miloLibs = setLibs(LIBS);
 const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
 setConfig({ ...CONFIG, miloLibs });
-if (isSignedInHomepage) acomsisCookieHandler(miloLibs);
+if (isSignedInHomepage) acomsisCookieHandler();
 
 decorateArea();
 
