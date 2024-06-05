@@ -1,5 +1,4 @@
 import { createTag } from '../../../scripts/utils.js';
-import { getBearerToken } from '../../../blocks/unity/unity.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
 function applyAccessibility(inputEle, target) {
@@ -20,16 +19,6 @@ function applyAccessibility(inputEle, target) {
   });
 }
 
-function appendSVGToButton(picture, button) {
-  if (!picture) return;
-  const svg = picture.querySelector('img[src*=svg]');
-  if (!svg) return;
-  const svgClone = svg.cloneNode(true);
-  const svgCTACont = createTag('div', { class: 'svg-icon-container' });
-  svgCTACont.append(svgClone);
-  button.prepend(svgCTACont);
-}
-
 function createUploadButton(text, picture, menu, buttonsPanel) {
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
   const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'application/pdf' });
@@ -43,19 +32,13 @@ function createUploadButton(text, picture, menu, buttonsPanel) {
   const clone = labelBtn.cloneNode(true);
   clone.classList.add('uploadButtonMobile');
   const mobileInput = clone.querySelector('.inputFile');
+  const progressMessage = `<p><span class='message hide'>Uploading the PDF file</span></p>`;
   menu.append(clone);
   buttonsPanel.append(menu);
   buttonsPanel.append(labelBtn);
+  buttonsPanel.innerHTML = buttonsPanel.innerHTML + progressMessage;
   applyAccessibility(btn, labelBtn);
   applyAccessibility(mobileInput, clone);
-}
-
-function createChatButton(text, picture, layer) {
-  const btn = createTag('a', { class: 'continueButton body-xl hide', href: '#' }, text);
-  const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${text}`);
-  btn.append(analyticsHolder);
-  appendSVGToButton(picture, btn);
-  layer.append(btn);
 }
 
 function handleInput(option, buttonsPanel, menu, layer) {
@@ -69,9 +52,6 @@ function handleInput(option, buttonsPanel, menu, layer) {
   switch (inputType) {
     case 'upload':
       createUploadButton(text, picture, menu, buttonsPanel);
-      break;
-    case 'chat':
-      createChatButton(text, picture, layer);
       break;
     default:
       window.lana.log(`Unknown input type: ${inputType}`);
@@ -100,42 +80,6 @@ function cancelAnalytics(btn) {
   btn.setAttribute('daa-ll', 'Upload Image');
 }
 
-async function createAsset(pdfObj) {
-  const url = 'https://assistant-int.adobe.io/api/v1/asset';
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: getBearerToken(),
-      'Content-Type': 'application/json',
-      'x-api-key': 'leo',
-      'x-gw-ims-client-id': 'leo',
-      'x-gw-ims-org-id': 'CFB456506041E6960A49412C@AdobeOrg',
-      'x-gw-ims-scope': 'indesign_services,openid,AdobeID,read_organizations,photoshop_services,system',
-      'x-gw-ims-user-id': '121C1ABC6426CEC10A494118@techacct.adobe.com',
-    },
-  });
-  if (!response.ok) {
-    window.lana.log('Error creating asset');
-    return false;
-  }
-  const json = await response.json();
-  pdfObj.assetId = json.id;
-  pdfObj.presignedUrl = json.href;
-  return true;
-}
-
-async function uploadAsset(pdfObj) {
-  const response = await fetch(pdfObj.presignedUrl, {
-    method: 'PUT',
-    body: pdfObj.pdfFile,
-  });
-  if (!response.ok) {
-    window.lana.log('Error uploading asset');
-    return false;
-  }
-  return true;
-}
-
 async function getAnonymousToken() {
   const x = await fetch("https://pdfnow-stage.adobe.io/users/anonymous_token", {
       "credentials": "omit",
@@ -156,10 +100,6 @@ const encodeBlobUrl = (url = {}) => {
 };
 
 async function chatPDF(layer, pdfObj) {
-  layer.querySelectorAll('.continueButton').forEach((btn) => {
-  const analyticsBtn = btn.querySelector('.interactive-link-analytics-text');
-  btn.addEventListener('click', async (e) => {
-    e.preventDefault();
     const res1 = await getAnonymousToken();
     const data1 = await res1.json();
     const token = data1.access_token;
@@ -198,8 +138,6 @@ async function chatPDF(layer, pdfObj) {
     const l =`https://acrobat.adobe.com/blob/${encodedBlobUrl}?defaultRHPFeature=verb-quanda&x_api_client_location=chat_pdf&pdfNowAssetUri=${uri}#${data3.uri}`;
 
     window.location = l;
-  });
-});
 }
 
 function uploadPdf(media, layer, pdfObj) {
@@ -209,25 +147,18 @@ function uploadPdf(media, layer, pdfObj) {
       cancelAnalytics(btn);
     });
     btn.addEventListener('change', async (e) => {
+      btn.classList.add('loading');
+      layer.querySelector('.message').classList.remove('hide');
       const image = media.querySelector('picture > img');
-      const parent = image.parentElement;
       const file = e.target.files[0];
       if (!file.type.startsWith('application/pdf')) return;
       if (file) {
         pdfObj.fileName = file.name;
         pdfObj.pdfFile = file;
         const pdfUrl = URL.createObjectURL(file);
-        const embed = createTag('embed', { src: `${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`, width: '100%', height: '100%', type: 'application/pdf' });
-        image.remove();
-        parent.appendChild(embed);
         pdfObj.pdfUrl = pdfUrl;
         analyticsBtn.innerHTML = 'Upload Button';
-        await createAsset(pdfObj);
-        await uploadAsset(pdfObj);
-        const continueBtn = layer.querySelector('.continueButton');
-        if (continueBtn) {
-          continueBtn.classList.remove('hide');
-        }
+        chatPDF(layer, pdfObj);
       } else {
         cancelAnalytics(btn);
       }
@@ -241,6 +172,6 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   await createPdfButtons(data, layer);
   uploadPdf(data.target, layer, pdfObj);
-  chatPDF(layer, pdfObj);
+  //chatPDF(layer, pdfObj);
   return layer;
 }
