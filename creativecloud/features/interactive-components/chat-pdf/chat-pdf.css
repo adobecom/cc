@@ -1,11 +1,11 @@
-.interactive-holder.show-image.step-chat-pdf > picture {
-  display: none;
-}
-
 .interactive-enabled .step-chat-pdf .panel .message {
   font-size: 16px;
   color: white;
 } 
+
+.interactive-enabled .step-chat-pdf .panel.hide {
+  display: none;
+}
 
 .interactive-enabled .step-chat-pdf .panel .message.hide {
   display: none;
@@ -82,7 +82,8 @@
   display: inline-flex;
   box-sizing: content-box;
   margin: 16px auto 0;
-  background: var(--prompt-input-fill);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   color: var(--color-white) !important;
   width: auto;
   gap: 8px;
@@ -99,13 +100,15 @@
 
 .interactive-enabled.light .step-chat-pdf .panel .menu .uploadButtonMobile,
 .interactive-enabled .interactive-holder.light.step-chat-pdf .panel .menu .uploadButtonMobile {
-  background: var(--prompt-btn-fill-light);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   color: var(--color-black) !important;
   border: 1px solid #000;
 }
 
 .interactive-enabled .interactive-holder.dark.step-chat-pdf .panel .menu .uploadButtonMobile {
-  background: var(--prompt-input-fill);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   color: var(--color-white) !important;
   border: 1px solid #fff;
 }
@@ -135,6 +138,22 @@
 }
 
 .interactive-enabled .step-chat-pdf .uploadButton.loading:after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #333;
+  animation: spinner .6s linear infinite;
+}
+
+.interactive-enabled .step-chat-pdf .continueButton.loading:after {
   content: '';
   box-sizing: border-box;
   position: absolute;
@@ -186,46 +205,53 @@
  }
 
  .interactive-enabled .step-chat-pdf .panel .uploadButton {
-   top: 70%;
+   top: 130px;
    display: flex;
    gap: 16px;
-   background: var(--prompt-input-fill);
-   border-radius: 8px;
+   background: var(--color-accent);
+   border-color: var(--color-accent);
+   color: var(--color-white);
    text-decoration: none;
-   color: var(--prompt-btn-fill-light);
    font-weight: bold;
-   padding: 6px 21px;
    align-items: center;
    justify-content: center;
-   width: 260px;
    border: 3px solid transparent;
    box-sizing: border-box;
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
-   height: 64px;
    position: relative;
+   border-radius: 25px;
+   font-size: 19px;
+   line-height: 24px;
+   min-height: 28px;
+   padding: 10px 24px 8px;
  }
 
  .interactive-enabled.light .step-chat-pdf .panel .uploadButton {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
  }
 
  .interactive-enabled .interactive-holder.dark.step-chat-pdf .panel .uploadButton {
-  background: var(--prompt-input-fill);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   color: var(--color-white);
  }
 
  .interactive-enabled .interactive-holder.light.step-chat-pdf .panel .uploadButton {
-  background: var(--prompt-btn-fill-light);
-  color: var(--color-black);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
  }
 
  .interactive-enabled .step-chat-pdf .panel .menu {
    display: none;
  }
 
-  .interactive-enabled .step-chat-pdf .panel .svg-icon-container svg,
- .interactive-enabled .step-chat-pdf .panel .svg-icon-container img {
+ .interactive-enabled .step-chat-pdf .panel .svg-icon-container svg,
+ .interactive-enabled .step-chat-pdf .panel .svg-icon-container img,
+ .interactive-enabled .step-chat-pdf .continueButton .svg-icon-container img,
+ .interactive-enabled .step-chat-pdf .downloadButton .svg-icon-container img {
    display: flex;
    align-items: center;
    justify-content: center;
@@ -234,4 +260,46 @@
    border-radius: 3px;
    flex-shrink: 0;
  }
+}
+
+@media screen and (min-width: 1024px) {
+  .interactive-enabled .step-chat-pdf .continueButton,
+  .interactive-enabled .step-chat-pdf .downloadButton {
+    position: absolute;
+    bottom: 10%;
+    display: flex;
+    gap: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    width: 47%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    border: 2px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 25px;
+    font-size: 19px;
+    line-height: 24px;
+    min-height: 28px;
+    padding: 10px 24px 8px;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  .interactive-enabled .step-chat-pdf .continueButton.hide,
+  .interactive-enabled .step-chat-pdf .downloadButton.hide{
+    display: none;
+  }
+
+  .interactive-enabled .step-chat-pdf .continueButton:hover,
+  .interactive-enabled .step-chat-pdf .continueButton:focus,
+  .interactive-enabled .step-chat-pdf .downloadButton:hover,
+  .interactive-enabled .step-chat-pdf .downloadButton:focus{
+    border: 2px solid var(--prompt-btn-fill-light);
+  }
 }
