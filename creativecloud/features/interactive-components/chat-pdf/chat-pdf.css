@@ -1,3 +1,16 @@
+.interactive-holder.show-image.step-chat-pdf > picture {
+  display: none;
+}
+
+.interactive-enabled .step-chat-pdf .panel .message {
+  font-size: 16px;
+  color: white;
+} 
+
+.interactive-enabled .step-chat-pdf .panel .message.hide {
+  display: none;
+}
+
 .interactive-enabled .step-chat-pdf .panel {
   display: flex;
   flex-direction: column;
@@ -65,11 +78,6 @@
   display: none;
 }
 
-.interactive-enabled .step-chat-pdf .continueButton,
-.interactive-enabled .step-chat-pdf .downloadButton {
-  display: none;
-}
-
 .interactive-enabled .step-chat-pdf .panel .menu .uploadButtonMobile {
   display: inline-flex;
   box-sizing: content-box;
@@ -126,7 +134,7 @@
   to { transform: rotate(360deg); }
 }
 
-.interactive-enabled .step-chat-pdf .continueButton.loading:after {
+.interactive-enabled .step-chat-pdf .uploadButton.loading:after {
   content: '';
   box-sizing: border-box;
   position: absolute;
@@ -160,7 +168,6 @@
    gap: 15px;
    transform: translateY(-50%);
    width: 260px;
-   right: -20%;
  }
 
  [dir="rtl"] .interactive-enabled:not(.row-reversed) .step-chat-pdf .panel,
@@ -218,9 +225,7 @@
  }
 
   .interactive-enabled .step-chat-pdf .panel .svg-icon-container svg,
- .interactive-enabled .step-chat-pdf .panel .svg-icon-container img,
- .interactive-enabled .step-chat-pdf .continueButton .svg-icon-container img,
- .interactive-enabled .step-chat-pdf .downloadButton .svg-icon-container img{
+ .interactive-enabled .step-chat-pdf .panel .svg-icon-container img {
    display: flex;
    align-items: center;
    justify-content: center;
@@ -230,44 +235,3 @@
    flex-shrink: 0;
  }
 }
-
-@media screen and (min-width: 1024px) {
-  .interactive-enabled .step-chat-pdf .continueButton,
-  .interactive-enabled .step-chat-pdf .downloadButton {
-    position: absolute;
-    bottom: 4%;
-    display: flex;
-    gap: 16px;
-    background: #1273E6;
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--prompt-btn-fill-light);
-    font-weight: bold;
-    padding: 0 56px;
-    align-items: center;
-    justify-content: center;
-    width: 47%;
-    left: 50%;
-    max-height: 64px;
-    transform: translateX(-50%);
-    cursor: pointer;
-    border: 2px solid transparent;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    height: 64px;
-  }
-  
-  .interactive-enabled .step-chat-pdf .continueButton.hide,
-  .interactive-enabled .step-chat-pdf .downloadButton.hide{
-    display: none;
-  }
-  
-  .interactive-enabled .step-chat-pdf .continueButton:hover,
-  .interactive-enabled .step-chat-pdf .continueButton:focus,
-  .interactive-enabled .step-chat-pdf .downloadButton:hover,
-  .interactive-enabled .step-chat-pdf .downloadButton:focus{
-    border: 2px solid var(--prompt-btn-fill-light);
-  }
-}
-
