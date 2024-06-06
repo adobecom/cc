@@ -123,11 +123,11 @@ function appendSearch(rootNav, searchText) {
 function appendResources(rootNav, resourceLink) {
   const literals = resourceLink.textContent.split(':');
   const title = literals[0].trim();
-  const tag = createTag('sp-sidenav', { manageTabIndex: true });
+  const tag = createTag('sp-sidenav', { manageTabIndex: true, class: 'resources' });
   const merchTag = createTag('merch-sidenav-list', { title });
   merchTag.append(tag);
   const label = literals[1].trim();
-  const link = createTag('sp-sidenav-item', { href: resourceLink.href });
+  const link = createTag('sp-sidenav-item', { href: resourceLink.href, target: '_blank', selected: false });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
     link.append(document.createTextNode(label));
     const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon' });
@@ -140,9 +140,8 @@ function appendResources(rootNav, resourceLink) {
 export default async function init(el) {
   const libs = getLibs();
   const [mainRow, categoryRow] = Array.from(el.children);
-  const merchSidenavDep = import('../../deps/merch-sidenav.js');
   const deps = Promise.all([
-    merchSidenavDep,
+    import('../../deps/merch-sidenav.js'),
     // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
     import('/libs/deps/lit-all.min.js'),
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
@@ -151,8 +150,8 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/sidenav.js`),
     import(`${libs}/features/spectrum-web-components/dist/search.js`),
     import(`${libs}/features/spectrum-web-components/dist/checkbox.js`),
-    import(`${libs}/features/spectrum-web-components/dist/button.js`),
     import(`${libs}/features/spectrum-web-components/dist/dialog.js`),
+    import(`${libs}/features/spectrum-web-components/dist/link.js`),
     import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
   ]);
 
@@ -162,9 +161,8 @@ export default async function init(el) {
   // eslint-disable-next-line prefer-const
   const resourcesLink = mainRow?.querySelector('a');
   let endpoint = categoryRow?.querySelector('a');
-  await merchSidenavDep;
-  const rootNav = createTag('merch-sidenav', { title });
   await deps;
+  const rootNav = createTag('merch-sidenav', { title });
   el.replaceWith(rootNav);
   appendSearch(rootNav, searchText);
   if (endpoint) {
