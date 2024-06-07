@@ -176,10 +176,12 @@
     flex-direction: row;
     align-items: center;
     order: unset;
-    width: 100%;
+    width: var(--grid-container-width);
   }
 
   .interactive-marquee .interactive-container {
+    position: absolute;
+    right: 0;
     order: unset;
     width: 50%;
     height: 100%;
@@ -196,10 +198,10 @@
   }
 
   .interactive-marquee .text {
-    padding: var(--spacing-xl) 0;
     order: unset;
     display: block;
     max-width: 500px;
+    margin: 0;
   }
 }
 

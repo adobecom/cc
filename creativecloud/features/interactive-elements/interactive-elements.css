@@ -347,3 +347,10 @@
     padding: 7px 18px 8px;
   }
 }
+
+@media screen and (min-width: 1200px) and (max-width: 1350px) {
+  .enticement-arrow {
+    right: 0;
+    left: -55px;
+  }
+}
