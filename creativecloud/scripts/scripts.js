@@ -92,7 +92,7 @@ const locales = {
   sg: { ietf: 'en-SG', tk: 'pps7abe.css' },
   th_en: { ietf: 'en', tk: 'pps7abe.css' },
   in_hi: { ietf: 'hi', tk: 'aaa8deh.css' },
-  th_th: { ietf: 'th', tk: 'aaz7dvd.css' },
+  th_th: { ietf: 'th', tk: 'lqo2bst.css' },
   cn: { ietf: 'zh-CN', tk: 'puu3xkp' },
   hk_zh: { ietf: 'zh-HK', tk: 'jay0ecd' },
   tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
