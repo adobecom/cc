@@ -126,7 +126,7 @@ const stageDomainsMap = {
   'helpx.adobe.com': 'helpx.stage.adobe.com',
   'blog.adobe.com': 'blog.stage.adobe.com',
   'developer.adobe.com': 'developer-stage.adobe.com',
-  'news.adobe.com': 'news.stage.adobe.com'
+  'news.adobe.com': 'news.stage.adobe.com',
 };
 
 // Add any config options.
