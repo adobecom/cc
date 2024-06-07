@@ -29,6 +29,7 @@ const swcImportMaps = Object.fromEntries([
   'icon.js',
   'icons/checkmark.js',
   'icons/dash.js',
+  'icons/cross.js',
 ].map((file) => [`/libs/features/spectrum-web-components/dist/${file}`, `/node_modules/@adobecom/milo/libs/features/spectrum-web-components/dist/${file}`]));
 
 export default {
