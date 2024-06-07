@@ -120,6 +120,15 @@ const locales = {
   cis_en: { ietf: 'en', tk: 'pps7abe.css' },
 };
 
+const stageDomainsMap = {
+  "www.adobe.com": "www.stage.adobe.com",
+  "business.adobe.com": "business.stage.adobe.com",
+  "helpx.adobe.com": "helpx.stage.adobe.com",
+  "blog.adobe.com": "blog.stage.adobe.com",
+  "developer.adobe.com": "developer-stage.adobe.com",
+  "news.adobe.com": "news.stage.adobe.com"
+};
+
 // Add any config options.
 const CONFIG = {
   contentRoot: '/cc-shared',
@@ -128,6 +137,7 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
+  stageDomainsMap,
   decorateArea,
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
