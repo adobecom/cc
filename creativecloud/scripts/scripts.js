@@ -10,7 +10,10 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea } from './utils.js';
+import { setLibs, decorateArea, acomsisCookieHandler } from './utils.js';
+
+// For CN home's acomsis cookie handler
+const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -164,9 +167,12 @@ const CONFIG = {
  * ------------------------------------------------------------
  */
 
+const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
 const miloLibs = setLibs(LIBS);
 const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
 setConfig({ ...CONFIG, miloLibs });
+if (isSignedInHomepage) acomsisCookieHandler();
+
 decorateArea();
 
 (function loadStyles() {
