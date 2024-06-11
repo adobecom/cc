@@ -30,9 +30,7 @@ export const [setLibs, getLibs] = (() => {
         return libs;
       }
       const { hostname } = window.location;
-      if (!hostname.includes('hlx.page')
-        && !hostname.includes('hlx.live')
-        && !hostname.includes('localhost')) {
+      if (!['.hlx.', '.stage.', 'localhost'].some((i) => hostname.includes(i))) {
         libs = prodLibs;
         return libs;
       }
