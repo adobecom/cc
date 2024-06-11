@@ -154,9 +154,6 @@ export async function acomsisCookieHandler() {
       }
       window.location.reload();
     }
-    if (acomsisCokie && isSignedInUser && !window.location.href.includes('/fragments/')) {
-      window.location.reload();
-    }
   });
 }
 
