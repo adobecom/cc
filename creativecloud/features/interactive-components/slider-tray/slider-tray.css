@@ -302,6 +302,8 @@
    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.32);
    height: 64px;
    position: relative;
+   word-break: normal !important;
+   overflow-wrap: normal !important;
  }
 
  .interactive-enabled.light .step-slider-tray .sliderTray .uploadButton {
@@ -359,6 +361,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     height: 64px;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
   }
   
   .interactive-enabled .step-slider-tray .continueButton.hide {
@@ -370,3 +374,4 @@
     border: 2px solid var(--prompt-btn-fill-light);
   }
 }
+
