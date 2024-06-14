@@ -28,7 +28,7 @@ export default async function init(el) {
       sidenav.setAttribute('daa-lh', 'b1|catalog-sidenav');
       await sidenav.updateComplete;
       if (merchCards) {
-        sidenav.filters.addEventListener('click', ({ target }) => {
+        sidenav.filters.addEventListener('click', ({ target }) => {
           merchCards.setAttribute('daa-lh', target.getAttribute('daa-ll'));
         });
         merchCards.sidenav = sidenav;
