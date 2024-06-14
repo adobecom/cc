@@ -150,11 +150,8 @@ export async function acomsisCookieHandler() {
         document.cookie = `${COOKIE_SIGNED_IN}=;path=/;expires=${new Date(0).toUTCString()};`;
         document.cookie = `${COOKIE_SIGNED_IN}=;path=/;expires=${new Date(0).toUTCString()};domain=adobe.com;`;
       } else {
-        document.cookie = `${COOKIE_SIGNED_IN_STAGE}=;path=/;expires=${new Date(0).toUTCString()};domain='www.stage.adobe.com;`;
+        document.cookie = `${COOKIE_SIGNED_IN_STAGE}=;path=/;expires=${new Date(0).toUTCString()};domain=www.stage.adobe.com;`;
       }
-      window.location.reload();
-    }
-    if (acomsisCokie && isSignedInUser && !window.location.href.includes('/fragments/')) {
       window.location.reload();
     }
   });
