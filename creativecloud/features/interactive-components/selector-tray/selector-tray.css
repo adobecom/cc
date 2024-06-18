@@ -50,6 +50,7 @@
   background-position: center;
   outline: none;
   position: relative;
+  max-width: 30%;
 }
 
 .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail .tray-thumbnail-img {
@@ -106,9 +107,20 @@
     flex-direction: column;
   }
 
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail {
+    max-width: 80px;
+    min-height: 80px;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail .tray-thumbnail-img {
     width: auto;
-    min-width: 80px;
+    min-width: auto;
+    max-width: unset;
     height: 120px;
     min-height: 120px;
     max-height: 120px;
