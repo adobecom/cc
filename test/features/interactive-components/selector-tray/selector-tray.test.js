@@ -20,11 +20,11 @@ describe('Selector tray', () => {
   });
   it('should remove selection on hover', async () => {
     expect(document.querySelector('.step-selector-tray .thumbnail-selected')).to.exist;
-    document.querySelector('.tray-thumbnail-img').dispatchEvent(new Event('mouseover'));
+    document.querySelector('.tray-thumbnail').dispatchEvent(new Event('mouseover'));
     expect(document.querySelector('.step-selector-tray .thumbnail-selected')).to.not.exist;
   });
   it('should have next layer on selection', async () => {
-    document.querySelector('.tray-thumbnail-img').dispatchEvent(new Event('click'));
+    document.querySelector('.tray-thumbnail').dispatchEvent(new Event('click'));
     await new Promise((res) => { setTimeout(() => { res(); }, 200); });
     expect(document.querySelector('.interactive-holder.step-crop')).to.exist;
   });
@@ -34,7 +34,7 @@ describe('Selector tray', () => {
     expect(document.querySelector('.step-selector-tray .thumbnail-selected')).to.exist;
   });
   it('should have not have thumbnail on selection', async () => {
-    const thumbnail = document.querySelector('.show-layer .tray-thumbnail-img.thumbnail-selected');
+    const thumbnail = document.querySelector('.show-layer .tray-thumbnail.thumbnail-selected');
     thumbnail.dispatchEvent(new Event('touchstart'));
     await new Promise((res) => { setTimeout(() => { res(); }, 200); });
   });
