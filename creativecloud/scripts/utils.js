@@ -134,6 +134,7 @@ export async function acomsisCookieHandler() {
     }
     return isSignedInUser;
   }
+  
   imsCheck().then((isSignedInUser) => {
     const isStage = window.location.host.includes('stage');
     const acomsisCokie = isStage ? getCookie(COOKIE_SIGNED_IN_STAGE) : getCookie(COOKIE_SIGNED_IN);
