@@ -19,14 +19,14 @@ function getStartingPathIdx(data) {
 
 function createSelectorThumbnail(pic, pathId, displayImg) {
   const src = getImgSrc(pic);
+  const { alt } = pic.querySelector('img');
   const outline = createTag('div', { class: 'tray-thumbnail-outline' });
-  const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
-  a.style.backgroundImage = `url(${src})`;
+  const a = createTag('a', { class: 'tray-thumbnail', href: '#' });
   [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
   a.dataset.dispPth = pathId;
-  const img = createTag('img', { class: 'preload-img', src });
+  const img = createTag('img', { class: 'tray-thumbnail-img', src, alt });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, pic.querySelector('img').alt);
-  a.append(img, analyticsHolder);
+  a.append(img, outline, analyticsHolder);
   if (pathId === 0) a.classList.add('thumbnail-selected');
   return a;
 }

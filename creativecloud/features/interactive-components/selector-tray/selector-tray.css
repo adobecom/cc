@@ -41,31 +41,36 @@
   justify-content: space-between;
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail {
   display: block;
-  width: 30%;
-  height: 80px;
+  width: auto;
+  height: auto;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   outline: none;
+  position: relative;
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .preload-img {
-  display: none;
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail .tray-thumbnail-img {
+  height: 80px;
+  width: auto;
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .tray-thumbnail-outline {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail .tray-thumbnail-outline {
   display: none;
   box-sizing: content-box;
   height: calc(100% - 10px);
   width: calc(100% - 10px);
   border: 5px solid var(--prompt-highlight-color);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img.thumbnail-selected .tray-thumbnail-outline,
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:focus-visible .tray-thumbnail-outline,
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:hover .tray-thumbnail-outline {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail.thumbnail-selected .tray-thumbnail-outline,
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail:focus-visible .tray-thumbnail-outline,
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail:hover .tray-thumbnail-outline {
   display: block;
 }
 
@@ -101,12 +106,15 @@
     flex-direction: column;
   }
 
-  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img {
-    width: 80px;
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail .tray-thumbnail-img {
+    width: auto;
+    min-width: 80px;
     height: 120px;
+    min-height: 120px;
+    max-height: 120px;
   }
 
-  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .tray-thumbnail-outline {
+  .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail .tray-thumbnail-outline {
     height: calc(100% - 12px);
     width: calc(100% - 12px);
     border: 6px solid var(--prompt-highlight-color);
