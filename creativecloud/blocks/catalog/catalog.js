@@ -47,6 +47,10 @@ export default async function init(el) {
         i?.setAttribute('daa-lh', `sort-${i?.value}`);
       }
     });
+    sort.addEventListener('click', (e) => {
+      const redispatched = new e.constructor(e.type, e);
+      merchCards.dispatchEvent(redispatched);
+    });
   }
   return el;
 }
