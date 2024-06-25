@@ -52,7 +52,6 @@ export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConf
 
 function getDecorateAreaFn() {
   let lcpImgSet = false;
-
   // Load LCP image immediately
   const eagerLoad = (lcpImg) => {
     lcpImg?.setAttribute('loading', 'eager');
@@ -78,7 +77,10 @@ function getDecorateAreaFn() {
   }
 
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
-    const firstBlock = area.querySelector('body > main > div > div');
+    let firstBlock = area.querySelector('body > main > div > div');
+    if (!firstBlock && window.document.querySelector('body > div > div > a.fragment')) {
+      firstBlock = area.querySelector('body > div > div');
+    }
     let fgDivs = null;
     switch (true) {
       case firstBlock?.classList.contains('changebg'): {
@@ -108,7 +110,7 @@ function getDecorateAreaFn() {
 
   return (area, options) => {
     if (isRootPage()) replaceDotMedia();
-    if (!lcpImgSet) loadLCPImage(area, options);
+    loadLCPImage(area, options);
   };
 }
 
