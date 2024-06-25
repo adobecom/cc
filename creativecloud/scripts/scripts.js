@@ -127,6 +127,7 @@ const stageDomainsMap = {
   'blog.adobe.com': 'blog.stage.adobe.com',
   'developer.adobe.com': 'developer-stage.adobe.com',
   'news.adobe.com': 'news.stage.adobe.com',
+  'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
 };
 
 // Add any config options.
