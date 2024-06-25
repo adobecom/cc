@@ -39,18 +39,5 @@ export default async function init(el) {
       }
     });
   }
-  // decorate sort dropdown
-  if (merchCards) {
-    const sort = merchCards.shadowRoot.querySelector('#sortButton');
-    sort?.querySelectorAll('sp-menu-item').forEach((i) => {
-      if (i.value) {
-        i?.setAttribute('daa-lh', `sort-${i?.value}`);
-      }
-    });
-    sort.addEventListener('click', (e) => {
-      const redispatched = new e.constructor(e.type, e);
-      merchCards.dispatchEvent(redispatched);
-    });
-  }
   return el;
 }
