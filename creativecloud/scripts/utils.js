@@ -30,9 +30,7 @@ export const [setLibs, getLibs] = (() => {
         return libs;
       }
       const { hostname } = window.location;
-      if (!hostname.includes('hlx.page')
-        && !hostname.includes('hlx.live')
-        && !hostname.includes('localhost')) {
+      if (!['.hlx.', '.stage.', 'localhost'].some((i) => hostname.includes(i))) {
         libs = prodLibs;
         return libs;
       }
@@ -136,6 +134,7 @@ export async function acomsisCookieHandler() {
     }
     return isSignedInUser;
   }
+  
   imsCheck().then((isSignedInUser) => {
     const isStage = window.location.host.includes('stage');
     const acomsisCokie = isStage ? getCookie(COOKIE_SIGNED_IN_STAGE) : getCookie(COOKIE_SIGNED_IN);
