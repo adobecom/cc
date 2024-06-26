@@ -95,7 +95,7 @@ function getDecorateAreaFn() {
         // Last image of last column of last row
         eagerLoad(firstBlock.querySelector('div:last-child > div:last-child img'));
         break;
-      }  
+      }
       case firstBlock?.classList.contains('interactive-marquee'):
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
