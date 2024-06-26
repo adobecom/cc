@@ -102,10 +102,10 @@ function getDecorateAreaFn() {
         // Load image eagerly for specific breakpoint
         const viewport = defineDeviceByScreenSize();
         const lcpImageByViewport = {
-          'MOBILE': 'div:first-child img',
-          'TABLET': 'div:nth-child(2) img',
-          'DESKTOP': 'div:nth-child(3) img',
-        }    
+          MOBILE: 'div:first-child img',
+          TABLET: 'div:nth-child(2) img',
+          DESKTOP: 'div:nth-child(3) img',
+        };
         eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
         // Last image of last column of last row
         eagerLoad(firstBlock.querySelector('div:last-child > div:last-child img'));
