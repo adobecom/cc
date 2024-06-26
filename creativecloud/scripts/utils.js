@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
+import defineDeviceByScreenSize from './decorate.js';
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -87,11 +87,12 @@ function getDecorateAreaFn() {
         break;
       }
       case firstBlock?.classList.contains('marquee'):
-        // First image of first row
-        eagerLoad(firstBlock.querySelector('div:first-child img'));
+        // Load image eagerly for specific breakpoint
+        if (defineDeviceByScreenSize() === 'MOBILE') eagerLoad(firstBlock.querySelector('div:first-child img'));
+        else if (defineDeviceByScreenSize() === 'TABLET') eagerLoad(firstBlock.querySelector('div:second-child img'));
+        else if (defineDeviceByScreenSize() === 'DESKTOP') eagerLoad(firstBlock.querySelector('div:third-child img'));
         // Last image of last column of last row
         eagerLoad(firstBlock.querySelector('div:last-child > div:last-child img'));
-        //firstBlock.querySelectorAll('img').forEach(eagerLoad);
         break;
       case firstBlock?.classList.contains('interactive-marquee'):
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
