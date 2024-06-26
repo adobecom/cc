@@ -51,12 +51,10 @@ const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserve
 export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
 
 function getDecorateAreaFn() {
-  let lcpImgSet = false;
   // Load LCP image immediately
   const eagerLoad = (lcpImg) => {
     lcpImg?.setAttribute('loading', 'eager');
     lcpImg?.setAttribute('fetchpriority', 'high');
-    if (lcpImg) lcpImgSet = true;
   };
 
   function isRootPage() {
