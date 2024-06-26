@@ -89,7 +89,7 @@ function getDecorateAreaFn() {
       case firstBlock?.classList.contains('marquee'):
         // Load image eagerly for specific breakpoint
         if (defineDeviceByScreenSize() === 'MOBILE') eagerLoad(firstBlock.querySelector('div:first-child img'));
-        else if (defineDeviceByScreenSize() === 'TABLET') eagerLoad(firstBlock.querySelector('div:second-child img'));
+        else if (defineDeviceByScreenSize() === 'TABLET') eagerLoad(firstBlock.querySelector('div:nth-child(2) img'));
         else if (defineDeviceByScreenSize() === 'DESKTOP') eagerLoad(firstBlock.querySelector('div:last-child img'));
         // Last image of last column of last row
         eagerLoad(firstBlock.querySelector('div:last-child > div:last-child img'));
