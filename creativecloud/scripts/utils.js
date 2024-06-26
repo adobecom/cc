@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import defineDeviceByScreenSize from './decorate.js';
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -50,6 +49,19 @@ const miloLibs = setLibs('/libs');
 const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
 export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
 
+function defineDeviceByScreenSize() {
+  const DESKTOP_SIZE = 1200;
+  const MOBILE_SIZE = 600;
+  const screenWidth = window.innerWidth;
+  if (screenWidth >= DESKTOP_SIZE) {
+    return 'DESKTOP';
+  }
+  if (screenWidth <= MOBILE_SIZE) {
+    return 'MOBILE';
+  }
+  return 'TABLET';
+}
+
 function getDecorateAreaFn() {
   let lcpImgSet = false;
 
@@ -89,9 +101,12 @@ function getDecorateAreaFn() {
       case firstBlock?.classList.contains('marquee'): {
         // Load image eagerly for specific breakpoint
         const viewport = defineDeviceByScreenSize();
-        if (viewport === 'MOBILE') eagerLoad(firstBlock.querySelector('div:first-child img'));
-        else if (viewport === 'TABLET') eagerLoad(firstBlock.querySelector('div:nth-child(2) img'));
-        else if (viewport === 'DESKTOP') eagerLoad(firstBlock.querySelector('div:last-child img'));
+        const lcpImageByViewport = {
+          'MOBILE': 'div:first-child img',
+          'TABLET': 'div:nth-child(2) img',
+          'DESKTOP': 'div:nth-child(3) img',
+        }    
+        eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
         // Last image of last column of last row
         eagerLoad(firstBlock.querySelector('div:last-child > div:last-child img'));
         break;
