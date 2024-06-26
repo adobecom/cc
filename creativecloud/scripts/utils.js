@@ -108,7 +108,7 @@ function getDecorateAreaFn() {
         };
         eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
         // Last image of last column of last row
-        eagerLoad(firstBlock.querySelector('div:last-child > div:last-child img'));
+        eagerLoad(firstBlock.querySelector('div:nth-child(2) > div img'));
         break;
       }
       case firstBlock?.classList.contains('interactive-marquee'):
