@@ -106,8 +106,10 @@ function getDecorateAreaFn() {
           TABLET: 'div:nth-child(2) img',
           DESKTOP: 'div:nth-child(3) img',
         };
-        eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
-        // Last image of last column of last row
+        const backgroundImages = firstBlock.querySelector('div:nth-child(1)');
+        if (backgroundImages.querySelectorAll('img').length === 1) eagerLoad(firstBlock.querySelector('div:first-child img'));
+        else eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
+        // Foreground image
         eagerLoad(firstBlock.querySelector('div:nth-child(2) > div img'));
         break;
       }
