@@ -86,7 +86,7 @@ function getDecorateAreaFn() {
         import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
         break;
       }
-      case firstBlock?.classList.contains('marquee'):
+      case firstBlock?.classList.contains('marquee'): {
         // Load image eagerly for specific breakpoint
         const viewport = defineDeviceByScreenSize();
         if (viewport === 'MOBILE') eagerLoad(firstBlock.querySelector('div:first-child img'));
@@ -95,6 +95,7 @@ function getDecorateAreaFn() {
         // Last image of last column of last row
         eagerLoad(firstBlock.querySelector('div:last-child > div:last-child img'));
         break;
+      }  
       case firstBlock?.classList.contains('interactive-marquee'):
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
