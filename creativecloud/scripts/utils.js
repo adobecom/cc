@@ -102,11 +102,11 @@ function getDecorateAreaFn() {
         // Load image eagerly for specific breakpoint
         const viewport = defineDeviceByScreenSize();
         const lcpImageByViewport = {
-          MOBILE: 'div:first-child img',
+          MOBILE: 'div img',
           TABLET: 'div:nth-child(2) img',
           DESKTOP: 'div:nth-child(3) img',
         };
-        const backgroundImages = firstBlock.querySelector('div:nth-child(1)');
+        const backgroundImages = firstBlock.querySelector('div');
         if (backgroundImages.querySelectorAll('img').length === 1) eagerLoad(firstBlock.querySelector('div:first-child img'));
         else eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
         // Foreground image
