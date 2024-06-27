@@ -107,7 +107,7 @@ function getDecorateAreaFn() {
           DESKTOP: 'div:nth-child(3) img',
         };
         const backgroundImages = firstBlock.querySelector('div');
-        if (backgroundImages.querySelectorAll('img').length === 1) eagerLoad(firstBlock.querySelector('div:first-child img'));
+        if (backgroundImages.querySelectorAll('img').length === 1) eagerLoad(firstBlock.querySelector('div img'));
         else eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
         // Foreground image
         eagerLoad(firstBlock.querySelector('div:nth-child(2) > div img'));
