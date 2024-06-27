@@ -101,16 +101,16 @@ function getDecorateAreaFn() {
       case firstBlock?.classList.contains('marquee'): {
         // Load image eagerly for specific breakpoint
         const viewport = defineDeviceByScreenSize();
-        const lcpImageByViewport = {
+        const bgImages = firstBlock.querySelectorAll('div').length > 1 ? firstBlock.querySelector('div') : null;
+        const lcpImgVP = {
           MOBILE: 'div img',
           TABLET: 'div:nth-child(2) img',
-          DESKTOP: 'div:nth-child(3) img',
+          DESKTOP: 'div:last-child img',
         };
-        const backgroundImages = firstBlock.querySelector('div');
-        if (backgroundImages.querySelectorAll('img').length === 1) eagerLoad(firstBlock.querySelector('div img'));
-        else eagerLoad(firstBlock.querySelector(lcpImageByViewport[viewport]));
+        if (bgImages?.querySelectorAll('img').length === 1) eagerLoad(bgImages?.querySelector('div img'));
+        else eagerLoad(bgImages?.querySelector(`:scope ${lcpImgVP[viewport]}`));
         // Foreground image
-        eagerLoad(firstBlock.querySelector('div:nth-child(2) > div img'));
+        eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
         break;
       }
       case firstBlock?.classList.contains('interactive-marquee'):
