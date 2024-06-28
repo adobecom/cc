@@ -25,7 +25,7 @@ export default async function init(el) {
       const { default: initSidenav } = await import('../sidenav/sidenav.js');
       const sidenav = await initSidenav(sidenavEl);
       el.appendChild(sidenav);
-      sidenav.setAttribute('daa-lh', 'b1|catalog-sidenav');
+      sidenav.setAttribute('daa-lh', 'b1|sidenav');
       await sidenav.updateComplete;
       if (merchCards) {
         sidenav.filters.addEventListener('click', ({ target }) => {
