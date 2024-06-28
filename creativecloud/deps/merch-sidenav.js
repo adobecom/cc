@@ -1,9 +1,9 @@
-// branch: catalog-regressions-4 commit: 90641e42ad012c2386133cbd2df855f468842b2d Wed, 29 May 2024 12:05:08 GMT
+// branch: mwpw-147716-scroll-refactoring commit: 5de8d51df428ceec0bd48fb5035badc195351405 Fri, 28 Jun 2024 13:16:59 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
 
-// ../../node_modules/@spectrum-web-components/reactive-controllers/src/MatchMedia.js
+// ../node_modules/@spectrum-web-components/reactive-controllers/src/MatchMedia.js
 var MatchMediaController = class {
   constructor(e, t) {
     this.key = Symbol("match-media-key");
@@ -78,6 +78,8 @@ function pushState(state) {
 }
 function deeplink(callback) {
   const handler = () => {
+    if (!window.location.hash.includes("="))
+      return;
     const state = parseState(window.location.hash);
     callback(state);
   };
@@ -381,6 +383,46 @@ customElements.define(
 var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
 var TABLET_DOWN = "(max-width: 1199px)";
 
+// src/bodyScrollLock.js
+var IS_IOS = /iP(ad|hone|od)/.test(window?.navigator?.platform) || window?.navigator?.platform === "MacIntel" && window.navigator.maxTouchPoints > 1;
+var documentListenerAdded = false;
+var previousBodyOverflowSetting;
+var disableBodyScroll = (targetElement) => {
+  if (!targetElement)
+    return;
+  if (IS_IOS) {
+    document.body.style.position = "fixed";
+    targetElement.ontouchmove = (event) => {
+      if (event.targetTouches.length === 1) {
+        event.stopPropagation();
+      }
+    };
+    if (!documentListenerAdded) {
+      document.addEventListener("touchmove", (e) => e.preventDefault());
+      documentListenerAdded = true;
+    }
+  } else {
+    previousBodyOverflowSetting = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  }
+};
+var enableBodyScroll = (targetElement) => {
+  if (!targetElement)
+    return;
+  if (IS_IOS) {
+    targetElement.ontouchstart = null;
+    targetElement.ontouchmove = null;
+    document.body.style.position = "";
+    document.removeEventListener("touchmove", (e) => e.preventDefault());
+    documentListenerAdded = false;
+  } else {
+    if (previousBodyOverflowSetting !== void 0) {
+      document.body.style.overflow = previousBodyOverflowSetting;
+      previousBodyOverflowSetting = void 0;
+    }
+  }
+};
+
 // src/sidenav/merch-sidenav.js
 document.addEventListener("sp-opened", () => {
   document.body.classList.add("merch-modal");
@@ -504,6 +546,7 @@ var MerchSideNav = class extends LitElement4 {
   }
   openModal() {
     this.updateComplete.then(async () => {
+      disableBodyScroll(this.dialog);
       const options = {
         trigger: this.#target,
         notImmediatelyClosable: true,
@@ -515,6 +558,7 @@ var MerchSideNav = class extends LitElement4 {
       );
       overlay.addEventListener("close", () => {
         this.modal = false;
+        enableBodyScroll(this.dialog);
       });
       this.shadowRoot.querySelector("sp-theme").append(overlay);
     });
