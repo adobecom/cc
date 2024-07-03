@@ -1,4 +1,4 @@
-// branch: mwpw-147716-scroll-refactoring commit: 5de8d51df428ceec0bd48fb5035badc195351405 Fri, 28 Jun 2024 13:16:59 GMT
+// branch: main commit: d113c9c27640ef88ab28eff3ef4637919479e540 Wed, 03 Jul 2024 15:04:49 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -384,13 +384,13 @@ var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
 var TABLET_DOWN = "(max-width: 1199px)";
 
 // src/bodyScrollLock.js
-var IS_IOS = /iP(ad|hone|od)/.test(window?.navigator?.platform) || window?.navigator?.platform === "MacIntel" && window.navigator.maxTouchPoints > 1;
+var isIosDevice = /iP(ad|hone|od)/.test(window?.navigator?.platform) || window?.navigator?.platform === "MacIntel" && window.navigator.maxTouchPoints > 1;
 var documentListenerAdded = false;
 var previousBodyOverflowSetting;
 var disableBodyScroll = (targetElement) => {
   if (!targetElement)
     return;
-  if (IS_IOS) {
+  if (isIosDevice) {
     document.body.style.position = "fixed";
     targetElement.ontouchmove = (event) => {
       if (event.targetTouches.length === 1) {
@@ -409,7 +409,7 @@ var disableBodyScroll = (targetElement) => {
 var enableBodyScroll = (targetElement) => {
   if (!targetElement)
     return;
-  if (IS_IOS) {
+  if (isIosDevice) {
     targetElement.ontouchstart = null;
     targetElement.ontouchmove = null;
     document.body.style.position = "";
