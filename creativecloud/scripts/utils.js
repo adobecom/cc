@@ -77,7 +77,7 @@ function getDecorateAreaFn() {
   }
 
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
-    const firstBlock = !!fragmentLink ? area.querySelector('body > div > div') : area.querySelector('body > main > div > div');
+    const firstBlock = fragmentLink ? area.querySelector('body > div > div') : area.querySelector('body > main > div > div');
     let fgDivs = null;
     switch (true) {
       case firstBlock?.classList.contains('changebg'): {
