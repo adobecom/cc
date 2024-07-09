@@ -64,7 +64,6 @@ function defineDeviceByScreenSize() {
 
 function getDecorateAreaFn() {
   let lcpImgSet = false;
-
   // Load LCP image immediately
   const eagerLoad = (lcpImg) => {
     lcpImg?.setAttribute('loading', 'eager');
@@ -90,7 +89,7 @@ function getDecorateAreaFn() {
   }
 
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
-    const firstBlock = area.querySelector('body > main > div > div');
+    const firstBlock = fragmentLink ? area.querySelector('body > div > div') : area.querySelector('body > main > div > div');
     let fgDivs = null;
     switch (true) {
       case firstBlock?.classList.contains('changebg'): {
@@ -132,7 +131,7 @@ function getDecorateAreaFn() {
 
   return (area, options) => {
     if (isRootPage()) replaceDotMedia();
-    if (!lcpImgSet) loadLCPImage(area, options);
+    if (!lcpImgSet || window.document.querySelector('body > div > div > a.fragment')) loadLCPImage(area, options);
   };
 }
 
