@@ -70,6 +70,13 @@
   [dir="rtl"] .enticement-text {
     position: absolute;
     left: var(--spacing-xxs);
+    right: var(--spacing-xxs);
+    margin: 40px -20px 16px 0;
+  }
+
+  [dir="rtl"] .enticement-arrow {
+    right: -54px;
+    transform: scaleX(-1); 
   }
 }
 
@@ -91,5 +98,19 @@
   [dir="rtl"] .enticement-text {
     position: absolute;
     left: var(--spacing-xxs);
+    right: var(--spacing-xxs);
+    margin: 40px -20px 16px 0;
+  }
+
+  [dir="rtl"] .enticement-arrow {
+    right: -54px;
+    transform: scaleX(-1); 
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1350px) {
+  .enticement-arrow {
+    right: 0;
+    left: -55px;
   }
 }

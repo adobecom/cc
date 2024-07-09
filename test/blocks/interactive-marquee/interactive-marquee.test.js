@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-document.body.innerHTML = await readFile({ path: './mocks/container.html' });
+document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
 const { default: init } = await import('../../../creativecloud/blocks/interactive-marquee/interactive-marquee.js');
 
@@ -11,6 +11,7 @@ describe('interactive marquee', () => {
     setLibs('https://milo.adobe.com/libs');
     await init(im);
   });
+
   it('interactive marquee light variant should exist', () => {
     const light = im.classList.contains('light');
     expect(light).to.true;

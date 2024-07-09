@@ -1,0 +1,75 @@
+.interactive-enabled .step-crop .layer .gray-button.crop-button {
+  padding: 0 13px; 
+  height: 48px;
+  margin: auto;
+}
+
+@media screen and (min-width: 600px) {
+  .interactive-enabled .step-crop .layer .gray-button.crop-button {
+    height: 64px;
+    min-width: 145px;
+    gap: 16px;
+    margin: auto;
+    padding: 5px;
+    padding-right: 13px;
+    left: 47px;
+    right: auto;
+    bottom: 125px;
+  }
+
+  [dir="rtl"] .interactive-enabled .step-crop .layer .gray-button.crop-button {
+    padding: 5px;
+    padding-left: 13px;
+    left: auto;
+    right: 47px;
+  }
+
+  .interactive-enabled .step-crop .layer .gray-button.crop-button .crop-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    width: 46px;
+    border-radius: 3px;
+    border: 3px solid var(--prompt-input-fill);
+    background-color: var(--prompt-input-fill);
+  }
+
+  .interactive-enabled.light .step-crop .layer .gray-button.crop-button .crop-icon-container,
+  .interactive-enabled .interactive-holder.light.step-crop .layer .gray-button.crop-button .crop-icon-container {
+    border: 3px solid var(--prompt-input-fill-light);
+    background-color: var(--prompt-input-fill-light);
+  }
+
+  .interactive-enabled .interactive-holder.dark.step-crop .layer .gray-button.crop-button .crop-icon-container {
+    border: 3px solid var(--prompt-input-fill);
+    background-color: var(--prompt-input-fill);
+  }
+
+  .interactive-enabled .step-crop .layer .gray-button.crop-button img {
+    width: 34px;
+    height: auto;
+  }
+
+  .interactive-enabled .step-crop .layer .gray-button.crop-button:focus-visible,
+  .interactive-enabled .step-crop .layer .gray-button.crop-button:hover {
+    border: 3px solid transparent;
+  }
+
+  .interactive-enabled .step-crop .layer .gray-button.crop-button:focus-visible .crop-icon-container,
+  .interactive-enabled .step-crop .layer .gray-button.crop-button:hover .crop-icon-container {
+    border-color: var(--prompt-highlight-color);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .interactive-enabled.row-reversed .step-crop .layer .gray-button.crop-button {
+    left: auto;
+    right: 47px;
+  }
+
+  [dir="rtl"] .interactive-enabled.row-reversed .step-crop .layer .gray-button.crop-button {
+    left: 47px;
+    right: auto;
+  }
+}
