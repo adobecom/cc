@@ -56,8 +56,7 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, interacti
     promptButton.addEventListener('click', async (e) => {
       const userprompt = promptInput?.value;
       const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';
-      //e.target.setAttribute('daa-ll', dall);
-      e.target.removeAttribute('daa-ll');
+      e.target.setAttribute('daa-ll', '');
       if (userprompt === '') {
         window.location.href = allP[3].querySelector('a').href;
       } else {
