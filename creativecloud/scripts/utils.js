@@ -131,7 +131,7 @@ function getDecorateAreaFn() {
 
   return (area, options) => {
     if (isRootPage()) replaceDotMedia();
-    if (!lcpImgSet || window.document.querySelector('body > div > div > a.fragment')) loadLCPImage(area, options);
+    if (!lcpImgSet || window.document.querySelector('body > main > div > div > a.fragment')) loadLCPImage(area, options);
   };
 }
 
