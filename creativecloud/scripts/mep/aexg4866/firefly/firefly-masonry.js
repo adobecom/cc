@@ -1,4 +1,4 @@
-import { getLibs } from '../../../utils.js';
+import { getLibs, loadStyle } from '../../../utils.js';
 
 const { createTag, createIntersectionObserver } = await import(`${getLibs()}/utils/utils.js`);
 const { focusOnInput } = await import('../../../../features/firefly/firefly-interactive.js');
@@ -56,7 +56,7 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, interacti
     promptButton.addEventListener('click', async (e) => {
       const userprompt = promptInput?.value;
       const dall = userprompt === '' ? 'SubmitTextToImage' : 'SubmitTextToImageUserContent';
-      e.target.setAttribute('daa-ll', '');
+      e.target.setAttribute('daa-ll', dall);
       if (userprompt === '') {
         window.location.href = allP[3].querySelector('a').href;
       } else {
@@ -168,6 +168,7 @@ function processMobileMedia(ic, mediaMobile, allP, mediaDetail) {
 }
 
 export default async function setMultiImageMarquee(el) {
+  loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
   const interactiveMode = el.classList.contains('light') ? 'dark' : 'light';
   const ic = el.querySelector('.interactive-container');
