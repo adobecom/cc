@@ -10,6 +10,7 @@ jobs:
 
   log_time:
     name: log the time of push
+    if: github.repository_owner == 'adobecom'
     runs-on: ubuntu-latest
     environment: merge-to-stage
     
