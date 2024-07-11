@@ -61,7 +61,7 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, interacti
       if (userprompt === '') {
         window.location.href = allP[3].querySelector('a').href;
       } else if (el.classList.contains('express')) {
-        const isStageEnv = ['.stage.adobe.com/', '.hlx.page/'].some((urlSubstring) => window.document.domain.includes(urlSubstring));
+        const isStageEnv = ['.stage.adobe.com', '.hlx.page'].some((urlSubstring) => window.document.domain.includes(urlSubstring));
         const axEnvUrl = isStageEnv ? 'https://adobesparkpost.test-app.link/e/R1fMMbgHLKb' : 'https://adobesparkpost-web.app.link/e/RohcL3leMKb';
         const axGenerateImageUrl = `${axEnvUrl}?category=media&action=text+to+image&width=1080&height=1080&prompt=${userprompt}`;
         window.location.href = axGenerateImageUrl; // redirect to url that's selected
