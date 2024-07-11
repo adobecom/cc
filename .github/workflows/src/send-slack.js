@@ -1,38 +1,72 @@
-const { convertMarkdownToSlackFormat } = require('./helpers');
+const { parseTextToSlackBlocks } = require('./helpers.js');
+
+// Those env variables are set by an github action automatically
+const [owner, repo] = process.env.GITHUB_REPOSITORY?.split('/') || '';
+const auth = process.env.GITHUB_TOKEN;
 
 /**
  * Function to send Slack message
- * @param {string} pr_event - JSON string containing pull request details
- * @param {string} slack_webhook_url - Slack webhook URL
+ * @param {string} prNumber - PR number
+ * @param {string} slackWebHookURL - Slack webhook URL
  * @returns {Promise} - Promise representing the result of the Slack message sending process
  */
-const sendReleaseNotes = async (pr_event, slack_webhook_url) => {
-  pr_event = JSON.parse(pr_event);
-  const { number, html_url, title, body } = pr_event;
+const sendReleaseNotes = async (prNumber, slackWebHookURL) => {
+  console.log({ owner, repo, prNumber });
 
-  console.log({
-    number,
-    html_url,
-    title,
-    body,
-  });
+  try {
+    const number = parseInt(prNumber, 10);
+    const { Octokit } = await import('@octokit/rest');
+    const octokit = new Octokit({ auth });
+    const { status, data } = await octokit.pulls.get({
+      pull_number: number,
+      owner,
+      repo,
+    });
+    if (status !== 200) throw new Error('Cannot fetch the PR details');
 
-  // Format message text for Slack
-  const text = `\n
-:rocket: *Production Release*\n\n
-*TITLE:* ${title} | <${html_url}|#${number}>\n
-*PR DESCRIPTION:*\n ${convertMarkdownToSlackFormat(body)}
-`;
+    const { html_url: prLink, title, body } = data;
+    const formattedBodyBlocks = await parseTextToSlackBlocks(body, octokit);
+    const titleBlocks = [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: ':rocket: Production Release',
+        },
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `<${prLink}| *#${number}: ${title}*>`,
+        },
+      },
+    ];
 
-  console.log('slack text', text);
+    const slackBodyBlocks = JSON.stringify({ blocks: [...titleBlocks, ...formattedBodyBlocks] });
 
-  // Send message to Slack webhook
-  const result = await fetch(slack_webhook_url, {
-    method: 'POST',
-    body: JSON.stringify({ text }),
-  }).catch(console.error);
+    console.log('Message', slackBodyBlocks);
 
-  return result;
+    // Send message to Slack webhook
+    const result = await fetch(slackWebHookURL, {
+      method: 'POST',
+      body: slackBodyBlocks,
+      headers: { 'Content-type': 'application/json' },
+    }).catch(console.error);
+
+    if (result.status === 200) console.log('Slack Message sent');
+    else {
+      console.log(
+        `Slack Message not sent ${result.status}:${result.statusText}`
+      );
+      console.log(result);
+    }
+
+    return result;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
 };
 
 module.exports = { sendReleaseNotes };
