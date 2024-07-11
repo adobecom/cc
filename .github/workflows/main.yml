@@ -15,5 +15,14 @@ jobs:
     steps:
     - name: echoing date
       run: echo $(date +%Y%m%d%H%M)
-  
 
+    - name: list all closed pull requests in last 24 hours
+      id: list
+      uses: actions/github-list-pull-requests@v1.0
+      with:
+        token: ${{secrets.GITHUB_TOKEN}}
+        state: 'closed'
+        window: '24'
+    
+    - name: output
+      run: echo '${{ steps.list.outputs.pullRequestNumbers }}'
