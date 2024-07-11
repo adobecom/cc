@@ -16,7 +16,7 @@ jobs:
     
     steps:
     - name: echoing date
-      run: echo $(date +%Y%m%d%H%M)
+      run: echo $(github.repository_owner)
 
     - uses: actions/create-github-app-token@v1
       id: milo-pr-merge-token
