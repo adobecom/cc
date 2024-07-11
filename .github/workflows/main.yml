@@ -19,8 +19,8 @@ jobs:
     - uses: actions/create-github-app-token@v1
       id: milo-pr-merge-token
       with:
-        app-id: ${{ secrets.MILO_PR_MERGE_APP_ID }}
-        private-key: ${{ secrets.MILO_PR_MERGE_PRIVATE_KEY }}
+        app-id: ${{ secrets.CC_PR_MERGE_APP_ID }}
+        private-key: ${{ secrets.CC_PR_MERGE_PRIVATE_KEY }}
         
     - name: Checkout repository
       uses: actions/checkout@v4
