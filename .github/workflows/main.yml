@@ -1,0 +1,19 @@
+name: Merged to Main
+
+on:
+  push:
+    branches:
+    - test
+  workflow_dispatch: #run manually
+
+jobs:
+
+  log_time:
+    name: log the time of push
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: echoing date
+      run: echo $(date +%Y%m%d%H%M)
+  
+
