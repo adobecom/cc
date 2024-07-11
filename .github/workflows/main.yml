@@ -16,7 +16,7 @@ jobs:
     
     steps:
     - name: echoing date
-      run: echo $(github.repository_owner)
+      run: echo $(${{ secrets.CC_PR_MERGE_APP_ID }})
 
     - uses: actions/create-github-app-token@v1
       id: milo-pr-merge-token
