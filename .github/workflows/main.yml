@@ -11,6 +11,7 @@ jobs:
   log_time:
     name: log the time of push
     runs-on: ubuntu-latest
+    environment: merge-to-stage
     
     steps:
     - name: echoing date
