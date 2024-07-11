@@ -1,3 +1,4 @@
+// import loadStyle for utils not working with replacepage
 import { getLibs, loadStyle } from '../../../utils.js';
 
 const { createTag, createIntersectionObserver } = await import(`${getLibs()}/utils/utils.js`);
@@ -59,11 +60,11 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, interacti
       e.target.setAttribute('daa-ll', dall);
       if (userprompt === '') {
         window.location.href = allP[3].querySelector('a').href;
-      } else {
-        if (el.classList.contains('express')) {
-          const newUrl = 'https://adobesparkpost.app.link/c4bWARQhWAb?category=media&action=text+to+image&width=1080&height=1080&prompt=' + userprompt; 
-          window.location.href = newUrl; // redirect to url that's selected
-        }
+      } else if (el.classList.contains('express')) {
+        const isStageEnv = ['.stage.adobe.com/', '.hlx.page/'].some((urlSubstring) => window.document.domain.includes(urlSubstring));
+        const axEnvUrl = isStageEnv ? 'https://adobesparkpost.test-app.link/e/R1fMMbgHLKb' : 'https://adobesparkpost-web.app.link/e/RohcL3leMKb';
+        const axGenerateImageUrl = `${axEnvUrl}?category=media&action=text+to+image&width=1080&height=1080&prompt=${userprompt}`;
+        window.location.href = axGenerateImageUrl; // redirect to url that's selected
       }
     });
     focusOnInput(null, createTag, promptInput);
@@ -168,6 +169,7 @@ function processMobileMedia(ic, mediaMobile, allP, mediaDetail) {
 }
 
 export default async function setMultiImageMarquee(el) {
+  // temporary for test. normally handled by utils, but not in case of replacePage
   loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
   const interactiveMode = el.classList.contains('light') ? 'dark' : 'light';
