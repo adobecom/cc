@@ -1,4 +1,4 @@
-name: Merged to Main
+name: Merge to stage
 
 on:
   push:
@@ -16,13 +16,13 @@ jobs:
     - name: echoing date
       run: echo $(date +%Y%m%d%H%M)
 
-    - name: list all closed pull requests in last 24 hours
-      id: list
-      uses: actions/github-list-pull-requests@v1.0
+    - uses: actions/create-github-app-token@v1
+      id: milo-pr-merge-token
       with:
-        token: ${{secrets.GITHUB_TOKEN}}
-        state: 'closed'
-        window: '24'
-    
-    - name: output
-      run: echo '${{ steps.list.outputs.pullRequestNumbers }}'
+        app-id: ${{ secrets.MILO_PR_MERGE_APP_ID }}
+        private-key: ${{ secrets.MILO_PR_MERGE_PRIVATE_KEY }}
+        
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - run: echo ${{ steps.milo-pr-merge-token.outputs.token }}
