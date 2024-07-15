@@ -91,6 +91,12 @@ export default async function init(el) {
           loadStyle('/creativecloud/features/firefly/firefly-masonry.css', resolve);
         });
         await stylePromise;
+        if (el.classList.contains('express')) {
+          const expressStylePromise = new Promise((resolve) => {
+            loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css', resolve);
+          });
+          await expressStylePromise;
+        }
         interactiveInit(el, decorateButtons, decorateBlockBg, createTag);
         const { default: setMultiImageMarquee } = await import('../firefly/firefly-masonry.js');
         await setMultiImageMarquee(el);

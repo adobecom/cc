@@ -1,5 +1,5 @@
 // import loadStyle for utils not working with replacepage
-import { getLibs, loadStyle } from '../../../utils.js';
+import { getLibs, getConfig } from '../../../utils.js';
 
 const { createTag, createIntersectionObserver } = await import(`${getLibs()}/utils/utils.js`);
 const { focusOnInput } = await import('../../../../features/firefly/firefly-interactive.js');
@@ -61,9 +61,9 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, interacti
       if (userprompt === '') {
         window.location.href = allP[3].querySelector('a').href;
       } else if (el.classList.contains('express')) {
+        const config = getConfig();
         const promptCharLimit = 1024;
-        const isStageEnv = ['.stage.adobe.com', '.hlx.page'].some((urlSubstring) => window.document.domain.includes(urlSubstring));
-        const axEnvUrl = isStageEnv ? 'https://adobesparkpost.test-app.link/e/R1fMMbgHLKb' : 'https://adobesparkpost-web.app.link/e/RohcL3leMKb';
+        const axEnvUrl = config.env?.name?.includes('prod') ? 'https://adobesparkpost-web.app.link/e/RohcL3leMKb' : 'https://adobesparkpost.test-app.link/e/R1fMMbgHLKb';
         window.location.href = `${axEnvUrl}?prompt=${userprompt.length <= promptCharLimit ? userprompt : userprompt.substring(0, promptCharLimit)}`;
       }
     });
@@ -169,8 +169,6 @@ function processMobileMedia(ic, mediaMobile, allP, mediaDetail) {
 }
 
 export default async function setMultiImageMarquee(el) {
-  // temporary for test. normally handled by utils, but not in case of replacePage
-  loadStyle('/creativecloud/blocks/interactive-marquee/milo-marquee.css');
   const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
   const interactiveMode = el.classList.contains('light') ? 'dark' : 'light';
   const ic = el.querySelector('.interactive-container');
