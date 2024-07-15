@@ -25,9 +25,16 @@ export default async function init(el) {
       const { default: initSidenav } = await import('../sidenav/sidenav.js');
       const sidenav = await initSidenav(sidenavEl);
       el.appendChild(sidenav);
+      sidenav.setAttribute('daa-lh', 'b1|sidenav');
       await sidenav.updateComplete;
       if (merchCards) {
+        sidenav.filters.addEventListener('click', ({ target }) => {
+          merchCards.setAttribute('daa-lh', target.getAttribute('daa-ll'));
+        });
         merchCards.sidenav = sidenav;
+        merchCards.querySelectorAll('merch-card').forEach((card) => {
+          card.setAttribute('daa-lh', `card-${card.name}`);
+        });
         merchCards.requestUpdate();
       }
     });

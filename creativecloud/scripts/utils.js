@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -50,9 +49,21 @@ const miloLibs = setLibs('/libs');
 const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
 export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
 
+function defineDeviceByScreenSize() {
+  const DESKTOP_SIZE = 1200;
+  const MOBILE_SIZE = 600;
+  const screenWidth = window.innerWidth;
+  if (screenWidth >= DESKTOP_SIZE) {
+    return 'DESKTOP';
+  }
+  if (screenWidth <= MOBILE_SIZE) {
+    return 'MOBILE';
+  }
+  return 'TABLET';
+}
+
 function getDecorateAreaFn() {
   let lcpImgSet = false;
-
   // Load LCP image immediately
   const eagerLoad = (lcpImg) => {
     lcpImg?.setAttribute('loading', 'eager');
@@ -78,7 +89,7 @@ function getDecorateAreaFn() {
   }
 
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
-    const firstBlock = area.querySelector('body > main > div > div');
+    const firstBlock = fragmentLink ? area.querySelector('body > div > div') : area.querySelector('body > main > div > div');
     let fgDivs = null;
     switch (true) {
       case firstBlock?.classList.contains('changebg'): {
@@ -86,9 +97,21 @@ function getDecorateAreaFn() {
         import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
         break;
       }
-      case firstBlock?.classList.contains('marquee'):
-        firstBlock.querySelectorAll('img').forEach(eagerLoad);
+      case firstBlock?.classList.contains('marquee'): {
+        // Load image eagerly for specific breakpoint
+        const viewport = defineDeviceByScreenSize();
+        const bgImages = firstBlock.querySelectorAll('div').length > 1 ? firstBlock.querySelector('div') : null;
+        const lcpImgVP = {
+          MOBILE: 'div img',
+          TABLET: 'div:nth-child(2) img',
+          DESKTOP: 'div:last-child img',
+        };
+        if (bgImages?.querySelectorAll('img').length === 1) eagerLoad(bgImages?.querySelector('div img'));
+        else eagerLoad(bgImages?.querySelector(`:scope ${lcpImgVP[viewport]}`));
+        // Foreground image
+        eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
         break;
+      }
       case firstBlock?.classList.contains('interactive-marquee'):
         firstBlock.querySelector(':scope > div:nth-child(1)').querySelectorAll('img').forEach(eagerLoad);
         fgDivs = firstBlock.querySelector(':scope > div:nth-child(2)').querySelectorAll('div:not(:first-child)');
@@ -108,7 +131,7 @@ function getDecorateAreaFn() {
 
   return (area, options) => {
     if (isRootPage()) replaceDotMedia();
-    if (!lcpImgSet) loadLCPImage(area, options);
+    if (!lcpImgSet || window.document.querySelector('body > main > div > div > a.fragment')) loadLCPImage(area, options);
   };
 }
 
