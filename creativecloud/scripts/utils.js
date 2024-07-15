@@ -102,7 +102,7 @@ function getDecorateAreaFn() {
         const viewport = defineDeviceByScreenSize();
         const bgImages = firstBlock.querySelectorAll('div').length > 1 ? firstBlock.querySelector('div') : null;
         const lcpImgVP = {
-          MOBILE: 'div img',
+          MOBILE: 'div:first-child img',
           TABLET: 'div:nth-child(2) img',
           DESKTOP: 'div:last-child img',
         };
