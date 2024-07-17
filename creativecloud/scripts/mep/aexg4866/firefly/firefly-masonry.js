@@ -44,6 +44,8 @@ function getImgSrc(pic, viewport = '') {
 async function createEmbellishment(allP, media, mediaMobile, ic, mode, interactiveMode, el) {
   const [promptText, buttonText] = allP[3].innerText.split('|');
   const fireflyPrompt = await createPromptField(`${promptText}`, `${buttonText}`, `ff-masonry, ${interactiveMode}`);
+  const promptCharLimit = '1024';
+  fireflyPrompt.querySelector('input').setAttribute('maxlength', promptCharLimit);
   fireflyPrompt.classList.add('ff-masonry-prompt');
   const enticementText = allP[0].textContent.trim();
   const enticementIcon = allP[0].querySelector('a').href;
@@ -62,9 +64,8 @@ async function createEmbellishment(allP, media, mediaMobile, ic, mode, interacti
         window.location.href = allP[3].querySelector('a').href;
       } else if (el.classList.contains('express')) {
         const config = getConfig();
-        const promptCharLimit = 1024;
         const axEnvUrl = config.env?.name?.includes('prod') ? 'https://adobesparkpost-web.app.link/e/RohcL3leMKb' : 'https://adobesparkpost.test-app.link/e/R1fMMbgHLKb';
-        window.location.href = `${axEnvUrl}?prompt=${userprompt.length <= promptCharLimit ? userprompt : userprompt.substring(0, promptCharLimit)}`;
+        window.location.href = `${axEnvUrl}?prompt=${userprompt}`;
       }
     });
     focusOnInput(null, createTag, promptInput);
