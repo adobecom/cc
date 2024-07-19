@@ -73,7 +73,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
 };
 
 const getTypes = (arrayTypes, typeText) => {
-  const tag = createTag('merch-sidenav-checkbox-group', { title: typeText, deeplink: 'types', 'daa-lh': 'b3|types' });
+  const tag = createTag('merch-sidenav-checkbox-group', { title: typeText, deeplink: 'types' });
   arrayTypes.forEach((item) => {
     if (item.name?.length > 0) {
       const checkbox = createTag('sp-checkbox', {
@@ -136,7 +136,7 @@ const appendFilters = async (root, link, explicitCategoriesElt, typeText) => {
 function appendSearch(rootNav, searchText) {
   if (searchText) {
     const spectrumSearch = createTag('sp-search', { placeholder: searchText });
-    const search = createTag('merch-search', { deeplink: 'search', 'daa-lh': 'b1|search' });
+    const search = createTag('merch-search', { deeplink: 'search' });
     search.append(spectrumSearch);
     rootNav.append(search);
   }
@@ -165,7 +165,7 @@ export default async function init(el) {
   const deps = Promise.all([
     import('../../deps/merch-sidenav.js'),
     // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
-    import('/libs/deps/lit-all.min.js'),
+    import(`${libs}/deps/lit-all.min.js`),
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
     import(`${libs}/features/spectrum-web-components/dist/base.js`),
     import(`${libs}/features/spectrum-web-components/dist/shared.js`),
