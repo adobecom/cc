@@ -73,7 +73,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
 };
 
 const getTypes = (arrayTypes, typeText) => {
-  const tag = createTag('merch-sidenav-checkbox-group', { title: typeText, deeplink: 'types', 'daa-lh': 'b3|types' });
+  const tag = createTag('merch-sidenav-checkbox-group', { sidenavCheckboxTitle: typeText, deeplink: 'types', 'daa-lh': 'b3|types' });
   arrayTypes.forEach((item) => {
     if (item.name?.length > 0) {
       const checkbox = createTag('sp-checkbox', {
