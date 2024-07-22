@@ -144,12 +144,12 @@ function appendSearch(rootNav, searchText) {
 
 function appendResources(rootNav, resourceLink) {
   const literals = resourceLink.textContent.split(':');
-  const sidenavListTitle = literals[0].trim();
+  const title = literals[0].trim();
   const tag = createTag('sp-sidenav', { manageTabIndex: true, class: 'resources' });
-  const merchTag = createTag('merch-sidenav-list', { sidenavListTitle, 'daa-ll': generateDaaLL(sidenavListTitle, 'resources') });
+  const merchTag = createTag('merch-sidenav-list', { title, 'daa-ll': generateDaaLL(title, 'resources') });
   merchTag.append(tag);
   const label = literals[1].trim();
-  const link = createTag('sp-sidenav-item', { href: resourceLink.href, 'daa-ll': generateDaaLL(sidenavListTitle, 'special-offers'), target: '_blank', selected: false });
+  const link = createTag('sp-sidenav-item', { href: resourceLink.href, 'daa-ll': generateDaaLL(title, 'special-offers'), target: '_blank', selected: false });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
     link.append(document.createTextNode(label));
     const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon' });
