@@ -1,3 +1,4 @@
+import { MerchSidenavCheckboxGroup } from '../../../../../mas/web-components/src/sidenav/merch-sidenav-checkbox-group.js';
 import { createTag, localizeLink, getLibs } from '../../scripts/utils.js';
 
 const CATEGORY_ID_PREFIX = 'categories/';
@@ -73,7 +74,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
 };
 
 const getTypes = (arrayTypes, typeText) => {
-  const tag = createTag('merch-sidenav-checkbox-group', { title: typeText, deeplink: 'types', 'daa-lh': 'b3|types' });
+  const tag = createTag('merch-sidenav-checkbox-group', { sidenavCheckboxTitle: typeText, deeplink: 'types', 'daa-lh': 'b3|types' });
   arrayTypes.forEach((item) => {
     if (item.name?.length > 0) {
       const checkbox = createTag('sp-checkbox', {
@@ -144,12 +145,12 @@ function appendSearch(rootNav, searchText) {
 
 function appendResources(rootNav, resourceLink) {
   const literals = resourceLink.textContent.split(':');
-  const title = literals[0].trim();
+  const sidenavListTitle = literals[0].trim();
   const tag = createTag('sp-sidenav', { manageTabIndex: true, class: 'resources' });
-  const merchTag = createTag('merch-sidenav-list', { title, 'daa-ll': generateDaaLL(title, 'resources') });
+  const merchTag = createTag('merch-sidenav-list', { sidenavListTitle, 'daa-ll': generateDaaLL(sidenavListTitle, 'resources') });
   merchTag.append(tag);
   const label = literals[1].trim();
-  const link = createTag('sp-sidenav-item', { href: resourceLink.href, 'daa-ll': generateDaaLL(title, 'special-offers'), target: '_blank', selected: false });
+  const link = createTag('sp-sidenav-item', { href: resourceLink.href, 'daa-ll': generateDaaLL(sidenavListTitle, 'special-offers'), target: '_blank', selected: false });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
     link.append(document.createTextNode(label));
     const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon' });
@@ -177,14 +178,14 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
   ]);
 
-  const title = mainRow?.querySelector('h2,h3')?.textContent.trim();
+  const sidenavTitle = mainRow?.querySelector('h2,h3')?.textContent.trim();
   const searchText = mainRow?.querySelector('p > strong')?.textContent.trim();
   const typeText = mainRow?.querySelector('p > em')?.textContent.trim();
   // eslint-disable-next-line prefer-const
   const resourcesLink = mainRow?.querySelector('a');
   let endpoint = categoryRow?.querySelector('a');
   await deps;
-  const rootNav = createTag('merch-sidenav', { title });
+  const rootNav = createTag('merch-sidenav', { sidenavTitle });
   el.replaceWith(rootNav);
   appendSearch(rootNav, searchText);
   if (endpoint) {
