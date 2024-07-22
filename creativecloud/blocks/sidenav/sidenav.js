@@ -1,4 +1,3 @@
-import { MerchSidenavCheckboxGroup } from '../../../../../mas/web-components/src/sidenav/merch-sidenav-checkbox-group.js';
 import { createTag, localizeLink, getLibs } from '../../scripts/utils.js';
 
 const CATEGORY_ID_PREFIX = 'categories/';
@@ -74,7 +73,7 @@ const getCategories = (items, isMultilevel, mapCategories) => {
 };
 
 const getTypes = (arrayTypes, typeText) => {
-  const tag = createTag('merch-sidenav-checkbox-group', { sidenavCheckboxTitle: typeText, deeplink: 'types', 'daa-lh': 'b3|types' });
+  const tag = createTag('merch-sidenav-checkbox-group', { title: typeText, deeplink: 'types', 'daa-lh': 'b3|types' });
   arrayTypes.forEach((item) => {
     if (item.name?.length > 0) {
       const checkbox = createTag('sp-checkbox', {
@@ -178,14 +177,14 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
   ]);
 
-  const sidenavTitle = mainRow?.querySelector('h2,h3')?.textContent.trim();
+  const title = mainRow?.querySelector('h2,h3')?.textContent.trim();
   const searchText = mainRow?.querySelector('p > strong')?.textContent.trim();
   const typeText = mainRow?.querySelector('p > em')?.textContent.trim();
   // eslint-disable-next-line prefer-const
   const resourcesLink = mainRow?.querySelector('a');
   let endpoint = categoryRow?.querySelector('a');
   await deps;
-  const rootNav = createTag('merch-sidenav', { sidenavTitle });
+  const rootNav = createTag('merch-sidenav', { title });
   el.replaceWith(rootNav);
   appendSearch(rootNav, searchText);
   if (endpoint) {
