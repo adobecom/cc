@@ -177,14 +177,14 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
   ]);
 
-  const title = mainRow?.querySelector('h2,h3')?.textContent.trim();
+  const sidenavTitle = mainRow?.querySelector('h2,h3')?.textContent.trim();
   const searchText = mainRow?.querySelector('p > strong')?.textContent.trim();
   const typeText = mainRow?.querySelector('p > em')?.textContent.trim();
   // eslint-disable-next-line prefer-const
   const resourcesLink = mainRow?.querySelector('a');
   let endpoint = categoryRow?.querySelector('a');
   await deps;
-  const rootNav = createTag('merch-sidenav', { title });
+  const rootNav = createTag('merch-sidenav', { sidenavTitle });
   el.replaceWith(rootNav);
   appendSearch(rootNav, searchText);
   if (endpoint) {
