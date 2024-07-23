@@ -1,7 +1,6 @@
 function getUnityLibs(prodLibs, project = 'unity') {
   let libs = '';
   const { hostname, origin } = window.location;
-  if (project === 'unity') { libs = `${origin}/unitylibs`; return libs; }
   if (!hostname.includes('hlx.page')
     && !hostname.includes('hlx.live')
     && !hostname.includes('localhost')) {
