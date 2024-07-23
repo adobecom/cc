@@ -87,14 +87,14 @@
   .interactive-enabled.generate-side .step-generate .generate-prompt-button,
   .interactive-enabled .step-generate .generate-side .generate-prompt-button {
     left: auto;
-    right: -21.5%;
+    right: -18.5%;
     bottom: calc(50% - 80px);
   }
 
   [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
   [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
     left: auto;
-    right: -21.5%;
+    right: -18.5%;
   }
 
   .interactive-enabled .step-generate .generate-text-container {
@@ -134,20 +134,20 @@
     .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
     .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
       flex-direction: row;
-      left: -20%;
+      left: -21.5%;
       right: auto;
     }
 
     [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
     [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
-      left: -20%;
+      left: -21.5%;
       right: auto;
     }
 
     [dir="rtl"] .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
     [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
       left: auto;
-      right: -20%;
+      right: -21.5%;
     }
     
     [dir="rtl"] .interactive-enabled .step-generate .generate-text-container,
