@@ -102,11 +102,11 @@ function getDecorateAreaFn() {
         const viewport = defineDeviceByScreenSize();
         const bgImages = firstBlock.querySelectorAll('div').length > 1 ? firstBlock.querySelector('div') : null;
         const lcpImgVP = {
-          MOBILE: 'div img',
+          MOBILE: 'div:first-child img',
           TABLET: 'div:nth-child(2) img',
           DESKTOP: 'div:last-child img',
         };
-        if (bgImages?.querySelectorAll('img').length === 1) eagerLoad(bgImages?.querySelector('div img'));
+        if (bgImages?.querySelectorAll('img').length === 1 && bgImages.querySelectorAll('div').length === 1) eagerLoad(bgImages?.querySelector('div img'));
         else eagerLoad(bgImages?.querySelector(`:scope ${lcpImgVP[viewport]}`));
         // Foreground image
         eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
