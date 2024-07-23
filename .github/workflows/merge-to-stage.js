@@ -1,0 +1,270 @@
+const STAGE = 'stage-mock';
+const PROD = 'main-mock';
+const PR_TITLE = '[Release] Stage to Main';
+const SEEN = {};
+let github, owner, repo;
+let body = '';
+const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 1;
+const LABELS = {
+  highPriority: 'high priority',
+  readyForStage: 'Ready for Stage',
+  SOTPrefix: 'SOT',
+  zeroImpact: 'zero-impact',
+};
+const TEAM_MENTIONS = [
+  '@adobecom/creative-cloud-sot',
+];
+
+const getChecks = ({ pr, github, owner, repo }) =>
+  github.rest.checks
+    .listForRef({ owner, repo, ref: pr.head.sha })
+    .then(({ data }) => {
+      const checksByName = data.check_runs.reduce((map, check) => {
+        if (
+          !map.has(check.name) ||
+          new Date(map.get(check.name).completed_at) <
+          new Date(check.completed_at)
+        ) {
+          map.set(check.name, check);
+        }
+        return map;
+      }, new Map());
+      pr.checks = Array.from(checksByName.values());
+      return pr;
+    });
+
+const getReviews = ({ pr, github, owner, repo }) =>
+  github.rest.pulls
+    .listReviews({
+      owner,
+      repo,
+      pull_number: pr.number,
+    })
+    .then(({ data }) => {
+      pr.reviews = data;
+      return pr;
+    });
+
+const commentOnPR = async (comment, prNumber) => {
+  console.log(comment); // Logs for debugging the action.
+  const { data: comments } = await github.rest.issues.listComments({
+    owner,
+    repo,
+    issue_number: prNumber,
+  });
+
+  const dayAgo = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+  const hasRecentComment = comments
+    .filter(({ created_at }) => new Date(created_at) > dayAgo)
+    .some(({ body }) => body === comment);
+  if (hasRecentComment) return console.log('Comment exists for', prNumber);
+
+  await github.rest.issues.createComment({
+    owner,
+    repo,
+    issue_number: prNumber,
+    body: comment,
+  });
+};
+
+const hasFailingChecks = (checks) =>
+  checks.some(
+    ({ conclusion, name }) =>
+      name !== 'merge-to-stage' && conclusion === 'failure'
+  );
+
+const addFiles = ({ pr, github, owner, repo }) =>
+  github.rest.pulls
+    .listFiles({ owner, repo, pull_number: pr.number })
+    .then(({ data }) => {
+      pr.files = data.map(({ filename }) => filename);
+      return pr;
+    });
+
+const addLabels = ({ pr, github, owner, repo }) =>
+  github.rest.issues
+    .listLabelsOnIssue({ owner, repo, issue_number: pr.number })
+    .then(({ data }) => {
+      pr.labels = data.map(({ name }) => name);
+      return pr;
+    });
+
+const merge = async ({ prs, type }) => {
+  console.log(`Merging ${prs.length || 0} ${type} PRs that are ready... `);
+
+  for await (const { number, files, html_url, title } of prs) {
+    try {
+      console.log(SEEN);
+      if (files.some((file) => SEEN[file])) {
+        commentOnPR(
+          `Skipped ${number}: ${title} due to file overlap. Merging will be attempted in the next batch`,
+          number
+        );
+        continue;
+      }
+      if (type !== LABELS.zeroImpact) {
+        files.forEach((file) => (SEEN[file] = true));
+      }
+      console.log("process.env.LOCAL_RUN =", process.env.LOCAL_RUN)
+      if (!process.env.LOCAL_RUN) {
+        await github.rest.pulls.merge({
+          owner,
+          repo,
+          pull_number: number,
+          merge_method: 'squash',
+        });
+        const prefix = type === LABELS.zeroImpact ? ' [ZERO IMPACT]' : '';
+        body = `-${prefix} ${html_url}\n${body}`;
+      }
+    } catch (error) {
+      commentOnPR(`Error merging ${number}: ${title} ` + error.message, number);
+      files.forEach((file) => (SEEN[file] = false));
+    }
+  }
+};
+
+const openStageToMainPR = async () => {
+  const { data: comparisonData } = await github.rest.repos.compareCommits({
+    owner,
+    repo,
+    base: PROD,
+    head: STAGE,
+  });
+
+  for (const commit of comparisonData.commits) {
+    const { data: pullRequestData } =
+      await github.rest.repos.listPullRequestsAssociatedWithCommit({
+        owner,
+        repo,
+        commit_sha: commit.sha,
+      });
+    console.log("Value of body", body);
+    for (const pr of pullRequestData) {
+      console.log(`- ${pr.html_url}\n${body}`);
+      if (!body.includes(pr.html_url)) body = `- ${pr.html_url}\n${body}`;
+    }
+  }
+
+  try {
+    const {
+      data: { html_url, number },
+    } = await github.rest.pulls.create({
+      owner,
+      repo,
+      title: PR_TITLE,
+      head: STAGE,
+      base: PROD,
+      body,
+    });
+
+    await github.rest.issues.createComment({
+      owner,
+      repo,
+      issue_number: number,
+      body: `Testing can start ${TEAM_MENTIONS.join(' ')}`,
+    });
+  } catch (error) {
+    if (error.message.includes('No commits between main and stage'))
+      return console.log('No new commits, no stage->main PR opened');
+    throw error;
+  }
+};
+
+const getPRs = async () => {
+  let prs = await github.rest.pulls
+    .list({ owner, repo, state: 'open', per_page: 100, base: STAGE })
+    .then(({ data }) => data);
+  await Promise.all(prs.map((pr) => addLabels({ pr, github, owner, repo })));
+  await Promise.all([
+    ...prs.map((pr) => addFiles({ pr, github, owner, repo })),
+    ...prs.map((pr) => getChecks({ pr, github, owner, repo })),
+    ...prs.map((pr) => getReviews({ pr, github, owner, repo })),
+  ]);
+  prs = prs.filter(({ checks, reviews, number, title }) => {
+    if (hasFailingChecks(checks)) {
+      commentOnPR(
+        `Skipped merging ${number}: ${title} due to failing checks`,
+        number
+      );
+      return false;
+    }
+
+    const approvals = reviews.filter(({ state }) => state === 'APPROVED');
+    if (approvals.length < REQUIRED_APPROVALS) {
+      commentOnPR(
+        `Skipped merging ${number}: ${title} due to insufficient approvals. Required: ${REQUIRED_APPROVALS} approvals`,
+        number
+      );
+      return false;
+    }
+    return true;
+  });
+  return prs.reverse().reduce(
+    (categorizedPRs, pr) => {
+      console.log("PR", pr.labels)
+      if (pr.labels.includes(LABELS.zeroImpact)) {
+        categorizedPRs.zeroImpactPRs.push(pr);
+      } else if (pr.labels.includes(LABELS.highPriority)) {
+        categorizedPRs.highImpactPRs.push(pr);
+      } else {
+        categorizedPRs.normalPRs.push(pr);
+      }
+      return categorizedPRs;
+    },
+    { zeroImpactPRs: [], highImpactPRs: [], normalPRs: [] }
+  );
+}
+
+const getStageToMainPR = () =>
+  github.rest.pulls
+    .list({ owner, repo, state: 'open', base: PROD })
+    .then(({ data } = {}) => data.find(({ title } = {}) => title === PR_TITLE))
+    .then((pr) => pr && addLabels({ pr, github, owner, repo }))
+    .then((pr) => pr && addFiles({ pr, github, owner, repo }))
+    .then((pr) => {
+      pr?.files.forEach((file) => (SEEN[file] = true));
+      return pr;
+    });
+
+const main = async (params) => {
+  github = params.github;
+  owner = params.context.repo.owner;
+  repo = params.context.repo.repo;
+  try {
+    const stageToMainPR = await getStageToMainPR();
+    console.log("Stage to main PR exits", !!stageToMainPR);
+    console.log("owner", owner);
+    console.log("repo", repo);
+    if (stageToMainPR) body = stageToMainPR.body;
+    const { zeroImpactPRs, highImpactPRs, normalPRs } = await getPRs();
+    await merge({ prs: zeroImpactPRs, type: LABELS.zeroImpact });
+    if (stageToMainPR?.labels.some((label) => label.includes(LABELS.SOTPrefix)))
+      return console.log('PR exists & testing started. Stopping execution.');
+    await merge({ prs: highImpactPRs, type: LABELS.highPriority });
+    await merge({ prs: normalPRs, type: 'normal' });
+    //create or merge to existing PR.
+    if (!stageToMainPR) await openStageToMainPR();
+    if (stageToMainPR && body !== stageToMainPR.body) {
+      console.log("Updating PR's body...");
+      await github.rest.pulls.update({
+        owner,
+        repo,
+        pull_number: stageToMainPR.number,
+        body: body,
+      });
+    }
+    console.log('Process successfully executed.');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+if (process.env.LOCAL_RUN) {
+  const { github, context } = getLocalConfigs();
+  main({
+    github,
+    context,
+  });
+}
+
+module.exports = main;
