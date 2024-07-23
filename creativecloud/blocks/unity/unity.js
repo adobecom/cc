@@ -1,4 +1,4 @@
-function getUnityLibs(prodLibs, project = 'unity') {
+function getUnityLibs(prodLibs = '/unitylibs') {
   let libs = '';
   const { hostname, origin } = window.location;
   if (!hostname.includes('hlx.page')
@@ -12,8 +12,7 @@ function getUnityLibs(prodLibs, project = 'unity') {
 }
 
 export default async function init(el) {
-  const projectName = 'cc';
-  const unitylibs = getUnityLibs('/unitylibs', projectName);
+  const unitylibs = getUnityLibs();
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
-  wfinit(el, projectName, unitylibs);
+  wfinit(el, 'cc', unitylibs);
 }
