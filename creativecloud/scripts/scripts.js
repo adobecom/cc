@@ -132,6 +132,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   decorateArea,
+  adobeid: { api_parameters: { check_token: { guest_allowed: true } } },
   stage: {
     marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
     edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
