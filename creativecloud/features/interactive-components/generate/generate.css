@@ -134,20 +134,20 @@
     .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
     .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
       flex-direction: row;
-      left: -21.5%;
+      left: -20%;
       right: auto;
     }
 
     [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
     [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
-      left: -21.5%;
+      left: -20%;
       right: auto;
     }
 
     [dir="rtl"] .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
     [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
       left: auto;
-      right: -21.5%;
+      right: -20%;
     }
     
     [dir="rtl"] .interactive-enabled .step-generate .generate-text-container,
