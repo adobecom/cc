@@ -84,12 +84,6 @@
     padding: 0;
   }
 
-  [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
-  [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
-    left: auto;
-    right: -21.5%;
-  }
-
   .interactive-enabled .step-generate .generate-text-container {
     width: 215px;
     min-width: 215px;
