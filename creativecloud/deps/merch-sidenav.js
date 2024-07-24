@@ -1,4 +1,4 @@
-// branch: MWPW-153245 commit: 49a1e14b9adc2a2ff6b0436528bb3d3e91170d0c Wed, 24 Jul 2024 17:06:11 GMT
+// branch: main commit: edd23b3bf8505bfd02280d9ae77ece1ce3a25147 Wed, 24 Jul 2024 17:16:07 GMT
 import{html as k,css as H,LitElement as P}from"/libs/deps/lit-all.min.js";var a=class{constructor(e,t){this.key=Symbol("match-media-key"),this.matches=!1,this.host=e,this.host.addController(this),this.media=window.matchMedia(t),this.matches=this.media.matches,this.onChange=this.onChange.bind(this),e.addController(this)}hostConnected(){var e;(e=this.media)==null||e.addEventListener("change",this.onChange)}hostDisconnected(){var e;(e=this.media)==null||e.removeEventListener("change",this.onChange)}onChange(e){this.matches!==e.matches&&(this.matches=e.matches,this.host.requestUpdate(this.key,!this.matches))}};import{css as A}from"/libs/deps/lit-all.min.js";var l=A`
     h2 {
         font-size: 11px;
