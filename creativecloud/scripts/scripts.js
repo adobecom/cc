@@ -132,6 +132,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   decorateArea,
+  adobeid: { api_parameters: { check_token: { guest_allowed: true } } },
   stage: {
     pdfViewerClientId: '9f7f19a46bd542e2b8548411e51eb4d4',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
