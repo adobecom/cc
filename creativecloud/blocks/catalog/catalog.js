@@ -2,13 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 
 const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-const EVENT_MERCH_CARD_ACTION_MENU_TOGGLE = 'merch-card:action-menu-toggle';
 
-const EVENT_MERCH_SEARCH_CHANGE = 'merch-search:change';
-
-const EVENT_MERCH_CARD_COLLECTION_SORT = 'merch-card-collection:sort';
-
-const EVENT_MERCH_CARD_COLLECTION_SHOWMORE = 'merch-card-collection:showmore';
 // Helps with TBT: MWPW-145127
 loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
 
@@ -30,15 +24,38 @@ function handleCustomAnalyticsEvent(eventName, element) {
   });
 }
 
-const addCustomAnalyticsListeners = (events, component) => {
-  events.forEach((e) => {
-    component.addEventListener(e, ({ detail }) => {
-      const eventSuffix = e.substring(e.indexOf(':'));
-      const eventName = detail.value ? `${detail.value}--${eventSuffix}` : e;
-      handleCustomAnalyticsEvent(eventName, component);
+function enableAnalytics(catalog, merchCards, sidenav) {
+  merchCards.querySelectorAll('merch-card').forEach(async (card) => {
+    card.querySelectorAll('a[daa-ll]').forEach((anchor) => {
+      const ll = anchor.getAttribute('daa-ll');
+      anchor.setAttribute('daa-ll', `${ll.slice(0, ll.indexOf('--'))}--${card.name}`);
     });
   });
-};
+  merchCards.addEventListener('merch-card-collection:sort', ({ detail }) => {
+    handleCustomAnalyticsEvent(`${detail?.value === 'authored' ? 'popularity' : detail?.value}--sort`, merchCards);
+  });
+  merchCards.addEventListener('merch-card-collection:showmore', () => {
+    handleCustomAnalyticsEvent('showmore', merchCards);
+  });
+  merchCards.addEventListener('merch-card:action-menu-toggle', ({ detail }) => {
+    handleCustomAnalyticsEvent(`menu-toggle--${detail.card}`, merchCards);
+  });
+  sidenav.search.addEventListener('merch-search:change', ({ detail }) => {
+    handleCustomAnalyticsEvent(`${detail.value}--search`, sidenav.search);
+  });
+  merchCards.addEventListener('click', ({ target }) => {
+    if (target.tagName === 'MERCH-ICON') {
+      const card = target.closest('merch-card');
+      handleCustomAnalyticsEvent(`merch-icon-click--${card?.name}`, merchCards);
+    }
+  });
+
+  sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
+    const lh = catalog.getAttribute('daa-lh');
+    const mepValue = lh?.substring(lh.indexOf('|')) || '';
+    catalog.setAttribute('daa-lh', `${target?.selectedValue || 'all'}${mepValue}`);
+  });
+}
 
 /** container block */
 export default async function init(el) {
@@ -61,37 +78,9 @@ export default async function init(el) {
       el.appendChild(sidenav);
       await sidenav.updateComplete;
       if (merchCards) {
-        addCustomAnalyticsListeners(
-          [
-            EVENT_MERCH_CARD_COLLECTION_SORT,
-            EVENT_MERCH_CARD_COLLECTION_SHOWMORE,
-            EVENT_MERCH_CARD_ACTION_MENU_TOGGLE,
-          ],
-          merchCards,
-        );
-        sidenav.search.addEventListener(EVENT_MERCH_SEARCH_CHANGE, ({ detail }) => {
-          handleCustomAnalyticsEvent(`${detail.value}--search`, sidenav.search);
-        });
-        merchCards.addEventListener('click', ({ target }) => {
-          if (target.tagName === 'MERCH-ICON') {
-            handleCustomAnalyticsEvent('merch-icon-click', merchCards);
-          }
-        });
-
-        sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
-          const lh = el.getAttribute('daa-lh');
-          const mepValue = lh?.substring(lh.indexOf('|')) || '';
-          el.setAttribute('daa-lh', `${target?.selectedValue || 'all'}${mepValue}`);
-        });
-
         merchCards.sidenav = sidenav;
-        merchCards.querySelectorAll('merch-card').forEach(async (card) => {
-          card.querySelectorAll('a[daa-ll]').forEach((anchor) => {
-            const ll = anchor.getAttribute('daa-ll');
-            anchor.setAttribute('daa-ll', `${ll.slice(0, ll.indexOf('--'))}--${card.name}`);
-          });
-        });
         merchCards.requestUpdate();
+        enableAnalytics(el, merchCards, sidenav);
       }
     });
   }
