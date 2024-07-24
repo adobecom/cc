@@ -1,11 +1,11 @@
-.reading-width {
-  max-width: 600px;
+ .reading-width {
+  max-width: 800px;
   margin: auto;
   padding: 20px;
 }
 
  .reading-width-footer-tag {
-  max-width: 600px;
+  max-width: 800px;
   margin: -20px auto;
   padding: 0 20px 20px;
 }

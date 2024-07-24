@@ -10,7 +10,10 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea } from './utils.js';
+import { setLibs, decorateArea, acomsisCookieHandler } from './utils.js';
+
+// For CN home's acomsis cookie handler
+const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
 
 // Add project-wide style path here.
 const STYLES = '/creativecloud/styles/styles.css';
@@ -92,7 +95,7 @@ const locales = {
   sg: { ietf: 'en-SG', tk: 'pps7abe.css' },
   th_en: { ietf: 'en', tk: 'pps7abe.css' },
   in_hi: { ietf: 'hi', tk: 'aaa8deh.css' },
-  th_th: { ietf: 'th', tk: 'aaz7dvd.css' },
+  th_th: { ietf: 'th', tk: 'lqo2bst.css' },
   cn: { ietf: 'zh-CN', tk: 'puu3xkp' },
   hk_zh: { ietf: 'zh-HK', tk: 'jay0ecd' },
   tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
@@ -129,9 +132,8 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   decorateArea,
+  adobeid: { api_parameters: { check_token: { guest_allowed: true } } },
   stage: {
-    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-2c94beadc94f-development.min.js',
-    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
     pdfViewerClientId: '9f7f19a46bd542e2b8548411e51eb4d4',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
     psUrl: 'https://stage.photoshop.adobe.com',
@@ -141,8 +143,6 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   prod: {
-    marTechUrl: 'https://assets.adobedtm.com/d4d114c60e50/a0e989131fd5/launch-5dd5dd2177e6.min.js',
-    edgeConfigId: '2cba807b-7430-41ae-9aac-db2b0da742d5',
     pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
     pdfViewerReportSuite: 'adbadobenonacdcprod',
     psUrl: 'https://photoshop.adobe.com',
@@ -164,9 +164,12 @@ const CONFIG = {
  * ------------------------------------------------------------
  */
 
+const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
 const miloLibs = setLibs(LIBS);
 const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
 setConfig({ ...CONFIG, miloLibs });
+if (isSignedInHomepage) acomsisCookieHandler();
+
 decorateArea();
 
 (function loadStyles() {
