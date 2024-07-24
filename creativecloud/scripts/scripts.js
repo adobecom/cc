@@ -123,6 +123,16 @@ const locales = {
   cis_en: { ietf: 'en', tk: 'pps7abe.css' },
 };
 
+const stageDomainsMap = {
+  'www.adobe.com': 'www.stage.adobe.com',
+  'business.adobe.com': 'business.stage.adobe.com',
+  'helpx.adobe.com': 'helpx.stage.adobe.com',
+  'blog.adobe.com': 'blog.stage.adobe.com',
+  'developer.adobe.com': 'developer-stage.adobe.com',
+  'news.adobe.com': 'news.stage.adobe.com',
+  'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+};
+
 // Add any config options.
 const CONFIG = {
   contentRoot: '/cc-shared',
@@ -131,6 +141,7 @@ const CONFIG = {
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
+  stageDomainsMap,
   decorateArea,
   stage: {
     pdfViewerClientId: '9f7f19a46bd542e2b8548411e51eb4d4',
