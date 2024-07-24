@@ -1,0 +1,16 @@
+{
+  "name": "@ccmilo/preview-index",
+  "version": "1.0.0",
+  "main": "src/update.mjs",
+  "type": "commonjs",
+  "sideEffects": false,
+  "scripts": {
+    "index": "node src/update.js"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^2.11.0",
+    "jsdom": "^24.1.1",
+    "node-fetch-commonjs": "^3.3.2",
+    "xlsx": "file:deps/xlsx-0.20.3.tgz"
+  }
+}
