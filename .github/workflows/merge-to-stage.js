@@ -1,10 +1,14 @@
-const STAGE = 'stage-mock';
-const PROD = 'main-mock';
+const STAGE = 'stage';
+const PROD = 'main';
 const PR_TITLE = '[Release] Stage to Main';
 const SEEN = {};
 let github, owner, repo;
-let body = '';
-const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 1;
+let body = `
+**Creative cloud:**
+- Before: https://${PROD}--cc--adobecom.hlx.live/?martech=off
+- After: https://${STAGE}--cc--adobecom.hlx.live/?martech=off
+`;
+const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
 const LABELS = {
   highPriority: 'high priority',
   readyForStage: 'Ready for Stage',
@@ -94,7 +98,6 @@ const merge = async ({ prs, type }) => {
 
   for await (const { number, files, html_url, title } of prs) {
     try {
-      console.log(SEEN);
       if (files.some((file) => SEEN[file])) {
         commentOnPR(
           `Skipped ${number}: ${title} due to file overlap. Merging will be attempted in the next batch`,
@@ -105,7 +108,6 @@ const merge = async ({ prs, type }) => {
       if (type !== LABELS.zeroImpact) {
         files.forEach((file) => (SEEN[file] = true));
       }
-      console.log("process.env.LOCAL_RUN =", process.env.LOCAL_RUN)
       if (!process.env.LOCAL_RUN) {
         await github.rest.pulls.merge({
           owner,
@@ -116,6 +118,7 @@ const merge = async ({ prs, type }) => {
         const prefix = type === LABELS.zeroImpact ? ' [ZERO IMPACT]' : '';
         body = `-${prefix} ${html_url}\n${body}`;
       }
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     } catch (error) {
       commentOnPR(`Error merging ${number}: ${title} ` + error.message, number);
       files.forEach((file) => (SEEN[file] = false));
@@ -138,9 +141,7 @@ const openStageToMainPR = async () => {
         repo,
         commit_sha: commit.sha,
       });
-    console.log("Value of body", body);
     for (const pr of pullRequestData) {
-      console.log(`- ${pr.html_url}\n${body}`);
       if (!body.includes(pr.html_url)) body = `- ${pr.html_url}\n${body}`;
     }
   }
@@ -233,8 +234,6 @@ const main = async (params) => {
   try {
     const stageToMainPR = await getStageToMainPR();
     console.log("Stage to main PR exits", !!stageToMainPR);
-    console.log("owner", owner);
-    console.log("repo", repo);
     if (stageToMainPR) body = stageToMainPR.body;
     const { zeroImpactPRs, highImpactPRs, normalPRs } = await getPRs();
     await merge({ prs: zeroImpactPRs, type: LABELS.zeroImpact });
@@ -243,17 +242,19 @@ const main = async (params) => {
     await merge({ prs: highImpactPRs, type: LABELS.highPriority });
     await merge({ prs: normalPRs, type: 'normal' });
     //create or merge to existing PR.
-    if (!stageToMainPR) await openStageToMainPR();
-    if (stageToMainPR && body !== stageToMainPR.body) {
-      console.log("Updating PR's body...");
-      await github.rest.pulls.update({
-        owner,
-        repo,
-        pull_number: stageToMainPR.number,
-        body: body,
-      });
+    if (zeroImpactPRs.length > 0 || highImpactPRs.length > 0 || normalPRs.length > 0) {
+      if (!stageToMainPR) await openStageToMainPR();
+      if (stageToMainPR && body !== stageToMainPR.body) {
+        console.log("Updating PR's body...");
+        await github.rest.pulls.update({
+          owner,
+          repo,
+          pull_number: stageToMainPR.number,
+          body: body,
+        });
+      }
+      console.log('*** Process successfully executed.***');
     }
-    console.log('Process successfully executed.');
   } catch (err) {
     console.error(err);
   }
