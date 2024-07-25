@@ -25,8 +25,17 @@ function handleCustomAnalyticsEvent(eventName, element) {
   });
 }
 
-function enableAnalytics(catalog, merchCards, sidenav) {
-  merchCards.querySelectorAll('merch-card').forEach(async (card) => {
+export function updateCatalogLh(catalogEl, newValue) {
+  if (newValue) {
+    const lh = catalogEl.getAttribute('daa-lh');
+    const value = (lh?.indexOf(DEFAULT_LH) === 0) ? lh?.substring(DEFAULT_LH.length) : lh;
+    const mepValue = value?.substring(value.indexOf('|')) || '';
+    catalogEl.setAttribute('daa-lh', `${newValue || 'all'}${mepValue}`);
+  }
+}
+
+export function enableAnalytics(catalog, merchCards, sidenav) {
+  merchCards.querySelectorAll('merch-card').forEach((card) => {
     card.querySelectorAll('a[daa-ll]').forEach((anchor) => {
       const ll = anchor.getAttribute('daa-ll');
       anchor.setAttribute('daa-ll', `${ll.slice(0, ll.indexOf('--'))}--${card.name}`);
@@ -52,10 +61,7 @@ function enableAnalytics(catalog, merchCards, sidenav) {
   });
 
   sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
-    const lh = catalog.getAttribute('daa-lh');
-    const value = (lh?.indexOf(DEFAULT_LH) === 0) ? lh?.substring(DEFAULT_LH.length) : lh;
-    const mepValue = value?.substring(value.indexOf('|')) || '';
-    catalog.setAttribute('daa-lh', `${target?.selectedValue || 'all'}${mepValue}`);
+    updateCatalogLh(catalog, target?.selectedValue);
   });
 }
 
