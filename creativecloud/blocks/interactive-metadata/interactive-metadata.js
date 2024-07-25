@@ -260,6 +260,7 @@ function getWorkFlowInformation(el) {
     'workflow-generate-select': ['generate', 'selector-tray', 'start-over'],
     'workflow-generate-selector': ['generate', 'selector-tray', 'generate', 'start-over'],
     'workflow-generate-triple-selector': ['generate', 'selector-tray', 'generate', 'selector-tray', 'generate', 'selector-tray', 'start-over'],
+    'workflow-start-over': ['start-over', 'start-over'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   [...el.classList].forEach((cn) => { if (cn.match('workflow-')) wfName = cn; });
