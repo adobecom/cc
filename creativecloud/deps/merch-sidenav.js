@@ -1,4 +1,4 @@
-// branch: main commit: d113c9c27640ef88ab28eff3ef4637919479e540 Wed, 03 Jul 2024 15:04:49 GMT
+// branch: HEAD commit: 11af2dec1ee187524a73c15055a43dcb58e07c49 Thu, 25 Jul 2024 10:26:34 GMT
 
 // src/sidenav/merch-sidenav.js
 import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
@@ -41,7 +41,18 @@ var headingStyles = css`
 // src/merch-search.js
 import { html, LitElement, css as css2 } from "/libs/deps/lit-all.min.js";
 
-// src/deeplink.js
+// src/utils.js
+function debounce(func, delay) {
+  let debounceTimer;
+  return function() {
+    const context = this;
+    const args = arguments;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func.apply(context, args), delay);
+  };
+}
+
+// ../commons/src/deeplink.js
 var EVENT_HASHCHANGE = "hashchange";
 function parseState(hash = window.location.hash) {
   const result = [];
@@ -72,6 +83,8 @@ function pushState(state) {
   });
   hash.sort();
   const value = hash.toString();
+  if (value === window.location.hash)
+    return;
   let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
   window.location.hash = value;
   window.scrollTo(0, lastScrollTop);
@@ -90,16 +103,13 @@ function deeplink(callback) {
   };
 }
 
-// src/utils.js
-function debounce(func, delay) {
-  let debounceTimer;
-  return function() {
-    const context = this;
-    const args = arguments;
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => func.apply(context, args), delay);
-  };
-}
+// ../commons/src/aem.js
+var accessToken = localStorage.getItem("masAccessToken");
+var headers = {
+  Authorization: `Bearer ${accessToken}`,
+  pragma: "no-cache",
+  "cache-control": "no-cache"
+};
 
 // src/merch-search.js
 var MerchSearch = class extends LitElement {
@@ -161,7 +171,7 @@ customElements.define("merch-search", MerchSearch);
 import { html as html2, LitElement as LitElement2, css as css3 } from "/libs/deps/lit-all.min.js";
 var MerchSidenavList = class extends LitElement2 {
   static properties = {
-    title: { type: String },
+    sidenavListTitle: { type: String },
     label: { type: String },
     deeplink: { type: String, attribute: "deeplink" },
     selectedText: {
@@ -283,7 +293,7 @@ var MerchSidenavList = class extends LitElement2 {
             aria-label="${this.label}"
             @change="${(e) => this.selectionChanged(e)}"
         >
-            ${this.title ? html2`<h2>${this.title}</h2>` : ""}
+            ${this.sidenavListTitle ? html2`<h2>${this.sidenavListTitle}</h2>` : ""}
             <slot></slot>
         </div>`;
   }
@@ -294,7 +304,7 @@ customElements.define("merch-sidenav-list", MerchSidenavList);
 import { html as html3, LitElement as LitElement3, css as css4 } from "/libs/deps/lit-all.min.js";
 var MerchSidenavCheckboxGroup = class extends LitElement3 {
   static properties = {
-    title: { type: String },
+    sidenavCheckboxTitle: { type: String },
     label: { type: String },
     deeplink: { type: String },
     selectedValues: { type: Array, reflect: true },
@@ -364,7 +374,7 @@ var MerchSidenavCheckboxGroup = class extends LitElement3 {
   }
   render() {
     return html3`<div aria-label="${this.label}">
-            <h3>${this.title}</h3>
+            <h3>${this.sidenavCheckboxTitle}</h3>
             <div
                 @change="${(e) => this.selectionChanged(e)}"
                 class="checkbox-group"
@@ -432,7 +442,7 @@ document.addEventListener("sp-closed", () => {
 });
 var MerchSideNav = class extends LitElement4 {
   static properties = {
-    title: { type: String },
+    sidenavTitle: { type: String },
     closeText: { type: String, attribute: "close-text" },
     modal: { type: Boolean, attribute: "modal", reflect: true }
   };
@@ -519,7 +529,7 @@ var MerchSideNav = class extends LitElement4 {
                     <div id="content">
                         <div id="sidenav">
                             <div>
-                                <h2>${this.title}</h2>
+                                <h2>${this.sidenavTitle}</h2>
                                 <slot></slot>
                             </div>
                             <sp-link href="#" @click="${this.closeModal}"
@@ -533,7 +543,7 @@ var MerchSideNav = class extends LitElement4 {
   }
   get asAside() {
     return html4`<sp-theme theme="spectrum" color="light" scale="medium"
-            ><h2>${this.title}</h2>
+            ><h2>${this.sidenavTitle}</h2>
             <slot></slot
         ></sp-theme>`;
   }
