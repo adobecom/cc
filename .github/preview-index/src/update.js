@@ -17,11 +17,8 @@
 
 const fetch = require('node-fetch-commonjs');
 const crypto = require('crypto');
-const fs = require('fs');
 const msal = require('@azure/msal-node');
-var XLSX = require("xlsx");
 const jsdom = require("jsdom");
-const { get } = require('http');
 const { JSDOM } = jsdom;
 
 
@@ -143,17 +140,6 @@ const getItemId = async (indexPath) => {
   return null;
 };
 
-const getRows = async (url) => {
-  const response = await fetch(url, {
-      headers: await defaultHeaders(),
-  });
-  if (!response.ok) {
-    throw new Error(`failed to fetch rows ${url}${JSON.stringify(res)}`);
-  }
-  const json = await response.json();
-  return json.value ? json.value : json;
-}
-
 const getPreviewResources = async (folder, parseIndexFc) => {
   const PREVIEW_STATUS_URL = 'https://admin.hlx.page/status/adobecom/milo/main/*';
   const data = {"select": ["preview"], "paths": [folder]};
@@ -226,9 +212,7 @@ const deleteAllRows = async (url) => {
   }
 }
 
-
 const reindex = async (indexPath, folder) => {
-  console.log(await getAccessToken());
   const indexData = await getPreviewResources(folder, getResourceIndexData);
   if (!indexData) {
     console.log('No index data found.');
@@ -242,19 +226,19 @@ const reindex = async (indexPath, folder) => {
   
   const tableURL = getTableURL(itemId);
   await deleteAllRows(tableURL);
-
-  const data = {"index": null, "values": indexData};
   const response = await fetch(`${tableURL}/rows`, {
       method: 'POST',
       headers: await defaultHeaders(),
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        "index": null, 
+        "values": indexData
+      }),
     });
   if (response?.ok) {
-    console.log(`Updated row: ${response.status} - ${response.statusText}, path: ${indexItem[0]}`);
+    console.log(`Added index rows: ${response.status} - ${response.statusText}`);
   } else {
-    console.log(`Failed to update row ${indexItem[0]}`);
+    console.log(`Failed to add index rows: ${response.status} - ${response.statusText}`);
   }
-  
   console.log(`Reindexed folder ${folder}`);
 };
 
