@@ -33,7 +33,7 @@ runTests(async () => {
       const sidenavEl = document.querySelector(selector);
       const newRoot = await init(sidenavEl);
       expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
-      expect(newRoot.title).to.equal('REFINE YOUR RESULTS');
+      expect(newRoot.sidenavTitle).to.equal('REFINE YOUR RESULTS');
       const items = newRoot.querySelectorAll('sp-sidenav-item');
       expect(items.length).to.equal(expectedItemCount);
       const found = Array.from(items).find((item) => item.getAttribute('label') === 'ColdFusion');
@@ -61,7 +61,7 @@ runTests(async () => {
       const sidenavEl = document.querySelector('.plans');
       const newRoot = await init(sidenavEl);
       expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
-      expect(newRoot.title).to.equal('CATEGORIES');
+      expect(newRoot.sidenavTitle).to.equal('CATEGORIES');
       const search = newRoot.querySelector('sp-search');
       expect(search).to.be.null;
       const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
