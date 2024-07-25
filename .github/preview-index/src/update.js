@@ -25,9 +25,8 @@ const { get } = require('http');
 const { JSDOM } = jsdom;
 
 
-
-
 const INDEX_PATH = `milo/drafts/mariia/preview-index/query-index-cards-preview.xlsx`;
+const FOLDER = '/drafts/mariia/preview-index/*';
 const SHEET_RAW_INDEX = 'raw_index';
 const TABLE_NAME = 'Table1';
 const FETCH_RETRY = 10;
@@ -88,8 +87,8 @@ const getAccessToken = async () => {
   return accessToken;
 }
 
-const getCardJson = async (path) => {
-  const url = `https://main--milo--adobecom.hlx.page${path}`;
+const getResourceIndexData = async (resource) => {
+  const url = `https://main--milo--adobecom.hlx.page${resource.path}`;
   const response = await fetch(url);
   if (response?.status !== 200) {
     console.log('Failed to fetch card: ' + url);
@@ -102,9 +101,10 @@ const getCardJson = async (path) => {
     console.log('Merch card not found in the dom: ' + merchCard.outerHTML);
     return;
   }
-  const title = document.querySelector('head > meta[property="og:title"]')?.content || '',
+  const path = resource.path,
+        title = document.querySelector('head > meta[property="og:title"]')?.content || '',
         cardContent = merchCard.outerHTML,
-        lastModified = '',
+        lastModified = new Date(resource.previewLastModified).getTime().toString(),
         cardClasses = JSON.stringify(Object.values(merchCard.classList)),
         robots = 'new',
         tags = '[]',
@@ -151,10 +151,10 @@ const getRows = async (url) => {
     throw new Error(`failed to fetch rows ${url}${JSON.stringify(res)}`);
   }
   const json = await response.json();
-  return json.value ? json.value : [];
+  return json.value ? json.value : json;
 }
 
-const getPreviewCards = async (folder) => {
+const getPreviewResources = async (folder, parseIndexFc) => {
   const PREVIEW_STATUS_URL = 'https://admin.hlx.page/status/adobecom/milo/main/*';
   const data = {"select": ["preview"], "paths": [folder]};
   let headers = {...await defaultHeaders(),
@@ -192,44 +192,72 @@ const getPreviewCards = async (folder) => {
     console.log('Failed to fetch previewed cards.')
     return;
   }
-  const cards = cardsData.resources?.filter((res) => !res.path.endsWith('.json'));
-  console.log(`fetched ${cards?.length} previewed cards`);
-  return cards;
+  
+  const jsonPromises = await Promise.allSettled(
+    cardsData.resources
+      .filter((res) => !res.path.endsWith('.json'))
+      .map(async (resource) => await parseIndexFc(resource))
+  );
+
+  const indexData = jsonPromises
+    .filter((p) => p.status === 'fulfilled')
+    .map((p) => p.value);
+  console.log(`fetched ${indexData?.length} previewed resources`);
+  return indexData;
 }
 
-const updateIndex = async (indexPath) => {
-  const cards = await getPreviewCards('/drafts/mariia/preview-index/*');
-  if (!cards) {
-    console.log('no previewed cards found.');
+const getTableURL = (itemId) => `${GRAPH_BASE_URL}/drives/${DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
+
+const deleteAllRows = async (url) => {
+  let headers = {...await defaultHeaders(),
+    'Content-Type': 'application/json'
+  };
+  const response = await fetch(`${url}/DataBodyRange/delete`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      "shift": "Up"
+    }),
+  });
+  if (response?.ok) {
+    console.log(`Deleted all row: ${response.status} - ${response.statusText}`);
+  } else {
+    console.log(`(no rows found?) Failed to delete all rows: ${response.status} - ${response.statusText}`);
+  }
+}
+
+
+const reindex = async (indexPath, folder) => {
+  console.log(await getAccessToken());
+  const indexData = await getPreviewResources(folder, getResourceIndexData);
+  if (!indexData) {
+    console.log('No index data found.');
     return;
   }
-  if (cards.length === 0) {
-    //todo delete index?
-  }
-
-  const cardJson = await getCardJson(CARD_PATH);
   const itemId = await getItemId(indexPath);
   if (!itemId) {
-    console.error('No item id found.');
+    console.error('No index item id found.');
     return;
   }
-  const rowsURL = `${GRAPH_BASE_URL}/drives/${DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/rows`;
-  const rows = await getRows(rowsURL);
+  
+  const tableURL = getTableURL(itemId);
+  await deleteAllRows(tableURL);
 
-  const data = {"index": null, "values": [cardJson, cardJson]};
-  const response2 = await fetch(rowsURL, {
+  const data = {"index": null, "values": indexData};
+  const response = await fetch(`${tableURL}/rows`, {
       method: 'POST',
       headers: await defaultHeaders(),
       body: JSON.stringify(data),
     });
-  if (response2) {
-    console.log(`response: ${response2.status} - ${response2.statusText}`);
+  if (response?.ok) {
+    console.log(`Updated row: ${response.status} - ${response.statusText}, path: ${indexItem[0]}`);
   } else {
-    console.log('no response');
+    console.log(`Failed to update row ${indexItem[0]}`);
   }
-
+  
+  console.log(`Reindexed folder ${folder}`);
 };
 
-updateIndex(INDEX_PATH);
+reindex(INDEX_PATH, FOLDER);
 
 
