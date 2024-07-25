@@ -21,21 +21,17 @@ const fs = require('fs');
 const msal = require('@azure/msal-node');
 var XLSX = require("xlsx");
 const jsdom = require("jsdom");
+const { get } = require('http');
 const { JSDOM } = jsdom;
 
 
-// todo: move out
-const GRAPH_BASE_URL = '';
-const SP_CLIENT_ID='';
-const SP_TENANT_ID='';
-const SP_CERT_PASSWORD='';
-const SP_CERT_THUMB_PRINT='';
-const SP_CERT_CONTENT='';
-const DRIVE_ID = '';
-// todo end: move out
+
 
 const INDEX_PATH = `milo/drafts/mariia/preview-index/query-index-cards-preview.xlsx`;
 const SHEET_RAW_INDEX = 'raw_index';
+const TABLE_NAME = 'Table1';
+const FETCH_RETRY = 10;
+let accessToken;
 
 const toSharepointUrl = (relativePath) => `${GRAPH_BASE_URL}/drives/${DRIVE_ID}/root:/${relativePath}`;
 
@@ -48,44 +44,49 @@ const parseCert = (content, password) => crypto.createPrivateKey({
   type: 'pkcs8'
 });
 
-const getAccessToken = async () => {
-  const config = {
-      auth: {
-          clientId: SP_CLIENT_ID,
-          authority: `https://login.microsoftonline.com/${SP_TENANT_ID}`,
-          knownAuthorities: ['login.microsoftonline.com'],
-          clientCertificate: {
-              privateKey: parseCert(SP_CERT_CONTENT, SP_CERT_PASSWORD),
-              thumbprint: SP_CERT_THUMB_PRINT,
-          }
-      }
-  }
-  const authClient = new msal.ConfidentialClientApplication(config);
-  const request = {
-      scopes: ['https://graph.microsoft.com/.default']
-  };
-  const tokens = await authClient.acquireTokenByClientCredential(request);
-  return tokens.accessToken;
-}
-
-const download = async (accessToken, indexPath, indexName) => {
-  const filePath = `${toSharepointUrl(indexPath)}:/content`;
-  const response = await fetch(filePath, {
-      headers: {
-          Authorization: `Bearer ${accessToken}`,
-      }
-  });
-  if (response?.status === 200) {
-      console.log('downloaded: ' + filePath);
-      return new Promise (resolve => {
-          const stream = fs.createWriteStream(`./${indexName}`);
-          response.body.pipe(stream);
-          stream.on('finish', resolve);
-      });
-  } else {
-    console.log('Failed to download: ' + filePath);
+const decodeToObject = (base64String) => {
+  try {
+      return JSON.parse(Buffer.from(base64String, 'base64').toString());
+  } catch (err) {
+      return {};
   }
 };
+
+const isTokenExpired = (token) => {
+  const tokenParts = token.split('.');
+  if (tokenParts.length === 3) {
+      const data = decodeToObject(tokenParts[1]);
+      if (data && data.exp) {
+          return Math.floor(Date.now() / 1000) > data.exp - 10;
+      }
+  }
+  return true;
+};
+
+const getAccessToken = async () => {
+  if (!accessToken || isTokenExpired(accessToken)) {
+    console.log('fetching access token...')
+    const config = {
+        auth: {
+            clientId: SP_CLIENT_ID,
+            authority: `https://login.microsoftonline.com/${SP_TENANT_ID}`,
+            knownAuthorities: ['login.microsoftonline.com'],
+            clientCertificate: {
+                privateKey: parseCert(SP_CERT_CONTENT, SP_CERT_PASSWORD),
+                thumbprint: SP_CERT_THUMB_PRINT,
+            }
+        }
+    }
+    const authClient = new msal.ConfidentialClientApplication(config);
+    const request = {
+        scopes: ['https://graph.microsoft.com/.default']
+    };
+    const tokens = await authClient.acquireTokenByClientCredential(request);
+    accessToken = tokens.accessToken;
+    console.log('token fetched.')
+  }
+  return accessToken;
+}
 
 const getCardJson = async (path) => {
   const url = `https://main--milo--adobecom.hlx.page${path}`;
@@ -101,16 +102,15 @@ const getCardJson = async (path) => {
     console.log('Merch card not found in the dom: ' + merchCard.outerHTML);
     return;
   }
-  
   const title = document.querySelector('head > meta[property="og:title"]')?.content || '',
         cardContent = merchCard.outerHTML,
         lastModified = '',
         cardClasses = JSON.stringify(Object.values(merchCard.classList)),
-        robots = 'mariia',
+        robots = 'new',
         tags = '[]',
         publicationDate = '';
 
-  return {
+  return [
     path,
     title,
     cardContent,
@@ -119,72 +119,117 @@ const getCardJson = async (path) => {
     robots,
     tags,
     publicationDate
-  }
+  ]
 }
 
-const modify = async (indexName, localFileName) => {
-  const workbook = XLSX.readFile(`./${indexName}`);
-  const rawSheet = workbook.Sheets[SHEET_RAW_INDEX];
-  if (!rawSheet) {
-      console.error(`Sheet ${SHEET_RAW_INDEX} not found in the workbook.`);
-      return;
-  }
-  const CARD_PATH = '/drafts/mariia/preview-index/adobe-firefly/default';
-  const cardJson = await getCardJson(CARD_PATH);
-  const data = XLSX.utils.sheet_to_json(rawSheet);
-  const row = data.find((card) => card.path === CARD_PATH);
-  if (row) {
-    Object.assign(row, cardJson);
-  } else {
-    data.push(cardJson);
-  }
+const defaultHeaders = async () => ({
+  Authorization: `Bearer ${await getAccessToken()}`,
+  'User-Agent': 'NONISV|Adobe|PreviewIndex/0.0.1',
+});
 
-  const updatedSheet = XLSX.utils.json_to_sheet(data);
-  workbook.Sheets[SHEET_RAW_INDEX] = updatedSheet;
-  XLSX.writeFile(workbook, `./${localFileName}`);
-}
-
-const upload = async (accessToken, indexPath, localFileName) => {
-  const data = fs.readFileSync(localFileName);
-  const url = `${toSharepointUrl(indexPath)}:/content`;
-  const uploadResponse = await fetch(url, {
-      method: 'PUT',
-      headers: {
-          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          Authorization: `Bearer ${accessToken}`,
-      },
-      body: data,
+const getItemId = async (indexPath) => {
+  const url = `${toSharepointUrl(indexPath)}`;
+  console.log(`Get item id: ${url}`);
+  const response = await fetch(url, {
+      headers: await defaultHeaders(),
   });
-  if (uploadResponse) {
-      console.log(`Upload: ${uploadResponse.status} - ${uploadResponse.statusText}`);
-      if (uploadResponse.status === 200 || uploadResponse.status === 201) {
-        console.log('uploaded successfully');
-        return;
-      } 
+  if (response) {
+      console.log(`Check if document exists: ${response.status} - ${response.statusText}`);
+      if (response.status === 200) {
+          const jsonResponse = await response.json();
+          return jsonResponse.id;
+      }
   }
-  console.log('ERROR: upload failed.');
+  return null;
+};
+
+const getRows = async (url) => {
+  const response = await fetch(url, {
+      headers: await defaultHeaders(),
+  });
+  if (!response.ok) {
+    throw new Error(`failed to fetch rows ${url}${JSON.stringify(res)}`);
+  }
+  const json = await response.json();
+  return json.value ? json.value : [];
 }
 
-const cleanup = async(indexName) => {
-  try {
-    fs.unlinkSync(`./${indexName}`);
-    console.log('removed: ' + indexName);
-  } catch (e) {}
-  try {
-    fs.unlinkSync(`./MODIFIED_${indexName}`);
-    console.log('removed: MODIFIED_' + indexName);
-  } catch (e) {}
+const getPreviewCards = async (folder) => {
+  const PREVIEW_STATUS_URL = 'https://admin.hlx.page/status/adobecom/milo/main/*';
+  const data = {"select": ["preview"], "paths": [folder]};
+  let headers = {...await defaultHeaders(),
+    'Content-Type': 'application/json'
+  };
+  const response = await fetch(PREVIEW_STATUS_URL, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(data),
+  });
+  if (!response?.ok) {
+    console.log(`fetching preview status failed: ${response.status} - ${response.statusText}`);
+    return;
+  }
+  const job = await response.json();
+  const jobDetailsURL = `${job.links.self}/details`;
+
+  const retryFetch = async (resolve, attempt = 1) => {
+    const response = await fetch(jobDetailsURL, { headers: await defaultHeaders() });
+    const data = await response.json();
+    if (data?.state === 'stopped') {
+        resolve(data?.data);
+    } else if (attempt < FETCH_RETRY) {
+        console.log(`Attempt ${attempt}: Job state is '${data?.state}'. Checking again in 1 second...`);
+        setTimeout(() => retryFetch(resolve, attempt + 1), 1000); // Wait 1 second before the next check
+    } else {
+        console.log("Maximum attempts reached. Stopping the fetching.");
+        resolve(undefined);
+    }
+  };
+
+  const cardsDataPromise = new Promise (async (resolve) => retryFetch(resolve, 1));
+  const cardsData = await cardsDataPromise;
+  if (!cardsData) {
+    console.log('Failed to fetch previewed cards.')
+    return;
+  }
+  const cards = cardsData.resources?.filter((res) => !res.path.endsWith('.json'));
+  console.log(`fetched ${cards?.length} previewed cards`);
+  return cards;
 }
 
 const updateIndex = async (indexPath) => {
-  const indexName = indexPath.split('/').pop();
-  const localFileName = `MODIFIED_${indexName}`;
-  cleanup(indexName);
-  const accessToken = await getAccessToken();
-  const indexFilePromise = await download(accessToken, indexPath, indexName);
-  await indexFilePromise;
-  await modify(indexName, localFileName);
-  await upload(accessToken, indexPath, localFileName);
+  const cards = await getPreviewCards('/drafts/mariia/preview-index/*');
+  if (!cards) {
+    console.log('no previewed cards found.');
+    return;
+  }
+  if (cards.length === 0) {
+    //todo delete index?
+  }
+
+  const cardJson = await getCardJson(CARD_PATH);
+  const itemId = await getItemId(indexPath);
+  if (!itemId) {
+    console.error('No item id found.');
+    return;
+  }
+  const rowsURL = `${GRAPH_BASE_URL}/drives/${DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/rows`;
+  const rows = await getRows(rowsURL);
+
+  const data = {"index": null, "values": [cardJson, cardJson]};
+  const response2 = await fetch(rowsURL, {
+      method: 'POST',
+      headers: await defaultHeaders(),
+      body: JSON.stringify(data),
+    });
+  if (response2) {
+    console.log(`response: ${response2.status} - ${response2.statusText}`);
+  } else {
+    console.log('no response');
+  }
+
 };
 
 updateIndex(INDEX_PATH);
+
+
