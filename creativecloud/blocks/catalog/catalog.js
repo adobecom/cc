@@ -2,6 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 
 const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const DEFAULT_LH = 'b1|catalog';
 
 // Helps with TBT: MWPW-145127
 loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
@@ -52,7 +53,8 @@ function enableAnalytics(catalog, merchCards, sidenav) {
 
   sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
     const lh = catalog.getAttribute('daa-lh');
-    const mepValue = lh?.substring(lh.indexOf('|')) || '';
+    const value = (lh?.indexOf(DEFAULT_LH) === 0) ? lh?.substring(DEFAULT_LH.length) : lh;
+    const mepValue = value?.substring(value.indexOf('|')) || '';
     catalog.setAttribute('daa-lh', `${target?.selectedValue || 'all'}${mepValue}`);
   });
 }
