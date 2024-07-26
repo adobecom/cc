@@ -1,0 +1,31 @@
+name: Merge to stage
+on:
+   schedule:
+    - cron: '0 */4 * * *' # Run every 4 hours
+   workflow_dispatch: #run manually
+jobs:
+  merge-to-stage:
+    name: Merge to stage
+    runs-on: ubuntu-latest
+    environment: merge-to-stage
+
+    steps:
+    - uses: actions/create-github-app-token@v1
+      id: milo-pr-merge-token
+      with:
+        app-id: ${{ secrets.CC_PR_MERGE_APP_ID }}
+        private-key: ${{ secrets.CC_PR_MERGE_PRIVATE_KEY }}
+        
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: echoing status
+      run: echo Got token and checked out the repository\n Now running js script.
+   
+    - name: Merge to main
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ steps.milo-pr-merge-token.outputs.token }}
+        script: |
+          const main = require('./.github/workflows/merge-to-stage.js')
+          main({ github, context })
