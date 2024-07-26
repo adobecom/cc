@@ -1,8 +1,7 @@
 import { loadStyle } from '../../scripts/utils.js';
 
 function getUnityLibs(prodLibs = '/unitylibs') {
-  let libs = '';
-  const { hostname, origin } = window.location;
+  const { hostname } = window.location;
   if (!hostname.includes('hlx.page')
     && !hostname.includes('hlx.live')
     && !hostname.includes('localhost')) {
