@@ -1,0 +1,48 @@
+name: Run preview index
+
+on:
+  schedule:
+    - cron: '0 */12 * * *' # Run every 12 hours
+  workflow_dispatch: # Allow manual trigger
+  repository_dispatch:
+    types: [run-preview-index]
+
+env:
+  SP_CLIENT_ID: ${{ secrets.SP_CLIENT_ID }}
+  SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
+  SP_CERT_PASSWORD: ${{ secrets.SP_CERT_PASSWORD }}
+  SP_CERT_THUMB_PRINT: ${{secrets.SP_CERT_THUMB_PRINT}}
+  SP_CERT_CONTENT: ${{ secrets.SP_CERT_CONTENT }}
+  SP_DRIVE_ID: ${{secrets.SP_DRIVE_ID}}
+  PREVIEW_INDEX_FILE: ${{secrets.PREVIEW_INDEX_FILE}}
+  PREVIEW_RESOURCES_FOLDER: ${{secrets.PREVIEW_RESOURCES_FOLDER}}
+
+jobs:
+  run-preview-index:
+    name: Reindexing preview resources
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install XVFB
+        run: sudo apt-get install xvfb
+
+      - name: Install dependencies
+        run: |
+          cd .github/preview-index 
+          npm install
+
+      - name: Reindex
+        run: |
+          cd .github/preview-index 
+          npm run index

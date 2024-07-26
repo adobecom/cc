@@ -21,15 +21,21 @@ const msal = require('@azure/msal-node');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
+require('dotenv').config();
+const SP_CLIENT_ID = process.env.SP_CLIENT_ID;
+const SP_TENANT_ID = process.env.SP_TENANT_ID;
+const SP_CERT_PASSWORD = process.env.SP_CERT_PASSWORD;
+const SP_CERT_THUMB_PRINT = process.env.SP_CERT_THUMB_PRINT;
+const SP_CERT_CONTENT = process.env.SP_CERT_CONTENT;
+const SP_DRIVE_ID = process.env.SP_DRIVE_ID;
+const PREVIEW_INDEX_FILE = process.env.PREVIEW_INDEX_FILE;
+const PREVIEW_RESOURCES_FOLDER = process.env.PREVIEW_INDEX_FILE;
 
-const INDEX_PATH = `milo/drafts/mariia/preview-index/query-index-cards-preview.xlsx`;
-const FOLDER = '/drafts/mariia/preview-index/*';
+const GRAPH_BASE_URL = `https://graph.microsoft.com/v1.0`;
 const SHEET_RAW_INDEX = 'raw_index';
 const TABLE_NAME = 'Table1';
 const FETCH_RETRY = 10;
 let accessToken;
-
-const toSharepointUrl = (relativePath) => `${GRAPH_BASE_URL}/drives/${DRIVE_ID}/root:/${relativePath}`;
 
 const parseCert = (content, password) => crypto.createPrivateKey({
   key: content,
@@ -125,7 +131,7 @@ const defaultHeaders = async () => ({
 });
 
 const getItemId = async (indexPath) => {
-  const url = `${toSharepointUrl(indexPath)}`;
+  const url = `${GRAPH_BASE_URL}/drives/${SP_DRIVE_ID}/root:/${indexPath}`;
   console.log(`Get item id: ${url}`);
   const response = await fetch(url, {
       headers: await defaultHeaders(),
@@ -192,7 +198,7 @@ const getPreviewResources = async (folder, parseIndexFc) => {
   return indexData;
 }
 
-const getTableURL = (itemId) => `${GRAPH_BASE_URL}/drives/${DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
+const getTableURL = (itemId) => `${GRAPH_BASE_URL}/drives/${SP_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
 
 const deleteAllRows = async (url) => {
   let headers = {...await defaultHeaders(),
@@ -242,6 +248,6 @@ const reindex = async (indexPath, folder) => {
   console.log(`Reindexed folder ${folder}`);
 };
 
-reindex(INDEX_PATH, FOLDER);
+reindex(PREVIEW_INDEX_FILE, PREVIEW_RESOURCES_FOLDER);
 
 
