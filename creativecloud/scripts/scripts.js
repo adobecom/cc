@@ -132,7 +132,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   decorateArea,
-  adobeid: { 
+  adobeid: {
     api_parameters: { check_token: { guest_allowed: true } },
     enableGuestAccounts: true,
     enableGuestTokenForceRefresh: true,
