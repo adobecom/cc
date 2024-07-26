@@ -4,7 +4,7 @@ on:
     - cron: '0 */4 * * *' # Run every 4 hours
    workflow_dispatch: #run manually
 jobs:
-  log_time:
+  merge-to-stage:
     name: Merge to stage
     runs-on: ubuntu-latest
     environment: merge-to-stage
@@ -13,8 +13,8 @@ jobs:
     - uses: actions/create-github-app-token@v1
       id: milo-pr-merge-token
       with:
-        app-id: ${{ secrets.cc_PR_MERGE_APP_ID }}
-        private-key: ${{ secrets.cc_PR_MERGE_PRIVATE_KEY }}
+        app-id: ${{ secrets.CC_PR_MERGE_APP_ID }}
+        private-key: ${{ secrets.CC_PR_MERGE_PRIVATE_KEY }}
         
     - name: Checkout repository
       uses: actions/checkout@v4
