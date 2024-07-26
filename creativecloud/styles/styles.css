@@ -14,3 +14,22 @@
   max-width: var(--grid-container-width);
   margin: 0 auto;
 }
+
+.section.sticky-top.sticky-survey {
+  position: absolute;
+  width: 300px;
+  min-height: 200px;
+  height: 200px;
+  z-index: 3;
+  right: 0;
+  top: var(--feds-totalheight-nav);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.section.sticky-top.sticky-survey .action-area {
+  border-top: 2px solid #DADADA;
+  padding-top: 20px;
+}

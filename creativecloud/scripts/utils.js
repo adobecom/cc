@@ -181,3 +181,9 @@ export async function acomsisCookieHandler() {
 }
 
 export const decorateArea = getDecorateAreaFn();
+
+// (() => {
+//   document.querySelector('.sticky-top.sticky-survey .con-button')?.addEventListener('click', () => {
+//     document.querySelector('.sticky-top.sticky-survey').style.display = 'none';
+//   }, { once: true})
+// })();
