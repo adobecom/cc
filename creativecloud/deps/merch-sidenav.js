@@ -1,36 +1,5 @@
-<<<<<<< HEAD
-// branch: main commit: edd23b3bf8505bfd02280d9ae77ece1ce3a25147 Wed, 24 Jul 2024 17:16:07 GMT
+// branch: main commit: 0c31b05ec2696beea4056b85b67bc74072fa4334 Fri, 26 Jul 2024 10:00:56 GMT
 import{html as k,css as H,LitElement as P}from"/libs/deps/lit-all.min.js";var a=class{constructor(e,t){this.key=Symbol("match-media-key"),this.matches=!1,this.host=e,this.host.addController(this),this.media=window.matchMedia(t),this.matches=this.media.matches,this.onChange=this.onChange.bind(this),e.addController(this)}hostConnected(){var e;(e=this.media)==null||e.addEventListener("change",this.onChange)}hostDisconnected(){var e;(e=this.media)==null||e.removeEventListener("change",this.onChange)}onChange(e){this.matches!==e.matches&&(this.matches=e.matches,this.host.requestUpdate(this.key,!this.matches))}};import{css as A}from"/libs/deps/lit-all.min.js";var l=A`
-=======
-// branch: HEAD commit: 11af2dec1ee187524a73c15055a43dcb58e07c49 Thu, 25 Jul 2024 10:26:34 GMT
-
-// src/sidenav/merch-sidenav.js
-import { html as html4, css as css5, LitElement as LitElement4 } from "/libs/deps/lit-all.min.js";
-
-// ../node_modules/@spectrum-web-components/reactive-controllers/src/MatchMedia.js
-var MatchMediaController = class {
-  constructor(e, t) {
-    this.key = Symbol("match-media-key");
-    this.matches = false;
-    this.host = e, this.host.addController(this), this.media = window.matchMedia(t), this.matches = this.media.matches, this.onChange = this.onChange.bind(this), e.addController(this);
-  }
-  hostConnected() {
-    var e;
-    (e = this.media) == null || e.addEventListener("change", this.onChange);
-  }
-  hostDisconnected() {
-    var e;
-    (e = this.media) == null || e.removeEventListener("change", this.onChange);
-  }
-  onChange(e) {
-    this.matches !== e.matches && (this.matches = e.matches, this.host.requestUpdate(this.key, !this.matches));
-  }
-};
-
-// src/sidenav/merch-sidenav-heading.css.js
-import { css } from "/libs/deps/lit-all.min.js";
-var headingStyles = css`
->>>>>>> 93791aab3dc8fb5281fac5a441c20a75e557e785
     h2 {
         font-size: 11px;
         font-style: normal;
@@ -41,161 +10,7 @@ var headingStyles = css`
         line-height: 32px;
         color: #747474;
     }
-<<<<<<< HEAD
 `;import{html as R,LitElement as D}from"/libs/deps/lit-all.min.js";var g="merch-search:change";var x="merch-sidenav:select";function d(s,e){let t;return function(){let o=this,n=arguments;clearTimeout(t),t=setTimeout(()=>s.apply(o,n),e)}}var v="hashchange";function i(s=window.location.hash){let e=[],t=s.replace(/^#/,"").split("&");for(let o of t){let[n,c=""]=o.split("=");n&&e.push([n,decodeURIComponent(c.replace(/\+/g," "))])}return Object.fromEntries(e)}function r(s,e){if(s.deeplink){let t={};t[s.deeplink]=e,N(t)}}function N(s){let e=new URLSearchParams(window.location.hash.slice(1));Object.entries(s).forEach(([n,c])=>{c?e.set(n,c):e.delete(n)}),e.sort();let t=e.toString();if(t===window.location.hash)return;let o=window.scrollY||document.documentElement.scrollTop;window.location.hash=t,window.scrollTo(0,o)}function b(s){let e=()=>{if(!window.location.hash.includes("="))return;let t=i(window.location.hash);s(t)};return e(),window.addEventListener(v,e),()=>{window.removeEventListener(v,e)}}var L=localStorage.getItem("masAccessToken"),z={Authorization:`Bearer ${L}`,pragma:"no-cache","cache-control":"no-cache"};var p=class extends D{static properties={deeplink:{type:String}};get search(){return this.querySelector("sp-search")}constructor(){super(),this.handleInput=()=>{r(this,this.search.value),this.search.value&&this.dispatchEvent(new CustomEvent(g,{bubbles:!0,composed:!0,detail:{type:"search",value:this.search.value}}))},this.handleInputDebounced=d(this.handleInput.bind(this))}connectedCallback(){super.connectedCallback(),this.search&&(this.search.addEventListener("input",this.handleInputDebounced),this.search.addEventListener("submit",this.handleInputSubmit),this.updateComplete.then(()=>{this.setStateFromURL()}),this.startDeeplink())}disconnectedCallback(){super.disconnectedCallback(),this.search.removeEventListener("input",this.handleInputDebounced),this.search.removeEventListener("submit",this.handleInputSubmit),this.stopDeeplink?.()}setStateFromURL(){let t=i()[this.deeplink];t&&(this.search.value=t)}startDeeplink(){this.stopDeeplink=b(({search:e})=>{this.search.value=e??""})}handleInputSubmit(e){e.preventDefault()}render(){return R`<slot></slot>`}};customElements.define("merch-search",p);import{html as C,LitElement as I,css as M}from"/libs/deps/lit-all.min.js";var m=class extends I{static properties={sidenavListTitle:{type:String},label:{type:String},deeplink:{type:String,attribute:"deeplink"},selectedText:{type:String,reflect:!0,attribute:"selected-text"},selectedValue:{type:String,reflect:!0,attribute:"selected-value"}};static styles=[M`
-=======
-`;
-
-// src/merch-search.js
-import { html, LitElement, css as css2 } from "/libs/deps/lit-all.min.js";
-
-// src/utils.js
-function debounce(func, delay) {
-  let debounceTimer;
-  return function() {
-    const context = this;
-    const args = arguments;
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => func.apply(context, args), delay);
-  };
-}
-
-// ../commons/src/deeplink.js
-var EVENT_HASHCHANGE = "hashchange";
-function parseState(hash = window.location.hash) {
-  const result = [];
-  const keyValuePairs = hash.replace(/^#/, "").split("&");
-  for (const pair of keyValuePairs) {
-    const [key, value = ""] = pair.split("=");
-    if (key) {
-      result.push([key, decodeURIComponent(value.replace(/\+/g, " "))]);
-    }
-  }
-  return Object.fromEntries(result);
-}
-function pushStateFromComponent(component, value) {
-  if (component.deeplink) {
-    const state = {};
-    state[component.deeplink] = value;
-    pushState(state);
-  }
-}
-function pushState(state) {
-  const hash = new URLSearchParams(window.location.hash.slice(1));
-  Object.entries(state).forEach(([key, value2]) => {
-    if (value2) {
-      hash.set(key, value2);
-    } else {
-      hash.delete(key);
-    }
-  });
-  hash.sort();
-  const value = hash.toString();
-  if (value === window.location.hash)
-    return;
-  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-  window.location.hash = value;
-  window.scrollTo(0, lastScrollTop);
-}
-function deeplink(callback) {
-  const handler = () => {
-    if (!window.location.hash.includes("="))
-      return;
-    const state = parseState(window.location.hash);
-    callback(state);
-  };
-  handler();
-  window.addEventListener(EVENT_HASHCHANGE, handler);
-  return () => {
-    window.removeEventListener(EVENT_HASHCHANGE, handler);
-  };
-}
-
-// ../commons/src/aem.js
-var accessToken = localStorage.getItem("masAccessToken");
-var headers = {
-  Authorization: `Bearer ${accessToken}`,
-  pragma: "no-cache",
-  "cache-control": "no-cache"
-};
-
-// src/merch-search.js
-var MerchSearch = class extends LitElement {
-  static properties = {
-    deeplink: { type: String }
-  };
-  get search() {
-    return this.querySelector(`sp-search`);
-  }
-  constructor() {
-    super();
-    this.handleInput = () => pushStateFromComponent(this, this.search.value);
-    this.handleInputDebounced = debounce(this.handleInput.bind(this));
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    if (!this.search)
-      return;
-    this.search.addEventListener("input", this.handleInputDebounced);
-    this.search.addEventListener("change", this.handleInputDebounced);
-    this.search.addEventListener("submit", this.handleInputSubmit);
-    this.updateComplete.then(() => {
-      this.setStateFromURL();
-    });
-    this.startDeeplink();
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.search.removeEventListener("input", this.handleInputDebounced);
-    this.search.removeEventListener("change", this.handleInputDebounced);
-    this.search.removeEventListener("submit", this.handleInputSubmit);
-    this.stopDeeplink?.();
-  }
-  /*
-   * set the state of the search based on the URL
-   */
-  setStateFromURL() {
-    const state = parseState();
-    const value = state[this.deeplink];
-    if (value) {
-      this.search.value = value;
-    }
-  }
-  startDeeplink() {
-    this.stopDeeplink = deeplink(({ search }) => {
-      this.search.value = search ?? "";
-    });
-  }
-  handleInputSubmit(event) {
-    event.preventDefault();
-  }
-  render() {
-    return html`<slot></slot>`;
-  }
-};
-customElements.define("merch-search", MerchSearch);
-
-// src/sidenav/merch-sidenav-list.js
-import { html as html2, LitElement as LitElement2, css as css3 } from "/libs/deps/lit-all.min.js";
-var MerchSidenavList = class extends LitElement2 {
-  static properties = {
-    sidenavListTitle: { type: String },
-    label: { type: String },
-    deeplink: { type: String, attribute: "deeplink" },
-    selectedText: {
-      type: String,
-      reflect: true,
-      attribute: "selected-text"
-    },
-    selectedValue: {
-      type: String,
-      reflect: true,
-      attribute: "selected-value"
-    }
-  };
-  static styles = [
-    css3`
->>>>>>> 93791aab3dc8fb5281fac5a441c20a75e557e785
             :host {
                 display: block;
                 contain: content;
@@ -220,30 +35,9 @@ var MerchSidenavList = class extends LitElement2 {
             aria-label="${this.label}"
             @change="${e=>this.selectionChanged(e)}"
         >
-<<<<<<< HEAD
             ${this.sidenavListTitle?C`<h2>${this.sidenavListTitle}</h2>`:""}
             <slot></slot>
         </div>`}};customElements.define("merch-sidenav-list",m);import{html as O,LitElement as V,css as $}from"/libs/deps/lit-all.min.js";var u=class extends V{static properties={sidenavCheckboxTitle:{type:String},label:{type:String},deeplink:{type:String},selectedValues:{type:Array,reflect:!0},value:{type:String}};static styles=$`
-=======
-            ${this.sidenavListTitle ? html2`<h2>${this.sidenavListTitle}</h2>` : ""}
-            <slot></slot>
-        </div>`;
-  }
-};
-customElements.define("merch-sidenav-list", MerchSidenavList);
-
-// src/sidenav/merch-sidenav-checkbox-group.js
-import { html as html3, LitElement as LitElement3, css as css4 } from "/libs/deps/lit-all.min.js";
-var MerchSidenavCheckboxGroup = class extends LitElement3 {
-  static properties = {
-    sidenavCheckboxTitle: { type: String },
-    label: { type: String },
-    deeplink: { type: String },
-    selectedValues: { type: Array, reflect: true },
-    value: { type: String }
-  };
-  static styles = css4`
->>>>>>> 93791aab3dc8fb5281fac5a441c20a75e557e785
         :host {
             display: block;
             contain: content;
@@ -265,52 +59,7 @@ var MerchSidenavCheckboxGroup = class extends LitElement3 {
             display: flex;
             flex-direction: column;
         }
-<<<<<<< HEAD
     `;setStateFromURL(){this.selectedValues=[];let{types:e}=i();e&&(this.selectedValues=e.split(","),this.selectedValues.forEach(t=>{let o=this.querySelector(`sp-checkbox[name=${t}]`);o&&(o.checked=!0)}))}selectionChanged(e){let{target:t}=e,o=t.getAttribute("name");if(o){let n=this.selectedValues.indexOf(o);t.checked&&n===-1?this.selectedValues.push(o):!t.checked&&n>=0&&this.selectedValues.splice(n,1)}r(this,this.selectedValues.join(","))}connectedCallback(){super.connectedCallback(),this.updateComplete.then(async()=>{this.setStateFromURL()})}render(){return O`<div aria-label="${this.label}">
-=======
-    `;
-  /*
-   * set the state of the sidenav based on the URL
-   */
-  setStateFromURL() {
-    this.selectedValues = [];
-    const { types: state } = parseState();
-    if (state) {
-      this.selectedValues = state.split(",");
-      this.selectedValues.forEach((name) => {
-        const element = this.querySelector(`sp-checkbox[name=${name}]`);
-        if (element) {
-          element.checked = true;
-        }
-      });
-    }
-  }
-  /**
-   * leaf level item change handler
-   * @param {*} event
-   */
-  selectionChanged(event) {
-    const { target } = event;
-    const name = target.getAttribute("name");
-    if (name) {
-      const index = this.selectedValues.indexOf(name);
-      if (target.checked && index === -1) {
-        this.selectedValues.push(name);
-      } else if (!target.checked && index >= 0) {
-        this.selectedValues.splice(index, 1);
-      }
-    }
-    pushStateFromComponent(this, this.selectedValues.join(","));
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.updateComplete.then(async () => {
-      this.setStateFromURL();
-    });
-  }
-  render() {
-    return html3`<div aria-label="${this.label}">
->>>>>>> 93791aab3dc8fb5281fac5a441c20a75e557e785
             <h3>${this.sidenavCheckboxTitle}</h3>
             <div
                 @change="${e=>this.selectionChanged(e)}"
@@ -318,83 +67,7 @@ var MerchSidenavCheckboxGroup = class extends LitElement3 {
             >
                 <slot></slot>
             </div>
-<<<<<<< HEAD
         </div>`}};customElements.define("merch-sidenav-checkbox-group",u);var y="(max-width: 700px)";var S="(max-width: 1199px)";var T=/iP(ad|hone|od)/.test(window?.navigator?.platform)||window?.navigator?.platform==="MacIntel"&&window.navigator.maxTouchPoints>1,f=!1,h,_=s=>{s&&(T?(document.body.style.position="fixed",s.ontouchmove=e=>{e.targetTouches.length===1&&e.stopPropagation()},f||(document.addEventListener("touchmove",e=>e.preventDefault()),f=!0)):(h=document.body.style.overflow,document.body.style.overflow="hidden"))},w=s=>{s&&(T?(s.ontouchstart=null,s.ontouchmove=null,document.body.style.position="",document.removeEventListener("touchmove",e=>e.preventDefault()),f=!1):h!==void 0&&(document.body.style.overflow=h,h=void 0))};document.addEventListener("sp-opened",()=>{document.body.classList.add("merch-modal")});document.addEventListener("sp-closed",()=>{document.body.classList.remove("merch-modal")});var E=class extends P{static properties={sidenavTitle:{type:String},closeText:{type:String,attribute:"close-text"},modal:{type:Boolean,attribute:"modal",reflect:!0}};#e;constructor(){super(),this.modal=!1}static styles=[H`
-=======
-        </div>`;
-  }
-};
-customElements.define(
-  "merch-sidenav-checkbox-group",
-  MerchSidenavCheckboxGroup
-);
-
-// src/media.js
-var SPECTRUM_MOBILE_LANDSCAPE = "(max-width: 700px)";
-var TABLET_DOWN = "(max-width: 1199px)";
-
-// src/bodyScrollLock.js
-var isIosDevice = /iP(ad|hone|od)/.test(window?.navigator?.platform) || window?.navigator?.platform === "MacIntel" && window.navigator.maxTouchPoints > 1;
-var documentListenerAdded = false;
-var previousBodyOverflowSetting;
-var disableBodyScroll = (targetElement) => {
-  if (!targetElement)
-    return;
-  if (isIosDevice) {
-    document.body.style.position = "fixed";
-    targetElement.ontouchmove = (event) => {
-      if (event.targetTouches.length === 1) {
-        event.stopPropagation();
-      }
-    };
-    if (!documentListenerAdded) {
-      document.addEventListener("touchmove", (e) => e.preventDefault());
-      documentListenerAdded = true;
-    }
-  } else {
-    previousBodyOverflowSetting = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-  }
-};
-var enableBodyScroll = (targetElement) => {
-  if (!targetElement)
-    return;
-  if (isIosDevice) {
-    targetElement.ontouchstart = null;
-    targetElement.ontouchmove = null;
-    document.body.style.position = "";
-    document.removeEventListener("touchmove", (e) => e.preventDefault());
-    documentListenerAdded = false;
-  } else {
-    if (previousBodyOverflowSetting !== void 0) {
-      document.body.style.overflow = previousBodyOverflowSetting;
-      previousBodyOverflowSetting = void 0;
-    }
-  }
-};
-
-// src/sidenav/merch-sidenav.js
-document.addEventListener("sp-opened", () => {
-  document.body.classList.add("merch-modal");
-});
-document.addEventListener("sp-closed", () => {
-  document.body.classList.remove("merch-modal");
-});
-var MerchSideNav = class extends LitElement4 {
-  static properties = {
-    sidenavTitle: { type: String },
-    closeText: { type: String, attribute: "close-text" },
-    modal: { type: Boolean, attribute: "modal", reflect: true }
-  };
-  // modal target
-  #target;
-  constructor() {
-    super();
-    this.modal = false;
-  }
-  static styles = [
-    css5`
->>>>>>> 93791aab3dc8fb5281fac5a441c20a75e557e785
             :host {
                 display: block;
             }
@@ -463,14 +136,7 @@ var MerchSideNav = class extends LitElement4 {
                     </div>
                 </sp-dialog-base>
             </sp-theme>
-<<<<<<< HEAD
         `}get asAside(){return k`<sp-theme theme="spectrum" color="light" scale="medium"
-=======
-        `;
-  }
-  get asAside() {
-    return html4`<sp-theme theme="spectrum" color="light" scale="medium"
->>>>>>> 93791aab3dc8fb5281fac5a441c20a75e557e785
             ><h2>${this.sidenavTitle}</h2>
             <slot></slot
         ></sp-theme>`}get dialog(){return this.shadowRoot.querySelector("sp-dialog-base")}closeModal(e){e.preventDefault(),this.dialog?.close()}openModal(){this.updateComplete.then(async()=>{_(this.dialog);let e={trigger:this.#e,notImmediatelyClosable:!0,type:"auto"},t=await window.__merch__spectrum_Overlay.open(this.dialog,e);t.addEventListener("close",()=>{this.modal=!1,w(this.dialog)}),this.shadowRoot.querySelector("sp-theme").append(t)})}updated(){this.modal&&this.openModal()}showModal({target:e}){this.#e=e,this.modal=!0}};customElements.define("merch-sidenav",E);export{E as MerchSideNav};
