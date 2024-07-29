@@ -6,7 +6,7 @@ export function getImgSrc(pic) {
   let source = '';
   if (viewport === 'mobile') source = pic.querySelector('source[type="image/webp"]:not([media])');
   else source = pic.querySelector('source[type="image/webp"][media]');
-  return source.srcset;
+  return source?.srcset;
 }
 
 function getNextStepIndex(stepInfo) {
@@ -209,9 +209,10 @@ function createInteractiveArea(el, pic) {
   const newPic = pic.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
-  pic.querySelector('img').src = getImgSrc(pic);
+  if (pic.querySelector('img')) pic.querySelector('img').src = getImgSrc(pic);
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
-  const video = createTag('video');
+  let video = '';
+  if (pic.querySelector('img')) video = createTag('video');
   iArea.append(pic, video);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
@@ -228,7 +229,7 @@ async function getTargetArea(el) {
     intEnb.classList.add('interactive-enabled');
     await intEnbReendered(intEnb);
   } catch (err) { return null; }
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video');
   const container = assets[assets.length - 1].closest('p');
   const iArea = createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');

@@ -1,4 +1,5 @@
 
+
 :root {
   --prompt-input-fill: #262626;
   --prompt-btn-fill: #323232;
@@ -44,7 +45,8 @@
   aspect-ratio: 1;
 }
 
-.interactive-enabled .foreground .image .enticement-container {
+.interactive-enabled .foreground .image .enticement-container,
+.interactive-enabled .foreground .asset .enticement-container {
   display: block;
   height: 28px;
   font-weight: bold;
@@ -53,18 +55,21 @@
   margin: 0 0 16px;
 }
 
-.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
+.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container,
+.interactive-enabled.mobile-hide-enticement .foreground .asset .enticement-container {
   display: none;
 }
 
-.interactive-enabled .foreground .image .enticement-message {
+.interactive-enabled .foreground .image .enticement-message,
+.interactive-enabled .foreground .asset .enticement-message {
   display: block;
   max-width: 30ch;
   font-size: 28px;
   line-height: 35px;
 }
 
-.interactive-enabled .foreground .image .enticement-svg {
+.interactive-enabled .foreground .image .enticement-svg,
+.interactive-enabled .foreground .asset .enticement-svg {
   display: block;
   position: relative;
   width: 49px;
@@ -76,7 +81,8 @@
   margin: 0;
 }
 
-[dir="rtl"] .interactive-enabled .foreground .image .enticement-svg {
+[dir="rtl"] .interactive-enabled .foreground .image .enticement-svg,
+[dir="rtl"] .interactive-enabled .foreground .asset .enticement-svg {
   left: 30px;
   right: auto;
   transform: scaleX(-1);
@@ -324,7 +330,8 @@
     background: none;
   }
   
-  .interactive-enabled .foreground.container .image .enticement-container {
+  .interactive-enabled .foreground.container .image .enticement-container,
+  .interactive-enabled .foreground.container .asset .enticement-container {
     display: block;
     position: relative;
     width: var(--grid-container-width);
@@ -333,12 +340,14 @@
     margin: 0 0 24px;
   }
 
-  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container {
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container,
+  [dir="rtl"] .interactive-enabled .foreground.container .asset .enticement-container {
     right: auto;
     left: 30px;
   }
 
-  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-svg {
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-svg,
+  [dir="rtl"] .interactive-enabled .foreground.container .asset .enticement-container .enticement-svg {
     right: auto;
     left: 30px;
     transform: scaleX(-1);
@@ -402,7 +411,8 @@
     margin: 36px 0 0 60px;
   }
 
-  .interactive-enabled .foreground .image .enticement-svg {
+  .interactive-enabled .foreground .image .enticement-svg,
+  .interactive-enabled .foreground .asset .enticement-svg {
     display: flex;
     flex-direction: row-reverse;
     justify-content: start;
@@ -434,5 +444,3 @@
     flex-direction: row-reverse;
   }
 }
-
-
