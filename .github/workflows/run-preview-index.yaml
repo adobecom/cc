@@ -7,16 +7,6 @@ on:
   repository_dispatch:
     types: [run-preview-index]
 
-env:
-  SP_CLIENT_ID: ${{ secrets.SP_CLIENT_ID }}
-  SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
-  SP_CERT_PASSWORD: ${{ secrets.SP_CERT_PASSWORD }}
-  SP_CERT_THUMB_PRINT: ${{secrets.SP_CERT_THUMB_PRINT}}
-  SP_CERT_CONTENT: ${{ secrets.SP_CERT_CONTENT }}
-  SP_DRIVE_ID: ${{secrets.SP_DRIVE_ID}}
-  PREVIEW_INDEX_FILE: ${{secrets.PREVIEW_INDEX_FILE}}
-  PREVIEW_RESOURCES_FOLDER: ${{secrets.PREVIEW_RESOURCES_FOLDER}}
-
 jobs:
   run-preview-index:
     name: Reindexing preview resources
@@ -40,9 +30,4 @@ jobs:
       - name: Install dependencies
         run: |
           cd .github/preview-index 
-          npm install
-
-      - name: Reindex
-        run: |
-          cd .github/preview-index 
-          npm run index
+          pwd
