@@ -68,7 +68,7 @@ const isTokenExpired = (token) => {
 const getAccessToken = async () => {
   if (!accessToken || isTokenExpired(accessToken)) {
     console.log('fetching access token...')
-    const config = {
+    const authConfig = {
         auth: {
             clientId: SP_CLIENT_ID,
             authority: `https://login.microsoftonline.com/${SP_TENANT_ID}`,
@@ -79,7 +79,7 @@ const getAccessToken = async () => {
             }
         }
     }
-    const authClient = new msal.ConfidentialClientApplication(config);
+    const authClient = new msal.ConfidentialClientApplication(authConfig);
     const request = {
         scopes: ['https://graph.microsoft.com/.default']
     };
@@ -218,7 +218,35 @@ const deleteAllRows = async (url) => {
   }
 }
 
+const validateConfig = () => {
+  const config = {
+    SP_CLIENT_ID: SP_CLIENT_ID,
+    SP_TENANT_ID: SP_TENANT_ID,
+    SP_CERT_PASSWORD: SP_CERT_PASSWORD,
+    SP_CERT_THUMB_PRINT: SP_CERT_THUMB_PRINT,
+    SP_CERT_CONTENT: SP_CERT_CONTENT,
+    SP_DRIVE_ID: SP_DRIVE_ID,
+    PREVIEW_INDEX_FILE: PREVIEW_INDEX_FILE,
+    PREVIEW_RESOURCES_FOLDER: PREVIEW_RESOURCES_FOLDER,
+  };
+  let valid = true;
+  Object.entries(config).forEach(([key, value]) => {
+     if (!value) {
+      console.error(`ERROR: Config item ${key} is empty.`);
+      valid = false;
+     }
+    });
+  if (valid) {
+    console.log('config is valid')
+  }
+  return valid;
+}
+
 const reindex = async (indexPath, folder) => {
+  if (!validateConfig()) {
+    return;
+  }
+
   const indexData = await getPreviewResources(folder, getResourceIndexData);
   if (!indexData) {
     console.log('No index data found.');
@@ -249,5 +277,3 @@ const reindex = async (indexPath, folder) => {
 };
 
 reindex(PREVIEW_INDEX_FILE, PREVIEW_RESOURCES_FOLDER);
-
-
