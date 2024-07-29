@@ -1,6 +1,6 @@
 const STAGE = 'stage';
 const PROD = 'main';
-const PR_TITLE = '[Release] Stage to Main';
+const PR_TITLE = `[Release] Stage to Main ${new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}`;
 const SEEN = {};
 let github, owner, repo;
 let body = `
@@ -14,6 +14,7 @@ const LABELS = {
   readyForStage: 'Ready for Stage',
   SOTPrefix: 'SOT',
   zeroImpact: 'zero-impact',
+  verified: 'verified',
 };
 const TEAM_MENTIONS = [
   '@adobecom/creative-cloud-sot',
@@ -181,10 +182,17 @@ const getPRs = async () => {
     ...prs.map((pr) => getChecks({ pr, github, owner, repo })),
     ...prs.map((pr) => getReviews({ pr, github, owner, repo })),
   ]);
-  prs = prs.filter(({ checks, reviews, number, title }) => {
+  prs = prs.filter(({ checks, reviews, number, title, labels }) => {
     if (hasFailingChecks(checks)) {
       commentOnPR(
         `Skipped merging ${number}: ${title} due to failing checks`,
+        number
+      );
+      return false;
+    }
+    if (!labels.includes(LABELS.verified)) {
+      commentOnPR(
+        `Skipped merging ${number}: ${title} due to missing verified label. kindly make sure that the PR has been verified`,
         number
       );
       return false;
@@ -219,7 +227,7 @@ const getPRs = async () => {
 const getStageToMainPR = () =>
   github.rest.pulls
     .list({ owner, repo, state: 'open', base: PROD })
-    .then(({ data } = {}) => data.find(({ title } = {}) => title === PR_TITLE))
+    .then(({ data } = {}) => data.find(({ title } = {}) => title.includes('[Release] Stage to Main')))
     .then((pr) => pr && addLabels({ pr, github, owner, repo }))
     .then((pr) => pr && addFiles({ pr, github, owner, repo }))
     .then((pr) => {
