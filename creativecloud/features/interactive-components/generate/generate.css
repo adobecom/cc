@@ -193,7 +193,6 @@
 
     .interactive-enabled.row-reversed.generate-side .step-generate .generate-layer,
     .interactive-enabled.row-reversed .step-generate .generate-side .generate-layer {
-      flex-direction: row;
       left: -21.5%;
       right: auto;
     }
