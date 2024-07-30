@@ -215,7 +215,7 @@ function createInteractiveArea(el, pic) {
   let assetTag = '';
   if (pic.querySelector('img')) assetTag = createTag('video');
   else {
-    assetTag = createTag('pictute');
+    assetTag = createTag('picture');
     const img = createTag('img');
     assetTag.append(img);
   }
