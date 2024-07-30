@@ -39,9 +39,10 @@ jobs:
         env:
           SP_CLIENT_ID: ${{ secrets.SP_CLIENT_ID }}
           SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
-          SP_CERT_PASSWORD: ${{ secrets.SP_CERT_PASSWORD }}
-          SP_CERT_THUMB_PRINT: ${{secrets.SP_CERT_THUMB_PRINT}}
-          SP_CERT_CONTENT: ${{ secrets.SP_CERT_CONTENT }}
+          SP_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
           SP_DRIVE_ID: ${{secrets.SP_DRIVE_ID}}
-          PREVIEW_INDEX_FILE: ${{secrets.PREVIEW_INDEX_FILE}}
-          PREVIEW_RESOURCES_FOLDER: ${{secrets.PREVIEW_RESOURCES_FOLDER}}
+          EDS_ADMIN_KEY: ${{secrets.EDS_ADMIN_KEY}}
+          EDS_ACCESS_KEY: ${{secrets.EDS_ACCESS_KEY}}
+          CONSUMER: ${{vars.CONSUMER}}
+          PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}
+          PREVIEW_RESOURCES_FOLDER: ${{vars.PREVIEW_RESOURCES_FOLDER}}
