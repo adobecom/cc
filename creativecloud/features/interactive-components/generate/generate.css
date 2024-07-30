@@ -108,7 +108,7 @@
 .interactive-enabled .step-generate .layer .generate-layer .label-text img {
     width: 16px;
     height: auto;
-    min-height: 16px;
+    max-height: 16px;
     max-width: 16px;
     border-radius: 0;
   }
@@ -178,9 +178,9 @@
   .interactive-enabled .step-generate .layer .generate-layer .label-text img {
     width: 24px;
     height: auto;
-    min-height: 24px;
     max-width: 24px;
     border-radius: 0;
+    max-height: 24px;
   }
 }
   @media screen and (min-width: 1200px) {
