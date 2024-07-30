@@ -24,7 +24,6 @@ export default async function stepInit(data) {
     const labelText = firstp.textContent.trim();
     labelBtn.appendChild(document.createTextNode(labelText));
     const firstsvg = firstp?.querySelector('img[src*=".svg"]')?.closest('picture');
-    labelBtn.style.display = 'block';
     if (firstsvg) {
       firstsvg.insertAdjacentElement('afterend', firstsvg.cloneNode(true));
       labelBtn.appendChild(firstsvg);
