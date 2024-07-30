@@ -211,9 +211,15 @@ function createInteractiveArea(el, pic) {
   el.querySelector(':scope > div > div').prepend(p);
   if (pic.querySelector('img')) pic.querySelector('img').src = getImgSrc(pic);
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
-  let video = '';
-  if (pic.querySelector('img')) video = createTag('video');
-  iArea.append(pic, video);
+  //const imgtag = `<picture><img></img></picture>`
+  let assetTag = '';
+  if (pic.querySelector('img')) assetTag = createTag('video');
+  else {
+    assetTag = createTag('pictute');
+    const img = createTag('img');
+    assetTag.append(img);
+  }
+  iArea.append(pic, assetTag);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
   if (el.classList.contains('light')) iArea.classList.add('light');
