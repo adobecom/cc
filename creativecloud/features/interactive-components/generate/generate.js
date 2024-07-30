@@ -24,6 +24,7 @@ export default async function stepInit(data) {
     const labelText = firstp.textContent.trim();
     labelBtn.appendChild(document.createTextNode(labelText));
     const firstsvg = firstp?.querySelector('img[src*=".svg"]')?.closest('picture');
+    labelBtn.style.display = 'block';
     if (firstsvg) {
       firstsvg.insertAdjacentElement('afterend', firstsvg.cloneNode(true));
       labelBtn.appendChild(firstsvg);
@@ -46,7 +47,7 @@ export default async function stepInit(data) {
   genfillDiv.appendChild(generateBtn);
   const generateLayer = createTag('div', { class: 'generate-layer' });
   generateLayer.appendChild(genfillDiv);
-  labelBtn ? generateLayer.appendChild(labelBtn) : '';
+  firstp ? generateLayer.appendChild(labelBtn) : '';
   layer.appendChild(generateLayer);
   generateBtn.addEventListener('click', async (e) => {
     e.preventDefault();
