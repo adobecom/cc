@@ -1,7 +1,6 @@
 import { createTag } from '../../../scripts/utils.js';
 
 function getGenerateConfig(data) {
-  console.log('data', data);
   let genCfg = null;
   if (data.stepIndex !== 0) {
     genCfg = data.stepConfigs[data.stepIndex].querySelector('ul, ol');
@@ -20,7 +19,6 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const gerenateCfg = getGenerateConfig(data);
   const firstp = config.querySelector(':scope > div > ul:first-of-type') || null;
-  console.log('lastp', firstp, gerenateCfg);
   const labelBtn = createTag('div', { class: 'label-text' });
   if (firstp) {
     const labelText = firstp.textContent.trim();
@@ -31,7 +29,6 @@ export default async function stepInit(data) {
       labelBtn.appendChild(firstsvg);
     }
   }
-  console.log('gerenateCfg', gerenateCfg);
   const [searchText, btnText] = gerenateCfg.textContent.trim().split('|');
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, `${searchText}`);
