@@ -210,7 +210,6 @@ function createInteractiveArea(el, pic) {
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
   const imgElem = pic.querySelector('img');
-  [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   let assetElem = '';
   if (imgElem) {
     imgElem.src = getImgSrc(pic);
@@ -220,6 +219,7 @@ function createInteractiveArea(el, pic) {
     const img = createTag('img');
     assetElem.append(img);
   }
+  [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   iArea.append(pic, assetElem);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
