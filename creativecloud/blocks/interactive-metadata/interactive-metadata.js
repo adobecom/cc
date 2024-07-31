@@ -209,17 +209,19 @@ function createInteractiveArea(el, pic) {
   const newPic = pic.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
-  if (pic.querySelector('img')) pic.querySelector('img').src = getImgSrc(pic);
+  const imgElem = pic.querySelector('img');
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
-  //const imgtag = `<picture><img></img></picture>`
-  let assetTag = '';
-  if (pic.querySelector('img')) assetTag = createTag('video');
-  else {
-    assetTag = createTag('picture');
-    const img = createTag('img');
-    assetTag.append(img);
+  let assetElem = '';
+  if (imgElem) {
+    imgElem.src = getImgSrc(pic);
+    assetElem = createTag('video');
   }
-  iArea.append(pic, assetTag);
+  else {
+    assetElem = createTag('picture');
+    const img = createTag('img');
+    assetElem.append(img);
+  }
+  iArea.append(pic, assetElem);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
   if (el.classList.contains('light')) iArea.classList.add('light');
