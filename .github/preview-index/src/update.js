@@ -263,6 +263,7 @@ const reindex = async (indexPath, folder) => {
     console.log(`Failed to add index rows: ${response.status} - ${response.statusText}`);
   }
 
+  console.log('preview update url:' + PREVIEW_UPDATE_URL);
   const previewResponse = await fetch(PREVIEW_UPDATE_URL, {
       method: 'POST',
       headers: edsAdminHeaders(),
