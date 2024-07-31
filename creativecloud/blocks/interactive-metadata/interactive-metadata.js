@@ -215,8 +215,7 @@ function createInteractiveArea(el, pic) {
   if (imgElem) {
     imgElem.src = getImgSrc(pic);
     assetElem = createTag('video');
-  }
-  else {
+  } else {
     assetElem = createTag('picture');
     const img = createTag('img');
     assetElem.append(img);
