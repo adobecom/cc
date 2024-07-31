@@ -27,12 +27,14 @@ const SP_TENANT_ID = process.env.SP_TENANT_ID;
 const SP_CLIENT_SECRET = process.env.SP_CLIENT_SECRET;
 const SP_DRIVE_ID = process.env.SP_DRIVE_ID;
 const EDS_ADMIN_KEY = process.env.EDS_ADMIN_KEY;
-const EDS_ACCESS_KEY = process.env.EDS_ACCESS_KEY;
+const PREVIEW_INDEX_JSON = process.env.PREVIEW_INDEX_JSON;
 const CONSUMER = process.env.CONSUMER;
 const PREVIEW_INDEX_FILE = process.env.PREVIEW_INDEX_FILE;
-const PREVIEW_RESOURCES_FOLDER = process.env.PREVIEW_RESOURCES_FOLDER; 
+const PREVIEW_RESOURCES_FOLDER = process.env.PREVIEW_RESOURCES_FOLDER;
+
 
 const PREVIEW_STATUS_URL = `https://admin.hlx.page/status/adobecom/${CONSUMER}/main/*`;
+const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${PREVIEW_INDEX_JSON}`;
 const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.hlx.page`;
 const GRAPH_BASE_URL = `https://graph.microsoft.com/v1.0`;
 const SHEET_RAW_INDEX = 'raw_index';
@@ -81,12 +83,10 @@ const getAccessToken = async () => {
 }
 
 const getResourceIndexData = async (resource) => {
-  let headers = {
-    Authorization: `token ${EDS_ACCESS_KEY}`,
-    'Content-Type': 'application/json'
-  };
   const url = `${PREVIEW_BASE_URL}${resource.path}`;
-  const response = await fetch(url, {headers});
+  const response = await fetch(url, {
+    headers: {...edsAdminHeaders(), 'Content-Type': 'application/json'}
+  });
   if (response?.status !== 200) {
     console.log('Failed to fetch card: ' + url);
     return;
@@ -103,9 +103,9 @@ const getResourceIndexData = async (resource) => {
         cardContent = merchCard.outerHTML,
         lastModified = new Date(resource.previewLastModified).getTime().toString(),
         cardClasses = JSON.stringify(Object.values(merchCard.classList)),
-        robots = 'new',
-        tags = '[]',
-        publicationDate = '';
+        robots = document.querySelector('head > meta[name="robots"]')?.content || '',
+        tags = document.querySelector('head > meta[property="article:tag"]')?.content || '',
+        publicationDate = 'todo';
 
   return [
     path,
@@ -119,16 +119,21 @@ const getResourceIndexData = async (resource) => {
   ]
 }
 
-const defaultHeaders = async () => ({
-  Authorization: `Bearer ${await getAccessToken()}`,
+const sharepointHeaders = async () => ({
+  'Authorization': `Bearer ${await getAccessToken()}`,
   'User-Agent': 'NONISV|Adobe|PreviewIndex/0.0.1',
+});
+
+const edsAdminHeaders = () => ({
+  'Authorization': `token ${EDS_ADMIN_KEY}`,
+  'User-Agent': 'NONISV|Adobe|PreviewIndex/0.0.1'
 });
 
 const getItemId = async (indexPath) => {
   const url = `${GRAPH_BASE_URL}/drives/${SP_DRIVE_ID}/root:/${indexPath}`;
   console.log(`Get item id: ${url}`);
   const response = await fetch(url, {
-      headers: await defaultHeaders(),
+      headers: await sharepointHeaders(),
   });
   if (response) {
       console.log(`Check if document exists: ${response.status} - ${response.statusText}`);
@@ -141,15 +146,11 @@ const getItemId = async (indexPath) => {
 };
 
 const getPreviewResources = async (folder, parseIndexFc) => {
-  const data = {"select": ["preview"], "paths": [folder]};
-  let headers = {
-    Authorization: `token ${EDS_ADMIN_KEY}`,
-    'Content-Type': 'application/json'
-  };
+  const headers = {...edsAdminHeaders(), 'Content-Type': 'application/json'};
   const response = await fetch(PREVIEW_STATUS_URL, {
     method: 'POST',
     headers,
-    body: JSON.stringify(data),
+    body: JSON.stringify({ "select": ["preview"], "paths": [folder] }),
   });
   if (!response?.ok) {
     console.log(`fetching preview status failed: ${response.status} - ${response.statusText}`);
@@ -157,12 +158,9 @@ const getPreviewResources = async (folder, parseIndexFc) => {
   }
   const job = await response.json();
   let jobDetailsURL = `${job.links.self}/details`;
-  jobDetailsURL = 'https://admin.hlx.page/job/adobecom/cc/main/status/job-2024-07-29t17-33-30-392z/details';
 
   const retryFetch = async (resolve, attempt = 1) => {
-    const response = await fetch(jobDetailsURL, {
-      headers
-    });
+    const response = await fetch(jobDetailsURL, { headers });
     const data = await response.json();
     if (data?.state === 'stopped') {
         resolve(data?.data);
@@ -196,18 +194,11 @@ const getPreviewResources = async (folder, parseIndexFc) => {
   return indexData;
 }
 
-const getTableURL = (itemId) => `${GRAPH_BASE_URL}/drives/${SP_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
-
 const deleteAllRows = async (url) => {
-  let headers = {...await defaultHeaders(),
-    'Content-Type': 'application/json'
-  };
   const response = await fetch(`${url}/DataBodyRange/delete`, {
     method: 'POST',
-    headers,
-    body: JSON.stringify({
-      "shift": "Up"
-    }),
+    headers: {...await sharepointHeaders(), 'Content-Type': 'application/json'},
+    body: JSON.stringify({ "shift": "Up" }),
   });
   if (response?.ok) {
     console.log(`Deleted all row: ${response.status} - ${response.statusText}`);
@@ -223,7 +214,6 @@ const validateConfig = () => {
     SP_CLIENT_SECRET: SP_CLIENT_SECRET,
     SP_DRIVE_ID: SP_DRIVE_ID,
     EDS_ADMIN_KEY: EDS_ADMIN_KEY,
-    EDS_ACCESS_KEY: EDS_ACCESS_KEY,
     CONSUMER: CONSUMER,
     PREVIEW_INDEX_FILE: PREVIEW_INDEX_FILE,
     PREVIEW_RESOURCES_FOLDER: PREVIEW_RESOURCES_FOLDER,
@@ -258,11 +248,11 @@ const reindex = async (indexPath, folder) => {
     return;
   }
   
-  const tableURL = getTableURL(itemId);
+  const tableURL = `${GRAPH_BASE_URL}/drives/${SP_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
   await deleteAllRows(tableURL);
   const response = await fetch(`${tableURL}/rows`, {
       method: 'POST',
-      headers: await defaultHeaders(),
+      headers: await sharepointHeaders(),
       body: JSON.stringify({
         "index": null, 
         "values": indexData
@@ -272,6 +262,16 @@ const reindex = async (indexPath, folder) => {
     console.log(`Added index rows: ${response.status} - ${response.statusText}`);
   } else {
     console.log(`Failed to add index rows: ${response.status} - ${response.statusText}`);
+  }
+
+  const previewResponse = await fetch(PREVIEW_UPDATE_URL, {
+      method: 'POST',
+      headers: edsAdminHeaders(),
+    });
+  if (previewResponse?.ok) {
+    console.log(`Previewed index file: ${previewResponse.status} - ${previewResponse.statusText}`);
+  } else {
+    console.log(`Failed to preview index file: ${previewResponse.status} - ${previewResponse.statusText}`);
   }
   console.log(`Reindexed folder ${folder}`);
 };
