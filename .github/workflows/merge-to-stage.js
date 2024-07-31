@@ -190,7 +190,7 @@ const getPRs = async () => {
       );
       return false;
     }
-    if (!labels.includes(LABELS.verified)) {
+    if (!labels.includes(LABELS.verified) || !labels.includes(LABELS.readyForStage)) {
       commentOnPR(
         `Skipped merging ${number}: ${title} due to missing verified label. kindly make sure that the PR has been verified`,
         number
