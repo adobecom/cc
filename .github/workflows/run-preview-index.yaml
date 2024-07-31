@@ -42,7 +42,6 @@ jobs:
           SP_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
           SP_DRIVE_ID: ${{secrets.SP_DRIVE_ID}}
           EDS_ADMIN_KEY: ${{secrets.EDS_ADMIN_KEY}}
-          EDS_ACCESS_KEY: ${{secrets.EDS_ACCESS_KEY}}
           CONSUMER: ${{vars.CONSUMER}}
           PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}
           PREVIEW_INDEX_JSON: ${{vars.PREVIEW_INDEX_JSON}}

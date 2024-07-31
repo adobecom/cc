@@ -98,11 +98,12 @@ const getResourceIndexData = async (path) => {
     return;
   }
   // lastModified and publicationDate are not parsed for preview index since this data is irrelevant
+  // robots should be ignored
   const title = document.querySelector('head > meta[property="og:title"]')?.content || '',
         cardContent = merchCard.outerHTML,
         lastModified = '',
         cardClasses = JSON.stringify(Object.values(merchCard.classList)),
-        robots = document.querySelector('head > meta[name="robots"]')?.content || '',
+        robots =  '',
         tags = document.querySelector('head > meta[property="article:tag"]')?.content || '',
         publicationDate = '';
 
