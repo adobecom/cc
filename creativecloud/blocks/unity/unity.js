@@ -1,6 +1,7 @@
+import { loadStyle } from '../../scripts/utils.js';
+
 function getUnityLibs(prodLibs = '/unitylibs') {
-  let libs = '';
-  const { hostname, origin } = window.location;
+  const { hostname } = window.location;
   if (!hostname.includes('hlx.page')
     && !hostname.includes('hlx.live')
     && !hostname.includes('localhost')) {
@@ -13,6 +14,10 @@ function getUnityLibs(prodLibs = '/unitylibs') {
 
 export default async function init(el) {
   const unitylibs = getUnityLibs();
+  const stylePromise = new Promise((resolve) => {
+    loadStyle(`${unitylibs}/core/styles/styles.css`, resolve);
+  });
+  await stylePromise;
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
-  wfinit(el, 'cc', unitylibs);
+  await wfinit(el, 'cc', unitylibs);
 }
