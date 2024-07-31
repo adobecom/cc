@@ -11,7 +11,7 @@ let body = `
 const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
 const LABELS = {
   highPriority: 'high priority',
-  readyForStage: 'Ready for Stage',
+  readyForStage: 'ready for stage',
   SOTPrefix: 'SOT',
   zeroImpact: 'zero-impact',
   verified: 'verified',
