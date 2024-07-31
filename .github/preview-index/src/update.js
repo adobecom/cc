@@ -32,7 +32,6 @@ const CONSUMER = process.env.CONSUMER;
 const PREVIEW_INDEX_FILE = process.env.PREVIEW_INDEX_FILE;
 const PREVIEW_RESOURCES_FOLDER = process.env.PREVIEW_RESOURCES_FOLDER;
 
-
 const PREVIEW_STATUS_URL = `https://admin.hlx.page/status/adobecom/${CONSUMER}/main/*`;
 const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${PREVIEW_INDEX_JSON}`;
 const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.hlx.page`;
@@ -82,8 +81,8 @@ const getAccessToken = async () => {
   return accessToken;
 }
 
-const getResourceIndexData = async (resource) => {
-  const url = `${PREVIEW_BASE_URL}${resource.path}`;
+const getResourceIndexData = async (path) => {
+  const url = `${PREVIEW_BASE_URL}${path}`;
   const response = await fetch(url, {
     headers: {...edsAdminHeaders(), 'Content-Type': 'application/json'}
   });
@@ -98,14 +97,14 @@ const getResourceIndexData = async (resource) => {
     console.log('Merch card not found in the dom: ' + merchCard.outerHTML);
     return;
   }
-  const path = resource.path,
-        title = document.querySelector('head > meta[property="og:title"]')?.content || '',
+  // lastModified and publicationDate are not parsed for preview index since this data is irrelevant
+  const title = document.querySelector('head > meta[property="og:title"]')?.content || '',
         cardContent = merchCard.outerHTML,
-        lastModified = new Date(resource.previewLastModified).getTime().toString(),
+        lastModified = '',
         cardClasses = JSON.stringify(Object.values(merchCard.classList)),
         robots = document.querySelector('head > meta[name="robots"]')?.content || '',
         tags = document.querySelector('head > meta[property="article:tag"]')?.content || '',
-        publicationDate = 'todo';
+        publicationDate = '';
 
   return [
     path,
@@ -150,7 +149,7 @@ const getPreviewResources = async (folder, parseIndexFc) => {
   const response = await fetch(PREVIEW_STATUS_URL, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ "select": ["preview"], "paths": [folder] }),
+    body: JSON.stringify({"select": ["preview"], "paths": [folder], "pathsOnly": "true"}),
   });
   if (!response?.ok) {
     console.log(`fetching preview status failed: ${response.status} - ${response.statusText}`);
@@ -181,9 +180,9 @@ const getPreviewResources = async (folder, parseIndexFc) => {
   }
   
   const jsonPromises = await Promise.allSettled(
-    cardsData.resources
-      .filter((res) => !res.path.endsWith('.json'))
-      .map(async (resource) => await parseIndexFc(resource))
+    cardsData.resources?.preview
+      .filter((path) => !path.endsWith('.json') && path.includes('/merch-card/'))
+      .map(async (path) => await parseIndexFc(path))
   );
 
   const indexData = jsonPromises

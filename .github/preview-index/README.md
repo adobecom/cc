@@ -1,3 +1,14 @@
+This script:
+* is running every 2h
+* query all 'previewed' resources in folder /cc-shared/fragments/merch/*
+* filter out .json or url's that don't contain /merch-card/ in the path
+* for each merch-card resource, it will request .hlx.page content 
+* parse the content to the index table row, similar to the 'merch-cards' index definition in 'helix-query.yaml'
+* delete all rows from /cc-shared/assets/query-index-cards-preview.xslx, 'raw_index' sheet, 'Table1'
+* add new generated rows to the index
+* preview the index
+
+
 # Usage
 
 1. Populate /preview-index/.env
@@ -37,7 +48,7 @@ Change `access_token` for an actual one.
 Admin token and access token are different values!
 
 ```
-curl -v -X POST --header "Authorization: Bearer admin_token" -H "Content-Type: application/json" -d '{"select": ["preview"], "paths": ["/drafts/mariia/preview-index/*"]}' 'https://admin.hlx.page/status/adobecom/cc/main/*'
+curl -v -X POST --header "Authorization: token admin_token" -H "Content-Type: application/json" -d '{"select": ["preview"], "paths": ["/drafts/mariia/preview-index/*"]}' 'https://admin.hlx.page/status/adobecom/cc/main/*'
 ```
 
 ## EDS Get page content
