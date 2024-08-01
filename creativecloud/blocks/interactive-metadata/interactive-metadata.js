@@ -205,7 +205,7 @@ function decorateMobileHeading(intEnb) {
 }
 
 function createInteractiveArea(el, pic) {
-  const iArea = createTag('div', { class: 'interactive-holder show-image' });
+  const iArea = createTag('div', { class: 'interactive-holder show-image show-video' });
   const newPic = pic.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
