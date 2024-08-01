@@ -1,7 +1,7 @@
 This script:
 * is running every 2h
 * query all 'previewed' resources in folder /cc-shared/fragments/merch/*
-* filter out .json or url's that don't contain /merch-card/ in the path
+* filter out .json or urls that don't contain /merch-card/ in the path
 * for each merch-card resource, it will request .hlx.page content 
 * parse the content to the index table row, similar to the 'merch-cards' index definition in 'helix-query.yaml'
 * delete all rows from /cc-shared/assets/query-index-cards-preview.xslx, 'raw_index' sheet, 'Table1'
@@ -22,10 +22,10 @@ If you do a change to .env file, remember to re-run 'npm i' before running 'npm 
 # Configuration
 Application expects a .env file of this format:
 ```
-SP_CLIENT_ID="..."
-SP_TENANT_ID="..."
-SP_CLIENT_SECRET="..."
-SP_DRIVE_ID="..."
+SHAREPOINT_CLIENT_ID="..."
+SHAREPOINT_TENANT_ID="..."
+SHAREPOINT_CLIENT_SECRET="..."
+SHAREPOINT_DRIVE_ID="..."
 EDS_ADMIN_KEY="..."
 CONSUMER="..."
 PREVIEW_INDEX_FILE="..."
@@ -33,7 +33,7 @@ PREVIEW_INDEX_JSON="..."
 PREVIEW_RESOURCES_FOLDER="..."
 ```
 
-`SP_CLIENT_ID` and `SP_TENANT_ID` can be found on the azure app 'Essential' tab, see 'Application (client) ID' and 'Directory (tenant) ID'.
+`SHAREPOINT_CLIENT_ID` and `SHAREPOINT_TENANT_ID` can be found on the azure app 'Essential' tab, see 'Application (client) ID' and 'Directory (tenant) ID'.
 `PREVIEW_INDEX_FILE` path to the target index file, e.g. "milo/drafts/mariia/preview-index/query-index-cards-preview.xlsx"
 `PREVIEW_RESOURCES_FOLDER` path to resource to index, e.g. "/drafts/mariia/preview-index/*". Folder path is not sharepoint path, but mapped *hlx.page location. So if your sharepoint folder is CC/www/cc-shared/myfolder, please specify /cc-shared/myfolder.
 

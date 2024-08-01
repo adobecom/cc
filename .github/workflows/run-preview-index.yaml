@@ -37,10 +37,10 @@ jobs:
           cd .github/preview-index 
           npm run index
         env:
-          SP_CLIENT_ID: ${{ secrets.SP_CLIENT_ID }}
-          SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
-          SP_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
-          SP_DRIVE_ID: ${{secrets.SP_DRIVE_ID}}
+          SHAREPOINT_CLIENT_ID: ${{ secrets.SHAREPOINT_CLIENT_ID }}
+          SHAREPOINT_TENANT_ID: ${{ secrets.SHAREPOINT_TENANT_ID }}
+          SHAREPOINT_CLIENT_SECRET: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
+          SHAREPOINT_DRIVE_ID: ${{secrets.SHAREPOINT_DRIVE_ID}}
           EDS_ADMIN_KEY: ${{secrets.EDS_ADMIN_KEY}}
           CONSUMER: ${{vars.CONSUMER}}
           PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}

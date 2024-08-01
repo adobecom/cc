@@ -22,10 +22,10 @@ const { JSDOM } = jsdom;
 
 require('dotenv').config();
 
-const SP_CLIENT_ID = process.env.SP_CLIENT_ID;
-const SP_TENANT_ID = process.env.SP_TENANT_ID;
-const SP_CLIENT_SECRET = process.env.SP_CLIENT_SECRET;
-const SP_DRIVE_ID = process.env.SP_DRIVE_ID;
+const SHAREPOINT_CLIENT_ID = process.env.SHAREPOINT_CLIENT_ID;
+const SHAREPOINT_TENANT_ID = process.env.SHAREPOINT_TENANT_ID;
+const SHAREPOINT_CLIENT_SECRET = process.env.SHAREPOINT_CLIENT_SECRET;
+const SHAREPOINT_DRIVE_ID = process.env.SHAREPOINT_DRIVE_ID;
 const EDS_ADMIN_KEY = process.env.EDS_ADMIN_KEY;
 const CONSUMER = process.env.CONSUMER;
 const PREVIEW_INDEX_JSON = process.env.PREVIEW_INDEX_JSON;
@@ -35,7 +35,7 @@ const PREVIEW_RESOURCES_FOLDER = process.env.PREVIEW_RESOURCES_FOLDER;
 const PREVIEW_STATUS_URL = `https://admin.hlx.page/status/adobecom/${CONSUMER}/main/*`;
 const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${PREVIEW_INDEX_JSON}`;
 const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.hlx.page`;
-const GRAPH_BASE_URL = `https://graph.microsoft.com/v1.0`;
+const GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0';
 const SHEET_RAW_INDEX = 'raw_index';
 const TABLE_NAME = 'Table1';
 const FETCH_RETRY = 10;
@@ -65,9 +65,9 @@ const getAccessToken = async () => {
     console.log('fetching access token...')
     const authConfig = {
       auth: {
-          clientId: SP_CLIENT_ID,
-          authority: `https://login.microsoftonline.com/${SP_TENANT_ID}`,
-          clientSecret: encodeURIComponent(SP_CLIENT_SECRET)
+          clientId: SHAREPOINT_CLIENT_ID,
+          authority: `https://login.microsoftonline.com/${SHAREPOINT_TENANT_ID}`,
+          clientSecret: encodeURIComponent(SHAREPOINT_CLIENT_SECRET)
       }
     }
     const authClient = new msal.ConfidentialClientApplication(authConfig);
@@ -131,7 +131,7 @@ const edsAdminHeaders = () => ({
 });
 
 const getItemId = async (indexPath) => {
-  const url = `${GRAPH_BASE_URL}/drives/${SP_DRIVE_ID}/root:/${indexPath}`;
+  const url = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/root:/${indexPath}`;
   console.log(`Get item id: ${url}`);
   const response = await fetch(url, {
       headers: await sharepointHeaders(),
@@ -233,10 +233,10 @@ const deleteAllRows = async (url) => {
 
 const validateConfig = () => {
   const config = {
-    SP_CLIENT_ID: SP_CLIENT_ID,
-    SP_TENANT_ID: SP_TENANT_ID,
-    SP_CLIENT_SECRET: SP_CLIENT_SECRET,
-    SP_DRIVE_ID: SP_DRIVE_ID,
+    SHAREPOINT_CLIENT_ID: SHAREPOINT_CLIENT_ID,
+    SHAREPOINT_TENANT_ID: SHAREPOINT_TENANT_ID,
+    SHAREPOINT_CLIENT_SECRET: SHAREPOINT_CLIENT_SECRET,
+    SHAREPOINT_DRIVE_ID: SHAREPOINT_DRIVE_ID,
     EDS_ADMIN_KEY: EDS_ADMIN_KEY,
     CONSUMER: CONSUMER,
     PREVIEW_INDEX_FILE: PREVIEW_INDEX_FILE,
@@ -272,7 +272,7 @@ const reindex = async (indexPath, folder) => {
     return;
   }
   
-  const tableURL = `${GRAPH_BASE_URL}/drives/${SP_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
+  const tableURL = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
   await deleteAllRows(tableURL);
   const response = await fetch(`${tableURL}/rows`, {
       method: 'POST',
