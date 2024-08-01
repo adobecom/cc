@@ -82,20 +82,21 @@ const getAccessToken = async () => {
 }
 
 const getResourceIndexData = async (path) => {
+  console.log(new Date().toString() + ', path: ' + path);
   const url = `${PREVIEW_BASE_URL}${path}`;
   const response = await fetch(url, {
     headers: {...edsAdminHeaders(), 'Content-Type': 'application/json'}
   });
   if (response?.status !== 200) {
     console.log('Failed to fetch card: ' + url);
-    return;
+    return [];
   }
   const cardHTML = await response.text();
   const document = new JSDOM(cardHTML).window.document;
   const merchCard = document.querySelector('main div.merch-card');
   if (!merchCard) {
     console.log('Merch card not found in the dom: ' + path);
-    return;
+    return [];
   }
   // lastModified and publicationDate are not parsed for preview index since this data is irrelevant
   // robots should be ignored
@@ -168,7 +169,7 @@ const getPreviewResources = async (folder, parseIndexFc) => {
     return;
   }
   const job = await response.json();
-  let jobDetailsURL = `${job.links.self}/details`;
+  const jobDetailsURL = `${job.links.self}/details`;
   console.log(`fetching list of previewed resources: ${jobDetailsURL}`);
 
   const retryFetch = async (resolve, attempt = 1) => {
@@ -193,10 +194,7 @@ const getPreviewResources = async (folder, parseIndexFc) => {
 
   const tasks = paths.resources?.preview
     .filter((path) => !path.endsWith('.json') && path.includes('/merch-card/'))
-    .map((path) => async () => {
-      console.log(new Date().toString() + ', path: ' + path);
-      await parseIndexFc(path);
-    });
+    .map((path) => () => parseIndexFc(path));
   const pool = async (tasks, concurrencyLimit) => {
     const results = [];
     const executing = new Set();
@@ -213,7 +211,9 @@ const getPreviewResources = async (folder, parseIndexFc) => {
     return Promise.allSettled(results); // wait for the rest of tasks
   }
 
-  const indexData = await pool(tasks, 20);
+  let indexData = await pool(tasks, 20);
+  indexData = indexData.map((item) => item?.value)
+    .filter((row) => row?.length > 0);
   console.log(`fetched ${indexData?.length} previewed resources`);
   return indexData;
 }

@@ -66,3 +66,12 @@ curl --header "Authorization: Bearer access_token" 'https://graph.microsoft.com/
 ```
 curl -X POST --header "Authorization: Bearer access_token" -H "Content-Type: application/json" -d '{"shift": "Up"}' 'https://graph.microsoft.com/v1.0/drives/${DRIVE_ID}/items/${ITEM_ID}/workbook/worksheets/raw_index/tables/Table1/DataBodyRange/delete'
 ```
+
+
+# Troubleshooting
+
+The error below doesn't mean the script failed, it could be that your target index file table had no rows, so nothing could be deleted.
+
+```
+(no rows found?) Failed to delete all rows: 409 - Conflict
+```
