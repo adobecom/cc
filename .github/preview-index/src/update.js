@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * ___________________
  *
- * Copyright 2023 Adobe
+ * Copyright 2024 Adobe
  * All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains
@@ -27,8 +27,8 @@ const SP_TENANT_ID = process.env.SP_TENANT_ID;
 const SP_CLIENT_SECRET = process.env.SP_CLIENT_SECRET;
 const SP_DRIVE_ID = process.env.SP_DRIVE_ID;
 const EDS_ADMIN_KEY = process.env.EDS_ADMIN_KEY;
-const PREVIEW_INDEX_JSON = process.env.PREVIEW_INDEX_JSON;
 const CONSUMER = process.env.CONSUMER;
+const PREVIEW_INDEX_JSON = process.env.PREVIEW_INDEX_JSON;
 const PREVIEW_INDEX_FILE = process.env.PREVIEW_INDEX_FILE;
 const PREVIEW_RESOURCES_FOLDER = process.env.PREVIEW_RESOURCES_FOLDER;
 
@@ -94,7 +94,7 @@ const getResourceIndexData = async (path) => {
   const document = new JSDOM(cardHTML).window.document;
   const merchCard = document.querySelector('main div.merch-card');
   if (!merchCard) {
-    console.log('Merch card not found in the dom: ' + merchCard.outerHTML);
+    console.log('Merch card not found in the dom: ' + path);
     return;
   }
   // lastModified and publicationDate are not parsed for preview index since this data is irrelevant
@@ -145,6 +145,17 @@ const getItemId = async (indexPath) => {
   return null;
 };
 
+/**
+ * Fetch all previewed resources in specified folder. Bulk status job is asynchronyous, 
+ * so the method will keep re-fetching the status till the job is done. Interval - 5 seconds.
+ * When Bulk Status returned all previewed resource paths, map each path to a function that will 
+ * request this path content from hlx.page and map it to index row.
+ * Concurrent Requests to hlx.page are limited to 20 in order not to overload EDS. hlx.page is an uncached endpoint.
+ * Promise.allSettled instead of Promise.all insures the script will execute for rest of paths, even if one of them failed.
+ * @param {*} folder 
+ * @param {*} parseIndexFc 
+ * @returns 
+ */
 const getPreviewResources = async (folder, parseIndexFc) => {
   const headers = {...edsAdminHeaders(), 'Content-Type': 'application/json'};
   const response = await fetch(PREVIEW_STATUS_URL, {
@@ -158,6 +169,7 @@ const getPreviewResources = async (folder, parseIndexFc) => {
   }
   const job = await response.json();
   let jobDetailsURL = `${job.links.self}/details`;
+  console.log(`fetching list of previewed resources: ${jobDetailsURL}`);
 
   const retryFetch = async (resolve, attempt = 1) => {
     const response = await fetch(jobDetailsURL, { headers });
@@ -165,7 +177,7 @@ const getPreviewResources = async (folder, parseIndexFc) => {
     if (data?.state === 'stopped') {
         resolve(data?.data);
     } else if (attempt < FETCH_RETRY) {
-        console.log(`Attempt ${attempt}: Job state is '${data?.state}'. Checking again in 1 second...`);
+        console.log(`Attempt ${attempt}: Job state is '${data?.state}'. Checking again in 5 second...`);
         setTimeout(() => retryFetch(resolve, attempt + 1), 5000); // Wait 1 second before the next check
     } else {
         console.log("Maximum attempts reached. Stopping the fetching.");
@@ -173,23 +185,35 @@ const getPreviewResources = async (folder, parseIndexFc) => {
     }
   };
 
-  const cardsDataPromise = new Promise (async (resolve) => retryFetch(resolve, 1));
-  const cardsData = await cardsDataPromise;
-  if (!cardsData) {
-    console.log('Failed to fetch previewed cards.')
+  const paths = await new Promise (async (resolve) => retryFetch(resolve, 1));
+  if (!paths) {
+    console.log('Failed to fetch previewed resources.')
     return;
   }
-  
-  const jsonPromises = await Promise.allSettled(
-    cardsData.resources?.preview
-      .filter((path) => !path.endsWith('.json') && path.includes('/merch-card/'))
-      .map(async (path) => await parseIndexFc(path))
-  );
 
-  const indexData = jsonPromises
-    .filter((p) => p.status === 'fulfilled')
-    .map((p) => p.value)
-    .filter((value) => !!value);
+  const tasks = paths.resources?.preview
+    .filter((path) => !path.endsWith('.json') && path.includes('/merch-card/'))
+    .map((path) => async () => {
+      console.log(new Date().toString() + ', path: ' + path);
+      await parseIndexFc(path);
+    });
+  const pool = async (tasks, concurrencyLimit) => {
+    const results = [];
+    const executing = new Set();
+    for (const task of tasks) {
+      const promise = task();
+      results.push(promise);
+      executing.add(promise);
+      promise.finally(() => executing.delete(promise));
+      if (executing.size >= concurrencyLimit) {
+        console.log('Waiting...');
+        await Promise.race(executing);
+      }
+    }
+    return Promise.allSettled(results); // wait for the rest of tasks
+  }
+
+  const indexData = await pool(tasks, 20);
   console.log(`fetched ${indexData?.length} previewed resources`);
   return indexData;
 }
