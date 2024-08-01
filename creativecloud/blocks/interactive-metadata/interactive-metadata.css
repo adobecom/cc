@@ -399,7 +399,6 @@
   }
 
   .aside.interactive-enabled .foreground.container div.image,
-  .marquee.interactive-enabled .foreground.container div.image,
   .marquee.interactive-enabled .foreground.container div.asset {
     max-width: 570px;
     margin-inline-start: 60px;
