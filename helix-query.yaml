@@ -14,6 +14,7 @@ indices:
       - /ai/**
       - /education/**
       - /partnerpromo/**
+      - /downloads/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -67,6 +68,7 @@ indices:
       - /au/ai/**
       - /au/education/**
       - /au/partnerpromo/**
+      - /au/downloads/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -83,6 +85,7 @@ indices:
       - /de/ai/**
       - /de/education/**
       - /de/partnerpromo/**
+      - /de/downloads/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -99,6 +102,7 @@ indices:
       - /es/ai/**
       - /es/education/**
       - /es/partnerpromo/**
+      - /es/downloads/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -115,6 +119,7 @@ indices:
       - /fr/ai/**
       - /fr/education/**
       - /fr/partnerpromo/**
+      - /fr/downloads/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -131,6 +136,7 @@ indices:
       - /it/ai/**
       - /it/education/**
       - /it/partnerpromo/**
+      - /it/downloads/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -147,6 +153,7 @@ indices:
       - /jp/ai/**
       - /jp/education/**
       - /jp/partnerpromo/**
+      - /jp/downloads/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -163,6 +170,7 @@ indices:
       - /kr/ai/**
       - /kr/education/**
       - /kr/partnerpromo/**
+      - /kr/downloads/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -179,6 +187,7 @@ indices:
       - /ru/ai/**
       - /ru/education/**
       - /ru/partnerpromo/**
+      - /ru/downloads/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -195,6 +204,7 @@ indices:
       - /hk_zh/ai/**
       - /hk_zh/education/**
       - /hk_zh/partnerpromo/**
+      - /hk_zh/downloads/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -211,6 +221,7 @@ indices:
       - /tw/ai/**
       - /tw/education/**
       - /tw/partnerpromo/**
+      - /tw/downloads/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -227,6 +238,7 @@ indices:
       - /nl/ai/**
       - /nl/education/**
       - /nl/partnerpromo/**
+      - /nl/downloads/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -243,6 +255,7 @@ indices:
       - /pl/ai/**
       - /pl/education/**
       - /pl/partnerpromo/**
+      - /pl/downloads/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -259,6 +272,7 @@ indices:
       - /tr/ai/**
       - /tr/education/**
       - /tr/partnerpromo/**
+      - /tr/downloads/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -275,6 +289,7 @@ indices:
       - /uk/ai/**
       - /uk/education/**
       - /uk/partnerpromo/**
+      - /uk/downloads/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -291,6 +306,7 @@ indices:
       - /ca/ai/**
       - /ca/education/**
       - /ca/partnerpromo/**
+      - /ca/downloads/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -307,6 +323,7 @@ indices:
       - /cn/ai/**
       - /cn/education/**
       - /cn/partnerpromo/**
+      - /cn/downloads/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -323,6 +340,7 @@ indices:
       - /ae_ar/ai/**
       - /ae_ar/education/**
       - /ae_ar/partnerpromo/**
+      - /ae_ar/downloads/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -339,6 +357,7 @@ indices:
       - /ae_en/ai/**
       - /ae_en/education/**
       - /ae_en/partnerpromo/**
+      - /ae_en/downloads/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -355,6 +374,7 @@ indices:
       - /at/ai/**
       - /at/education/**
       - /at/partnerpromo/**
+      - /at/downloads/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -371,6 +391,7 @@ indices:
       - /be_en/ai/**
       - /be_en/education/**
       - /be_en/partnerpromo/**
+      - /be_en/downloads/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -387,6 +408,7 @@ indices:
       - /be_fr/ai/**
       - /be_fr/education/**
       - /be_fr/partnerpromo/**
+      - /be_fr/downloads/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -403,6 +425,7 @@ indices:
       - /ca_fr/ai/**
       - /ca_fr/education/**
       - /ca_fr/partnerpromo/**
+      - /ca_fr/downloads/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -419,6 +442,7 @@ indices:
       - /ch_de/ai/**
       - /ch_de/education/**
       - /ch_de/partnerpromo/**
+      - /ch_de/downloads/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -435,6 +459,7 @@ indices:
       - /ch_fr/ai/**
       - /ch_fr/education/**
       - /ch_fr/partnerpromo/**
+      - /ch_fr/downloads/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -451,6 +476,7 @@ indices:
       - /cl/ai/**
       - /cl/education/**
       - /cl/partnerpromo/**
+      - /cl/downloads/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -467,6 +493,7 @@ indices:
       - /gr_en/ai/**
       - /gr_en/education/**
       - /gr_en/partnerpromo/**
+      - /gr_en/downloads/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -483,6 +510,7 @@ indices:
       - /hk_en/ai/**
       - /hk_en/education/**
       - /hk_en/partnerpromo/**
+      - /hk_en/downloads/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -499,6 +527,7 @@ indices:
       - /ie/ai/**
       - /ie/education/**
       - /ie/partnerpromo/**
+      - /ie/downloads/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -515,6 +544,7 @@ indices:
       - /il_en/ai/**
       - /il_en/education/**
       - /il_en/partnerpromo/**
+      - /il_en/downloads/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -531,6 +561,7 @@ indices:
       - /in/ai/**
       - /in/education/**
       - /in/partnerpromo/**
+      - /in/downloads/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -547,6 +578,7 @@ indices:
       - /lt/ai/**
       - /lt/education/**
       - /lt/partnerpromo/**
+      - /lt/downloads/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -563,6 +595,7 @@ indices:
       - /lu_de/ai/**
       - /lu_de/education/**
       - /lu_de/partnerpromo/**
+      - /lu_de/downloads/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -579,6 +612,7 @@ indices:
       - /lu_en/ai/**
       - /lu_en/education/**
       - /lu_en/partnerpromo/**
+      - /lu_en/downloads/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -595,6 +629,7 @@ indices:
       - /lu_fr/ai/**
       - /lu_fr/education/**
       - /lu_fr/partnerpromo/**
+      - /lu_fr/downloads/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -611,6 +646,7 @@ indices:
       - /mena_en/ai/**
       - /mena_en/education/**
       - /mena_en/partnerpromo/**
+      - /mena_en/downloads/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -627,6 +663,7 @@ indices:
       - /nz/ai/**
       - /nz/education/**
       - /nz/partnerpromo/**
+      - /nz/downloads/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -643,6 +680,7 @@ indices:
       - /sa_ar/ai/**
       - /sa_ar/education/**
       - /sa_ar/partnerpromo/**
+      - /sa_ar/downloads/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -659,6 +697,7 @@ indices:
       - /sa_en/ai/**
       - /sa_en/education/**
       - /sa_en/partnerpromo/**
+      - /sa_en/downloads/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
    cards-sa_en:
@@ -675,6 +714,7 @@ indices:
       - /th_en/ai/**
       - /th_en/education/**
       - /th_en/partnerpromo/**
+      - /th_en/downloads/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -691,6 +731,7 @@ indices:
       - /th_th/ai/**
       - /th_th/education/**
       - /th_th/partnerpromo/**
+      - /th_th/downloads/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -707,6 +748,7 @@ indices:
       - /za/ai/**
       - /za/education/**
       - /za/partnerpromo/**
+      - /za/downloads/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -723,6 +765,7 @@ indices:
       - /africa/ai/**
       - /africa/education/**
       - /africa/partnerpromo/**
+      - /africa/downloads/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -739,6 +782,7 @@ indices:
       - /ar/ai/**
       - /ar/education/**
       - /ar/partnerpromo/**
+      - /ar/downloads/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -755,6 +799,7 @@ indices:
       - /co/ai/**
       - /co/education/**
       - /co/partnerpromo/**
+      - /co/downloads/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -771,6 +816,7 @@ indices:
       - /cr/ai/**
       - /cr/education/**
       - /cr/partnerpromo/**
+      - /cr/downloads/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -787,6 +833,7 @@ indices:
       - /ec/ai/**
       - /ec/education/**
       - /ec/partnerpromo/**
+      - /ec/downloads/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -803,6 +850,7 @@ indices:
       - /eg_ar/ai/**
       - /eg_ar/education/**
       - /eg_ar/partnerpromo/**
+      - /eg_ar/downloads/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -819,6 +867,7 @@ indices:
       - /eg_en/ai/**
       - /eg_en/education/**
       - /eg_en/partnerpromo/**
+      - /eg_en/downloads/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -835,6 +884,7 @@ indices:
       - /gr_el/ai/**
       - /gr_el/education/**
       - /gr_el/partnerpromo/**
+      - /gr_el/downloads/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -851,6 +901,7 @@ indices:
       - /gt/ai/**
       - /gt/education/**
       - /gt/partnerpromo/**
+      - /gt/downloads/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -867,6 +918,7 @@ indices:
       - /id_en/ai/**
       - /id_en/education/**
       - /id_en/partnerpromo/**
+      - /id_en/downloads/**
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -883,6 +935,7 @@ indices:
       - /id_id/ai/**
       - /id_id/education/**
       - /id_id/partnerpromo/**
+      - /id_id/downloads/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -899,6 +952,7 @@ indices:
       - /in_hi/ai/**
       - /in_hi/education/**
       - /in_hi/partnerpromo/**
+      - /in_hi/downloads/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -915,6 +969,7 @@ indices:
       - /kw_ar/ai/**
       - /kw_ar/education/**
       - /kw_ar/partnerpromo/**
+      - /kw_ar/downloads/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -931,6 +986,7 @@ indices:
       - /kw_en/ai/**
       - /kw_en/education/**
       - /kw_en/partnerpromo/**
+      - /kw_en/downloads/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -947,6 +1003,7 @@ indices:
       - /my_en/ai/**
       - /my_en/education/**
       - /my_en/partnerpromo/**
+      - /my_en/downloads/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -963,6 +1020,7 @@ indices:
       - /my_ms/ai/**
       - /my_ms/education/**
       - /my_ms/partnerpromo/**
+      - /my_ms/downloads/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -979,6 +1037,7 @@ indices:
       - /ng/ai/**
       - /ng/education/**
       - /ng/partnerpromo/**
+      - /ng/downloads/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -995,6 +1054,7 @@ indices:
       - /pe/ai/**
       - /pe/education/**
       - /pe/partnerpromo/**
+      - /pe/downloads/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -1011,6 +1071,7 @@ indices:
       - /ph_en/ai/**
       - /ph_en/education/**
       - /ph_en/partnerpromo/**
+      - /ph_en/downloads/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -1027,6 +1088,7 @@ indices:
       - /ph_fil/ai/**
       - /ph_fil/education/**
       - /ph_fil/partnerpromo/**
+      - /ph_fil/downloads/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -1043,6 +1105,7 @@ indices:
       - /pr/ai/**
       - /pr/education/**
       - /pr/partnerpromo/**
+      - /pr/downloads/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -1059,6 +1122,7 @@ indices:
       - /qa_ar/ai/**
       - /qa_ar/education/**
       - /qa_ar/partnerpromo/**
+      - /qa_ar/downloads/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -1075,6 +1139,7 @@ indices:
       - /qa_en/ai/**
       - /qa_en/education/**
       - /qa_en/partnerpromo/**
+      - /qa_en/downloads/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -1091,6 +1156,7 @@ indices:
       - /vn_en/ai/**
       - /vn_en/education/**
       - /vn_en/partnerpromo/**
+      - /vn_en/downloads/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -1107,6 +1173,7 @@ indices:
       - /vn_vi/ai/**
       - /vn_vi/education/**
       - /vn_vi/partnerpromo/**
+      - /vn_vi/downloads/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -1123,6 +1190,7 @@ indices:
       - /dk/ai/**
       - /dk/education/**
       - /dk/partnerpromo/**
+      - /dk/downloads/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -1139,6 +1207,7 @@ indices:
       - /fi/ai/**
       - /fi/education/**
       - /fi/partnerpromo/**
+      - /fi/downloads/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -1155,6 +1224,7 @@ indices:
       - /no/ai/**
       - /no/education/**
       - /no/partnerpromo/**
+      - /no/downloads/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -1171,6 +1241,7 @@ indices:
       - /se/ai/**
       - /se/education/**
       - /se/partnerpromo/**
+      - /se/downloads/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -1187,6 +1258,7 @@ indices:
       - /la/ai/**
       - /la/education/**
       - /la/partnerpromo/**
+      - /la/downloads/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -1203,6 +1275,7 @@ indices:
       - /mx/ai/**
       - /mx/education/**
       - /mx/partnerpromo/**
+      - /mx/downloads/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -1219,6 +1292,7 @@ indices:
       - /be_nl/ai/**
       - /be_nl/education/**
       - /be_nl/partnerpromo/**
+      - /be_nl/downloads/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -1235,6 +1309,7 @@ indices:
       - /bg/ai/**
       - /bg/education/**
       - /bg/partnerpromo/**
+      - /bg/downloads/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -1251,6 +1326,7 @@ indices:
       - /ch_it/ai/**
       - /ch_it/education/**
       - /ch_it/partnerpromo/**
+      - /ch_it/downloads/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -1267,6 +1343,7 @@ indices:
       - /cz/ai/**
       - /cz/education/**
       - /cz/partnerpromo/**
+      - /cz/downloads/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -1283,6 +1360,7 @@ indices:
       - /ee/ai/**
       - /ee/education/**
       - /ee/partnerpromo/**
+      - /ee/downloads/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -1299,6 +1377,7 @@ indices:
       - /hu/ai/**
       - /hu/education/**
       - /hu/partnerpromo/**
+      - /hu/downloads/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -1315,6 +1394,7 @@ indices:
       - /il_he/ai/**
       - /il_he/education/**
       - /il_he/partnerpromo/**
+      - /il_he/downloads/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -1331,6 +1411,7 @@ indices:
       - /lv/ai/**
       - /lv/education/**
       - /lv/partnerpromo/**
+      - /lv/downloads/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -1347,6 +1428,7 @@ indices:
       - /mena_ar/ai/**
       - /mena_ar/education/**
       - /mena_ar/partnerpromo/**
+      - /mena_ar/downloads/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -1363,6 +1445,7 @@ indices:
       - /pt/ai/**
       - /pt/education/**
       - /pt/partnerpromo/**
+      - /pt/downloads/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -1379,6 +1462,7 @@ indices:
       - /ro/ai/**
       - /ro/education/**
       - /ro/partnerpromo/**
+      - /ro/downloads/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -1395,6 +1479,7 @@ indices:
       - /si/ai/**
       - /si/education/**
       - /si/partnerpromo/**
+      - /si/downloads/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -1411,6 +1496,7 @@ indices:
       - /sk/ai/**
       - /sk/education/**
       - /sk/partnerpromo/**
+      - /sk/downloads/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -1427,6 +1513,7 @@ indices:
       - /ua/ai/**
       - /ua/education/**
       - /ua/partnerpromo/**
+      - /ua/downloads/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -1443,6 +1530,7 @@ indices:
       - /sg/ai/**
       - /sg/education/**
       - /sg/partnerpromo/**
+      - /sg/downloads/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -1459,6 +1547,7 @@ indices:
       - /br/ai/**
       - /br/education/**
       - /br/partnerpromo/**
+      - /br/downloads/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -1475,6 +1564,7 @@ indices:
       - /cis_en/ai/**
       - /cis_en/education/**
       - /cis_en/partnerpromo/**
+      - /cis_en/downloads/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -1491,6 +1581,7 @@ indices:
       - /cis_ru/ai/**
       - /cis_ru/education/**
       - /cis_ru/partnerpromo/**
+      - /cis_ru/downloads/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
