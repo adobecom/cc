@@ -1,4 +1,3 @@
-
 :root {
   --prompt-input-fill: #262626;
   --prompt-btn-fill: #323232;
@@ -12,12 +11,14 @@
   --prompt-input-fill-light: #D5D5D5;
 }
 
-.interactive-enabled .foreground .image > p:first-child {
+.interactive-enabled .foreground .image > p:first-child,
+.interactive-enabled .foreground .asset > p:first-child  {
   display: none;
   margin: 0;
 }
 
-.interactive-enabled .foreground.container .image {
+.interactive-enabled .foreground.container .image,
+.interactive-enabled .foreground.container .asset  {
   flex-direction: column;
 }
 
@@ -87,7 +88,8 @@
   transform: scaleX(-1);
 }
 
-.interactive-enabled .foreground .image > p > img[src*='svg'] {
+.interactive-enabled .foreground .image > p > img[src*='svg'],
+.interactive-enabled .foreground .asset > p > img[src*='svg'] {
   display: block;
 }
 
@@ -274,11 +276,13 @@
   .interactive-enabled.mobile-heading-top  h4,
   .interactive-enabled.mobile-heading-top  h5,
   .interactive-enabled.mobile-heading-top  h6,
-  .interactive-enabled .foreground .image .mobile-heading-top {
+  .interactive-enabled .foreground .image .mobile-heading-top,
+  .interactive-enabled .foreground .asset .mobile-heading-top {
     display: none;
   }
 
-  .interactive-enabled.mobile-heading-top .foreground .image .mobile-heading-top {
+  .interactive-enabled.mobile-heading-top .foreground .image .mobile-heading-top,
+  .interactive-enabled.mobile-heading-top .foreground .asset .mobile-heading-top {
     display: block;
     margin-bottom: 24px;
     font-size: 36px;
@@ -288,15 +292,18 @@
 }
 
 @media screen and (min-width: 600px) {
-  .interactive-enabled .foreground .image .mobile-heading-top {
+  .interactive-enabled .foreground .image .mobile-heading-top,
+  .interactive-enabled .foreground .asset .mobile-heading-top {
     display: none;
   }
 
-  .interactive-enabled .foreground.container .image > p:first-child {
+  .interactive-enabled .foreground.container .image > p:first-child,
+  .interactive-enabled .foreground.container .asset > p:first-child {
     display: none;
   }
 
-  .interactive-enabled .foreground .image {
+  .interactive-enabled .foreground .image,
+  .interactive-enabled .foreground .asset {
     position: relative;
     border-radius: 16px;
     margin-inline-start: 0;
@@ -315,7 +322,10 @@
   
   .interactive-enabled .foreground.container .image .interactive-holder > picture img,
   .interactive-enabled .foreground.container .image .interactive-holder > picture,
-  .interactive-enabled .foreground.container .image .interactive-holder > video {
+  .interactive-enabled .foreground.container .image .interactive-holder > video,
+  .interactive-enabled .foreground.container .asset .interactive-holder > picture img,
+  .interactive-enabled .foreground.container .asset .interactive-holder > picture,
+  .interactive-enabled .foreground.container .asset .interactive-holder > video {
     border-radius: 16px;
   }
 
@@ -389,7 +399,8 @@
   }
 
   .aside.interactive-enabled .foreground.container div.image,
-  .marquee.interactive-enabled .foreground.container div.image {
+  .marquee.interactive-enabled .foreground.container div.image,
+  .marquee.interactive-enabled .foreground.container div.asset {
     max-width: 570px;
     margin-inline-start: 60px;
   }
