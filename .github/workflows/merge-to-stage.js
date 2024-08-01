@@ -11,7 +11,7 @@ let body = `
 const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
 const LABELS = {
   highPriority: 'high priority',
-  readyForStage: 'Ready for Stage',
+  readyForStage: 'ready for stage',
   SOTPrefix: 'SOT',
   zeroImpact: 'zero-impact',
   verified: 'verified',
@@ -190,7 +190,7 @@ const getPRs = async () => {
       );
       return false;
     }
-    if (!labels.includes(LABELS.verified)) {
+    if (!labels.includes(LABELS.verified) || !labels.includes(LABELS.readyForStage)) {
       commentOnPR(
         `Skipped merging ${number}: ${title} due to missing verified label. kindly make sure that the PR has been verified`,
         number
