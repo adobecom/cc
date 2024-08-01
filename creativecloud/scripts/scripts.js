@@ -202,4 +202,3 @@ decorateArea();
   loadLana({ clientId: 'cc' });
   await loadArea();
 }());
-
