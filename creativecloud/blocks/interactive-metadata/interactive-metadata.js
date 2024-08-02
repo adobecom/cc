@@ -96,12 +96,12 @@ async function createDisplayImg(target, replaceEl, src, alt) {
 async function createDisplayVideo(target, video, src) {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
-  if (hash?.includes('autoplay1')) video.removeAttribute('loop');
+  if (hash?.includes('autoplay1')) video?.removeAttribute('loop');
   else attrs.loop = '';
-  Object.keys(attrs).forEach((attr) => video.setAttribute(attr, attrs[attr]));
+  Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
   try {
-    video.load();
-    await video.play();
+    video?.load();
+    await video?.play();
   } catch (err) { return; }
   target.classList.add('show-video');
   target.classList.remove('show-image');
