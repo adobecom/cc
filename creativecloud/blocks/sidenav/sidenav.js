@@ -175,7 +175,9 @@ export default async function init(el) {
     import(`${libs}/features/spectrum-web-components/dist/dialog.js`),
     import(`${libs}/features/spectrum-web-components/dist/link.js`),
     import(`${libs}/features/spectrum-web-components/dist/overlay.js`),
-  ]);
+  ]).catch((err) => {
+    console.error(err);
+  });
 
   const sidenavTitle = mainRow?.querySelector('h2,h3')?.textContent.trim();
   const searchText = mainRow?.querySelector('p > strong')?.textContent.trim();

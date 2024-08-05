@@ -43,6 +43,6 @@
     "stylelint-config-standard": "25.0.0"
   },
   "dependencies": {
-    "@adobecom/milo": "github:adobecom/milo#main"
+    "@adobecom/milo": "github:mirafedas/milo#mwpw-151392-swc-version"
   }
 }
