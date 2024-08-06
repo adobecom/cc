@@ -1,0 +1,48 @@
+name: Run preview index
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Run every 2 hours
+  workflow_dispatch: # Allow manual trigger
+  repository_dispatch:
+    types: [run-preview-index]
+
+jobs:
+  run-preview-index:
+    name: Reindexing preview resources
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install XVFB
+        run: sudo apt-get install xvfb
+
+      - name: Install dependencies
+        run: |
+          cd .github/preview-index 
+          npm install
+      
+      - name: Reindex preview resources
+        run: |
+          cd .github/preview-index 
+          npm run index
+        env:
+          SHAREPOINT_CLIENT_ID: ${{ secrets.SHAREPOINT_CLIENT_ID }}
+          SHAREPOINT_TENANT_ID: ${{ secrets.SHAREPOINT_TENANT_ID }}
+          SHAREPOINT_CLIENT_SECRET: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
+          SHAREPOINT_DRIVE_ID: ${{secrets.SHAREPOINT_DRIVE_ID}}
+          EDS_ADMIN_KEY: ${{secrets.EDS_ADMIN_KEY}}
+          CONSUMER: ${{vars.CONSUMER}}
+          PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}
+          PREVIEW_INDEX_JSON: ${{vars.PREVIEW_INDEX_JSON}}
+          PREVIEW_RESOURCES_FOLDER: ${{vars.PREVIEW_RESOURCES_FOLDER}}
