@@ -6,7 +6,7 @@ export function getImgSrc(pic) {
   let source = '';
   if (viewport === 'mobile') source = pic.querySelector('source[type="image/webp"]:not([media])');
   else source = pic.querySelector('source[type="image/webp"][media]');
-  return source.srcset;
+  return source?.srcset;
 }
 
 function getNextStepIndex(stepInfo) {
@@ -93,15 +93,18 @@ async function createDisplayImg(target, replaceEl, src, alt) {
   target.classList.remove('show-video');
 }
 
-async function createDisplayVideo(target, video, src) {
+async function createDisplayVideo(target, video, src, poster = '') {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
-  if (hash?.includes('autoplay1')) video.removeAttribute('loop');
+  if (poster !== '') attrs.poster = poster;
+  if (hash?.includes('autoplay1')) video?.removeAttribute('loop');
   else attrs.loop = '';
-  Object.keys(attrs).forEach((attr) => video.setAttribute(attr, attrs[attr]));
+  Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
   try {
-    video.load();
-    await video.play();
+    video?.load();
+    video.oncanplaythrough = async () => {
+      await video.play();
+    };
   } catch (err) { return; }
   target.classList.add('show-video');
   target.classList.remove('show-image');
@@ -128,7 +131,8 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[imgIdx].alt);
   } else if (displayVideos.length) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
-    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href);
+    const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
+    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
   }
 }
 
@@ -201,18 +205,28 @@ function decorateMobileHeading(intEnb) {
   if (!h) return;
   const htxt = h.textContent;
   const hTxtTop = createTag('div', { class: 'mobile-heading-top' }, htxt);
-  intEnb.querySelector('.image').prepend(hTxtTop);
+  intEnb.querySelector('.image, .asset').prepend(hTxtTop);
 }
 
 function createInteractiveArea(el, pic) {
-  const iArea = createTag('div', { class: 'interactive-holder show-image' });
+  const iArea = createTag('div', { class: 'interactive-holder' });
   const newPic = pic.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
-  pic.querySelector('img').src = getImgSrc(pic);
+  const imgElem = pic.querySelector('img');
+  let assetElem = '';
+  if (imgElem) {
+    imgElem.src = getImgSrc(pic);
+    assetElem = createTag('video');
+    iArea.classList.add('show-image');
+  } else {
+    assetElem = createTag('picture');
+    const img = createTag('img');
+    assetElem.append(img);
+    iArea.classList.add('show-video');
+  }
   [...pic.querySelectorAll('source')].forEach((s) => s.remove());
-  const video = createTag('video');
-  iArea.append(pic, video);
+  iArea.append(pic, assetElem);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
   if (el.classList.contains('light')) iArea.classList.add('light');
@@ -228,7 +242,7 @@ async function getTargetArea(el) {
     intEnb.classList.add('interactive-enabled');
     await intEnbReendered(intEnb);
   } catch (err) { return null; }
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video');
   const container = assets[assets.length - 1].closest('p');
   const iArea = createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');
@@ -260,6 +274,7 @@ function getWorkFlowInformation(el) {
     'workflow-generate-select': ['generate', 'selector-tray', 'start-over'],
     'workflow-generate-selector': ['generate', 'selector-tray', 'generate', 'start-over'],
     'workflow-generate-triple-selector': ['generate', 'selector-tray', 'generate', 'selector-tray', 'generate', 'selector-tray', 'start-over'],
+    'workflow-startover': ['start-over', 'start-over'],
   };
   const wfNames = Object.keys(intWorkFlowConfig);
   [...el.classList].forEach((cn) => { if (cn.match('workflow-')) wfName = cn; });
