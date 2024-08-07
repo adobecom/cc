@@ -140,7 +140,7 @@ async function handleNextStep(stepInfo) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
   await loadAllImgs(stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img[src*="svg"]'));
-  await preloadAsset(nextStepIndex, stepInfo);
+  preloadAsset(nextStepIndex, stepInfo);
 }
 
 async function handleLayerDisplay(stepInfo) {
