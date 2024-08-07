@@ -1,4 +1,3 @@
-
 :root {
   --prompt-input-fill: #262626;
   --prompt-btn-fill: #323232;
@@ -12,12 +11,14 @@
   --prompt-input-fill-light: #D5D5D5;
 }
 
-.interactive-enabled .foreground .image > p:first-child {
+.interactive-enabled .foreground .image > p:first-child,
+.interactive-enabled .foreground .asset > p:first-child  {
   display: none;
   margin: 0;
 }
 
-.interactive-enabled .foreground.container .image {
+.interactive-enabled .foreground.container .image,
+.interactive-enabled .foreground.container .asset  {
   flex-direction: column;
 }
 
@@ -44,7 +45,8 @@
   aspect-ratio: 1;
 }
 
-.interactive-enabled .foreground .image .enticement-container {
+.interactive-enabled .foreground .image .enticement-container,
+.interactive-enabled .foreground .asset .enticement-container {
   display: block;
   height: 28px;
   font-weight: bold;
@@ -53,18 +55,21 @@
   margin: 0 0 16px;
 }
 
-.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container {
+.interactive-enabled.mobile-hide-enticement .foreground .image .enticement-container,
+.interactive-enabled.mobile-hide-enticement .foreground .asset .enticement-container {
   display: none;
 }
 
-.interactive-enabled .foreground .image .enticement-message {
+.interactive-enabled .foreground .image .enticement-message,
+.interactive-enabled .foreground .asset .enticement-message {
   display: block;
   max-width: 30ch;
   font-size: 28px;
   line-height: 35px;
 }
 
-.interactive-enabled .foreground .image .enticement-svg {
+.interactive-enabled .foreground .image .enticement-svg,
+.interactive-enabled .foreground .asset .enticement-svg {
   display: block;
   position: relative;
   width: 49px;
@@ -76,13 +81,15 @@
   margin: 0;
 }
 
-[dir="rtl"] .interactive-enabled .foreground .image .enticement-svg {
+[dir="rtl"] .interactive-enabled .foreground .image .enticement-svg,
+[dir="rtl"] .interactive-enabled .foreground .asset .enticement-svg {
   left: 30px;
   right: auto;
   transform: scaleX(-1);
 }
 
-.interactive-enabled .foreground .image > p > img[src*='svg'] {
+.interactive-enabled .foreground .image > p > img[src*='svg'],
+.interactive-enabled .foreground .asset > p > img[src*='svg'] {
   display: block;
 }
 
@@ -269,11 +276,13 @@
   .interactive-enabled.mobile-heading-top  h4,
   .interactive-enabled.mobile-heading-top  h5,
   .interactive-enabled.mobile-heading-top  h6,
-  .interactive-enabled .foreground .image .mobile-heading-top {
+  .interactive-enabled .foreground .image .mobile-heading-top,
+  .interactive-enabled .foreground .asset .mobile-heading-top {
     display: none;
   }
 
-  .interactive-enabled.mobile-heading-top .foreground .image .mobile-heading-top {
+  .interactive-enabled.mobile-heading-top .foreground .image .mobile-heading-top,
+  .interactive-enabled.mobile-heading-top .foreground .asset .mobile-heading-top {
     display: block;
     margin-bottom: 24px;
     font-size: 36px;
@@ -283,15 +292,18 @@
 }
 
 @media screen and (min-width: 600px) {
-  .interactive-enabled .foreground .image .mobile-heading-top {
+  .interactive-enabled .foreground .image .mobile-heading-top,
+  .interactive-enabled .foreground .asset .mobile-heading-top {
     display: none;
   }
 
-  .interactive-enabled .foreground.container .image > p:first-child {
+  .interactive-enabled .foreground.container .image > p:first-child,
+  .interactive-enabled .foreground.container .asset > p:first-child {
     display: none;
   }
 
-  .interactive-enabled .foreground .image {
+  .interactive-enabled .foreground .image,
+  .interactive-enabled .foreground .asset {
     position: relative;
     border-radius: 16px;
     margin-inline-start: 0;
@@ -310,7 +322,10 @@
   
   .interactive-enabled .foreground.container .image .interactive-holder > picture img,
   .interactive-enabled .foreground.container .image .interactive-holder > picture,
-  .interactive-enabled .foreground.container .image .interactive-holder > video {
+  .interactive-enabled .foreground.container .image .interactive-holder > video,
+  .interactive-enabled .foreground.container .asset .interactive-holder > picture img,
+  .interactive-enabled .foreground.container .asset .interactive-holder > picture,
+  .interactive-enabled .foreground.container .asset .interactive-holder > video {
     border-radius: 16px;
   }
 
@@ -324,7 +339,8 @@
     background: none;
   }
   
-  .interactive-enabled .foreground.container .image .enticement-container {
+  .interactive-enabled .foreground.container .image .enticement-container,
+  .interactive-enabled .foreground.container .asset .enticement-container {
     display: block;
     position: relative;
     width: var(--grid-container-width);
@@ -333,12 +349,14 @@
     margin: 0 0 24px;
   }
 
-  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container {
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container,
+  [dir="rtl"] .interactive-enabled .foreground.container .asset .enticement-container {
     right: auto;
     left: 30px;
   }
 
-  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-svg {
+  [dir="rtl"] .interactive-enabled .foreground.container .image .enticement-container .enticement-svg,
+  [dir="rtl"] .interactive-enabled .foreground.container .asset .enticement-container .enticement-svg {
     right: auto;
     left: 30px;
     transform: scaleX(-1);
@@ -381,7 +399,7 @@
   }
 
   .aside.interactive-enabled .foreground.container div.image,
-  .marquee.interactive-enabled .foreground.container div.image {
+  .marquee.interactive-enabled .foreground.container div.asset {
     max-width: 570px;
     margin-inline-start: 60px;
   }
@@ -402,7 +420,8 @@
     margin: 36px 0 0 60px;
   }
 
-  .interactive-enabled .foreground .image .enticement-svg {
+  .interactive-enabled .foreground .image .enticement-svg,
+  .interactive-enabled .foreground .asset .enticement-svg {
     display: flex;
     flex-direction: row-reverse;
     justify-content: start;
@@ -434,5 +453,3 @@
     flex-direction: row-reverse;
   }
 }
-
-
