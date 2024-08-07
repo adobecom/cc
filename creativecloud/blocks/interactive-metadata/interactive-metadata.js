@@ -93,15 +93,18 @@ async function createDisplayImg(target, replaceEl, src, alt) {
   target.classList.remove('show-video');
 }
 
-async function createDisplayVideo(target, video, src) {
+async function createDisplayVideo(target, video, src, poster = '') {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
+  if (poster !== '') attrs.poster = poster;
   if (hash?.includes('autoplay1')) video?.removeAttribute('loop');
   else attrs.loop = '';
   Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
   try {
     video?.load();
-    await video?.play();
+    video.oncanplaythrough = async () => {
+      await video.play();
+    };
   } catch (err) { return; }
   target.classList.add('show-video');
   target.classList.remove('show-image');
@@ -128,7 +131,8 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[imgIdx].alt);
   } else if (displayVideos.length) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
-    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href);
+    const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
+    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
   }
 }
 
@@ -136,7 +140,7 @@ async function handleNextStep(stepInfo) {
   const nextStepIndex = getNextStepIndex(stepInfo);
   stepInfo.stepInit = await loadJSandCSS(stepInfo.stepList[nextStepIndex]);
   await loadAllImgs(stepInfo.stepConfigs[nextStepIndex].querySelectorAll('img[src*="svg"]'));
-  preloadAsset(nextStepIndex, stepInfo);
+  await preloadAsset(nextStepIndex, stepInfo);
 }
 
 async function handleLayerDisplay(stepInfo) {
