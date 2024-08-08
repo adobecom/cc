@@ -172,6 +172,14 @@ const CONFIG = {
   ],
 };
 
+function loadLCPPreloads(miloLibs, loadLink) {
+  const marqueeLcp = document.body.querySelector('main > div:nth-child(1) > .marquee');
+  if (!marqueeLcp) return;
+  loadLink(`${miloLibs}/blocks/marquee/marquee.css`, { rel: 'stylesheet' });
+  loadLink(`${miloLibs}/blocks/marquee/marquee.js`, { as: 'script', rel: 'modulepreload' });
+  loadLink(`${miloLibs}/utils/decorate.js`, { as: 'script', rel: 'modulepreload' });
+}
+
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -180,7 +188,7 @@ const CONFIG = {
 
 const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
 const miloLibs = setLibs(LIBS);
-const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+const { loadArea, setConfig, loadLana, loadLink } = await import(`${miloLibs}/utils/utils.js`);
 setConfig({ ...CONFIG, miloLibs });
 if (isSignedInHomepage) acomsisCookieHandler();
 
@@ -199,5 +207,6 @@ decorateArea();
 
 (async function loadPage() {
   loadLana({ clientId: 'cc' });
+  loadLCPPreloads(miloLibs, loadLink);
   await loadArea();
 }());
