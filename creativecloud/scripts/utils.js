@@ -97,7 +97,7 @@ function getDecorateAreaFn() {
         import(`${getConfig().codeRoot}/deps/interactive-marquee-changebg/changeBgMarquee.js`);
         break;
       }
-      case firstBlock?.classList.contains('marquee'): {
+      case firstBlock?.classList.contains('marquee') || firstBlock?.classList.contains('hero-marquee'): {
         // Load image eagerly for specific breakpoint
         const viewport = defineDeviceByScreenSize();
         const bgImages = firstBlock.querySelectorAll('div').length > 1 ? firstBlock.querySelector('div') : null;
