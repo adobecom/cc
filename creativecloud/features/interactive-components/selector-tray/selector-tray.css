@@ -88,7 +88,7 @@
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-items {
-    gap: 16px
+    gap: 14px
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-title {
@@ -102,14 +102,16 @@
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img {
-    width: 80px;
-    height: 120px;
+    width: 98px;
+    height: 98px;
+    border-radius: 4px;
   }
 
   .interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img .tray-thumbnail-outline {
-    height: calc(100% - 12px);
-    width: calc(100% - 12px);
-    border: 6px solid var(--prompt-highlight-color);
+    height: calc(100% - 6px);
+    width: calc(100% - 6px);
+    border: 3px solid var(--prompt-highlight-color);
+    border-radius: 4px;
   }
 }
 
