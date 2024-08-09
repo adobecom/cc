@@ -262,8 +262,8 @@ async function renderLayer(stepInfo) {
       .then(() => resolve())
       .catch((e) => {
         console.log(e);
-        reject());
-      }
+        reject();
+      });
   });
 }
 
