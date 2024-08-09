@@ -186,16 +186,15 @@ if (isSignedInHomepage) acomsisCookieHandler();
 
 decorateArea();
 
-(function loadStyles() {
-  const paths = [`${miloLibs}/styles/styles.css`];
-  if (STYLES) { paths.push(STYLES); }
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
-    document.head.appendChild(link);
-  });
-}());
+// (function loadStyles() {
+//   if (STYLES) { paths.push(STYLES); }
+//   paths.forEach((path) => {
+//     const link = document.createElement('link');
+//     link.setAttribute('rel', 'stylesheet');
+//     link.setAttribute('href', path);
+//     document.head.appendChild(link);
+//   });
+// }());
 
 (async function loadPage() {
   loadLana({ clientId: 'cc' });
