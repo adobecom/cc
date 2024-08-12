@@ -21,6 +21,19 @@ jobs:
         node-version: [18.x]
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          cd .github/preview-index
+          npm install
+
       - name: Test reindex preview resources
         run: |
           cd .github/preview-index
