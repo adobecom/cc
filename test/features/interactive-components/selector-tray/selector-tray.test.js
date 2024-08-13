@@ -19,9 +19,10 @@ describe('Selector tray', () => {
     expect(ib.querySelector('.interactive-holder.step-selector-tray')).to.exist;
   });
   it('should remove selection on hover', async () => {
-    expect(document.querySelector('.step-selector-tray .thumbnail-selected')).to.exist;
-    document.querySelector('.tray-thumbnail-img').dispatchEvent(new Event('mouseover'));
-    expect(document.querySelector('.step-selector-tray .thumbnail-selected')).to.not.exist;
+    const allAs = document.querySelectorAll('.tray-thumbnail-img');
+    expect(allAs[0].classList.contains('thumbnail-selected')).to.equal(true);
+    allAs[1].dispatchEvent(new Event('mouseover'));
+    expect(allAs[0].classList.contains('thumbnail-selected')).to.equal(false);
   });
   it('should have next layer on selection', async () => {
     document.querySelector('.tray-thumbnail-img').dispatchEvent(new Event('click'));
