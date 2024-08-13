@@ -37,6 +37,20 @@ function attachThumbnailEvents(a, data, layer) {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });
   });
+  ['mouseover', 'focus'].forEach((event) => {
+    a.addEventListener(event, async (e) => {
+      const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
+      e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
+      curra.classList.add('thumbnail-selected');
+      const curLayer = e.target.closest('.layer');
+      if (!curLayer.dataset.defSrc) {
+        const displaying = data.target.querySelector(':scope > picture img');
+        [curLayer.dataset.defSrc, curLayer.dataset.defAlt] = [displaying.src, displaying.alt];
+      }
+      const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
+      await handleImageTransition(data, trObj);
+    });
+  });
   a.addEventListener('click', async (e) => {
     e.preventDefault();
     if (layer.classList.contains('disable-click')) return;
