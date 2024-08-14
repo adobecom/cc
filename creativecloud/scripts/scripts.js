@@ -207,9 +207,7 @@ decorateArea();
     const rlink = url.hash.split('_redirect=')[1];
     a.href = dlink;
     a.addEventListener('click', () => {
-      setTimeout( () => {      
-        window.location = `https://${rlink}`;
-      }, 2000);
+      window.location = `https://${rlink}`;
     });
   });
 }());
