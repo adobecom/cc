@@ -208,7 +208,7 @@ decorateArea();
     a.href = dlink;
     a.addEventListener('click', () => {
       debugger;
-      window.location.href = rlink;
+      window.location.assign(`https://rlink`);
     });
   });
 }());
