@@ -200,4 +200,16 @@ decorateArea();
 (async function loadPage() {
   loadLana({ clientId: 'cc' });
   await loadArea();
+  const atags = document.querySelectorAll('a[href*="_redirect"');
+  [...atags].forEach((a) => {
+    const url = new URL(document.querySelectorAll('a[href*="_redirect"')[0].href);
+    const dlink = `${url.origin}${url.pathname}`;
+    const rlink = url.hash.split('_redirect=')[1];
+    a.href = dlink;
+    a.addEventListener('click', () => {
+      window.location.assign(rlink);
+      window.location.reload();
+    }
+    })
+  });
 }());
