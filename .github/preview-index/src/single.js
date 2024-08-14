@@ -202,8 +202,10 @@ const respond = (response, action) => {
   return false;
 }
 
+const getBaseUrl = (itemId) => `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
+
 const clearFilter = async (itemId) => {
-  const clearFilterUrl = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/columns/8/filter/clear`;
+  const clearFilterUrl = `${getBaseUrl(itemId)}/columns/8/filter/clear`;
   const response = await fetch(clearFilterUrl, {
     method: 'POST',
     headers: await sharepointHeadersWithSession(),
@@ -214,7 +216,7 @@ const clearFilter = async (itemId) => {
 }
 
 const applyFilter = async (itemId, resPath) => {
-  const applyFilterUrl = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/columns('path')/filter/apply`;
+  const applyFilterUrl = `${getBaseUrl(itemId)}/columns('path')/filter/apply`;
   const response = await fetch(applyFilterUrl, {
     method: 'POST',
     headers: await sharepointHeadersWithSession(),
@@ -231,7 +233,7 @@ const applyFilter = async (itemId, resPath) => {
 }
 
 const addTableRow = async (itemId, values) => {
-  const addRowUrl = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/rows/add`;
+  const addRowUrl = `${getBaseUrl(itemId)}/rows/add`;
   const response = await fetch(addRowUrl, {
     method: 'POST',
     headers: await sharepointHeaders(),
@@ -241,7 +243,7 @@ const addTableRow = async (itemId, values) => {
 }
 
 const updateTableRow = async (itemId, values, updateIndex) => {
-  const updateRowUrl = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/rows/itemAt(index=${updateIndex})`;
+  const updateRowUrl = `${getBaseUrl(itemId)}/rows/itemAt(index=${updateIndex})`;
   const response = await fetch(updateRowUrl, {
     method: 'PATCH',
     headers: await sharepointHeaders(),
@@ -251,7 +253,7 @@ const updateTableRow = async (itemId, values, updateIndex) => {
 }
 
 const fetchVisibleView = async (itemId) => {
-  const visibleViewUrl = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/range/visibleView/rows`;
+  const visibleViewUrl = `${getBaseUrl(itemId)}/range/visibleView/rows`;
   const response = await fetch(visibleViewUrl, {
     method: 'GET',
     headers: await sharepointHeadersWithSession(),
