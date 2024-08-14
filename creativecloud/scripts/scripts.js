@@ -209,6 +209,7 @@ decorateArea();
     a.addEventListener('click', () => {
       window.location.assign(rlink);
       window.location.reload();
-    })
+    });
+  });
   });
 }());
