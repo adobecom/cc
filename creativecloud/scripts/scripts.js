@@ -209,7 +209,7 @@ decorateArea();
     a.addEventListener('click', () => {
       setTimeout(() => {
         window.location = `https://${rlink}`;
-      }, 3000)
+      }, 1000)
     });
   });
 }());
