@@ -211,5 +211,4 @@ decorateArea();
       window.location = rlink;
     });
   });
-  });
 }());
