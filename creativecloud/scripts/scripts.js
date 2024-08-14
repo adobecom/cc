@@ -206,10 +206,10 @@ decorateArea();
     const dlink = `${url.origin}${url.pathname}`;
     const rlink = url.hash.split('_redirect=')[1];
     a.href = dlink;
-    // a.addEventListener('click', () => {
-    //   setTimeout(() => {
-    //     window.location = `https://${rlink}`;
-    //   }, 2000)
-    // });
+    a.addEventListener('click', () => {
+      setTimeout(() => {
+        window.location = `https://${rlink}`;
+      }, 2000)
+    });
   });
 }());
