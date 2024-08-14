@@ -15,7 +15,7 @@ function getEnv(env) {
   return 'stage';
 }
 
-const replaceText = (text, params) => {
+const replacePlaceholderText = (text, params) => {
   let finalText = text;
   Object.keys(PLACEHOLDERS).forEach((key) => {
     if (params.get(key)) {
@@ -51,7 +51,7 @@ async function getTermsHTML(params, el, env, search) {
   if (!promoTerms || !promoTerms.header || !promoTerms.text) {
     return false;
   }
-  const termsHtml = replaceText(promoTerms.text, params);
+  const termsHtml = replacePlaceholderText(promoTerms.text, params);
   return `<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${termsHtml}</p></div>`;
 }
 
