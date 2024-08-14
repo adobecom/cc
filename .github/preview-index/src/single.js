@@ -252,44 +252,59 @@ const updateTableRow = async (itemId, values, updateIndex) => {
 
 const fetchVisibleView = async (itemId) => {
   const visibleViewUrl = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}/range/visibleView/rows`;
-  const vvResponse = await fetch(visibleViewUrl, {
+  const response = await fetch(visibleViewUrl, {
     method: 'GET',
     headers: await sharepointHeadersWithSession(),
   });
-  if (vvResponse?.ok) {
-    console.log(`Got visible view: ${vvResponse.status} - ${vvResponse.statusText}`);
-    return await vvResponse.json();
+  if (response?.ok) {
+    console.log(`Got visible view: ${response.status} - ${response.statusText}`);
+    return await response.json();
   } else {
-    console.log(`Failed to get visible view: ${vvResponse.status} - ${vvResponse.statusText}`);
+    console.log(`Failed to get visible view: ${response.status} - ${response.statusText}`);
     return {};
   }
 }
 
-const findRow = (data) => {
+const findRowAddress = (data) => {
   if (!data?.value || data.value.length < 2) return;
 
-  return [data.value[1].cellAddresses[0], data.value[1].values[0]];
+  return data.value[1].cellAddresses[0];
 }
 
-const findIndex = (cellAddresses) => {
-  const cell = cellAddresses[0];
+const findIndex = (cellAddress) => {
+  const cell = cellAddress[0];
   return parseInt(cell.replace('A', ''), 10) - 2;
 }
 
-const reindex = async (indexPath) => {
+/**
+ * Path of the resource that needs to be indexed will be read from the event "resource-previewed".
+ * It ends with '.md' extension that needs to be removed.
+ * Details of this resource, that will be saved in index file, needs to be loaded.
+ * If that resource is already indexed, details will be updated in index file, otherwise new row will be added.
+ *
+ * The procedure to check if the resource is already indexed is :
+ * - create session and get the session ID that will be used in all subsequent calls
+ * - clear all filters
+ * - create new filter with criterion "= resource path"
+ * - fetch the row for this filter
+ * - if there is no row fetched, the new row will be added with resource details
+ * - otherwise the fetched row will be updated.
+ * From the address of the fetched row (which has the form like ['A10', 'B10', 'C10', ...]) we can extract the index
+ * of the row that needs to be updated.
+ *
+ * Doc https://learn.microsoft.com/en-us/graph/api/resources/excel?view=graph-rest-1.0
+ */
+const reindex = async () => {
   if (!validateConfig()) {
     return;
   }
 
-  // const path = '/cc-shared/fragments/merch/products/catalog/merch-card/additional/postscript/default.md';
   const path = process.env.npm_config_path;
-  console.log(`TEST RESOURCE PUBLISHED : path ${path}`);
-  /*
   if (!path || path.endsWith('.json') || !path.includes('/merch-card/')) {
     return;
   }
 
-  const itemId = await getItemId(indexPath);
+  const itemId = await getItemId(PREVIEW_INDEX_FILE);
   if (!itemId) {
     console.error('No index item id found.');
     return;
@@ -304,14 +319,14 @@ const reindex = async (indexPath) => {
   if (!await clearFilter(itemId)) return;
   if (!await applyFilter(itemId, resPath)) return;
   const data = await fetchVisibleView(itemId);
-  const row = findRow(data);
-  if (row) {
-    const updateIndex = findIndex(row[0]);
+  const address = findRowAddress(data);
+  if (address) {
+    const updateIndex = findIndex(address);
     await updateTableRow(itemId, resData, updateIndex);
   } else {
     await addTableRow(itemId, resData);
   }
-  */
+
 }
 
-reindex(PREVIEW_INDEX_FILE);
+reindex();
