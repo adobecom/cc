@@ -1,10 +1,10 @@
-name: Run preview index test
+name: Run preview index for single path
 
 on:
   workflow_dispatch: # Allow manual trigger
   repository_dispatch:
     types:
-      - resource-previewed
+      - resource-published
 
 jobs:
   print:
@@ -13,8 +13,8 @@ jobs:
       - run: |
           echo "Status: ${{ github.event.client_payload.status }}"
           echo "Path: ${{ github.event.client_payload.path }}"
-  run-preview-index-test:
-    name: Test reindexing preview resources
+  run-preview-index-single:
+    name: Run preview index for single path
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,12 +29,23 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Install XVFB
+        run: sudo apt-get install xvfb
+
       - name: Install dependencies
         run: |
           cd .github/preview-index
           npm install
 
-      - name: Test reindex preview resources
+      - name: Reindex preview resource
         run: |
           cd .github/preview-index
-          npm run testevent --payload=${{ toJson(github.event.client_payload) }}
+          npm run single --path=${{ github.event.client_payload.path }}
+        env:
+          SHAREPOINT_CLIENT_ID: ${{ secrets.SHAREPOINT_CLIENT_ID }}
+          SHAREPOINT_TENANT_ID: ${{ secrets.SHAREPOINT_TENANT_ID }}
+          SHAREPOINT_CLIENT_SECRET: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
+          SHAREPOINT_DRIVE_ID: ${{secrets.SHAREPOINT_DRIVE_ID}}
+          EDS_ADMIN_KEY: ${{secrets.EDS_ADMIN_KEY}}
+          CONSUMER: ${{vars.CONSUMER}}
+          PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}

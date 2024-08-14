@@ -6,7 +6,7 @@
   "sideEffects": false,
   "scripts": {
     "index": "node src/update.js",
-    "testevent": "node src/testevent.js"
+    "single": "node src/single.js"
   },
   "dependencies": {
     "@azure/msal-node": "^2.11.0",
