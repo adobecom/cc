@@ -207,7 +207,7 @@ decorateArea();
     a.addEventListener('click', () => {
       setTimeout(() => {
         window.location = `https://${rlink}`;
-      }, 100)
+      }, 3000)
     });
   });
   loadLana({ clientId: 'cc' });
