@@ -208,8 +208,8 @@ decorateArea();
     a.href = dlink;
     a.addEventListener('click', () => {
       setTimeout( () => {      
-        window.location.assign(`https://${rlink}`);
-        window.location.reload();}, 2000);
+        window.location = `https://${rlink}`;
+      }, 2000);
     });
   });
 }());
