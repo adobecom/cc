@@ -29,6 +29,7 @@ const SHAREPOINT_DRIVE_ID = process.env.SHAREPOINT_DRIVE_ID;
 const EDS_ADMIN_KEY = process.env.EDS_ADMIN_KEY;
 const CONSUMER = process.env.CONSUMER;
 const PREVIEW_INDEX_FILE = process.env.PREVIEW_INDEX_FILE;
+const ENABLED = process.env.ENABLED;
 
 const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.hlx.page`;
 const GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0';
@@ -297,7 +298,7 @@ const findIndex = (cellAddress) => {
  * Doc https://learn.microsoft.com/en-us/graph/api/resources/excel?view=graph-rest-1.0
  */
 const reindex = async () => {
-  if (!validateConfig()) {
+  if (!ENABLED || !validateConfig()) {
     return;
   }
 

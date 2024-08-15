@@ -49,3 +49,4 @@ jobs:
           EDS_ADMIN_KEY: ${{secrets.EDS_ADMIN_KEY}}
           CONSUMER: ${{vars.CONSUMER}}
           PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}
+          ENABLED: ${{vars.ENABLED}}

@@ -1,8 +1,6 @@
 name: Run preview index
 
 on:
-  schedule:
-    - cron: '0 */2 * * *' # Run every 2 hours
   workflow_dispatch: # Allow manual trigger
   repository_dispatch:
     types: [run-preview-index]
