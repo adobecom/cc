@@ -77,7 +77,7 @@ function observeSliderTray(sliderTray, targets) {
 function createSlider(sliderType, details, menu, sliderTray) {
   const sliderLabel = createTag('label', { for: `${sliderType}` }, details.trim());
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
-  const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1','aria-label': 'slideRunner'});
+  const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1', 'aria-label': 'slideRunner' });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
   const input = createTag('input', {
     type: 'range',
