@@ -16,111 +16,11 @@
  ************************************************************************* */
 
 const fetch = require('node-fetch-commonjs');
-const msal = require('@azure/msal-node');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const { getConfig, getResourceIndexData, getAccessToken, getItemId, sharepointHeaders } = require('./sharepoint');
 
-require('dotenv').config();
+const config = getConfig();
 
-const SHAREPOINT_CLIENT_ID = process.env.SHAREPOINT_CLIENT_ID;
-const SHAREPOINT_TENANT_ID = process.env.SHAREPOINT_TENANT_ID;
-const SHAREPOINT_CLIENT_SECRET = process.env.SHAREPOINT_CLIENT_SECRET;
-const SHAREPOINT_DRIVE_ID = process.env.SHAREPOINT_DRIVE_ID;
-const EDS_ADMIN_KEY = process.env.EDS_ADMIN_KEY;
-const CONSUMER = process.env.CONSUMER;
-const PREVIEW_INDEX_FILE = process.env.PREVIEW_INDEX_FILE;
-const ENABLED = process.env.ENABLED;
-
-const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.hlx.page`;
-const GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0';
-const SHEET_RAW_INDEX = 'raw_index';
-const TABLE_NAME = 'Table1';
-let accessToken;
 let sessionId;
-
-const decodeToObject = (base64String) => {
-  try {
-    return JSON.parse(Buffer.from(base64String, 'base64').toString());
-  } catch (err) {
-    return {};
-  }
-};
-
-const isTokenExpired = (token) => {
-  const tokenParts = token.split('.');
-  if (tokenParts.length === 3) {
-    const data = decodeToObject(tokenParts[1]);
-    if (data && data.exp) {
-      return Math.floor(Date.now() / 1000) > data.exp - 10;
-    }
-  }
-  return true;
-};
-
-const getAccessToken = async () => {
-  if (!accessToken || isTokenExpired(accessToken)) {
-    console.log('fetching access token...')
-    const authConfig = {
-      auth: {
-        clientId: SHAREPOINT_CLIENT_ID,
-        authority: `https://login.microsoftonline.com/${SHAREPOINT_TENANT_ID}`,
-        clientSecret: encodeURIComponent(SHAREPOINT_CLIENT_SECRET)
-      }
-    }
-    const authClient = new msal.ConfidentialClientApplication(authConfig);
-    const request = {
-      scopes: ['https://graph.microsoft.com/.default']
-    };
-    const tokens = await authClient.acquireTokenByClientCredential(request);
-    accessToken = tokens.accessToken;
-    console.log('token fetched.');
-  }
-  return accessToken;
-}
-
-const getResourceIndexData = async (path) => {
-  console.log(new Date().toString() + ', path: ' + path);
-  const url = `${PREVIEW_BASE_URL}${path}`;
-  const response = await fetch(url, {
-    headers: {...edsAdminHeaders(), 'Content-Type': 'application/json'}
-  });
-  if (response?.status !== 200) {
-    console.log('Failed to fetch card: ' + url);
-    return [];
-  }
-  const cardHTML = await response.text();
-  const document = new JSDOM(cardHTML).window.document;
-  const merchCard = document.querySelector('main div.merch-card');
-  if (!merchCard) {
-    console.log('Merch card not found in the dom: ' + path);
-    return [];
-  }
-  // lastModified and publicationDate are not parsed for preview index since this data is irrelevant
-  // robots should be ignored
-  const title = document.querySelector('head > meta[property="og:title"]')?.content || '',
-    cardContent = merchCard.outerHTML,
-    lastModified = '',
-    cardClasses = JSON.stringify(Object.values(merchCard.classList)),
-    robots =  '',
-    tags = document.querySelector('head > meta[property="article:tag"]')?.content || '',
-    publicationDate = '';
-
-  return [
-    path,
-    title,
-    cardContent,
-    lastModified,
-    cardClasses,
-    robots,
-    tags,
-    publicationDate
-  ]
-}
-
-const sharepointHeaders = async () => ({
-  'Authorization': `Bearer ${await getAccessToken()}`,
-  'User-Agent': 'NONISV|Adobe|PreviewIndex/0.0.1'
-});
 
 const sharepointHeadersWithSession = async () => ({
   'Authorization': `Bearer ${await getAccessToken()}`,
@@ -128,52 +28,8 @@ const sharepointHeadersWithSession = async () => ({
   'workbook-session-id': sessionId,
 });
 
-const edsAdminHeaders = () => ({
-  'Authorization': `token ${EDS_ADMIN_KEY}`,
-  'User-Agent': 'NONISV|Adobe|PreviewIndex/0.0.1'
-});
-
-const getItemId = async (indexPath) => {
-  const url = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/root:/${indexPath}`;
-  console.log(`Get item id: ${url}`);
-  const response = await fetch(url, {
-    headers: await sharepointHeaders(),
-  });
-  if (response) {
-    console.log(`Check if document exists: ${response.status} - ${response.statusText}`);
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-      return jsonResponse.id;
-    }
-  }
-  return null;
-};
-
-const validateConfig = () => {
-  const config = {
-    SHAREPOINT_CLIENT_ID: SHAREPOINT_CLIENT_ID,
-    SHAREPOINT_TENANT_ID: SHAREPOINT_TENANT_ID,
-    SHAREPOINT_CLIENT_SECRET: SHAREPOINT_CLIENT_SECRET,
-    SHAREPOINT_DRIVE_ID: SHAREPOINT_DRIVE_ID,
-    EDS_ADMIN_KEY: EDS_ADMIN_KEY,
-    CONSUMER: CONSUMER,
-    PREVIEW_INDEX_FILE: PREVIEW_INDEX_FILE,
-  };
-  let valid = true;
-  Object.entries(config).forEach(([key, value]) => {
-    if (!value) {
-      console.error(`ERROR: Config item ${key} is empty.`);
-      valid = false;
-    }
-  });
-  if (valid) {
-    console.log('config is valid')
-  }
-  return valid;
-}
-
 const fetchSessionId = async (itemId) => {
-  const createSessionUrl = `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/createSession`;
+  const createSessionUrl = `${config.GRAPH_BASE_URL}/drives/${config.SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/createSession`;
   const csResponse = await fetch(createSessionUrl, {
     method: 'POST',
     headers: await sharepointHeaders(),
@@ -203,7 +59,7 @@ const respond = (response, action) => {
   return false;
 }
 
-const getBaseUrl = (itemId) => `${GRAPH_BASE_URL}/drives/${SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${SHEET_RAW_INDEX}/tables/${TABLE_NAME}`;
+const getBaseUrl = (itemId) => `${config.GRAPH_BASE_URL}/drives/${config.SHAREPOINT_DRIVE_ID}/items/${itemId}/workbook/worksheets/${config.SHEET_RAW_INDEX}/tables/${config.TABLE_NAME}`;
 
 const clearFilter = async (itemId) => {
   const clearFilterUrl = `${getBaseUrl(itemId)}/columns/8/filter/clear`;
@@ -298,7 +154,7 @@ const findIndex = (cellAddress) => {
  * Doc https://learn.microsoft.com/en-us/graph/api/resources/excel?view=graph-rest-1.0
  */
 const reindex = async () => {
-  if (!ENABLED || !validateConfig()) {
+  if (!config?.ENABLED) {
     return;
   }
 
@@ -307,7 +163,7 @@ const reindex = async () => {
     return;
   }
 
-  const itemId = await getItemId(PREVIEW_INDEX_FILE);
+  const itemId = await getItemId(config.PREVIEW_INDEX_FILE);
   if (!itemId) {
     console.error('No index item id found.');
     return;
