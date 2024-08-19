@@ -1,5 +1,8 @@
-This script:
-* is running every 2h
+There are 2 scripts here, one for full reindex and one to reindex a single document.
+
+# Full reindex
+
+The script for full reindex:
 * query all 'previewed' resources in folder /cc-shared/fragments/merch/*
 * filter out .json or urls that don't contain /merch-card/ in the path
 * for each merch-card resource, it will request .hlx.page content 
@@ -9,15 +12,29 @@ This script:
 * preview the index
 
 
-# Usage
+## Usage
 
 1. Populate /preview-index/.env
 2. npm i
-3. npm run index
+3. npm run full
 
+If you do a change to .env file, remember to re-run 'npm i' before running 'npm run full' command.
 
-If you do a change to .env file, remember to re-run 'npm i' before running 'npm run index' command.
+# Single reindex
 
+The script for reindexing of a single document
+* is triggered on 'resource-previewed' event
+* will work only if resource path contains /merch-card/ and does not end with .json
+* for the resource path it requests .hlx.page content
+* it searches for the existing row in /cc-shared/assets/query-index-cards-preview.xslx for this resource 
+* if it exists, it updates that row with new details
+* otherwise it inserts new row
+
+## Usage
+
+1. Populate /preview-index/.env
+2. npm i
+3. npm run single --path=/cc-shared/fragments/merch/products/catalog/default.md
 
 # Configuration
 Application expects a .env file of this format:
@@ -31,6 +48,7 @@ CONSUMER="..."
 PREVIEW_INDEX_FILE="..."
 PREVIEW_INDEX_JSON="..."
 PREVIEW_RESOURCES_FOLDER="..."
+ENABLED=y
 ```
 
 `SHAREPOINT_CLIENT_ID` and `SHAREPOINT_TENANT_ID` can be found on the azure app 'Essential' tab, see 'Application (client) ID' and 'Directory (tenant) ID'.
