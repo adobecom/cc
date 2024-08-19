@@ -159,7 +159,7 @@ const reindex = async () => {
   }
 
   const path = process.env.npm_config_path;
-  if (!path || path.endsWith('.json') || !path.includes('/merch-card/') || !path.startsWith('/cc-shared/')) {
+  if (!path || path.endsWith('.json') || !path.includes('/merch-card/') || !path.startsWith('/cc-shared/fragments/merch/')) {
     return;
   }
 
