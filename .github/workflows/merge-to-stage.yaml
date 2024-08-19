@@ -1,7 +1,7 @@
 name: Merge to stage
 on:
    schedule:
-    - cron: '0 */4 * * *' # Run every 4 hours
+    - cron: '0 */4 * * 1-4' # Run every 4 hours from monday through thursday.
    workflow_dispatch: #run manually
 jobs:
   merge-to-stage:
