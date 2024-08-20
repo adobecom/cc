@@ -77,13 +77,14 @@ function observeSliderTray(sliderTray, targets) {
 function createSlider(sliderType, details, menu, sliderTray) {
   const sliderLabel = createTag('label', { for: `${sliderType}` }, details.trim());
   const sliderContainer = createTag('div', { class: `sliderContainer ${sliderType.toLowerCase()}` });
-  const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1' });
+  const outerCircle = createTag('a', { class: 'outerCircle', href: '#', tabindex: '-1', 'aria-label': 'slideRunner' });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `Adjust ${sliderType} slider`);
   const input = createTag('input', {
     type: 'range',
     min: CSSRanges[sliderType].min,
     max: CSSRanges[sliderType].max,
     class: `options ${sliderType.toLowerCase()}-input`,
+    'aria-label': 'slider',
     value: `${sliderType === 'hue' ? '0' : '150'}`,
   });
   outerCircle.append(analyticsHolder);
@@ -98,7 +99,7 @@ function createSlider(sliderType, details, menu, sliderTray) {
 
 function createUploadButton(details, picture, sliderTray, menu) {
   const currentVP = defineDeviceByScreenSize().toLocaleLowerCase();
-  const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*' });
+  const btn = createTag('input', { class: 'inputFile', type: 'file', accept: 'image/*', 'aria-label': 'upload image' });
   const labelBtn = createTag('a', { class: `uploadButton body-${currentVP === 'mobile' ? 'm' : 'xl'}` }, details);
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${details}`);
   labelBtn.append(btn, analyticsHolder);
