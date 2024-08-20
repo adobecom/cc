@@ -5,7 +5,8 @@
   "type": "commonjs",
   "sideEffects": false,
   "scripts": {
-    "index": "node src/update.js"
+    "full": "node src/indexFull.js",
+    "single": "node src/indexSingle.js"
   },
   "dependencies": {
     "@azure/msal-node": "^2.11.0",

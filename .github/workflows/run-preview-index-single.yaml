@@ -1,13 +1,20 @@
-name: Run preview index
+name: Run preview index for single path
 
 on:
   workflow_dispatch: # Allow manual trigger
   repository_dispatch:
-    types: [run-preview-index]
+    types:
+      - resource-previewed
 
 jobs:
-  run-preview-index:
-    name: Reindexing preview resources
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Status: ${{ github.event.client_payload.status }}"
+          echo "Path: ${{ github.event.client_payload.path }}"
+  run-preview-index-single:
+    name: Run preview index for single path
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,13 +34,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd .github/preview-index 
+          cd .github/preview-index
           npm install
-      
-      - name: Reindex preview resources
+
+      - name: Reindex preview resource
         run: |
-          cd .github/preview-index 
-          npm run full
+          cd .github/preview-index
+          npm run single --path=${{ github.event.client_payload.path }}
         env:
           SHAREPOINT_CLIENT_ID: ${{ secrets.SHAREPOINT_CLIENT_ID }}
           SHAREPOINT_TENANT_ID: ${{ secrets.SHAREPOINT_TENANT_ID }}
@@ -42,5 +49,4 @@ jobs:
           EDS_ADMIN_KEY: ${{secrets.EDS_ADMIN_KEY}}
           CONSUMER: ${{vars.CONSUMER}}
           PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}
-          PREVIEW_INDEX_JSON: ${{vars.PREVIEW_INDEX_JSON}}
-          PREVIEW_RESOURCES_FOLDER: ${{vars.PREVIEW_RESOURCES_FOLDER}}
+          ENABLED: ${{vars.ENABLED}}
