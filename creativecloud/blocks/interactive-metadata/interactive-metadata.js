@@ -221,7 +221,7 @@ function createInteractiveArea(el, pic) {
     iArea.classList.add('show-image');
   } else {
     assetElem = createTag('picture');
-    const img = createTag('img');
+    const img = createTag('img', { alt: '' });
     assetElem.append(img);
     iArea.classList.add('show-video');
   }
