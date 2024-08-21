@@ -5,8 +5,8 @@ const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.sel
 const API_KEY = 'universalPromoTerm';
 const SERVICE_PROVIDERS = 'PROMO_TERMS';
 const PLACEHOLDERS = {
-  campaignStart: '{{campaignStart}}',
-  campaignEnd: '{{campaignEnd}}',
+  campaignStart: ['{{campaignStart}}', '{{startDate}}', '{{ campaignStart }}', '{{ startDate }}'],
+  campaignEnd: ['{{campaignEnd}}', '{{endDate}}', '{{ campaignEnd }}', '{{ endDate }}'],
 };
 
 function getEnv(env) {
@@ -19,7 +19,9 @@ const replacePlaceholderText = (text, params) => {
   let finalText = text;
   Object.keys(PLACEHOLDERS).forEach((key) => {
     if (params.get(key)) {
-      finalText = text.replaceAll(PLACEHOLDERS[key], params.get(key));
+      PLACEHOLDERS[key].forEach((updateTarget) => {
+        finalText = finalText.replaceAll(updateTarget, params.get(key));
+      });
     }
   });
   return finalText;
