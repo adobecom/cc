@@ -16,7 +16,7 @@
  ************************************************************************* */
 
 const fetch = require('node-fetch-commonjs');
-const { getConfig, getResourceIndexData, getItemId, sharepointHeaders, edsAdminHeaders } = require('./sharepoint');
+const { getConfig, getResourceIndexData, getItemId, sharepointHeaders, edsAdminHeaders, previewIndex } = require('./sharepoint');
 
 const config = getConfig();
 
@@ -141,16 +141,7 @@ const reindex = async () => {
     console.log(`Failed to add index rows: ${response.status} - ${response.statusText}`);
   }
 
-  console.log('preview update url:' + config.PREVIEW_UPDATE_URL);
-  const previewResponse = await fetch(config.PREVIEW_UPDATE_URL, {
-      method: 'POST',
-      headers: edsAdminHeaders(),
-    });
-  if (previewResponse?.ok) {
-    console.log(`Previewed index file: ${previewResponse.status} - ${previewResponse.statusText}`);
-  } else {
-    console.log(`Failed to preview index file: ${previewResponse.status} - ${previewResponse.statusText}`);
-  }
+  await previewIndex();
   console.log(`Reindexed folder ${folder}`);
 };
 

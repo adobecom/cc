@@ -16,7 +16,7 @@
  ************************************************************************* */
 
 const fetch = require('node-fetch-commonjs');
-const { getConfig, getResourceIndexData, getAccessToken, getItemId, sharepointHeaders } = require('./sharepoint');
+const { getConfig, getResourceIndexData, getAccessToken, getItemId, sharepointHeaders, previewIndex } = require('./sharepoint');
 
 const config = getConfig();
 
@@ -186,6 +186,7 @@ const reindex = async () => {
     await addTableRow(itemId, resData);
   }
 
+  await previewIndex();
 }
 
 reindex();
