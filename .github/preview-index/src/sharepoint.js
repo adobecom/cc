@@ -195,11 +195,25 @@ const getItemId = async (indexPath) => {
   return null;
 };
 
+const previewIndex = async () => {
+  console.log('Preview update url: ' + PREVIEW_UPDATE_URL);
+  const previewResponse = await fetch(PREVIEW_UPDATE_URL, {
+    method: 'POST',
+    headers: edsAdminHeaders(),
+  });
+  if (previewResponse?.ok) {
+    console.log(`Previewed index file: ${previewResponse.status} - ${previewResponse.statusText}`);
+  } else {
+    console.log(`Failed to preview index file: ${previewResponse.status} - ${previewResponse.statusText}`);
+  }
+}
+
 module.exports = {
   getConfig,
   getResourceIndexData,
   getAccessToken,
   getItemId,
   sharepointHeaders,
-  edsAdminHeaders
+  edsAdminHeaders,
+  previewIndex
 };
