@@ -202,7 +202,8 @@ decorateArea();
   [...atags].forEach((a) => {
     const btnLink = a.href;
     a.href = '';
-    if (!a.classList.contains('con-button')) a.classList.add('share-link-black');
+    const checkButton = a.parentElement.nodeName === 'EM' || a.parentElement.nodeName === 'STRONG';
+    if (!a.classList.contains('con-button') && !checkButton) a.classList.add('share-link-black');
     a.addEventListener('click', async () => {
       if (navigator.share) {
         try {
