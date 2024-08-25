@@ -198,6 +198,23 @@ decorateArea();
 }());
 
 (async function loadPage() {
+  const atags = document.querySelectorAll('a[href*="_share-link"');
+  [...atags].forEach((a) => {
+    const btnLink = a.href;
+    a.href = '';
+    if (!a.classList.contains('con-button')) a.classList.add('share-link-black');
+    a.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'send', url: btnLink });
+        } catch (err) {
+          window.lana.log(`Error using navigator object: ${err}`, { tags: 'errorType=error,module=share-link' });
+        }
+      } else {
+        window.lana.log('Web Share API is not supported in your browser', { tags: 'errorType=error,module=share-link' });
+      }
+    });
+  });
   loadLana({ clientId: 'cc' });
   await loadArea();
 }());

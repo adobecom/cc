@@ -14,3 +14,9 @@
   max-width: var(--grid-container-width);
   margin: 0 auto;
 }
+
+.share-link-black {
+  color: black;
+  text-decoration: underline;
+  font-weight: 700;
+}
