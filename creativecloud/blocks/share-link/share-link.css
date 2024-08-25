@@ -1,4 +1,4 @@
-.share-link {
+/* .share-link {
   padding: 40px 4% 0;
 }
 
@@ -38,4 +38,24 @@
   .share-link {
     display: none;
   }
-}
+} */
+
+
+/* .mybutton {
+  border-radius: 20px;
+  font-size: 17px;
+  line-height: 20px;
+  min-height: 21px;
+  padding: 7px 18px 8px;
+  background-color: transparent;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+  display: inline-block;
+  font-style: normal;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--body-font-family);
+} */
