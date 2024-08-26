@@ -37,7 +37,7 @@ function attachThumbnailEvents(a, data, layer) {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });
   });
-  ['mouseover', 'focus', 'touchstart'].forEach((event) => {
+  ['mouseover', 'focus', 'touchend', 'touchend'].forEach((event) => {
     a.addEventListener(event, async (e) => {
       const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
