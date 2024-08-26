@@ -37,10 +37,11 @@ function attachThumbnailEvents(a, data, layer) {
       e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
     });
   });
-  ['mouseover', 'focus', 'touchstart', 'touchend'].forEach((event) => {
+  ['mouseover', 'focus', 'touchend'].forEach((event) => {
     a.addEventListener(event, async (e) => {
       const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
-      e.target.closest('.tray-items')?.querySelector('.thumbnail-selected')?.classList.remove('thumbnail-selected');
+      const selected = e.target.closest('.tray-items')?.querySelectorAll('.thumbnail-selected');
+      [...selected].forEach((s) => s.classList.remove('thumbnail-selected'));
       curra.classList.add('thumbnail-selected');
       const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
       await handleImageTransition(data, trObj);
