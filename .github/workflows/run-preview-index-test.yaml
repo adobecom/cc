@@ -1,0 +1,40 @@
+name: Run preview index test
+
+on:
+  workflow_dispatch: # Allow manual trigger
+  repository_dispatch:
+    types:
+      - resource-previewed
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Status: ${{ github.event.client_payload.status }}"
+          echo "Path: ${{ github.event.client_payload.path }}"
+  run-preview-index-test:
+    name: Test reindexing preview resources
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          cd .github/preview-index
+          npm install
+
+      - name: Test reindex preview resources
+        run: |
+          cd .github/preview-index
+          npm run testevent --payload=${{ toJson(github.event.client_payload) }}
