@@ -20,7 +20,11 @@ const replacePlaceholderText = (text, params) => {
   Object.keys(PLACEHOLDERS).forEach((key) => {
     if (params.get(key)) {
       PLACEHOLDERS[key].forEach((updateTarget) => {
-        finalText = finalText.replaceAll(updateTarget, params.get(key));
+        let replacement = params.get(key);
+        if (key.toLowerCase().includes('start') || key.toLowerCase().includes('end')) {
+          replacement = new Date(replacement).toLocaleDateString();
+        }
+        finalText = finalText.replaceAll(updateTarget, replacement);
       });
     }
   });
