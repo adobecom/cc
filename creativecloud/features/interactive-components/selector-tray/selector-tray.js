@@ -32,13 +32,13 @@ function createSelectorThumbnail(pic, pathId, displayImg) {
 }
 
 function attachThumbnailEvents(a, data, layer) {
-  ['touchstart', 'focus', 'keyup'].forEach((event) => {
-    a.addEventListener(event, (e) => {
-      const selected = e.target.closest('.tray-items')?.querySelectorAll('.thumbnail-selected');
-      [...selected].forEach((s) => s.classList.remove('thumbnail-selected'));
-    });
-  });
-  ['mouseover'].forEach((event) => {
+  // ['touchstart', 'focus', 'keyup'].forEach((event) => {
+  //   a.addEventListener(event, (e) => {
+  //     const selected = e.target.closest('.tray-items')?.querySelectorAll('.thumbnail-selected');
+  //     [...selected].forEach((s) => s.classList.remove('thumbnail-selected'));
+  //   });
+  // });
+  ['mouseover', 'touchstart', 'focus', 'keyup'].forEach((event) => {
     a.addEventListener(event, async (e) => {
       const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       const selected = e.target.closest('.tray-items')?.querySelectorAll('.thumbnail-selected');
