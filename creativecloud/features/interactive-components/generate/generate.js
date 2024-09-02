@@ -2,7 +2,7 @@ import { createTag } from '../../../scripts/utils.js';
 
 function getGenerateConfig(data, flag) {
   const { stepConfigs, stepIndex, displayPath } = data;
-  let genCfg = flag ? stepConfigs[stepIndex].querySelector('ul:last-of-type, ol:last-of-type') : null;
+  const genCfg = flag ? stepConfigs[stepIndex].querySelector('ul:last-of-type, ol:last-of-type') : null;
   const lastElement = stepConfigs[stepIndex].querySelector(':scope > div > :last-child');
   if (!genCfg) return lastElement;
   const allCfgs = genCfg.querySelectorAll('li');
@@ -14,14 +14,13 @@ export default async function stepInit(data) {
   target.classList.add('step-generate');
   const config = stepConfigs[stepIndex];
   const imgElements = config.querySelectorAll('picture img');
-  const svgElements = Array.from(imgElements).filter(img => img.src.endsWith('.svg'));
+  const svgElements = Array.from(imgElements).filter((img) => img.src.endsWith('.svg'));
   const flag = svgElements.length > 1;
   const labelBtn = createTag('div', { class: 'label-text' });
   if (flag) {
     const firstSvgElement = svgElements[0];
     const labelText = firstSvgElement.closest('p').nextElementSibling.textContent.trim();
     labelBtn.appendChild(document.createTextNode(labelText));
-    
     const firstSvgPicture = firstSvgElement.closest('picture');
     if (firstSvgPicture) {
       firstSvgPicture.insertAdjacentElement('afterend', firstSvgPicture.cloneNode(true));
