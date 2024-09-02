@@ -14,3 +14,7 @@
   max-width: var(--grid-container-width);
   margin: 0 auto;
 }
+
+.dialog-modal.locale-modal-v2 {
+  background-image: url('/drafts/mathuria/georouting/media_16c01eea144f3c14cce1359d5618645bb8ba5c483.png?optimize=medium&format=webply&width=300')
+}
