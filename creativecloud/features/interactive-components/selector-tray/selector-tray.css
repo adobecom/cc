@@ -63,9 +63,7 @@
   border: 5px solid var(--prompt-highlight-color);
 }
 
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img.thumbnail-selected .tray-thumbnail-outline,
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:focus-visible .tray-thumbnail-outline,
-.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img:hover .tray-thumbnail-outline {
+.interactive-enabled .step-selector-tray .selector-tray .tray-items a.tray-thumbnail-img.thumbnail-selected .tray-thumbnail-outline {
   display: block;
 }
 
