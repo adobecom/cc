@@ -5,8 +5,20 @@
   justify-content: space-between;
   font-weight: bold;
   margin: auto;
-  padding: 0 5px;
+  width: 100%
+}
+
+.interactive-enabled .step-generate .generate-layer {
+  position: relative;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 8px;
+  font-weight: bold;
+  margin: auto;
+  padding: 5px;
   width: calc(100% - 10px);
+  flex-direction: column-reverse;
 }
 
 .interactive-enabled .step-generate .generate-text-container {
@@ -74,25 +86,64 @@
   border-radius: 8px 0 0 8px;
 }
 
+.interactive-enabled .step-generate .generate-layer .label-text {
+  display: inline-flex;
+  padding: 8px;
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 8px;
+  background: var(--prompt-btn-fill);
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
+  max-height: 32px;
+  width: auto;
+  box-sizing: border-box;
+  height: 32px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.interactive-enabled.light .generate-layer .label-text {
+  background-color: var(--prompt-btn-fill-light);
+  color: var(--prompt-text-color-light);
+}
+
+.interactive-enabled .interactive-holder.light .layer .generate-layer .label-text {
+  background-color: var(--prompt-btn-fill-light);
+  color: var(--prompt-text-color-light);
+}
+
+.interactive-enabled .step-generate .layer .generate-layer .label-text picture,
+.interactive-enabled .step-generate .layer .generate-layer .label-text img {
+    width: 16px;
+    height: auto;
+    max-height: 16px;
+    max-width: 16px;
+    border-radius: 0;
+    min-height: 16px;
+  }
+
 @media screen and (min-width: 600px) {
-  .interactive-enabled .step-generate .generate-prompt-button {
+   .interactive-enabled .step-generate .generate-layer {
     position: absolute;
     left: auto;
     bottom: 64px;
     width: auto;
     max-width: unset;
     padding: 0;
+    gap: 16px;
   }
 
-  .interactive-enabled.generate-side .step-generate .generate-prompt-button,
-  .interactive-enabled .step-generate .generate-side .generate-prompt-button {
+  .interactive-enabled.generate-side .step-generate .generate-layer,
+  .interactive-enabled .step-generate .generate-side .generate-layer {
     left: auto;
     right: -18.5%;
     bottom: calc(50% - 80px);
   }
 
-  [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
-  [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
+  [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-layer,
+  [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-layer {
     right: auto;
     left: -18.5%;
   }
@@ -124,28 +175,46 @@
     min-width: auto;
     max-width: unset;
   }
+
+  .interactive-enabled .step-generate .generate-layer .label-text {
+    max-height: 56px;
+    font-size: 22px;
+    max-width: unset;
+    height: 56px;
+    padding: 16px;
+    border-radius: 11px;
+  }
+
+  .interactive-enabled .step-generate .layer .generate-layer .label-text picture,
+  .interactive-enabled .step-generate .layer .generate-layer .label-text img {
+    width: 24px;
+    height: auto;
+    max-width: 24px;
+    border-radius: 0;
+    max-height: 24px;
+    min-height: 24px;
+  }
 }
   @media screen and (min-width: 1200px) {
     .interactive-enabled.row-reversed .step-generate .generate-text-container {
       width: 218px;
       max-width: 218px;
     }
-    
-    .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
-    .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
-      flex-direction: row;
+
+    .interactive-enabled.row-reversed.generate-side .step-generate .generate-layer,
+    .interactive-enabled.row-reversed .step-generate .generate-side .generate-layer {
       left: -21.5%;
       right: auto;
     }
 
-    [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-prompt-button,
-    [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-prompt-button {
-      left: -21.5%;
+    [dir="rtl"] .interactive-enabled.generate-side .step-generate .generate-layer,
+    [dir="rtl"] .interactive-enabled .step-generate .generate-side .generate-layer {
+      left: -18.5%;
       right: auto;
     }
 
-    [dir="rtl"] .interactive-enabled.row-reversed.generate-side .step-generate .generate-prompt-button,
-    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-side .generate-prompt-button {
+    [dir="rtl"] .interactive-enabled.row-reversed.generate-side .step-generate .generate-layer,
+    [dir="rtl"] .interactive-enabled.row-reversed .step-generate .generate-side .generate-layer {
       left: auto;
       right: -21.5%;
     }
