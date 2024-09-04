@@ -24,7 +24,7 @@ export const [setLibs, getLibs] = (() => {
   let libs;
   return [
     (prodLibs, force = false) => {
-      libs = 'https://mas-xlg-hackathon--mas--adobecom.hlx.live/libs';
+      libs = 'https://mas-xlg-hackathon--milo--adobecom.hlx.live/libs';
       return libs;
       if (force) {
         libs = prodLibs;
