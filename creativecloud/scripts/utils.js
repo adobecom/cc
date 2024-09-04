@@ -24,6 +24,8 @@ export const [setLibs, getLibs] = (() => {
   let libs;
   return [
     (prodLibs, force = false) => {
+      libs = 'mas-xlg-hackathon--mas--adobecom';
+      return libs;
       if (force) {
         libs = prodLibs;
         return libs;
