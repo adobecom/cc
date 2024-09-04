@@ -83,7 +83,7 @@ export default async function init(el) {
     (merchCards?.updateComplete ?? Promise.resolve()).then(async () => {
       const { default: initSidenav } = await import('../sidenav/sidenav.js');
       const sidenav = await initSidenav(sidenavEl);
-      el.prepend(sidenav);
+      el.appendChild(sidenav);
       await sidenav.updateComplete;
       if (merchCards) {
         merchCards.sidenav = sidenav;
