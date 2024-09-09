@@ -4,12 +4,32 @@ const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
 const API_KEY = 'universalPromoTerm';
 const SERVICE_PROVIDERS = 'PROMO_TERMS';
+const PLACEHOLDERS = {
+  campaignStart: ['{{campaignStart}}', '{{startDate}}', '{{ campaignStart }}', '{{ startDate }}'],
+  campaignEnd: ['{{campaignEnd}}', '{{endDate}}', '{{ campaignEnd }}', '{{ endDate }}'],
+};
 
 function getEnv(env) {
   if (env) return env;
   if (window.location.hostname === 'www.adobe.com') return 'production';
   return 'stage';
 }
+
+const replacePlaceholderText = (text, params) => {
+  let finalText = text;
+  Object.keys(PLACEHOLDERS).forEach((key) => {
+    if (params.get(key)) {
+      PLACEHOLDERS[key].forEach((updateTarget) => {
+        let replacement = params.get(key);
+        if (key.toLowerCase().includes('start') || key.toLowerCase().includes('end')) {
+          replacement = new Date(replacement).toLocaleDateString();
+        }
+        finalText = finalText.replaceAll(updateTarget, replacement);
+      });
+    }
+  });
+  return finalText;
+};
 
 async function getTermsHTML(params, el, env, search) {
   const locationSearch = search ?? window.location.search;
@@ -37,7 +57,8 @@ async function getTermsHTML(params, el, env, search) {
   if (!promoTerms || !promoTerms.header || !promoTerms.text) {
     return false;
   }
-  return `<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${promoTerms.text}</p></div>`;
+  const termsHtml = replacePlaceholderText(promoTerms.text, params);
+  return `<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${termsHtml}</p></div>`;
 }
 
 export default async function init(el, search) {
@@ -49,4 +70,6 @@ export default async function init(el, search) {
   } else {
     el.innerHTML = termsHTML;
   }
+  // eslint-disable-next-line no-restricted-globals
+  history.replaceState(null, '', location.pathname);
 }
