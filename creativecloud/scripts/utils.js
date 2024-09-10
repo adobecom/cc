@@ -24,6 +24,8 @@ export const [setLibs, getLibs] = (() => {
   let libs;
   return [
     (prodLibs, force = false) => {
+      libs = 'https://fragment-cache--milo--adobecom.hlx.live/libs';
+      return libs;
       if (force) {
         libs = prodLibs;
         return libs;
