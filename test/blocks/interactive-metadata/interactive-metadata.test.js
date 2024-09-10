@@ -29,6 +29,7 @@ describe('interactive metadata', () => {
     const { x, y } = ib.querySelector('.gray-button').getBoundingClientRect();
     window.scrollTo(x, y);
     await delay(200);
+    // dummy comment
     expect(ib.querySelector('.interactive-holder .show-layer .gray-button.animated')).to.exist;
   });
 
