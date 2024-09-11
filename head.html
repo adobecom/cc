@@ -11,6 +11,7 @@
   const link = document.createElement('link');
   link.rel = 'preload';
   link.href = `${baseUrl}/libs/blocks/fragment/cache/${page}.html`;
+  link.credentials = 'anonymous';
   link.as = 'fetch';
   document.head.appendChild(link);
 </script>
