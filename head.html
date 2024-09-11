@@ -9,7 +9,7 @@
   const page = document.location.pathname.split('/').pop();
   const link = document.createElement('link');
   link.rel = 'preload';
-  link.href = `/fragment-cache/${page}.html`;
+  link.href = `/creativecloud/fragment-cache/${page}.html`;
   link.as = 'fetch';
   document.head.appendChild(link);
 </script>
