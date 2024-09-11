@@ -124,7 +124,8 @@ function getDecorateAreaFn() {
         // Foreground image
         if (firstBlock?.classList.contains('hero-marquee')) {
           const foreground = heroForegroundImage(firstBlock);
-          eagerLoad(foreground.querySelector('img'));
+          const imageHidden = (viewport === 'TABLET' && firstBlock?.classList.contains('media-hidden-tablet')) || (viewport === 'MOBILE' && firstBlock?.classList.contains('media-hidden-mobile'));
+          if (!imageHidden) eagerLoad(foreground.querySelector('img'));
         } else eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
         break;
       }
