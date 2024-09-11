@@ -1,16 +1,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<link ref="prefetch" href="/creativecloud/scripts/utils.js" />
-<link ref="prefetch" href="/creativecloud/scripts/decorate.js" />
-<link ref="prefetch" href="/cc-shared/placeholders.json" />
-<link ref="prefetch" href="/federal/globalnav/placeholders.json" />
+<link ref="modulepreload" href="/creativecloud/scripts/utils.js" />
+<link ref="modulepreload" href="/creativecloud/scripts/decorate.js" />
+<link ref="preload" href="/cc-shared/placeholders.json" as="fetch"/>
+<link ref="preload" href="/federal/globalnav/placeholders.json" as="fetch"/>
 
 <script>
   const page = document.location.pathname.split('/').pop();
   const baseUrl = "https://fragment-cache--milo--adobecom.hlx.live"; // resolve milo base
   const link = document.createElement('link');
-  link.rel = 'prefetch';
+  link.rel = 'preload';
   link.href = `${baseUrl}/libs/blocks/fragment/cache/${page}.html`;
+  link.as = 'fetch';
   document.head.appendChild(link);
 </script>
 
