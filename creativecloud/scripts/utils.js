@@ -63,11 +63,8 @@ function defineDeviceByScreenSize() {
 }
 
 function heroForegroundImage(firstBlock) {
-  let rows = firstBlock.querySelectorAll(':scope > div');
-  if (rows.length > 1 && rows[0].textContent !== '') {
-    const [, ...tail] = rows;
-    rows = tail;
-  }
+  const rows = [...firstBlock.querySelectorAll(':scope > div')];
+  if (rows.length > 1 && rows[0].textContent !== '') rows.shift();
   const mainRowIndex = rows.findIndex((row) => {
     const firstColText = row.children[0].textContent.toLowerCase().trim();
     return !firstColText.includes('con-block-row-');
