@@ -1,4 +1,4 @@
- .reading-width {
+ /* .reading-width {
   max-width: 800px;
   margin: auto;
   padding: 20px;
@@ -13,4 +13,4 @@
  .reading-width-footer-tag > .content {
   max-width: var(--grid-container-width);
   margin: 0 auto;
-}
+} */

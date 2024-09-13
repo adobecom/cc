@@ -21,7 +21,7 @@ const COOKIE_SIGNED_IN_STAGE = 'acomsis_stage';
 const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
 
 // Add project-wide style path here.
-const STYLES = '/creativecloud/styles/styles.css';
+// const STYLES = '/creativecloud/styles/styles.css';
 
 const locales = {
   // Americas
