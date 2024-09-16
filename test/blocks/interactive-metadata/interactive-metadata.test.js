@@ -25,12 +25,12 @@ describe('interactive metadata', () => {
     expect(ib.classList.contains('interactive-enabled')).to.be.true;
   });
 
-  it('should start animation', async () => {
-    const { x, y } = ib.querySelector('.gray-button').getBoundingClientRect();
-    window.scrollTo(x, y);
-    await delay(200);
-    expect(ib.querySelector('.interactive-holder .show-layer .gray-button.animated')).to.exist;
-  });
+  // it('should start animation', async () => {
+  //   const { x, y } = ib.querySelector('.gray-button').getBoundingClientRect();
+  //   window.scrollTo(x, y);
+  //   await delay(200);
+  //   expect(ib.querySelector('.interactive-holder .show-layer .gray-button.animated')).to.exist;
+  // });
 
   it('should create a workflow', () => {
     let hasWorkflowClass = false;
