@@ -162,7 +162,7 @@ export const [setLibs, getLibs] = (() => {
 })();
 
 const miloLibs = setLibs('/libs');
-const miloUtilsPromise = import(`${miloLibs}/utils/utils.js`);
+// const miloUtilsPromise = import(`${miloLibs}/utils/utils.js`);
 
 const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
 export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
@@ -341,7 +341,7 @@ const CONFIG = {
 };
 
 const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
-const { loadArea, setConfig, loadLana } = await miloUtilsPromise;
+const { loadArea, setConfig, loadLana } = await window.miloUtilsPromise;
 setConfig({ ...CONFIG, miloLibs });
 if (isSignedInHomepage) acomsisCookieHandler();
 
