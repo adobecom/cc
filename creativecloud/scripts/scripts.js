@@ -124,7 +124,7 @@ const locales = {
 };
 
 const stageDomainsMap = {
-  'www.stage.adobe.com': { 
+  'www.stage.adobe.com': {
     'www.adobe.com': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
