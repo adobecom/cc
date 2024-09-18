@@ -124,15 +124,9 @@ const locales = {
 };
 
 const stageDomainsMap = {
-  'www.stage.adobe.com': {
-    'www.adobe.com': 'origin',
-  },
-  '--cc--adobecom.hlx.live': {
-    'www.adobe.com': 'origin',
-  },
-  '--cc--adobecom.hlx.page': {
-    'www.adobe.com': 'origin',
-  },
+  'www.stage.adobe.com': { 'www.adobe.com': 'origin', },
+  '--cc--adobecom.hlx.live': { 'www.adobe.com': 'origin', },
+  '--cc--adobecom.hlx.page': { 'www.adobe.com': 'origin', },
 };
 
 // Add any config options.
