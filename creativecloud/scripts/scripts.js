@@ -180,7 +180,7 @@ const CONFIG = {
 
 const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
 const miloLibs = setLibs(LIBS);
-const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+const { loadArea, setConfig, loadLana } = await window.miloUtilsPromise;
 setConfig({ ...CONFIG, miloLibs });
 if (isSignedInHomepage) acomsisCookieHandler();
 
