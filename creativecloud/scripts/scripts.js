@@ -124,6 +124,18 @@ const locales = {
 };
 
 const stageDomainsMap = {
+  'www.stage.adobe.com': {
+    'www.adobe.com': 'origin',
+  },
+  '--cc--adobecom.hlx.live': {
+    'www.adobe.com': 'origin',
+  },
+  '--cc--adobecom.hlx.page': {
+    'www.adobe.com': 'origin',
+  },
+};
+
+const stageDomainsMap = {
   'business.adobe.com': 'business.stage.adobe.com',
   'helpx.adobe.com': 'helpx.stage.adobe.com',
   'blog.adobe.com': 'blog.stage.adobe.com',
@@ -170,6 +182,7 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
   ],
+  stageDomainsMap,
 };
 
 /*
