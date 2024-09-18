@@ -1,0 +1,54 @@
+.community-home-banner{
+    #banner-container{
+        display: grid;
+    }
+    #banner-heading{
+        text-align: center;
+        font: normal normal 800 28px / 35px adobe-clean;
+    }
+    #banner-search-bar{
+        width: 408px;
+        height: 33px;
+        border: none;
+        padding-left: 46px;
+        padding-right: 46px;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
+        border-radius: 16px;
+        opacity: 1;
+        justify-self: center;
+    }
+    #banner-search-icon{
+        justify-self: center;
+        top: -27px;
+        right: 178px;
+        position: relative;
+    }
+    #banner-stats-strip{
+        display: flex;
+        justify-content: center;
+        margin-top: 12px;
+
+        #stats-text, #count-text{
+            text-align: left;
+            font: normal normal normal 14px / 17px adobe-clean;
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            opacity: 1;
+            vertical-align: super;
+            padding-left: 10px;
+            -webkit-font-smoothing: antialiased;
+        }
+        #members-count, #conversations-count, #online-count{
+            margin-right: 27px;
+            align-items: center;
+        }
+        #online-count{
+            display: contents;
+            #icon{
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+@media (min-width: 900px) {
+  body .feds-topnav-wrapper {
+    border: 0;
+  }  
+}
+
+body .global-footer {
+  background: none;
+}

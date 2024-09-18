@@ -1,0 +1,74 @@
+.bricks-container{
+    display: flex;
+    justify-content: center;
+}
+.community-bricks{
+    padding-bottom: 20px;
+    padding-top: 12px;
+}
+.community-brick{
+    width: 288px;
+    height: 265px;
+    border-radius: 10px;
+    padding: 20px;
+    margin-right: 33px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 1s;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.brick-title{
+    /* margin-left: 120px; */
+    margin-bottom: 16px;
+    text-align: left;
+    font: normal normal 800 22px / 20px adobe-clean;
+    letter-spacing: 0px;
+    color: #222222;
+    opacity: 1;
+    /* margin-top: 32px; */
+    height: 27px;
+    -webkit-font-smoothing: antialiased;
+}
+.brick-header-section{
+    display: flex;
+    justify-content: space-between;
+
+    .brick-header-left{
+        display: flex;
+        align-items: center;
+    }
+    .brick-heading{
+        margin-left: 10px;
+        margin-bottom: 0px;
+        letter-spacing: -0.48px;
+        line-height: 24px;
+        font-size: 20px;
+        font-weight: bold;
+        -webkit-font-smoothing: antialiased;
+        color: #FFF;
+    }
+}
+.brick-body{
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #FFF;
+}
+.brick-non-white-heading, .brick-non-white-body{
+    color: #222 !important;
+}
+
+.brick-body-footer{
+    margin-top: 145px;
+    font-size: 11px;
+}
