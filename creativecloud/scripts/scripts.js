@@ -124,12 +124,33 @@ const locales = {
 };
 
 const stageDomainsMap = {
-  'business.adobe.com': 'business.stage.adobe.com',
-  'helpx.adobe.com': 'helpx.stage.adobe.com',
-  'blog.adobe.com': 'blog.stage.adobe.com',
-  'developer.adobe.com': 'developer-stage.adobe.com',
-  'news.adobe.com': 'news.stage.adobe.com',
-  'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+  'www.stage.adobe.com': {
+    'www.adobe.com': 'origin',
+    'business.adobe.com': 'business.stage.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+  },
+  '--cc--adobecom.hlx.live': {
+    'www.adobe.com': 'origin',
+    'business.adobe.com': 'business.stage.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+  },
+  '--cc--adobecom.hlx.page': {
+    'www.adobe.com': 'origin',
+    'business.adobe.com': 'business.stage.adobe.com',
+    'helpx.adobe.com': 'helpx.stage.adobe.com',
+    'blog.adobe.com': 'blog.stage.adobe.com',
+    'developer.adobe.com': 'developer-stage.adobe.com',
+    'news.adobe.com': 'news.stage.adobe.com',
+    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+  },
 };
 
 // Add any config options.
