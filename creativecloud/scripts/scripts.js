@@ -133,7 +133,7 @@ const stageDomainsMap = {
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
   },
-  '--cc--adobecom.hlx.live': { 
+  '--cc--adobecom.hlx.live': {
     'www.adobe.com': 'origin',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -141,7 +141,8 @@ const stageDomainsMap = {
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
   },
-  '--cc--adobecom.hlx.page': { 'www.adobe.com': 'origin',
+  '--cc--adobecom.hlx.page': {
+    'www.adobe.com': 'origin',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
     'developer.adobe.com': 'developer-stage.adobe.com',
