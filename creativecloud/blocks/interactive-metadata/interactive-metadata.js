@@ -137,7 +137,12 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     }
     else if (displayVideos[vidIdx].nodeName === 'VIDEO') {
       const posterImg = displayVideos[vidIdx].getAttribute('poster') ? displayVideos[vidIdx].getAttribute('poster') : '';
-      await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].dataset.videoSource, posterImg);
+      await createDisplayVideo(
+        stepInfo.target,
+        trgtVideo,
+        displayVideos[vidIdx].dataset.videoSource,
+        posterImg
+      );
     }
   }
 }
