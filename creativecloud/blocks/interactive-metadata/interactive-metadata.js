@@ -140,7 +140,7 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
         stepInfo.target,
         trgtVideo,
         displayVideos[vidIdx].dataset.videoSource,
-        posterImg
+        posterImg,
       );
     }
   }
