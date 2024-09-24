@@ -138,7 +138,8 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
   } else if (displayVideos.length) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
     const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
-    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
+    if (displayVideos.nodeName == 'A') await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
+    else if (displayVideos.nodeName == 'A') await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].dataset.videoSource, posterImg);
   }
 }
 
