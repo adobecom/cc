@@ -223,13 +223,13 @@ function createInteractiveArea(el, pic) {
     imgElem.src = getImgSrc(pic);
     assetElem = createTag('video');
     iArea.classList.add('show-image');
+    [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   } else {
     assetElem = createTag('picture');
     const img = createTag('img', { alt: '' });
     assetElem.append(img);
     iArea.classList.add('show-video');
   }
-  [...pic.querySelectorAll('source')].forEach((s) => s.remove());
   iArea.append(pic, assetElem);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
