@@ -139,7 +139,7 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
     const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
     if (displayVideos.nodeName == 'A') await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
-    else if (displayVideos.nodeName == 'A') await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].dataset.videoSource, posterImg);
+    else if (displayVideos.nodeName == 'VIDEO') await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].dataset.videoSource, posterImg);
   }
 }
 
