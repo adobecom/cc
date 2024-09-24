@@ -100,6 +100,10 @@ async function createDisplayVideo(target, video, src, poster = '') {
   if (hash?.includes('autoplay1')) video?.removeAttribute('loop');
   else attrs.loop = '';
   Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
+  if (!video.querySelector('source')) {
+    const src = video.dataset.videoSource;
+    video?.appendChild(createTag('source', { src, type: 'video/mp4' }));
+  }
   try {
     video?.load();
     video.oncanplaythrough = async () => {
