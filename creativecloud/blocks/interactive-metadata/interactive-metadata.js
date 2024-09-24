@@ -267,7 +267,10 @@ async function renderLayer(stepInfo) {
     stepInfo.stepName = stepInfo.stepList[stepInfo.stepIndex];
     implementWorkflow(stepInfo)
       .then(() => resolve())
-      .catch(() => reject());
+      .catch((e) => {
+        console.log(e);
+        reject();
+      });
   });
 }
 
