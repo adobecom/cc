@@ -103,6 +103,8 @@ async function createDisplayVideo(target, video, src, poster = '') {
   if (!video.querySelector('source')) {
     const src = video.dataset.videoSource;
     video.appendChild(createTag('source', { src, type: 'video/mp4' }));
+  } else {
+    video.querySelector('source').src = video.dataset.videoSource;
   }
   try {
     video?.load();
@@ -127,7 +129,7 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     return;
   }
   const displayPics = config.querySelectorAll(':scope > p > picture img[src*="media_"]');
-  const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"]');
+  const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"], :scope > p > video');
   const { displayPath } = stepInfo;
   if (displayPics.length) {
     const imgIdx = (displayPath < displayPics.length) ? displayPath : 0;
