@@ -100,12 +100,6 @@ async function createDisplayVideo(target, video, src, poster = '') {
   if (hash?.includes('autoplay1')) video?.removeAttribute('loop');
   else attrs.loop = '';
   Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
-  if (!video.querySelector('source')) {
-    const src = video.dataset.videoSource;
-    video.appendChild(createTag('source', { src, type: 'video/mp4' }));
-  } else {
-    video.querySelector('source').src = video.dataset.videoSource;
-  }
   try {
     video?.load();
     video.oncanplaythrough = async () => {
@@ -231,7 +225,7 @@ function createInteractiveArea(el, asset) {
     assetElem = createTag('picture');
     const img = createTag('img', { alt: '' });
     assetElem.append(img);
-    if (!asset.querySelector('source')) asset.appendChild(createTag('source', { src: asset.dataset.videoSource, type: 'video/mp4' }));
+    if (!asset.src) asset.src = asset.dataset.videoSource;
     iArea.classList.add('show-video');
   }
   iArea.append(asset, assetElem);
