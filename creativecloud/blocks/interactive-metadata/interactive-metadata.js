@@ -134,8 +134,7 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     if (displayVideos[vidIdx].nodeName === 'A') {
       const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
       await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
-    }
-    else if (displayVideos[vidIdx].nodeName === 'VIDEO') {
+    } else if (displayVideos[vidIdx].nodeName === 'VIDEO') {
       const posterImg = displayVideos[vidIdx].getAttribute('poster') ? displayVideos[vidIdx].getAttribute('poster') : '';
       await createDisplayVideo(
         stepInfo.target,
