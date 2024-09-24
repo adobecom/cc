@@ -97,6 +97,7 @@ async function createDisplayVideo(target, video, src, poster = '') {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
   if (poster !== '') attrs.poster = poster;
+  if (video.hasAttribute('poster')) attrs.poster = video.poster;
   if (hash?.includes('autoplay1') || !video.hasAttribute('loop')) video?.removeAttribute('loop');
   else attrs.loop = '';
   Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
