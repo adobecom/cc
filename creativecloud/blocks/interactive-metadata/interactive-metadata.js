@@ -212,25 +212,26 @@ function decorateMobileHeading(intEnb) {
   intEnb.querySelector('.image, .asset').prepend(hTxtTop);
 }
 
-function createInteractiveArea(el, pic) {
+function createInteractiveArea(el, asset) {
   const iArea = createTag('div', { class: 'interactive-holder' });
-  const newPic = pic.cloneNode(true);
+  const newPic = asset.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
-  const imgElem = pic.querySelector('img');
+  const imgElem = asset.querySelector('img');
   let assetElem = '';
   if (imgElem) {
-    imgElem.src = getImgSrc(pic);
+    imgElem.src = getImgSrc(asset);
     assetElem = createTag('video');
     iArea.classList.add('show-image');
-    [...pic.querySelectorAll('source')].forEach((s) => s.remove());
+    [...asset.querySelectorAll('source')].forEach((s) => s.remove());
   } else {
     assetElem = createTag('picture');
     const img = createTag('img', { alt: '' });
     assetElem.append(img);
+    if (!asset.querySelector('source')) asset.appendChild(createTag('source', { src: asset.dataset.videoSource, type: 'video/mp4' }));
     iArea.classList.add('show-video');
   }
-  iArea.append(pic, assetElem);
+  iArea.append(asset, assetElem);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
   if (el.classList.contains('light')) iArea.classList.add('light');
