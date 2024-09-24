@@ -97,7 +97,6 @@ async function createDisplayVideo(target, video, src, poster = '') {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
   if (poster !== '') attrs.poster = poster;
-  if (video.hasAttribute('poster')) attrs.poster = video.poster;
   if (hash?.includes('autoplay1') || !video.hasAttribute('loop')) video?.removeAttribute('loop');
   else attrs.loop = '';
   Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
@@ -132,9 +131,14 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[imgIdx].alt);
   } else if (displayVideos.length) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
-    const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
-    if (displayVideos[vidIdx].nodeName == 'A') await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
-    else if (displayVideos[vidIdx].nodeName == 'VIDEO') await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].dataset.videoSource, posterImg);
+    if (displayVideos[vidIdx].nodeName == 'A') {
+      const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
+      await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
+    }
+    else if (displayVideos[vidIdx].nodeName == 'VIDEO') {
+      const posterImg = displayVideos[vidIdx].getAttribute('poster') ? displayVideos[vidIdx].getAttribute('poster') : '';
+      await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].dataset.videoSource, posterImg);
+    }
   }
 }
 
