@@ -48,7 +48,13 @@ export const [setLibs, getLibs] = (() => {
 
 const miloLibs = setLibs('/libs');
 
-const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+const {
+  createTag,
+  localizeLink,
+  getConfig,
+  loadStyle,
+  createIntersectionObserver,
+} = await window.miloUtilsPromise;
 export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
 
 function defineDeviceByScreenSize() {
@@ -158,7 +164,7 @@ export async function acomsisCookieHandler() {
     ?.split('=')[1];
 
   async function imsCheck() {
-    const { loadIms } = await import(`${miloLibs}/utils/utils.js`);
+    const { loadIms } = await window.miloUtilsPromise;
     let isSignedInUser = false;
     try {
       await loadIms();
@@ -388,7 +394,7 @@ const CONFIG = {
  */
 
 const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
-const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+const { loadArea, setConfig, loadLana } = await window.miloUtilsPromise;
 setConfig({ ...CONFIG, miloLibs });
 if (isSignedInHomepage) acomsisCookieHandler();
 
