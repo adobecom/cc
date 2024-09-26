@@ -97,7 +97,7 @@ async function createDisplayVideo(target, video, src, poster = '') {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
   if (poster !== '') attrs.poster = poster;
-  if (hash?.includes('autoplay1')) video?.removeAttribute('loop');
+  if (hash?.includes('autoplay1') || !video.hasAttribute('loop')) video?.removeAttribute('loop');
   else attrs.loop = '';
   Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
   try {
@@ -123,7 +123,7 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     return;
   }
   const displayPics = config.querySelectorAll(':scope > p > picture img[src*="media_"]');
-  const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"]');
+  const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"], :scope > p > video');
   const { displayPath } = stepInfo;
   if (displayPics.length) {
     const imgIdx = (displayPath < displayPics.length) ? displayPath : 0;
@@ -131,8 +131,18 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[imgIdx].alt);
   } else if (displayVideos.length) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
-    const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
-    await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
+    if (displayVideos[vidIdx].nodeName === 'A') {
+      const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
+      await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
+    } else if (displayVideos[vidIdx].nodeName === 'VIDEO') {
+      const posterImg = displayVideos[vidIdx].getAttribute('poster') ? displayVideos[vidIdx].getAttribute('poster') : '';
+      await createDisplayVideo(
+        stepInfo.target,
+        trgtVideo,
+        displayVideos[vidIdx].dataset.videoSource,
+        posterImg,
+      );
+    }
   }
 }
 
@@ -208,25 +218,26 @@ function decorateMobileHeading(intEnb) {
   intEnb.querySelector('.image, .asset').prepend(hTxtTop);
 }
 
-function createInteractiveArea(el, pic) {
+function createInteractiveArea(el, asset) {
   const iArea = createTag('div', { class: 'interactive-holder' });
-  const newPic = pic.cloneNode(true);
+  const newPic = asset.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
-  const imgElem = pic.querySelector('img');
+  const imgElem = asset.querySelector('img');
   let assetElem = '';
   if (imgElem) {
-    imgElem.src = getImgSrc(pic);
+    imgElem.src = getImgSrc(asset);
     assetElem = createTag('video');
     iArea.classList.add('show-image');
+    [...asset.querySelectorAll('source')].forEach((s) => s.remove());
   } else {
     assetElem = createTag('picture');
     const img = createTag('img', { alt: '' });
     assetElem.append(img);
+    if (!asset.src) asset.src = asset.dataset.videoSource;
     iArea.classList.add('show-video');
   }
-  [...pic.querySelectorAll('source')].forEach((s) => s.remove());
-  iArea.append(pic, assetElem);
+  iArea.append(asset, assetElem);
   const clsLayer = createTag('div', { class: 'layer layer-placeholder show-layer' });
   iArea.append(clsLayer);
   if (el.classList.contains('light')) iArea.classList.add('light');
@@ -242,7 +253,7 @@ async function getTargetArea(el) {
     intEnb.classList.add('interactive-enabled');
     await intEnbReendered(intEnb);
   } catch (err) { return null; }
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset video, .image video');
   const container = assets[assets.length - 1].closest('p');
   const iArea = createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');
