@@ -62,6 +62,16 @@ function defineDeviceByScreenSize() {
   return 'TABLET';
 }
 
+function heroForegroundImage(firstBlock) {
+  const rows = [...firstBlock.querySelectorAll(':scope > div')];
+  if (rows.length > 1 && rows[0].textContent !== '') rows.shift();
+  const mainRowIndex = rows.findIndex((row) => {
+    const firstColText = row.children[0].textContent.toLowerCase().trim();
+    return !firstColText.includes('con-block-row-');
+  });
+  return rows[mainRowIndex];
+}
+
 function getDecorateAreaFn() {
   let lcpImgSet = false;
   // Load LCP image immediately
@@ -109,7 +119,11 @@ function getDecorateAreaFn() {
         if (bgImages?.querySelectorAll('img').length === 1 && bgImages.querySelectorAll('div').length === 1) eagerLoad(bgImages?.querySelector('div img'));
         else eagerLoad(bgImages?.querySelector(`:scope ${lcpImgVP[viewport]}`));
         // Foreground image
-        eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
+        if (firstBlock?.classList.contains('hero-marquee')) {
+          const foreground = heroForegroundImage(firstBlock);
+          const imageHidden = (viewport === 'TABLET' && firstBlock?.classList.contains('media-hidden-tablet')) || (viewport === 'MOBILE' && firstBlock?.classList.contains('media-hidden-mobile'));
+          if (!imageHidden) eagerLoad(foreground.querySelector('img'));
+        } else eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
         break;
       }
       case firstBlock?.classList.contains('interactive-marquee'):
