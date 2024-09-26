@@ -12,7 +12,7 @@
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
- * The Utils.js file is now merged below:
+ * The Utils.js file is merged below:
  * ------------------------------------------------------------
  */
 
@@ -206,7 +206,8 @@ export const decorateArea = getDecorateAreaFn();
 
 /*
 *
-* scripts.js:
+* Edit below at your own risk
+* scripts.js added below:
 */
 
 // For CN home's acomsis cookie handler
