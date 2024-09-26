@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
+const { setLibs } = await import('../../../creativecloud/scripts/scripts.js');
 const { default: init } = await import('../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
 const { handleImageTransition } = await import('../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
 function delay(ms) {

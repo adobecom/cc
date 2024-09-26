@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-use-before-define */
-import { createTag, getConfig } from '../../../scripts/utils.js';
+import { createTag, getConfig } from '../../../scripts/scripts.js';
 import defineDeviceByScreenSize from '../../../scripts/decorate.js';
 
 const CSSRanges = {

@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/scripts.js';
 
 const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);

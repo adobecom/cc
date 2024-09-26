@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/scripts.js';
 
 export async function createPromptField(prompt, buttonText, mode, trackingValue = '') {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);

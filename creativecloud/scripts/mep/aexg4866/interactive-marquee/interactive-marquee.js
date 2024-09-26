@@ -1,4 +1,4 @@
-import { getLibs } from '../../../utils.js';
+import { getLibs } from '../../../scripts.js';
 
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];

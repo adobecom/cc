@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/scripts.js';
 
 const { createTag, createIntersectionObserver } = await import(`${getLibs()}/utils/utils.js`);
 const { focusOnInput } = await import('./firefly-interactive.js');

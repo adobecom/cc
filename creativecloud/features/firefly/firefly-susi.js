@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/scripts.js';
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const config = getConfig();

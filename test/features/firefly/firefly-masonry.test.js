@@ -1,6 +1,6 @@
 import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setLibs } from '../../../creativecloud/scripts/utils.js';
+import { setLibs } from '../../../creativecloud/scripts/scripts.js';
 import waitForElement from '../../helpers/waitForElement.js';
 
 setLibs('/libs');

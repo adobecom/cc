@@ -1,4 +1,4 @@
-import { createTag } from '../../../scripts/utils.js';
+import { createTag } from '../../../scripts/scripts.js';
 
 function btnLoadDelay(layer, button, delay, once = true) {
   const io = new IntersectionObserver((entries, observer) => {

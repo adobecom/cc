@@ -1,5 +1,5 @@
 // import loadStyle for utils not working with replacepage
-import { getLibs, getConfig } from '../../../utils.js';
+import { getLibs, getConfig } from '../../../scripts.js';
 
 const { createTag, createIntersectionObserver } = await import(`${getLibs()}/utils/utils.js`);
 const { focusOnInput } = await import('../../../../features/firefly/firefly-interactive.js');

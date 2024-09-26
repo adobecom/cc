@@ -1,6 +1,6 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setLibs } from '../../../creativecloud/scripts/utils.js';
+import { setLibs } from '../../../creativecloud/scripts/scripts.js';
 
 setLibs('/libs');
 const { default: init } = await import('../../../creativecloud/blocks/interactive-marquee/interactive-marquee.js');

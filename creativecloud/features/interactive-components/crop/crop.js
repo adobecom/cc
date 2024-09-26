@@ -1,4 +1,4 @@
-import { createTag } from '../../../scripts/utils.js';
+import { createTag } from '../../../scripts/scripts.js';
 
 export default async function stepInit(data) {
   data.target.classList.add('step-crop');

@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/scripts.js';
 
 const { default: defineDeviceByScreenSize } = await import('../../scripts/decorate.js');
 

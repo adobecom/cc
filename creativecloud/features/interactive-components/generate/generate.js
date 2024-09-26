@@ -1,4 +1,4 @@
-import { createTag } from '../../../scripts/utils.js';
+import { createTag } from '../../../scripts/scripts.js';
 
 function getGenerateConfig(data, flag) {
   const { stepConfigs, stepIndex, displayPath } = data;

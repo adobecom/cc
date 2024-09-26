@@ -1,4 +1,4 @@
-import { createTag, localizeLink, getLibs } from '../../scripts/utils.js';
+import { createTag, localizeLink, getLibs } from '../../scripts/scripts.js';
 
 const CATEGORY_ID_PREFIX = 'categories/';
 const TYPE_ID_PREFIX = 'types/';

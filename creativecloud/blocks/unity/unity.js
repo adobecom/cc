@@ -1,4 +1,4 @@
-import { loadStyle } from '../../scripts/utils.js';
+import { loadStyle } from '../../scripts/scripts.js';
 
 function getUnityLibs(prodLibs = '/unitylibs') {
   const { hostname } = window.location;

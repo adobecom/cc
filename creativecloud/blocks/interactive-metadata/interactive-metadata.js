@@ -1,4 +1,4 @@
-import { getLibs, createTag, loadStyle } from '../../scripts/utils.js';
+import { getLibs, createTag, loadStyle } from '../../scripts/scripts.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
 
 export function getImgSrc(pic) {

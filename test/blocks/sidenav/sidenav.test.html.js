@@ -2,7 +2,7 @@ import { runTests } from '@web/test-runner-mocha';
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
-import { setLibs } from '../../../creativecloud/scripts/utils.js';
+import { setLibs } from '../../../creativecloud/scripts/scripts.js';
 
 setLibs('/node_modules/@adobecom/milo/libs', true);
 
