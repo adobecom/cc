@@ -16,7 +16,7 @@ import { setLibs, decorateArea, acomsisCookieHandler } from './utils.js';
 const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
 
 // Add project-wide style path here.
-const STYLES = '/creativecloud/styles/styles.css';
+// const STYLES = '/creativecloud/styles/styles.css';
 
 // Use '/libs' if your live site maps '/libs' to milo's origin.
 const LIBS = '/libs';
@@ -207,16 +207,16 @@ if (isSignedInHomepage) acomsisCookieHandler();
 
 decorateArea();
 
-(function loadStyles() {
-  const paths = [`${miloLibs}/styles/styles.css`];
-  if (STYLES) { paths.push(STYLES); }
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
-    document.head.appendChild(link);
-  });
-}());
+// (function loadStyles() {
+//   const paths = [`${miloLibs}/styles/styles.css`];
+//   if (STYLES) { paths.push(STYLES); }
+//   paths.forEach((path) => {
+//     const link = document.createElement('link');
+//     link.setAttribute('rel', 'stylesheet');
+//     link.setAttribute('href', path);
+//     document.head.appendChild(link);
+//   });
+// }());
 
 (async function loadPage() {
   loadLana({ clientId: 'cc' });
