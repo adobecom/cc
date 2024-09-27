@@ -277,10 +277,6 @@
     order: 1;
   }
 
-  /*.marquee.large.interactive-enabled.mobile-reorder .foreground {
-    gap: var(--spacing-xxs);
-  }*/
-
   .aside.interactive-enabled .foreground.container .image {
     display: block;
     width: 100%;
