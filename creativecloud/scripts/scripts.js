@@ -132,7 +132,6 @@ const stageDomainsMap = {
     'developer.adobe.com': 'developer-stage.adobe.com',
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
-    'news.adobe.com': 'news.stage.adobe.com',
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
   },
   '--cc--adobecom.hlx.live': {
