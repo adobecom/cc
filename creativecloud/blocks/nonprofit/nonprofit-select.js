@@ -256,8 +256,14 @@ export default function nonprofitSelect(props) {
     controlTag.append(arrowIconTag);
   }
 
-  controlTag.onInput = (handler) => (onInput = handler);
-  controlTag.onSelect = (handler) => (onSelect = handler);
+  controlTag.onInput = (handler) => {
+    onInput = handler;
+  };
+
+  controlTag.onSelect = (handler) => {
+    onSelect = handler;
+  };
+
   controlTag.onScroll = (handler) => {
     listTag.addEventListener('scroll', (ev) => {
       abortController = new AbortController();

@@ -1,7 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable compat/compat */
 /* eslint-disable max-len */
 import ReactiveStore from './reactiveStore.js';
 import { setLibs } from '../../scripts/utils.js';
@@ -30,13 +29,11 @@ export const SCENARIOS = Object.freeze({
 });
 const SEARCH_DEBOUNCE = 500; // ms
 const FETCH_ON_SCROLL_OFFSET = 100; // px
-
 // #endregion
 
 const nonprofitFormData = JSON.parse('{}');
 
 // #region Stores
-
 export const stepperStore = new ReactiveStore({
   step: 1,
   scenario: SCENARIOS.FOUND_IN_SEARCH,
@@ -48,7 +45,6 @@ export const organizationsStore = new ReactiveStore([]);
 export const registriesStore = new ReactiveStore([]);
 
 const selectedOrganizationStore = new ReactiveStore();
-
 // #endregion
 
 // #region Percent API integration
@@ -958,82 +954,13 @@ function renderStepContent(containerTag) {
 
   containerTag.append(contentContainerTag);
 }
-
-// #endregion
-
-// #region Stepper Controller (TODO - remove)
-
-function initStepperController(tag) {
-  const containerTag = createTag('div', { class: 'np-controller-container' });
-
-  const titleTag = createTag(
-    'span',
-    { class: 'np-controller-title' },
-    'Stepper controller (for testing)',
-  );
-
-  const scenariosTag = createTag('div', { class: 'np-controller-section' });
-  const stepsTag = createTag('div', { class: 'np-controller-section' });
-
-  stepperStore.subscribe(() => {
-    const { step, scenario } = stepperStore.data;
-
-    const foundInSearchTag = createTag(
-      'button',
-      { class: `np-controller-button${scenario === SCENARIOS.FOUND_IN_SEARCH ? ' selected' : ''}` },
-      'Found in search',
-    );
-    foundInSearchTag.addEventListener('click', () => {
-      const newStep = step > 3 ? 1 : step;
-      stepperStore.update((prev) => ({
-        ...prev,
-        step: newStep,
-        scenario: SCENARIOS.FOUND_IN_SEARCH,
-      }));
-    });
-    const notFoundInSearchTag = createTag(
-      'button',
-      { class: `np-controller-button${scenario === SCENARIOS.NOT_FOUND_IN_SEARCH ? ' selected' : ''}` },
-      'Not found in search',
-    );
-    notFoundInSearchTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, scenario: SCENARIOS.NOT_FOUND_IN_SEARCH })));
-
-    const maxSteps = scenario === SCENARIOS.FOUND_IN_SEARCH ? 3 : 5;
-
-    stepsTag.replaceChildren();
-    Array.from({ length: maxSteps })
-      .map((_, index) => index + 1)
-      .forEach((value) => {
-        const stepTag = createTag(
-          'button',
-          { class: `np-controller-button is-step ${step === value ? ' selected' : ''}` },
-          value,
-        );
-        stepTag.addEventListener('click', () => stepperStore.update((prev) => ({ ...prev, step: value })));
-        stepsTag.append(stepTag);
-      });
-
-    scenariosTag.replaceChildren(foundInSearchTag, notFoundInSearchTag);
-  });
-
-  containerTag.append(titleTag, scenariosTag, stepsTag);
-
-  const bufferTag = createTag('div', { class: 'np-controller-buffer ' });
-  tag.append(bufferTag, containerTag);
-}
-
 // #endregion
 
 function initNonprofit(element) {
   const containerTag = createTag('div', { class: 'np-container' });
-
   renderStepper(containerTag);
   renderStepContent(containerTag);
-
   element.append(containerTag);
-
-  // TODO - remove
-  initStepperController(element);
 }
 
 export default function init(element) {
