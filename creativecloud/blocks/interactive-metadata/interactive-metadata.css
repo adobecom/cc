@@ -277,6 +277,10 @@
     order: 1;
   }
 
+  .marquee.large.interactive-enabled.content-top-mobile .foreground {
+    gap: 0;
+  }
+
   .aside.interactive-enabled .foreground.container .image {
     display: block;
     width: 100%;
@@ -406,6 +410,10 @@
 
   .marquee.large.interactive-enabled.content-top-tablet .text {
     order: 1;
+  }
+
+  .marquee.large.interactive-enabled.content-top-tablet .foreground {
+    gap: 0;
   }
 }
 
