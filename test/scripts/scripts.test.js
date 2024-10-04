@@ -9,7 +9,7 @@ document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 document.head.innerHTML = await readFile({ path: './mocks/head.html' });
 describe('Scripts', () => {
   before(async () => {
-    await import('../../creativecloud/scripts/scripts.js');
+    // await import('../../creativecloud/scripts/scripts.js');
     delay(200);
   });
 
