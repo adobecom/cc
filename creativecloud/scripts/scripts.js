@@ -132,6 +132,8 @@ const stageDomainsMap = {
     'developer.adobe.com': 'developer-stage.adobe.com',
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
+    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.live': {
     'www.adobe.com': 'origin',
@@ -141,6 +143,8 @@ const stageDomainsMap = {
     'developer.adobe.com': 'developer-stage.adobe.com',
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
+    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.page': {
     'www.adobe.com': 'origin',
@@ -150,6 +154,8 @@ const stageDomainsMap = {
     'developer.adobe.com': 'developer-stage.adobe.com',
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
+    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
 };
 
