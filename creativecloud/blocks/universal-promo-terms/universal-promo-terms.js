@@ -70,6 +70,8 @@ export default async function init(el, search) {
   } else {
     el.innerHTML = termsHTML;
   }
-  // eslint-disable-next-line no-restricted-globals
-  history.replaceState(null, '', location.pathname);
+  if (!params.get('upt-debug')) {
+    // eslint-disable-next-line no-restricted-globals
+    document.addEventListener('milo:deferred', () => history.replaceState(null, '', location.pathname));
+  }
 }
