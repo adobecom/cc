@@ -17,6 +17,7 @@
 const COOKIE_SIGNED_IN = 'acomsis';
 const COOKIE_SIGNED_IN_STAGE = 'acomsis_stage';
 const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
+
 const locales = {
   // Americas
   ar: { ietf: 'es-AR', tk: 'oln4yqj.css' },
@@ -118,6 +119,7 @@ const locales = {
   cis_ru: { ietf: 'ru', tk: 'qxw8hzm.css' },
   cis_en: { ietf: 'en', tk: 'pps7abe.css' },
 };
+
 const stageDomainsMap = {
   'www.stage.adobe.com': {
     'www.adobe.com': 'origin',
@@ -127,6 +129,8 @@ const stageDomainsMap = {
     'developer.adobe.com': 'developer-stage.adobe.com',
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
+    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.live': {
     'www.adobe.com': 'origin',
@@ -136,6 +140,8 @@ const stageDomainsMap = {
     'developer.adobe.com': 'developer-stage.adobe.com',
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
+    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.page': {
     'www.adobe.com': 'origin',
@@ -145,8 +151,11 @@ const stageDomainsMap = {
     'developer.adobe.com': 'developer-stage.adobe.com',
     'news.adobe.com': 'news.stage.adobe.com',
     'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
+    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
+    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
 };
+
 const LIBS = '/libs';
 
 /**
@@ -373,11 +382,15 @@ export const scriptInit = async () => {
   setConfig({ ...CONFIG, miloLibs });
   if (isSignedInHomepage) acomsisCookieHandler();
   decorateArea();
-  const path = `${miloLibs}/styles/styles.css`;
-  const link = document.createElement('link');
-  link.setAttribute('rel', 'stylesheet');
-  link.setAttribute('href', path);
-  document.head.appendChild(link);
+  (function loadStyles() {
+    const paths = [`${miloLibs}/styles/styles.css`];
+    paths.forEach((path) => {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'stylesheet');
+      link.setAttribute('href', path);
+      document.head.appendChild(link);
+    });
+  }());
   (async function loadPage() {
     loadLana({ clientId: 'cc' });
     await loadArea();
