@@ -156,8 +156,6 @@ const stageDomainsMap = {
   },
 };
 
-const LIBS = '/libs';
-
 /**
  * The decision engine for where to get Milo's libs from.
  */
