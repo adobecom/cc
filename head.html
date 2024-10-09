@@ -1,10 +1,4 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<script src="/creativecloud/scripts/fallback.js" nomodule></script>
-<script src="/creativecloud/scripts/utils.js" type="module"></script>
-<script type="module">
-  import { scriptInit } from '/creativecloud/scripts/utils.js';
-  scriptInit();
-</script>
 <style>
   body { display: none; }
   .reading-width {
@@ -24,9 +18,11 @@
   margin: 0 auto;
 }
 </style>
+<script src="/creativecloud/scripts/fallback.js" nomodule></script>
+<script src="/creativecloud/scripts/utils.js" type="module"></script>
+<script type="module">
+  import { scriptInit } from '/creativecloud/scripts/utils.js';
+  scriptInit();
+</script>
 <link rel="icon" href="data:,">
-<link rel="preload" href="/creativecloud/scripts/utils.js" as="script" crossorigin>
-<link rel="preload" href="https://main--milo--adobecom.hlx.live/libs/utils/utils.js" as="script" crossorigin>
-<link rel="preload" href="https://main--milo--adobecom.hlx.live/libs/martech/martech.js" as="script" crossorigin>
-<link rel="preload" href="https://main--milo--adobecom.hlx.live/libs/deps/mas/commerce.js" as="script" crossorigin>
-<link rel="preload" href="https://main--milo--adobecom.hlx.live/libs/deps/imslib.min.js" as="script">
+
