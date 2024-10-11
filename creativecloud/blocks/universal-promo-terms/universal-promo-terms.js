@@ -32,12 +32,12 @@ const replacePlaceholderText = (text, params) => {
 };
 
 /**
- * Returns promo term HTML from API 
- * @param {*} params 
- * @param {*} el 
- * @param {*} env 
- * @param {*} search 
- * @returns 
+ * Returns promo term HTML from API
+ * @param {*} params
+ * @param {*} el
+ * @param {*} env
+ * @param {*} search
+ * @returns
  */
 async function getTermsHTML(params, el, env, search) {
   const locationSearch = search ?? window.location.search;
