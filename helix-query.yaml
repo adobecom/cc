@@ -1,8 +1,7 @@
 version: 1
-
 indices:
-  def: &def
-    exclude:
+  def:
+    exclude: &ref_0
       - '**/cc-shared/**'
       - '**/gnav**'
       - '**/footer**'
@@ -22,53 +21,61 @@ indices:
       - /confirmation/**
       - /devnet/**
       - /diversity/**
+      - /privacy/**
+      - /offer-terms/**
+      - /procurement/**
+      - /partners/**
+      - /pdf-page/**
+      - /offers/**
     target: /cc-shared/assets/query-index.xlsx
-    properties:
+    properties: &ref_1
       title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, 'content')
+        select: 'head > meta[property="og:title"]'
+        value: 'attribute(el, ''content'')'
       date:
-        select: head > meta[name="publishdate"]
-        value: dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+        select: 'head > meta[name="publishdate"]'
+        value: 'dateValue(attribute(el, ''content''), ''MM-DD-YYYY'')'
       image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+        select: 'head > meta[property="og:image"]'
+        value: 'match(attribute(el, ''content''), ''https:\/\/[^/]+(\/.*)'')'
       description:
-        select: head > meta[name="description"]
-        value: attribute(el, 'content')
+        select: 'head > meta[name="description"]'
+        value: 'attribute(el, ''content'')'
       lastModified:
         select: none
-        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+        value: >-
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss
+          GMT')
       robots:
-        select: head > meta[name="robots"]
-        value: attribute(el, 'content')  
-  
-  merch-cards: &merch-cards
+        select: 'head > meta[name="robots"]'
+        value: 'attribute(el, ''content'')'
+  merch-cards:
     include:
       - /cc-shared/fragments/merch/**/merch-card/**
     target: /cc-shared/assets/query-index-cards.xslx
-    properties:
+    properties: &ref_2
       lastModified:
         select: none
-        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+        value: >-
+          parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss
+          GMT")
       title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, "content")
+        select: 'head > meta[property="og:title"]'
+        value: 'attribute(el, "content")'
       cardClasses:
         select: main div.merch-card
-        value: attribute(el, "className")
+        value: 'attribute(el, "className")'
       cardContent:
         select: main > div
         value: innerHTML(el)
       tags:
-        select: head > meta[property="article:tag"]
-        values: attribute(el, "content")
+        select: 'head > meta[property="article:tag"]'
+        values: 'attribute(el, "content")'
       publicationDate:
         select: none
-        value: parseTimestamp(headers["date"], "ddd, DD MMM YYYY hh:mm:ss GMT")
-
+        value: 'parseTimestamp(headers["date"], "ddd, DD MMM YYYY hh:mm:ss GMT")'
   creativecloud-au:
-    <<: *def
+    exclude: *ref_0
     include:
       - /au/creativecloud/**
       - /au/products/**
@@ -83,16 +90,21 @@ indices:
       - /au/confirmation/**
       - /au/devnet/**
       - /au/diversity/**
+      - /au/privacy/**
+      - /au/offer-terms/**
+      - /au/procurement/**
+      - /au/partners/**
+      - /au/pdf-page/**
+      - /au/offers/**
     target: /au/cc-shared/assets/query-index.xlsx
-  
+    properties: *ref_1
   cards-au:
-    <<: *merch-cards
     include:
       - /au/cc-shared/fragments/merch/**/merch-card/**
-    target: /au/cc-shared/assets/query-index-cards.xslx    
-
+    target: /au/cc-shared/assets/query-index-cards.xslx
+    properties: *ref_2
   creativecloud-de:
-    <<: *def
+    exclude: *ref_0
     include:
       - /de/creativecloud/**
       - /de/products/**
@@ -107,16 +119,21 @@ indices:
       - /de/confirmation/**
       - /de/devnet/**
       - /de/diversity/**
+      - /de/privacy/**
+      - /de/offer-terms/**
+      - /de/procurement/**
+      - /de/partners/**
+      - /de/pdf-page/**
+      - /de/offers/**
     target: /de/cc-shared/assets/query-index.xlsx
-  
+    properties: *ref_1
   cards-de:
-    <<: *merch-cards
     include:
       - /de/cc-shared/fragments/merch/**/merch-card/**
-    target: /de/cc-shared/assets/query-index-cards.xslx    
-    
+    target: /de/cc-shared/assets/query-index-cards.xslx
+    properties: *ref_2
   creativecloud-es:
-    <<: *def
+    exclude: *ref_0
     include:
       - /es/creativecloud/**
       - /es/products/**
@@ -131,16 +148,21 @@ indices:
       - /es/confirmation/**
       - /es/devnet/**
       - /es/diversity/**
+      - /es/privacy/**
+      - /es/offer-terms/**
+      - /es/procurement/**
+      - /es/partners/**
+      - /es/pdf-page/**
+      - /es/offers/**
     target: /es/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-es:
-    <<: *merch-cards
     include:
       - /es/cc-shared/fragments/merch/**/merch-card/**
     target: /es/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-fr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /fr/creativecloud/**
       - /fr/products/**
@@ -155,16 +177,21 @@ indices:
       - /fr/confirmation/**
       - /fr/devnet/**
       - /fr/diversity/**
+      - /fr/privacy/**
+      - /fr/offer-terms/**
+      - /fr/procurement/**
+      - /fr/partners/**
+      - /fr/pdf-page/**
+      - /fr/offers/**
     target: /fr/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-fr:
-    <<: *merch-cards
     include:
       - /fr/cc-shared/fragments/merch/**/merch-card/**
-    target: /fr/cc-shared/assets/query-index-cards.xslx    
-
+    target: /fr/cc-shared/assets/query-index-cards.xslx
+    properties: *ref_2
   creativecloud-it:
-    <<: *def
+    exclude: *ref_0
     include:
       - /it/creativecloud/**
       - /it/products/**
@@ -179,16 +206,21 @@ indices:
       - /it/confirmation/**
       - /it/devnet/**
       - /it/diversity/**
+      - /it/privacy/**
+      - /it/offer-terms/**
+      - /it/procurement/**
+      - /it/partners/**
+      - /it/pdf-page/**
+      - /it/offers/**
     target: /it/cc-shared/assets/query-index.xlsx
-  
+    properties: *ref_1
   cards-it:
-    <<: *merch-cards
     include:
       - /it/cc-shared/fragments/merch/**/merch-card/**
     target: /it/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-jp:
-    <<: *def
+    exclude: *ref_0
     include:
       - /jp/creativecloud/**
       - /jp/products/**
@@ -203,16 +235,21 @@ indices:
       - /jp/confirmation/**
       - /jp/devnet/**
       - /jp/diversity/**
+      - /jp/privacy/**
+      - /jp/offer-terms/**
+      - /jp/procurement/**
+      - /jp/partners/**
+      - /jp/pdf-page/**
+      - /jp/offers/**
     target: /jp/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-jp:
-    <<: *merch-cards
     include:
       - /jp/cc-shared/fragments/merch/**/merch-card/**
     target: /jp/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-kr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /kr/creativecloud/**
       - /kr/products/**
@@ -227,16 +264,21 @@ indices:
       - /kr/confirmation/**
       - /kr/devnet/**
       - /kr/diversity/**
+      - /kr/privacy/**
+      - /kr/offer-terms/**
+      - /kr/procurement/**
+      - /kr/partners/**
+      - /kr/pdf-page/**
+      - /kr/offers/**
     target: /kr/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-kr:
-    <<: *merch-cards
     include:
       - /kr/cc-shared/fragments/merch/**/merch-card/**
     target: /kr/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ru:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ru/creativecloud/**
       - /ru/products/**
@@ -251,16 +293,21 @@ indices:
       - /ru/confirmation/**
       - /ru/devnet/**
       - /ru/diversity/**
+      - /ru/privacy/**
+      - /ru/offer-terms/**
+      - /ru/procurement/**
+      - /ru/partners/**
+      - /ru/pdf-page/**
+      - /ru/offers/**
     target: /ru/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ru:
-    <<: *merch-cards
     include:
       - /ru/cc-shared/fragments/merch/**/merch-card/**
     target: /ru/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-hk_zh:
-    <<: *def
+    exclude: *ref_0
     include:
       - /hk_zh/creativecloud/**
       - /hk_zh/products/**
@@ -275,16 +322,21 @@ indices:
       - /hk_zh/confirmation/**
       - /hk_zh/devnet/**
       - /hk_zh/diversity/**
+      - /hk_zh/privacy/**
+      - /hk_zh/offer-terms/**
+      - /hk_zh/procurement/**
+      - /hk_zh/partners/**
+      - /hk_zh/pdf-page/**
+      - /hk_zh/offers/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-hk_zh:
-    <<: *merch-cards
     include:
       - /hk_zh/cc-shared/fragments/merch/**/merch-card/**
     target: /hk_zh/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-tw:
-    <<: *def
+    exclude: *ref_0
     include:
       - /tw/creativecloud/**
       - /tw/products/**
@@ -299,16 +351,21 @@ indices:
       - /tw/confirmation/**
       - /tw/devnet/**
       - /tw/diversity/**
-    target: /tw/cc-shared/assets/query-index.xlsx  
-
+      - /tw/privacy/**
+      - /tw/offer-terms/**
+      - /tw/procurement/**
+      - /tw/partners/**
+      - /tw/pdf-page/**
+      - /tw/offers/**
+    target: /tw/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-tw:
-    <<: *merch-cards
     include:
       - /tw/cc-shared/fragments/merch/**/merch-card/**
     target: /tw/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-nl:
-    <<: *def
+    exclude: *ref_0
     include:
       - /nl/creativecloud/**
       - /nl/products/**
@@ -323,16 +380,21 @@ indices:
       - /nl/confirmation/**
       - /nl/devnet/**
       - /nl/diversity/**
+      - /nl/privacy/**
+      - /nl/offer-terms/**
+      - /nl/procurement/**
+      - /nl/partners/**
+      - /nl/pdf-page/**
+      - /nl/offers/**
     target: /nl/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-nl:
-    <<: *merch-cards
     include:
       - /nl/cc-shared/fragments/merch/**/merch-card/**
     target: /nl/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-pl:
-    <<: *def
+    exclude: *ref_0
     include:
       - /pl/creativecloud/**
       - /pl/products/**
@@ -347,16 +409,21 @@ indices:
       - /pl/confirmation/**
       - /pl/devnet/**
       - /pl/diversity/**
+      - /pl/privacy/**
+      - /pl/offer-terms/**
+      - /pl/procurement/**
+      - /pl/partners/**
+      - /pl/pdf-page/**
+      - /pl/offers/**
     target: /pl/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-pl:
-    <<: *merch-cards
     include:
       - /pl/cc-shared/fragments/merch/**/merch-card/**
     target: /pl/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-tr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /tr/creativecloud/**
       - /tr/products/**
@@ -371,16 +438,21 @@ indices:
       - /tr/confirmation/**
       - /tr/devnet/**
       - /tr/diversity/**
-    target: /tr/cc-shared/assets/query-index.xlsx  
-
+      - /tr/privacy/**
+      - /tr/offer-terms/**
+      - /tr/procurement/**
+      - /tr/partners/**
+      - /tr/pdf-page/**
+      - /tr/offers/**
+    target: /tr/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-tr:
-    <<: *merch-cards
     include:
       - /tr/cc-shared/fragments/merch/**/merch-card/**
     target: /tr/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-uk:
-    <<: *def
+    exclude: *ref_0
     include:
       - /uk/creativecloud/**
       - /uk/products/**
@@ -395,16 +467,21 @@ indices:
       - /uk/confirmation/**
       - /uk/devnet/**
       - /uk/diversity/**
+      - /uk/privacy/**
+      - /uk/offer-terms/**
+      - /uk/procurement/**
+      - /uk/partners/**
+      - /uk/pdf-page/**
+      - /uk/offers/**
     target: /uk/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-uk:
-    <<: *merch-cards
     include:
       - /uk/cc-shared/fragments/merch/**/merch-card/**
     target: /uk/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ca:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ca/creativecloud/**
       - /ca/products/**
@@ -419,16 +496,21 @@ indices:
       - /ca/confirmation/**
       - /ca/devnet/**
       - /ca/diversity/**
+      - /ca/privacy/**
+      - /ca/offer-terms/**
+      - /ca/procurement/**
+      - /ca/partners/**
+      - /ca/pdf-page/**
+      - /ca/offers/**
     target: /ca/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ca:
-    <<: *merch-cards
     include:
       - /ca/cc-shared/fragments/merch/**/merch-card/**
     target: /ca/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-cn:
-    <<: *def
+    exclude: *ref_0
     include:
       - /cn/creativecloud/**
       - /cn/products/**
@@ -443,16 +525,21 @@ indices:
       - /cn/confirmation/**
       - /cn/devnet/**
       - /cn/diversity/**
+      - /cn/privacy/**
+      - /cn/offer-terms/**
+      - /cn/procurement/**
+      - /cn/partners/**
+      - /cn/pdf-page/**
+      - /cn/offers/**
     target: /cn/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-cn:
-    <<: *merch-cards
     include:
       - /cn/cc-shared/fragments/merch/**/merch-card/**
     target: /cn/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ae_ar:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ae_ar/creativecloud/**
       - /ae_ar/products/**
@@ -467,16 +554,21 @@ indices:
       - /ae_ar/confirmation/**
       - /ae_ar/devnet/**
       - /ae_ar/diversity/**
+      - /ae_ar/privacy/**
+      - /ae_ar/offer-terms/**
+      - /ae_ar/procurement/**
+      - /ae_ar/partners/**
+      - /ae_ar/pdf-page/**
+      - /ae_ar/offers/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ae_ar:
-    <<: *merch-cards
     include:
       - /ae_ar/cc-shared/fragments/merch/**/merch-card/**
     target: /ae_ar/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ae_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ae_en/creativecloud/**
       - /ae_en/products/**
@@ -491,16 +583,21 @@ indices:
       - /ae_en/confirmation/**
       - /ae_en/devnet/**
       - /ae_en/diversity/**
+      - /ae_en/privacy/**
+      - /ae_en/offer-terms/**
+      - /ae_en/procurement/**
+      - /ae_en/partners/**
+      - /ae_en/pdf-page/**
+      - /ae_en/offers/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ae_en:
-    <<: *merch-cards
     include:
       - /ae_en/cc-shared/fragments/merch/**/merch-card/**
     target: /ae_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-at:
-    <<: *def
+    exclude: *ref_0
     include:
       - /at/creativecloud/**
       - /at/products/**
@@ -515,16 +612,21 @@ indices:
       - /at/confirmation/**
       - /at/devnet/**
       - /at/diversity/**
+      - /at/privacy/**
+      - /at/offer-terms/**
+      - /at/procurement/**
+      - /at/partners/**
+      - /at/pdf-page/**
+      - /at/offers/**
     target: /at/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-at:
-    <<: *merch-cards
     include:
       - /at/cc-shared/fragments/merch/**/merch-card/**
     target: /at/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-be_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /be_en/creativecloud/**
       - /be_en/products/**
@@ -539,16 +641,21 @@ indices:
       - /be_en/confirmation/**
       - /be_en/devnet/**
       - /be_en/diversity/**
+      - /be_en/privacy/**
+      - /be_en/offer-terms/**
+      - /be_en/procurement/**
+      - /be_en/partners/**
+      - /be_en/pdf-page/**
+      - /be_en/offers/**
     target: /be_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-be_en:
-    <<: *merch-cards
     include:
       - /be_en/cc-shared/fragments/merch/**/merch-card/**
     target: /be_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-be_fr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /be_fr/creativecloud/**
       - /be_fr/products/**
@@ -563,16 +670,21 @@ indices:
       - /be_fr/confirmation/**
       - /be_fr/devnet/**
       - /be_fr/diversity/**
+      - /be_fr/privacy/**
+      - /be_fr/offer-terms/**
+      - /be_fr/procurement/**
+      - /be_fr/partners/**
+      - /be_fr/pdf-page/**
+      - /be_fr/offers/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-be_fr:
-    <<: *merch-cards
     include:
       - /be_fr/cc-shared/fragments/merch/**/merch-card/**
     target: /be_fr/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ca_fr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ca_fr/creativecloud/**
       - /ca_fr/products/**
@@ -587,16 +699,21 @@ indices:
       - /ca_fr/confirmation/**
       - /ca_fr/devnet/**
       - /ca_fr/diversity/**
+      - /ca_fr/privacy/**
+      - /ca_fr/offer-terms/**
+      - /ca_fr/procurement/**
+      - /ca_fr/partners/**
+      - /ca_fr/pdf-page/**
+      - /ca_fr/offers/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ca_fr:
-    <<: *merch-cards
     include:
       - /ca_fr/cc-shared/fragments/merch/**/merch-card/**
     target: /ca_fr/cc-shared/assets/query-index-cards.xslx
-    
+    properties: *ref_2
   creativecloud-ch_de:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ch_de/creativecloud/**
       - /ch_de/products/**
@@ -611,16 +728,21 @@ indices:
       - /ch_de/confirmation/**
       - /ch_de/devnet/**
       - /ch_de/diversity/**
+      - /ch_de/privacy/**
+      - /ch_de/offer-terms/**
+      - /ch_de/procurement/**
+      - /ch_de/partners/**
+      - /ch_de/pdf-page/**
+      - /ch_de/offers/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ch_de:
-    <<: *merch-cards
     include:
       - /ch_de/cc-shared/fragments/merch/**/merch-card/**
     target: /ch_de/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ch_fr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ch_fr/creativecloud/**
       - /ch_fr/products/**
@@ -635,16 +757,21 @@ indices:
       - /ch_fr/confirmation/**
       - /ch_fr/devnet/**
       - /ch_fr/diversity/**
+      - /ch_fr/privacy/**
+      - /ch_fr/offer-terms/**
+      - /ch_fr/procurement/**
+      - /ch_fr/partners/**
+      - /ch_fr/pdf-page/**
+      - /ch_fr/offers/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ch_fr:
-    <<: *merch-cards
     include:
       - /ch_fr/cc-shared/fragments/merch/**/merch-card/**
     target: /ch_fr/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-cl:
-    <<: *def
+    exclude: *ref_0
     include:
       - /cl/creativecloud/**
       - /cl/products/**
@@ -659,16 +786,21 @@ indices:
       - /cl/confirmation/**
       - /cl/devnet/**
       - /cl/diversity/**
+      - /cl/privacy/**
+      - /cl/offer-terms/**
+      - /cl/procurement/**
+      - /cl/partners/**
+      - /cl/pdf-page/**
+      - /cl/offers/**
     target: /cl/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-cl:
-    <<: *merch-cards
     include:
       - /cl/cc-shared/fragments/merch/**/merch-card/**
     target: /cl/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-gr_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /gr_en/creativecloud/**
       - /gr_en/products/**
@@ -683,16 +815,21 @@ indices:
       - /gr_en/confirmation/**
       - /gr_en/devnet/**
       - /gr_en/diversity/**
-    target: /gr_en/cc-shared/assets/query-index.xlsx  
-
+      - /gr_en/privacy/**
+      - /gr_en/offer-terms/**
+      - /gr_en/procurement/**
+      - /gr_en/partners/**
+      - /gr_en/pdf-page/**
+      - /gr_en/offers/**
+    target: /gr_en/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-gr_en:
-    <<: *merch-cards
     include:
       - /gr_en/cc-shared/fragments/merch/**/merch-card/**
     target: /gr_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-hk_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /hk_en/creativecloud/**
       - /hk_en/products/**
@@ -707,16 +844,21 @@ indices:
       - /hk_en/confirmation/**
       - /hk_en/devnet/**
       - /hk_en/diversity/**
+      - /hk_en/privacy/**
+      - /hk_en/offer-terms/**
+      - /hk_en/procurement/**
+      - /hk_en/partners/**
+      - /hk_en/pdf-page/**
+      - /hk_en/offers/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-hk_en:
-    <<: *merch-cards
     include:
       - /hk_en/cc-shared/fragments/merch/**/merch-card/**
     target: /hk_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ie:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ie/creativecloud/**
       - /ie/products/**
@@ -731,16 +873,21 @@ indices:
       - /ie/confirmation/**
       - /ie/devnet/**
       - /ie/diversity/**
-    target: /ie/cc-shared/assets/query-index.xlsx  
-
+      - /ie/privacy/**
+      - /ie/offer-terms/**
+      - /ie/procurement/**
+      - /ie/partners/**
+      - /ie/pdf-page/**
+      - /ie/offers/**
+    target: /ie/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-ie:
-    <<: *merch-cards
     include:
       - /ie/cc-shared/fragments/merch/**/merch-card/**
     target: /ie/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-il_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /il_en/creativecloud/**
       - /il_en/products/**
@@ -755,16 +902,21 @@ indices:
       - /il_en/confirmation/**
       - /il_en/devnet/**
       - /il_en/diversity/**
+      - /il_en/privacy/**
+      - /il_en/offer-terms/**
+      - /il_en/procurement/**
+      - /il_en/partners/**
+      - /il_en/pdf-page/**
+      - /il_en/offers/**
     target: /il_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-il_en:
-    <<: *merch-cards
     include:
       - /il_en/cc-shared/fragments/merch/**/merch-card/**
     target: /il_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-in:
-    <<: *def
+    exclude: *ref_0
     include:
       - /in/creativecloud/**
       - /in/products/**
@@ -779,16 +931,21 @@ indices:
       - /in/confirmation/**
       - /in/devnet/**
       - /in/diversity/**
+      - /in/privacy/**
+      - /in/offer-terms/**
+      - /in/procurement/**
+      - /in/partners/**
+      - /in/pdf-page/**
+      - /in/offers/**
     target: /in/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-in:
-    <<: *merch-cards
     include:
       - /in/cc-shared/fragments/merch/**/merch-card/**
     target: /in/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-lt:
-    <<: *def
+    exclude: *ref_0
     include:
       - /lt/creativecloud/**
       - /lt/products/**
@@ -803,16 +960,21 @@ indices:
       - /lt/confirmation/**
       - /lt/devnet/**
       - /lt/diversity/**
+      - /lt/privacy/**
+      - /lt/offer-terms/**
+      - /lt/procurement/**
+      - /lt/partners/**
+      - /lt/pdf-page/**
+      - /lt/offers/**
     target: /lt/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-lt:
-    <<: *merch-cards
     include:
       - /lt/cc-shared/fragments/merch/**/merch-card/**
     target: /lt/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-lu_de:
-    <<: *def
+    exclude: *ref_0
     include:
       - /lu_de/creativecloud/**
       - /lu_de/products/**
@@ -827,16 +989,21 @@ indices:
       - /lu_de/confirmation/**
       - /lu_de/devnet/**
       - /lu_de/diversity/**
+      - /lu_de/privacy/**
+      - /lu_de/offer-terms/**
+      - /lu_de/procurement/**
+      - /lu_de/partners/**
+      - /lu_de/pdf-page/**
+      - /lu_de/offers/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-lu_de:
-    <<: *merch-cards
     include:
       - /lu_de/cc-shared/fragments/merch/**/merch-card/**
     target: /lu_de/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-lu_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /lu_en/creativecloud/**
       - /lu_en/products/**
@@ -851,16 +1018,21 @@ indices:
       - /lu_en/confirmation/**
       - /lu_en/devnet/**
       - /lu_en/diversity/**
+      - /lu_en/privacy/**
+      - /lu_en/offer-terms/**
+      - /lu_en/procurement/**
+      - /lu_en/partners/**
+      - /lu_en/pdf-page/**
+      - /lu_en/offers/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-lu_en:
-    <<: *merch-cards
     include:
       - /lu_en/cc-shared/fragments/merch/**/merch-card/**
     target: /lu_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-lu_fr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /lu_fr/creativecloud/**
       - /lu_fr/products/**
@@ -875,16 +1047,21 @@ indices:
       - /lu_fr/confirmation/**
       - /lu_fr/devnet/**
       - /lu_fr/diversity/**
+      - /lu_fr/privacy/**
+      - /lu_fr/offer-terms/**
+      - /lu_fr/procurement/**
+      - /lu_fr/partners/**
+      - /lu_fr/pdf-page/**
+      - /lu_fr/offers/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-lu_fr:
-    <<: *merch-cards
     include:
       - /lu_fr/cc-shared/fragments/merch/**/merch-card/**
     target: /lu_fr/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-mena_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /mena_en/creativecloud/**
       - /mena_en/products/**
@@ -899,16 +1076,21 @@ indices:
       - /mena_en/confirmation/**
       - /mena_en/devnet/**
       - /mena_en/diversity/**
+      - /mena_en/privacy/**
+      - /mena_en/offer-terms/**
+      - /mena_en/procurement/**
+      - /mena_en/partners/**
+      - /mena_en/pdf-page/**
+      - /mena_en/offers/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-mena_en:
-    <<: *merch-cards
     include:
       - /mena_en/cc-shared/fragments/merch/**/merch-card/**
     target: /mena_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-nz:
-    <<: *def
+    exclude: *ref_0
     include:
       - /nz/creativecloud/**
       - /nz/products/**
@@ -923,16 +1105,21 @@ indices:
       - /nz/confirmation/**
       - /nz/devnet/**
       - /nz/diversity/**
+      - /nz/privacy/**
+      - /nz/offer-terms/**
+      - /nz/procurement/**
+      - /nz/partners/**
+      - /nz/pdf-page/**
+      - /nz/offers/**
     target: /nz/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-nz:
-    <<: *merch-cards
     include:
       - /nz/cc-shared/fragments/merch/**/merch-card/**
     target: /nz/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-sa_ar:
-    <<: *def
+    exclude: *ref_0
     include:
       - /sa_ar/creativecloud/**
       - /sa_ar/products/**
@@ -947,16 +1134,21 @@ indices:
       - /sa_ar/confirmation/**
       - /sa_ar/devnet/**
       - /sa_ar/diversity/**
-    target: /sa_ar/cc-shared/assets/query-index.xlsx  
-
+      - /sa_ar/privacy/**
+      - /sa_ar/offer-terms/**
+      - /sa_ar/procurement/**
+      - /sa_ar/partners/**
+      - /sa_ar/pdf-page/**
+      - /sa_ar/offers/**
+    target: /sa_ar/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-sa_ar:
-    <<: *merch-cards
     include:
       - /sa_ar/cc-shared/fragments/merch/**/merch-card/**
     target: /sa_ar/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-sa_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /sa_en/creativecloud/**
       - /sa_en/products/**
@@ -971,16 +1163,21 @@ indices:
       - /sa_en/confirmation/**
       - /sa_en/devnet/**
       - /sa_en/diversity/**
+      - /sa_en/privacy/**
+      - /sa_en/offer-terms/**
+      - /sa_en/procurement/**
+      - /sa_en/partners/**
+      - /sa_en/pdf-page/**
+      - /sa_en/offers/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
-
-   cards-sa_en:
-    <<: *merch-cards
+    properties: *ref_1
+  cards-sa_en:
     include:
       - /sa_en/cc-shared/fragments/merch/**/merch-card/**
     target: /sa_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-th_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /th_en/creativecloud/**
       - /th_en/products/**
@@ -995,16 +1192,21 @@ indices:
       - /th_en/confirmation/**
       - /th_en/devnet/**
       - /th_en/diversity/**
+      - /th_en/privacy/**
+      - /th_en/offer-terms/**
+      - /th_en/procurement/**
+      - /th_en/partners/**
+      - /th_en/pdf-page/**
+      - /th_en/offers/**
     target: /th_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-th_en:
-    <<: *merch-cards
     include:
       - /th_en/cc-shared/fragments/merch/**/merch-card/**
     target: /th_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-th_th:
-    <<: *def
+    exclude: *ref_0
     include:
       - /th_th/creativecloud/**
       - /th_th/products/**
@@ -1020,15 +1222,14 @@ indices:
       - /th_th/devnet/**
       - /th_th/diversity/**
     target: /th_th/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-th_th:
-    <<: *merch-cards
     include:
       - /th_th/cc-shared/fragments/merch/**/merch-card/**
     target: /th_th/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-za:
-    <<: *def
+    exclude: *ref_0
     include:
       - /za/creativecloud/**
       - /za/products/**
@@ -1043,16 +1244,21 @@ indices:
       - /za/confirmation/**
       - /za/devnet/**
       - /za/diversity/**
+      - /za/privacy/**
+      - /za/offer-terms/**
+      - /za/procurement/**
+      - /za/partners/**
+      - /za/pdf-page/**
+      - /za/offers/**
     target: /za/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-za:
-    <<: *merch-cards
     include:
       - /za/cc-shared/fragments/merch/**/merch-card/**
     target: /za/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-africa:
-    <<: *def
+    exclude: *ref_0
     include:
       - /africa/creativecloud/**
       - /africa/products/**
@@ -1067,16 +1273,21 @@ indices:
       - /africa/confirmation/**
       - /africa/devnet/**
       - /africa/diversity/**
+      - /africa/privacy/**
+      - /africa/offer-terms/**
+      - /africa/procurement/**
+      - /africa/partners/**
+      - /africa/pdf-page/**
+      - /africa/offers/**
     target: /africa/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-africa:
-    <<: *merch-cards
     include:
       - /africa/cc-shared/fragments/merch/**/merch-card/**
     target: /africa/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ar:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ar/creativecloud/**
       - /ar/products/**
@@ -1091,16 +1302,21 @@ indices:
       - /ar/confirmation/**
       - /ar/devnet/**
       - /ar/diversity/**
+      - /ar/privacy/**
+      - /ar/offer-terms/**
+      - /ar/procurement/**
+      - /ar/partners/**
+      - /ar/pdf-page/**
+      - /ar/offers/**
     target: /ar/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ar:
-    <<: *merch-cards
     include:
       - /ar/cc-shared/fragments/merch/**/merch-card/**
     target: /ar/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-co:
-    <<: *def
+    exclude: *ref_0
     include:
       - /co/creativecloud/**
       - /co/products/**
@@ -1115,16 +1331,21 @@ indices:
       - /co/confirmation/**
       - /co/devnet/**
       - /co/diversity/**
+      - /co/privacy/**
+      - /co/offer-terms/**
+      - /co/procurement/**
+      - /co/partners/**
+      - /co/pdf-page/**
+      - /co/offers/**
     target: /co/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-co:
-    <<: *merch-cards
     include:
       - /co/cc-shared/fragments/merch/**/merch-card/**
     target: /co/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-cr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /cr/creativecloud/**
       - /cr/products/**
@@ -1139,16 +1360,21 @@ indices:
       - /cr/confirmation/**
       - /cr/devnet/**
       - /cr/diversity/**
+      - /cr/privacy/**
+      - /cr/offer-terms/**
+      - /cr/procurement/**
+      - /cr/partners/**
+      - /cr/pdf-page/**
+      - /cr/offers/**
     target: /cr/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-cr:
-    <<: *merch-cards
     include:
       - /cr/cc-shared/fragments/merch/**/merch-card/**
     target: /cr/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ec:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ec/creativecloud/**
       - /ec/products/**
@@ -1163,16 +1389,21 @@ indices:
       - /ec/confirmation/**
       - /ec/devnet/**
       - /ec/diversity/**
+      - /ec/privacy/**
+      - /ec/offer-terms/**
+      - /ec/procurement/**
+      - /ec/partners/**
+      - /ec/pdf-page/**
+      - /ec/offers/**
     target: /ec/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ec:
-    <<: *merch-cards
     include:
       - /ec/cc-shared/fragments/merch/**/merch-card/**
     target: /ec/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-eg_ar:
-    <<: *def
+    exclude: *ref_0
     include:
       - /eg_ar/creativecloud/**
       - /eg_ar/products/**
@@ -1187,16 +1418,21 @@ indices:
       - /eg_ar/confirmation/**
       - /eg_ar/devnet/**
       - /eg_ar/diversity/**
+      - /eg_ar/privacy/**
+      - /eg_ar/offer-terms/**
+      - /eg_ar/procurement/**
+      - /eg_ar/partners/**
+      - /eg_ar/pdf-page/**
+      - /eg_ar/offers/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-eg_ar:
-    <<: *merch-cards
     include:
       - /eg_ar/cc-shared/fragments/merch/**/merch-card/**
     target: /eg_ar/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-eg_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /eg_en/creativecloud/**
       - /eg_en/products/**
@@ -1211,16 +1447,21 @@ indices:
       - /eg_en/confirmation/**
       - /eg_en/devnet/**
       - /eg_en/diversity/**
+      - /eg_en/privacy/**
+      - /eg_en/offer-terms/**
+      - /eg_en/procurement/**
+      - /eg_en/partners/**
+      - /eg_en/pdf-page/**
+      - /eg_en/offers/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-eg_en:
-    <<: *merch-cards
     include:
       - /eg_en/cc-shared/fragments/merch/**/merch-card/**
     target: /eg_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-gr_el:
-    <<: *def
+    exclude: *ref_0
     include:
       - /gr_el/creativecloud/**
       - /gr_el/products/**
@@ -1235,16 +1476,21 @@ indices:
       - /gr_el/confirmation/**
       - /gr_el/devnet/**
       - /gr_el/diversity/**
+      - /gr_el/privacy/**
+      - /gr_el/offer-terms/**
+      - /gr_el/procurement/**
+      - /gr_el/partners/**
+      - /gr_el/pdf-page/**
+      - /gr_el/offers/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-gr_el:
-    <<: *merch-cards
     include:
       - /gr_el/cc-shared/fragments/merch/**/merch-card/**
     target: /gr_el/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-gt:
-    <<: *def
+    exclude: *ref_0
     include:
       - /gt/creativecloud/**
       - /gt/products/**
@@ -1259,16 +1505,21 @@ indices:
       - /gt/confirmation/**
       - /gt/devnet/**
       - /gt/diversity/**
+      - /gt/privacy/**
+      - /gt/offer-terms/**
+      - /gt/procurement/**
+      - /gt/partners/**
+      - /gt/pdf-page/**
+      - /gt/offers/**
     target: /gt/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-gt:
-    <<: *merch-cards
     include:
       - /gt/cc-shared/fragments/merch/**/merch-card/**
     target: /gt/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-id_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /id_en/creativecloud/**
       - /id_en/products/**
@@ -1283,16 +1534,21 @@ indices:
       - /id_en/confirmation/**
       - /id_en/devnet/**
       - /id_en/diversity/**
+      - /id_en/privacy/**
+      - /id_en/offer-terms/**
+      - /id_en/procurement/**
+      - /id_en/partners/**
+      - /id_en/pdf-page/**
+      - /id_en/offers/**
     target: /id_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-id_en:
-    <<: *merch-cards
     include:
       - /id_en/cc-shared/fragments/merch/**/merch-card/**
     target: /id_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-id_id:
-    <<: *def
+    exclude: *ref_0
     include:
       - /id_id/creativecloud/**
       - /id_id/products/**
@@ -1307,16 +1563,21 @@ indices:
       - /id_id/confirmation/**
       - /id_id/devnet/**
       - /id_id/diversity/**
+      - /id_id/privacy/**
+      - /id_id/offer-terms/**
+      - /id_id/procurement/**
+      - /id_id/partners/**
+      - /id_id/pdf-page/**
+      - /id_id/offers/**
     target: /id_id/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-id_id:
-    <<: *merch-cards
     include:
       - /id_id/cc-shared/fragments/merch/**/merch-card/**
     target: /id_id/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-in_hi:
-    <<: *def
+    exclude: *ref_0
     include:
       - /in_hi/creativecloud/**
       - /in_hi/products/**
@@ -1331,16 +1592,21 @@ indices:
       - /in_hi/confirmation/**
       - /in_hi/devnet/**
       - /in_hi/diversity/**
+      - /in_hi/privacy/**
+      - /in_hi/offer-terms/**
+      - /in_hi/procurement/**
+      - /in_hi/partners/**
+      - /in_hi/pdf-page/**
+      - /in_hi/offers/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-in_hi:
-    <<: *merch-cards
     include:
       - /in_hi/cc-shared/fragments/merch/**/merch-card/**
     target: /in_hi/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-kw_ar:
-    <<: *def
+    exclude: *ref_0
     include:
       - /kw_ar/creativecloud/**
       - /kw_ar/products/**
@@ -1355,16 +1621,21 @@ indices:
       - /kw_ar/confirmation/**
       - /kw_ar/devnet/**
       - /kw_ar/diversity/**
+      - /kw_ar/privacy/**
+      - /kw_ar/offer-terms/**
+      - /kw_ar/procurement/**
+      - /kw_ar/partners/**
+      - /kw_ar/pdf-page/**
+      - /kw_ar/offers/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-kw_ar:
-    <<: *merch-cards
     include:
       - /kw_ar/cc-shared/fragments/merch/**/merch-card/**
     target: /kw_ar/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-kw_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /kw_en/creativecloud/**
       - /kw_en/products/**
@@ -1379,16 +1650,21 @@ indices:
       - /kw_en/confirmation/**
       - /kw_en/devnet/**
       - /kw_en/diversity/**
+      - /kw_ar/privacy/**
+      - /kw_ar/offer-terms/**
+      - /kw_ar/procurement/**
+      - /kw_ar/partners/**
+      - /kw_ar/pdf-page/**
+      - /kw_ar/offers/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-kw_en:
-    <<: *merch-cards
     include:
       - /kw_en/cc-shared/fragments/merch/**/merch-card/**
     target: /kw_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-my_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /my_en/creativecloud/**
       - /my_en/products/**
@@ -1403,16 +1679,21 @@ indices:
       - /my_en/confirmation/**
       - /my_en/devnet/**
       - /my_en/diversity/**
+      - /my_en/privacy/**
+      - /my_en/offer-terms/**
+      - /my_en/procurement/**
+      - /my_en/partners/**
+      - /my_en/pdf-page/**
+      - /my_en/offers/**
     target: /my_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-my_en:
-    <<: *merch-cards
     include:
       - /my_en/cc-shared/fragments/merch/**/merch-card/**
     target: /my_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-my_ms:
-    <<: *def
+    exclude: *ref_0
     include:
       - /my_ms/creativecloud/**
       - /my_ms/products/**
@@ -1427,16 +1708,21 @@ indices:
       - /my_ms/confirmation/**
       - /my_ms/devnet/**
       - /my_ms/diversity/**
+      - /my_ms/privacy/**
+      - /my_ms/offer-terms/**
+      - /my_ms/procurement/**
+      - /my_ms/partners/**
+      - /my_ms/pdf-page/**
+      - /my_ms/offers/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-my_ms:
-    <<: *merch-cards
     include:
       - /my_ms/cc-shared/fragments/merch/**/merch-card/**
     target: /my_ms/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ng:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ng/creativecloud/**
       - /ng/products/**
@@ -1451,16 +1737,21 @@ indices:
       - /ng/confirmation/**
       - /ng/devnet/**
       - /ng/diversity/**
-    target: /ng/cc-shared/assets/query-index.xlsx  
-
+      - /ng/privacy/**
+      - /ng/offer-terms/**
+      - /ng/procurement/**
+      - /ng/partners/**
+      - /ng/pdf-page/**
+      - /ng/offers/**
+    target: /ng/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-ng:
-    <<: *merch-cards
     include:
       - /ng/cc-shared/fragments/merch/**/merch-card/**
     target: /ng/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-pe:
-    <<: *def
+    exclude: *ref_0
     include:
       - /pe/creativecloud/**
       - /pe/products/**
@@ -1475,16 +1766,21 @@ indices:
       - /pe/confirmation/**
       - /pe/devnet/**
       - /pe/diversity/**
-    target: /pe/cc-shared/assets/query-index.xlsx  
-
+      - /pe/privacy/**
+      - /pe/offer-terms/**
+      - /pe/procurement/**
+      - /pe/partners/**
+      - /pe/pdf-page/**
+      - /pe/offers/**
+    target: /pe/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-pe:
-    <<: *merch-cards
     include:
       - /pe/cc-shared/fragments/merch/**/merch-card/**
     target: /pe/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ph_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ph_en/creativecloud/**
       - /ph_en/products/**
@@ -1499,16 +1795,21 @@ indices:
       - /ph_en/confirmation/**
       - /ph_en/devnet/**
       - /ph_en/diversity/**
+      - /ph_en/privacy/**
+      - /ph_en/offer-terms/**
+      - /ph_en/procurement/**
+      - /ph_en/partners/**
+      - /ph_en/pdf-page/**
+      - /ph_en/offers/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ph_en:
-    <<: *merch-cards
     include:
       - /ph_en/cc-shared/fragments/merch/**/merch-card/**
     target: /ph_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ph_fil:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ph_fil/creativecloud/**
       - /ph_fil/products/**
@@ -1523,16 +1824,21 @@ indices:
       - /ph_fil/confirmation/**
       - /ph_fil/devnet/**
       - /ph_fil/diversity/**
+      - /ph_fil/privacy/**
+      - /ph_fil/offer-terms/**
+      - /ph_fil/procurement/**
+      - /ph_fil/partners/**
+      - /ph_fil/pdf-page/**
+      - /ph_fil/offers/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ph_fil:
-    <<: *merch-cards
     include:
       - /ph_fil/cc-shared/fragments/merch/**/merch-card/**
     target: /ph_fil/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-pr:
-    <<: *def
+    exclude: *ref_0
     include:
       - /pr/creativecloud/**
       - /pr/products/**
@@ -1547,16 +1853,21 @@ indices:
       - /pr/confirmation/**
       - /pr/devnet/**
       - /pr/diversity/**
-    target: /pr/cc-shared/assets/query-index.xlsx  
-
+      - /pr/privacy/**
+      - /pr/offer-terms/**
+      - /pr/procurement/**
+      - /pr/partners/**
+      - /pr/pdf-page/**
+      - /pr/offers/**
+    target: /pr/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-pr:
-    <<: *merch-cards
     include:
       - /pr/cc-shared/fragments/merch/**/merch-card/**
     target: /pr/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-qa_ar:
-    <<: *def
+    exclude: *ref_0
     include:
       - /qa_ar/creativecloud/**
       - /qa_ar/products/**
@@ -1571,16 +1882,21 @@ indices:
       - /qa_ar/confirmation/**
       - /qa_ar/devnet/**
       - /qa_ar/diversity/**
+      - /qa_ar/privacy/**
+      - /qa_ar/offer-terms/**
+      - /qa_ar/procurement/**
+      - /qa_ar/partners/**
+      - /qa_ar/pdf-page/**
+      - /qa_ar/offers/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-qa_ar:
-    <<: *merch-cards
     include:
       - /qa_ar/cc-shared/fragments/merch/**/merch-card/**
     target: /qa_ar/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-qa_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /qa_en/creativecloud/**
       - /qa_en/products/**
@@ -1595,16 +1911,21 @@ indices:
       - /qa_en/confirmation/**
       - /qa_en/devnet/**
       - /qa_en/diversity/**
+      - /qa_en/privacy/**
+      - /qa_en/offer-terms/**
+      - /qa_en/procurement/**
+      - /qa_en/partners/**
+      - /qa_en/pdf-page/**
+      - /qa_en/offers/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-qa_en:
-    <<: *merch-cards
     include:
       - /qa_en/cc-shared/fragments/merch/**/merch-card/**
     target: /qa_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-vn_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /vn_en/creativecloud/**
       - /vn_en/products/**
@@ -1619,16 +1940,21 @@ indices:
       - /vn_en/confirmation/**
       - /vn_en/devnet/**
       - /vn_en/diversity/**
+      - /vn_en/privacy/**
+      - /vn_en/offer-terms/**
+      - /vn_en/procurement/**
+      - /vn_en/partners/**
+      - /vn_en/pdf-page/**
+      - /vn_en/offers/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-vn_en:
-    <<: *merch-cards
     include:
       - /vn_en/cc-shared/fragments/merch/**/merch-card/**
     target: /vn_en/cc-shared/assets/query-index-cards.xslx
-    
+    properties: *ref_2
   creativecloud-vn_vi:
-    <<: *def
+    exclude: *ref_0
     include:
       - /vn_vi/creativecloud/**
       - /vn_vi/products/**
@@ -1643,16 +1969,21 @@ indices:
       - /vn_vi/confirmation/**
       - /vn_vi/devnet/**
       - /vn_vi/diversity/**
-    target: /vn_vi/cc-shared/assets/query-index.xlsx 
-
+      - /vn_vi/privacy/**
+      - /vn_vi/offer-terms/**
+      - /vn_vi/procurement/**
+      - /vn_vi/partners/**
+      - /vn_vi/pdf-page/**
+      - /vn_vi/offers/**
+    target: /vn_vi/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-vn_vi:
-    <<: *merch-cards
     include:
       - /vn_vi/cc-shared/fragments/merch/**/merch-card/**
     target: /vn_vi/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-dk:
-    <<: *def
+    exclude: *ref_0
     include:
       - /dk/creativecloud/**
       - /dk/products/**
@@ -1667,16 +1998,21 @@ indices:
       - /dk/confirmation/**
       - /dk/devnet/**
       - /dk/diversity/**
+      - /dk/privacy/**
+      - /dk/offer-terms/**
+      - /dk/procurement/**
+      - /dk/partners/**
+      - /dk/pdf-page/**
+      - /dk/offers/**
     target: /dk/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-dk:
-    <<: *merch-cards
     include:
       - /dk/cc-shared/fragments/merch/**/merch-card/**
     target: /dk/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-fi:
-    <<: *def
+    exclude: *ref_0
     include:
       - /fi/creativecloud/**
       - /fi/products/**
@@ -1691,16 +2027,21 @@ indices:
       - /fi/confirmation/**
       - /fi/devnet/**
       - /fi/diversity/**
+      - /fi/privacy/**
+      - /fi/offer-terms/**
+      - /fi/procurement/**
+      - /fi/partners/**
+      - /fi/pdf-page/**
+      - /fi/offers/**
     target: /fi/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-fi:
-    <<: *merch-cards
     include:
       - /fi/cc-shared/fragments/merch/**/merch-card/**
     target: /fi/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-no:
-    <<: *def
+    exclude: *ref_0
     include:
       - /no/creativecloud/**
       - /no/products/**
@@ -1715,16 +2056,21 @@ indices:
       - /no/confirmation/**
       - /no/devnet/**
       - /no/diversity/**
+      - /no/privacy/**
+      - /no/offer-terms/**
+      - /no/procurement/**
+      - /no/partners/**
+      - /no/pdf-page/**
+      - /no/offers/**
     target: /no/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-no:
-    <<: *merch-cards
     include:
       - /no/cc-shared/fragments/merch/**/merch-card/**
     target: /no/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-se:
-    <<: *def
+    exclude: *ref_0
     include:
       - /se/creativecloud/**
       - /se/products/**
@@ -1739,16 +2085,21 @@ indices:
       - /se/confirmation/**
       - /se/devnet/**
       - /se/diversity/**
+      - /se/privacy/**
+      - /se/offer-terms/**
+      - /se/procurement/**
+      - /se/partners/**
+      - /se/pdf-page/**
+      - /se/offers/**
     target: /se/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-se:
-    <<: *merch-cards
     include:
       - /se/cc-shared/fragments/merch/**/merch-card/**
     target: /se/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-la:
-    <<: *def
+    exclude: *ref_0
     include:
       - /la/creativecloud/**
       - /la/products/**
@@ -1763,16 +2114,21 @@ indices:
       - /la/confirmation/**
       - /la/devnet/**
       - /la/diversity/**
+      - /la/privacy/**
+      - /la/offer-terms/**
+      - /la/procurement/**
+      - /la/partners/**
+      - /la/pdf-page/**
+      - /la/offers/**
     target: /la/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-la:
-    <<: *merch-cards
     include:
       - /la/cc-shared/fragments/merch/**/merch-card/**
     target: /la/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-mx:
-    <<: *def
+    exclude: *ref_0
     include:
       - /mx/creativecloud/**
       - /mx/products/**
@@ -1787,16 +2143,21 @@ indices:
       - /mx/confirmation/**
       - /mx/devnet/**
       - /mx/diversity/**
+      - /mx/privacy/**
+      - /mx/offer-terms/**
+      - /mx/procurement/**
+      - /mx/partners/**
+      - /mx/pdf-page/**
+      - /mx/offers/**
     target: /mx/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-mx:
-    <<: *merch-cards
     include:
       - /mx/cc-shared/fragments/merch/**/merch-card/**
     target: /mx/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-be_nl:
-    <<: *def
+    exclude: *ref_0
     include:
       - /be_nl/creativecloud/**
       - /be_nl/products/**
@@ -1811,16 +2172,21 @@ indices:
       - /be_nl/confirmation/**
       - /be_nl/devnet/**
       - /be_nl/diversity/**
+      - /be_nl/privacy/**
+      - /be_nl/offer-terms/**
+      - /be_nl/procurement/**
+      - /be_nl/partners/**
+      - /be_nl/pdf-page/**
+      - /be_nl/offers/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-be_nl:
-    <<: *merch-cards
     include:
       - /be_nl/cc-shared/fragments/merch/**/merch-card/**
     target: /be_nl/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-bg:
-    <<: *def
+    exclude: *ref_0
     include:
       - /bg/creativecloud/**
       - /bg/products/**
@@ -1835,16 +2201,21 @@ indices:
       - /bg/confirmation/**
       - /bg/devnet/**
       - /bg/diversity/**
+      - /bg/privacy/**
+      - /bg/offer-terms/**
+      - /bg/procurement/**
+      - /bg/partners/**
+      - /bg/pdf-page/**
+      - /bg/offers/**
     target: /bg/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-bg:
-    <<: *merch-cards
     include:
       - /bg/cc-shared/fragments/merch/**/merch-card/**
     target: /bg/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ch_it:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ch_it/creativecloud/**
       - /ch_it/products/**
@@ -1859,16 +2230,21 @@ indices:
       - /ch_it/confirmation/**
       - /ch_it/devnet/**
       - /ch_it/diversity/**
+      - /ch_it/privacy/**
+      - /ch_it/offer-terms/**
+      - /ch_it/procurement/**
+      - /ch_it/partners/**
+      - /ch_it/pdf-page/**
+      - /ch_it/offers/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ch_it:
-    <<: *merch-cards
     include:
       - /ch_it/cc-shared/fragments/merch/**/merch-card/**
     target: /ch_it/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-cz:
-    <<: *def
+    exclude: *ref_0
     include:
       - /cz/creativecloud/**
       - /cz/products/**
@@ -1883,16 +2259,21 @@ indices:
       - /cz/confirmation/**
       - /cz/devnet/**
       - /cz/diversity/**
+      - /cz/privacy/**
+      - /cz/offer-terms/**
+      - /cz/procurement/**
+      - /cz/partners/**
+      - /cz/pdf-page/**
+      - /cz/offers/**
     target: /cz/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-cz:
-    <<: *merch-cards
     include:
       - /cz/cc-shared/fragments/merch/**/merch-card/**
     target: /cz/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ee:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ee/creativecloud/**
       - /ee/products/**
@@ -1907,16 +2288,21 @@ indices:
       - /ee/confirmation/**
       - /ee/devnet/**
       - /ee/diversity/**
+      - /ee/privacy/**
+      - /ee/offer-terms/**
+      - /ee/procurement/**
+      - /ee/partners/**
+      - /ee/pdf-page/**
+      - /ee/offers/**
     target: /ee/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ee:
-    <<: *merch-cards
     include:
       - /ee/cc-shared/fragments/merch/**/merch-card/**
     target: /ee/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-hu:
-    <<: *def
+    exclude: *ref_0
     include:
       - /hu/creativecloud/**
       - /hu/products/**
@@ -1931,16 +2317,21 @@ indices:
       - /hu/confirmation/**
       - /hu/devnet/**
       - /hu/diversity/**
+      - /hu/privacy/**
+      - /hu/offer-terms/**
+      - /hu/procurement/**
+      - /hu/partners/**
+      - /hu/pdf-page/**
+      - /hu/offers/**
     target: /hu/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-hu:
-    <<: *merch-cards
     include:
       - /hu/cc-shared/fragments/merch/**/merch-card/**
     target: /hu/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-il_he:
-    <<: *def
+    exclude: *ref_0
     include:
       - /il_he/creativecloud/**
       - /il_he/products/**
@@ -1955,16 +2346,21 @@ indices:
       - /il_he/confirmation/**
       - /il_he/devnet/**
       - /il_he/diversity/**
+      - /il_he/privacy/**
+      - /il_he/offer-terms/**
+      - /il_he/procurement/**
+      - /il_he/partners/**
+      - /il_he/pdf-page/**
+      - /il_he/offers/**
     target: /il_he/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-il_he:
-    <<: *merch-cards
     include:
       - /il_he/cc-shared/fragments/merch/**/merch-card/**
     target: /il_he/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-lv:
-    <<: *def
+    exclude: *ref_0
     include:
       - /lv/creativecloud/**
       - /lv/products/**
@@ -1979,16 +2375,21 @@ indices:
       - /lv/confirmation/**
       - /lv/devnet/**
       - /lv/diversity/**
+      - /lv/privacy/**
+      - /lv/offer-terms/**
+      - /lv/procurement/**
+      - /lv/partners/**
+      - /lv/pdf-page/**
+      - /lv/offers/**
     target: /lv/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-lv:
-    <<: *merch-cards
     include:
       - /lv/cc-shared/fragments/merch/**/merch-card/**
     target: /lv/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-mena_ar:
-    <<: *def
+    exclude: *ref_0
     include:
       - /mena_ar/creativecloud/**
       - /mena_ar/products/**
@@ -2003,16 +2404,21 @@ indices:
       - /mena_ar/confirmation/**
       - /mena_ar/devnet/**
       - /mena_ar/diversity/**
+      - /mena_ar/privacy/**
+      - /mena_ar/offer-terms/**
+      - /mena_ar/procurement/**
+      - /mena_ar/partners/**
+      - /mena_ar/pdf-page/**
+      - /mena_ar/offers/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-mena_ar:
-    <<: *merch-cards
     include:
       - /mena_ar/cc-shared/fragments/merch/**/merch-card/**
     target: /mena_ar/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-pt:
-    <<: *def
+    exclude: *ref_0
     include:
       - /pt/creativecloud/**
       - /pt/products/**
@@ -2027,16 +2433,21 @@ indices:
       - /pt/confirmation/**
       - /pt/devnet/**
       - /pt/diversity/**
+      - /pt/privacy/**
+      - /pt/offer-terms/**
+      - /pt/procurement/**
+      - /pt/partners/**
+      - /pt/pdf-page/**
+      - /pt/offers/**
     target: /pt/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-pt:
-    <<: *merch-cards
     include:
       - /pt/cc-shared/fragments/merch/**/merch-card/**
     target: /pt/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-ro:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ro/creativecloud/**
       - /ro/products/**
@@ -2051,16 +2462,21 @@ indices:
       - /ro/confirmation/**
       - /ro/devnet/**
       - /ro/diversity/**
+      - /ro/privacy/**
+      - /ro/offer-terms/**
+      - /ro/procurement/**
+      - /ro/partners/**
+      - /ro/pdf-page/**
+      - /ro/offers/**
     target: /ro/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ro:
-    <<: *merch-cards
     include:
       - /ro/cc-shared/fragments/merch/**/merch-card/**
     target: /ro/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-si:
-    <<: *def
+    exclude: *ref_0
     include:
       - /si/creativecloud/**
       - /si/products/**
@@ -2075,16 +2491,21 @@ indices:
       - /si/confirmation/**
       - /si/devnet/**
       - /si/diversity/**
+      - /si/privacy/**
+      - /si/offer-terms/**
+      - /si/procurement/**
+      - /si/partners/**
+      - /si/pdf-page/**
+      - /si/offers/**
     target: /si/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-si:
-    <<: *merch-cards
     include:
       - /si/cc-shared/fragments/merch/**/merch-card/**
     target: /si/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-sk:
-    <<: *def
+    exclude: *ref_0
     include:
       - /sk/creativecloud/**
       - /sk/products/**
@@ -2099,16 +2520,21 @@ indices:
       - /sk/confirmation/**
       - /sk/devnet/**
       - /sk/diversity/**
+      - /sk/privacy/**
+      - /sk/offer-terms/**
+      - /sk/procurement/**
+      - /sk/partners/**
+      - /sk/pdf-page/**
+      - /sk/offers/**
     target: /sk/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-sk:
-    <<: *merch-cards
     include:
       - /sk/cc-shared/fragments/merch/**/merch-card/**
     target: /sk/cc-shared/assets/query-index-cards.xslx
-    
+    properties: *ref_2
   creativecloud-ua:
-    <<: *def
+    exclude: *ref_0
     include:
       - /ua/creativecloud/**
       - /ua/products/**
@@ -2123,16 +2549,21 @@ indices:
       - /ua/confirmation/**
       - /ua/devnet/**
       - /ua/diversity/**
+      - /ua/privacy/**
+      - /ua/offer-terms/**
+      - /ua/procurement/**
+      - /ua/partners/**
+      - /ua/pdf-page/**
+      - /ua/offers/**
     target: /ua/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-ua:
-    <<: *merch-cards
     include:
       - /ua/cc-shared/fragments/merch/**/merch-card/**
     target: /ua/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-sg:
-    <<: *def
+    exclude: *ref_0
     include:
       - /sg/creativecloud/**
       - /sg/products/**
@@ -2147,16 +2578,21 @@ indices:
       - /sg/confirmation/**
       - /sg/devnet/**
       - /sg/diversity/**
+      - /sg/privacy/**
+      - /sg/offer-terms/**
+      - /sg/procurement/**
+      - /sg/partners/**
+      - /sg/pdf-page/**
+      - /sg/offers/**
     target: /sg/cc-shared/assets/query-index.xlsx
-
+    properties: *ref_1
   cards-sg:
-    <<: *merch-cards
     include:
       - /sg/cc-shared/fragments/merch/**/merch-card/**
     target: /sg/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-br:
-    <<: *def
+    exclude: *ref_0
     include:
       - /br/creativecloud/**
       - /br/products/**
@@ -2171,16 +2607,21 @@ indices:
       - /br/confirmation/**
       - /br/devnet/**
       - /br/diversity/**
-    target: /br/cc-shared/assets/query-index.xlsx    
-
+      - /br/privacy/**
+      - /br/offer-terms/**
+      - /br/procurement/**
+      - /br/partners/**
+      - /br/pdf-page/**
+      - /br/offers/**
+    target: /br/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-br:
-    <<: *merch-cards
     include:
       - /br/cc-shared/fragments/merch/**/merch-card/**
     target: /br/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-cis_en:
-    <<: *def
+    exclude: *ref_0
     include:
       - /cis_en/creativecloud/**
       - /cis_en/products/**
@@ -2195,16 +2636,21 @@ indices:
       - /cis_en/confirmation/**
       - /cis_en/devnet/**
       - /cis_en/diversity/**
-    target: /cis_en/cc-shared/assets/query-index.xlsx    
-
+      - /cis_en/privacy/**
+      - /cis_en/offer-terms/**
+      - /cis_en/procurement/**
+      - /cis_en/partners/**
+      - /cis_en/pdf-page/**
+      - /cis_en/offers/**
+    target: /cis_en/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-cis_en:
-    <<: *merch-cards
     include:
       - /cis_en/cc-shared/fragments/merch/**/merch-card/**
     target: /cis_en/cc-shared/assets/query-index-cards.xslx
-
+    properties: *ref_2
   creativecloud-cis_ru:
-    <<: *def
+    exclude: *ref_0
     include:
       - /cis_ru/creativecloud/**
       - /cis_ru/products/**
@@ -2219,10 +2665,16 @@ indices:
       - /cis_ru/confirmation/**
       - /cis_ru/devnet/**
       - /cis_ru/diversity/**
-    target: /cis_ru/cc-shared/assets/query-index.xlsx    
-
+      - /cis_ru/privacy/**
+      - /cis_ru/offer-terms/**
+      - /cis_ru/procurement/**
+      - /cis_ru/partners/**
+      - /cis_ru/pdf-page/**
+      - /cis_ru/offers/**
+    target: /cis_ru/cc-shared/assets/query-index.xlsx
+    properties: *ref_1
   cards-cis_ru:
-    <<: *merch-cards
     include:
       - /cis_ru/cc-shared/fragments/merch/**/merch-card/**
     target: /cis_ru/cc-shared/assets/query-index-cards.xslx
+    properties: *ref_2
