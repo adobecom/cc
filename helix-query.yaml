@@ -22,6 +22,12 @@ indices:
       - /confirmation/**
       - /devnet/**
       - /diversity/**
+      - /privacy/**
+      - /offer-terms/**
+      - /procurement/**
+      - /partners/**
+      - /pdf-page/**
+      - /offers/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -83,6 +89,12 @@ indices:
       - /au/confirmation/**
       - /au/devnet/**
       - /au/diversity/**
+      - /au/privacy/**
+      - /au/offer-terms/**
+      - /au/procurement/**
+      - /au/partners/**
+      - /au/pdf-page/**
+      - /au/offers/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -107,6 +119,12 @@ indices:
       - /de/confirmation/**
       - /de/devnet/**
       - /de/diversity/**
+      - /de/privacy/**
+      - /de/offer-terms/**
+      - /de/procurement/**
+      - /de/partners/**
+      - /de/pdf-page/**
+      - /de/offers/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -131,6 +149,12 @@ indices:
       - /es/confirmation/**
       - /es/devnet/**
       - /es/diversity/**
+      - /es/privacy/**
+      - /es/offer-terms/**
+      - /es/procurement/**
+      - /es/partners/**
+      - /es/pdf-page/**
+      - /es/offers/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -155,6 +179,12 @@ indices:
       - /fr/confirmation/**
       - /fr/devnet/**
       - /fr/diversity/**
+      - /fr/privacy/**
+      - /fr/offer-terms/**
+      - /fr/procurement/**
+      - /fr/partners/**
+      - /fr/pdf-page/**
+      - /fr/offers/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -179,6 +209,12 @@ indices:
       - /it/confirmation/**
       - /it/devnet/**
       - /it/diversity/**
+      - /it/privacy/**
+      - /it/offer-terms/**
+      - /it/procurement/**
+      - /it/partners/**
+      - /it/pdf-page/**
+      - /it/offers/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -203,6 +239,12 @@ indices:
       - /jp/confirmation/**
       - /jp/devnet/**
       - /jp/diversity/**
+      - /jp/privacy/**
+      - /jp/offer-terms/**
+      - /jp/procurement/**
+      - /jp/partners/**
+      - /jp/pdf-page/**
+      - /jp/offers/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -227,6 +269,12 @@ indices:
       - /kr/confirmation/**
       - /kr/devnet/**
       - /kr/diversity/**
+      - /kr/privacy/**
+      - /kr/offer-terms/**
+      - /kr/procurement/**
+      - /kr/partners/**
+      - /kr/pdf-page/**
+      - /kr/offers/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -251,6 +299,12 @@ indices:
       - /ru/confirmation/**
       - /ru/devnet/**
       - /ru/diversity/**
+      - /ru/privacy/**
+      - /ru/offer-terms/**
+      - /ru/procurement/**
+      - /ru/partners/**
+      - /ru/pdf-page/**
+      - /ru/offers/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -275,6 +329,12 @@ indices:
       - /hk_zh/confirmation/**
       - /hk_zh/devnet/**
       - /hk_zh/diversity/**
+      - /hk_zh/privacy/**
+      - /hk_zh/offer-terms/**
+      - /hk_zh/procurement/**
+      - /hk_zh/partners/**
+      - /hk_zh/pdf-page/**
+      - /hk_zh/offers/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -299,6 +359,12 @@ indices:
       - /tw/confirmation/**
       - /tw/devnet/**
       - /tw/diversity/**
+      - /tw/privacy/**
+      - /tw/offer-terms/**
+      - /tw/procurement/**
+      - /tw/partners/**
+      - /tw/pdf-page/**
+      - /tw/offers/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -323,6 +389,12 @@ indices:
       - /nl/confirmation/**
       - /nl/devnet/**
       - /nl/diversity/**
+      - /nl/privacy/**
+      - /nl/offer-terms/**
+      - /nl/procurement/**
+      - /nl/partners/**
+      - /nl/pdf-page/**
+      - /nl/offers/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -347,6 +419,12 @@ indices:
       - /pl/confirmation/**
       - /pl/devnet/**
       - /pl/diversity/**
+      - /pl/privacy/**
+      - /pl/offer-terms/**
+      - /pl/procurement/**
+      - /pl/partners/**
+      - /pl/pdf-page/**
+      - /pl/offers/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -371,6 +449,12 @@ indices:
       - /tr/confirmation/**
       - /tr/devnet/**
       - /tr/diversity/**
+      - /tr/privacy/**
+      - /tr/offer-terms/**
+      - /tr/procurement/**
+      - /tr/partners/**
+      - /tr/pdf-page/**
+      - /tr/offers/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -395,6 +479,12 @@ indices:
       - /uk/confirmation/**
       - /uk/devnet/**
       - /uk/diversity/**
+      - /uk/privacy/**
+      - /uk/offer-terms/**
+      - /uk/procurement/**
+      - /uk/partners/**
+      - /uk/pdf-page/**
+      - /uk/offers/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -419,6 +509,12 @@ indices:
       - /ca/confirmation/**
       - /ca/devnet/**
       - /ca/diversity/**
+      - /ca/privacy/**
+      - /ca/offer-terms/**
+      - /ca/procurement/**
+      - /ca/partners/**
+      - /ca/pdf-page/**
+      - /ca/offers/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -443,6 +539,12 @@ indices:
       - /cn/confirmation/**
       - /cn/devnet/**
       - /cn/diversity/**
+      - /cn/privacy/**
+      - /cn/offer-terms/**
+      - /cn/procurement/**
+      - /cn/partners/**
+      - /cn/pdf-page/**
+      - /cn/offers/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -467,6 +569,12 @@ indices:
       - /ae_ar/confirmation/**
       - /ae_ar/devnet/**
       - /ae_ar/diversity/**
+      - /ae_ar/privacy/**
+      - /ae_ar/offer-terms/**
+      - /ae_ar/procurement/**
+      - /ae_ar/partners/**
+      - /ae_ar/pdf-page/**
+      - /ae_ar/offers/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -491,6 +599,12 @@ indices:
       - /ae_en/confirmation/**
       - /ae_en/devnet/**
       - /ae_en/diversity/**
+      - /ae_en/privacy/**
+      - /ae_en/offer-terms/**
+      - /ae_en/procurement/**
+      - /ae_en/partners/**
+      - /ae_en/pdf-page/**
+      - /ae_en/offers/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -515,6 +629,12 @@ indices:
       - /at/confirmation/**
       - /at/devnet/**
       - /at/diversity/**
+      - /at/privacy/**
+      - /at/offer-terms/**
+      - /at/procurement/**
+      - /at/partners/**
+      - /at/pdf-page/**
+      - /at/offers/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -539,6 +659,12 @@ indices:
       - /be_en/confirmation/**
       - /be_en/devnet/**
       - /be_en/diversity/**
+      - /be_en/privacy/**
+      - /be_en/offer-terms/**
+      - /be_en/procurement/**
+      - /be_en/partners/**
+      - /be_en/pdf-page/**
+      - /be_en/offers/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -563,6 +689,12 @@ indices:
       - /be_fr/confirmation/**
       - /be_fr/devnet/**
       - /be_fr/diversity/**
+      - /be_fr/privacy/**
+      - /be_fr/offer-terms/**
+      - /be_fr/procurement/**
+      - /be_fr/partners/**
+      - /be_fr/pdf-page/**
+      - /be_fr/offers/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -587,6 +719,12 @@ indices:
       - /ca_fr/confirmation/**
       - /ca_fr/devnet/**
       - /ca_fr/diversity/**
+      - /ca_fr/privacy/**
+      - /ca_fr/offer-terms/**
+      - /ca_fr/procurement/**
+      - /ca_fr/partners/**
+      - /ca_fr/pdf-page/**
+      - /ca_fr/offers/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -611,6 +749,12 @@ indices:
       - /ch_de/confirmation/**
       - /ch_de/devnet/**
       - /ch_de/diversity/**
+      - /ch_de/privacy/**
+      - /ch_de/offer-terms/**
+      - /ch_de/procurement/**
+      - /ch_de/partners/**
+      - /ch_de/pdf-page/**
+      - /ch_de/offers/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -635,6 +779,12 @@ indices:
       - /ch_fr/confirmation/**
       - /ch_fr/devnet/**
       - /ch_fr/diversity/**
+      - /ch_fr/privacy/**
+      - /ch_fr/offer-terms/**
+      - /ch_fr/procurement/**
+      - /ch_fr/partners/**
+      - /ch_fr/pdf-page/**
+      - /ch_fr/offers/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -659,6 +809,12 @@ indices:
       - /cl/confirmation/**
       - /cl/devnet/**
       - /cl/diversity/**
+      - /cl/privacy/**
+      - /cl/offer-terms/**
+      - /cl/procurement/**
+      - /cl/partners/**
+      - /cl/pdf-page/**
+      - /cl/offers/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -683,6 +839,12 @@ indices:
       - /gr_en/confirmation/**
       - /gr_en/devnet/**
       - /gr_en/diversity/**
+      - /gr_en/privacy/**
+      - /gr_en/offer-terms/**
+      - /gr_en/procurement/**
+      - /gr_en/partners/**
+      - /gr_en/pdf-page/**
+      - /gr_en/offers/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -707,6 +869,12 @@ indices:
       - /hk_en/confirmation/**
       - /hk_en/devnet/**
       - /hk_en/diversity/**
+      - /hk_en/privacy/**
+      - /hk_en/offer-terms/**
+      - /hk_en/procurement/**
+      - /hk_en/partners/**
+      - /hk_en/pdf-page/**
+      - /hk_en/offers/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -731,6 +899,12 @@ indices:
       - /ie/confirmation/**
       - /ie/devnet/**
       - /ie/diversity/**
+      - /ie/privacy/**
+      - /ie/offer-terms/**
+      - /ie/procurement/**
+      - /ie/partners/**
+      - /ie/pdf-page/**
+      - /ie/offers/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -755,6 +929,12 @@ indices:
       - /il_en/confirmation/**
       - /il_en/devnet/**
       - /il_en/diversity/**
+      - /il_en/privacy/**
+      - /il_en/offer-terms/**
+      - /il_en/procurement/**
+      - /il_en/partners/**
+      - /il_en/pdf-page/**
+      - /il_en/offers/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -779,6 +959,12 @@ indices:
       - /in/confirmation/**
       - /in/devnet/**
       - /in/diversity/**
+      - /in/privacy/**
+      - /in/offer-terms/**
+      - /in/procurement/**
+      - /in/partners/**
+      - /in/pdf-page/**
+      - /in/offers/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -803,6 +989,12 @@ indices:
       - /lt/confirmation/**
       - /lt/devnet/**
       - /lt/diversity/**
+      - /lt/privacy/**
+      - /lt/offer-terms/**
+      - /lt/procurement/**
+      - /lt/partners/**
+      - /lt/pdf-page/**
+      - /lt/offers/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -827,6 +1019,12 @@ indices:
       - /lu_de/confirmation/**
       - /lu_de/devnet/**
       - /lu_de/diversity/**
+      - /lu_de/privacy/**
+      - /lu_de/offer-terms/**
+      - /lu_de/procurement/**
+      - /lu_de/partners/**
+      - /lu_de/pdf-page/**
+      - /lu_de/offers/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -851,6 +1049,12 @@ indices:
       - /lu_en/confirmation/**
       - /lu_en/devnet/**
       - /lu_en/diversity/**
+      - /lu_en/privacy/**
+      - /lu_en/offer-terms/**
+      - /lu_en/procurement/**
+      - /lu_en/partners/**
+      - /lu_en/pdf-page/**
+      - /lu_en/offers/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -875,6 +1079,12 @@ indices:
       - /lu_fr/confirmation/**
       - /lu_fr/devnet/**
       - /lu_fr/diversity/**
+      - /lu_fr/privacy/**
+      - /lu_fr/offer-terms/**
+      - /lu_fr/procurement/**
+      - /lu_fr/partners/**
+      - /lu_fr/pdf-page/**
+      - /lu_fr/offers/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -899,6 +1109,12 @@ indices:
       - /mena_en/confirmation/**
       - /mena_en/devnet/**
       - /mena_en/diversity/**
+      - /mena_en/privacy/**
+      - /mena_en/offer-terms/**
+      - /mena_en/procurement/**
+      - /mena_en/partners/**
+      - /mena_en/pdf-page/**
+      - /mena_en/offers/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -923,6 +1139,12 @@ indices:
       - /nz/confirmation/**
       - /nz/devnet/**
       - /nz/diversity/**
+      - /nz/privacy/**
+      - /nz/offer-terms/**
+      - /nz/procurement/**
+      - /nz/partners/**
+      - /nz/pdf-page/**
+      - /nz/offers/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -947,6 +1169,12 @@ indices:
       - /sa_ar/confirmation/**
       - /sa_ar/devnet/**
       - /sa_ar/diversity/**
+      - /sa_ar/privacy/**
+      - /sa_ar/offer-terms/**
+      - /sa_ar/procurement/**
+      - /sa_ar/partners/**
+      - /sa_ar/pdf-page/**
+      - /sa_ar/offers/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -971,9 +1199,15 @@ indices:
       - /sa_en/confirmation/**
       - /sa_en/devnet/**
       - /sa_en/diversity/**
+      - /sa_en/privacy/**
+      - /sa_en/offer-terms/**
+      - /sa_en/procurement/**
+      - /sa_en/partners/**
+      - /sa_en/pdf-page/**
+      - /sa_en/offers/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
-   cards-sa_en:
+  cards-sa_en:
     <<: *merch-cards
     include:
       - /sa_en/cc-shared/fragments/merch/**/merch-card/**
@@ -995,6 +1229,12 @@ indices:
       - /th_en/confirmation/**
       - /th_en/devnet/**
       - /th_en/diversity/**
+      - /th_en/privacy/**
+      - /th_en/offer-terms/**
+      - /th_en/procurement/**
+      - /th_en/partners/**
+      - /th_en/pdf-page/**
+      - /th_en/offers/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -1043,6 +1283,12 @@ indices:
       - /za/confirmation/**
       - /za/devnet/**
       - /za/diversity/**
+      - /za/privacy/**
+      - /za/offer-terms/**
+      - /za/procurement/**
+      - /za/partners/**
+      - /za/pdf-page/**
+      - /za/offers/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -1067,6 +1313,12 @@ indices:
       - /africa/confirmation/**
       - /africa/devnet/**
       - /africa/diversity/**
+      - /africa/privacy/**
+      - /africa/offer-terms/**
+      - /africa/procurement/**
+      - /africa/partners/**
+      - /africa/pdf-page/**
+      - /africa/offers/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -1091,6 +1343,12 @@ indices:
       - /ar/confirmation/**
       - /ar/devnet/**
       - /ar/diversity/**
+      - /ar/privacy/**
+      - /ar/offer-terms/**
+      - /ar/procurement/**
+      - /ar/partners/**
+      - /ar/pdf-page/**
+      - /ar/offers/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -1115,6 +1373,12 @@ indices:
       - /co/confirmation/**
       - /co/devnet/**
       - /co/diversity/**
+      - /co/privacy/**
+      - /co/offer-terms/**
+      - /co/procurement/**
+      - /co/partners/**
+      - /co/pdf-page/**
+      - /co/offers/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -1139,6 +1403,12 @@ indices:
       - /cr/confirmation/**
       - /cr/devnet/**
       - /cr/diversity/**
+      - /cr/privacy/**
+      - /cr/offer-terms/**
+      - /cr/procurement/**
+      - /cr/partners/**
+      - /cr/pdf-page/**
+      - /cr/offers/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -1163,6 +1433,12 @@ indices:
       - /ec/confirmation/**
       - /ec/devnet/**
       - /ec/diversity/**
+      - /ec/privacy/**
+      - /ec/offer-terms/**
+      - /ec/procurement/**
+      - /ec/partners/**
+      - /ec/pdf-page/**
+      - /ec/offers/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -1187,6 +1463,12 @@ indices:
       - /eg_ar/confirmation/**
       - /eg_ar/devnet/**
       - /eg_ar/diversity/**
+      - /eg_ar/privacy/**
+      - /eg_ar/offer-terms/**
+      - /eg_ar/procurement/**
+      - /eg_ar/partners/**
+      - /eg_ar/pdf-page/**
+      - /eg_ar/offers/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -1211,6 +1493,12 @@ indices:
       - /eg_en/confirmation/**
       - /eg_en/devnet/**
       - /eg_en/diversity/**
+      - /eg_en/privacy/**
+      - /eg_en/offer-terms/**
+      - /eg_en/procurement/**
+      - /eg_en/partners/**
+      - /eg_en/pdf-page/**
+      - /eg_en/offers/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -1235,6 +1523,12 @@ indices:
       - /gr_el/confirmation/**
       - /gr_el/devnet/**
       - /gr_el/diversity/**
+      - /gr_el/privacy/**
+      - /gr_el/offer-terms/**
+      - /gr_el/procurement/**
+      - /gr_el/partners/**
+      - /gr_el/pdf-page/**
+      - /gr_el/offers/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -1259,6 +1553,12 @@ indices:
       - /gt/confirmation/**
       - /gt/devnet/**
       - /gt/diversity/**
+      - /gt/privacy/**
+      - /gt/offer-terms/**
+      - /gt/procurement/**
+      - /gt/partners/**
+      - /gt/pdf-page/**
+      - /gt/offers/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -1283,6 +1583,12 @@ indices:
       - /id_en/confirmation/**
       - /id_en/devnet/**
       - /id_en/diversity/**
+      - /id_en/privacy/**
+      - /id_en/offer-terms/**
+      - /id_en/procurement/**
+      - /id_en/partners/**
+      - /id_en/pdf-page/**
+      - /id_en/offers/**
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -1307,6 +1613,12 @@ indices:
       - /id_id/confirmation/**
       - /id_id/devnet/**
       - /id_id/diversity/**
+      - /id_id/privacy/**
+      - /id_id/offer-terms/**
+      - /id_id/procurement/**
+      - /id_id/partners/**
+      - /id_id/pdf-page/**
+      - /id_id/offers/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -1331,6 +1643,12 @@ indices:
       - /in_hi/confirmation/**
       - /in_hi/devnet/**
       - /in_hi/diversity/**
+      - /in_hi/privacy/**
+      - /in_hi/offer-terms/**
+      - /in_hi/procurement/**
+      - /in_hi/partners/**
+      - /in_hi/pdf-page/**
+      - /in_hi/offers/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -1355,6 +1673,12 @@ indices:
       - /kw_ar/confirmation/**
       - /kw_ar/devnet/**
       - /kw_ar/diversity/**
+      - /kw_ar/privacy/**
+      - /kw_ar/offer-terms/**
+      - /kw_ar/procurement/**
+      - /kw_ar/partners/**
+      - /kw_ar/pdf-page/**
+      - /kw_ar/offers/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -1379,6 +1703,12 @@ indices:
       - /kw_en/confirmation/**
       - /kw_en/devnet/**
       - /kw_en/diversity/**
+      - /kw_ar/privacy/**
+      - /kw_ar/offer-terms/**
+      - /kw_ar/procurement/**
+      - /kw_ar/partners/**
+      - /kw_ar/pdf-page/**
+      - /kw_ar/offers/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -1403,6 +1733,12 @@ indices:
       - /my_en/confirmation/**
       - /my_en/devnet/**
       - /my_en/diversity/**
+      - /my_en/privacy/**
+      - /my_en/offer-terms/**
+      - /my_en/procurement/**
+      - /my_en/partners/**
+      - /my_en/pdf-page/**
+      - /my_en/offers/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -1427,6 +1763,12 @@ indices:
       - /my_ms/confirmation/**
       - /my_ms/devnet/**
       - /my_ms/diversity/**
+      - /my_ms/privacy/**
+      - /my_ms/offer-terms/**
+      - /my_ms/procurement/**
+      - /my_ms/partners/**
+      - /my_ms/pdf-page/**
+      - /my_ms/offers/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -1451,6 +1793,12 @@ indices:
       - /ng/confirmation/**
       - /ng/devnet/**
       - /ng/diversity/**
+      - /ng/privacy/**
+      - /ng/offer-terms/**
+      - /ng/procurement/**
+      - /ng/partners/**
+      - /ng/pdf-page/**
+      - /ng/offers/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -1475,6 +1823,12 @@ indices:
       - /pe/confirmation/**
       - /pe/devnet/**
       - /pe/diversity/**
+      - /pe/privacy/**
+      - /pe/offer-terms/**
+      - /pe/procurement/**
+      - /pe/partners/**
+      - /pe/pdf-page/**
+      - /pe/offers/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -1499,6 +1853,12 @@ indices:
       - /ph_en/confirmation/**
       - /ph_en/devnet/**
       - /ph_en/diversity/**
+      - /ph_en/privacy/**
+      - /ph_en/offer-terms/**
+      - /ph_en/procurement/**
+      - /ph_en/partners/**
+      - /ph_en/pdf-page/**
+      - /ph_en/offers/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -1523,6 +1883,12 @@ indices:
       - /ph_fil/confirmation/**
       - /ph_fil/devnet/**
       - /ph_fil/diversity/**
+      - /ph_fil/privacy/**
+      - /ph_fil/offer-terms/**
+      - /ph_fil/procurement/**
+      - /ph_fil/partners/**
+      - /ph_fil/pdf-page/**
+      - /ph_fil/offers/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -1547,6 +1913,12 @@ indices:
       - /pr/confirmation/**
       - /pr/devnet/**
       - /pr/diversity/**
+      - /pr/privacy/**
+      - /pr/offer-terms/**
+      - /pr/procurement/**
+      - /pr/partners/**
+      - /pr/pdf-page/**
+      - /pr/offers/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -1571,6 +1943,12 @@ indices:
       - /qa_ar/confirmation/**
       - /qa_ar/devnet/**
       - /qa_ar/diversity/**
+      - /qa_ar/privacy/**
+      - /qa_ar/offer-terms/**
+      - /qa_ar/procurement/**
+      - /qa_ar/partners/**
+      - /qa_ar/pdf-page/**
+      - /qa_ar/offers/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -1595,6 +1973,12 @@ indices:
       - /qa_en/confirmation/**
       - /qa_en/devnet/**
       - /qa_en/diversity/**
+      - /qa_en/privacy/**
+      - /qa_en/offer-terms/**
+      - /qa_en/procurement/**
+      - /qa_en/partners/**
+      - /qa_en/pdf-page/**
+      - /qa_en/offers/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -1619,6 +2003,12 @@ indices:
       - /vn_en/confirmation/**
       - /vn_en/devnet/**
       - /vn_en/diversity/**
+      - /vn_en/privacy/**
+      - /vn_en/offer-terms/**
+      - /vn_en/procurement/**
+      - /vn_en/partners/**
+      - /vn_en/pdf-page/**
+      - /vn_en/offers/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -1643,6 +2033,12 @@ indices:
       - /vn_vi/confirmation/**
       - /vn_vi/devnet/**
       - /vn_vi/diversity/**
+      - /vn_vi/privacy/**
+      - /vn_vi/offer-terms/**
+      - /vn_vi/procurement/**
+      - /vn_vi/partners/**
+      - /vn_vi/pdf-page/**
+      - /vn_vi/offers/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -1667,6 +2063,12 @@ indices:
       - /dk/confirmation/**
       - /dk/devnet/**
       - /dk/diversity/**
+      - /dk/privacy/**
+      - /dk/offer-terms/**
+      - /dk/procurement/**
+      - /dk/partners/**
+      - /dk/pdf-page/**
+      - /dk/offers/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -1691,6 +2093,12 @@ indices:
       - /fi/confirmation/**
       - /fi/devnet/**
       - /fi/diversity/**
+      - /fi/privacy/**
+      - /fi/offer-terms/**
+      - /fi/procurement/**
+      - /fi/partners/**
+      - /fi/pdf-page/**
+      - /fi/offers/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -1715,6 +2123,12 @@ indices:
       - /no/confirmation/**
       - /no/devnet/**
       - /no/diversity/**
+      - /no/privacy/**
+      - /no/offer-terms/**
+      - /no/procurement/**
+      - /no/partners/**
+      - /no/pdf-page/**
+      - /no/offers/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -1739,6 +2153,12 @@ indices:
       - /se/confirmation/**
       - /se/devnet/**
       - /se/diversity/**
+      - /se/privacy/**
+      - /se/offer-terms/**
+      - /se/procurement/**
+      - /se/partners/**
+      - /se/pdf-page/**
+      - /se/offers/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -1763,6 +2183,12 @@ indices:
       - /la/confirmation/**
       - /la/devnet/**
       - /la/diversity/**
+      - /la/privacy/**
+      - /la/offer-terms/**
+      - /la/procurement/**
+      - /la/partners/**
+      - /la/pdf-page/**
+      - /la/offers/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -1787,6 +2213,12 @@ indices:
       - /mx/confirmation/**
       - /mx/devnet/**
       - /mx/diversity/**
+      - /mx/privacy/**
+      - /mx/offer-terms/**
+      - /mx/procurement/**
+      - /mx/partners/**
+      - /mx/pdf-page/**
+      - /mx/offers/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -1811,6 +2243,12 @@ indices:
       - /be_nl/confirmation/**
       - /be_nl/devnet/**
       - /be_nl/diversity/**
+      - /be_nl/privacy/**
+      - /be_nl/offer-terms/**
+      - /be_nl/procurement/**
+      - /be_nl/partners/**
+      - /be_nl/pdf-page/**
+      - /be_nl/offers/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -1835,6 +2273,12 @@ indices:
       - /bg/confirmation/**
       - /bg/devnet/**
       - /bg/diversity/**
+      - /bg/privacy/**
+      - /bg/offer-terms/**
+      - /bg/procurement/**
+      - /bg/partners/**
+      - /bg/pdf-page/**
+      - /bg/offers/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -1859,6 +2303,12 @@ indices:
       - /ch_it/confirmation/**
       - /ch_it/devnet/**
       - /ch_it/diversity/**
+      - /ch_it/privacy/**
+      - /ch_it/offer-terms/**
+      - /ch_it/procurement/**
+      - /ch_it/partners/**
+      - /ch_it/pdf-page/**
+      - /ch_it/offers/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -1883,6 +2333,12 @@ indices:
       - /cz/confirmation/**
       - /cz/devnet/**
       - /cz/diversity/**
+      - /cz/privacy/**
+      - /cz/offer-terms/**
+      - /cz/procurement/**
+      - /cz/partners/**
+      - /cz/pdf-page/**
+      - /cz/offers/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -1907,6 +2363,12 @@ indices:
       - /ee/confirmation/**
       - /ee/devnet/**
       - /ee/diversity/**
+      - /ee/privacy/**
+      - /ee/offer-terms/**
+      - /ee/procurement/**
+      - /ee/partners/**
+      - /ee/pdf-page/**
+      - /ee/offers/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -1931,6 +2393,12 @@ indices:
       - /hu/confirmation/**
       - /hu/devnet/**
       - /hu/diversity/**
+      - /hu/privacy/**
+      - /hu/offer-terms/**
+      - /hu/procurement/**
+      - /hu/partners/**
+      - /hu/pdf-page/**
+      - /hu/offers/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -1955,6 +2423,12 @@ indices:
       - /il_he/confirmation/**
       - /il_he/devnet/**
       - /il_he/diversity/**
+      - /il_he/privacy/**
+      - /il_he/offer-terms/**
+      - /il_he/procurement/**
+      - /il_he/partners/**
+      - /il_he/pdf-page/**
+      - /il_he/offers/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -1979,6 +2453,12 @@ indices:
       - /lv/confirmation/**
       - /lv/devnet/**
       - /lv/diversity/**
+      - /lv/privacy/**
+      - /lv/offer-terms/**
+      - /lv/procurement/**
+      - /lv/partners/**
+      - /lv/pdf-page/**
+      - /lv/offers/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -2003,6 +2483,12 @@ indices:
       - /mena_ar/confirmation/**
       - /mena_ar/devnet/**
       - /mena_ar/diversity/**
+      - /mena_ar/privacy/**
+      - /mena_ar/offer-terms/**
+      - /mena_ar/procurement/**
+      - /mena_ar/partners/**
+      - /mena_ar/pdf-page/**
+      - /mena_ar/offers/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -2027,6 +2513,12 @@ indices:
       - /pt/confirmation/**
       - /pt/devnet/**
       - /pt/diversity/**
+      - /pt/privacy/**
+      - /pt/offer-terms/**
+      - /pt/procurement/**
+      - /pt/partners/**
+      - /pt/pdf-page/**
+      - /pt/offers/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -2051,6 +2543,12 @@ indices:
       - /ro/confirmation/**
       - /ro/devnet/**
       - /ro/diversity/**
+      - /ro/privacy/**
+      - /ro/offer-terms/**
+      - /ro/procurement/**
+      - /ro/partners/**
+      - /ro/pdf-page/**
+      - /ro/offers/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -2075,6 +2573,12 @@ indices:
       - /si/confirmation/**
       - /si/devnet/**
       - /si/diversity/**
+      - /si/privacy/**
+      - /si/offer-terms/**
+      - /si/procurement/**
+      - /si/partners/**
+      - /si/pdf-page/**
+      - /si/offers/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -2099,6 +2603,12 @@ indices:
       - /sk/confirmation/**
       - /sk/devnet/**
       - /sk/diversity/**
+      - /sk/privacy/**
+      - /sk/offer-terms/**
+      - /sk/procurement/**
+      - /sk/partners/**
+      - /sk/pdf-page/**
+      - /sk/offers/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -2123,6 +2633,12 @@ indices:
       - /ua/confirmation/**
       - /ua/devnet/**
       - /ua/diversity/**
+      - /ua/privacy/**
+      - /ua/offer-terms/**
+      - /ua/procurement/**
+      - /ua/partners/**
+      - /ua/pdf-page/**
+      - /ua/offers/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -2147,6 +2663,12 @@ indices:
       - /sg/confirmation/**
       - /sg/devnet/**
       - /sg/diversity/**
+      - /sg/privacy/**
+      - /sg/offer-terms/**
+      - /sg/procurement/**
+      - /sg/partners/**
+      - /sg/pdf-page/**
+      - /sg/offers/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -2171,6 +2693,12 @@ indices:
       - /br/confirmation/**
       - /br/devnet/**
       - /br/diversity/**
+      - /br/privacy/**
+      - /br/offer-terms/**
+      - /br/procurement/**
+      - /br/partners/**
+      - /br/pdf-page/**
+      - /br/offers/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -2195,6 +2723,12 @@ indices:
       - /cis_en/confirmation/**
       - /cis_en/devnet/**
       - /cis_en/diversity/**
+      - /cis_en/privacy/**
+      - /cis_en/offer-terms/**
+      - /cis_en/procurement/**
+      - /cis_en/partners/**
+      - /cis_en/pdf-page/**
+      - /cis_en/offers/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -2219,6 +2753,12 @@ indices:
       - /cis_ru/confirmation/**
       - /cis_ru/devnet/**
       - /cis_ru/diversity/**
+      - /cis_ru/privacy/**
+      - /cis_ru/offer-terms/**
+      - /cis_ru/procurement/**
+      - /cis_ru/partners/**
+      - /cis_ru/pdf-page/**
+      - /cis_ru/offers/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
