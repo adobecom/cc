@@ -118,11 +118,11 @@ export const countries = [
   },
   {
     code: 'COM',
-    name: 'Comoros (the)',
+    name: 'Comoros',
   },
   {
     code: 'COG',
-    name: 'Congo (the)',
+    name: 'Congo',
   },
   {
     code: 'COD',
@@ -130,7 +130,7 @@ export const countries = [
   },
   {
     code: 'COK',
-    name: 'Cook Islands (the)',
+    name: 'Cook Islands',
   },
   {
     code: 'HRV',
@@ -158,7 +158,7 @@ export const countries = [
   },
   {
     code: 'DOM',
-    name: 'Dominican Republic (the)',
+    name: 'Dominican Republic',
   },
   {
     code: 'ECU',
@@ -310,7 +310,7 @@ export const countries = [
   },
   {
     code: 'NLD',
-    name: 'Netherlands (the)',
+    name: 'Netherlands',
   },
   {
     code: 'NZL',
@@ -330,7 +330,7 @@ export const countries = [
   },
   {
     code: 'PHL',
-    name: 'Philippines (the)',
+    name: 'Philippines',
   },
   {
     code: 'POL',
@@ -342,7 +342,7 @@ export const countries = [
   },
   {
     code: 'RUS',
-    name: 'Russian Federation (the)',
+    name: 'Russian Federation',
   },
   {
     code: 'SRB',
@@ -398,11 +398,11 @@ export const countries = [
   },
   {
     code: 'GBR',
-    name: 'United Kingdom of Great Britain and Northern Ireland (the)',
+    name: 'United Kingdom of Great Britain and Northern Ireland',
   },
   {
     code: 'USA',
-    name: 'United States of America (the)',
+    name: 'United States of America',
   },
   {
     code: 'VUT',
