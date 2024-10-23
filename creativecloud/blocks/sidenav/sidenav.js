@@ -163,7 +163,7 @@ export default async function init(el) {
   const libs = getLibs();
   const [mainRow, categoryRow] = Array.from(el.children);
   const deps = Promise.all([
-    import('../../deps/merch-sidenav.js'),
+    import(`${libs}/deps/mas/merch-sidenav.js`),
     // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
     import(`${libs}/deps/lit-all.min.js`),
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
