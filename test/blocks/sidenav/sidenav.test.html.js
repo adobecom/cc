@@ -4,7 +4,7 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 import { setLibs } from '../../../creativecloud/scripts/utils.js';
 
-setLibs('/node_modules/@adobecom/milo/libs', true);
+setLibs('https://milo.adobe.com/libs', true);
 
 const { default: init } = await import('../../../creativecloud/blocks/sidenav/sidenav.js');
 
