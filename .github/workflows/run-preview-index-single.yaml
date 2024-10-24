@@ -50,3 +50,4 @@ jobs:
           CONSUMER: ${{vars.CONSUMER}}
           PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}
           ENABLED: ${{vars.ENABLED}}
+          PREVIEW_INDEX_JSON: ${{vars.PREVIEW_INDEX_JSON}}
