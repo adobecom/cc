@@ -850,7 +850,7 @@ function renderPersonalData(containerTag) {
   });
 
   const emailTag = getNonprofitInput({
-    type: 'text',
+    type: 'email',
     name: 'email',
     label: window.mph['nonprofit-email'],
     placeholder: window.mph['nonprofit-email-placeholder'],
@@ -862,11 +862,28 @@ function renderPersonalData(containerTag) {
     { class: 'np-personal-data-disclaimer' },
     window.mph['nonprofit-personal-data-disclaimer'],
   );
+  const emailInput = emailTag.querySelector('input');
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+
+  const validateEmail = () => {
+    const isValid = emailInput.validity.valid && emailPattern.test(emailInput.value);
+    emailInput.classList.toggle('np-error', !isValid);
+    return isValid;
+  };
+
+  emailInput.addEventListener('input', validateEmail);
+  emailInput.addEventListener('blur', validateEmail);
 
   const submitTag = getSubmitTag();
 
+  formTag.addEventListener('input', () => {
+    const isFormValid = formTag.checkValidity() && validateEmail();
+    submitTag.toggleAttribute('disabled', !isFormValid);
+  });
+
   formTag.append(firstNameTag, lastNameTag, emailTag, disclaimerTag, submitTag);
 
+  formTag.append(firstNameTag, lastNameTag, emailTag, submitTag);
   trackSubmitCondition(formTag);
 
   formTag.addEventListener('submit', async (ev) => {
