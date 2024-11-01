@@ -863,7 +863,7 @@ function renderPersonalData(containerTag) {
     window.mph['nonprofit-personal-data-disclaimer'],
   );
   const emailInput = emailTag.querySelector('input');
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const validateEmail = () => {
     const isValid = emailInput.validity.valid && emailPattern.test(emailInput.value);
