@@ -332,6 +332,7 @@ function getSubmitTag() {
     type: 'submit',
     value: window.mph['nonprofit-continue'],
     disabled: 'disabled',
+    'daa-ll': 'continue',
   });
 }
 
@@ -515,6 +516,8 @@ function trackSubmitCondition(formTag) {
 
 // Select non-profit
 function renderSelectNonprofit(containerTag) {
+  containerTag.setAttribute('daa-lh', 'find your nonprofit');
+
   // Description
   const descriptionTag = getDescriptionTag(
     window.mph['nonprofit-title-select-non-profit'],
@@ -566,7 +569,7 @@ function renderSelectNonprofit(containerTag) {
       const cannotFindTag = createTag('div', { class: 'np-select-list-tag np-organization-cannot-find' });
       const cannotFindLinkTag = createTag(
         'a',
-        { tabindex: 0 },
+        { tabindex: 0, 'daa-ll': 'org not found' },
         window.mph['nonprofit-organization-cannot-find'],
       );
       // Cannot find action handler
@@ -647,6 +650,8 @@ function renderSelectNonprofit(containerTag) {
 
 // Organization details
 function renderOrganizationDetails(containerTag) {
+  containerTag.setAttribute('daa-lh', 'confirm org details');
+
   // Description
   const descriptionTag = getDescriptionTag(window.mph['nonprofit-title-organization-details']);
 
@@ -756,6 +761,8 @@ function renderOrganizationDetails(containerTag) {
 
 // Organization address
 function renderOrganizationAddress(containerTag) {
+  containerTag.setAttribute('daa-lh', 'confirm org address');
+
   // Description
   const descriptionTag = getDescriptionTag(window.mph['nonprofit-title-organization-address']);
 
@@ -824,6 +831,8 @@ function renderOrganizationAddress(containerTag) {
 
 // Personal data
 function renderPersonalData(containerTag) {
+  containerTag.setAttribute('daa-lh', 'confirm your details');
+
   // Description
   const descriptionTag = getDescriptionTag(
     window.mph['nonprofit-title-personal-details'],
@@ -901,6 +910,8 @@ function renderPersonalData(containerTag) {
 }
 
 function renderApplicationReview(containerTag) {
+  containerTag.setAttribute('daa-lh', 'verification');
+
   const applicationReviewTag = createTag('div', { class: 'np-application-review-container' });
 
   const titleTag = createTag(
@@ -926,7 +937,7 @@ function renderApplicationReview(containerTag) {
 
   const returnToAcrobatForNonprofitsTag = createTag(
     'button',
-    { class: 'np-button' },
+    { class: 'np-button', 'daa-ll': 'return to acrobat for nonprofits' },
     window.mph['nonprofit-return-to-acrobat-for-nonprofits'],
   );
 
