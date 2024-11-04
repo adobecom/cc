@@ -10,8 +10,6 @@ import nonprofitSelect from './nonprofit-select.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
-
-
 const removeOptionElements = (element) => {
   const children = element.querySelectorAll(':scope > div');
   children.forEach((child) => {
