@@ -61,8 +61,8 @@ function selectorTrayWithImgs(layer, data) {
   const configTray = getTrayConfig(data);
   let pathIdx = getStartingPathIdx(data);
   const pics = [...configTray.querySelectorAll('li picture')];
-  const thumbnails = pics.filter((p) => parseInt(p.querySelector('img').getAttribute('width')) <= 150);
-  const displayImgs = pics.filter((p) => parseInt(p.querySelector('img').getAttribute('width')) > 150);
+  const thumbnails = pics.filter((p) => parseInt(p.querySelector('img').getAttribute('width')) <= 500);
+  const displayImgs = pics.filter((p) => parseInt(p.querySelector('img').getAttribute('width')) > 500);
   [...thumbnails].forEach((thumbnailPic, idx) => {
     const displayPic = displayImgs[idx];
     const displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
