@@ -59,15 +59,13 @@ function selectorTrayWithImgs(layer, data) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
   const trayItems = createTag('div', { class: 'tray-items' });
   const configTray = getTrayConfig(data);
-  const options = configTray.querySelectorAll('li');
   let pathIdx = getStartingPathIdx(data);
-  let displayImg = null;
   const pics = [...configTray.querySelectorAll('li picture')];
   const thumbnails = pics.filter((p) => parseInt(p.querySelector('img').getAttribute('width')) <= 150);
   const displayImgs = pics.filter((p) => parseInt(p.querySelector('img').getAttribute('width')) > 150);
   [...thumbnails].forEach((thumbnailPic, idx) => {
     const displayPic = displayImgs[idx];
-    displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
+    const displayImg = [getImgSrc(displayPic), displayPic.querySelector('img').alt];
     const a = createSelectorThumbnail(thumbnailPic, pathIdx, displayImg);
     trayItems.append(a);
     pathIdx += 1;
