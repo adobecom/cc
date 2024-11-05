@@ -145,6 +145,10 @@
   max-width: 800px;
 }
 
+.nonprofit-url {
+  text-decoration: underline;
+}
+
 .np-form {
   width: var(--np-content-width);
   display: flex;
@@ -162,6 +166,11 @@
   border-radius: 20px;
   padding: 10px 20px;
   cursor: pointer;
+}
+
+.np-button:hover {
+  text-decoration: none;
+  color: var(--color-white);
 }
 
 .np-button:disabled {
