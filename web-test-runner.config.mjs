@@ -32,6 +32,8 @@ const swcImportMaps = Object.fromEntries([
   'icons/cross.js',
 ].map((file) => [`/libs/features/spectrum-web-components/dist/${file}`, `/node_modules/@adobecom/milo/libs/features/spectrum-web-components/dist/${file}`]));
 
+const miloImportMaps = { 'libs/': 'https://main--milo--adobecom.hlx.live/libs/' };
+
 export default {
   coverageConfig: {
     include: ['creativecloud/**'],
@@ -41,7 +43,18 @@ export default {
   files: ['test/**/*.test.(js|html)'],
   nodeResolve: true,
   middlewares: [enableCORS],
-  plugins: [importMapsPlugin({ inject: { importMap: { imports: { ...swcImportMaps } } } })],
+  plugins: [
+    importMapsPlugin({
+      inject: {
+        importMap: {
+          imports: {
+            ...swcImportMaps,
+            ...miloImportMaps,
+          },
+        },
+      },
+    }),
+  ],
   port: 2000,
   browserLogs: false,
 };

@@ -9,8 +9,7 @@ import { getNonprofitIconTag, NONPRFIT_ICONS } from './icons.js';
 import nonprofitSelect from './nonprofit-select.js';
 
 const miloLibs = setLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
-
+const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
 const removeOptionElements = (element) => {
   const children = element.querySelectorAll(':scope > div');
   children.forEach((child) => {
@@ -311,6 +310,15 @@ function renderStepper(containerTag) {
 
 // #region Render form
 
+function replaceURL(tagObject) {
+  const { locale } = getConfig();
+  const privacyURL = window.mph['nonprofit-privacy-policy-url'] || `https://www.adobe.com${locale.prefix}/privacy/policy.html`;
+  const termsURL = window.mph['nonprofit-terms-of-use-url'] || `https://www.adobe.com${locale.prefix}/legal/terms.html`;
+  tagObject.innerHTML = tagObject.innerHTML.replace(window.mph['nonprofit-terms-of-use'], `<a class="nonprofit-url" href="${termsURL}">${window.mph['nonprofit-terms-of-use']}</a>`);
+  tagObject.innerHTML = tagObject.innerHTML.replace(window.mph['nonprofit-privacy-policy'], `<a class="nonprofit-url" href="${privacyURL}">${window.mph['nonprofit-privacy-policy']}</a>`);
+  tagObject.innerHTML = tagObject.innerHTML.replace(window.mph['nonprofit-partner-name'], `<a class="nonprofit-url" target="_blank" href="${window.mph['nonprofit-partner-url']}">${window.mph['nonprofit-partner-name']}</a>`);
+}
+
 function getDescriptionTag(title, subtitle) {
   const descriptionTag = createTag('div', { class: 'np-description' });
   const titleTag = createTag('span', { class: 'np-title' }, title);
@@ -319,7 +327,7 @@ function getDescriptionTag(title, subtitle) {
 
   if (subtitle) {
     const subtitleTag = createTag('span', { class: 'np-subtitle' }, subtitle);
-
+    replaceURL(subtitleTag);
     descriptionTag.append(subtitleTag);
   }
 
@@ -332,6 +340,7 @@ function getSubmitTag() {
     type: 'submit',
     value: window.mph['nonprofit-continue'],
     disabled: 'disabled',
+    'daa-ll': 'continue',
   });
 }
 
@@ -515,6 +524,8 @@ function trackSubmitCondition(formTag) {
 
 // Select non-profit
 function renderSelectNonprofit(containerTag) {
+  containerTag.setAttribute('daa-lh', 'find your nonprofit');
+
   // Description
   const descriptionTag = getDescriptionTag(
     window.mph['nonprofit-title-select-non-profit'],
@@ -566,7 +577,7 @@ function renderSelectNonprofit(containerTag) {
       const cannotFindTag = createTag('div', { class: 'np-select-list-tag np-organization-cannot-find' });
       const cannotFindLinkTag = createTag(
         'a',
-        { tabindex: 0 },
+        { tabindex: 0, 'daa-ll': 'org not found' },
         window.mph['nonprofit-organization-cannot-find'],
       );
       // Cannot find action handler
@@ -647,6 +658,8 @@ function renderSelectNonprofit(containerTag) {
 
 // Organization details
 function renderOrganizationDetails(containerTag) {
+  containerTag.setAttribute('daa-lh', 'confirm org details');
+
   // Description
   const descriptionTag = getDescriptionTag(window.mph['nonprofit-title-organization-details']);
 
@@ -756,6 +769,8 @@ function renderOrganizationDetails(containerTag) {
 
 // Organization address
 function renderOrganizationAddress(containerTag) {
+  containerTag.setAttribute('daa-lh', 'confirm org address');
+
   // Description
   const descriptionTag = getDescriptionTag(window.mph['nonprofit-title-organization-address']);
 
@@ -824,6 +839,8 @@ function renderOrganizationAddress(containerTag) {
 
 // Personal data
 function renderPersonalData(containerTag) {
+  containerTag.setAttribute('daa-lh', 'confirm your details');
+
   // Description
   const descriptionTag = getDescriptionTag(
     window.mph['nonprofit-title-personal-details'],
@@ -850,7 +867,7 @@ function renderPersonalData(containerTag) {
   });
 
   const emailTag = getNonprofitInput({
-    type: 'text',
+    type: 'email',
     name: 'email',
     label: window.mph['nonprofit-email'],
     placeholder: window.mph['nonprofit-email-placeholder'],
@@ -862,11 +879,29 @@ function renderPersonalData(containerTag) {
     { class: 'np-personal-data-disclaimer' },
     window.mph['nonprofit-personal-data-disclaimer'],
   );
+  const emailInput = emailTag.querySelector('input');
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+  const validateEmail = () => {
+    const isValid = emailInput.validity.valid && emailPattern.test(emailInput.value);
+    emailInput.classList.toggle('np-error', !isValid);
+    return isValid;
+  };
+
+  emailInput.addEventListener('input', validateEmail);
+  emailInput.addEventListener('blur', validateEmail);
+
+  replaceURL(disclaimerTag);
   const submitTag = getSubmitTag();
+
+  formTag.addEventListener('input', () => {
+    const isFormValid = formTag.checkValidity() && validateEmail();
+    submitTag.toggleAttribute('disabled', !isFormValid);
+  });
 
   formTag.append(firstNameTag, lastNameTag, emailTag, disclaimerTag, submitTag);
 
+  formTag.append(firstNameTag, lastNameTag, emailTag, submitTag);
   trackSubmitCondition(formTag);
 
   formTag.addEventListener('submit', async (ev) => {
@@ -901,6 +936,8 @@ function renderPersonalData(containerTag) {
 }
 
 function renderApplicationReview(containerTag) {
+  containerTag.setAttribute('daa-lh', 'verification');
+
   const applicationReviewTag = createTag('div', { class: 'np-application-review-container' });
 
   const titleTag = createTag(
@@ -913,6 +950,7 @@ function renderApplicationReview(containerTag) {
     { class: 'np-application-review-detail' },
     window.mph['nonprofit-detail-1-application-review'],
   );
+  replaceURL(detail1Tag);
   const detail2Tag = createTag(
     'span',
     { class: 'np-application-review-detail' },
@@ -925,8 +963,13 @@ function renderApplicationReview(containerTag) {
   applicationReviewTag.append(titleTag, detail1Tag, detail2Tag);
 
   const returnToAcrobatForNonprofitsTag = createTag(
-    'button',
-    { class: 'np-button' },
+    'a',
+    {
+      class: 'np-button',
+      href: 'https://www.adobe.com/nonprofits.html',
+      'daa-ll': 'return to acrobat for nonprofits',
+    },
+
     window.mph['nonprofit-return-to-acrobat-for-nonprofits'],
   );
 
