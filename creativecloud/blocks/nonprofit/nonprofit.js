@@ -950,7 +950,6 @@ function renderApplicationReview(containerTag) {
     { class: 'np-application-review-detail' },
     window.mph['nonprofit-detail-1-application-review'],
   );
-  replaceURL(detail1Tag);
   const detail2Tag = createTag(
     'span',
     { class: 'np-application-review-detail' },
@@ -959,8 +958,18 @@ function renderApplicationReview(containerTag) {
       nonprofitFormData.email,
     ),
   );
-
-  applicationReviewTag.append(titleTag, detail1Tag, detail2Tag);
+  const detail3Tag = createTag(
+    'span',
+    { class: 'np-application-review-detail' },
+    window.mph['nonprofit-detail-3-application-review']?.replace(
+      '__EMAIL__',
+      nonprofitFormData.email,
+    ),
+  );
+  replaceURL(detail1Tag);
+  replaceURL(detail2Tag);
+  replaceURL(detail3Tag);
+  applicationReviewTag.append(titleTag, detail1Tag, detail2Tag, detail3Tag);
 
   const returnToAcrobatForNonprofitsTag = createTag(
     'a',
