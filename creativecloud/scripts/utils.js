@@ -384,8 +384,8 @@ export const scriptInit = async () => {
   (function loadStyles() {
     const paths = [`${miloLibs}/styles/styles.css`, `${miloLibs}/blocks/text/text.js`, `${miloLibs}/blocks/text/text.css`, `${miloLibs}/blocks/mnemonic-list/mnemonic-list.css`];
     if (window.location.pathname.includes(CATALOG_PATH)) {
-      const catalogRenderBlockPaths = [`${miloLibs}/blocks/text/text.js`, `${miloLibs}/blocks/text/text.css`, `${miloLibs}/blocks/mnemonic-list/mnemonic-list.css`];
-      paths.push(...catalogRenderBlockPaths);
+      const catalogPreloadPaths = [`${miloLibs}/blocks/text/text.js`, `${miloLibs}/blocks/text/text.css`, `${miloLibs}/blocks/mnemonic-list/mnemonic-list.css`];
+      paths.push(...catalogPreloadPaths);
     }
     paths.forEach((path) => {
       const link = document.createElement('link');
