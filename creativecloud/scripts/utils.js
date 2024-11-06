@@ -17,6 +17,7 @@
 const COOKIE_SIGNED_IN = 'acomsis';
 const COOKIE_SIGNED_IN_STAGE = 'acomsis_stage';
 const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
+const CATALOG_PATH = '/products/catalog';
 
 const locales = {
   // Americas
@@ -381,7 +382,11 @@ export const scriptInit = async () => {
   if (isSignedInHomepage) acomsisCookieHandler();
   decorateArea();
   (function loadStyles() {
-    const paths = [`${miloLibs}/styles/styles.css`];
+    const paths = [`${miloLibs}/styles/styles.css`, `${miloLibs}/blocks/text/text.js`, `${miloLibs}/blocks/text/text.css`, `${miloLibs}/blocks/mnemonic-list/mnemonic-list.css`];
+    if (window.location.pathname.includes(CATALOG_PATH)) {
+      const catalogRenderBlockPaths = [`${miloLibs}/blocks/text/text.js`, `${miloLibs}/blocks/text/text.css`, `${miloLibs}/blocks/mnemonic-list/mnemonic-list.css`];
+      paths.push(...catalogRenderBlockPaths);
+    }
     paths.forEach((path) => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
