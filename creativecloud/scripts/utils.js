@@ -382,7 +382,7 @@ export const scriptInit = async () => {
   if (isSignedInHomepage) acomsisCookieHandler();
   decorateArea();
   (function loadStyles() {
-    const paths = [`${miloLibs}/styles/styles.css`, `${miloLibs}/blocks/text/text.js`, `${miloLibs}/blocks/text/text.css`, `${miloLibs}/blocks/mnemonic-list/mnemonic-list.css`];
+    const paths = [`${miloLibs}/styles/styles.css`];
     if (window.location.pathname.includes(CATALOG_PATH)) {
       const catalogPreloadPaths = [`${miloLibs}/blocks/text/text.js`, `${miloLibs}/blocks/text/text.css`, `${miloLibs}/blocks/mnemonic-list/mnemonic-list.css`];
       paths.push(...catalogPreloadPaths);
