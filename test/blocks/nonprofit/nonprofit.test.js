@@ -15,6 +15,7 @@ import {
 import { mockedOrganizations, mockedRegistries } from './mocks/data.js';
 
 const { default: init } = await import('../../../creativecloud/blocks/nonprofit/nonprofit.js');
+const { setConfig } = await import(import.meta.resolve('libs/utils/utils.js'));
 
 const body = await readFile({ path: './mocks/body.html' });
 
@@ -24,6 +25,7 @@ function delay(ms) {
 
 describe('nonprofit - General', () => {
   before(() => {
+    setConfig({ locale: { prefix: 'mx' } });
     window.mph = {
       'nonprofit-title-select-non-profit': "What's your nonprofit organization?",
       'nonprofit-title-organization-details': 'Verify your organization details',
@@ -405,6 +407,7 @@ describe('nonprofit - Organization details', () => {
 
 describe('nonprofit - Address details', () => {
   before(() => {
+    setConfig({ locale: { prefix: 'mx' } });
     window.mph = {};
   });
 
@@ -489,6 +492,7 @@ describe('nonprofit - Personal details', () => {
   };
 
   before(() => {
+    setConfig({ locale: { prefix: 'mx' } });
     window.mph = {};
     window.lana = { log: () => {} };
   });

@@ -1,5 +1,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<style>
+  body { display: none; }
+  .reading-width {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+ .reading-width-footer-tag {
+  max-width: 800px;
+  margin: -20px auto;
+  padding: 0 20px 20px;
+}
+
+ .reading-width-footer-tag > .content {
+  max-width: var(--grid-container-width);
+  margin: 0 auto;
+}
+</style>
 <script src="/creativecloud/scripts/fallback.js" nomodule></script>
-<script src="/creativecloud/scripts/scripts.js" type="module"></script>
-<style>body { display: none; }</style>
+<script type="module">
+  import { scriptInit } from '/creativecloud/scripts/utils.js';
+  scriptInit();
+</script>
 <link rel="icon" href="data:,">
+
