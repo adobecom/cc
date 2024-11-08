@@ -96,7 +96,7 @@ class Trials {
     setFormConfig() {
         const formConfig = [];
         Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
-          const redirectUrl = this.formContainer.querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
+          const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
           if (!redirectUrl) return;
           this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
           formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
