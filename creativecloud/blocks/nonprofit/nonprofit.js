@@ -19,9 +19,9 @@ const removeOptionElements = (element) => {
 
 // #region Constants
 
-const PERCENT_API_URL = 'https://sandbox-api.poweredbypercent.com/v1';
-const PERCENT_VALIDATION_API_URL = 'https://sandbox-validate.poweredbypercent.com/adobe-acrobat';
-const PERCENT_PUBLISHABLE_KEY = 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b';
+const PERCENT_API_URL = 'https://api.goodstack.io/v1';
+const PERCENT_VALIDATION_API_URL = 'https://validate.goodstack.org/adobe-acrobat';
+const PERCENT_PUBLISHABLE_KEY = 'pk_ea675372-2eb2-4cf1-8b6a-358087bf8df5';
 export const SCENARIOS = Object.freeze({
   FOUND_IN_SEARCH: 'FOUND_IN_SEARCH',
   NOT_FOUND_IN_SEARCH: 'NOT_FOUND_IN_SEARCH',
