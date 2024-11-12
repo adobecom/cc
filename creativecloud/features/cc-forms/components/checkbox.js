@@ -16,7 +16,7 @@ class Checkbox {
     createCheckbox() {
       const i = createTag('input', { type: 'checkbox'});
       const s = createTag('span', { class: 'input-checkbox'}, i);
-      const d = createTag('div', {}, s);
+      const d = createTag('div', { class: 'form-item' }, s);
       this.form.append(d);
       const cfgKeys = Object.keys(this.fieldConfig);
       if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) i.setAttribute('required', 'required');
@@ -32,7 +32,7 @@ class Checkbox {
             i.setAttribute('checked', 'checked');
             break;
           case 'error-required':
-            const er = createTag('div', {}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
         }

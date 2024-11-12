@@ -58,7 +58,7 @@ class Dropdown {
 
     createDropdown() {
       const i = createTag('select');
-      const d = createTag('div', {}, i);
+      const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
       const cfgKeys = Object.keys(this.fieldConfig);
       if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) i.setAttribute('required', 'required');
@@ -81,11 +81,11 @@ class Dropdown {
             i.setAttribute('readonly', 'readonly');
             break;
           case 'error-required':
-            const er = createTag('div', {}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
           case 'error-validation':
-            const ev = createTag('div', {}, this.fieldConfig[ck].innerText.trim());
+            const ev = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
             d.append(ev);
             break;
         }

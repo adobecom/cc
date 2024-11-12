@@ -13,14 +13,18 @@
 
 .cc-forms > div,
 .cc-forms > p {
-  /* display: none; */
+  display: none;
 }
 
 .cc-forms form {
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding-bottom: 100px; /* to remove */
+}
+
+.cc-forms form .hide-form-item {
+  display: none;
 }
 
 .cc-forms h2 {
@@ -232,7 +236,7 @@
 @media screen and (min-width: 600px) {
   .cc-forms form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0 var(--spacing-l);
     align-items: start;
   }
