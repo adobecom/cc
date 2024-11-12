@@ -1,3 +1,5 @@
+import { createTag } from '../../../scripts/utils.js';
+
 const SELECTOR_DROPDOWN = '.spectrum-Dropdown';
 const CLASS_IS_SELECTED = 'is-selected';
 const CLASS_IS_PLACEHOLDER = 'is-placeholder';
@@ -30,32 +32,32 @@ class Dropdown {
         this.form = formEl;
         this.fieldConfig = config;
         this.dropdown = this.createDropdown();
-        this.type = this.dropdown.getAttribute(ATTR_DROPDOWN_TYPE);
-        this.parentName = this.dropdown.getAttribute(ATTR_DROPDOWN_PARENT);
+        // this.type = this.dropdown.getAttribute(ATTR_DROPDOWN_TYPE);
+        // this.parentName = this.dropdown.getAttribute(ATTR_DROPDOWN_PARENT);
         this.parent = false;
         this.child = false;
-        this.configureFor = this.dropdown.getAttribute(ATTR_DROPDOWN_CONFIGURE_FOR) || false;
-        this.source = this.dropdown.getAttribute(ATTR_DROPDOWN_SOURCE) || false;
-        if (this.source && this.form && this.form.getAttribute(DATA_ODIN_ENVIRONMENT) && this.source.indexOf('https://') === -1) {
-            this.source = this.form.getAttribute(DATA_ODIN_ENVIRONMENT) + this.source;
-        }
-        this.name = this.dropdown.getAttribute(ATTR_DROPDOWN_NAME);
-        this.label = this.dropdown.getAttribute(ATTR_DROPDOWN_LABEL);
-        this.sortProperty = this.dropdown.getAttribute(ATTR_SORT_PROPERTY);
-        this.elemLabel = this.dropdown.querySelector(SELECTOR_DROPDOWN_LABEL);
-        this.elemButton = this.dropdown.querySelector(SELECTOR_DROPDOWN_TRIGGER);
-        this.value = this.elemButton.value;
+        // this.configureFor = this.dropdown.getAttribute(ATTR_DROPDOWN_CONFIGURE_FOR) || false;
+        // this.source = this.dropdown.getAttribute(ATTR_DROPDOWN_SOURCE) || false;
+        // if (this.source && this.form && this.form.getAttribute(DATA_ODIN_ENVIRONMENT) && this.source.indexOf('https://') === -1) {
+        //     this.source = this.form.getAttribute(DATA_ODIN_ENVIRONMENT) + this.source;
+        // }
+        // this.name = this.dropdown.getAttribute(ATTR_DROPDOWN_NAME);
+        // this.label = this.dropdown.getAttribute(ATTR_DROPDOWN_LABEL);
+        // this.sortProperty = this.dropdown.getAttribute(ATTR_SORT_PROPERTY);
+        // this.elemLabel = this.dropdown.querySelector(SELECTOR_DROPDOWN_LABEL);
+        // this.elemButton = this.dropdown.querySelector(SELECTOR_DROPDOWN_TRIGGER);
+        // this.value = this.elemButton.value;
         this.isOpen = false;
         this.valid = true;
         this.keysSoFar = '';
         this.searchIndex = -1;
         this.activeItem = '';
         this.required = !!(this.dropdown.getAttribute('data-form-required'));
-        this.init();
+        // this.init();
     }
 
     createDropdown() {
-      const i = createTag('input', { type: 'text'});
+      const i = createTag('select');
       const d = createTag('div', {}, i);
       this.form.append(d);
       const cfgKeys = Object.keys(this.fieldConfig);

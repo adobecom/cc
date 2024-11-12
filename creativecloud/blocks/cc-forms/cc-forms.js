@@ -75,7 +75,7 @@ class CCForms {
           new Textfield(this.form, componentConfig);
           break;
         case componentName.startsWith('cc-form-dropdown'):
-          // new Dropdown(this.form, componentConfig);
+          new Dropdown(this.form, componentConfig);
           break;
         case componentName.startsWith('cc-form-button'):
           console.log('button');
