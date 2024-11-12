@@ -2,6 +2,7 @@ import { createTag } from '../../scripts/utils.js';
 import Textfield from '/creativecloud/features/cc-forms/components/textfield.js';
 import Dropdown from '/creativecloud/features/cc-forms/components/dropdown.js';
 import Checkbox from '/creativecloud/features/cc-forms/components/checkbox.js';
+import TextContent from '/creativecloud/features/cc-forms/components/content.js';
 
 const formConfig = {
   'perpeptual': {
@@ -84,10 +85,10 @@ class CCForms {
           new Checkbox(this.form, componentConfig);
           break;
         case componentName.startsWith('cc-form-consent'):
-          console.log('consent');
+          new TextContent(this.form, componentConfig);
           break;
         case componentName.startsWith('cc-form-content'):
-          console.log('content');
+          new TextContent(this.form, componentConfig);
           break;
         default:
           break;

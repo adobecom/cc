@@ -22,8 +22,14 @@
   flex-direction: column;
   padding-bottom: 100px; /* to remove */
 }
+
 .cc-forms form .form-item {
   width: 100%;
+}
+
+.cc-forms form .form-item .section .content,
+.cc-forms form .form-item .section .text .foreground {
+  max-width: 100%;
 }
 
 .cc-forms form .is-hidden {
