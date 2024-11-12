@@ -1,6 +1,6 @@
 import { createTag } from '../../../scripts/utils.js';
 
-const CLASS_HIDDEN = 'hawksForms-message--hidden';
+const CLASS_HIDDEN = 'is-hidden';
 const SELECTOR_PREFIX_MESSAGE = '.hawksForms-message--';
 
 class Textfield {
@@ -26,7 +26,10 @@ class Textfield {
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
       const cfgKeys = Object.keys(this.fieldConfig);
-      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) i.setAttribute('required', 'required');
+      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
+        i.setAttribute('required', 'required');
+        i.setAttribute('data-required', 'required');
+      }
       [...cfgKeys].forEach((ck) => {
         switch(ck) {
           case 'label':
@@ -46,11 +49,11 @@ class Textfield {
             i.setAttribute('readonly', 'readonly');
             break;
           case 'error-required':
-            const er = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
           case 'error-validation':
-            const ev = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
+            const ev = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
             d.append(ev);
             break;
         }

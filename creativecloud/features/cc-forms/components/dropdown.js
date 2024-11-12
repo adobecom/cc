@@ -3,6 +3,7 @@ import { createTag } from '../../../scripts/utils.js';
 const SELECTOR_DROPDOWN = '.spectrum-Dropdown';
 const CLASS_IS_SELECTED = 'is-selected';
 const CLASS_IS_PLACEHOLDER = 'is-placeholder';
+const CLASS_HIDDEN = 'is-hidden';
 const ATTR_DROPDOWN_TYPE = 'data-dropdown-type';
 const ATTR_DROPDOWN_PARENT = 'data-dropdown-parent';
 const ATTR_DROPDOWN_SOURCE = 'data-dropdown-source';
@@ -81,11 +82,11 @@ class Dropdown {
             i.setAttribute('readonly', 'readonly');
             break;
           case 'error-required':
-            const er = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
           case 'error-validation':
-            const ev = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
+            const ev = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
             d.append(ev);
             break;
         }

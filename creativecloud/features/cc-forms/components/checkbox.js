@@ -1,4 +1,6 @@
 import { createTag } from '../../../scripts/utils.js';
+
+const CLASS_HIDDEN = 'is-hidden';
 class Checkbox {
     constructor(formEl, config) {
         this.form = formEl;
@@ -32,7 +34,7 @@ class Checkbox {
             i.setAttribute('checked', 'checked');
             break;
           case 'error-required':
-            const er = createTag('div', {class: 'hide-form-item'}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
         }
