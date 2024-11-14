@@ -122,6 +122,7 @@ const locales = {
 
 const stageDomainsMap = {
   'www.stage.adobe.com': {
+    'www.adobe.com': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -132,6 +133,7 @@ const stageDomainsMap = {
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.live': {
+    'www.adobe.com': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -142,6 +144,7 @@ const stageDomainsMap = {
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.page': {
+    'www.adobe.com': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
