@@ -79,11 +79,11 @@ class CCForms {
         case componentName.startsWith('cc-form-checkbox'):
           new Checkbox(this.form, componentConfig);
           break;
+        case componentName.startsWith('cc-form-button'):
+          new Button(this.form, componentConfig);
+          break;
         // case componentName.startsWith('cc-form-dropdown'):
         //   new Dropdown(this.form, componentConfig);
-        //   break;
-        // case componentName.startsWith('cc-form-button'):
-        //   new Button(this.form, componentConfig);
         //   break;
         // case componentName.startsWith('cc-form-consent'):
         //   new TextContent(this.form, componentConfig);
