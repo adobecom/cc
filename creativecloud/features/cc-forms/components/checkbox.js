@@ -64,17 +64,19 @@ class Checkbox {
     }
 
     createCheckbox() {
-      const i = createTag('input', { type: 'checkbox', class: 'cc-form-component'});
-      const s = createTag('label', { class: 'checkbox-label'}, i);
-      const d = createTag('div', { class: 'form-item' }, s);
+      const i = createTag('input', { type: 'checkbox', class: 'cc-form-component check-item-input checkbox-input'});
+      const checkWrap = createTag('div', { class: 'check-item-wrap checkbox-input-wrap' }, i);
+      const checkIcon = createTag('span', { class: 'check-item-button checkbox-button'});
+      checkWrap.append(checkIcon);
+      const d = createTag('div', { class: 'form-item' }, checkWrap);
       this.form.append(d);
       const cfgKeys = this.setComponentAttributes(i);
       [...cfgKeys].forEach((ck) => {
         switch(ck) {
           case 'label':
-            const ltxt = this.fieldConfig[ck].innerText.trim()
-            const lel = createTag('span', {}, ltxt);
-            s.append(lel);
+            const ltxt = this.fieldConfig[ck].innerText.trim();
+            const l = createTag('label', { class: 'check-item-label checkbox-label' }, ltxt);
+            checkWrap.append(l);
             i.setAttribute('aria-label', ltxt);
             break;
           case 'checked':

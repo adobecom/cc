@@ -194,7 +194,6 @@
 }
 
 .cc-forms .check-item-label {
-  font-size: var(--type-body-xs-size);
   font-weight: normal;
   margin-left: var(--spacing-xxs);
   padding-bottom: 0;
