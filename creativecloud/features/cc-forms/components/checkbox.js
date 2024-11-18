@@ -22,7 +22,7 @@ class Checkbox {
     }
 
     setComponentAttributes(i) {
-      const fieldType = this.fieldConfig.type.split('-').pop();
+      const fieldType = this.fieldConfig.type.split('cc-form-checkbox-').pop();
       switch(fieldType) {
         case 'consent-explicit-email':
           i.setAttribute('name', 'consentexplicitemail');
