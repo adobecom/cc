@@ -5,6 +5,10 @@
   justify-content: center;
 }
 
+.carousel-wrapper:has(.image-prompt) {
+  overflow: visible !important;
+}
+
 .image-prompt .prompt-link {
   display: flex;
   aspect-ratio: var(--aspect-ratio-wide);
