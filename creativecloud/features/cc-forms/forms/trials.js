@@ -73,7 +73,7 @@ class Trials {
           this.formContainer.dispatchEvent(this.event);
           this.checkValidElements();
           if (this.valid) {
-              this.circleLoaderShow();
+              // this.circleLoaderShow();
               setTimeout(() => {
                   this.submitAction();
               }, 1);
@@ -125,17 +125,17 @@ class Trials {
         window.location.href = destination;
     }
 
-    circleLoaderHide() {
-        this.circleLoader.classList.remove(CLASS_CIRCLE_LOADER_VISIBLE);
-    }
+    // circleLoaderHide() {
+    //     this.circleLoader.classList.remove(CLASS_CIRCLE_LOADER_VISIBLE);
+    // }
 
-    circleLoaderShow() {
-        const form = this;
-        this.circleLoader.classList.add(CLASS_CIRCLE_LOADER_VISIBLE);
-        setTimeout(() => {
-            form.circleLoaderHide();
-        }, CIRCLE_LOADER_TIMEOUT);
-    }
+    // circleLoaderShow() {
+    //     const form = this;
+    //     this.circleLoader.classList.add(CLASS_CIRCLE_LOADER_VISIBLE);
+    //     setTimeout(() => {
+    //         form.circleLoaderHide();
+    //     }, CIRCLE_LOADER_TIMEOUT);
+    // }
 
     getPST() {
         const d = new Date();
