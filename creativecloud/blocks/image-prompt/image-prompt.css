@@ -7,7 +7,7 @@
 
 .image-prompt .prompt-link {
   display: flex;
-  aspect-ratio: 16/9;
+  aspect-ratio: var(--aspect-ratio-wide);
   max-height: 240px;
   min-height: 160px;
   width: 100%;
@@ -31,8 +31,7 @@
   z-index: auto;
   margin: 12px;
   bottom: 0;
-  width: calc(100% - 24px);
-  max-width: 400px;
+  width: calc(100% - 26px);
 }
 
 .image-prompt .prompt-text {
@@ -54,7 +53,7 @@
   position: absolute;
   width: auto;
   height: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: var(--aspect-ratio-wide);
   background-color: #212121A8;
   opacity: 0;
   display: flex;
@@ -129,7 +128,6 @@
   border: none;
 }
 
-/* Mobile hover link */
 .image-prompt .hover-wrapper {
   display: flex;
   position: absolute;

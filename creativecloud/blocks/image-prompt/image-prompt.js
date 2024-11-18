@@ -77,7 +77,6 @@ export default async function init(el) {
   promptHover.classList.add('prompt-hover');
   hoverDiv.append(promptHover);
 
-  // Desktop
   const desktopButtonWrapper = createTag('div', { class: 'button-wrapper' });
   const desktopButton = createTag('button', { class: 'moving-button', tabindex: '-1' }, rows[2]?.textContent.replace('|', '').trim());
   const desktopsvg = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11" fill="none">
@@ -102,7 +101,7 @@ export default async function init(el) {
     prompt.style.opacity = '';
     promptHover.style.opacity = '';
   });
-  // Mobile
+
   const mobileLinkWrapper = createTag('div', { class: 'hover-wrapper' });
   const mobileLink = createTag('div', { class: 'hover-link' }, rows[2]?.textContent.replace('|', '').trim());
   const mobileIcon = rows[2]?.querySelector('img[src*=".svg"]');
@@ -111,7 +110,7 @@ export default async function init(el) {
   mobileLinkSvg.innerHTML = `${mobilesvg}`;
   mobileLinkWrapper.append(mobileLink, mobileLinkSvg);
   hoverMobileDiv.append(mobileLinkWrapper);
-  // Avatar
+
   const avatar = createTag('div', { class: 'avatar' });
   const avatarName = createTag('p', { class: 'avatar-name' });
   const avatarImg = rows[1]?.querySelector(':scope img');
