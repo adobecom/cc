@@ -729,14 +729,31 @@ function renderOrganizationDetails(containerTag) {
   });
 
   const websiteTag = getNonprofitInput({
-    type: 'text',
+    type: 'url',
     name: 'website',
     label: window.mph['nonprofit-website'],
     placeholder: window.mph['nonprofit-website-placeholder'],
     required: true,
   });
 
+  const websiteInput = websiteTag.querySelector('input');
+  const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+
+  const validateWebsite = () => {
+    const isValid = websiteInput.validity.valid && urlPattern.test(websiteInput.value);
+    websiteInput.classList.toggle('np-error', !isValid);
+  };
+
+  websiteInput.addEventListener('input', validateWebsite);
+  websiteInput.addEventListener('blur', validateWebsite);
+
   const submitTag = getSubmitTag();
+
+  formTag.addEventListener('input', () => {
+    const isFormValid = formTag.checkValidity();
+    const isWebsiteValid = urlPattern.test(websiteInput.value);
+    submitTag.toggleAttribute('disabled', !(isFormValid && isWebsiteValid));
+  });
 
   formTag.append(
     countryTag,
