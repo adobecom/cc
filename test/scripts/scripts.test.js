@@ -23,7 +23,7 @@ describe('Scripts', () => {
   });
 
   it('Check domain switch regexp', () => {
-    const regex = /www.adobe.com(?!\/*\S*\/(mini-plans|plans-fragments\/modals)\/\S*)/;
+    const regex = /www\.adobe\.com(?!\/*\S*\/(mini-plans|plans-fragments\/modals)\/\S*)/;
     // should not switch domain
     expect(regex.test('https://www.adobe.com/mini-plans/photoshop.html?mid=ft&web=1')).to.false;
     expect(regex.test('https://www.adobe.com/de/mini-plans/photoshop.html?mid=ft&web=1')).to.false;
