@@ -24,10 +24,6 @@ class Checkbox {
     setComponentAttributes(i) {
       const fieldType = this.fieldConfig.type.split('-').pop();
       switch(fieldType) {
-        case 'accept-agreement':
-          i.setAttribute('name', 'accept-agreement');
-          i.setAttribute('id', 'accept-agreement');
-          break;
         case 'consent-explicit-email':
           i.setAttribute('name', 'consentexplicitemail');
           i.setAttribute('id', 'consentexplicitemail');
@@ -40,19 +36,9 @@ class Checkbox {
           i.setAttribute('name', 'consentsoft');
           i.setAttribute('id', 'consentsoft');
           break;
-        case 'unsubscribe-all':
-          i.setAttribute('name', 'unsubscribe-all');
-          i.setAttribute('id', 'unsubscribe-all');
-          break;
-        case 'unsubscribe-instructional':
-          i.setAttribute('name', 'unsubscribe-instructional');
-          i.setAttribute('id', 'unsubscribe-instructional');
-          break;
-        case 'unsubscribe-sname':
-          i.setAttribute('name', 'unsubscribe-sname');
-          i.setAttribute('id', 'unsubscribe-sname');
-          break;
         default:
+          i.setAttribute('name', fieldType);
+          i.setAttribute('id', fieldType);
           break;
       }
       const cfgKeys = Object.keys(this.fieldConfig);
