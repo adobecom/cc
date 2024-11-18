@@ -65,7 +65,7 @@ class CCForms {
       const componentConfig = {};
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
-      componentConfig.type = componentName;
+      componentConfig.type = componentName.toLowerCase();
       if (c.parentElement.nextElementSibling) componentConfig.value = c.parentElement.nextElementSibling;
       while(formMetadata.length && !(/cc-form-/.test(formMetadata[0].classList))) {
         const s = formMetadata.shift();

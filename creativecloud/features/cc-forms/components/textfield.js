@@ -21,40 +21,16 @@ class Textfield {
         this.init();
     }
 
-    setValidationPattern(i) {
-      const fieldType = this.fieldConfig.type.split('-').pop();
-      switch(fieldType) {
-        case 'contributor':
-          i.setAttribute('pattern', "\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$");
-          break;
-        case 'email':
-          i.setAttribute('pattern', "^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$");
-          break;
-        case 'phonenumber':
-          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
-          break;
-        case 'postalcode':
-          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
-          break;
-        case 'website':
-          i.setAttribute('pattern', "^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$");
-          break;
-        default:
-          i.setAttribute('pattern', '[a-zA-Z0-9]+');
-          break;
-      }
+    init() {
+      this.textfield.addEventListener('blur', () => this.isValid() );
+      this.form.addEventListener('checkValidation', () => this.isValid());
     }
 
     createTextField() {
       const i = createTag('input', { type: 'text cc-form-component' });
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
-      this.setValidationPattern(i);
-      const cfgKeys = Object.keys(this.fieldConfig);
-      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
-        i.setAttribute('required', 'required');
-        i.setAttribute('data-required', 'required');
-      }
+      const cfgKeys = this.setComponentAttributes(i);
       [...cfgKeys].forEach((ck) => {
         switch(ck) {
           case 'label':
@@ -86,9 +62,36 @@ class Textfield {
       return i;
     }
 
-    init() {
-      this.textfield.addEventListener('blur', () => this.isValid() );
-      this.form.addEventListener('checkValidation', () => this.isValid());
+    setComponentAttributes(i) {
+      const fieldType = this.fieldConfig.type.split('cc-form-text-').pop();
+      switch(fieldType) {
+        case 'contributor':
+          i.setAttribute('pattern', "\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$");
+          break;
+        case 'email':
+          i.setAttribute('pattern', "^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$");
+          break;
+        case 'phonenumber':
+          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+          break;
+        case 'postalcode':
+          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+          break;
+        case 'website':
+          i.setAttribute('pattern', "^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$");
+          break;
+        default:
+          i.setAttribute('pattern', '[a-zA-Z0-9]+');
+          break;
+      }
+      i.setAttribute('name', fieldType);
+      i.setAttribute('id', fieldType);
+      const cfgKeys = Object.keys(this.fieldConfig);
+      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
+        i.setAttribute('required', 'required');
+        i.setAttribute('data-required', 'required');
+      }
+      return cfgKeys;
     }
 
     showMessage(type) {

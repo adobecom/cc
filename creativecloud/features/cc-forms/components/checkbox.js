@@ -14,6 +14,38 @@ class Checkbox {
         this.valid = true;
         this.init();
     }
+    
+    setComponentAttributes(i) {
+      const fieldType = this.fieldConfig.type.split('-').pop();
+      switch(fieldType) {
+        case 'contributor':
+          i.setAttribute('pattern', "\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$");
+          break;
+        case 'email':
+          i.setAttribute('pattern', "^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$");
+          break;
+        case 'phonenumber':
+          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+          break;
+        case 'postalcode':
+          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+          break;
+        case 'website':
+          i.setAttribute('pattern', "^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$");
+          break;
+        default:
+          i.setAttribute('pattern', '[a-zA-Z0-9]+');
+          break;
+      }
+      i.setAttribute('name', fieldType);
+      i.setAttribute('id', fieldType);
+      const cfgKeys = Object.keys(this.fieldConfig);
+      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
+        i.setAttribute('required', 'required');
+        i.setAttribute('data-required', 'required');
+      }
+      return cfgKeys;
+    }
 
     createCheckbox() {
       const i = createTag('input', { type: 'checkbox'});
@@ -47,13 +79,6 @@ class Checkbox {
         this.checkboxInput.addEventListener('change', () => this.isValid());
     }
 
-    fixRequiredAttribute() {
-        if (this.checkboxInput.hasAttribute('data-required')) {
-            this.checkboxInput.removeAttribute('data-required');
-            this.checkboxInput.setAttribute('required', 'required');
-        }
-    }
-
     showMessage() {
         const elem = this.form;
         this.form.classList.add('is-invalid');
@@ -69,7 +94,6 @@ class Checkbox {
     }
 
     isValid() {
-        this.fixRequiredAttribute();
         this.valid = false;
         if (!this.required) this.valid = true;
         if (this.required && this.checkboxInput.checked) this.valid = true;
