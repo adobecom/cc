@@ -2,8 +2,35 @@ import { createTag } from '../../scripts/utils.js';
 import Textfield from '/creativecloud/features/cc-forms/components/textfield.js';
 import Dropdown from '/creativecloud/features/cc-forms/components/dropdown.js';
 import Checkbox from '/creativecloud/features/cc-forms/components/checkbox.js';
-import Button from '/creativecloud/features/cc-forms/components/button.js';
-import TextContent from '/creativecloud/features/cc-forms/components/content.js';
+
+class TextContent {
+  constructor(formEl, config) {
+      this.form = formEl;
+      this.fieldConfig = config;
+      this.init();
+  }
+
+  init() {
+    const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
+    this.form.append(d);
+    return;
+  }
+}
+class Button {
+  constructor(formEl, config) {
+      this.form = formEl;
+      this.fieldConfig = config;
+      this.btnEl = this.createButton();
+  }
+
+  createButton() {
+    const a = createTag('a', { href: '#', class: 'con-button blue button-l' }, this.fieldConfig['label'].innerText.trim());
+    a.addEventListener('click', (e) => e.preventDefault());
+    const d = createTag('div', { class: 'form-item' }, a);
+    this.form.append(d);
+    return a;
+  }
+}
 
 const formConfig = {
   'perpeptual': {
@@ -85,12 +112,12 @@ class CCForms {
         // case componentName.startsWith('cc-form-dropdown'):
         //   new Dropdown(this.form, componentConfig);
         //   break;
-        // case componentName.startsWith('cc-form-consent'):
-        //   new TextContent(this.form, componentConfig);
-        //   break;
-        // case componentName.startsWith('cc-form-content'):
-        //   new TextContent(this.form, componentConfig);
-        //   break;
+        case componentName.startsWith('cc-form-consent'):
+          new TextContent(this.form, componentConfig);
+          break;
+        case componentName.startsWith('cc-form-content'):
+          new TextContent(this.form, componentConfig);
+          break;
         default:
           break;
       }
@@ -100,7 +127,6 @@ class CCForms {
 
 export default async function init(el) {
     const ccf = new CCForms(el);
-    // ccf.form.innerHTML += '<input type="submit" value="Submit" class="cc-form-component button submit">';
     // const { default: formConfigurator} = await import(ccf.formConfig["js"]);
     // const a = new formConfigurator(ccf.form);
     // a.buttonListener()
