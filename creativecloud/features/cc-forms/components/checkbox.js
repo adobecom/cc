@@ -1,6 +1,7 @@
 import { createTag } from '../../../scripts/utils.js';
 
 const CLASS_HIDDEN = 'is-hidden';
+const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 class Checkbox {
     constructor(formEl, config) {
         this.form = formEl;
@@ -14,31 +15,46 @@ class Checkbox {
         this.valid = true;
         this.init();
     }
-    
+
+    init() {
+        this.form.addEventListener('checkValidation', () => this.isValid());
+        this.checkboxInput.addEventListener('change', () => this.isValid());
+    }
+
     setComponentAttributes(i) {
       const fieldType = this.fieldConfig.type.split('-').pop();
       switch(fieldType) {
-        case 'contributor':
-          i.setAttribute('pattern', "\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$");
+        case 'accept-agreement':
+          i.setAttribute('name', 'accept-agreement');
+          i.setAttribute('id', 'accept-agreement');
           break;
-        case 'email':
-          i.setAttribute('pattern', "^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$");
+        case 'consent-explicit-email':
+          i.setAttribute('name', 'consentexplicitemail');
+          i.setAttribute('id', 'consentexplicitemail');
           break;
-        case 'phonenumber':
-          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+        case 'consent-explicit-phone':
+          i.setAttribute('name', 'consentexplicitphone');
+          i.setAttribute('id', 'consentexplicitphone');
           break;
-        case 'postalcode':
-          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+        case 'consent-soft':
+          i.setAttribute('name', 'consentsoft');
+          i.setAttribute('id', 'consentsoft');
           break;
-        case 'website':
-          i.setAttribute('pattern', "^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$");
+        case 'unsubscribe-all':
+          i.setAttribute('name', 'unsubscribe-all');
+          i.setAttribute('id', 'unsubscribe-all');
+          break;
+        case 'unsubscribe-instructional':
+          i.setAttribute('name', 'unsubscribe-instructional');
+          i.setAttribute('id', 'unsubscribe-instructional');
+          break;
+        case 'unsubscribe-sname':
+          i.setAttribute('name', 'unsubscribe-sname');
+          i.setAttribute('id', 'unsubscribe-sname');
           break;
         default:
-          i.setAttribute('pattern', '[a-zA-Z0-9]+');
           break;
       }
-      i.setAttribute('name', fieldType);
-      i.setAttribute('id', fieldType);
       const cfgKeys = Object.keys(this.fieldConfig);
       if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
         i.setAttribute('required', 'required');
@@ -48,25 +64,24 @@ class Checkbox {
     }
 
     createCheckbox() {
-      const i = createTag('input', { type: 'checkbox'});
-      const s = createTag('span', { class: 'input-checkbox'}, i);
+      const i = createTag('input', { type: 'checkbox', class: 'cc-form-component'});
+      const s = createTag('label', { class: 'checkbox-label'}, i);
       const d = createTag('div', { class: 'form-item' }, s);
       this.form.append(d);
-      const cfgKeys = Object.keys(this.fieldConfig);
-      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) i.setAttribute('required', 'required');
+      const cfgKeys = this.setComponentAttributes(i);
       [...cfgKeys].forEach((ck) => {
         switch(ck) {
           case 'label':
-            const l = this.fieldConfig[ck].innerText.trim();
-            const lel = createTag('label', {}, l);
+            const ltxt = this.fieldConfig[ck].innerText.trim()
+            const lel = createTag('span', {}, ltxt);
             s.append(lel);
-            i.setAttribute('aria-label', l);
+            i.setAttribute('aria-label', ltxt);
             break;
           case 'checked':
             i.setAttribute('checked', 'checked');
             break;
           case 'error-required':
-            const er = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required` }, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
         }
@@ -74,22 +89,13 @@ class Checkbox {
       return i;
     }
 
-    init() {
-        this.form.addEventListener('checkValidation', () => this.isValid());
-        this.checkboxInput.addEventListener('change', () => this.isValid());
-    }
-
-    showMessage() {
-        const elem = this.form;
-        this.form.classList.add('is-invalid');
-        this.form.querySelector('.spectrum-Checkbox').classList.add('is-invalid');
+    showMessage(type) {
+        const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
         if (elem) elem.classList.remove(CLASS_HIDDEN);
     }
 
-    hideMessage() {
-        const elem = this.form;
-        this.form.classList.remove('is-invalid');
-        this.form.querySelector('.spectrum-Checkbox').classList.remove('is-invalid');
+    hideMessage(type) {
+        const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
         if (elem) elem.classList.add(CLASS_HIDDEN);
     }
 
@@ -97,9 +103,9 @@ class Checkbox {
         this.valid = false;
         if (!this.required) this.valid = true;
         if (this.required && this.checkboxInput.checked) this.valid = true;
-        this.form.setAttribute('data-valid', this.valid);
-        this.hideMessage();
-        if (!this.valid) this.showMessage();
+        this.checkboxInput.setAttribute('data-valid', this.valid);
+        this.hideMessage('required');
+        if (!this.valid) this.showMessage('required');
         return this.valid;
     }
 }

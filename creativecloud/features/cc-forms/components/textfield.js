@@ -27,7 +27,7 @@ class Textfield {
     }
 
     createTextField() {
-      const i = createTag('input', { type: 'text cc-form-component' });
+      const i = createTag('input', { type: 'text', class: 'cc-form-component' });
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
       const cfgKeys = this.setComponentAttributes(i);
@@ -95,12 +95,12 @@ class Textfield {
     }
 
     showMessage(type) {
-        const elem = this.textfield.parentElement.querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
+        const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
         if (elem) elem.classList.remove(CLASS_HIDDEN);
     }
 
     hideMessage(type) {
-        const elem = this.textfield.parentElement.querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
+        const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
         if (elem) elem.classList.add(CLASS_HIDDEN);
     }
 
