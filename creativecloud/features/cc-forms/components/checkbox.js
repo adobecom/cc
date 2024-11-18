@@ -21,7 +21,39 @@ class Checkbox {
         this.checkboxInput.addEventListener('change', () => this.isValid());
     }
 
-    setComponentAttributes(i) {
+    createCheckbox() {
+      const i = createTag('input', { type: 'checkbox', class: 'cc-form-component check-item-input checkbox-input'});
+      const checkWrap = createTag('div', { class: 'check-item-wrap checkbox-input-wrap' }, i);
+      const checkIcon = createTag('span', { class: 'check-item-button checkbox-button'});
+      checkWrap.append(checkIcon);
+      const d = createTag('div', { class: 'form-item' }, checkWrap);
+      this.form.append(d);
+      const cfgKeys = this.setTypeAttributes(i);
+      [...cfgKeys].forEach((ck) => {
+        switch(ck) {
+          case 'label':
+            const ltxt = this.fieldConfig[ck].innerText.trim();
+            const l = createTag('label', { class: 'check-item-label checkbox-label' }, ltxt);
+            checkWrap.append(l);
+            i.setAttribute('aria-label', ltxt);
+            break;
+          case 'checked':
+            i.setAttribute('checked', 'checked');
+            break;
+          case 'optional':
+            i.removeAttribute('required');
+            i.removeAttribute('data-required');
+            break;
+          case 'error-required':
+            const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required` }, this.fieldConfig[ck].innerText.trim());
+            d.append(er);
+            break;
+        }
+      });
+      return i;
+    }
+
+    setTypeAttributes(i) {
       const fieldType = this.fieldConfig.type.split('cc-form-checkbox-').pop();
       switch(fieldType) {
         case 'consent-explicit-email':
@@ -42,39 +74,9 @@ class Checkbox {
           break;
       }
       const cfgKeys = Object.keys(this.fieldConfig);
-      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
-        i.setAttribute('required', 'required');
-        i.setAttribute('data-required', 'required');
-      }
+      i.setAttribute('required', 'required');
+      i.setAttribute('data-required', 'required');
       return cfgKeys;
-    }
-
-    createCheckbox() {
-      const i = createTag('input', { type: 'checkbox', class: 'cc-form-component check-item-input checkbox-input'});
-      const checkWrap = createTag('div', { class: 'check-item-wrap checkbox-input-wrap' }, i);
-      const checkIcon = createTag('span', { class: 'check-item-button checkbox-button'});
-      checkWrap.append(checkIcon);
-      const d = createTag('div', { class: 'form-item' }, checkWrap);
-      this.form.append(d);
-      const cfgKeys = this.setComponentAttributes(i);
-      [...cfgKeys].forEach((ck) => {
-        switch(ck) {
-          case 'label':
-            const ltxt = this.fieldConfig[ck].innerText.trim();
-            const l = createTag('label', { class: 'check-item-label checkbox-label' }, ltxt);
-            checkWrap.append(l);
-            i.setAttribute('aria-label', ltxt);
-            break;
-          case 'checked':
-            i.setAttribute('checked', 'checked');
-            break;
-          case 'error-required':
-            const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required` }, this.fieldConfig[ck].innerText.trim());
-            d.append(er);
-            break;
-        }
-      });
-      return i;
     }
 
     showMessage(type) {

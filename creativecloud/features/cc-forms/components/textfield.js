@@ -30,7 +30,8 @@ class Textfield {
       const i = createTag('input', { type: 'text', class: 'cc-form-component' });
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
-      const cfgKeys = this.setComponentAttributes(i);
+      this.setTypeAttributes(i);
+      const cfgKeys = Object.keys(this.fieldConfig);
       [...cfgKeys].forEach((ck) => {
         switch(ck) {
           case 'label':
@@ -45,7 +46,11 @@ class Textfield {
             break;
           case 'placeholder':
             i.setAttribute('placeholder', this.fieldConfig[ck].innerText.trim());
-            break
+            break;
+          case 'optional':
+            i.removeAttribute('required');
+            i.removeAttribute('data-required');
+            break;
           case 'read-only':
             i.setAttribute('readonly', 'readonly');
             break;
@@ -62,7 +67,7 @@ class Textfield {
       return i;
     }
 
-    setComponentAttributes(i) {
+    setTypeAttributes(i) {
       const fieldType = this.fieldConfig.type.split('cc-form-text-').pop();
       switch(fieldType) {
         case 'contributor':
@@ -86,12 +91,8 @@ class Textfield {
       }
       i.setAttribute('name', fieldType);
       i.setAttribute('id', fieldType);
-      const cfgKeys = Object.keys(this.fieldConfig);
-      if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
-        i.setAttribute('required', 'required');
-        i.setAttribute('data-required', 'required');
-      }
-      return cfgKeys;
+      i.setAttribute('required', 'required');
+      i.setAttribute('data-required', 'required');
     }
 
     showMessage(type) {
