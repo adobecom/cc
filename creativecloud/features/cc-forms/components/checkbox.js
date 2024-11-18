@@ -29,7 +29,8 @@ class Checkbox {
       const d = createTag('div', { class: 'form-item' }, checkWrap);
       this.form.append(d);
       const cfgKeys = this.setTypeAttributes(i);
-      [...cfgKeys].forEach((ck) => {
+      [...cfgKeys].forEach((ckraw) => {
+        const ck = ckraw.toLowerCase();
         switch(ck) {
           case 'label':
             const ltxt = this.fieldConfig[ck].innerText.trim();

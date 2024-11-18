@@ -32,7 +32,9 @@ class Textfield {
       this.form.append(d);
       this.setTypeAttributes(i);
       const cfgKeys = Object.keys(this.fieldConfig);
-      [...cfgKeys].forEach((ck) => {
+      [...cfgKeys].forEach((ckraw) => {
+        const ck = ckraw.toLowerCase();
+        if (ck.startsWith('max-length')) return i.setAttribute('maxlength', parseInt(ck.split('-').pop()));
         switch(ck) {
           case 'label':
             const l = this.fieldConfig[ck].innerText.trim();
