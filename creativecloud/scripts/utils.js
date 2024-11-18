@@ -154,17 +154,6 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '--cc--bozojovicic.hlx.page': {
-    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
-    'business.adobe.com': 'business.stage.adobe.com',
-    'helpx.adobe.com': 'helpx.stage.adobe.com',
-    'blog.adobe.com': 'blog.stage.adobe.com',
-    'developer.adobe.com': 'developer-stage.adobe.com',
-    'news.adobe.com': 'news.stage.adobe.com',
-    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
-    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
-    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
-  },
 };
 
 /**
