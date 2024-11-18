@@ -1,6 +1,9 @@
+:root {
+  --cc-forms-error: #E34850;
+}
+
 .cc-forms {
   --input-border-radius: 4px;
-
   padding: var(--spacing-xl);
   border-radius: var(--card-border-radius-l);
   filter: var(--image-filter-drop-shadow-small);
@@ -240,6 +243,15 @@
 
 .cc-forms .thank-you {
   text-align: center;
+}
+
+.cc-forms .field-detail {
+  font-size: var(--type-body-xxs-size);
+  line-height: var(--type-body-xxs-lh);
+}
+
+.cc-forms .error-message {
+  color: var(--cc-forms-error);
 }
 
 @media screen and (min-width: 600px) {

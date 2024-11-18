@@ -1,7 +1,7 @@
 import { createTag } from '../../../scripts/utils.js';
 
 const CLASS_HIDDEN = 'is-hidden';
-const SELECTOR_PREFIX_MESSAGE = '.hawksForms-message--';
+const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 
 class Textfield {
     constructor(formEl, config) {
@@ -21,10 +21,35 @@ class Textfield {
         this.init();
     }
 
+    setValidationPattern(i) {
+      const fieldType = this.fieldConfig.type.split('-').pop();
+      switch(fieldType) {
+        case 'contributor':
+          i.setAttribute('pattern', "\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$");
+          break;
+        case 'email':
+          i.setAttribute('pattern', "^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$");
+          break;
+        case 'phonenumber':
+          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+          break;
+        case 'postalcode':
+          i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+          break;
+        case 'website':
+          i.setAttribute('pattern', "^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$");
+          break;
+        default:
+          i.setAttribute('pattern', '[a-zA-Z0-9]+');
+          break;
+      }
+    }
+
     createTextField() {
-      const i = createTag('input', { type: 'text'});
+      const i = createTag('input', { type: 'text cc-form-component' });
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
+      this.setValidationPattern(i);
       const cfgKeys = Object.keys(this.fieldConfig);
       if (cfgKeys.includes('required') || !cfgKeys.includes('optional')) {
         i.setAttribute('required', 'required');
@@ -39,7 +64,7 @@ class Textfield {
             i.setAttribute('aria-label', l);
             break;
           case 'disclaimer':
-            const disclaimerDiv = createTag('div', {}, this.fieldConfig[ck].innerText.trim());
+            const disclaimerDiv = createTag('div', { class: `field-detail` }, this.fieldConfig[ck].innerText.trim());
             d.append(disclaimerDiv);
             break;
           case 'placeholder':
@@ -49,11 +74,11 @@ class Textfield {
             i.setAttribute('readonly', 'readonly');
             break;
           case 'error-required':
-            const er = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required` }, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
           case 'error-validation':
-            const ev = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
+            const ev = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-invalid` }, this.fieldConfig[ck].innerText.trim());
             d.append(ev);
             break;
         }
@@ -62,52 +87,29 @@ class Textfield {
     }
 
     init() {
-        this.form.addEventListener('checkValidation', () => this.isValid());
-        this.textfield.addEventListener('blur', () => this.isValid());
-    }
-
-    fixRequiredAttribute() {
-        if (this.textfield.hasAttribute('data-required')) {
-            this.textfield.removeAttribute('data-required');
-            this.textfield.setAttribute('required', 'required');
-        }
+      this.textfield.addEventListener('blur', () => this.isValid() );
+      this.form.addEventListener('checkValidation', () => this.isValid());
     }
 
     showMessage(type) {
-        const elem = this.form.querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
-        if (elem) {
-            elem.classList.remove(CLASS_HIDDEN);
-        }
+        const elem = this.textfield.parentElement.querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
+        if (elem) elem.classList.remove(CLASS_HIDDEN);
     }
 
     hideMessage(type) {
-        const elem = this.form.querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
-        if (elem) {
-            elem.classList.add(CLASS_HIDDEN);
-        }
+        const elem = this.textfield.parentElement.querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
+        if (elem) elem.classList.add(CLASS_HIDDEN);
     }
 
     isValid() {
         this.value = this.textfield.value;
-        this.fixRequiredAttribute();
         this.valid = false;
-        if (!this.pattern && !this.required) {
-            this.valid = true;
-        }
-        if (!this.pattern && this.required && this.value !== '') {
-            this.valid = true;
-        }
-        if (this.pattern && this.textfield.validity.valid) {
-            this.valid = true;
-        }
-        if (this.required && this.value === '') {
-            this.valid = false;
-        }
-
-        if (this.readonly) {
-            this.valid = true;
-        }
-        this.form.setAttribute('data-valid', this.valid);
+        if (!this.pattern && !this.required) this.valid = true;
+        if (!this.pattern && this.required && this.value !== '') this.valid = true;
+        if (this.pattern && this.textfield.validity.valid) this.valid = true;
+        if (this.required && this.value === '') this.valid = false;
+        if (this.readonly) this.valid = true;
+        this.textfield.setAttribute('data-valid', this.valid);
         this.hideMessage('invalid');
         this.hideMessage('required');
         if (!this.valid && this.value === '') {

@@ -1,5 +1,4 @@
 const SELECTOR_BUTTON = '.cc-form-component.button.submit';
-const SELECTOR_FORMS = '.cc-forms';
 const BUTTON_DISABLED_CLASS = 'is-disabled';
 const DATA_THANK_YOU_PAGE = 'data-thankyoupage';
 const DATA_CLIENT_NAME = 'data-clientName';
@@ -70,17 +69,16 @@ class Trials {
     }
 
     buttonListener() {
-        document.querySelector(SELECTOR_BUTTON)
-            .addEventListener('click', () => {
-                this.formContainer.dispatchEvent(this.event);
-                this.checkValidElements();
-                if (this.valid) {
-                    this.circleLoaderShow();
-                    setTimeout(() => {
-                        this.submitAction();
-                    }, 1);
-                }
-            });
+      this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
+          this.formContainer.dispatchEvent(this.event);
+          this.checkValidElements();
+          if (this.valid) {
+              this.circleLoaderShow();
+              setTimeout(() => {
+                  this.submitAction();
+              }, 1);
+          }
+      });
     }
 
     getUUID() {
@@ -252,8 +250,8 @@ class Trials {
                     if (response.status === 200 && (data.successful || data.success)) {
                         this.postSubmitSuccess(data);
                     } else if (response.status === 200
-                    && (document.querySelector(SELECTOR_FORMS).getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
-                    || document.querySelector(SELECTOR_FORMS).getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
+                    && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
+                    || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
                         this.postSubmitSuccess(data);
                     } else {
                         this.postSubmitFailure(response);
