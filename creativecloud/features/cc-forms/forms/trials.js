@@ -1,4 +1,4 @@
-const SELECTOR_BUTTON = '.cc-form-component.button.submit';
+const SELECTOR_BUTTON = '.cc-form-component.con-button.submit';
 const BUTTON_DISABLED_CLASS = 'is-disabled';
 const DATA_THANK_YOU_PAGE = 'data-thankyoupage';
 const DATA_CLIENT_NAME = 'data-clientName';
@@ -245,22 +245,22 @@ class Trials {
             },
             body: JSON.stringify(payLoad),
         })
-            .then((response) => {
-                response.json().then((data) => {
-                    if (response.status === 200 && (data.successful || data.success)) {
-                        this.postSubmitSuccess(data);
-                    } else if (response.status === 200
-                    && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
-                    || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
-                        this.postSubmitSuccess(data);
-                    } else {
-                        this.postSubmitFailure(response);
-                    }
-                })
-                    .catch(() => {
-                        this.postSubmitFailure(response);
-                    });
+        .then((response) => {
+            response.json().then((data) => {
+                if (response.status === 200 && (data.successful || data.success)) {
+                    this.postSubmitSuccess(data);
+                } else if (response.status === 200
+                && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
+                || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
+                    this.postSubmitSuccess(data);
+                } else {
+                    this.postSubmitFailure(response);
+                }
+            })
+            .catch(() => {
+                this.postSubmitFailure(response);
             });
+        });
     }
 
     toggleSubmitButton(disabled) {

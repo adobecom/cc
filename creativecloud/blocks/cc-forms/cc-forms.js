@@ -1,8 +1,7 @@
-import { createTag } from '../../scripts/utils.js';
+import { createTag, getConfig } from '../../scripts/utils.js';
 import Textfield from '/creativecloud/features/cc-forms/components/textfield.js';
 import Dropdown from '/creativecloud/features/cc-forms/components/dropdown.js';
 import Checkbox from '/creativecloud/features/cc-forms/components/checkbox.js';
-
 class TextContent {
   constructor(formEl, config) {
       this.form = formEl;
@@ -24,12 +23,20 @@ class Button {
   }
 
   createButton() {
-    const a = createTag('a', { href: '#', class: 'con-button blue button-l' }, this.fieldConfig['label'].innerText.trim());
+    const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig['label'].innerText.trim());
     a.addEventListener('click', (e) => e.preventDefault());
     const d = createTag('div', { class: 'form-item' }, a);
     this.form.append(d);
     return a;
   }
+}
+
+function getOdinEndpoint() {
+  const cfg = getConfig();
+  const { host } = window.location;
+  if (host.includes('stage.adobe.com' || 'hlx.live')) return cfg.stage.odinEndpoint;
+  if (host.includes('adobe.com')) return cfg.prod.odinEndpoint;
+  return cfg.live.odinEndpoint;
 }
 
 const formConfig = {
@@ -39,7 +46,10 @@ const formConfig = {
     'blockDataset': {
       'clientname': 'trials',
       'endpoint': '/api2/marketing_common_service',
-      'form-type': 'form.perpetual.action'
+      'form-type': 'form.perpetual.action',
+      'odinenvironment' : getOdinEndpoint(),
+      'odin-prepopulate-api': `${getOdinEndpoint()}graphql/execute.json/acom/listvalidationsbylocale;path=/content/dam/acom/validation`,
+      'form-submit': 'trials',
     }
   },
   'connect': {
@@ -74,7 +84,7 @@ class CCForms {
   }
 
   initForm() {
-    const f = createTag('form');
+    const f = createTag('form', { novalidate: '' });
     this.el.prepend(f);
     return f;
   }
@@ -126,8 +136,7 @@ class CCForms {
 }
 
 export default async function init(el) {
-    const ccf = new CCForms(el);
-    // const { default: formConfigurator} = await import(ccf.formConfig["js"]);
-    // const a = new formConfigurator(ccf.form);
-    // a.buttonListener()
+    const formComponent = new CCForms(el);
+    const { default: FormConfigurator} = await import(formComponent.formConfig["js"]);
+    const formVariant = new FormConfigurator(formComponent.form);
 }

@@ -1,4 +1,5 @@
 import Trials from '/creativecloud/features/cc-forms/forms/trials.js';
+import { getConfig } from '/creativecloud/scripts/utils.js';
 
 const SELECTOR = {
     NO_LEAD: '#nolead',
@@ -37,25 +38,12 @@ const ATTRIBUTE = {
 
 class PerpetualTrials extends Trials {
     constructor(form) {
+        console.log(getConfig())
         super(form);
         this.form = form;
-        // wait for consent notice dxf to load
-        // const notice = document.querySelector(`#${NOTICE_ID}`);
-        // const dxf = notice.querySelector('.dxf');
-        // if (notice && dxf !== null) {
-        //     window.addEventListener('dexter:DXFsReady', () => {
-        //         this.buttonListener();
-        //     });
-        //     notice.addEventListener('load', () => {
-        //         this.buttonListener();
-        //     });
-        // } else {
-        //     // if consent notice dxf is not authored
-        //     this.buttonListener();
-        // }
-        window.addEventListener('load', () => {
-            this.initVars();
-        });
+        const notice = this.form.querySelector(`#${NOTICE_ID}`);
+        this.buttonListener();
+        this.initVars();
         const ptDownloadForm = document.getElementById('ptDownloadForm');
         const thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
         if (ptDownloadForm !== null) {
@@ -77,8 +65,8 @@ class PerpetualTrials extends Trials {
         this.orgSize = '';
         this.setOrgFlag = false;
         this.rengaUri = `/api2/marketing_get_uds?api_key=${this.apikey}`;
-        // try { this.locale = this.imslib.getLocale(); } catch (e) { this.locale = 'en_US'; }
-        const userProfilePromise = window.adobeIMS.getProfile();
+        try { this.locale = this.imslib.adobeid.locale } catch (e) { this.locale = 'en_US'; }
+        const userProfilePromise = this.imslib.getProfile();
         userProfilePromise.then((profile) => {
             if (!profile.userId) return;
             this.imsProfile = profile;
@@ -117,9 +105,7 @@ class PerpetualTrials extends Trials {
         if (userAgent.indexOf('X11') !== -1) OSName = 'UNIX';
         if (userAgent.indexOf('Linux') !== -1) OSName = 'Linux';
         if (userAgent.indexOf('WOW64') !== -1 || userAgent.indexOf('Win64') !== -1) OSName = 'Windows 64-bit';
-        if (OSName === 'Unsupported') {
-            OSSelect = 'Undefined';
-        }
+        if (OSName === 'Unsupported') OSSelect = 'Undefined';
         return OSSelect;
     }
 
@@ -130,33 +116,29 @@ class PerpetualTrials extends Trials {
             rengatoken: this.getCookieValueByName('WCDServer'),
             appdomain: 'ACOM_ECOM',
         };
-        this.accesstoken = window.feds.utilities.imslib.getAccessToken();
+        this.accesstoken = this.imslib.getAccessToken().token;
         this.postCommonService(this.accesstoken, rengaJson, this.rengaUri);
     }
 
     submitAction() {
         const ptDownloadForm = document.getElementById('ptDownloadForm');
         if (window.digitalData && ptDownloadForm !== null) {
-            const primaryEvent = window.digitalData.primaryEvent
-                ? window.digitalData.primaryEvent : {};
-            const eventInfo = primaryEvent.eventInfo
-                ? primaryEvent.eventInfo : {};
-            const pageName = window.digitalData.page && window.digitalData.page.pageInfo
-                && window.digitalData.page.pageInfo.pageName ? window.digitalData.page.pageInfo.pageName : '';
+            const primaryEvent = window.digitalData.primaryEvent ? window.digitalData.primaryEvent : {};
+            const eventInfo = primaryEvent.eventInfo ? primaryEvent.eventInfo : {};
+            const digitalDataObj = window.alloy_all.data._adobe_corpnew.digitalData;
+            const pageName = digitalDataObj?.page?.pageInfo?.pageName ? digitalDataObj.page.pageInfo.pageName : '';
             eventInfo.eventName = `${pageName}_submitButtonClick`;
             eventInfo.eventAction = 'event14';
             primaryEvent.eventInfo = eventInfo;
             window.digitalData.primaryEvent = primaryEvent;
         }
         /* eslint-disable no-underscore-dangle */
-        if (window._satellite) {
-            window._satellite.track('trackPerpetualTrialDownloadFormSubmit');
-        }
+        if (window._satellite) window._satellite.track('trackPerpetualTrialDownloadFormSubmit');
         /* eslint-enable no-underscore-dangle */
         this.setOrgFlag = false;
         this.payLoad = this.isNoLeadProduct ? this.getPayloadForNoLead() : this.getPayloadForLead();
         this.addGdprPropertiesToPayload();
-        this.accesstoken = window.feds.utilities.imslib.getAccessToken();
+        this.accesstoken = this.imslib.getAccessToken().token;
         this.setDownloadFile();
         this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
     }
@@ -167,18 +149,14 @@ class PerpetualTrials extends Trials {
         date = date.setTime(date.getTime() + 60 * 60 * 1000);
         const cookieDetails = { path: '/', domain: '.adobe.com', expiration: date };
         this.setCookie('MM_TRIALS', '12345', cookieDetails);
-        if (!productSkuValue) {
-            return false;
-        }
+        if (!productSkuValue) return false;
         const downloadUrl = productSkuValue.split('|')[0].trim();
         return window.localStorage.setItem('productSkuDownloadUrl', downloadUrl);
     }
 
     getTIDCookie() {
         const TIDCookieValue = decodeURIComponent(this.getCookieValueByName('TID')) || '';
-        if (TIDCookieValue && TIDCookieValue.length > 0) {
-            return TIDCookieValue.trim();
-        }
+        if (TIDCookieValue && TIDCookieValue.length > 0) return TIDCookieValue.trim();
         return TIDCookieValue;
     }
 
@@ -187,7 +165,7 @@ class PerpetualTrials extends Trials {
             ims: {
                 ims_client_id: 'trials1',
                 userProfile: this.imsProfile || {},
-                access_token: window.feds.utilities.imslib.getAccessToken(),
+                access_token: this.imslib.getAccessToken().token,
                 renga_token: this.getCookieValueByName('WCDServer'),
             },
             actions: ['apo', 'ims_update', 'ok_to_call', 'renga_uds', 'lead', 'ice'],
@@ -237,7 +215,6 @@ class PerpetualTrials extends Trials {
         } else {
             jsonPayload.custom.email_template = emailTemplate;
         }
-
         jsonPayload.ims.userProfile.job_title = this.getValue(SELECTOR.JOB_TITLE) ? this.getValue(SELECTOR.JOB_TITLE) : '';
         jsonPayload.ims.userProfile.job_function = this.getValue(SELECTOR.JOB_FUNCTION);
         jsonPayload.ims.userProfile.company = this.getValue(SELECTOR.COMPANY);
@@ -248,10 +225,8 @@ class PerpetualTrials extends Trials {
         jsonPayload.ims.userProfile['address.mail_to'].countryRegion = this.getValue(SELECTOR.STATE);
         jsonPayload.ims.userProfile['address.mail_to'].countryCode = countryCode !== null ? countryCode : this.getValue(SELECTOR.COUNTRY);
         const skuElement = this.form.querySelector('[data-configurefor="productsku"] .spectrum-Menu-item.is-selected');
-        if (skuElement) {
-            this.skuValue = skuElement.getAttribute('sku');
-        }
-        jsonPayload.custom.locale = window.feds.utilities.imslib.getLocale();
+        if (skuElement) this.skuValue = skuElement.getAttribute('sku');
+        jsonPayload.custom.locale = this.imslib.adobeid.locale;
         jsonPayload.custom.website = this.getValue(SELECTOR.WEBSITE);
         jsonPayload.custom.campaignId = this.skuValue;
         jsonPayload.custom.purchasetimeframe = this.getValue(SELECTOR.PURCHASE_TIMEFRAME);
@@ -272,20 +247,18 @@ class PerpetualTrials extends Trials {
     }
 
     getPayloadForNoLead() {
-        const skuElement = this.form.querySelector('[data-configurefor="productsku"] .spectrum-Menu-item.is-selected');
-        if (skuElement) {
-            this.skuValue = skuElement.getAttribute('sku');
-        }
+        const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
+        if (skuElement) this.skuValue = skuElement.getAttribute('sku');
         const jsonPayload = {
             client_name: this.clientName || 'trials',
             message_uuid: this.getUUID(),
             ims: {
                 userProfile: this.imsProfile,
-                access_token: window.feds.utilities.imslib.getAccessToken(),
+                access_token: this.imslib.getAccessToken().token,
                 renga_token: this.getCookieValueByName('WCDServer'),
             },
             custom: {
-                locale: window.feds.utilities.imslib.getLocale(),
+                locale: this.imslib.adobeid.locale,
                 campaignId: this.skuValue,
                 email_template: this.getValue(SELECTOR.EMAIL_TEMPLATE),
                 treatmentid: this.getTIDCookie(),
@@ -315,9 +288,7 @@ class PerpetualTrials extends Trials {
 
     addGdprPropertiesToPayload() {
         const currentUrl = this.getValue('#current_url');
-        if (currentUrl) {
-            this.payLoad.custom.current_url = currentUrl;
-        }
+        if (currentUrl) this.payLoad.custom.current_url = currentUrl;
         const noticeBody = this.getValue('#noticeplaceholder', 'data-notice-body');
         this.payLoad.custom.consent_notice = noticeBody;
         const marketingPermissions = this.getValue('#noticeplaceholder', 'data-marketing-permissions');
@@ -333,8 +304,8 @@ class PerpetualTrials extends Trials {
             },
             body: JSON.stringify(payLoad),
         })
-            .then((response) => { window.location.href = this.thankyouPage; })
-            .catch((error) => {});
+        .then((response) => { window.location.href = this.thankyouPage; })
+        .catch((error) => {});
     }
 }
 
