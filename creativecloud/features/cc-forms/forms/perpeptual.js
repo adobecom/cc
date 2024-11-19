@@ -38,7 +38,6 @@ const ATTRIBUTE = {
 
 class PerpetualTrials extends Trials {
     constructor(form) {
-        console.log(getConfig())
         super(form);
         this.form = form;
         const notice = this.form.querySelector(`#${NOTICE_ID}`);

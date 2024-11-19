@@ -100,7 +100,6 @@ class Trials {
           formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
         });
         this.formConfig = formConfig;
-        console.log(this.formConfig);
     }
 
     getFormConfig(key) {
