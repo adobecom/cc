@@ -66,8 +66,8 @@ const formConfig = {
 class CCForms {
   constructor(el) {
     this.el = el;
-    this.form = this.initForm();
     this.formConfig = this.getFormConfig();
+    this.form = this.initForm();
     this.setFormDataAttributes();
     this.createFormComponents();
   }
@@ -79,17 +79,23 @@ class CCForms {
       case this.el.classList.contains('subscribe'):
         return formConfig['subscribe'];
       default:
-        return {}
+        return null;
     }
   }
 
   initForm() {
+    if (!this.formConfig) {
+      const d = createTag('div', { class: 'form-components'});
+      this.el.prepend(d);
+      return d;
+    }
     const f = createTag('form', { novalidate: '' });
     this.el.prepend(f);
     return f;
   }
 
   setFormDataAttributes() {
+    if (!this.formConfig) return;
     Object.keys(this.formConfig.blockDataset).forEach((k) => {
       this.form.setAttribute(`data-${k}`, this.formConfig.blockDataset[k]);
     });
@@ -137,6 +143,7 @@ class CCForms {
 
 export default async function init(el) {
     const formComponent = new CCForms(el);
+    if (!formComponent.formConfig) return;
     const { default: FormConfigurator} = await import(formComponent.formConfig["js"]);
     const formVariant = new FormConfigurator(formComponent.form);
 }

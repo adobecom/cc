@@ -14,28 +14,29 @@
   color: #2C2C2C;
 }
 
-.cc-forms > div,
+.cc-forms > div:not(.form-components),
 .cc-forms > p {
   display: none;
 }
 
-.cc-forms form {
+.cc-forms form,
+.cc-forms .form-component {
   width: 100%;
   display: flex;
   flex-direction: column;
   padding-bottom: 100px; /* to remove */
 }
 
-.cc-forms form .form-item {
+.cc-forms .form-item {
   width: 100%;
 }
 
-.cc-forms form .form-item .section .content,
-.cc-forms form .form-item .section .text .foreground {
+.cc-forms .form-item .section .content,
+.cc-forms .form-item .section .text .foreground {
   max-width: 100%;
 }
 
-.cc-forms form .is-hidden {
+.cc-forms .is-hidden {
   display: none;
 }
 
@@ -254,7 +255,8 @@
 }
 
 @media screen and (min-width: 600px) {
-  .cc-forms form {
+  .cc-forms form,
+  .cc-forms .form-component {
     display: flex;
     flex-direction: column;
     gap: 0 var(--spacing-l);

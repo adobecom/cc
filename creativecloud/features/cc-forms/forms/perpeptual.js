@@ -79,7 +79,7 @@ class PerpetualTrials extends Trials {
         if (this.form.querySelector('[data-dropdown-name=country]') instanceof HTMLElement) {
             try {
                 const elemButton = this.form.querySelector('[data-dropdown-name=country]');
-                elemButton.querySelector(`.spectrum-Menu-item[data-value=${this.imsProfile.countryCode}]`).click();
+                elemButton.querySelector(`.menu-item[data-value=${this.imsProfile.countryCode}]`).click();
                 const dropdown = this.form.querySelector('[name=country]');
                 dropdown.setAttribute('disabled', 'true');
                 elemButton.classList.add(DISABLED);
@@ -223,7 +223,7 @@ class PerpetualTrials extends Trials {
         jsonPayload.ims.userProfile['address.mail_to'].stateProv = this.getValue(SELECTOR.STATE);
         jsonPayload.ims.userProfile['address.mail_to'].countryRegion = this.getValue(SELECTOR.STATE);
         jsonPayload.ims.userProfile['address.mail_to'].countryCode = countryCode !== null ? countryCode : this.getValue(SELECTOR.COUNTRY);
-        const skuElement = this.form.querySelector('[data-configurefor="productsku"] .spectrum-Menu-item.is-selected');
+        const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
         if (skuElement) this.skuValue = skuElement.getAttribute('sku');
         jsonPayload.custom.locale = this.imslib.adobeid.locale;
         jsonPayload.custom.website = this.getValue(SELECTOR.WEBSITE);
