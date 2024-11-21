@@ -70,6 +70,11 @@ class CCForms {
     this.form = this.initForm();
     this.setFormDataAttributes();
     this.createFormComponents();
+    this.demandBaseConfig = {
+      'demandbase-endpoint': 'https://api.demandbase.com/autocomplete',
+      'demandbase-apiKey': 'e4086fa3ea9d74ac2aae2719a0e5285dc7075d7b',
+      'demandbase-delay': 400,
+    }
   }
   
   getFormConfig() {
