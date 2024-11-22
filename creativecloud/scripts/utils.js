@@ -358,7 +358,7 @@ const CONFIG = {
   live: {
     pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
-    odinEndpoint: "https://qa-odin.adobe.com/",
+    odinEndpoint: "https://stage-odin.adobe.com/",
   },
   prod: {
     pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',

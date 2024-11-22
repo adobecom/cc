@@ -1,21 +1,12 @@
 import { createTag } from '../../../scripts/utils.js';
 
 const SELECTOR_DROPDOWN = '.spectrum-Dropdown';
-const CLASS_IS_SELECTED = 'is-selected';
-const CLASS_IS_PLACEHOLDER = 'is-placeholder';
 const CLASS_HIDDEN = 'is-hidden';
 const ATTR_DROPDOWN_TYPE = 'data-dropdown-type';
 const ATTR_DROPDOWN_PARENT = 'data-dropdown-parent';
 const ATTR_DROPDOWN_SOURCE = 'data-dropdown-source';
-const ATTR_DROPDOWN_CONFIGURE_FOR = 'data-configureFor';
 const ATTR_DROPDOWN_NAME = 'data-dropdown-name';
-const ATTR_DROPDOWN_LABEL = 'data-dropdown-label';
 const ATTR_SORT_PROPERTY = 'data-sort-property';
-const SELECTOR_MENU = '.menu';
-const SELECTOR_MENU_ITEM = '.menu-item';
-const SELECTOR_DROPDOWN_LABEL = '.dropdown-label';
-const SELECTOR_DROPDOWN_TRIGGER = '.dropdown-trigger';
-const SELECTOR_DROPDOWN_POPOVER = '.dropdown-popover';
 const DROPDOWN_HIDDEN_ID = 'ptDownloadForm';
 const DROPDOWN_HIDDEN_ATTR_PLABEL = 'data-plabel';
 const DATA_ODIN_ENVIRONMENT = 'data-odinEnvironment';
@@ -36,33 +27,89 @@ class Dropdown {
       this.parentName = this.dropdown.getAttribute(ATTR_DROPDOWN_PARENT);
       this.parent = false;
       this.child = false;
-      this.configureFor = this.dropdown.getAttribute(ATTR_DROPDOWN_CONFIGURE_FOR) || false;
       this.source = this.dropdown.getAttribute(ATTR_DROPDOWN_SOURCE) || false;
       if (this.source && this.form && this.form.getAttribute(DATA_ODIN_ENVIRONMENT) && this.source.indexOf('https://') === -1) {
         this.source = this.form.getAttribute(DATA_ODIN_ENVIRONMENT) + this.source;
       }
       this.name = this.dropdown.getAttribute(ATTR_DROPDOWN_NAME);
-      this.label = this.dropdown.getAttribute(ATTR_DROPDOWN_LABEL);
       this.sortProperty = this.dropdown.getAttribute(ATTR_SORT_PROPERTY);
-      this.elemLabel = this.dropdown.querySelector(SELECTOR_DROPDOWN_LABEL);
-      this.elemButton = this.dropdown.querySelector(SELECTOR_DROPDOWN_TRIGGER);
-      this.value = this.elemButton.value;
-      this.isOpen = false;
+      this.value = this.dropdown.value;
       this.valid = true;
-      this.keysSoFar = '';
-      this.searchIndex = -1;
-      this.activeItem = '';
       this.required = !!(this.dropdown.getAttribute('data-form-required'));
       this.init();
     }
 
+    getDroprownConfigurations(dtype) {
+      const dropdownConfigurations = {
+        'freemium-purchase-intent' : {
+            'dropdown-name': 'freemiumpurchaseintent',
+            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectfreemium/us/en',
+          },
+        'connect-purchase-intent': {
+              'dropdown-name': 'connectpurchaseintent',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connecttrialpurchaseintent/us/en',
+          },
+        'country': {
+              'dropdown-name': 'country',
+              'dropdown-source': 'graphql/execute.json/acom/listallcountries',
+          },
+        'estunitship': {
+              'dropdown-name': 'estunitship',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/estunitship/us/en',
+          },
+        'industry': {
+              'dropdown-name': 'industry',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/industry/us/en',
+          },
+        'jobfunction': {
+              'dropdown-name': 'jobfunction',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobfunction/us/en',
+          },
+        'jobtitle': {
+              'dropdown-name': 'jobtitle',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
+          },
+        'orgsize': {
+              'dropdown-name': 'orgsize',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/orgsize/us/en',
+          },
+        'productsku': {
+              'dropdown-name': 'productsku',
+              'dropdown-source': 'graphql/execute.json/acom/listskuproductandversions',
+          },
+        'purchaseintent': {
+              'dropdown-name': 'purchaseintent',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/us/en',
+          },
+        'region': {
+              'dropdown-name': 'region',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
+          },
+        'state': {
+              'dropdown-name': 'state',
+              'dropdown-source': null,
+          },
+        'timeframe': {
+              'dropdown-name': 'timeframe',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timeframe/us/en',
+          },
+        'timezone': {
+              'dropdown-name': 'timezone',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timezone/us/en',
+          },
+        'usertype': {
+              'dropdown-name': 'usertype',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/usertype/us/en',
+          },
+        };
+        return dropdownConfigurations[dtype] ? dropdownConfigurations[dtype] : null;
+    }
+
     createDropdown() {
-      const i = createTag('select');
+      const i = createTag('select', { class: 'menu'});
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
-      const cfgKeys = Object.keys(this.fieldConfig);
-      i.setAttribute('required', 'required');
-      i.setAttribute('data-form-required', 'required');
+      const cfgKeys = this.setTypeAttributes(i);
       [...cfgKeys].forEach((ck) => {
         switch(ck) {
           case 'label':
@@ -85,6 +132,15 @@ class Dropdown {
             i.removeAttribute('required');
             i.removeAttribute('data-form-required');
             break;
+          case 'sort-value':
+            i.setAttribute(ATTR_SORT_PROPERTY, 'value');
+            break;
+          case 'sort-id':
+            i.setAttribute(ATTR_SORT_PROPERTY, 'id');
+            break;
+          case 'sort-title':
+            i.setAttribute(ATTR_SORT_PROPERTY, 'title');
+            break;
           case 'error-required':
             const er = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
             d.append(er);
@@ -98,8 +154,27 @@ class Dropdown {
       return i;
     }
 
+    setTypeAttributes(i) {
+      const fieldType = this.fieldConfig.type.split('cc-form-dropdown-').pop();
+      const typeAttrs = this.getDroprownConfigurations(fieldType);
+      if (!typeAttrs) return;
+      Object.keys(typeAttrs).forEach((k) => {
+        i.setAttribute(`data-${k}`, typeAttrs[k]);
+      });
+      i.setAttribute('required', 'required');
+      i.setAttribute('data-form-required', 'required');
+      i.setAttribute(ATTR_DROPDOWN_TYPE, 'independent');
+      const cfgKeys = Object.keys(this.fieldConfig);
+      const dependentParent = cfgKeys.find((k) => k.includes('dependent'));
+      if (dependentParent) {
+        i.setAttribute(ATTR_DROPDOWN_TYPE, 'dependent');
+        i.setAttribute(ATTR_DROPDOWN_PARENT, dependentParent.split('-')[1]);
+      }
+      return cfgKeys;
+    }
+
     isValid() {
-      this.value = this.elemButton.value;
+      this.value = this.dropdown.value;
       this.valid = false;
       if (!this.required) this.valid = true;
       if (this.required && !!(this.value)) this.valid = true;
@@ -107,11 +182,9 @@ class Dropdown {
       this.form.setAttribute('data-valid', this.valid);
       if (this.valid) {
         this.dropdown.classList.remove('is-invalid');
-        this.elemButton.classList.remove('is-invalid');
-      } else {
-        this.dropdown.classList.add('is-invalid');
-        this.elemButton.classList.add('is-invalid');
-      }
+        return this.valid;
+      } 
+      this.dropdown.classList.add('is-invalid');
       return this.valid;
     }
 
@@ -122,10 +195,7 @@ class Dropdown {
       }
       if (this.type === 'independent' && this.source) this.loadData();
       if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
-      this.elemButton.addEventListener('blur', () => this.isValid());
-      this.handleClickClose();
-      this.handleClick();
-      this.DropKeyEvents();
+      this.dropdown.addEventListener('blur', () => this.isValid());
       if (this.name === 'productsku') this.handleProductSKUChange();
       if (this.name === 'purchaseintent') this.handlePurchaseIntentChange();
     }
@@ -170,49 +240,6 @@ class Dropdown {
         });
     }
 
-    handleClickClose() {
-        document.addEventListener('click', (event) => {
-            const dropdowns = this.form.querySelectorAll('.dropdown');
-            Array.prototype.forEach.call(dropdowns, (drop) => {
-                if (!drop.contains(event.target)) {
-                    this.closeDropdown(drop);
-                    if (this.activeItem) {
-                        this.deFocusElement(this.activeItem);
-                        this.activeItem = '';
-                    }
-                }
-            });
-        });
-    }
-
-    handleClick() {
-        this.dropdown.addEventListener('click', (event) => {
-            event.preventDefault();
-            const elem = event.target.closest(SELECTOR_DROPDOWN);
-            const dropdownTrigger = elem.querySelector(SELECTOR_DROPDOWN_TRIGGER);
-            const dropdownLabel = elem.querySelector(SELECTOR_DROPDOWN_LABEL);
-            const menuItem = event.target.closest(SELECTOR_MENU_ITEM);
-            if (dropdownTrigger) {
-                if (!this.dropdown.classList.contains('is-open')) {
-                    this.toggleOpen();
-                } else {
-                    this.closeDropdown(this.dropdown);
-                }
-            }
-            if (this.activeItem) {
-                this.deFocusElement(this.activeItem);
-                this.activeItem = '';
-            }
-            if (menuItem) {
-                const menuLabel = menuItem.querySelector('.menu-itemLabel');
-                if (!menuLabel && !dropdownLabel) return;
-                dropdownLabel.innerHTML = menuLabel.innerHTML;
-                event.stopPropagation();
-                this.handleMenuChange(menuItem.parentElement, menuItem);
-            }
-        });
-    }
-
     loadData() {
       window.fetch(this.source)
       .then(response => response.json())
@@ -224,7 +251,7 @@ class Dropdown {
 
     dataMapping(data) {
         let dataMapped;
-        switch (this.configureFor) {
+        switch (this.name) {
             case 'productsku':
                 dataMapped = this.mapProductSku(data);
                 this.populatePlabel(data);
@@ -266,7 +293,7 @@ class Dropdown {
     }
 
     populatePlabel(data) {
-        const hiddenEl = document.getElementById(DROPDOWN_HIDDEN_ID);
+        const hiddenEl = this.form.getElementById(DROPDOWN_HIDDEN_ID);
         const productLabel = data.data[Object.keys(data.data)[0]].items[0].version[0].productlabel;
         if (hiddenEl.hasAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL)) {
             hiddenEl.setAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL, productLabel);
@@ -282,11 +309,8 @@ class Dropdown {
         const sortedTopCountries = [];
         const sortedCountries = [];
         for (let i = 0; i < items.length; i += 1) {
-            if (items[i].isTop) {
-                sortedTopCountries.push(items[i]);
-            } else {
-                sortedCountries.push(items[i]);
-            }
+            if (items[i].isTop) sortedTopCountries.push(items[i]);
+            else sortedCountries.push(items[i]);
         }
         sortedTopCountries.sort(function (a, b) {
             return (a.value > b.value) ? -1 : 1;
@@ -298,7 +322,7 @@ class Dropdown {
     }
 
     listenParentChanges() {
-      this.parent = document.querySelector(`.spectrum-Dropdown[data-dropdown-name="${this.parentName}"]`);
+      this.parent = this.form.querySelector(`.menu[data-dropdown-name="${this.parentName}"]`);
       if (!(this.parent instanceof HTMLElement)) return;
       this.parent.addEventListener('change', (event) => {
           if (this.parentName === 'country') {
@@ -309,12 +333,12 @@ class Dropdown {
               if (hasCountriesALL && !hasCountriesByPathAPI) {
                   fetchRegionSource = this.form.getAttribute(DATA_ODIN_ENVIRONMENT)
                       + GRAPHQL_ENDPOINT + REGIONS_BY_PATH_API + DATA_ODIN_US_PATH
-                      + event.detail.value;
+                      + event.target.value;
               } else {
                   const s = this.parent.getAttribute(ATTR_DROPDOWN_SOURCE);
                   const replaceByRegion = s.replace(COUNTRIES_BY_PATH_API, REGIONS_BY_PATH_API);
                   fetchRegionSource = this.form.getAttribute(DATA_ODIN_ENVIRONMENT)
-                  + replaceByRegion + SLASH + event.detail.value;
+                  + replaceByRegion + SLASH + event.target.value;
               }
               this.resetRegionDropdown();
               window.fetch(fetchRegionSource)
@@ -356,278 +380,32 @@ class Dropdown {
     }
 
     reset() {
-      this.elemLabel.innerHTML = this.label;
-      this.elemLabel.classList.add(CLASS_IS_PLACEHOLDER);
-      this.elemButton.setAttribute('value', '');
+      this.dropdown.setAttribute('value', '');
     }
 
     disable(force) {
-      this.elemButton[force ? 'setAttribute' : 'removeAttribute']('disabled', 'true');
-      this.elemButton.classList[force ? 'add' : 'remove']('is-disabled');
       this.dropdown.classList[force ? 'add' : 'remove']('is-disabled');
-    }
-
-    toggleOpen(force) {
-      if (this.elemButton.disabled) return;
-      this.isOpen = force !== undefined ? force : !this.dropdown.classList.contains('is-open');
-      const fieldButton = this.dropdown.querySelector(SELECTOR_DROPDOWN_TRIGGER);
-      const popover = this.dropdown.querySelector(SELECTOR_DROPDOWN_POPOVER);
-      this.dropdown[this.isOpen ? 'setAttribute' : 'removeAttribute']('aria-expanded', 'true');
-      this.dropdown.classList.toggle('is-open', this.isOpen);
-      fieldButton.classList.toggle(CLASS_IS_SELECTED, this.isOpen);
-      if (popover) {
-          popover.style.zIndex = 1;
-          popover.classList.toggle('is-open', this.isOpen);
-      }
-      if (this.isOpen) {
-        this.openDropdown = this.dropdown;
-        this.dropdown.tabIndex = 1;
-        if (popover) {
-            popover.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-            });
-        }
-      }
-    }
-
-    closeAndFocusDropdown(dropdown) {
-        if (dropdown) {
-            this.toggleOpen(false);
-            const fieldButton = dropdown.querySelector(SELECTOR_DROPDOWN_TRIGGER);
-            if (fieldButton) {
-                fieldButton.focus();
-            }
-        }
-    }
-
-    setDropdownValue(dropdown, value, label, childJson) {
-      const menu = dropdown.querySelector(SELECTOR_MENU);
-      const menuItem = dropdown.querySelector(`.menu-item[data-value="${value}"]`);
-      if (menuItem) {
-          const selectedMenuItem = menu.querySelector('.menu-item.is-selected');
-          if (selectedMenuItem) {
-              selectedMenuItem.classList.remove(CLASS_IS_SELECTED);
-              selectedMenuItem.removeAttribute('aria-selected');
-          }
-          menuItem.classList.add(CLASS_IS_SELECTED);
-          menuItem.setAttribute('aria-selected', 'true');
-          if (!label) {
-              const menuLabel = menuItem.querySelector('.menu-itemLabel');
-              if (menuLabel) {
-                  // eslint-disable-next-line no-param-reassign
-                  label = menuLabel.innerHTML;
-              }
-          }
-      }
-      dropdown.querySelector('button').value = value;
-      const fieldButton = dropdown.querySelector(SELECTOR_DROPDOWN_TRIGGER);
-      if (fieldButton && label) {
-          const dropdownLabel = fieldButton.querySelector(SELECTOR_DROPDOWN_LABEL);
-          if (dropdownLabel) {
-              dropdownLabel.classList.remove(CLASS_IS_SELECTED);
-              dropdownLabel.classList.remove(CLASS_IS_PLACEHOLDER);
-              dropdownLabel.innerHTML = label;
-          }
-      }
-      const child = JSON.parse(childJson);
-      const event = new window.CustomEvent('change', {
-          bubbles: true,
-          detail: {
-              label,
-              value,
-              child,
-          },
-      });
-      dropdown.dispatchEvent(event);
-    }
-
-    DropKeyEvents() {
-      this.dropdown.addEventListener('keydown', (event) => {
-          const inp = String.fromCharCode(event.keyCode);
-          if (/^[ A-Za-z0-9_@./+-]*$/.test(inp)) {
-              this.dropAutoSuggest(event);
-          } else if (event.keyCode === 13) {
-              this.selectDropDownMenu(event);
-          } else if (event.keyCode === 38) {
-              this.moveUp(event);
-          } else if (event.keyCode === 40) {
-              this.moveDown(event);
-          } else if (event.keyCode === 27) {
-              this.closeDropdown(this.dropdown);
-              if (this.activeItem) {
-                  this.deFocusElement(this.activeItem);
-                  this.activeItem = '';
-              }
-          }
-      });
-    }
-
-    moveDown(event) {
-      event.preventDefault();
-      this.list = this.form.querySelector('.spectrum-Dropdown.is-open').querySelectorAll('.spectrum-Menu-itemLabel');
-      const nextItem = this.activeItem.nextElementSibling;
-
-      if (nextItem) {
-          this.focusElement(nextItem);
-      } else {
-          this.focusElement(this.list[0].offsetParent);
-      }
-    }
-
-    moveUp(event) {
-      event.preventDefault();
-      this.list = this.form.querySelector('.spectrum-Dropdown.is-open').querySelectorAll('.spectrum-Menu-itemLabel');
-      const prevItem = this.activeItem.previousElementSibling;
-
-      if (prevItem) {
-          this.focusElement(prevItem);
-      } else {
-          this.focusElement(this.list[this.list.length - 1].offsetParent);
-      }
-    }
-
-    selectDropDownMenu(event) {
-      event.preventDefault();
-      const elem = event.target.closest(SELECTOR_DROPDOWN);
-      const dropdownTrigger = elem.querySelector(SELECTOR_DROPDOWN_TRIGGER);
-      if (dropdownTrigger) {
-          if (!this.dropdown.classList.contains('is-open')) {
-              this.toggleOpen();
-          } else {
-              this.closeDropdown(this.dropdown);
-          }
-      }
-      if (this.activeItem) {
-          this.handleMenuChange(this.activeItem.parentElement, this.activeItem);
-          this.deFocusElement(this.activeItem);
-          this.activeItem = '';
-      }
-    }
-
-    dropAutoSuggest(event) {
-      this.list = this.form.querySelector('.spectrum-Dropdown.is-open').querySelectorAll('.spectrum-Menu-itemLabel');
-      const { key } = event;
-      if (!this.keysSoFar) {
-          for (let i = 0; i < this.list.length; i += 1) {
-              if (this.list[i].classList.contains('is-selected')) {
-                  this.searchIndex = i;
-              }
-          }
-      }
-      this.keysSoFar += key.toLocaleLowerCase();
-      this.clearKeysSoFarAfterDelay();
-      let nextMatch = this.findMatchInRang(this.list,
-          this.keysSoFar.length > 1 ? this.searchIndex : this.searchIndex + 1,
-          this.list.length - 1);
-      if (!nextMatch) {
-          nextMatch = this.findMatchInRang(this.list, 0, this.searchIndex);
-      }
-      if (nextMatch) {
-          this.focusElement(nextMatch.offsetParent);
-      }
-    }
-
-    clearKeysSoFarAfterDelay() {
-      if (this.keyClear) {
-          clearTimeout(this.keyClear);
-          this.keyClear = null;
-      }
-      this.keyClear = setTimeout((function () {
-          this.keysSoFar = '';
-          this.keyClear = null;
-      }).bind(this), 500);
-    }
-
-    findMatchInRang(list, startIndex, endIndex) {
-      for (let n = startIndex; n <= endIndex; n += 1) {
-          const label = list[n].innerText;
-          if (label && label.toLocaleLowerCase().indexOf(this.keysSoFar) === 0) {
-              this.searchIndex = n;
-              return list[n];
-          }
-      }
-      return null;
-    }
-
-    focusElement(element) {
-      if (this.activeItem) {
-          this.deFocusElement(this.activeItem);
-      }
-      const parentDropdown = this.form.querySelector('.spectrum-Dropdown-popover.is-open');
-      const openDropdown = parentDropdown.querySelector('.spectrum-Menu');
-      this.activeItem = element;
-      if (openDropdown.scrollHeight > openDropdown.clientHeight) {
-          const scrollBottom = openDropdown.clientHeight + openDropdown.scrollTop;
-          const elementBottom = this.activeItem.offsetTop
-          + this.activeItem.offsetHeight;
-          if (elementBottom > scrollBottom) {
-              openDropdown.scrollTop = elementBottom - openDropdown.clientHeight;
-          } else if (this.activeItem.offsetTop < openDropdown.scrollTop) {
-              openDropdown.scrollTop = this.activeItem.offsetTop;
-          }
-      }
-      this.activeItem.classList.add('focused');
-    }
-
-    deFocusElement(element) {
-      element.classList.remove('focused');
-    }
-
-    handleMenuChange(menu, menuItem) {
-      const value = menuItem.getAttribute('data-value');
-      const child = menuItem.getAttribute('data-child');
-      const menuLabel = menuItem.querySelector('.spectrum-Menu-itemLabel');
-      const label = menuLabel.innerHTML;
-
-      const dropdown = menu.closest(SELECTOR_DROPDOWN);
-      if (dropdown) {
-          this.toggleOpen(false);
-          this.setDropdownValue(dropdown, value, label, child);
-          setTimeout(this.isValid(), 1);
-      }
     }
 
     updateList(items) {
       let prevItem = false;
-      this.dropdown.querySelector(SELECTOR_MENU).innerHTML = '';
-      if (!items) {
-        this.disable(true);
-      } else {
-          this.data = items;
-          this.disable(false);
-          items.forEach((item) => {
-            const textNode = document.createTextNode(`${item.title}`);
-            const itemLabel = document.createElement('span');
-            const listItem = document.createElement('li');
-            const listItemDivider = document.createElement('li');
-            listItemDivider.setAttribute('class', 'spectrum-Menu-divider');
-            listItem.setAttribute('data-value', item.value);
-            listItem.setAttribute('data-isTop', item.isTop);
-            listItem.setAttribute('class', 'spectrum-Menu-item');
-            listItem.setAttribute('role', 'option');
-            listItem.setAttribute('sku', item.sku);
-            if (item.child) {
-                listItem.setAttribute('data-child', JSON.stringify(item.child));
-            }
-            listItem.appendChild(itemLabel);
-            itemLabel.setAttribute('class', 'spectrum-Menu-itemLabel');
-            itemLabel.setAttribute('aria-label', `${item.title}`);
-            itemLabel.appendChild(textNode);
-            if (!item.isTop && prevItem && prevItem.isTop) {
-                this.dropdown.querySelector(SELECTOR_MENU).appendChild(listItemDivider);
-            }
-            this.dropdown.querySelector(SELECTOR_MENU).appendChild(listItem);
-            prevItem = item;
-        });
-      }
-    }
-
-    closeDropdown(drop) {
-      this.isOpen = !drop.classList.contains('is-open');
-      drop[this.isOpen ? 'setAttribute' : 'removeAttribute']('aria-expanded', 'true');
-      drop.classList.remove('is-open');
-      drop.querySelector(SELECTOR_DROPDOWN_POPOVER).classList.remove('is-open');
+      this.dropdown.innerHTML = '';
+      if (!items) return this.disable(true);
+      this.data = items;
+      this.disable(false);
+      const placeholderItem = createTag('option', { value: '', disabled: 'disabled', selected: 'selected', hidden: 'true' }, this.dropdown.getAttribute('placeholder'));
+      debugger
+      this.dropdown.append(placeholderItem);
+      items.forEach((item) => {
+        const listItem = createTag('option', { value: item.value }, item.title);
+        listItem.setAttribute('data-value', item.value);
+        listItem.setAttribute('data-isTop', item.isTop);
+        listItem.setAttribute('class', 'spectrum-Menu-item');
+        listItem.setAttribute('role', 'option');
+        listItem.setAttribute('sku', item.sku);
+        if (item.child) listItem.setAttribute('data-child', JSON.stringify(item.child));
+        this.dropdown.append(listItem);
+      });
     }
 }
 
