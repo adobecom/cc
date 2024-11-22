@@ -53,7 +53,6 @@ class Dropdown {
         'country': {
               'dropdown-name': 'country',
               'dropdown-source': 'graphql/execute.json/acom/listallcountries',
-              // 'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/components/listallcountries.json',
           },
         'estunitship': {
               'dropdown-name': 'estunitship',
@@ -70,7 +69,6 @@ class Dropdown {
         'jobtitle': {
               'dropdown-name': 'jobtitle',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
-              // 'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/components/jobtitle.json',
           },
         'orgsize': {
               'dropdown-name': 'orgsize',
@@ -87,7 +85,6 @@ class Dropdown {
         'region': {
               'dropdown-name': 'region',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
-              // 'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/components/region.json',
           },
         'state': {
               'dropdown-name': 'state',
@@ -344,7 +341,6 @@ class Dropdown {
                   + replaceByRegion + SLASH + event.target.value;
               }
               this.resetRegionDropdown();
-              // fetchRegionSource = 'https://localhost/creativecloud/features/cc-forms/components/region.json';
               window.fetch(fetchRegionSource)
                   .then(response => response.json())
                   .then((data) => {
