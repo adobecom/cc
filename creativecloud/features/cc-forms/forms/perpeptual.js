@@ -1,5 +1,4 @@
 import Trials from '/creativecloud/features/cc-forms/forms/trials.js';
-import { getConfig } from '/creativecloud/scripts/utils.js';
 
 const SELECTOR = {
     NO_LEAD: '#nolead',

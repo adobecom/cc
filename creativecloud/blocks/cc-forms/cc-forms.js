@@ -2,6 +2,7 @@ import { createTag, getConfig } from '../../scripts/utils.js';
 import Textfield from '/creativecloud/features/cc-forms/components/textfield.js';
 import Dropdown from '/creativecloud/features/cc-forms/components/dropdown.js';
 import Checkbox from '/creativecloud/features/cc-forms/components/checkbox.js';
+import Trials from '/creativecloud/features/cc-forms/forms/trials.js';
 class TextContent {
   constructor(formEl, config) {
       this.form = formEl;
