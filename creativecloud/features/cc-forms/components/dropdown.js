@@ -394,7 +394,6 @@ class Dropdown {
       this.data = items;
       this.disable(false);
       const placeholderItem = createTag('option', { value: '', disabled: 'disabled', selected: 'selected', hidden: 'true' }, this.dropdown.getAttribute('placeholder'));
-      debugger
       this.dropdown.append(placeholderItem);
       items.forEach((item) => {
         const listItem = createTag('option', { value: item.value }, item.title);
