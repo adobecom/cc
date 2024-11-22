@@ -2,6 +2,7 @@ import { createTag } from '../../../scripts/utils.js';
 
 const SELECTOR_DROPDOWN = '.spectrum-Dropdown';
 const CLASS_HIDDEN = 'is-hidden';
+const SELECTOR_PREFIX_MESSAGE = '.error-message';
 const ATTR_DROPDOWN_TYPE = 'data-dropdown-type';
 const ATTR_DROPDOWN_PARENT = 'data-dropdown-parent';
 const ATTR_DROPDOWN_SOURCE = 'data-dropdown-source';
@@ -52,6 +53,7 @@ class Dropdown {
         'country': {
               'dropdown-name': 'country',
               'dropdown-source': 'graphql/execute.json/acom/listallcountries',
+              // 'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/components/listallcountries.json',
           },
         'estunitship': {
               'dropdown-name': 'estunitship',
@@ -68,6 +70,7 @@ class Dropdown {
         'jobtitle': {
               'dropdown-name': 'jobtitle',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
+              // 'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/components/jobtitle.json',
           },
         'orgsize': {
               'dropdown-name': 'orgsize',
@@ -84,6 +87,7 @@ class Dropdown {
         'region': {
               'dropdown-name': 'region',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
+              // 'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/components/region.json',
           },
         'state': {
               'dropdown-name': 'state',
@@ -142,12 +146,10 @@ class Dropdown {
             i.setAttribute(ATTR_SORT_PROPERTY, 'title');
             break;
           case 'error-required':
-            const er = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
+            const er = createTag('div', {class: `field-detail ${CLASS_HIDDEN} error-message error-message-required`}, this.fieldConfig[ck].innerText.trim());
             d.append(er);
             break;
-          case 'error-validation':
-            const ev = createTag('div', {class: CLASS_HIDDEN}, this.fieldConfig[ck].innerText.trim());
-            d.append(ev);
+          default:
             break;
         }
       });
@@ -179,11 +181,12 @@ class Dropdown {
       if (!this.required) this.valid = true;
       if (this.required && !!(this.value)) this.valid = true;
       if (this.required && this.dropdown.classList.contains('is-disabled')) this.valid = true;
-      this.form.setAttribute('data-valid', this.valid);
+      this.dropdown.setAttribute('data-valid', this.valid);
       if (this.valid) {
-        this.dropdown.classList.remove('is-invalid');
+        this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE).classList.add(CLASS_HIDDEN);
         return this.valid;
-      } 
+      }
+      this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE).classList.remove(CLASS_HIDDEN);
       this.dropdown.classList.add('is-invalid');
       return this.valid;
     }
@@ -341,6 +344,7 @@ class Dropdown {
                   + replaceByRegion + SLASH + event.target.value;
               }
               this.resetRegionDropdown();
+              // fetchRegionSource = 'https://localhost/creativecloud/features/cc-forms/components/region.json';
               window.fetch(fetchRegionSource)
                   .then(response => response.json())
                   .then((data) => {
@@ -388,7 +392,6 @@ class Dropdown {
     }
 
     updateList(items) {
-      let prevItem = false;
       this.dropdown.innerHTML = '';
       if (!items) return this.disable(true);
       this.data = items;
