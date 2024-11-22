@@ -399,7 +399,6 @@ class Dropdown {
         const listItem = createTag('option', { value: item.value }, item.title);
         listItem.setAttribute('data-value', item.value);
         listItem.setAttribute('data-isTop', item.isTop);
-        listItem.setAttribute('class', 'spectrum-Menu-item');
         listItem.setAttribute('role', 'option');
         listItem.setAttribute('sku', item.sku);
         if (item.child) listItem.setAttribute('data-child', JSON.stringify(item.child));
