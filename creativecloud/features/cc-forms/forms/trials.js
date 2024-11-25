@@ -71,16 +71,16 @@ class Trials {
     }
 
     buttonListener() {
-        this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
-            this.formContainer.dispatchEvent(this.event);
-            this.checkValidElements();
-            if (this.valid) {
-                this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
-                setTimeout(() => {
-                    this.submitAction();
-                }, 1);
-            }
-        });
+      this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
+          this.formContainer.dispatchEvent(this.event);
+          this.checkValidElements();
+          if (this.valid) {
+              this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
+              setTimeout(() => {
+                  this.submitAction();
+              }, 1);
+          }
+      });
     }
 
   getUUID() {
