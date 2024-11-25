@@ -51,15 +51,15 @@ class Trials {
         this.handleEnterKeyPress();
     }
 
-  handleEnterKeyPress() {
-      this.inputElements.forEach((element) => {
-          element.addEventListener('keypress', (e) => {
-              if (e.key === 'Enter' || e.keyCode === 13) {
-                  e.preventDefault();
-              }
-          });
-      });
-  }
+    handleEnterKeyPress() {
+        this.inputElements.forEach((element) => {
+            element.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    e.preventDefault();
+                }
+            });
+        });
+    }
 
   checkValidElements() {
     this.valid = true;
