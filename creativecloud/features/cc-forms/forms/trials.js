@@ -93,38 +93,39 @@ class Trials {
         return `${rs() + rs()}-${rs()}-${rs()}-${rs()}-${rs()}${rs()}${rs()}`;
     }
 
-  setFormConfig() {
-    const formConfig = [];
-    Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
-      const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
-      if (!redirectUrl) return;
-      this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
-      formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
-    });
-    this.formConfig = formConfig;
+    setFormConfig() {
+        const formConfig = [];
+        Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
+            const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
+            if (!redirectUrl) return;
+            this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
+            formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
+        });
+        this.formConfig = formConfig;
   }
 
-  getFormConfig(key) {
-    return this.formContainer.getAttribute(key) || this.formConfig[CONF_KEY_ERROR_GENERIC];
-  }
+    getFormConfig(key) {
+        return this.formContainer.getAttribute(key) || this.formConfig[CONF_KEY_ERROR_GENERIC];
+    }
 
-  postSubmitSuccess(response) {
-    let destination = this.thankyouPage;
-    if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
+
+    postSubmitSuccess(response) {
+        let destination = this.thankyouPage;
+        if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
         || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
         && response.reason && response.reason !== 'SUCCESS') {
-      destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
+            destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
+        }
+        window.location.href = destination;
     }
-    window.location.href = destination;
-  }
 
-  postSubmitFailure(response) {
-    let destination = this.getFormConfig(CONF_KEY_ERROR_GENERIC);
-    if (response.status === 502 || response.status === 503) {
-      destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);
+    postSubmitFailure(response) {
+        let destination = this.getFormConfig(CONF_KEY_ERROR_GENERIC);
+        if (response.status === 502 || response.status === 503) {
+            destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);
+        }
+        window.location.href = destination;
     }
-    window.location.href = destination;
-  }
 
   createProgressCircle() {
     const pdom = `<div class="spectrum-ProgressCircle-track"></div>
@@ -166,139 +167,139 @@ class Trials {
     }, CIRCLE_LOADER_TIMEOUT);
   }
 
-  getPST() {
-    const d = new Date();
-    const offset = 60000 - 28800000;
-    const pst = new Date(d.getTime() + d.getTimezoneOffset() * offset).toJSON();
-    return pst;
-  }
-
-  escapeXml(unsafe) {
-    return unsafe.replace(/[<>&'"]/g, (c) => {
-      switch (c) {
-        case '<':
-          return '&lt;';
-        case '>':
-          return '&gt;';
-        case '&':
-          return '&amp;';
-        case '\'':
-          return '&apos;';
-        case '"':
-          return '&quot;';
-        default:
-          return '';
-      }
-    });
-  }
-
-  constructDemandbaseValues(payload) {
-    return payload;
-  }
-
-  getValue(selector, attr) {
-    const attribute = attr || 'value';
-    try {
-      const elem = this.formContainer.querySelector(selector);
-      if (!(elem instanceof HTMLElement)) {
-        return false;
-      }
-      if (attribute === 'value') {
-        return elem.value;
-      }
-      return elem.getAttribute(attribute);
-    } catch (e) {
-      return false;
+    getPST() {
+        const d = new Date();
+        const offset = 60000 - 28800000;
+        const pst = new Date(d.getTime() + d.getTimezoneOffset() * offset).toJSON();
+        return pst;
     }
-  }
 
-  setValue(selector, value, attr) {
-    const attribute = (typeof attr !== 'undefined') ? attr : 'value';
-    const elem = this.formContainer.querySelector(selector);
-    if (!(elem instanceof HTMLElement)) {
-      return false;
+    escapeXml(unsafe) {
+        return unsafe.replace(/[<>&'"]/g, (c) => {
+            switch (c) {
+                case '<':
+                    return '&lt;';
+                case '>':
+                    return '&gt;';
+                case '&':
+                    return '&amp;';
+                case '\'':
+                    return '&apos;';
+                case '"':
+                    return '&quot;';
+                default:
+                    return '';
+            }
+        });
     }
-    if (!value) {
-      return false;
-    }
-    if (attr === 'value') {
-      elem.value = value;
-    } else {
-      elem.setAttribute(attribute, value);
-    }
-    return true;
-  }
 
-  getCookieValueByName(cookieName) {
-    const name = `${cookieName}=`;
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i += 1) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') c = c.substring(1);
-      if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+    constructDemandbaseValues(payload) {
+        return payload;
     }
-    return '';
-  }
 
-  setCookie(cookie, value, options) {
-    let newCookie = '';
-    let cookiePath;
-    let cookieExpiration;
-    let cookieDomain;
-    if (typeof cookie === 'string' && cookie.length && (typeof document.cookie === 'string')) {
-      newCookie += `${cookie}=${value}`;
-      if (options) {
-        cookiePath = options.path;
-        if (typeof cookiePath === 'string' && cookiePath.length) {
-          newCookie += `; path=${cookiePath}`;
+    getValue(selector, attr) {
+        const attribute = attr || 'value';
+        try {
+            const elem = this.formContainer.querySelector(selector);
+            if (!(elem instanceof HTMLElement)) {
+                return false;
+            }
+            if (attribute === 'value') {
+                return elem.value;
+            }
+            return elem.getAttribute(attribute);
+        } catch (e) {
+            return false;
         }
-        cookieExpiration = options.expiration;
-        if (cookieExpiration instanceof Date) {
-          newCookie += `; expires=${cookieExpiration.toUTCString()}`;
-        }
-        cookieDomain = options.domain;
-        if (typeof cookieDomain === 'string' && cookieDomain.length) {
-          newCookie += `; domain=${cookieDomain}`;
-        }
-      }
-      document.cookie = newCookie;
     }
-  }
 
-  postCommonService(accessToken, payLoad, endPoint) {
-    window.fetch(endPoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': REQUEST_CONTENT_TYPE,
-        Authorization: `${accessToken}`,
-      },
-      body: JSON.stringify(payLoad),
-    })
-      .then((response) => {
-        response.json().then((data) => {
-          if (response.status === 200 && (data.successful || data.success)) {
-            this.postSubmitSuccess(data);
-          } else if (response.status === 200
-                && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
-                || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
-            this.postSubmitSuccess(data);
-          } else {
-            this.postSubmitFailure(response);
-          }
+    setValue(selector, value, attr) {
+        const attribute = (typeof attr !== 'undefined') ? attr : 'value';
+        const elem = this.formContainer.querySelector(selector);
+        if (!(elem instanceof HTMLElement)) {
+            return false;
+        }
+        if (!value) {
+            return false;
+        }
+        if (attr === 'value') {
+            elem.value = value;
+        } else {
+            elem.setAttribute(attribute, value);
+        }
+        return true;
+    }
+
+    getCookieValueByName(cookieName) {
+        const name = `${cookieName}=`;
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i += 1) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1);
+            if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+        }
+        return '';
+    }
+
+    setCookie(cookie, value, options) {
+        let newCookie = '';
+        let cookiePath;
+        let cookieExpiration;
+        let cookieDomain;
+        if (typeof cookie === 'string' && cookie.length && (typeof document.cookie === 'string')) {
+            newCookie += `${cookie}=${value}`;
+            if (options) {
+                cookiePath = options.path;
+                if (typeof cookiePath === 'string' && cookiePath.length) {
+                    newCookie += `; path=${cookiePath}`;
+                }
+                cookieExpiration = options.expiration;
+                if (cookieExpiration instanceof Date) {
+                    newCookie += `; expires=${cookieExpiration.toUTCString()}`;
+                }
+                cookieDomain = options.domain;
+                if (typeof cookieDomain === 'string' && cookieDomain.length) {
+                    newCookie += `; domain=${cookieDomain}`;
+                }
+            }
+            document.cookie = newCookie;
+        }
+    }
+
+    postCommonService(accessToken, payLoad, endPoint) {
+        window.fetch(endPoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': REQUEST_CONTENT_TYPE,
+                Authorization: `${accessToken}`,
+            },
+            body: JSON.stringify(payLoad),
         })
-          .catch(() => {
-            this.postSubmitFailure(response);
+            .then((response) => {
+              response.json().then((data) => {
+                  if (response.status === 200 && (data.successful || data.success)) {
+                      this.postSubmitSuccess(data);
+                  } else if (response.status === 200
+                      && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
+                      || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
+                      this.postSubmitSuccess(data);
+                  } else {
+                      this.postSubmitFailure(response);
+                  }
+            })
+              .catch(() => {
+                this.postSubmitFailure(response);
+              });
           });
-      });
-  }
-
-  toggleSubmitButton(disabled) {
-    if (disabled) {
-      this.submitButton.classList.add(BUTTON_DISABLED_CLASS);
-    } else {
-      this.submitButton.classList.remove(BUTTON_DISABLED_CLASS);
     }
-  }
+
+    toggleSubmitButton(disabled) {
+        if (disabled) {
+            this.submitButton.classList.add(BUTTON_DISABLED_CLASS);
+        } else {
+            this.submitButton.classList.remove(BUTTON_DISABLED_CLASS);
+      }
+    }
 }
 
 export default Trials;
