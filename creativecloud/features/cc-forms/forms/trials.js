@@ -28,28 +28,28 @@ const STATUS_REDIRECT_MAP = {
 };
 
 class Trials {
-  constructor(formContainer) {
-    this.imslib = window.adobeIMS;
-    this.formContainer = formContainer;
-    this.valid = true;
-    this.formConfig = [];
-    this.payLoad = {};
-    this.clientName = this.formContainer.getAttribute(DATA_CLIENT_NAME) || '';
-    this.accessToken = window.localStorage.getItem('accessToken') || window.adobeIMS.getAccessToken();
-    this.elements = this.formContainer.querySelectorAll(SELECTOR_ELEMENTS);
-    this.thankyouPage = this.formContainer.getAttribute(DATA_THANK_YOU_PAGE) || '';
-    this.apikey = this.formContainer.getAttribute(DATA_APIKEY) || '';
-    this.endPoint = this.formContainer.getAttribute(DATA_ENDPOINT) || '';
-    this.submitButton = this.formContainer.querySelector(SELECTOR_BUTTON);
-    this.address_mail_to = this.formContainer.hasAttribute(ADDRESS_MAIL_TO) ? this.formContainer.getAttribute(ADDRESS_MAIL_TO).split(',') : '';
-    this.userprofile = this.formContainer.hasAttribute(USER_PROFILE) ? this.formContainer.getAttribute(USER_PROFILE).split(',') : '';
-    this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
-    this.event = new Event('checkValidation');
-    this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
-    this.checkValidElements();
-    this.setFormConfig();
-    this.handleEnterKeyPress();
-  }
+    constructor(formContainer) {
+        this.imslib = window.adobeIMS;
+        this.formContainer = formContainer;
+        this.valid = true;
+        this.formConfig = [];
+        this.payLoad = {};
+        this.clientName = this.formContainer.getAttribute(DATA_CLIENT_NAME) || '';
+        this.accessToken = window.localStorage.getItem('accessToken') || window.adobeIMS.getAccessToken();
+        this.elements = this.formContainer.querySelectorAll(SELECTOR_ELEMENTS);
+        this.thankyouPage = this.formContainer.getAttribute(DATA_THANK_YOU_PAGE) || '';
+        this.apikey = this.formContainer.getAttribute(DATA_APIKEY) || '';
+        this.endPoint = this.formContainer.getAttribute(DATA_ENDPOINT) || '';
+        this.submitButton = this.formContainer.querySelector(SELECTOR_BUTTON);
+        this.address_mail_to = this.formContainer.hasAttribute(ADDRESS_MAIL_TO) ? this.formContainer.getAttribute(ADDRESS_MAIL_TO).split(',') : '';
+        this.userprofile = this.formContainer.hasAttribute(USER_PROFILE) ? this.formContainer.getAttribute(USER_PROFILE).split(',') : '';
+        this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
+        this.event = new Event('checkValidation');
+        this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
+        this.checkValidElements();
+        this.setFormConfig();
+        this.handleEnterKeyPress();
+    }
 
   handleEnterKeyPress() {
     this.inputElements.forEach((element) => {
