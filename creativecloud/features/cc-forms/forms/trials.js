@@ -52,13 +52,13 @@ class Trials {
     }
 
   handleEnterKeyPress() {
-    this.inputElements.forEach((element) => {
-      element.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' || e.keyCode === 13) {
-          e.preventDefault();
-        }
+      this.inputElements.forEach((element) => {
+          element.addEventListener('keypress', (e) => {
+              if (e.key === 'Enter' || e.keyCode === 13) {
+                  e.preventDefault();
+              }
+          });
       });
-    });
   }
 
   checkValidElements() {
