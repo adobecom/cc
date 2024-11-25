@@ -61,25 +61,25 @@ class Trials {
         });
     }
 
-  checkValidElements() {
-    this.valid = true;
-    this.elements.forEach((element) => {
-      if (element.getAttribute('data-valid') === 'false') {
-        this.valid = false;
-      }
-    });
+    checkValidElements() {
+      this.valid = true;
+      this.elements.forEach((element) => {
+          if (element.getAttribute('data-valid') === 'false') {
+              this.valid = false;
+          }
+      });
   }
 
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
-      this.formContainer.dispatchEvent(this.event);
-      this.checkValidElements();
-      if (this.valid) {
-        this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
-        setTimeout(() => {
-          this.submitAction();
-        }, 1);
-      }
+        this.formContainer.dispatchEvent(this.event);
+        this.checkValidElements();
+        if (this.valid) {
+            // this.circleLoaderShow();
+            setTimeout(() => {
+                this.submitAction();
+            }, 1);
+        }
     });
   }
 
