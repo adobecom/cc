@@ -96,18 +96,17 @@ class Trials {
     setFormConfig() {
         const formConfig = [];
         Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
-            const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
-            if (!redirectUrl) return;
-            this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
-            formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
+          const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
+          if (!redirectUrl) return;
+          this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
+          formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
         });
         this.formConfig = formConfig;
-  }
+    }
 
     getFormConfig(key) {
         return this.formContainer.getAttribute(key) || this.formConfig[CONF_KEY_ERROR_GENERIC];
     }
-
 
     postSubmitSuccess(response) {
         let destination = this.thankyouPage;
@@ -275,22 +274,22 @@ class Trials {
             },
             body: JSON.stringify(payLoad),
         })
-            .then((response) => {
-              response.json().then((data) => {
-                  if (response.status === 200 && (data.successful || data.success)) {
-                      this.postSubmitSuccess(data);
-                  } else if (response.status === 200
-                      && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
-                      || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
-                      this.postSubmitSuccess(data);
-                  } else {
-                      this.postSubmitFailure(response);
-                  }
-            })
-              .catch(() => {
+        .then((response) => {
+            response.json().then((data) => {
+                if (response.status === 200 && (data.successful || data.success)) {
+                    this.postSubmitSuccess(data);
+                } else if (response.status === 200
+                && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
+                || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
+                    this.postSubmitSuccess(data);
+                } else {
+                    this.postSubmitFailure(response);
+                }
+          })
+            .catch(() => {
                 this.postSubmitFailure(response);
-              });
-          });
+            });
+        });
     }
 
     toggleSubmitButton(disabled) {
@@ -298,7 +297,7 @@ class Trials {
             this.submitButton.classList.add(BUTTON_DISABLED_CLASS);
         } else {
             this.submitButton.classList.remove(BUTTON_DISABLED_CLASS);
-      }
+        }
     }
 }
 
