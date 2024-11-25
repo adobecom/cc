@@ -2,14 +2,13 @@ import { createTag, getConfig } from '../../scripts/utils.js';
 import Textfield from '/creativecloud/features/cc-forms/components/textfield.js';
 import Dropdown from '/creativecloud/features/cc-forms/components/dropdown.js';
 import Checkbox from '/creativecloud/features/cc-forms/components/checkbox.js';
-import Trials from '/creativecloud/features/cc-forms/forms/trials.js';
+import { ConsentNotice } from '/creativecloud/features/cc-forms/forms/trials.js';
 class TextContent {
   constructor(formEl, config) {
       this.form = formEl;
       this.fieldConfig = config;
       this.init();
   }
-
   init() {
     const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
     this.form.append(d);
@@ -22,7 +21,6 @@ class Button {
       this.fieldConfig = config;
       this.btnEl = this.createButton();
   }
-
   createButton() {
     const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig['label'].innerText.trim());
     a.addEventListener('click', (e) => e.preventDefault());
@@ -108,8 +106,8 @@ class CCForms {
   }
 
   createFormComponents() {
-    const formComponents = this.el.querySelectorAll(':scope > div span[class*="cc-form-"]');
-    const formMetadata = [...this.el.querySelectorAll(':scope > div .icon')];
+    const formComponents = this.el.querySelectorAll(':scope > div > div:nth-child(1) span[class*="cc-form-"]');
+    const formMetadata = [...this.el.querySelectorAll(':scope > div > div:nth-child(1) .icon')];
     [...formComponents].forEach((fc) => {
       const componentConfig = {};
       const c = formMetadata.shift();
@@ -118,8 +116,13 @@ class CCForms {
       if (c.parentElement.nextElementSibling) componentConfig.value = c.parentElement.nextElementSibling;
       while(formMetadata.length && !(/cc-form-/.test(formMetadata[0].classList))) {
         const s = formMetadata.shift();
-        const keyName = [...s.classList].find((cn) => cn.includes('icon-')).split('icon-')[1];
-        componentConfig[keyName] = s.closest('div').nextElementSibling;
+        const keyName = [...s.classList].find((cn) => cn.includes('icon-')).split('icon-')[1].toLowerCase();
+        if (componentName.startsWith('cc-form-consent')) {
+          if (!componentConfig.concentCfgs) componentConfig.concentCfgs = [];
+          componentConfig.concentCfgs.push({ bucketNoticeType: keyName, consetFragment: s.closest('div').nextElementSibling });
+        } else {
+          componentConfig[keyName] = s.closest('div').nextElementSibling;
+        }
       }
       switch(true) {
         case componentName.startsWith('cc-form-text'):
@@ -135,7 +138,9 @@ class CCForms {
           new Dropdown(this.form, componentConfig);
           break;
         case componentName.startsWith('cc-form-consent'):
-          new TextContent(this.form, componentConfig);
+          if (this.formConfig && (this.formConfig.type == 'perpeptual' || this.formConfig.type == 'connect')) {
+            new ConsentNotice(this.form, componentConfig);
+          }
           break;
         case componentName.startsWith('cc-form-content'):
           new TextContent(this.form, componentConfig);
@@ -150,6 +155,6 @@ class CCForms {
 export default async function init(el) {
     const formComponent = new CCForms(el);
     if (!formComponent.formConfig) return;
-    const { default: FormConfigurator} = await import(formComponent.formConfig["js"]);
-    const formVariant = new FormConfigurator(formComponent.form);
+    // const { default: FormConfigurator} = await import(formComponent.formConfig["js"]);
+    // const formVariant = new FormConfigurator(formComponent.form);
 }
