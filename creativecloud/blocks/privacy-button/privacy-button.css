@@ -6,14 +6,12 @@
   cursor: pointer;
 }
 
-.privacy-button-message{
+.privacy-button-message {
   color: red;
   font-size: larger;
 }
 
 .privacy-tracking-image {
-  width: 0px;
-  height: 0px;
   display: none;
 }
 
@@ -26,8 +24,7 @@
   gap: var(--spacing-m);
   justify-content: center;
   align-items: center;
-  background-color: #F5F5F5 ;
-  
+  background-color: #F5F5F5 ;  
 }
 
 @media (max-width: 600px) { 
