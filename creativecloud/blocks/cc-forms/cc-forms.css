@@ -29,6 +29,10 @@
 
 .cc-forms .form-item {
   width: 100%;
+  display: flex;
+  margin-bottom: var(--spacing-xxs);
+  flex-wrap: wrap;
+  padding: var(--spacing-xs) 0;
 }
 
 .cc-forms .form-item .section .content,
@@ -124,6 +128,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  /* align-items: flex-start; */
   width: 100%;
 }
 
@@ -161,6 +166,7 @@
 
 .cc-forms .checkbox-button::before {
   border-radius: 2px;
+  /* top: 5px; */
 }
 
 .cc-forms .checkbox-button::after {
@@ -175,6 +181,7 @@
   scale: 0;
   opacity: 0;
   transition: scale 0.13s ease-in-out, opacity 0.13s;
+  /* top: 10px; */
 }
 
 .cc-forms .checkbox-input:checked + .checkbox-button::after {
