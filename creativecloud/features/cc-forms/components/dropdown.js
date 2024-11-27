@@ -171,12 +171,12 @@ class Dropdown {
         let email = '';
         let ctxid = '';
         let value = '';
-        for (i of items) {
-          console.log(i);
+        for (let item of items) {
+          console.log(item);
           if (i.productname == this.productname) {
-            if (i.emailtemplate) email = i.emailtemplate;
-            if (i.imscontextid) ctxid = i.imscontextid;
-            if (i.productcode) value = i.productcode;
+            if (i.emailtemplate) email = item.emailtemplate;
+            if (i.imscontextid) ctxid = item.imscontextid;
+            if (i.productcode) value = item.productcode;
             break;
           }
         }
