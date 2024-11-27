@@ -185,7 +185,6 @@ export default async function init(el) {
       cfg.adobeid.api_parameters = {};
       cfg.adobeid.enableGuestAccounts = false;
       cfg.adobeid.enableGuestTokenForceRefresh = false;
-      cfg.adobeid.redirect_uri = window.location.href;
       setConfig(cfg);
     }
     imsInitialized().then(async () => {
