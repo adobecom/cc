@@ -185,7 +185,7 @@ class Dropdown {
         hiddenPtEl.setAttribute('data-ctxid', ctxid);
         hiddenPtEl.setAttribute('value', value);
       })
-      .catch((error) => {});
+      .catch((error) => { console.log(error); });
     }
 
     setTypeAttributes(i, d) {
