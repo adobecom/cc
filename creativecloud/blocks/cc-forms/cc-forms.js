@@ -167,6 +167,6 @@ class CCForms {
 export default async function init(el) {
     const formComponent = new CCForms(el);
     if (formComponent.formConfig == 'default') return;
-    // const { default: FormConfigurator} = await import(formComponent.formConfig["js"]);
-    // const formVariant = new FormConfigurator(formComponent.form);
+    const { default: FormConfigurator} = await import(formComponent.formConfig["js"]);
+    const formVariant = new FormConfigurator(formComponent.form);
 }
