@@ -46,7 +46,7 @@ const odinConfig = {
 const formConfig = {
   'perpeptual': {
     'type': 'perpeptual',
-    'js': '/creativecloud/features/cc-forms/forms/perpeptual.js',
+    'jsPath': '/creativecloud/features/cc-forms/forms/perpeptual.js',
     'blockDataset': {
       'clientname': 'trials',
       'endpoint': '/api2/marketing_common_service',
@@ -166,7 +166,7 @@ class CCForms {
 
 export default async function init(el) {
     const formComponent = new CCForms(el);
-    if (formComponent.type == 'default') return;
-    const { default: FormConfigurator} = await import(formComponent.formConfig.js);
+    if (formComponent.formConfig.type == 'default') return;
+    const { default: FormConfigurator} = await import(formComponent.formConfig.jsPath);
     const formVariant = new FormConfigurator(formComponent.form);
 }
