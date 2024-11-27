@@ -74,11 +74,11 @@ class Dropdown {
               'dropdown-name': 'orgsize',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/orgsize/us/en',
           },
-        'productsku': {
+        'product-sku': {
               'dropdown-name': 'productsku',
               'dropdown-source': 'graphql/execute.json/acom/listskuproductandversions',
           },
-        'purchaseintent': {
+        'purchase-intent': {
               'dropdown-name': 'purchaseintent',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/us/en',
           },
@@ -98,9 +98,13 @@ class Dropdown {
               'dropdown-name': 'timezone',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timezone/us/en',
           },
-        'usertype': {
+        'user-type': {
               'dropdown-name': 'usertype',
               'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/usertype/us/en',
+          },
+        'existing-user': {
+              'dropdown-name': 'usertype',
+              'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/existinguser/us/en',
           },
         };
         return dropdownConfigurations[dtype] ? dropdownConfigurations[dtype] : null;
@@ -155,15 +159,15 @@ class Dropdown {
 
     setTypeAttributes(i) {
       const fieldType = this.fieldConfig.type.split('cc-form-dropdown-').pop();
+      const cfgKeys = Object.keys(this.fieldConfig);
       const typeAttrs = this.getDroprownConfigurations(fieldType);
-      if (!typeAttrs) return;
+      if (!typeAttrs) return cfgKeys;
       Object.keys(typeAttrs).forEach((k) => {
         i.setAttribute(`data-${k}`, typeAttrs[k]);
       });
       i.setAttribute('required', 'required');
       i.setAttribute('data-form-required', 'required');
       i.setAttribute(ATTR_DROPDOWN_TYPE, 'independent');
-      const cfgKeys = Object.keys(this.fieldConfig);
       const dependentParent = cfgKeys.find((k) => k.includes('dependent'));
       if (dependentParent) {
         i.setAttribute(ATTR_DROPDOWN_TYPE, 'dependent');
