@@ -76,7 +76,7 @@ class Dropdown {
           },
         'product-sku': {
               'dropdown-name': 'productsku',
-              'dropdown-source': `graphql/execute.json/acom/listskuproductandversions;pname=${this.productname};ver=${this.version}`,
+              'dropdown-source': `graphql/execute.json/acom/listskuproductversiondetails;pname=${this.productname};ver=${this.version}`,
           },
         'purchase-intent': {
               'dropdown-name': 'purchaseintent',
