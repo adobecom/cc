@@ -38,6 +38,11 @@ function getOdinEndpoint() {
   return cfg.live.odinEndpoint;
 }
 
+const odinConfig = {
+  'odinenvironment' : getOdinEndpoint(),
+  'odin-prepopulate-api': `${getOdinEndpoint()}graphql/execute.json/acom/listvalidationsbylocale;path=/content/dam/acom/validation`,
+}
+
 const formConfig = {
   'perpeptual': {
     'type': 'perpeptual',
@@ -46,19 +51,21 @@ const formConfig = {
       'clientname': 'trials',
       'endpoint': '/api2/marketing_common_service',
       'form-type': 'form.perpetual.action',
-      'odinenvironment' : getOdinEndpoint(),
-      'odin-prepopulate-api': `${getOdinEndpoint()}graphql/execute.json/acom/listvalidationsbylocale;path=/content/dam/acom/validation`,
       'form-submit': 'trials',
+      ...odinConfig
     }
   },
   'connect': {
-    'type': 'connect'
+    'type': 'connect',
+      ...odinConfig
   },
   'subscribe': {
-    'type': 'subscribe'
+    'type': 'subscribe',
+      ...odinConfig
   },
   'unsubscribe': {
-    'type': 'unsubscribe'
+    'type': 'unsubscribe',
+      ...odinConfig
   }
 }
 
