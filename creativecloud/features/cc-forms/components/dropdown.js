@@ -162,11 +162,11 @@ class Dropdown {
     }
 
     createPtDownloadElement(d) {
-      const hiddenPtEl = createTag('input', { type: 'hidden', id: 'ptDownloadForm', name: 'ptDownloadForm'});
-      d.append(hiddenPtEl);
       window.fetch(`${this.form.getAttribute(DATA_ODIN_ENVIRONMENT)}/${PRODUCT_CODE_DETAILS}`)
       .then(response => response.json())
       .then((data) => {
+        const hiddenPtEl = createTag('input', { type: 'hidden', id: 'ptDownloadForm', name: 'ptDownloadForm'});
+        d.append(hiddenPtEl);
         const items = data.data[Object.keys(data.data)[0]].items;
         let email = '';
         let ctxid = '';
