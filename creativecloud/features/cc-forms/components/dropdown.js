@@ -172,7 +172,6 @@ class Dropdown {
         let ctxid = '';
         let value = '';
         for (let item of items) {
-          console.log(item);
           if (item.productname == this.productname) {
             if (item.emailtemplate) email = item.emailtemplate;
             if (item.imscontextid) ctxid = item.imscontextid;
@@ -185,7 +184,7 @@ class Dropdown {
         hiddenPtEl.setAttribute('data-ctxid', ctxid);
         hiddenPtEl.setAttribute('value', value);
       })
-      .catch((error) => { console.log(error); });
+      .catch((error) => {});
     }
 
     setTypeAttributes(i, d) {
