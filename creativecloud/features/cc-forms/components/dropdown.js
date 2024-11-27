@@ -193,8 +193,8 @@ class Dropdown {
       if (fieldType == 'product-sku') {
         const pnameId = cfgKeys.find(item => item.match(/product-name-/));
         const verId = cfgKeys.find(item => item.match(/product-version-/));
-        this.productname = pnameId.split('product-name-')[1].trim();
-        this.version = verId.split('product-version-')[1].trim();
+        if (pnameId) this.productname = pnameId.split('product-name-')[1].trim();
+        if (verId) this.version = verId.split('product-version-')[1].trim();
         this.createPtDownloadElement(d);
       }
       const typeAttrs = this.getDroprownConfigurations(fieldType);
