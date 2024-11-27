@@ -191,7 +191,6 @@ class Dropdown {
       const fieldType = this.fieldConfig.type.split('cc-form-dropdown-').pop();
       const cfgKeys = Object.keys(this.fieldConfig);
       if (fieldType == 'product-sku') {
-        debugger
         const pnameId = cfgKeys.find(item => item.match(/product-name-/));
         const verId = cfgKeys.find(item => item.match(/product-version-/));
         this.productname = this.fieldConfig[pnameId].split('product-name-')[1].trim();
