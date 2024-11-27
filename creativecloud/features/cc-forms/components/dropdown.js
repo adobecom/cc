@@ -174,9 +174,9 @@ class Dropdown {
         for (let item of items) {
           console.log(item);
           if (i.productname == this.productname) {
-            if (i.emailtemplate) email = item.emailtemplate;
-            if (i.imscontextid) ctxid = item.imscontextid;
-            if (i.productcode) value = item.productcode;
+            if (item.emailtemplate) email = item.emailtemplate;
+            if (item.imscontextid) ctxid = item.imscontextid;
+            if (item.productcode) value = item.productcode;
             break;
           }
         }
