@@ -44,7 +44,8 @@ class PerpetualTrials extends Trials {
         this.initVars();
         const ptDownloadForm = document.getElementById('ptDownloadForm');
         const thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
-        if (ptDownloadForm !== null) {
+        if (ptDownloadForm != null) {
+          console.log('set')
           const contextId = ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID)
               ? ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID) : TRIALS_DOWNLOAD;
           const ptrialAC = `Adobe.com_ptrials_${ptDownloadForm.value}:Adobe.com_ptrials_${thankyouPage}`;
