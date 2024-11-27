@@ -76,7 +76,7 @@ class Dropdown {
           },
         'product-sku': {
               'dropdown-name': 'productsku',
-              'dropdown-source': 'graphql/execute.json/acom/listskuproductandversions',
+              'dropdown-source': `graphql/execute.json/acom/listskuproductandversions;pname=${this.productname};ver=${this.version}`,
           },
         'purchase-intent': {
               'dropdown-name': 'purchaseintent',
@@ -163,6 +163,10 @@ class Dropdown {
     setTypeAttributes(i) {
       const fieldType = this.fieldConfig.type.split('cc-form-dropdown-').pop();
       const cfgKeys = Object.keys(this.fieldConfig);
+      if (fieldType == 'product-sku') {
+        this.productname = this.fieldConfig['product-name'].innerText.trim();
+        this.version = this.fieldConfig['version'].innerText.trim();
+      }
       const typeAttrs = this.getDroprownConfigurations(fieldType);
       if (!typeAttrs) return cfgKeys;
       Object.keys(typeAttrs).forEach((k) => {
