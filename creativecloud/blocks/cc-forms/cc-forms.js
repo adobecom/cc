@@ -164,9 +164,21 @@ class CCForms {
   }
 }
 
+function imsInitialized(interval = 200) {
+  return new Promise((resolve) => {
+      function poll() {
+        if (window.adobeIMS?.initialized) resolve();
+        else setTimeout(poll, interval);
+      }
+      poll();
+  });
+}
+
 export default async function init(el) {
     const formComponent = new CCForms(el);
     if (formComponent.formConfig.type == 'default') return;
-    const { default: FormConfigurator} = await import(formComponent.formConfig.jsPath);
-    const formVariant = new FormConfigurator(formComponent.form);
+    imsInitialized().then(async () => {
+      const { default: FormConfigurator} = await import(formComponent.formConfig.jsPath);
+      new FormConfigurator(formComponent.form);
+    })
 }
