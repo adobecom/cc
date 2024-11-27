@@ -173,7 +173,7 @@ class Dropdown {
         let value = '';
         for (let item of items) {
           console.log(item);
-          if (i.productname == this.productname) {
+          if (item.productname == this.productname) {
             if (item.emailtemplate) email = item.emailtemplate;
             if (item.imscontextid) ctxid = item.imscontextid;
             if (item.productcode) value = item.productcode;
