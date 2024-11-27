@@ -128,7 +128,10 @@ class Dropdown {
             d.append(disclaimerDiv);
             break;
           case 'placeholder':
-            i.setAttribute('placeholder', this.fieldConfig[ck].innerText.trim());
+            const ptext = this.fieldConfig[ck].innerText.trim();
+            i.setAttribute('placeholder', ptext);
+            const pi = createTag('option', { value: '', disabled: 'disabled', selected: 'selected', hidden: 'true' }, ptext);
+            i.append(pi);
             break
           case 'read-only':
             i.setAttribute('readonly', 'readonly');
