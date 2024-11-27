@@ -120,7 +120,7 @@ class Dropdown {
             i.setAttribute('aria-label', l);
             break;
           case 'disclaimer':
-            const disclaimerDiv = createTag('div', {}, this.fieldConfig[ck].innerText.trim());
+            const disclaimerDiv = createTag('div', { class: `field-detail` }, this.fieldConfig[ck].innerText.trim());
             d.append(disclaimerDiv);
             break;
           case 'placeholder':
