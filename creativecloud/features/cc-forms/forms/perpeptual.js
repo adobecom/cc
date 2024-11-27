@@ -37,28 +37,24 @@ const ATTRIBUTE = {
 
 class PerpetualTrials extends Trials {
     constructor(form) {
-        super(form);
-        this.form = form;
-        const notice = this.form.querySelector(`#${NOTICE_ID}`);
-        this.buttonListener();
-        this.initVars();
-        const ptDownloadForm = document.getElementById('ptDownloadForm');
-        const thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
-        if (ptDownloadForm != null) {
-          console.log('set')
-          const contextId = ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID)
-              ? ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID) : TRIALS_DOWNLOAD;
-          const ptrialAC = `Adobe.com_ptrials_${ptDownloadForm.value}:Adobe.com_ptrials_${thankyouPage}`;
-          window.adobeid.api_parameters = {
-            authorize:
-            {
-                state: { ac: ptrialAC },
-                ctx_id: contextId,
-            },
-          };
-        } else {
-          console.log('not set')
-        }
+      super(form);
+      this.form = form;
+      const notice = this.form.querySelector(`#${NOTICE_ID}`);
+      this.buttonListener();
+      this.initVars();
+      const ptDownloadForm = document.getElementById('ptDownloadForm');
+      const thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
+      if (ptDownloadForm != null) {
+        const contextId = ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID)
+            ? ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID) : TRIALS_DOWNLOAD;
+        const ptrialAC = `Adobe.com_ptrials_${ptDownloadForm.value}:Adobe.com_ptrials_${thankyouPage}`;
+        window.adobeid.api_parameters = {
+          authorize: {
+            state: { ac: ptrialAC },
+            ctx_id: contextId,
+          },
+        };
+      }
     }
 
     initVars() {
