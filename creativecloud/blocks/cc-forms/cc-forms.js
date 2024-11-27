@@ -66,6 +66,12 @@ const formConfig = {
   'unsubscribe': {
     'type': 'unsubscribe',
       ...odinConfig
+  },
+  'default': {
+    'type': 'default',
+    'blockDataset': {
+      ...odinConfig
+    },
   }
 }
 
@@ -90,12 +96,12 @@ class CCForms {
       case this.el.classList.contains('subscribe'):
         return formConfig['subscribe'];
       default:
-        return null;
+        return formConfig['default'];
     }
   }
 
   initForm() {
-    if (!this.formConfig) {
+    if (this.formConfig.type == 'default') {
       const d = createTag('div', { class: 'form-components'});
       this.el.prepend(d);
       return d;
@@ -106,7 +112,6 @@ class CCForms {
   }
 
   setFormDataAttributes() {
-    if (!this.formConfig) return;
     Object.keys(this.formConfig.blockDataset).forEach((k) => {
       this.form.setAttribute(`data-${k}`, this.formConfig.blockDataset[k]);
     });
@@ -161,7 +166,7 @@ class CCForms {
 
 export default async function init(el) {
     const formComponent = new CCForms(el);
-    if (!formComponent.formConfig) return;
+    if (formComponent.formConfig == 'default') return;
     // const { default: FormConfigurator} = await import(formComponent.formConfig["js"]);
     // const formVariant = new FormConfigurator(formComponent.form);
 }
