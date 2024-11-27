@@ -191,10 +191,10 @@ class Dropdown {
       if (this.required && this.dropdown.classList.contains('is-disabled')) this.valid = true;
       this.dropdown.setAttribute('data-valid', this.valid);
       if (this.valid) {
-        this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE).classList.add(CLASS_HIDDEN);
+        this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.add(CLASS_HIDDEN);
         return this.valid;
       }
-      this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE).classList.remove(CLASS_HIDDEN);
+      this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.remove(CLASS_HIDDEN);
       this.dropdown.classList.add('is-invalid');
       return this.valid;
     }
