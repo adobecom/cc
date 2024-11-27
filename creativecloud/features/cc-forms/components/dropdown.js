@@ -14,6 +14,7 @@ const DATA_ODIN_ENVIRONMENT = 'data-odinEnvironment';
 const COUNTRIES_ALL_API = 'listallcountries';
 const REGIONS_BY_PATH_API = 'listallregionsbypath;path=';
 const COUNTRIES_BY_PATH_API = 'listallcountriesbypath;path=';
+const PRODUCT_CODE_DETAILS = 'graphql/execute.json/acom/listskuproductandversions';
 const GRAPHQL_ENDPOINT = 'graphql/execute.json/acom/';
 const DATA_ODIN_US_PATH = '/content/dam/acom/country/us/en/';
 const SLASH = '/';
@@ -114,7 +115,7 @@ class Dropdown {
       const i = createTag('select', { class: 'menu'});
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
-      const cfgKeys = this.setTypeAttributes(i);
+      const cfgKeys = this.setTypeAttributes(i, d);
       [...cfgKeys].forEach((ck) => {
         switch(ck) {
           case 'label':
@@ -160,12 +161,40 @@ class Dropdown {
       return i;
     }
 
-    setTypeAttributes(i) {
+    createPtDownloadElement(d) {
+      const hiddenPtEl = createTag('input', { type: 'hidden', id: 'ptDownloadForm', name: 'ptDownloadForm'});
+      d.append(hiddenPtEl);
+      window.fetch(`${this.form.getAttribute(DATA_ODIN_ENVIRONMENT)}/${PRODUCT_CODE_DETAILS}`)
+      .then(response => response.json())
+      .then((data) => {
+        const items = data.data[Object.keys(data.data)[0]].items;
+        let email = '';
+        let ctxid = '';
+        let value = '';
+        for (i of items) {
+          console.log(i);
+          if (i.productname == this.productname) {
+            if (i.emailtemplate) email = i.emailtemplate;
+            if (i.imscontextid) ctxid = i.imscontextid;
+            if (i.productcode) value = i.productcode;
+            break;
+          }
+        }
+        hiddenPtEl.setAttribute('data-plabel', '');
+        hiddenPtEl.setAttribute('data-email', email);
+        hiddenPtEl.setAttribute('data-ctxid', ctxid);
+        hiddenPtEl.setAttribute('value', value);
+      })
+      .catch((error) => {});
+    }
+
+    setTypeAttributes(i, d) {
       const fieldType = this.fieldConfig.type.split('cc-form-dropdown-').pop();
       const cfgKeys = Object.keys(this.fieldConfig);
       if (fieldType == 'product-sku') {
         this.productname = this.fieldConfig['product-name'].innerText.trim();
         this.version = this.fieldConfig['version'].innerText.trim();
+        this.createPtDownloadElement(d);
       }
       const typeAttrs = this.getDroprownConfigurations(fieldType);
       if (!typeAttrs) return cfgKeys;

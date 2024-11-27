@@ -22,7 +22,7 @@ const SELECTOR = {
     ACTIONS: '#actions',
     EXISTING_USER: '#existinguser',
     PURCHASE_INTEND: '#purchaseintent',
-    BUTTON: '.spectrum-Button',
+    BUTTON: '.cc-form-component.con-button.submit',
 };
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
 const NOTICE_ID = 'noticeplaceholder';
