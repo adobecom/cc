@@ -191,8 +191,11 @@ class Dropdown {
       const fieldType = this.fieldConfig.type.split('cc-form-dropdown-').pop();
       const cfgKeys = Object.keys(this.fieldConfig);
       if (fieldType == 'product-sku') {
-        this.productname = this.fieldConfig['product-name'].innerText.trim();
-        this.version = this.fieldConfig['version'].innerText.trim();
+        debugger
+        const pnameId = cfgKeys.find(item => item.match(/product-name-/));
+        const verId = cfgKeys.find(item => item.match(/product-version-/));
+        this.productname = this.fieldConfig[pnameId].split('product-name-')[1].trim();
+        this.version = this.fieldConfig[verId].split('product-version-')[1].trim();
         this.createPtDownloadElement(d);
       }
       const typeAttrs = this.getDroprownConfigurations(fieldType);

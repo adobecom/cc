@@ -56,6 +56,8 @@ class PerpetualTrials extends Trials {
                 ctx_id: contextId,
             },
           };
+        } else {
+          console.log('not set')
         }
     }
 
