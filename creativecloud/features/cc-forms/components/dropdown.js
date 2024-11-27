@@ -304,10 +304,10 @@ class Dropdown {
     }
 
     populatePlabel(data) {
-        const hiddenEl = this.form.getElementById(DROPDOWN_HIDDEN_ID);
+        const hiddenEl = document.getElementById(DROPDOWN_HIDDEN_ID);
         const productLabel = data.data[Object.keys(data.data)[0]].items[0].version[0].productlabel;
-        if (hiddenEl.hasAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL)) {
-            hiddenEl.setAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL, productLabel);
+        if (hiddenEl?.hasAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL)) {
+            hiddenEl?.setAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL, productLabel);
         }
     }
 
