@@ -57,7 +57,7 @@ class Dropdown {
       },
       country: {
         'dropdown-name': 'country',
-        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/listallcountries.json',
+        'dropdown-source': 'graphql/execute.json/acom/listallcountries',
       },
       estunitship: {
         'dropdown-name': 'estunitship',
@@ -73,7 +73,7 @@ class Dropdown {
       },
       jobtitle: {
         'dropdown-name': 'jobtitle',
-        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/jobtitle.json',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
       },
       orgsize: {
         'dropdown-name': 'orgsize',
@@ -81,7 +81,7 @@ class Dropdown {
       },
       'product-sku': {
         'dropdown-name': 'productsku',
-        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/listskuproductversiondetails.json',
+        'dropdown-source': `graphql/execute.json/acom/listskuproductversiondetails;pname=${this.productname};ver=${this.version}`,
       },
       'purchase-intent': {
         'dropdown-name': 'purchaseintent',
@@ -105,7 +105,7 @@ class Dropdown {
       },
       'existing-user': {
         'dropdown-name': 'usertype',
-        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/existinguser.json',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/existinguser/us/en',
       },
     };
     return dropdownConfigurations[dtype] ? dropdownConfigurations[dtype] : null;
