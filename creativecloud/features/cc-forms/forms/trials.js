@@ -26,7 +26,205 @@ const STATUS_REDIRECT_MAP = {
   'error-redirect-bama': 'bamaunknownerrorpage',
   'error-redirect-service-unavailable': 'serviceunavailableerrorpage',
 };
+export class ConsentNotice {
+    constructor(form, formCongfig) {
+        this.form = form;
+        this.formCongfig = formCongfig;
+        this.cnConfig = this.getCNConfigs();
+        this.noticeEl = this.createNoticeEl();
+        this.noticeBody = '';
+        this.userCountry = new URLSearchParams(window.location.search).get('imsCountry') || undefined;
+        this.marketingPermissions = {};
+        this.noticeEmailPreset = '';
+        this.noticePhonePreset = '';
+        if (this.userCountry !== undefined) {
+          this.setNoticetags(this.userCountry);
+          this.setNoticeBody();
+          this.observeNoticeCheckboxes();
+        } else {
+            this.setNoticetagswithCountryCode();
+        }
+    }
 
+    createNoticeEl() {
+      let notice = createTag('div', { class: 'noticeplaceholder', id: 'noticeplaceholder' });
+      let d = createTag('div', { class: 'form-item' }, notice);
+      this.form.append(d);
+      return notice;
+    }
+
+    getCNConfigs() {
+      const cnconfig = {
+        consumer: {
+          soft: {
+            countryList: ['ROW'],
+            email: 'true',
+            emailpreset: 'no',
+            phone: 'false',
+            phonepreset: '',
+          },
+          implicit: {
+            countryList: ['JP','IN','US'],
+            email: 'true',
+            emailpreset: 'yes',
+            phone: 'false',
+            phonepreset: '',
+          },
+          explicitemail: {
+            countryList: ['AU','KR','SG'],
+            email: 'true',
+            emailpreset: 'no',
+            phone: 'false',
+            phonepreset: '',
+          },
+          explicitemailphone: { // to check on any page
+            countryList: [],
+            email: 'true',
+            emailpreset: 'no',
+            phone: 'true',
+            phonepreset: 'no',
+          }
+        },
+        enterprise: {
+          soft: { // to check on any page
+            countryList: [],
+            email: 'true',
+            emailpreset: 'no',
+            phone: 'false',
+            phonepreset: '',
+          },
+          implicit: {
+            countryList: ['SE','US','FI','PT','LV','FR','UK','IE','EE','IN','ROW'],
+            email: 'true',
+            emailpreset: 'yes',
+            phone: 'true',
+            phonepreset: 'yes',
+          },
+          explicitemail: {
+            countryList: ['DE','RU','BE','BG','JP','DK','LT','LU','HU','SG','SI','SK','CH','KR','MT','IT','GR','ES','AT','AU','CY','CZ','PL','RO','NL'],
+            email: 'true',
+            emailpreset: 'no',
+            phone: 'false',
+            phonepreset: '',
+          },
+          explicitemailphone: {
+            countryList: ['DE','RU','BE','BG','JP','DK','LT','LU','HU','SG','SI','SK','CH','KR','MT','IT','GR','ES','AT','AU','CY','CZ','PL','RO','NL'],
+            email: 'true',
+            emailpreset: 'no',
+            phone: 'true',
+            phonepreset: 'no',
+          }
+        }
+      }
+      return cnconfig;
+    }
+
+    imsReady({ interval = 200, maxAttempts = 25 } = {}) {
+      return new Promise((resolve) => {
+          let count = 0;
+          function poll() {
+              if (window.adobeIMS?.initialized) {
+                  resolve();
+              } else if (++count > maxAttempts) {
+                  resolve();
+              } else {
+                  setTimeout(poll, interval);
+              }
+          }
+          poll();
+      });
+    }
+
+    setNoticetagswithCountryCode() {
+        const promise = this.imsReady();
+        return promise.then(() => {
+            this.processOnLoggedInUser();
+        }).catch(() => {});
+    }
+
+    processOnLoggedInUser() {
+        const isSignedInUser = window.adobeIMS.isSignedInUser();
+        if (!isSignedInUser) return;
+        const userProfilePromise = window.adobeIMS.getProfile();
+        userProfilePromise.then((profile) => {
+            if (!profile.countryCode) return
+            this.setNoticetags(profile.countryCode);
+            this.setNoticeBody();
+            this.observeNoticeCheckboxes();
+        }).catch(() => {});
+    }
+
+    getUserGroup(userCountry) {
+      for (let i = 0; i < this.formCongfig.concentCfgs.length; i+=1) {
+        const [btype, ntype] = this.formCongfig.concentCfgs[i].bucketNoticeType.split('-');
+        const cl = this.cnConfig[btype][ntype].countryList;
+        if (cl.length && cl.includes(userCountry)) {
+          return {
+            countryCode: userCountry,
+            consentFragment: this.formCongfig.concentCfgs[i].consetFragment,
+            bucketType: btype,
+            noticeType: ntype,
+          }
+        } 
+      }
+    }
+
+    setNoticetags(userCountry) {
+      const consentBody = this.getUserGroup(userCountry);
+      if (consentBody?.countryCode) {
+        this.noticeEl.innerHTML = consentBody.consentFragment.innerHTML;
+        this.setNoticeChannels(consentBody.bucketType, consentBody.noticeType);
+        return;
+      }
+      if (userCountry != 'ROW') this.setNoticetags('ROW');
+    }
+
+    setNoticeChannels(bucketType, noticeType) {
+        const noticechannelsEmail = this.cnConfig[bucketType][noticeType]['email'];
+        if (noticechannelsEmail === 'true') this.noticeEmailPreset = this.cnConfig[bucketType][noticeType]['emailpreset'];
+        const noticechannelsPhone = this.cnConfig[bucketType][noticeType]['phone'];
+        if (noticechannelsPhone === 'true') this.noticePhonePreset = this.cnConfig[bucketType][noticeType]['phonepreset'];
+        this.setMarketingPermissionAttr();
+    }
+
+    setNoticeBody() {
+        const consentNotice = this.noticeEl.querySelectorAll('p, .form-items');
+        consentNotice.forEach((e) => { this.noticeBody += e.innerHTML });
+        this.noticeEl.setAttribute('data-notice-body', this.noticeBody.trim());
+    }
+
+    observeNoticeCheckboxes() {
+      const checkboxes = this.noticeEl.querySelectorAll('.cc-form-component.check-item-input');
+      [...checkboxes].forEach((elem) => {
+        elem.addEventListener('change', (elemChanged) => {
+          if (elemChanged.target.id === 'consentexplicitemail' || elemChanged.target.id === 'consentsoft') {
+              this.noticeEmailPreset = this.inversePermissionValue(this.noticeEmailPreset);
+          } else if (elemChanged.target.id === 'consentexplicitphone') {
+              this.noticePhonePreset = this.inversePermissionValue(this.noticePhonePreset);
+          }
+          this.setMarketingPermissionAttr();
+        });
+      });
+    }
+
+    inversePermissionValue(defaultPermission) {
+      return defaultPermission !== undefined && defaultPermission === 'no' ? 'yes' : 'no';
+    }
+
+    getBooleanValue(value) {
+      return value !== undefined && value === 'yes';
+    }
+
+    setMarketingPermissionAttr() {
+      if (this.noticeEmailPreset !== '') {
+          this.marketingPermissions.EMAIL = this.getBooleanValue(this.noticeEmailPreset);
+      }
+      if (this.noticePhonePreset !== '') {
+          this.marketingPermissions.PHONE = this.getBooleanValue(this.noticePhonePreset);
+      }
+      this.noticeEl.setAttribute('data-marketing-permissions', JSON.stringify(this.marketingPermissions));
+    }
+}
 class Trials {
     constructor(formContainer) {
         this.imslib = window.adobeIMS;

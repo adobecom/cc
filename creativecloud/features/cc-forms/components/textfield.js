@@ -27,14 +27,15 @@ class Textfield {
     }
 
     createTextField() {
-      const i = createTag('input', { type: 'text', class: 'cc-form-component' });
+      let i = createTag('input', { type: 'text', class: 'cc-form-component' });
+      i = this.setTypeAttributes(i);
       const d = createTag('div', { class: 'form-item' }, i);
       this.form.append(d);
-      this.setTypeAttributes(i);
       const cfgKeys = Object.keys(this.fieldConfig);
       [...cfgKeys].forEach((ckraw) => {
         const ck = ckraw.toLowerCase();
         if (ck.startsWith('max-length')) return i.setAttribute('maxlength', parseInt(ck.split('-').pop()));
+        if (ck.startsWith('max-lines')) return i.setAttribute('rows', parseInt(ck.split('-').pop()));
         switch(ck) {
           case 'label':
             const l = this.fieldConfig[ck].innerText.trim();
@@ -48,6 +49,7 @@ class Textfield {
             break;
           case 'placeholder':
             i.setAttribute('placeholder', this.fieldConfig[ck].innerText.trim());
+            if (i.nodeName == 'TEXTAREA') i.innerHTML = this.fieldConfig[ck].innerText.trim();
             break;
           case 'optional':
             i.removeAttribute('required');
@@ -72,6 +74,12 @@ class Textfield {
     setTypeAttributes(i) {
       const fieldType = this.fieldConfig.type.split('cc-form-text-').pop();
       switch(fieldType) {
+        case 'textarea':
+          const ta = createTag('textarea', {});
+          i.setAttribute('name', fieldType);
+          i.setAttribute('id', fieldType);
+          i.replaceWith(ta);
+          return ta;
         case 'contributor':
           i.setAttribute('pattern', "\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$");
           break;
@@ -95,6 +103,7 @@ class Textfield {
       i.setAttribute('id', fieldType);
       i.setAttribute('required', 'required');
       i.setAttribute('data-required', 'required');
+      return i;
     }
 
     showMessage(type) {

@@ -40,6 +40,7 @@ class Checkbox {
             break;
           case 'checked':
             i.setAttribute('checked', 'checked');
+            i.setAttribute('value', false);
             break;
           case 'optional':
             i.removeAttribute('required');
@@ -76,6 +77,8 @@ class Checkbox {
       }
       const cfgKeys = Object.keys(this.fieldConfig);
       i.setAttribute('required', 'required');
+      i.setAttribute('unchecked', 'unchecked');
+      i.setAttribute('value', false);
       i.setAttribute('data-required', 'required');
       return cfgKeys;
     }
