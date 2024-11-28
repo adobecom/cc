@@ -185,8 +185,8 @@ export const [setLibs, getLibs] = (() => {
 
 const miloLibs = setLibs('/libs');
 
-const { createTag, localizeLink, setConfig, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
-export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig, setConfig };
+const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
 
 function defineDeviceByScreenSize() {
   const DESKTOP_SIZE = 1200;
@@ -379,6 +379,16 @@ const CONFIG = {
 
 export const scriptInit = async () => {
   const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
+  const trialsCheck = document.querySelector('head > meta[name="trialsims"]');
+  if (trialsCheck && trialsCheck.content.toLowerCase() === 'on') {
+    CONFIG.imsClientId = 'trials1';
+    CONFIG.adobeid = {
+      api_parameters: {},
+      scope: 'AdobeID,openid,gnav,update_profile.mrktPerm,update_profile.job_function,update_profile.industry,update_profile.phoneNumber,update_profile.address.mail_to,update_profile.job_title,update_profile.company,additional_info.address.mail_to,additional_info.job_function,additional_info.industry,additional_info.job_title,additional_info.company,trials_ro,pps.read,firefly_api,additional_info.roles,read_organizations',
+      is_mandatory_sign_in: true,
+      redirect_uri: window.location.href,
+    };
+  }
   const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   if (isSignedInHomepage) acomsisCookieHandler();

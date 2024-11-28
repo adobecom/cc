@@ -205,8 +205,8 @@ class Dropdown {
     Object.keys(typeAttrs).forEach((k) => {
       i.setAttribute(`data-${k}`, typeAttrs[k]);
     });
-    i.setAttribute('name', fieldType);
-    i.setAttribute('id', fieldType);
+    i.setAttribute('name', typeAttrs['dropdown-name']);
+    i.setAttribute('id', typeAttrs['dropdown-name']);
     i.setAttribute('required', 'required');
     i.setAttribute('data-form-required', 'required');
     i.setAttribute(ATTR_DROPDOWN_TYPE, 'independent');
@@ -243,7 +243,13 @@ class Dropdown {
     if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
     this.dropdown.addEventListener('blur', () => this.isValid());
     if (this.name === 'productsku') this.handleProductSKUChange();
-    if (this.name === 'purchaseintent') this.handlePurchaseIntentChange();
+    else if (this.name === 'purchaseintent') this.handlePurchaseIntentChange();
+    else {
+      this.dropdown.addEventListener('change', (event) => {
+        event.target.querySelector('option[selected="selected"')?.removeAttribute('selected');
+        event.target.querySelectorAll('option')[event.target.selectedIndex]?.setAttribute('selected', 'selected');
+      });
+    }
   }
 
   handlePurchaseIntentChange() {
@@ -256,6 +262,8 @@ class Dropdown {
     window.digitalData.primaryProduct = primaryProduct;
     this.dropdown.addEventListener('change', (event) => {
       event.preventDefault();
+      event.target.querySelector('option[selected="selected"')?.removeAttribute('selected');
+      event.target.querySelectorAll('option')[event.target.selectedIndex]?.setAttribute('selected', 'selected');
       if (event.detail && event.detail.label) {
         if (event.detail.label === 'Yes') {
           window.digitalData.primaryProduct.productInfo.purchaseIntent = 'Yes';
@@ -269,8 +277,10 @@ class Dropdown {
   handleProductSKUChange() {
     this.dropdown.addEventListener('change', (event) => {
       event.preventDefault();
+      event.target.querySelector('option[selected="selected"')?.removeAttribute('selected');
+      event.target.querySelectorAll('option')[event.target.selectedIndex]?.setAttribute('selected', 'selected');
       if (!window.digitalData) return;
-      const elem = event.target.closest(SELECTOR_DROPDOWN);
+      const elem = event.target.closest('.form-item');
       const hiddenEl = elem.querySelector('#ptDownloadForm');
       const plabel = hiddenEl && hiddenEl.hasAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL)
         ? hiddenEl.getAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL) : '';

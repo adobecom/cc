@@ -144,6 +144,7 @@ export class ConsentNotice {
     const promise = this.imsReady();
     return promise.then(() => {
       this.processOnLoggedInUser();
+      this.noticeEl.dispatchEvent(new CustomEvent('cc:consent-ready'));
     }).catch(() => {});
   }
 

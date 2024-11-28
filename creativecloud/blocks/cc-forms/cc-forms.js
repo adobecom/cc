@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { createTag, getConfig, setConfig } from '../../scripts/utils.js';
+import { createTag, getConfig } from '../../scripts/utils.js';
 import Textfield from '../../features/cc-forms/components/textfield.js';
 import Dropdown from '../../features/cc-forms/components/dropdown.js';
 import Checkbox from '../../features/cc-forms/components/checkbox.js';
@@ -150,10 +150,6 @@ class CCForms {
           // eslint-disable-next-line no-unused-vars
           { const cb = new Checkbox(this.form, componentConfig); }
           break;
-        case componentName.startsWith('cc-form-button'):
-          // eslint-disable-next-line no-unused-vars
-          { const btn = new Button(this.form, componentConfig); }
-          break;
         case componentName.startsWith('cc-form-dropdown'):
           // eslint-disable-next-line no-unused-vars
           { const dd = new Dropdown(this.form, componentConfig); }
@@ -167,6 +163,10 @@ class CCForms {
         case componentName.startsWith('cc-form-content'):
           // eslint-disable-next-line no-unused-vars
           { const tc = new TextContent(this.form, componentConfig); }
+          break;
+        case componentName.startsWith('cc-form-button'):
+          // eslint-disable-next-line no-unused-vars
+          { const btn = new Button(this.form, componentConfig); }
           break;
         default:
           break;
@@ -186,24 +186,10 @@ function imsInitialized(interval = 200) {
 }
 
 export default async function init(el) {
-  if (window.adobeIMS?.initialized) throw new Error('Trials IMS pre-initialization error!!');
   const formComponent = new CCForms(el);
   if (formComponent.formConfig.type === 'default') return;
-  if (formComponent.formConfig.type === 'perpeptual' || formComponent.formConfig.type === 'connect') {
-    const cfg = getConfig();
-    cfg.imsClientId = 'trials1';
-    cfg.adobeid.client_id = 'trials1';
-    // eslint-disable-next-line max-len
-    cfg.adobeid.scope = 'AdobeID,openid,gnav,update_profile.mrktPerm,update_profile.job_function,update_profile.industry,update_profile.phoneNumber,update_profile.address.mail_to,update_profile.job_title,update_profile.company,additional_info.address.mail_to,additional_info.job_function,additional_info.industry,additional_info.job_title,additional_info.company,trials_ro,pps.read,firefly_api,additional_info.roles,read_organizations';
-    cfg.adobeid.api_parameters = {};
-    cfg.adobeid.enableGuestAccounts = false;
-    cfg.adobeid.enableGuestTokenForceRefresh = false;
-    cfg.adobeid.redirect_uri = window.location.href;
-    setConfig(cfg);
-  }
   imsInitialized().then(async () => {
-    // const disableSigIn = new URLSearchParams(window.location.search).get('disableSignIn');
-    // if (!disableSigIn && !window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
     const fc = new FormConfigurator(formComponent.form);
     return fc;

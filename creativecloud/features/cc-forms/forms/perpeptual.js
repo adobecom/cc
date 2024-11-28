@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { createTag } from '../../../scripts/utils.js';
 import Trials from './trials.js';
 
 const SELECTOR = {
@@ -26,8 +27,8 @@ const SELECTOR = {
   BUTTON: '.cc-form-component.con-button.submit',
 };
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
-// const NOTICE_ID = 'noticeplaceholder';
 const TRIALS_DOWNLOAD = 'trial_downloads';
+const NOTICE_ID = '#noticeplaceholder';
 const ATTRIBUTE = {
   DATA_EMAIL: 'data-email',
   DATA_CTX_ID: 'data-ctxid',
@@ -38,20 +39,23 @@ class PerpetualTrials extends Trials {
   constructor(form) {
     super(form);
     this.form = form;
-    this.buttonListener();
     this.initVars();
+    this.thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
+    const notice = document.querySelector(NOTICE_ID);
+    if (notice) {
+      const xf = notice.querySelector('.fragment');
+      if (xf) {
+        this.buttonListener();
+      } else {
+        notice.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
+      }
+    }
     const ptDownloadForm = document.getElementById('ptDownloadForm');
-    const thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
-    if (ptDownloadForm != null) {
+    if (ptDownloadForm) {
       const contextId = ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID)
         ? ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID) : TRIALS_DOWNLOAD;
-      const ptrialAC = `Adobe.com_ptrials_${ptDownloadForm.value}:Adobe.com_ptrials_${thankyouPage}`;
-      window.adobeid.api_parameters = {
-        authorize: {
-          state: { ac: ptrialAC },
-          ctx_id: contextId,
-        },
-      };
+      const ptrialAC = `Adobe.com_ptrials_${ptDownloadForm.value}:Adobe.com_ptrials_${this.thankyouPage}`;
+      window.adobeid.api_parameters = { authorize: { state: { ac: ptrialAC }, ctx_id: contextId } };
     }
   }
 
@@ -74,13 +78,15 @@ class PerpetualTrials extends Trials {
     // eslint-disable-next-line consistent-return
     if (this.isNoLeadProduct) return this.setValue(SELECTOR.PRODUCT_SKU, this.autoSelectBit());
     if (this.form.querySelector('[data-dropdown-name=country]') instanceof HTMLElement) {
-      const elemButton = this.form.querySelector('[data-dropdown-name=country]');
-      elemButton.querySelector('option[selected=selected]').removeAttribute('selected');
-      elemButton.querySelector(`option[data-value=${this.imsProfile.countryCode}]`).setAttribute('selected', 'selected');
-      const dropdown = this.form.querySelector('[name=country]');
-      dropdown.setAttribute('disabled', 'true');
-      const event = new Event('change', { bubbles: true });
-      elemButton.querySelector(`option[data-value=${this.imsProfile.countryCode}]`).dispatchEvent(event);
+      try {
+        const elemButton = this.form.querySelector('[data-dropdown-name=country]');
+        elemButton.querySelector('option[selected=selected]').removeAttribute('selected');
+        elemButton.querySelector(`option[data-value=${this.imsProfile.countryCode}]`).setAttribute('selected', 'selected');
+        const dropdown = this.form.querySelector('[name=country]');
+        dropdown.setAttribute('disabled', 'true');
+        const event = new Event('change', { bubbles: true });
+        elemButton.querySelector(`option[data-value=${this.imsProfile.countryCode}]`).dispatchEvent(event);
+      } catch (e) { /* pass */ }
     }
     this.setValue(SELECTOR.JOB_TITLE, this.imsProfile.job_title);
     this.setValue(SELECTOR.COMPANY, this.imsProfile.company);
@@ -145,7 +151,14 @@ class PerpetualTrials extends Trials {
     this.setCookie('MM_TRIALS', '12345', cookieDetails);
     if (!productSkuValue) return false;
     const downloadUrl = productSkuValue.split('|')[0].trim();
-    return window.localStorage.setItem('productSkuDownloadUrl', downloadUrl);
+    return this.downloadFile(this.form.querySelector(SELECTOR.PRODUCT_SKU), downloadUrl);
+  }
+
+  downloadFile(elem, downloadUrl) {
+    if (!downloadUrl) return;
+    const a = createTag('a', { class: 'is-hidden', href: downloadUrl, id: 'productSkuDownload' }, downloadUrl);
+    document.querySelector('body').append(a);
+    a.click();
   }
 
   getTIDCookie() {
@@ -218,8 +231,8 @@ class PerpetualTrials extends Trials {
     jsonPayload.ims.userProfile['address.mail_to'].stateProv = this.getValue(SELECTOR.STATE);
     jsonPayload.ims.userProfile['address.mail_to'].countryRegion = this.getValue(SELECTOR.STATE);
     jsonPayload.ims.userProfile['address.mail_to'].countryCode = countryCode !== null ? countryCode : this.getValue(SELECTOR.COUNTRY);
-    const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
-    if (skuElement) this.skuValue = skuElement.getAttribute('sku');
+    const skuElement = this.form.querySelector('[data-dropdown-name="productsku"]');
+    if (skuElement) this.skuValue = skuElement.querySelectorAll('option')[skuElement.selectedIndex].getAttribute('sku');
     jsonPayload.custom.locale = this.imslib.adobeid.locale;
     jsonPayload.custom.website = this.getValue(SELECTOR.WEBSITE);
     jsonPayload.custom.campaignId = this.skuValue;
@@ -299,7 +312,7 @@ class PerpetualTrials extends Trials {
       body: JSON.stringify(payLoad),
     })
       .then(() => { window.location.href = this.thankyouPage; })
-      .catch(() => {});
+      .catch(() => { });
   }
 }
 
