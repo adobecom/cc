@@ -5,9 +5,9 @@ import Checkbox from '/creativecloud/features/cc-forms/components/checkbox.js';
 import { ConsentNotice } from '/creativecloud/features/cc-forms/forms/trials.js';
 class TextContent {
   constructor(formEl, config) {
-      this.form = formEl;
-      this.fieldConfig = config;
-      this.init();
+    this.form = formEl;
+    this.fieldConfig = config;
+    this.init();
   }
   init() {
     const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
@@ -17,9 +17,9 @@ class TextContent {
 }
 class Button {
   constructor(formEl, config) {
-      this.form = formEl;
-      this.fieldConfig = config;
-      this.btnEl = this.createButton();
+    this.form = formEl;
+    this.fieldConfig = config;
+    this.btnEl = this.createButton();
   }
   createButton() {
     const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig['label'].innerText.trim());
