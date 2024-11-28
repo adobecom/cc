@@ -2,7 +2,6 @@
 /* eslint-disable eqeqeq */
 import { createTag } from '../../../scripts/utils.js';
 
-const SELECTOR_DROPDOWN = '.spectrum-Dropdown';
 const CLASS_HIDDEN = 'is-hidden';
 const SELECTOR_PREFIX_MESSAGE = '.error-message';
 const ATTR_DROPDOWN_TYPE = 'data-dropdown-type';
