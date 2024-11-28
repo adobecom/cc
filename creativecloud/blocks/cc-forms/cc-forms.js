@@ -190,20 +190,20 @@ export default async function init(el) {
   const formComponent = new CCForms(el);
   if (formComponent.formConfig.type === 'default') return;
   if (formComponent.formConfig.type === 'perpeptual' || formComponent.formConfig.type === 'connect') {
-    // const cfg = getConfig();
-    // cfg.imsClientId = 'trials1';
-    // cfg.adobeid.client_id = 'trials1';
+    const cfg = getConfig();
+    cfg.imsClientId = 'trials1';
+    cfg.adobeid.client_id = 'trials1';
     // eslint-disable-next-line max-len
-    // cfg.adobeid.scope = 'AdobeID,openid,gnav,update_profile.mrktPerm,update_profile.job_function,update_profile.industry,update_profile.phoneNumber,update_profile.address.mail_to,update_profile.job_title,update_profile.company,additional_info.address.mail_to,additional_info.job_function,additional_info.industry,additional_info.job_title,additional_info.company,trials_ro,pps.read,firefly_api,additional_info.roles,read_organizations';
-    // cfg.adobeid.api_parameters = {};
-    // cfg.adobeid.enableGuestAccounts = false;
-    // cfg.adobeid.enableGuestTokenForceRefresh = false;
-    // cfg.adobeid.redirect_uri = window.location.href.includes('.adobe.com') ? window.location.href : "https://www.adobe.com";
-    // setConfig(cfg);
+    cfg.adobeid.scope = 'AdobeID,openid,gnav,update_profile.mrktPerm,update_profile.job_function,update_profile.industry,update_profile.phoneNumber,update_profile.address.mail_to,update_profile.job_title,update_profile.company,additional_info.address.mail_to,additional_info.job_function,additional_info.industry,additional_info.job_title,additional_info.company,trials_ro,pps.read,firefly_api,additional_info.roles,read_organizations';
+    cfg.adobeid.api_parameters = {};
+    cfg.adobeid.enableGuestAccounts = false;
+    cfg.adobeid.enableGuestTokenForceRefresh = false;
+    cfg.adobeid.redirect_uri = window.location.href;
+    setConfig(cfg);
   }
   imsInitialized().then(async () => {
-    // const disableSigIn = new URLSearchParams(window.location.search).get('disableSignIn');
-    // if (!disableSigIn && !window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
+    const disableSigIn = new URLSearchParams(window.location.search).get('disableSignIn');
+    if (!disableSigIn && !window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
     const fc = new FormConfigurator(formComponent.form);
     return fc;
