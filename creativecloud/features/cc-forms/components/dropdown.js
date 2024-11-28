@@ -57,7 +57,7 @@ class Dropdown {
       },
       country: {
         'dropdown-name': 'country',
-        'dropdown-source': 'graphql/execute.json/acom/listallcountries',
+        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/listallcountries.json',
       },
       estunitship: {
         'dropdown-name': 'estunitship',
@@ -73,7 +73,7 @@ class Dropdown {
       },
       jobtitle: {
         'dropdown-name': 'jobtitle',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
+        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/jobtitle.json',
       },
       orgsize: {
         'dropdown-name': 'orgsize',
@@ -81,19 +81,15 @@ class Dropdown {
       },
       'product-sku': {
         'dropdown-name': 'productsku',
-        'dropdown-source': `graphql/execute.json/acom/listskuproductversiondetails;pname=${this.productname};ver=${this.version}`,
+        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/listskuproductversiondetails.json',
       },
       'purchase-intent': {
         'dropdown-name': 'purchaseintent',
         'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/us/en',
       },
-      region: {
+      state: {
         'dropdown-name': 'region',
         'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
-      },
-      state: {
-        'dropdown-name': 'state',
-        'dropdown-source': null,
       },
       timeframe: {
         'dropdown-name': 'timeframe',
@@ -109,14 +105,14 @@ class Dropdown {
       },
       'existing-user': {
         'dropdown-name': 'usertype',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/existinguser/us/en',
+        'dropdown-source': 'https://localhost/creativecloud/features/cc-forms/forms/existinguser.json',
       },
     };
     return dropdownConfigurations[dtype] ? dropdownConfigurations[dtype] : null;
   }
 
   createDropdown() {
-    const i = createTag('select', { class: 'menu'});
+    const i = createTag('select', { class: 'menu' });
     const d = createTag('div', { class: 'form-item' }, i);
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i, d);
@@ -156,7 +152,7 @@ class Dropdown {
           i.setAttribute(ATTR_SORT_PROPERTY, 'title');
           break;
         case 'error-required': {
-          const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required`}, this.fieldConfig[ck].innerText.trim());
+          const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required` }, this.fieldConfig[ck].innerText.trim());
           d.append(er);
         }
           break;
@@ -171,7 +167,7 @@ class Dropdown {
     window.fetch(`${this.form.getAttribute(DATA_ODIN_ENVIRONMENT)}/${PRODUCT_CODE_DETAILS}`)
       .then((response) => response.json())
       .then((data) => {
-        const hiddenPtEl = createTag('input', { type: 'hidden', id: 'ptDownloadForm', name: 'ptDownloadForm'});
+        const hiddenPtEl = createTag('input', { type: 'hidden', id: 'ptDownloadForm', name: 'ptDownloadForm' });
         d.append(hiddenPtEl);
         const { items } = data.data[Object.keys(data.data)[0]];
         let email = '';
@@ -227,7 +223,7 @@ class Dropdown {
     this.valid = false;
     if (!this.required) this.valid = true;
     if (this.required && !!(this.value)) this.valid = true;
-    if (this.required && this.dropdown.classList.contains('is-disabled')) this.valid = true;
+    if (this.required && this.dropdown.disabled) this.valid = true;
     this.dropdown.setAttribute('data-valid', this.valid);
     if (this.valid) {
       this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.add(CLASS_HIDDEN);
@@ -294,7 +290,7 @@ class Dropdown {
     window.fetch(this.source)
       .then((response) => response.json())
       .then((data) => {
-          this.dataMapping(data);
+        this.dataMapping(data);
       })
       .catch(() => {});
   }
@@ -430,7 +426,8 @@ class Dropdown {
   }
 
   disable(force) {
-    this.dropdown.classList[force ? 'add' : 'remove']('is-disabled');
+    if (force) this.dropdown.setAttribute('disabled', 'disabled');
+    else this.dropdown.removeAttribute('disabled');
   }
 
   // eslint-disable-next-line consistent-return

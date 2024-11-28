@@ -25,7 +25,7 @@ class Button {
   }
 
   createButton() {
-    const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig['label'].innerText.trim());
+    const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig.label.innerText.trim());
     a.addEventListener('click', (e) => e.preventDefault());
     const d = createTag('div', { class: 'form-item' }, a);
     this.form.append(d);
@@ -56,7 +56,7 @@ const formConfig = {
       'form-type': 'form.perpetual.action',
       'form-submit': 'trials',
       ...odinConfig,
-    }
+    },
   },
   connect: {
     type: 'connect',
@@ -87,7 +87,7 @@ class CCForms {
       'demandbase-endpoint': 'https://api.demandbase.com/autocomplete',
       'demandbase-apiKey': 'e4086fa3ea9d74ac2aae2719a0e5285dc7075d7b',
       'demandbase-delay': 400,
-    }
+    };
   }
 
   getFormConfig() {
@@ -123,7 +123,7 @@ class CCForms {
   createFormComponents() {
     const formComponents = this.el.querySelectorAll(':scope > div > div:nth-child(1) span[class*="cc-form-"]');
     const formMetadata = [...this.el.querySelectorAll(':scope > div > div:nth-child(1) .icon')];
-    [...formComponents].forEach((fc) => {
+    [...formComponents].forEach(() => {
       const componentConfig = {};
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
@@ -143,24 +143,30 @@ class CCForms {
       }
       switch (true) {
         case componentName.startsWith('cc-form-text'):
+          // eslint-disable-next-line no-unused-vars
           { const tf = new Textfield(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-checkbox'):
+          // eslint-disable-next-line no-unused-vars
           { const cb = new Checkbox(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-button'):
+          // eslint-disable-next-line no-unused-vars
           { const btn = new Button(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-dropdown'):
+          // eslint-disable-next-line no-unused-vars
           { const dd = new Dropdown(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-consent'):
           if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
+            // eslint-disable-next-line no-unused-vars
             const cn = new ConsentNotice(this.form, componentConfig);
           }
           break;
         case componentName.startsWith('cc-form-content'):
-          new TextContent(this.form, componentConfig);
+          // eslint-disable-next-line no-unused-vars
+          { const tc = new TextContent(this.form, componentConfig); }
           break;
         default:
           break;
@@ -171,22 +177,23 @@ class CCForms {
 
 function imsInitialized(interval = 200) {
   return new Promise((resolve) => {
-      function poll() {
-        if (window.adobeIMS?.initialized) resolve();
-        else setTimeout(poll, interval);
-      }
-      poll();
+    function poll() {
+      if (window.adobeIMS?.initialized) resolve();
+      else setTimeout(poll, interval);
+    }
+    poll();
   });
 }
 
 export default async function init(el) {
-  if (window.adobeIMS?.initialized) throw ('Trials IMS pre-initialization error!!');
+  if (window.adobeIMS?.initialized) throw new Error('Trials IMS pre-initialization error!!');
   const formComponent = new CCForms(el);
-  if (formComponent.formConfig.type == 'default') return;
-  if (formComponent.formConfig.type == 'perpeptual' || formComponent.formConfig.type == 'connect') {
+  if (formComponent.formConfig.type === 'default') return;
+  if (formComponent.formConfig.type === 'perpeptual' || formComponent.formConfig.type === 'connect') {
     // const cfg = getConfig();
     // cfg.imsClientId = 'trials1';
     // cfg.adobeid.client_id = 'trials1';
+    // eslint-disable-next-line max-len
     // cfg.adobeid.scope = 'AdobeID,openid,gnav,update_profile.mrktPerm,update_profile.job_function,update_profile.industry,update_profile.phoneNumber,update_profile.address.mail_to,update_profile.job_title,update_profile.company,additional_info.address.mail_to,additional_info.job_function,additional_info.industry,additional_info.job_title,additional_info.company,trials_ro,pps.read,firefly_api,additional_info.roles,read_organizations';
     // cfg.adobeid.api_parameters = {};
     // cfg.adobeid.enableGuestAccounts = false;
@@ -197,7 +204,8 @@ export default async function init(el) {
   imsInitialized().then(async () => {
     // const disableSigIn = new URLSearchParams(window.location.search).get('disableSignIn');
     // if (!disableSigIn && !window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
-    const { default: FormConfigurator} = await import(formComponent.formConfig.jsPath);
-    new FormConfigurator(formComponent.form);
-  })
+    const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
+    const fc = new FormConfigurator(formComponent.form);
+    return fc;
+  });
 }

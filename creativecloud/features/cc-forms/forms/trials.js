@@ -152,7 +152,7 @@ export class ConsentNotice {
     if (!isSignedInUser) return;
     const userProfilePromise = window.adobeIMS.getProfile();
     userProfilePromise.then((profile) => {
-      if (!profile.countryCode) return
+      if (!profile.countryCode) return;
       this.setNoticetags(profile.countryCode);
       this.setNoticeBody();
       this.observeNoticeCheckboxes();
@@ -194,7 +194,7 @@ export class ConsentNotice {
 
   setNoticeBody() {
     const consentNotice = this.noticeEl.querySelectorAll('p, .form-items');
-    consentNotice.forEach((e) => { this.noticeBody += e.innerHTML });
+    consentNotice.forEach((e) => { this.noticeBody += e.innerHTML; });
     this.noticeEl.setAttribute('data-notice-body', this.noticeBody.trim());
   }
 
@@ -275,7 +275,7 @@ class Trials {
       this.checkValidElements();
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
-        setTimeout(() => { this.submitAction() }, 1);
+        setTimeout(() => { this.submitAction(); }, 1);
       }
     });
   }

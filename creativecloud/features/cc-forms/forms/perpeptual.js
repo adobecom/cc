@@ -60,7 +60,7 @@ class PerpetualTrials extends Trials {
     this.orgSize = '';
     this.setOrgFlag = false;
     this.rengaUri = `/api2/marketing_get_uds?api_key=${this.apikey}`;
-    try { this.locale = this.imslib.adobeid.locale } catch (e) { this.locale = 'en_US'; }
+    try { this.locale = this.imslib.adobeid.locale; } catch (e) { this.locale = 'en_US'; }
     const userProfilePromise = this.imslib.getProfile();
     userProfilePromise.then((profile) => {
       if (!profile.userId) return;

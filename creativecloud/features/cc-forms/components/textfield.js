@@ -87,7 +87,7 @@ class Textfield {
         return ta;
       }
       case 'contributor':
-        i.setAttribute('pattern', '\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$');
+        i.setAttribute('pattern', '^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$');
         break;
       case 'email':
         i.setAttribute('pattern', '^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$');
