@@ -34,10 +34,10 @@ export default async function init(el) {
   const button = createTag('button', {
     class: 'con-button blue',
     type: 'button',
-  }, config['button-label']);
+  }, config['privacy-button-label']);
 
-  if (config['button-label'] && config['confirmation-message'] && config.url) {
-    handleUrlVariant(button, config.url, config['confirmation-message']);
+  if (config['privacy-button-label'] && config['privacy-confirmation-message'] && config['privacy-url']) {
+    handleUrlVariant(button, config['privacy-url'], config['privacy-confirmation-message']);
   }
 
   el.innerHTML = '';
