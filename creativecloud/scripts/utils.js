@@ -353,18 +353,18 @@ const CONFIG = {
     pdfViewerClientId: '9f7f19a46bd542e2b8548411e51eb4d4',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
     psUrl: 'https://stage.photoshop.adobe.com',
-    odinEndpoint: "https://stage-odin.adobe.com/",
+    odinEndpoint: 'https://stage-odin.adobe.com/',
   },
   live: {
     pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
-    odinEndpoint: "https://stage-odin.adobe.com/",
+    odinEndpoint: 'https://stage-odin.adobe.com/',
   },
   prod: {
     pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
     pdfViewerReportSuite: 'adbadobenonacdcprod',
     psUrl: 'https://photoshop.adobe.com',
-    odinEndpoint: "https://odin.adobe.com/",
+    odinEndpoint: 'https://odin.adobe.com/',
   },
   jarvis: {
     id: 'adobedotcom2',

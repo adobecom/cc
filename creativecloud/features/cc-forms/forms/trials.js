@@ -1,3 +1,7 @@
+/* eslint-disable comma-spacing */
+/* eslint-disable consistent-return */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable max-classes-per-file */
 import { createTag, loadStyle } from '../../../scripts/utils.js';
 
 const SELECTOR_BUTTON = '.cc-form-component.con-button.submit';
@@ -42,13 +46,13 @@ export class ConsentNotice {
       this.setNoticeBody();
       this.observeNoticeCheckboxes();
     } else {
-        this.setNoticetagswithCountryCode();
+      this.setNoticetagswithCountryCode();
     }
   }
 
   createNoticeEl() {
-    let notice = createTag('div', { class: 'noticeplaceholder', id: 'noticeplaceholder' });
-    let d = createTag('div', { class: 'form-item' }, notice);
+    const notice = createTag('div', { class: 'noticeplaceholder', id: 'noticeplaceholder' });
+    const d = createTag('div', { class: 'form-item' }, notice);
     this.form.append(d);
     return notice;
   }
@@ -83,7 +87,7 @@ export class ConsentNotice {
           emailpreset: 'no',
           phone: 'true',
           phonepreset: 'no',
-        }
+        },
       },
       enterprise: {
         soft: { // to check on any page
@@ -113,9 +117,9 @@ export class ConsentNotice {
           emailpreset: 'no',
           phone: 'true',
           phonepreset: 'no',
-        }
-      }
-    }
+        },
+      },
+    };
     return cnconfig;
   }
 
@@ -123,9 +127,10 @@ export class ConsentNotice {
     return new Promise((resolve) => {
       let count = 0;
       function poll() {
+        count += 1;
         if (window.adobeIMS?.initialized) {
           resolve();
-        } else if (++count > maxAttempts) {
+        } else if (count + 1 > maxAttempts) {
           resolve();
         } else {
           setTimeout(poll, interval);
@@ -155,7 +160,7 @@ export class ConsentNotice {
   }
 
   getUserGroup(userCountry) {
-    for (let i = 0; i < this.formCongfig.concentCfgs.length; i+=1) {
+    for (let i = 0; i < this.formCongfig.concentCfgs.length; i += 1) {
       const [btype, ntype] = this.formCongfig.concentCfgs[i].bucketNoticeType.split('-');
       const cl = this.cnConfig[btype][ntype].countryList;
       if (cl.length && cl.includes(userCountry)) {
@@ -164,8 +169,8 @@ export class ConsentNotice {
           consentFragment: this.formCongfig.concentCfgs[i].consetFragment,
           bucketType: btype,
           noticeType: ntype,
-        }
-      } 
+        };
+      }
     }
   }
 
@@ -176,14 +181,14 @@ export class ConsentNotice {
       this.setNoticeChannels(consentBody.bucketType, consentBody.noticeType);
       return;
     }
-    if (userCountry != 'ROW') this.setNoticetags('ROW');
+    if (userCountry !== 'ROW') this.setNoticetags('ROW');
   }
 
   setNoticeChannels(bucketType, noticeType) {
-    const noticechannelsEmail = this.cnConfig[bucketType][noticeType]['email'];
-    if (noticechannelsEmail === 'true') this.noticeEmailPreset = this.cnConfig[bucketType][noticeType]['emailpreset'];
-    const noticechannelsPhone = this.cnConfig[bucketType][noticeType]['phone'];
-    if (noticechannelsPhone === 'true') this.noticePhonePreset = this.cnConfig[bucketType][noticeType]['phonepreset'];
+    const noticechannelsEmail = this.cnConfig[bucketType][noticeType].email;
+    if (noticechannelsEmail === 'true') this.noticeEmailPreset = this.cnConfig[bucketType][noticeType].emailpreset;
+    const noticechannelsPhone = this.cnConfig[bucketType][noticeType].phone;
+    if (noticechannelsPhone === 'true') this.noticePhonePreset = this.cnConfig[bucketType][noticeType].phonepreset;
     this.setMarketingPermissionAttr();
   }
 
@@ -198,9 +203,9 @@ export class ConsentNotice {
     [...checkboxes].forEach((elem) => {
       elem.addEventListener('change', (elemChanged) => {
         if (elemChanged.target.id === 'consentexplicitemail' || elemChanged.target.id === 'consentsoft') {
-            this.noticeEmailPreset = this.inversePermissionValue(this.noticeEmailPreset);
+          this.noticeEmailPreset = this.inversePermissionValue(this.noticeEmailPreset);
         } else if (elemChanged.target.id === 'consentexplicitphone') {
-            this.noticePhonePreset = this.inversePermissionValue(this.noticePhonePreset);
+          this.noticePhonePreset = this.inversePermissionValue(this.noticePhonePreset);
         }
         this.setMarketingPermissionAttr();
       });
@@ -217,10 +222,10 @@ export class ConsentNotice {
 
   setMarketingPermissionAttr() {
     if (this.noticeEmailPreset !== '') {
-        this.marketingPermissions.EMAIL = this.getBooleanValue(this.noticeEmailPreset);
+      this.marketingPermissions.EMAIL = this.getBooleanValue(this.noticeEmailPreset);
     }
     if (this.noticePhonePreset !== '') {
-        this.marketingPermissions.PHONE = this.getBooleanValue(this.noticePhonePreset);
+      this.marketingPermissions.PHONE = this.getBooleanValue(this.noticePhonePreset);
     }
     this.noticeEl.setAttribute('data-marketing-permissions', JSON.stringify(this.marketingPermissions));
   }
@@ -396,9 +401,9 @@ class Trials {
     if (!(elem instanceof HTMLElement)) return false;
     if (!value) return false;
     if (attr === 'value') {
-        elem.value = value;
+      elem.value = value;
     } else {
-        elem.setAttribute(attribute, value);
+      elem.setAttribute(attribute, value);
     }
     return true;
   }
@@ -424,15 +429,15 @@ class Trials {
       if (options) {
         cookiePath = options.path;
         if (typeof cookiePath === 'string' && cookiePath.length) {
-            newCookie += `; path=${cookiePath}`;
+          newCookie += `; path=${cookiePath}`;
         }
         cookieExpiration = options.expiration;
         if (cookieExpiration instanceof Date) {
-            newCookie += `; expires=${cookieExpiration.toUTCString()}`;
+          newCookie += `; expires=${cookieExpiration.toUTCString()}`;
         }
         cookieDomain = options.domain;
         if (typeof cookieDomain === 'string' && cookieDomain.length) {
-            newCookie += `; domain=${cookieDomain}`;
+          newCookie += `; domain=${cookieDomain}`;
         }
       }
       document.cookie = newCookie;
@@ -443,27 +448,27 @@ class Trials {
     window.fetch(endPoint, {
       method: 'POST',
       headers: {
-          'Content-Type': REQUEST_CONTENT_TYPE,
-          Authorization: `${accessToken}`,
+        'Content-Type': REQUEST_CONTENT_TYPE,
+        Authorization: `${accessToken}`,
       },
       body: JSON.stringify(payLoad),
     })
-    .then((response) => {
-      response.json().then((data) => {
+      .then((response) => {
+        response.json().then((data) => {
           if (response.status === 200 && (data.successful || data.success)) {
-              this.postSubmitSuccess(data);
+            this.postSubmitSuccess(data);
           } else if (response.status === 200
           && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
           || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
-              this.postSubmitSuccess(data);
+            this.postSubmitSuccess(data);
           } else {
-              this.postSubmitFailure(response);
+            this.postSubmitFailure(response);
           }
-      })
-      .catch(() => {
-          this.postSubmitFailure(response);
+        })
+          .catch(() => {
+            this.postSubmitFailure(response);
+          });
       });
-    });
   }
 
   toggleSubmitButton(disabled) {

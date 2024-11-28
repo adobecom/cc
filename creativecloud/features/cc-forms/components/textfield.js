@@ -22,7 +22,7 @@ class Textfield {
   }
 
   init() {
-    this.textfield.addEventListener('blur', () => this.isValid() );
+    this.textfield.addEventListener('blur', () => this.isValid());
     this.form.addEventListener('checkValidation', () => this.isValid());
   }
 
@@ -34,22 +34,22 @@ class Textfield {
     const cfgKeys = Object.keys(this.fieldConfig);
     [...cfgKeys].forEach((ckraw) => {
       const ck = ckraw.toLowerCase();
-      if (ck.startsWith('max-length')) return i.setAttribute('maxlength', parseInt(ck.split('-').pop()));
-      if (ck.startsWith('max-lines')) return i.setAttribute('rows', parseInt(ck.split('-').pop()));
-      switch(ck) {
-        case 'label':
+      if (ck.startsWith('max-length')) return i.setAttribute('maxlength', parseInt(ck.split('-').pop(), 10));
+      if (ck.startsWith('max-lines')) return i.setAttribute('rows', parseInt(ck.split('-').pop(), 10));
+      switch (ck) {
+        case 'label': {
           const l = this.fieldConfig[ck].innerText.trim();
           const lel = createTag('label', {}, l);
           d.prepend(lel);
           i.setAttribute('aria-label', l);
+        }
           break;
         case 'disclaimer':
-          const disclaimerDiv = createTag('div', { class: `field-detail` }, this.fieldConfig[ck].innerText.trim());
-          d.append(disclaimerDiv);
+          d.append(createTag('div', { class: 'field-detail' }, this.fieldConfig[ck].innerText.trim()));
           break;
         case 'placeholder':
           i.setAttribute('placeholder', this.fieldConfig[ck].innerText.trim());
-          if (i.nodeName == 'TEXTAREA') i.innerHTML = this.fieldConfig[ck].innerText.trim();
+          if (i.nodeName === 'TEXTAREA') i.innerHTML = this.fieldConfig[ck].innerText.trim();
           break;
         case 'optional':
           i.removeAttribute('required');
@@ -58,42 +58,48 @@ class Textfield {
         case 'read-only':
           i.setAttribute('readonly', 'readonly');
           break;
-        case 'error-required':
+        case 'error-required': {
           const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required` }, this.fieldConfig[ck].innerText.trim());
           d.append(er);
+        }
           break;
-        case 'error-validation':
+        case 'error-validation': {
           const ev = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-invalid` }, this.fieldConfig[ck].innerText.trim());
           d.append(ev);
+        }
+          break;
+        default:
           break;
       }
+      return 1;
     });
     return i;
   }
 
   setTypeAttributes(i) {
     const fieldType = this.fieldConfig.type.split('cc-form-text-').pop();
-    switch(fieldType) {
-      case 'textarea':
+    switch (fieldType) {
+      case 'textarea': {
         const ta = createTag('textarea', {});
         i.setAttribute('name', fieldType);
         i.setAttribute('id', fieldType);
-        i.replaceWith(ta);
+        i.replaceWith(createTag('textarea', {}));
         return ta;
+      }
       case 'contributor':
-        i.setAttribute('pattern', "\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$");
+        i.setAttribute('pattern', '\^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$');
         break;
       case 'email':
-        i.setAttribute('pattern', "^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$");
+        i.setAttribute('pattern', '^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$');
         break;
       case 'phonenumber':
-        i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+        i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
         break;
       case 'postalcode':
-        i.setAttribute('pattern', "^[0-9a-zA-Z\\-]*$");
+        i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
         break;
       case 'website':
-        i.setAttribute('pattern', "^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$");
+        i.setAttribute('pattern', '^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$');
         break;
       default:
         i.setAttribute('pattern', '[a-zA-Z0-9]+');

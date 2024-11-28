@@ -1,4 +1,5 @@
-import Trials from '/creativecloud/features/cc-forms/forms/trials.js';
+/* eslint-disable no-underscore-dangle */
+import Trials from './trials.js';
 
 const SELECTOR = {
   NO_LEAD: '#nolead',
@@ -25,26 +26,25 @@ const SELECTOR = {
   BUTTON: '.cc-form-component.con-button.submit',
 };
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
-const NOTICE_ID = 'noticeplaceholder';
+// const NOTICE_ID = 'noticeplaceholder';
 const TRIALS_DOWNLOAD = 'trial_downloads';
 const ATTRIBUTE = {
-    DATA_EMAIL: 'data-email',
-    DATA_CTX_ID: 'data-ctxid',
-    DATA_THANK_YOU_PAGE: 'data-thankyoupage',
+  DATA_EMAIL: 'data-email',
+  DATA_CTX_ID: 'data-ctxid',
+  DATA_THANK_YOU_PAGE: 'data-thankyoupage',
 };
 
 class PerpetualTrials extends Trials {
   constructor(form) {
     super(form);
     this.form = form;
-    const notice = this.form.querySelector(`#${NOTICE_ID}`);
     this.buttonListener();
     this.initVars();
     const ptDownloadForm = document.getElementById('ptDownloadForm');
     const thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
     if (ptDownloadForm != null) {
       const contextId = ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID)
-          ? ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID) : TRIALS_DOWNLOAD;
+        ? ptDownloadForm.getAttribute(ATTRIBUTE.DATA_CTX_ID) : TRIALS_DOWNLOAD;
       const ptrialAC = `Adobe.com_ptrials_${ptDownloadForm.value}:Adobe.com_ptrials_${thankyouPage}`;
       window.adobeid.api_parameters = {
         authorize: {
@@ -71,6 +71,7 @@ class PerpetualTrials extends Trials {
 
   populateForm() {
     if (!this.imsProfile) return;
+    // eslint-disable-next-line consistent-return
     if (this.isNoLeadProduct) return this.setValue(SELECTOR.PRODUCT_SKU, this.autoSelectBit());
     if (this.form.querySelector('[data-dropdown-name=country]') instanceof HTMLElement) {
       const elemButton = this.form.querySelector('[data-dropdown-name=country]');
@@ -90,28 +91,29 @@ class PerpetualTrials extends Trials {
     if (this.form.querySelector(SELECTOR.ORG_SIZE)) this.setOrgSize();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   autoSelectBit() {
-      let OSName = 'Unsupported';
-      let OSSelect = '';
-      const { userAgent } = window.navigator;
-      if (userAgent.indexOf('Win') !== -1) OSName = 'Windows |';
-      if (userAgent.indexOf('Mac') !== -1) OSName = 'Mac';
-      if (userAgent.indexOf('X11') !== -1) OSName = 'UNIX';
-      if (userAgent.indexOf('Linux') !== -1) OSName = 'Linux';
-      if (userAgent.indexOf('WOW64') !== -1 || userAgent.indexOf('Win64') !== -1) OSName = 'Windows 64-bit';
-      if (OSName === 'Unsupported') OSSelect = 'Undefined';
-      return OSSelect;
+    let OSName = 'Unsupported';
+    let OSSelect = '';
+    const { userAgent } = window.navigator;
+    if (userAgent.indexOf('Win') !== -1) OSName = 'Windows |';
+    if (userAgent.indexOf('Mac') !== -1) OSName = 'Mac';
+    if (userAgent.indexOf('X11') !== -1) OSName = 'UNIX';
+    if (userAgent.indexOf('Linux') !== -1) OSName = 'Linux';
+    if (userAgent.indexOf('WOW64') !== -1 || userAgent.indexOf('Win64') !== -1) OSName = 'Windows 64-bit';
+    if (OSName === 'Unsupported') OSSelect = 'Undefined';
+    return OSSelect;
   }
 
   setOrgSize() {
-      this.setOrgFlag = true;
-      const rengaJson = {
-          guid: this.imslib.isSignedIn(),
-          rengatoken: this.getCookieValueByName('WCDServer'),
-          appdomain: 'ACOM_ECOM',
-      };
-      this.accesstoken = this.imslib.getAccessToken().token;
-      this.postCommonService(this.accesstoken, rengaJson, this.rengaUri);
+    this.setOrgFlag = true;
+    const rengaJson = {
+      guid: this.imslib.isSignedIn(),
+      rengatoken: this.getCookieValueByName('WCDServer'),
+      appdomain: 'ACOM_ECOM',
+    };
+    this.accesstoken = this.imslib.getAccessToken().token;
+    this.postCommonService(this.accesstoken, rengaJson, this.rengaUri);
   }
 
   submitAction() {
@@ -126,9 +128,7 @@ class PerpetualTrials extends Trials {
       primaryEvent.eventInfo = eventInfo;
       window.digitalData.primaryEvent = primaryEvent;
     }
-    /* eslint-disable no-underscore-dangle */
     if (window._satellite) window._satellite.track('trackPerpetualTrialDownloadFormSubmit');
-    /* eslint-enable no-underscore-dangle */
     this.setOrgFlag = false;
     this.payLoad = this.isNoLeadProduct ? this.getPayloadForNoLead() : this.getPayloadForLead();
     this.addGdprPropertiesToPayload();
@@ -288,18 +288,18 @@ class PerpetualTrials extends Trials {
     const marketingPermissions = this.getValue('#noticeplaceholder', 'data-marketing-permissions');
     this.payLoad.custom.marketing_permissions = JSON.parse(marketingPermissions);
   }
-  
+
   postCommonService(accessToken, payLoad, endPoint) {
     window.fetch(endPoint, {
       method: 'POST',
       headers: {
-          'Content-Type': REQUEST_CONTENT_TYPE,
-          Authorization: `${accessToken}`,
+        'Content-Type': REQUEST_CONTENT_TYPE,
+        Authorization: `${accessToken}`,
       },
       body: JSON.stringify(payLoad),
     })
-    .then((response) => { window.location.href = this.thankyouPage; })
-    .catch((error) => {});
+      .then(() => { window.location.href = this.thankyouPage; })
+      .catch(() => {});
   }
 }
 

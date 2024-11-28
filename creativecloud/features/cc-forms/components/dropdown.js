@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable eqeqeq */
 import { createTag } from '../../../scripts/utils.js';
 
 const SELECTOR_DROPDOWN = '.spectrum-Dropdown';
@@ -21,6 +23,7 @@ const SLASH = '/';
 
 class Dropdown {
   data = [];
+
   constructor(formEl, config) {
     this.form = formEl;
     this.fieldConfig = config;
@@ -44,72 +47,72 @@ class Dropdown {
 
   getDroprownConfigurations(dtype) {
     const dropdownConfigurations = {
-      'freemium-purchase-intent' : {
-          'dropdown-name': 'freemiumpurchaseintent',
-          'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectfreemium/us/en',
-        },
+      'freemium-purchase-intent': {
+        'dropdown-name': 'freemiumpurchaseintent',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectfreemium/us/en',
+      },
       'connect-purchase-intent': {
-            'dropdown-name': 'connectpurchaseintent',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connecttrialpurchaseintent/us/en',
-        },
-      'country': {
-            'dropdown-name': 'country',
-            'dropdown-source': 'graphql/execute.json/acom/listallcountries',
-        },
-      'estunitship': {
-            'dropdown-name': 'estunitship',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/estunitship/us/en',
-        },
-      'industry': {
-            'dropdown-name': 'industry',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/industry/us/en',
-        },
-      'jobfunction': {
-            'dropdown-name': 'jobfunction',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobfunction/us/en',
-        },
-      'jobtitle': {
-            'dropdown-name': 'jobtitle',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
-        },
-      'orgsize': {
-            'dropdown-name': 'orgsize',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/orgsize/us/en',
-        },
+        'dropdown-name': 'connectpurchaseintent',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connecttrialpurchaseintent/us/en',
+      },
+      country: {
+        'dropdown-name': 'country',
+        'dropdown-source': 'graphql/execute.json/acom/listallcountries',
+      },
+      estunitship: {
+        'dropdown-name': 'estunitship',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/estunitship/us/en',
+      },
+      industry: {
+        'dropdown-name': 'industry',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/industry/us/en',
+      },
+      jobfunction: {
+        'dropdown-name': 'jobfunction',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobfunction/us/en',
+      },
+      jobtitle: {
+        'dropdown-name': 'jobtitle',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
+      },
+      orgsize: {
+        'dropdown-name': 'orgsize',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/orgsize/us/en',
+      },
       'product-sku': {
-            'dropdown-name': 'productsku',
-            'dropdown-source': `graphql/execute.json/acom/listskuproductversiondetails;pname=${this.productname};ver=${this.version}`,
-        },
+        'dropdown-name': 'productsku',
+        'dropdown-source': `graphql/execute.json/acom/listskuproductversiondetails;pname=${this.productname};ver=${this.version}`,
+      },
       'purchase-intent': {
-            'dropdown-name': 'purchaseintent',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/us/en',
-        },
-      'region': {
-            'dropdown-name': 'region',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
-        },
-      'state': {
-            'dropdown-name': 'state',
-            'dropdown-source': null,
-        },
-      'timeframe': {
-            'dropdown-name': 'timeframe',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timeframe/us/en',
-        },
-      'timezone': {
-            'dropdown-name': 'timezone',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timezone/us/en',
-        },
+        'dropdown-name': 'purchaseintent',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/us/en',
+      },
+      region: {
+        'dropdown-name': 'region',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
+      },
+      state: {
+        'dropdown-name': 'state',
+        'dropdown-source': null,
+      },
+      timeframe: {
+        'dropdown-name': 'timeframe',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timeframe/us/en',
+      },
+      timezone: {
+        'dropdown-name': 'timezone',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timezone/us/en',
+      },
       'user-type': {
-            'dropdown-name': 'usertype',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/usertype/us/en',
-        },
+        'dropdown-name': 'usertype',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/usertype/us/en',
+      },
       'existing-user': {
-            'dropdown-name': 'usertype',
-            'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/existinguser/us/en',
-        },
-      };
-      return dropdownConfigurations[dtype] ? dropdownConfigurations[dtype] : null;
+        'dropdown-name': 'usertype',
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/existinguser/us/en',
+      },
+    };
+    return dropdownConfigurations[dtype] ? dropdownConfigurations[dtype] : null;
   }
 
   createDropdown() {
@@ -118,23 +121,24 @@ class Dropdown {
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i, d);
     [...cfgKeys].forEach((ck) => {
-      switch(ck) {
-        case 'label':
+      switch (ck) {
+        case 'label': {
           const l = this.fieldConfig[ck].innerText.trim();
           const lel = createTag('label', {}, l);
           d.prepend(lel);
           i.setAttribute('aria-label', l);
+        }
           break;
         case 'disclaimer':
-          const disclaimerDiv = createTag('div', { class: `field-detail` }, this.fieldConfig[ck].innerText.trim());
-          d.append(disclaimerDiv);
+          d.append(createTag('div', { class: 'field-detail' }, this.fieldConfig[ck].innerText.trim()));
           break;
-        case 'placeholder':
+        case 'placeholder': {
           const ptext = this.fieldConfig[ck].innerText.trim();
           i.setAttribute('placeholder', ptext);
           const pi = createTag('option', { value: '', disabled: 'disabled', selected: 'selected', hidden: 'true' }, ptext);
           i.append(pi);
-          break
+        }
+          break;
         case 'read-only':
           i.setAttribute('readonly', 'readonly');
           break;
@@ -151,9 +155,10 @@ class Dropdown {
         case 'sort-title':
           i.setAttribute(ATTR_SORT_PROPERTY, 'title');
           break;
-        case 'error-required':
-          const er = createTag('div', {class: `field-detail ${CLASS_HIDDEN} error-message error-message-required`}, this.fieldConfig[ck].innerText.trim());
+        case 'error-required': {
+          const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required`}, this.fieldConfig[ck].innerText.trim());
           d.append(er);
+        }
           break;
         default:
           break;
@@ -164,36 +169,37 @@ class Dropdown {
 
   createPtDownloadElement(d) {
     window.fetch(`${this.form.getAttribute(DATA_ODIN_ENVIRONMENT)}/${PRODUCT_CODE_DETAILS}`)
-    .then(response => response.json())
-    .then((data) => {
-      const hiddenPtEl = createTag('input', { type: 'hidden', id: 'ptDownloadForm', name: 'ptDownloadForm'});
-      d.append(hiddenPtEl);
-      const items = data.data[Object.keys(data.data)[0]].items;
-      let email = '';
-      let ctxid = '';
-      let value = '';
-      for (let item of items) {
-        if (item.productname == this.productname) {
-          if (item.emailtemplate) email = item.emailtemplate;
-          if (item.imscontextid) ctxid = item.imscontextid;
-          if (item.productcode) value = item.productcode;
-          break;
+      .then((response) => response.json())
+      .then((data) => {
+        const hiddenPtEl = createTag('input', { type: 'hidden', id: 'ptDownloadForm', name: 'ptDownloadForm'});
+        d.append(hiddenPtEl);
+        const { items } = data.data[Object.keys(data.data)[0]];
+        let email = '';
+        let ctxid = '';
+        let value = '';
+        // eslint-disable-next-line no-restricted-syntax
+        for (const item of items) {
+          if (item.productname == this.productname) {
+            if (item.emailtemplate) email = item.emailtemplate;
+            if (item.imscontextid) ctxid = item.imscontextid;
+            if (item.productcode) value = item.productcode;
+            break;
+          }
         }
-      }
-      hiddenPtEl.setAttribute('data-plabel', '');
-      hiddenPtEl.setAttribute('data-email', email);
-      hiddenPtEl.setAttribute('data-ctxid', ctxid);
-      hiddenPtEl.setAttribute('value', value);
-    })
-    .catch((error) => {});
+        hiddenPtEl.setAttribute('data-plabel', '');
+        hiddenPtEl.setAttribute('data-email', email);
+        hiddenPtEl.setAttribute('data-ctxid', ctxid);
+        hiddenPtEl.setAttribute('value', value);
+      })
+      .catch(() => {});
   }
 
   setTypeAttributes(i, d) {
     const fieldType = this.fieldConfig.type.split('cc-form-dropdown-').pop();
     const cfgKeys = Object.keys(this.fieldConfig);
     if (fieldType == 'product-sku') {
-      const pnameId = cfgKeys.find(item => item.match(/product-name-/));
-      const verId = cfgKeys.find(item => item.match(/product-version-/));
+      const pnameId = cfgKeys.find((item) => item.match(/product-name-/));
+      const verId = cfgKeys.find((item) => item.match(/product-version-/));
       if (pnameId) this.productname = pnameId.split('product-name-')[1].trim();
       if (verId) this.version = verId.split('product-version-')[1].trim();
       this.createPtDownloadElement(d);
@@ -247,7 +253,7 @@ class Dropdown {
   handlePurchaseIntentChange() {
     if (!window.digitalData) return;
     const primaryProduct = window.digitalData.primaryProduct
-        ? window.digitalData.primaryProduct : {};
+      ? window.digitalData.primaryProduct : {};
     const productInfo = primaryProduct.productInfo ? primaryProduct.productInfo : {};
     productInfo.purchaseIntent = 'NotAnswered';
     primaryProduct.productInfo = productInfo;
@@ -256,9 +262,9 @@ class Dropdown {
       event.preventDefault();
       if (event.detail && event.detail.label) {
         if (event.detail.label === 'Yes') {
-            window.digitalData.primaryProduct.productInfo.purchaseIntent = 'Yes';
+          window.digitalData.primaryProduct.productInfo.purchaseIntent = 'Yes';
         } else if (event.detail.label === 'No') {
-            window.digitalData.primaryProduct.productInfo.purchaseIntent = 'No';
+          window.digitalData.primaryProduct.productInfo.purchaseIntent = 'No';
         }
       }
     });
@@ -271,12 +277,12 @@ class Dropdown {
       const elem = event.target.closest(SELECTOR_DROPDOWN);
       const hiddenEl = elem.querySelector('#ptDownloadForm');
       const plabel = hiddenEl && hiddenEl.hasAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL)
-          ? hiddenEl.getAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL) : '';
+        ? hiddenEl.getAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL) : '';
       const selectedFile = event.detail && event.detail.label
-          ? event.detail.label.trim() : '';
+        ? event.detail.label.trim() : '';
       const daall = plabel.concat(' | ', selectedFile);
       const primaryProduct = window.digitalData.primaryProduct
-          ? window.digitalData.primaryProduct : {};
+        ? window.digitalData.primaryProduct : {};
       const productInfo = primaryProduct.productInfo ? primaryProduct.productInfo : {};
       productInfo.productName = daall;
       primaryProduct.productInfo = productInfo;
@@ -286,25 +292,25 @@ class Dropdown {
 
   loadData() {
     window.fetch(this.source)
-    .then(response => response.json())
-    .then((data) => {
-        this.dataMapping(data);
-    })
-    .catch((error) => {});
+      .then((response) => response.json())
+      .then((data) => {
+          this.dataMapping(data);
+      })
+      .catch(() => {});
   }
 
   dataMapping(data) {
     let dataMapped;
     switch (this.name) {
-        case 'productsku':
-            dataMapped = this.mapProductSku(data);
-            this.populatePlabel(data);
-            break;
-        case 'country':
-            dataMapped = this.sortCountries(data.data[Object.keys(data.data)[0]].items);
-            break;
-        default:
-            dataMapped = this.sortList(data.data[Object.keys(data.data)[0]].items);
+      case 'productsku':
+        dataMapped = this.mapProductSku(data);
+        this.populatePlabel(data);
+        break;
+      case 'country':
+        dataMapped = this.sortCountries(data.data[Object.keys(data.data)[0]].items);
+        break;
+      default:
+        dataMapped = this.sortList(data.data[Object.keys(data.data)[0]].items);
     }
     this.updateList(dataMapped);
   }
@@ -340,7 +346,7 @@ class Dropdown {
     const hiddenEl = document.getElementById(DROPDOWN_HIDDEN_ID);
     const productLabel = data.data[Object.keys(data.data)[0]].items[0].version[0].productlabel;
     if (hiddenEl?.hasAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL)) {
-        hiddenEl?.setAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL, productLabel);
+      hiddenEl?.setAttribute(DROPDOWN_HIDDEN_ATTR_PLABEL, productLabel);
     }
   }
 
@@ -356,12 +362,8 @@ class Dropdown {
       if (items[i].isTop) sortedTopCountries.push(items[i]);
       else sortedCountries.push(items[i]);
     }
-    sortedTopCountries.sort(function (a, b) {
-      return (a.value > b.value) ? -1 : 1;
-    });
-    sortedCountries.sort(function (a, b) {
-      return (a.value > b.value) ? 1 : -1;
-    });
+    sortedTopCountries.sort((a, b) => ((a.value > b.value) ? -1 : 1));
+    sortedCountries.sort((a, b) => ((a.value > b.value) ? 1 : -1));
     return sortedTopCountries.concat(sortedCountries);
   }
 
@@ -386,18 +388,18 @@ class Dropdown {
         }
         this.resetRegionDropdown();
         window.fetch(fetchRegionSource)
-        .then(response => response.json())
-        .then((data) => {
-          const items = data.data[Object.keys(data.data)[0]]?.item.child;
-          this.data = items;
-          this.reset();
-          if (items !== null && items.length > 0) {
+          .then((response) => response.json())
+          .then((data) => {
+            const items = data.data[Object.keys(data.data)[0]]?.item.child;
+            this.data = items;
+            this.reset();
+            if (items !== null && items.length > 0) {
               this.sortList(items);
-          }
-          this.updateList(items);
-          this.updateDropdown();
-        })
-        .catch((error) => { });
+            }
+            this.updateList(items);
+            this.updateDropdown();
+          })
+          .catch(() => { });
       } else {
         this.data = event.detail.child;
         this.reset();
@@ -431,6 +433,7 @@ class Dropdown {
     this.dropdown.classList[force ? 'add' : 'remove']('is-disabled');
   }
 
+  // eslint-disable-next-line consistent-return
   updateList(items) {
     this.dropdown.innerHTML = '';
     if (!items) return this.disable(true);

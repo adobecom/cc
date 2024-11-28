@@ -31,12 +31,13 @@ class Checkbox {
     const cfgKeys = this.setTypeAttributes(i);
     [...cfgKeys].forEach((ckraw) => {
       const ck = ckraw.toLowerCase();
-      switch(ck) {
-        case 'label':
+      switch (ck) {
+        case 'label': {
           const ltxt = this.fieldConfig[ck].innerText.trim();
           const l = createTag('label', { class: 'check-item-label checkbox-label' }, ltxt);
           checkWrap.append(l);
           i.setAttribute('aria-label', ltxt);
+        }
           break;
         case 'checked':
           i.setAttribute('checked', 'checked');
@@ -46,9 +47,12 @@ class Checkbox {
           i.removeAttribute('required');
           i.removeAttribute('data-required');
           break;
-        case 'error-required':
+        case 'error-required': {
           const er = createTag('div', { class: `field-detail ${CLASS_HIDDEN} error-message error-message-required` }, this.fieldConfig[ck].innerText.trim());
           d.append(er);
+        }
+          break;
+        default:
           break;
       }
     });
@@ -57,7 +61,7 @@ class Checkbox {
 
   setTypeAttributes(i) {
     const fieldType = this.fieldConfig.type.split('cc-form-checkbox-').pop();
-    switch(fieldType) {
+    switch (fieldType) {
       case 'consent-explicit-email':
         i.setAttribute('name', 'consentexplicitemail');
         i.setAttribute('id', 'consentexplicitemail');

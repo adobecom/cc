@@ -1,18 +1,20 @@
+/* eslint-disable max-classes-per-file */
 import { createTag, getConfig, setConfig } from '../../scripts/utils.js';
-import Textfield from '/creativecloud/features/cc-forms/components/textfield.js';
-import Dropdown from '/creativecloud/features/cc-forms/components/dropdown.js';
-import Checkbox from '/creativecloud/features/cc-forms/components/checkbox.js';
-import { ConsentNotice } from '/creativecloud/features/cc-forms/forms/trials.js';
+import Textfield from '../../features/cc-forms/components/textfield.js';
+import Dropdown from '../../features/cc-forms/components/dropdown.js';
+import Checkbox from '../../features/cc-forms/components/checkbox.js';
+import { ConsentNotice } from '../../features/cc-forms/forms/trials.js';
+
 class TextContent {
   constructor(formEl, config) {
     this.form = formEl;
     this.fieldConfig = config;
     this.init();
   }
+
   init() {
     const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
     this.form.append(d);
-    return;
   }
 }
 class Button {
@@ -21,6 +23,7 @@ class Button {
     this.fieldConfig = config;
     this.btnEl = this.createButton();
   }
+
   createButton() {
     const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig['label'].innerText.trim());
     a.addEventListener('click', (e) => e.preventDefault());
@@ -39,41 +42,39 @@ function getOdinEndpoint() {
 }
 
 const odinConfig = {
-  'odinenvironment' : getOdinEndpoint(),
+  odinenvironment: getOdinEndpoint(),
   'odin-prepopulate-api': `${getOdinEndpoint()}graphql/execute.json/acom/listvalidationsbylocale;path=/content/dam/acom/validation`,
-}
+};
 
 const formConfig = {
-  'perpeptual': {
-    'type': 'perpeptual',
-    'jsPath': '/creativecloud/features/cc-forms/forms/perpeptual.js',
-    'blockDataset': {
-      'clientname': 'trials',
-      'endpoint': '/api2/marketing_common_service',
+  perpeptual: {
+    type: 'perpeptual',
+    jsPath: '/creativecloud/features/cc-forms/forms/perpeptual.js',
+    blockDataset: {
+      clientname: 'trials',
+      endpoint: '/api2/marketing_common_service',
       'form-type': 'form.perpetual.action',
       'form-submit': 'trials',
-      ...odinConfig
+      ...odinConfig,
     }
   },
-  'connect': {
-    'type': 'connect',
-      ...odinConfig
+  connect: {
+    type: 'connect',
+    ...odinConfig,
   },
-  'subscribe': {
-    'type': 'subscribe',
-      ...odinConfig
+  subscribe: {
+    type: 'subscribe',
+    ...odinConfig,
   },
-  'unsubscribe': {
-    'type': 'unsubscribe',
-      ...odinConfig
+  unsubscribe: {
+    type: 'unsubscribe',
+    ...odinConfig,
   },
-  'default': {
-    'type': 'default',
-    'blockDataset': {
-      ...odinConfig
-    },
-  }
-}
+  default: {
+    type: 'default',
+    blockDataset: { ...odinConfig },
+  },
+};
 
 class CCForms {
   constructor(el) {
@@ -88,21 +89,23 @@ class CCForms {
       'demandbase-delay': 400,
     }
   }
-  
+
   getFormConfig() {
-    switch(true) {
+    switch (true) {
       case this.el.classList.contains('perpeptual'):
-        return formConfig['perpeptual'];
+        return formConfig.perpeptual;
+      case this.el.classList.contains('connect'):
+        return formConfig.connect;
       case this.el.classList.contains('subscribe'):
-        return formConfig['subscribe'];
+        return formConfig.subscribe;
       default:
-        return formConfig['default'];
+        return formConfig.default;
     }
   }
 
   initForm() {
-    if (this.formConfig.type == 'default') {
-      const d = createTag('div', { class: 'form-components'});
+    if (this.formConfig.type === 'default') {
+      const d = createTag('div', { class: 'form-components' });
       this.el.prepend(d);
       return d;
     }
@@ -125,8 +128,10 @@ class CCForms {
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
       componentConfig.type = componentName.toLowerCase();
-      if (c.parentElement.nextElementSibling) componentConfig.value = c.parentElement.nextElementSibling;
-      while(formMetadata.length && !(/cc-form-/.test(formMetadata[0].classList))) {
+      if (c.parentElement.nextElementSibling) {
+        componentConfig.value = c.parentElement.nextElementSibling;
+      }
+      while (formMetadata.length && !(/cc-form-/.test(formMetadata[0].classList))) {
         const s = formMetadata.shift();
         const keyName = [...s.classList].find((cn) => cn.includes('icon-')).split('icon-')[1].toLowerCase();
         if (componentName.startsWith('cc-form-consent')) {
@@ -136,22 +141,22 @@ class CCForms {
           componentConfig[keyName] = s.closest('div').nextElementSibling;
         }
       }
-      switch(true) {
+      switch (true) {
         case componentName.startsWith('cc-form-text'):
-          new Textfield(this.form, componentConfig);
+          { const tf = new Textfield(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-checkbox'):
-          new Checkbox(this.form, componentConfig);
+          { const cb = new Checkbox(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-button'):
-          new Button(this.form, componentConfig);
+          { const btn = new Button(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-dropdown'):
-          new Dropdown(this.form, componentConfig);
+          { const dd = new Dropdown(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-consent'):
-          if (this.formConfig && (this.formConfig.type == 'perpeptual' || this.formConfig.type == 'connect')) {
-            new ConsentNotice(this.form, componentConfig);
+          if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
+            const cn = new ConsentNotice(this.form, componentConfig);
           }
           break;
         case componentName.startsWith('cc-form-content'):
