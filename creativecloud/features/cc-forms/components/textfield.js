@@ -55,6 +55,9 @@ class Textfield {
           i.removeAttribute('required');
           i.removeAttribute('data-required');
           break;
+        case 'hidden':
+          d.classList.add(CLASS_HIDDEN);
+          break;
         case 'read-only':
           i.setAttribute('readonly', 'readonly');
           break;
