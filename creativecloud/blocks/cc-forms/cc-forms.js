@@ -202,8 +202,8 @@ export default async function init(el) {
     setConfig(cfg);
   }
   imsInitialized().then(async () => {
-    const disableSigIn = new URLSearchParams(window.location.search).get('disableSignIn');
-    if (!disableSigIn && !window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
+    // const disableSigIn = new URLSearchParams(window.location.search).get('disableSignIn');
+    // if (!disableSigIn && !window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
     const fc = new FormConfigurator(formComponent.form);
     return fc;
