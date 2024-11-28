@@ -1,4 +1,4 @@
-import { createTag } from '../../../scripts/utils.js';
+import { createTag, loadStyle } from '../../../scripts/utils.js';
 
 const SELECTOR_BUTTON = '.cc-form-component.con-button.submit';
 const BUTTON_DISABLED_CLASS = 'is-disabled';
@@ -11,7 +11,7 @@ const DATA_APIKEY = 'data-apiKey';
 const DATA_ENDPOINT = 'data-endpoint';
 const SELECTOR_ELEMENTS = '.cc-form-component';
 const SELECTOR_CIRCLE_LOADER = '.hawksForms-circleLoader';
-const CLASS_CIRCLE_LOADER_VISIBLE = 'hawksForms-circleLoader--visible';
+const CLASS_CIRCLE_LOADER_VISIBLE = 'visible';
 const CIRCLE_LOADER_TIMEOUT = 30000;
 const ADDRESS_MAIL_TO = 'data-imsAddressMailValue';
 const USER_PROFILE = 'data-userProfileValue';
@@ -273,7 +273,7 @@ class Trials {
           this.formContainer.dispatchEvent(this.event);
           this.checkValidElements();
           if (this.valid) {
-              // this.circleLoaderShow();
+              this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
               setTimeout(() => {
                   this.submitAction();
               }, 1);
@@ -324,17 +324,45 @@ class Trials {
         window.location.href = destination;
     }
 
-    // circleLoaderHide() {
-    //     this.circleLoader.classList.remove(CLASS_CIRCLE_LOADER_VISIBLE);
-    // }
+  createProgressCircle() {
+    const pdom = `<div class="spectrum-ProgressCircle-track"></div>
+  <div class="spectrum-ProgressCircle-fills">
+    <div class="spectrum-ProgressCircle-fillMask1">
+      <div class="spectrum-ProgressCircle-fillSubMask1">
+        <div class="spectrum-ProgressCircle-fill"></div>
+      </div>
+    </div>
+    <div class="spectrum-ProgressCircle-fillMask2">
+      <div class="spectrum-ProgressCircle-fillSubMask2">
+        <div class="spectrum-ProgressCircle-fill"></div>
+      </div>
+    </div>
+  </div>`;
+    const prgc = createTag('div', { class: 'spectrum-ProgressCircle spectrum-ProgressCircle--indeterminate' }, pdom);
+    const layer = createTag('div', { class: 'progress-holder' }, prgc);
+    layer.classList.add(SELECTOR_CIRCLE_LOADER);
+    return layer;
+  }
 
-    // circleLoaderShow() {
-    //     const form = this;
-    //     this.circleLoader.classList.add(CLASS_CIRCLE_LOADER_VISIBLE);
-    //     setTimeout(() => {
-    //         form.circleLoaderHide();
-    //     }, CIRCLE_LOADER_TIMEOUT);
-    // }
+  circleLoaderHide() {
+    this.circleLoader.classList.remove(CLASS_CIRCLE_LOADER_VISIBLE);
+  }
+
+  circleLoaderShow(targetEl) {
+    loadStyle('/creativecloud/features/cc-forms/components/progress-circle.css');
+    const form = this;
+    const progressHolder = targetEl.querySelector('.progress-holder');
+    if (!progressHolder) {
+      form.circleLoader = form.createProgressCircle();
+      form.circleLoader.classList.add(CLASS_CIRCLE_LOADER_VISIBLE);
+      targetEl.append(form.circleLoader);
+    }
+    if (targetEl.classList.contains('loading')) targetEl.classList.remove('loading');
+    else targetEl.classList.add('loading');
+    setTimeout(() => {
+      form.circleLoaderHide();
+    }, CIRCLE_LOADER_TIMEOUT);
+  }
 
     getPST() {
         const d = new Date();
@@ -455,7 +483,7 @@ class Trials {
                 } else {
                     this.postSubmitFailure(response);
                 }
-            })
+          })
             .catch(() => {
                 this.postSubmitFailure(response);
             });
