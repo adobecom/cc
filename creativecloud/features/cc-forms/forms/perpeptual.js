@@ -255,8 +255,8 @@ class PerpetualTrials extends Trials {
   }
 
   getPayloadForNoLead() {
-    const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
-    if (skuElement) this.skuValue = skuElement.getAttribute('sku');
+    const skuElement = this.form.querySelector('[data-dropdown-name="productsku"]');
+    if (skuElement) this.skuValue = skuElement.querySelectorAll('option')[skuElement.selectedIndex].getAttribute('sku');
     const jsonPayload = {
       client_name: this.clientName || 'trials',
       message_uuid: this.getUUID(),
