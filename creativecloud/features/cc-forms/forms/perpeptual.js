@@ -151,10 +151,11 @@ class PerpetualTrials extends Trials {
     this.setCookie('MM_TRIALS', '12345', cookieDetails);
     if (!productSkuValue) return false;
     const downloadUrl = productSkuValue.split('|')[0].trim();
-    return this.downloadFile(this.form.querySelector(SELECTOR.PRODUCT_SKU), downloadUrl);
+    return this.downloadFile(downloadUrl);
   }
 
-  downloadFile(elem, downloadUrl) {
+  // eslint-disable-next-line class-methods-use-this
+  downloadFile(downloadUrl) {
     if (!downloadUrl) return;
     const a = createTag('a', { class: 'is-hidden', href: downloadUrl, id: 'productSkuDownload' }, downloadUrl);
     document.querySelector('body').append(a);
