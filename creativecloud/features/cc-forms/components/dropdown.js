@@ -29,10 +29,11 @@ class Dropdown {
       this.parentName = this.dropdown.getAttribute(ATTR_DROPDOWN_PARENT);
       this.parent = false;
       this.child = false;
-      this.source = this.dropdown.getAttribute(ATTR_DROPDOWN_SOURCE) || false;
-      if (this.source && this.form && this.form.getAttribute(DATA_ODIN_ENVIRONMENT) && this.source.indexOf('https://') === -1) {
-        this.source = this.form.getAttribute(DATA_ODIN_ENVIRONMENT) + this.source;
-      }
+      this.source = this.dropdown.getAttribute(ATTR_DROPDOWN_SOURCE);
+      // this.source = this.dropdown.getAttribute(ATTR_DROPDOWN_SOURCE) || false;
+      // if (this.source && this.form && this.form.getAttribute(DATA_ODIN_ENVIRONMENT) && this.source.indexOf('https://') === -1) {
+      //   this.source = this.form.getAttribute(DATA_ODIN_ENVIRONMENT) + this.source;
+      // }
       this.name = this.dropdown.getAttribute(ATTR_DROPDOWN_NAME);
       this.sortProperty = this.dropdown.getAttribute(ATTR_SORT_PROPERTY);
       this.value = this.dropdown.value;
@@ -202,6 +203,8 @@ class Dropdown {
       Object.keys(typeAttrs).forEach((k) => {
         i.setAttribute(`data-${k}`, typeAttrs[k]);
       });
+      i.setAttribute('name', fieldType);
+      i.setAttribute('id', fieldType);
       i.setAttribute('required', 'required');
       i.setAttribute('data-form-required', 'required');
       i.setAttribute(ATTR_DROPDOWN_TYPE, 'independent');
