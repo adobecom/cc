@@ -27,317 +27,307 @@ const STATUS_REDIRECT_MAP = {
   'error-redirect-service-unavailable': 'serviceunavailableerrorpage',
 };
 export class ConsentNotice {
-    constructor(form, formCongfig) {
-        this.form = form;
-        this.formCongfig = formCongfig;
-        this.cnConfig = this.getCNConfigs();
-        this.noticeEl = this.createNoticeEl();
-        this.noticeBody = '';
-        this.userCountry = new URLSearchParams(window.location.search).get('imsCountry') || undefined;
-        this.marketingPermissions = {};
-        this.noticeEmailPreset = '';
-        this.noticePhonePreset = '';
-        if (this.userCountry !== undefined) {
-          this.setNoticetags(this.userCountry);
-          this.setNoticeBody();
-          this.observeNoticeCheckboxes();
-        } else {
-            this.setNoticetagswithCountryCode();
-        }
+  constructor(form, formCongfig) {
+    this.form = form;
+    this.formCongfig = formCongfig;
+    this.cnConfig = this.getCNConfigs();
+    this.noticeEl = this.createNoticeEl();
+    this.noticeBody = '';
+    this.userCountry = new URLSearchParams(window.location.search).get('imsCountry') || undefined;
+    this.marketingPermissions = {};
+    this.noticeEmailPreset = '';
+    this.noticePhonePreset = '';
+    if (this.userCountry !== undefined) {
+      this.setNoticetags(this.userCountry);
+      this.setNoticeBody();
+      this.observeNoticeCheckboxes();
+    } else {
+        this.setNoticetagswithCountryCode();
     }
+  }
 
-    createNoticeEl() {
-      let notice = createTag('div', { class: 'noticeplaceholder', id: 'noticeplaceholder' });
-      let d = createTag('div', { class: 'form-item' }, notice);
-      this.form.append(d);
-      return notice;
-    }
+  createNoticeEl() {
+    let notice = createTag('div', { class: 'noticeplaceholder', id: 'noticeplaceholder' });
+    let d = createTag('div', { class: 'form-item' }, notice);
+    this.form.append(d);
+    return notice;
+  }
 
-    getCNConfigs() {
-      const cnconfig = {
-        consumer: {
-          soft: {
-            countryList: ['ROW'],
-            email: 'true',
-            emailpreset: 'no',
-            phone: 'false',
-            phonepreset: '',
-          },
-          implicit: {
-            countryList: ['JP','IN','US'],
-            email: 'true',
-            emailpreset: 'yes',
-            phone: 'false',
-            phonepreset: '',
-          },
-          explicitemail: {
-            countryList: ['AU','KR','SG'],
-            email: 'true',
-            emailpreset: 'no',
-            phone: 'false',
-            phonepreset: '',
-          },
-          explicitemailphone: { // to check on any page
-            countryList: [],
-            email: 'true',
-            emailpreset: 'no',
-            phone: 'true',
-            phonepreset: 'no',
-          }
+  getCNConfigs() {
+    const cnconfig = {
+      consumer: {
+        soft: {
+          countryList: ['ROW'],
+          email: 'true',
+          emailpreset: 'no',
+          phone: 'false',
+          phonepreset: '',
         },
-        enterprise: {
-          soft: { // to check on any page
-            countryList: [],
-            email: 'true',
-            emailpreset: 'no',
-            phone: 'false',
-            phonepreset: '',
-          },
-          implicit: {
-            countryList: ['SE','US','FI','PT','LV','FR','UK','IE','EE','IN','ROW'],
-            email: 'true',
-            emailpreset: 'yes',
-            phone: 'true',
-            phonepreset: 'yes',
-          },
-          explicitemail: {
-            countryList: ['DE','RU','BE','BG','JP','DK','LT','LU','HU','SG','SI','SK','CH','KR','MT','IT','GR','ES','AT','AU','CY','CZ','PL','RO','NL'],
-            email: 'true',
-            emailpreset: 'no',
-            phone: 'false',
-            phonepreset: '',
-          },
-          explicitemailphone: {
-            countryList: ['DE','RU','BE','BG','JP','DK','LT','LU','HU','SG','SI','SK','CH','KR','MT','IT','GR','ES','AT','AU','CY','CZ','PL','RO','NL'],
-            email: 'true',
-            emailpreset: 'no',
-            phone: 'true',
-            phonepreset: 'no',
-          }
+        implicit: {
+          countryList: ['JP','IN','US'],
+          email: 'true',
+          emailpreset: 'yes',
+          phone: 'false',
+          phonepreset: '',
+        },
+        explicitemail: {
+          countryList: ['AU','KR','SG'],
+          email: 'true',
+          emailpreset: 'no',
+          phone: 'false',
+          phonepreset: '',
+        },
+        explicitemailphone: { // to check on any page
+          countryList: [],
+          email: 'true',
+          emailpreset: 'no',
+          phone: 'true',
+          phonepreset: 'no',
+        }
+      },
+      enterprise: {
+        soft: { // to check on any page
+          countryList: [],
+          email: 'true',
+          emailpreset: 'no',
+          phone: 'false',
+          phonepreset: '',
+        },
+        implicit: {
+          countryList: ['SE','US','FI','PT','LV','FR','UK','IE','EE','IN','ROW'],
+          email: 'true',
+          emailpreset: 'yes',
+          phone: 'true',
+          phonepreset: 'yes',
+        },
+        explicitemail: {
+          countryList: ['DE','RU','BE','BG','JP','DK','LT','LU','HU','SG','SI','SK','CH','KR','MT','IT','GR','ES','AT','AU','CY','CZ','PL','RO','NL'],
+          email: 'true',
+          emailpreset: 'no',
+          phone: 'false',
+          phonepreset: '',
+        },
+        explicitemailphone: {
+          countryList: ['DE','RU','BE','BG','JP','DK','LT','LU','HU','SG','SI','SK','CH','KR','MT','IT','GR','ES','AT','AU','CY','CZ','PL','RO','NL'],
+          email: 'true',
+          emailpreset: 'no',
+          phone: 'true',
+          phonepreset: 'no',
         }
       }
-      return cnconfig;
     }
+    return cnconfig;
+  }
 
-    imsReady({ interval = 200, maxAttempts = 25 } = {}) {
-      return new Promise((resolve) => {
-          let count = 0;
-          function poll() {
-              if (window.adobeIMS?.initialized) {
-                  resolve();
-              } else if (++count > maxAttempts) {
-                  resolve();
-              } else {
-                  setTimeout(poll, interval);
-              }
-          }
-          poll();
-      });
-    }
-
-    setNoticetagswithCountryCode() {
-        const promise = this.imsReady();
-        return promise.then(() => {
-            this.processOnLoggedInUser();
-        }).catch(() => {});
-    }
-
-    processOnLoggedInUser() {
-        const isSignedInUser = window.adobeIMS.isSignedInUser();
-        if (!isSignedInUser) return;
-        const userProfilePromise = window.adobeIMS.getProfile();
-        userProfilePromise.then((profile) => {
-            if (!profile.countryCode) return
-            this.setNoticetags(profile.countryCode);
-            this.setNoticeBody();
-            this.observeNoticeCheckboxes();
-        }).catch(() => {});
-    }
-
-    getUserGroup(userCountry) {
-      for (let i = 0; i < this.formCongfig.concentCfgs.length; i+=1) {
-        const [btype, ntype] = this.formCongfig.concentCfgs[i].bucketNoticeType.split('-');
-        const cl = this.cnConfig[btype][ntype].countryList;
-        if (cl.length && cl.includes(userCountry)) {
-          return {
-            countryCode: userCountry,
-            consentFragment: this.formCongfig.concentCfgs[i].consetFragment,
-            bucketType: btype,
-            noticeType: ntype,
-          }
-        } 
+  imsReady({ interval = 200, maxAttempts = 25 } = {}) {
+    return new Promise((resolve) => {
+      let count = 0;
+      function poll() {
+        if (window.adobeIMS?.initialized) {
+          resolve();
+        } else if (++count > maxAttempts) {
+          resolve();
+        } else {
+          setTimeout(poll, interval);
+        }
       }
-    }
+      poll();
+    });
+  }
 
-    setNoticetags(userCountry) {
-      const consentBody = this.getUserGroup(userCountry);
-      if (consentBody?.countryCode) {
-        this.noticeEl.innerHTML = consentBody.consentFragment.innerHTML;
-        this.setNoticeChannels(consentBody.bucketType, consentBody.noticeType);
-        return;
-      }
-      if (userCountry != 'ROW') this.setNoticetags('ROW');
-    }
+  setNoticetagswithCountryCode() {
+    const promise = this.imsReady();
+    return promise.then(() => {
+      this.processOnLoggedInUser();
+    }).catch(() => {});
+  }
 
-    setNoticeChannels(bucketType, noticeType) {
-        const noticechannelsEmail = this.cnConfig[bucketType][noticeType]['email'];
-        if (noticechannelsEmail === 'true') this.noticeEmailPreset = this.cnConfig[bucketType][noticeType]['emailpreset'];
-        const noticechannelsPhone = this.cnConfig[bucketType][noticeType]['phone'];
-        if (noticechannelsPhone === 'true') this.noticePhonePreset = this.cnConfig[bucketType][noticeType]['phonepreset'];
+  processOnLoggedInUser() {
+    const isSignedInUser = window.adobeIMS.isSignedInUser();
+    if (!isSignedInUser) return;
+    const userProfilePromise = window.adobeIMS.getProfile();
+    userProfilePromise.then((profile) => {
+      if (!profile.countryCode) return
+      this.setNoticetags(profile.countryCode);
+      this.setNoticeBody();
+      this.observeNoticeCheckboxes();
+    }).catch(() => {});
+  }
+
+  getUserGroup(userCountry) {
+    for (let i = 0; i < this.formCongfig.concentCfgs.length; i+=1) {
+      const [btype, ntype] = this.formCongfig.concentCfgs[i].bucketNoticeType.split('-');
+      const cl = this.cnConfig[btype][ntype].countryList;
+      if (cl.length && cl.includes(userCountry)) {
+        return {
+          countryCode: userCountry,
+          consentFragment: this.formCongfig.concentCfgs[i].consetFragment,
+          bucketType: btype,
+          noticeType: ntype,
+        }
+      } 
+    }
+  }
+
+  setNoticetags(userCountry) {
+    const consentBody = this.getUserGroup(userCountry);
+    if (consentBody?.countryCode) {
+      this.noticeEl.innerHTML = consentBody.consentFragment.innerHTML;
+      this.setNoticeChannels(consentBody.bucketType, consentBody.noticeType);
+      return;
+    }
+    if (userCountry != 'ROW') this.setNoticetags('ROW');
+  }
+
+  setNoticeChannels(bucketType, noticeType) {
+    const noticechannelsEmail = this.cnConfig[bucketType][noticeType]['email'];
+    if (noticechannelsEmail === 'true') this.noticeEmailPreset = this.cnConfig[bucketType][noticeType]['emailpreset'];
+    const noticechannelsPhone = this.cnConfig[bucketType][noticeType]['phone'];
+    if (noticechannelsPhone === 'true') this.noticePhonePreset = this.cnConfig[bucketType][noticeType]['phonepreset'];
+    this.setMarketingPermissionAttr();
+  }
+
+  setNoticeBody() {
+    const consentNotice = this.noticeEl.querySelectorAll('p, .form-items');
+    consentNotice.forEach((e) => { this.noticeBody += e.innerHTML });
+    this.noticeEl.setAttribute('data-notice-body', this.noticeBody.trim());
+  }
+
+  observeNoticeCheckboxes() {
+    const checkboxes = this.noticeEl.querySelectorAll('.cc-form-component.check-item-input');
+    [...checkboxes].forEach((elem) => {
+      elem.addEventListener('change', (elemChanged) => {
+        if (elemChanged.target.id === 'consentexplicitemail' || elemChanged.target.id === 'consentsoft') {
+            this.noticeEmailPreset = this.inversePermissionValue(this.noticeEmailPreset);
+        } else if (elemChanged.target.id === 'consentexplicitphone') {
+            this.noticePhonePreset = this.inversePermissionValue(this.noticePhonePreset);
+        }
         this.setMarketingPermissionAttr();
-    }
-
-    setNoticeBody() {
-        const consentNotice = this.noticeEl.querySelectorAll('p, .form-items');
-        consentNotice.forEach((e) => { this.noticeBody += e.innerHTML });
-        this.noticeEl.setAttribute('data-notice-body', this.noticeBody.trim());
-    }
-
-    observeNoticeCheckboxes() {
-      const checkboxes = this.noticeEl.querySelectorAll('.cc-form-component.check-item-input');
-      [...checkboxes].forEach((elem) => {
-        elem.addEventListener('change', (elemChanged) => {
-          if (elemChanged.target.id === 'consentexplicitemail' || elemChanged.target.id === 'consentsoft') {
-              this.noticeEmailPreset = this.inversePermissionValue(this.noticeEmailPreset);
-          } else if (elemChanged.target.id === 'consentexplicitphone') {
-              this.noticePhonePreset = this.inversePermissionValue(this.noticePhonePreset);
-          }
-          this.setMarketingPermissionAttr();
-        });
       });
-    }
+    });
+  }
 
-    inversePermissionValue(defaultPermission) {
-      return defaultPermission !== undefined && defaultPermission === 'no' ? 'yes' : 'no';
-    }
+  inversePermissionValue(defaultPermission) {
+    return defaultPermission !== undefined && defaultPermission === 'no' ? 'yes' : 'no';
+  }
 
-    getBooleanValue(value) {
-      return value !== undefined && value === 'yes';
-    }
+  getBooleanValue(value) {
+    return value !== undefined && value === 'yes';
+  }
 
-    setMarketingPermissionAttr() {
-      if (this.noticeEmailPreset !== '') {
-          this.marketingPermissions.EMAIL = this.getBooleanValue(this.noticeEmailPreset);
-      }
-      if (this.noticePhonePreset !== '') {
-          this.marketingPermissions.PHONE = this.getBooleanValue(this.noticePhonePreset);
-      }
-      this.noticeEl.setAttribute('data-marketing-permissions', JSON.stringify(this.marketingPermissions));
+  setMarketingPermissionAttr() {
+    if (this.noticeEmailPreset !== '') {
+        this.marketingPermissions.EMAIL = this.getBooleanValue(this.noticeEmailPreset);
     }
+    if (this.noticePhonePreset !== '') {
+        this.marketingPermissions.PHONE = this.getBooleanValue(this.noticePhonePreset);
+    }
+    this.noticeEl.setAttribute('data-marketing-permissions', JSON.stringify(this.marketingPermissions));
+  }
 }
 class Trials {
-    constructor(formContainer) {
-        this.imslib = window.adobeIMS;
-        this.formContainer = formContainer;
-        this.valid = true;
-        this.formConfig = [];
-        this.payLoad = {};
-        this.clientName = this.formContainer.getAttribute(DATA_CLIENT_NAME) || '';
-        this.accessToken = window.localStorage.getItem('accessToken') || window.adobeIMS.getAccessToken();
-        this.elements = this.formContainer.querySelectorAll(SELECTOR_ELEMENTS);
-        this.thankyouPage = this.formContainer.getAttribute(DATA_THANK_YOU_PAGE) || '';
-        this.apikey = this.formContainer.getAttribute(DATA_APIKEY) || '';
-        this.endPoint = this.formContainer.getAttribute(DATA_ENDPOINT) || '';
-        this.submitButton = this.formContainer.querySelector(SELECTOR_BUTTON);
-        this.address_mail_to = this.formContainer.hasAttribute(ADDRESS_MAIL_TO) ? this.formContainer.getAttribute(ADDRESS_MAIL_TO).split(',') : '';
-        this.userprofile = this.formContainer.hasAttribute(USER_PROFILE) ? this.formContainer.getAttribute(USER_PROFILE).split(',') : '';
-        this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
-        this.event = new Event('checkValidation');
-        this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
-        this.checkValidElements();
-        this.setFormConfig();
-        this.handleEnterKeyPress();
-    }
+  constructor(formContainer) {
+    this.imslib = window.adobeIMS;
+    this.formContainer = formContainer;
+    this.valid = true;
+    this.formConfig = [];
+    this.payLoad = {};
+    this.clientName = this.formContainer.getAttribute(DATA_CLIENT_NAME) || '';
+    this.accessToken = window.localStorage.getItem('accessToken') || window.adobeIMS.getAccessToken();
+    this.elements = this.formContainer.querySelectorAll(SELECTOR_ELEMENTS);
+    this.thankyouPage = this.formContainer.getAttribute(DATA_THANK_YOU_PAGE) || '';
+    this.apikey = this.formContainer.getAttribute(DATA_APIKEY) || '';
+    this.endPoint = this.formContainer.getAttribute(DATA_ENDPOINT) || '';
+    this.submitButton = this.formContainer.querySelector(SELECTOR_BUTTON);
+    this.address_mail_to = this.formContainer.hasAttribute(ADDRESS_MAIL_TO) ? this.formContainer.getAttribute(ADDRESS_MAIL_TO).split(',') : '';
+    this.userprofile = this.formContainer.hasAttribute(USER_PROFILE) ? this.formContainer.getAttribute(USER_PROFILE).split(',') : '';
+    this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
+    this.event = new Event('checkValidation');
+    this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
+    this.checkValidElements();
+    this.setFormConfig();
+    this.handleEnterKeyPress();
+  }
 
-    handleEnterKeyPress() {
-        this.inputElements.forEach((element) => {
-            element.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' || e.keyCode === 13) {
-                    e.preventDefault();
-                }
-            });
-        });
-    }
-
-    checkValidElements() {
-        this.valid = true;
-        this.elements.forEach((element) => {
-            if (element.getAttribute('data-valid') === 'false') {
-                this.valid = false;
-            }
-        });
-    }
-
-    buttonListener() {
-      this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
-          this.formContainer.dispatchEvent(this.event);
-          this.checkValidElements();
-          if (this.valid) {
-              this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
-              setTimeout(() => {
-                  this.submitAction();
-              }, 1);
-          }
+  handleEnterKeyPress() {
+    this.inputElements.forEach((element) => {
+      element.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.keyCode === 13) e.preventDefault();
       });
-    }
+    });
+  }
 
-    getUUID() {
-        function rs() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
+  checkValidElements() {
+    this.valid = true;
+    this.elements.forEach((element) => {
+      if (element.getAttribute('data-valid') === 'false') this.valid = false;
+    });
+  }
 
-        return `${rs() + rs()}-${rs()}-${rs()}-${rs()}-${rs()}${rs()}${rs()}`;
-    }
+  buttonListener() {
+    this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
+      this.formContainer.dispatchEvent(this.event);
+      this.checkValidElements();
+      if (this.valid) {
+        this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
+        setTimeout(() => { this.submitAction() }, 1);
+      }
+    });
+  }
 
-    setFormConfig() {
-        const formConfig = [];
-        Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
-          const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
-          if (!redirectUrl) return;
-          this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
-          formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
-        });
-        this.formConfig = formConfig;
+  getUUID() {
+    function rs() {
+      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
     }
+    return `${rs() + rs()}-${rs()}-${rs()}-${rs()}-${rs()}${rs()}${rs()}`;
+  }
 
-    getFormConfig(key) {
-        return this.formContainer.getAttribute(key) || this.formConfig[CONF_KEY_ERROR_GENERIC];
-    }
+  setFormConfig() {
+    const formConfig = [];
+    Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
+      const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
+      if (!redirectUrl) return;
+      this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
+      formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
+    });
+    this.formConfig = formConfig;
+  }
 
-    postSubmitSuccess(response) {
-        let destination = this.thankyouPage;
-        if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
-        || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
-        && response.reason && response.reason !== 'SUCCESS') {
-            destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
-        }
-        window.location.href = destination;
-    }
+  getFormConfig(key) {
+    return this.formContainer.getAttribute(key) || this.formConfig[CONF_KEY_ERROR_GENERIC];
+  }
 
-    postSubmitFailure(response) {
-        let destination = this.getFormConfig(CONF_KEY_ERROR_GENERIC);
-        if (response.status === 502 || response.status === 503) {
-            destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);
-        }
-        window.location.href = destination;
+  postSubmitSuccess(response) {
+    let destination = this.thankyouPage;
+    if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
+    || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
+    && response.reason && response.reason !== 'SUCCESS') {
+      destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
     }
+    window.location.href = destination;
+  }
+
+  postSubmitFailure(response) {
+    let destination = this.getFormConfig(CONF_KEY_ERROR_GENERIC);
+    if (response.status === 502 || response.status === 503) {
+      destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);
+    }
+    window.location.href = destination;
+  }
 
   createProgressCircle() {
-    const pdom = `<div class="spectrum-ProgressCircle-track"></div>
-  <div class="spectrum-ProgressCircle-fills">
-    <div class="spectrum-ProgressCircle-fillMask1">
-      <div class="spectrum-ProgressCircle-fillSubMask1">
-        <div class="spectrum-ProgressCircle-fill"></div>
+    const pdom = `<div class="spectrum-ProgressCircle-track"></div><div class="spectrum-ProgressCircle-fills">
+      <div class="spectrum-ProgressCircle-fillMask1">
+        <div class="spectrum-ProgressCircle-fillSubMask1">
+          <div class="spectrum-ProgressCircle-fill"></div>
+        </div>
       </div>
-    </div>
-    <div class="spectrum-ProgressCircle-fillMask2">
-      <div class="spectrum-ProgressCircle-fillSubMask2">
-        <div class="spectrum-ProgressCircle-fill"></div>
+      <div class="spectrum-ProgressCircle-fillMask2">
+        <div class="spectrum-ProgressCircle-fillSubMask2">
+          <div class="spectrum-ProgressCircle-fill"></div>
+        </div>
       </div>
-    </div>
-  </div>`;
+    </div>`;
     const prgc = createTag('div', { class: 'spectrum-ProgressCircle spectrum-ProgressCircle--indeterminate' }, pdom);
     const layer = createTag('div', { class: 'progress-holder' }, prgc);
     layer.classList.add(SELECTOR_CIRCLE_LOADER);
@@ -364,139 +354,122 @@ class Trials {
     }, CIRCLE_LOADER_TIMEOUT);
   }
 
-    getPST() {
-        const d = new Date();
-        const offset = 60000 - 28800000;
-        const pst = new Date(d.getTime() + d.getTimezoneOffset() * offset).toJSON();
-        return pst;
-    }
+  getPST() {
+    const d = new Date();
+    const offset = 60000 - 28800000;
+    const pst = new Date(d.getTime() + d.getTimezoneOffset() * offset).toJSON();
+    return pst;
+  }
 
-    escapeXml(unsafe) {
-        return unsafe.replace(/[<>&'"]/g, (c) => {
-            switch (c) {
-                case '<':
-                    return '&lt;';
-                case '>':
-                    return '&gt;';
-                case '&':
-                    return '&amp;';
-                case '\'':
-                    return '&apos;';
-                case '"':
-                    return '&quot;';
-                default:
-                    return '';
-            }
-        });
-    }
+  escapeXml(unsafe) {
+    return unsafe.replace(/[<>&'"]/g, (c) => {
+      switch (c) {
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '&': return '&amp;';
+        case '\'': return '&apos;';
+        case '"': return '&quot;';
+        default: return '';
+      }
+    });
+  }
 
-    constructDemandbaseValues(payload) {
-        return payload;
-    }
+  constructDemandbaseValues(payload) {
+    return payload;
+  }
 
-    getValue(selector, attr) {
-        const attribute = attr || 'value';
-        try {
-            const elem = this.formContainer.querySelector(selector);
-            if (!(elem instanceof HTMLElement)) {
-                return false;
-            }
-            if (attribute === 'value') {
-                return elem.value;
-            }
-            return elem.getAttribute(attribute);
-        } catch (e) {
-            return false;
+  getValue(selector, attr) {
+    const attribute = attr || 'value';
+    try {
+      const elem = this.formContainer.querySelector(selector);
+      if (!(elem instanceof HTMLElement)) return false;
+      if (attribute === 'value') return elem.value;
+      return elem.getAttribute(attribute);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  setValue(selector, value, attr) {
+    const attribute = (typeof attr !== 'undefined') ? attr : 'value';
+    const elem = this.formContainer.querySelector(selector);
+    if (!(elem instanceof HTMLElement)) return false;
+    if (!value) return false;
+    if (attr === 'value') {
+        elem.value = value;
+    } else {
+        elem.setAttribute(attribute, value);
+    }
+    return true;
+  }
+
+  getCookieValueByName(cookieName) {
+    const name = `${cookieName}=`;
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i += 1) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1);
+      if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+    }
+    return '';
+  }
+
+  setCookie(cookie, value, options) {
+    let newCookie = '';
+    let cookiePath;
+    let cookieExpiration;
+    let cookieDomain;
+    if (typeof cookie === 'string' && cookie.length && (typeof document.cookie === 'string')) {
+      newCookie += `${cookie}=${value}`;
+      if (options) {
+        cookiePath = options.path;
+        if (typeof cookiePath === 'string' && cookiePath.length) {
+            newCookie += `; path=${cookiePath}`;
         }
+        cookieExpiration = options.expiration;
+        if (cookieExpiration instanceof Date) {
+            newCookie += `; expires=${cookieExpiration.toUTCString()}`;
+        }
+        cookieDomain = options.domain;
+        if (typeof cookieDomain === 'string' && cookieDomain.length) {
+            newCookie += `; domain=${cookieDomain}`;
+        }
+      }
+      document.cookie = newCookie;
     }
+  }
 
-    setValue(selector, value, attr) {
-        const attribute = (typeof attr !== 'undefined') ? attr : 'value';
-        const elem = this.formContainer.querySelector(selector);
-        if (!(elem instanceof HTMLElement)) {
-            return false;
-        }
-        if (!value) {
-            return false;
-        }
-        if (attr === 'value') {
-            elem.value = value;
-        } else {
-            elem.setAttribute(attribute, value);
-        }
-        return true;
-    }
+  postCommonService(accessToken, payLoad, endPoint) {
+    window.fetch(endPoint, {
+      method: 'POST',
+      headers: {
+          'Content-Type': REQUEST_CONTENT_TYPE,
+          Authorization: `${accessToken}`,
+      },
+      body: JSON.stringify(payLoad),
+    })
+    .then((response) => {
+      response.json().then((data) => {
+          if (response.status === 200 && (data.successful || data.success)) {
+              this.postSubmitSuccess(data);
+          } else if (response.status === 200
+          && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
+          || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
+              this.postSubmitSuccess(data);
+          } else {
+              this.postSubmitFailure(response);
+          }
+      })
+      .catch(() => {
+          this.postSubmitFailure(response);
+      });
+    });
+  }
 
-    getCookieValueByName(cookieName) {
-        const name = `${cookieName}=`;
-        const ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i += 1) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1);
-            if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
-        }
-        return '';
-    }
-
-    setCookie(cookie, value, options) {
-        let newCookie = '';
-        let cookiePath;
-        let cookieExpiration;
-        let cookieDomain;
-        if (typeof cookie === 'string' && cookie.length && (typeof document.cookie === 'string')) {
-            newCookie += `${cookie}=${value}`;
-            if (options) {
-                cookiePath = options.path;
-                if (typeof cookiePath === 'string' && cookiePath.length) {
-                    newCookie += `; path=${cookiePath}`;
-                }
-                cookieExpiration = options.expiration;
-                if (cookieExpiration instanceof Date) {
-                    newCookie += `; expires=${cookieExpiration.toUTCString()}`;
-                }
-                cookieDomain = options.domain;
-                if (typeof cookieDomain === 'string' && cookieDomain.length) {
-                    newCookie += `; domain=${cookieDomain}`;
-                }
-            }
-            document.cookie = newCookie;
-        }
-    }
-
-    postCommonService(accessToken, payLoad, endPoint) {
-        window.fetch(endPoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': REQUEST_CONTENT_TYPE,
-                Authorization: `${accessToken}`,
-            },
-            body: JSON.stringify(payLoad),
-        })
-        .then((response) => {
-            response.json().then((data) => {
-                if (response.status === 200 && (data.successful || data.success)) {
-                    this.postSubmitSuccess(data);
-                } else if (response.status === 200
-                && (this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
-                || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')) {
-                    this.postSubmitSuccess(data);
-                } else {
-                    this.postSubmitFailure(response);
-                }
-          })
-            .catch(() => {
-                this.postSubmitFailure(response);
-            });
-        });
-    }
-
-    toggleSubmitButton(disabled) {
-        if (disabled) {
-            this.submitButton.classList.add(BUTTON_DISABLED_CLASS);
-        } else {
-            this.submitButton.classList.remove(BUTTON_DISABLED_CLASS);
-        }
-    }
+  toggleSubmitButton(disabled) {
+    if (disabled) return this.submitButton.classList.add(BUTTON_DISABLED_CLASS);
+    this.submitButton.classList.remove(BUTTON_DISABLED_CLASS);
+  }
 }
 
 export default Trials;

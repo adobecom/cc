@@ -115,191 +115,191 @@ class PerpetualTrials extends Trials {
   }
 
   submitAction() {
-      const ptDownloadForm = document.getElementById('ptDownloadForm');
-      if (window.digitalData && ptDownloadForm !== null) {
-          const primaryEvent = window.digitalData.primaryEvent ? window.digitalData.primaryEvent : {};
-          const eventInfo = primaryEvent.eventInfo ? primaryEvent.eventInfo : {};
-          const digitalDataObj = window.alloy_all.data._adobe_corpnew.digitalData;
-          const pageName = digitalDataObj?.page?.pageInfo?.pageName ? digitalDataObj.page.pageInfo.pageName : '';
-          eventInfo.eventName = `${pageName}_submitButtonClick`;
-          eventInfo.eventAction = 'event14';
-          primaryEvent.eventInfo = eventInfo;
-          window.digitalData.primaryEvent = primaryEvent;
-      }
-      /* eslint-disable no-underscore-dangle */
-      if (window._satellite) window._satellite.track('trackPerpetualTrialDownloadFormSubmit');
-      /* eslint-enable no-underscore-dangle */
-      this.setOrgFlag = false;
-      this.payLoad = this.isNoLeadProduct ? this.getPayloadForNoLead() : this.getPayloadForLead();
-      this.addGdprPropertiesToPayload();
-      this.accesstoken = this.imslib.getAccessToken().token;
-      this.setDownloadFile();
-      this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
+    const ptDownloadForm = document.getElementById('ptDownloadForm');
+    if (window.digitalData && ptDownloadForm !== null) {
+      const primaryEvent = window.digitalData.primaryEvent ? window.digitalData.primaryEvent : {};
+      const eventInfo = primaryEvent.eventInfo ? primaryEvent.eventInfo : {};
+      const digitalDataObj = window.alloy_all.data._adobe_corpnew.digitalData;
+      const pageName = digitalDataObj?.page?.pageInfo?.pageName ? digitalDataObj.page.pageInfo.pageName : '';
+      eventInfo.eventName = `${pageName}_submitButtonClick`;
+      eventInfo.eventAction = 'event14';
+      primaryEvent.eventInfo = eventInfo;
+      window.digitalData.primaryEvent = primaryEvent;
+    }
+    /* eslint-disable no-underscore-dangle */
+    if (window._satellite) window._satellite.track('trackPerpetualTrialDownloadFormSubmit');
+    /* eslint-enable no-underscore-dangle */
+    this.setOrgFlag = false;
+    this.payLoad = this.isNoLeadProduct ? this.getPayloadForNoLead() : this.getPayloadForLead();
+    this.addGdprPropertiesToPayload();
+    this.accesstoken = this.imslib.getAccessToken().token;
+    this.setDownloadFile();
+    this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
   }
 
   setDownloadFile() {
-      const productSkuValue = this.getValue(SELECTOR.PRODUCT_SKU);
-      let date = new Date();
-      date = date.setTime(date.getTime() + 60 * 60 * 1000);
-      const cookieDetails = { path: '/', domain: '.adobe.com', expiration: date };
-      this.setCookie('MM_TRIALS', '12345', cookieDetails);
-      if (!productSkuValue) return false;
-      const downloadUrl = productSkuValue.split('|')[0].trim();
-      return window.localStorage.setItem('productSkuDownloadUrl', downloadUrl);
+    const productSkuValue = this.getValue(SELECTOR.PRODUCT_SKU);
+    let date = new Date();
+    date = date.setTime(date.getTime() + 60 * 60 * 1000);
+    const cookieDetails = { path: '/', domain: '.adobe.com', expiration: date };
+    this.setCookie('MM_TRIALS', '12345', cookieDetails);
+    if (!productSkuValue) return false;
+    const downloadUrl = productSkuValue.split('|')[0].trim();
+    return window.localStorage.setItem('productSkuDownloadUrl', downloadUrl);
   }
 
   getTIDCookie() {
-      const TIDCookieValue = decodeURIComponent(this.getCookieValueByName('TID')) || '';
-      if (TIDCookieValue && TIDCookieValue.length > 0) return TIDCookieValue.trim();
-      return TIDCookieValue;
+    const TIDCookieValue = decodeURIComponent(this.getCookieValueByName('TID')) || '';
+    if (TIDCookieValue && TIDCookieValue.length > 0) return TIDCookieValue.trim();
+    return TIDCookieValue;
   }
 
   getPayloadForLead() {
-      const jsonPayload = {
-          ims: {
-              ims_client_id: 'trials1',
-              userProfile: this.imsProfile || {},
-              access_token: this.imslib.getAccessToken().token,
-              renga_token: this.getCookieValueByName('WCDServer'),
-          },
-          actions: ['apo', 'ims_update', 'ok_to_call', 'renga_uds', 'lead', 'ice'],
-          custom: {},
-          client_name: this.clientName || 'trials',
-          message_uuid: this.getUUID(),
-      };
-      const countryCode = this.imsProfile ? this.imsProfile.countryCode : undefined;
+    const jsonPayload = {
+      ims: {
+        ims_client_id: 'trials1',
+        userProfile: this.imsProfile || {},
+        access_token: this.imslib.getAccessToken().token,
+        renga_token: this.getCookieValueByName('WCDServer'),
+      },
+      actions: ['apo', 'ims_update', 'ok_to_call', 'renga_uds', 'lead', 'ice'],
+      custom: {},
+      client_name: this.clientName || 'trials',
+      message_uuid: this.getUUID(),
+    };
+    const countryCode = this.imsProfile ? this.imsProfile.countryCode : undefined;
 
-      if (typeof jsonPayload.ims.userProfile['address.mail_to'] === 'undefined') {
-          jsonPayload.ims.userProfile['address.mail_to'] = {
-              primary: true,
-              carrierRoute: null,
-              city: null,
-              countryCode: null,
-              countryRegion: null,
-              homeCity: null,
-              line1: null,
-              line2: null,
-              line3: null,
-              line4: null,
-              line5: null,
-              line6: null,
-              postalZip: null,
-              stateProv: null,
-              suiteApt: null,
-          };
-      }
-      if ((!this.imsProfile) || (!this.imsProfile.mrktPerm) || (!this.imsProfile.mrktPerm.match('(EMAIL:true|EMAIL:false)'))) jsonPayload.ims.userProfile.mrktPerm = 'EMAIL:false';
-      if ((!this.imsProfile) || (!this.imsProfile.mrktPerm) || (!this.imsProfile.mrktPerm.match('(PHONE:true|PHONE:false)'))) jsonPayload.ims.userProfile.mrktPerm = `${jsonPayload.ims.userProfile.mrktPerm},PHONE:false`;
-      if (jsonPayload.ims.userProfile.mrktPerm.match('(PHONE:true|PHONE:false)')[0].substr(6, 5) === 'true') {
-          jsonPayload.actions.splice(jsonPayload.actions.indexOf('ok_to_call'), 1);
-      }
-      if (!this.getValue(SELECTOR.ORG_SIZE)
-          || this.orgSize === this.getValue(SELECTOR.ORG_SIZE)) {
-          jsonPayload.actions.splice(jsonPayload.actions.indexOf('renga_uds'), 1);
-      } else {
-          jsonPayload.ims.renga_uds = {
-              key: 'NUMBER_OF_EMPLOYEES',
-              value: this.getValue(SELECTOR.ORG_SIZE),
-              domain: 'ACOM_ECOM',
-          };
-      }
-      const emailTemplate = this.getValue(SELECTOR.PT_DOWNLOAD_FORM, ATTRIBUTE.DATA_EMAIL);
-      if (emailTemplate && emailTemplate.length === 0) {
-          jsonPayload.actions.splice(jsonPayload.actions.indexOf('apo'), 1);
-      } else {
-          jsonPayload.custom.email_template = emailTemplate;
-      }
-      jsonPayload.ims.userProfile.job_title = this.getValue(SELECTOR.JOB_TITLE) ? this.getValue(SELECTOR.JOB_TITLE) : '';
-      jsonPayload.ims.userProfile.job_function = this.getValue(SELECTOR.JOB_FUNCTION);
-      jsonPayload.ims.userProfile.company = this.getValue(SELECTOR.COMPANY);
-      jsonPayload.ims.userProfile.phoneNumber = this.getValue(SELECTOR.PHONE_NUMBER);
-      jsonPayload.ims.userProfile.industry = this.getValue(SELECTOR.INDUSTRY);
-      jsonPayload.ims.userProfile['address.mail_to'].postalZip = this.getValue(SELECTOR.POSTAL_CODE);
-      jsonPayload.ims.userProfile['address.mail_to'].stateProv = this.getValue(SELECTOR.STATE);
-      jsonPayload.ims.userProfile['address.mail_to'].countryRegion = this.getValue(SELECTOR.STATE);
-      jsonPayload.ims.userProfile['address.mail_to'].countryCode = countryCode !== null ? countryCode : this.getValue(SELECTOR.COUNTRY);
-      const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
-      if (skuElement) this.skuValue = skuElement.getAttribute('sku');
-      jsonPayload.custom.locale = this.imslib.adobeid.locale;
-      jsonPayload.custom.website = this.getValue(SELECTOR.WEBSITE);
-      jsonPayload.custom.campaignId = this.skuValue;
-      jsonPayload.custom.purchasetimeframe = this.getValue(SELECTOR.PURCHASE_TIMEFRAME);
-      jsonPayload.custom.emp_using_product = this.getValue(SELECTOR.EMP_USING_PRODUCT) ? this.getValue(SELECTOR.EMP_USING_PRODUCT) : '';
-      jsonPayload.custom.treatmentid = this.getTIDCookie();
-      jsonPayload.custom.assignedid = (!(document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))) ? '' : (document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))[1];
-      jsonPayload.custom.industry = this.getValue(SELECTOR.INDUSTRY);
-      jsonPayload.custom.jobfunction = this.getValue(SELECTOR.JOB_FUNCTION);
-      jsonPayload.custom.state = this.getValue(SELECTOR.STATE);
-      jsonPayload.custom.orgsize = this.getValue(SELECTOR.ORG_SIZE);
-      jsonPayload.custom.dateandtime = this.getPST();
-      jsonPayload.custom.language = (this.form.querySelector(SELECTOR.PRODUCT_SKU) && this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|').length > 1) ? this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|')[1].trim() : '';
-      jsonPayload.custom.product = this.getValue(SELECTOR.PT_DOWNLOAD_FORM);
-      const comments = this.escapeXml(((!this.getValue('#usertype')) ? '' : this.getValue('#usertype')).concat('|', ((!this.getValue('#purchaseintent')) ? '' : this.getValue('#purchaseintent')), '|', ((!this.getValue('#softwaredetail')) ? '' : this.escapeXml(this.getValue('#softwaredetail').trim())), '|', ((!this.getValue('#PREtrialPage-PREowner')) ? '' : this.getValue('#PREtrialPage-PREowner').is(':checked')), '|', ((!this.getValue('#PSEtrialPage-PSEowner')) ? '' : this.getValue('#PSEtrialPage-PSEowner').is(':checked'))));
-      jsonPayload.custom.questions_comments = comments.concat('|', (!this.getValue('#existinguser') ? '' : this.getValue('#existinguser')), '|', ((!this.getValue('#knowmorescp')) ? '' : this.getValue('#knowmorescp')));
-      this.constructDemandbaseValues(jsonPayload);
-      return jsonPayload;
+    if (typeof jsonPayload.ims.userProfile['address.mail_to'] === 'undefined') {
+      jsonPayload.ims.userProfile['address.mail_to'] = {
+        primary: true,
+        carrierRoute: null,
+        city: null,
+        countryCode: null,
+        countryRegion: null,
+        homeCity: null,
+        line1: null,
+        line2: null,
+        line3: null,
+        line4: null,
+        line5: null,
+        line6: null,
+        postalZip: null,
+        stateProv: null,
+        suiteApt: null,
+      };
+    }
+    if ((!this.imsProfile) || (!this.imsProfile.mrktPerm) || (!this.imsProfile.mrktPerm.match('(EMAIL:true|EMAIL:false)'))) jsonPayload.ims.userProfile.mrktPerm = 'EMAIL:false';
+    if ((!this.imsProfile) || (!this.imsProfile.mrktPerm) || (!this.imsProfile.mrktPerm.match('(PHONE:true|PHONE:false)'))) jsonPayload.ims.userProfile.mrktPerm = `${jsonPayload.ims.userProfile.mrktPerm},PHONE:false`;
+    if (jsonPayload.ims.userProfile.mrktPerm.match('(PHONE:true|PHONE:false)')[0].substr(6, 5) === 'true') {
+      jsonPayload.actions.splice(jsonPayload.actions.indexOf('ok_to_call'), 1);
+    }
+    if (!this.getValue(SELECTOR.ORG_SIZE)
+      || this.orgSize === this.getValue(SELECTOR.ORG_SIZE)) {
+      jsonPayload.actions.splice(jsonPayload.actions.indexOf('renga_uds'), 1);
+    } else {
+      jsonPayload.ims.renga_uds = {
+        key: 'NUMBER_OF_EMPLOYEES',
+        value: this.getValue(SELECTOR.ORG_SIZE),
+        domain: 'ACOM_ECOM',
+      };
+    }
+    const emailTemplate = this.getValue(SELECTOR.PT_DOWNLOAD_FORM, ATTRIBUTE.DATA_EMAIL);
+    if (emailTemplate && emailTemplate.length === 0) {
+      jsonPayload.actions.splice(jsonPayload.actions.indexOf('apo'), 1);
+    } else {
+      jsonPayload.custom.email_template = emailTemplate;
+    }
+    jsonPayload.ims.userProfile.job_title = this.getValue(SELECTOR.JOB_TITLE) ? this.getValue(SELECTOR.JOB_TITLE) : '';
+    jsonPayload.ims.userProfile.job_function = this.getValue(SELECTOR.JOB_FUNCTION);
+    jsonPayload.ims.userProfile.company = this.getValue(SELECTOR.COMPANY);
+    jsonPayload.ims.userProfile.phoneNumber = this.getValue(SELECTOR.PHONE_NUMBER);
+    jsonPayload.ims.userProfile.industry = this.getValue(SELECTOR.INDUSTRY);
+    jsonPayload.ims.userProfile['address.mail_to'].postalZip = this.getValue(SELECTOR.POSTAL_CODE);
+    jsonPayload.ims.userProfile['address.mail_to'].stateProv = this.getValue(SELECTOR.STATE);
+    jsonPayload.ims.userProfile['address.mail_to'].countryRegion = this.getValue(SELECTOR.STATE);
+    jsonPayload.ims.userProfile['address.mail_to'].countryCode = countryCode !== null ? countryCode : this.getValue(SELECTOR.COUNTRY);
+    const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
+    if (skuElement) this.skuValue = skuElement.getAttribute('sku');
+    jsonPayload.custom.locale = this.imslib.adobeid.locale;
+    jsonPayload.custom.website = this.getValue(SELECTOR.WEBSITE);
+    jsonPayload.custom.campaignId = this.skuValue;
+    jsonPayload.custom.purchasetimeframe = this.getValue(SELECTOR.PURCHASE_TIMEFRAME);
+    jsonPayload.custom.emp_using_product = this.getValue(SELECTOR.EMP_USING_PRODUCT) ? this.getValue(SELECTOR.EMP_USING_PRODUCT) : '';
+    jsonPayload.custom.treatmentid = this.getTIDCookie();
+    jsonPayload.custom.assignedid = (!(document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))) ? '' : (document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))[1];
+    jsonPayload.custom.industry = this.getValue(SELECTOR.INDUSTRY);
+    jsonPayload.custom.jobfunction = this.getValue(SELECTOR.JOB_FUNCTION);
+    jsonPayload.custom.state = this.getValue(SELECTOR.STATE);
+    jsonPayload.custom.orgsize = this.getValue(SELECTOR.ORG_SIZE);
+    jsonPayload.custom.dateandtime = this.getPST();
+    jsonPayload.custom.language = (this.form.querySelector(SELECTOR.PRODUCT_SKU) && this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|').length > 1) ? this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|')[1].trim() : '';
+    jsonPayload.custom.product = this.getValue(SELECTOR.PT_DOWNLOAD_FORM);
+    const comments = this.escapeXml(((!this.getValue('#usertype')) ? '' : this.getValue('#usertype')).concat('|', ((!this.getValue('#purchaseintent')) ? '' : this.getValue('#purchaseintent')), '|', ((!this.getValue('#softwaredetail')) ? '' : this.escapeXml(this.getValue('#softwaredetail').trim())), '|', ((!this.getValue('#PREtrialPage-PREowner')) ? '' : this.getValue('#PREtrialPage-PREowner').is(':checked')), '|', ((!this.getValue('#PSEtrialPage-PSEowner')) ? '' : this.getValue('#PSEtrialPage-PSEowner').is(':checked'))));
+    jsonPayload.custom.questions_comments = comments.concat('|', (!this.getValue('#existinguser') ? '' : this.getValue('#existinguser')), '|', ((!this.getValue('#knowmorescp')) ? '' : this.getValue('#knowmorescp')));
+    this.constructDemandbaseValues(jsonPayload);
+    return jsonPayload;
   }
 
   getPayloadForNoLead() {
-      const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
-      if (skuElement) this.skuValue = skuElement.getAttribute('sku');
-      const jsonPayload = {
-          client_name: this.clientName || 'trials',
-          message_uuid: this.getUUID(),
-          ims: {
-              userProfile: this.imsProfile,
-              access_token: this.imslib.getAccessToken().token,
-              renga_token: this.getCookieValueByName('WCDServer'),
-          },
-          custom: {
-              locale: this.imslib.adobeid.locale,
-              campaignId: this.skuValue,
-              email_template: this.getValue(SELECTOR.EMAIL_TEMPLATE),
-              treatmentid: this.getTIDCookie(),
-              assignedid: (!(document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))) ? '' : (document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))[1],
-              dateandtime: this.getPST(),
-              language: (this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText && this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|').length > 1) ? this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|')[1].trim() : '',
-              product: this.getValue(SELECTOR.PT_DOWNLOAD_FORM),
-          },
-          actions: ['apo', 'ice', 'ims_update', 'ok_to_call'],
-      };
-      if (typeof this.getValue(SELECTOR.WEBSITE) !== 'undefined' && this.getValue(SELECTOR.WEBSITE) !== null) {
-          jsonPayload.custom.website = this.getValue(SELECTOR.WEBSITE);
-      }
-      jsonPayload.custom.questions_comments = this.escapeXml(((!this.getValue('#usertype')) ? '' : this.getValue('#usertype')).concat('|', ((!this.getValue('#purchaseintent')) ? '' : this.getValue('#purchaseintent')), '|', ((!this.getValue('#softwaredetail')) ? '' : this.escapeXml(this.getValue('#softwaredetail').trim()))));
-      if (this.form.querySelector(SELECTOR.ACTIONS) !== null
-          && this.form.querySelector(SELECTOR.ACTIONS).length !== 0) {
-          jsonPayload.actions = this.form.querySelector(SELECTOR.ACTIONS).split(',');
-      }
-      if (!this.getValue(SELECTOR.PT_DOWNLOAD_FORM, ATTRIBUTE.DATA_EMAIL)) {
-          jsonPayload.actions.splice(jsonPayload.actions.indexOf('apo'), 1);
-      } else {
-          const emailTemplate = this.getValue(SELECTOR.PT_DOWNLOAD_FORM, ATTRIBUTE.DATA_EMAIL);
-          jsonPayload.custom.email_template = emailTemplate;
-      }
-      return jsonPayload;
+    const skuElement = this.form.querySelector('[data-configurefor="productsku"] .menu-item.is-selected');
+    if (skuElement) this.skuValue = skuElement.getAttribute('sku');
+    const jsonPayload = {
+      client_name: this.clientName || 'trials',
+      message_uuid: this.getUUID(),
+      ims: {
+        userProfile: this.imsProfile,
+        access_token: this.imslib.getAccessToken().token,
+        renga_token: this.getCookieValueByName('WCDServer'),
+      },
+      custom: {
+        locale: this.imslib.adobeid.locale,
+        campaignId: this.skuValue,
+        email_template: this.getValue(SELECTOR.EMAIL_TEMPLATE),
+        treatmentid: this.getTIDCookie(),
+        assignedid: (!(document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))) ? '' : (document.URL.match(/assigned_id=([a-zA-Z0-9]+)/))[1],
+        dateandtime: this.getPST(),
+        language: (this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText && this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|').length > 1) ? this.form.querySelector(SELECTOR.PRODUCT_SKU).innerText.split('|')[1].trim() : '',
+        product: this.getValue(SELECTOR.PT_DOWNLOAD_FORM),
+      },
+      actions: ['apo', 'ice', 'ims_update', 'ok_to_call'],
+    };
+    if (typeof this.getValue(SELECTOR.WEBSITE) !== 'undefined' && this.getValue(SELECTOR.WEBSITE) !== null) {
+      jsonPayload.custom.website = this.getValue(SELECTOR.WEBSITE);
+    }
+    jsonPayload.custom.questions_comments = this.escapeXml(((!this.getValue('#usertype')) ? '' : this.getValue('#usertype')).concat('|', ((!this.getValue('#purchaseintent')) ? '' : this.getValue('#purchaseintent')), '|', ((!this.getValue('#softwaredetail')) ? '' : this.escapeXml(this.getValue('#softwaredetail').trim()))));
+    if (this.form.querySelector(SELECTOR.ACTIONS) !== null
+      && this.form.querySelector(SELECTOR.ACTIONS).length !== 0) {
+      jsonPayload.actions = this.form.querySelector(SELECTOR.ACTIONS).split(',');
+    }
+    if (!this.getValue(SELECTOR.PT_DOWNLOAD_FORM, ATTRIBUTE.DATA_EMAIL)) {
+      jsonPayload.actions.splice(jsonPayload.actions.indexOf('apo'), 1);
+    } else {
+      const emailTemplate = this.getValue(SELECTOR.PT_DOWNLOAD_FORM, ATTRIBUTE.DATA_EMAIL);
+      jsonPayload.custom.email_template = emailTemplate;
+    }
+    return jsonPayload;
   }
 
   addGdprPropertiesToPayload() {
-      const currentUrl = this.getValue('#current_url');
-      if (currentUrl) this.payLoad.custom.current_url = currentUrl;
-      const noticeBody = this.getValue('#noticeplaceholder', 'data-notice-body');
-      this.payLoad.custom.consent_notice = noticeBody;
-      const marketingPermissions = this.getValue('#noticeplaceholder', 'data-marketing-permissions');
-      this.payLoad.custom.marketing_permissions = JSON.parse(marketingPermissions);
+    const currentUrl = this.getValue('#current_url');
+    if (currentUrl) this.payLoad.custom.current_url = currentUrl;
+    const noticeBody = this.getValue('#noticeplaceholder', 'data-notice-body');
+    this.payLoad.custom.consent_notice = noticeBody;
+    const marketingPermissions = this.getValue('#noticeplaceholder', 'data-marketing-permissions');
+    this.payLoad.custom.marketing_permissions = JSON.parse(marketingPermissions);
   }
   
   postCommonService(accessToken, payLoad, endPoint) {
-      window.fetch(endPoint, {
-          method: 'POST',
-          headers: {
-              'Content-Type': REQUEST_CONTENT_TYPE,
-              Authorization: `${accessToken}`,
-          },
-          body: JSON.stringify(payLoad),
-      })
-      .then((response) => { window.location.href = this.thankyouPage; })
-      .catch((error) => {});
+    window.fetch(endPoint, {
+      method: 'POST',
+      headers: {
+          'Content-Type': REQUEST_CONTENT_TYPE,
+          Authorization: `${accessToken}`,
+      },
+      body: JSON.stringify(payLoad),
+    })
+    .then((response) => { window.location.href = this.thankyouPage; })
+    .catch((error) => {});
   }
 }
 
