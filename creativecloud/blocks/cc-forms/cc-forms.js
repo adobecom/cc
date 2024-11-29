@@ -104,14 +104,14 @@ class CCForms {
   }
 
   initForm() {
-    if (this.formConfig.type === 'default') {
-      const d = createTag('div', { class: 'form-components' });
-      this.el.prepend(d);
-      return d;
-    }
-    const f = createTag('form', { novalidate: '' });
-    this.el.prepend(f);
-    return f;
+    let formel = null;
+    if (this.formConfig.type === 'default') formel = createTag('div', { class: 'form-components' });
+    else formel = createTag('form', { novalidate: '' });
+    const d = createTag('div', { class: `cc-forms ${this.formConfig.type}` }, formel);
+    this.el.classList.remove('cc-forms');
+    this.el.classList.add('cc-forms-config');
+    this.el.insertAdjacentElement('beforebegin', d);
+    return formel;
   }
 
   setFormDataAttributes() {
@@ -187,11 +187,13 @@ function imsInitialized(interval = 200) {
 
 export default async function init(el) {
   const formComponent = new CCForms(el);
-  if (formComponent.formConfig.type === 'default') return;
+  if (formComponent.formConfig.type === 'default') return el.remove();
   imsInitialized().then(async () => {
     if (!window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
     const fc = new FormConfigurator(formComponent.form);
+    el.remove();
     return fc;
   });
+  return 1;
 }
