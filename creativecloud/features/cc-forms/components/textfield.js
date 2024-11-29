@@ -45,7 +45,7 @@ class Textfield {
         }
           break;
         case 'disclaimer':
-          d.append(createTag('div', { class: 'field-detail' }, this.fieldConfig[ck].innerText.trim()));
+          d.append(createTag('div', { class: 'field-detail disclaimer' }, this.fieldConfig[ck].innerText.trim()));
           break;
         case 'placeholder':
           i.setAttribute('placeholder', this.fieldConfig[ck].innerText.trim());

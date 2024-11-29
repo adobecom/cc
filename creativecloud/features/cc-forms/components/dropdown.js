@@ -126,7 +126,7 @@ class Dropdown {
         }
           break;
         case 'disclaimer':
-          d.append(createTag('div', { class: 'field-detail' }, this.fieldConfig[ck].innerText.trim()));
+          d.append(createTag('div', { class: 'field-detail disclaimer' }, this.fieldConfig[ck].innerText.trim()));
           break;
         case 'placeholder': {
           const ptext = this.fieldConfig[ck].innerText.trim();
