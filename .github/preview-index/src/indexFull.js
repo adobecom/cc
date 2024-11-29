@@ -147,7 +147,7 @@ const reindexAllLocales = () => {
     return;
   }
 
-  reindex(); // US
+  reindex(''); // US
 
   if (config.PREVIEW_LOCALES) {
     config.PREVIEW_LOCALES.split(',').forEach((locale) => {
