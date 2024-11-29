@@ -87,7 +87,7 @@ class Dropdown {
         'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/us/en',
       },
       state: {
-        'dropdown-name': 'region',
+        'dropdown-name': 'state',
         'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
       },
       timeframe: {

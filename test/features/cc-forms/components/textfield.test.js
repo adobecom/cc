@@ -24,7 +24,7 @@ describe('TextField Component', async () => {
 
   it('Text Fields should be decorated', () => {
     const textfields = document.querySelectorAll('input[type="text"].cc-form-component');
-    expect(textfields.length).to.be.equal(textfields.length);
+    expect(configuredTextFields.length - 1).to.be.equal(textfields.length);
   });
 
   it('Textbox should have placeholders', () => {
@@ -71,5 +71,10 @@ describe('TextField Component', async () => {
     const event = new Event('blur', { bubbles: true });
     textfield.dispatchEvent(event);
     expect(textfield.getAttribute('data-valid')).to.equal('false');
+  });
+
+  it('Text should have a text area', () => {
+    const textarea = document.querySelector('textarea');
+    expect(textarea).to.exist;
   });
 });
