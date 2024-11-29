@@ -115,7 +115,8 @@ class Dropdown {
     const d = createTag('div', { class: 'form-item' }, i);
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i, d);
-    [...cfgKeys].forEach((ck) => {
+    [...cfgKeys].forEach((ckraw) => {
+      const ck = ckraw.toLowerCase();
       switch (ck) {
         case 'label': {
           const l = this.fieldConfig[ck].innerText.trim();
