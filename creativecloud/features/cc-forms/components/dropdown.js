@@ -111,7 +111,7 @@ class Dropdown {
   }
 
   createDropdown() {
-    const i = createTag('select', { class: 'menu' });
+    const i = createTag('select', { class: 'menu cc-form-component' });
     const d = createTag('div', { class: 'form-item' }, i);
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i, d);

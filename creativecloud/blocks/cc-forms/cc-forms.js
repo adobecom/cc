@@ -3,35 +3,7 @@ import { createTag, getConfig } from '../../scripts/utils.js';
 import Textfield from '../../features/cc-forms/components/textfield.js';
 import Dropdown from '../../features/cc-forms/components/dropdown.js';
 import Checkbox from '../../features/cc-forms/components/checkbox.js';
-import { ConsentNotice } from '../../features/cc-forms/forms/trials.js';
-
-class TextContent {
-  constructor(formEl, config) {
-    this.form = formEl;
-    this.fieldConfig = config;
-    this.init();
-  }
-
-  init() {
-    const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
-    this.form.append(d);
-  }
-}
-class Button {
-  constructor(formEl, config) {
-    this.form = formEl;
-    this.fieldConfig = config;
-    this.btnEl = this.createButton();
-  }
-
-  createButton() {
-    const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig.label.innerText.trim());
-    a.addEventListener('click', (e) => e.preventDefault());
-    const d = createTag('div', { class: 'form-item' }, a);
-    this.form.append(d);
-    return a;
-  }
-}
+import { TextContent, Button, ConsentNotice } from '../../features/cc-forms/forms/trials.js';
 
 function getOdinEndpoint() {
   const cfg = getConfig();

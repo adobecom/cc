@@ -30,6 +30,36 @@ const STATUS_REDIRECT_MAP = {
   'error-redirect-bama': 'bamaunknownerrorpage',
   'error-redirect-service-unavailable': 'serviceunavailableerrorpage',
 };
+
+
+export class TextContent {
+  constructor(formEl, config) {
+    this.form = formEl;
+    this.fieldConfig = config;
+    this.init();
+  }
+
+  init() {
+    const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
+    this.form.append(d);
+  }
+}
+export class Button {
+  constructor(formEl, config) {
+    this.form = formEl;
+    this.fieldConfig = config;
+    this.btnEl = this.createButton();
+  }
+
+  createButton() {
+    const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig.label.innerText.trim());
+    a.addEventListener('click', (e) => e.preventDefault());
+    const d = createTag('div', { class: 'form-item' }, a);
+    this.form.append(d);
+    return a;
+  }
+}
+
 export class ConsentNotice {
   constructor(form, formCongfig) {
     this.form = form;
