@@ -49,13 +49,13 @@ describe('Perpeptual Form', async () => {
   });
 
   it('Consent should be monitored', () => {
-    // const checkbox1 = document.querySelector('#consentexplicitemail')
-    // checkbox1.checked = true;
-    // const changeEvent1 = new Event('change', { bubbles: true });
-    // checkbox1.dispatchEvent(changeEvent1);
-    // const checkbox2 = document.querySelector('#consentexplicitphone')
-    // checkbox2.checked = true;
-    // const changeEvent2 = new Event('change', { bubbles: true });
-    // checkbox2.dispatchEvent(changeEvent2);
+    const checkbox1 = document.querySelector('#consentexplicitemail')
+    checkbox1.checked = true;
+    const changeEvent1 = new Event('change', { bubbles: true });
+    checkbox1.dispatchEvent(changeEvent1);
+    const checkbox2 = document.querySelector('#consentexplicitphone')
+    checkbox2.checked = true;
+    const changeEvent2 = new Event('change', { bubbles: true });
+    checkbox2.dispatchEvent(changeEvent2);
   });
 });

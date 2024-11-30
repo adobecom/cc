@@ -96,8 +96,6 @@ class CCForms {
         return formConfig.perpeptual;
       case this.el.classList.contains('connect'):
         return formConfig.connect;
-      case this.el.classList.contains('subscribe'):
-        return formConfig.subscribe;
       default:
         return formConfig.default;
     }
