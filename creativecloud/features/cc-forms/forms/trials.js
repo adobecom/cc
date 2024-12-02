@@ -31,7 +31,6 @@ const STATUS_REDIRECT_MAP = {
   'error-redirect-service-unavailable': 'serviceunavailableerrorpage',
 };
 
-
 export class TextContent {
   constructor(formEl, config) {
     this.form = formEl;
