@@ -15,6 +15,16 @@
   color: #2C2C2C;
 }
 
+.cc-forms .form-item h1,
+.cc-forms .form-item h2,
+.cc-forms .form-item h3,
+.cc-forms .form-item h4,
+.cc-forms .form-item h5,
+.cc-forms .form-item h6 {
+  padding: 0;
+  margin: 0;
+}
+
 .cc-forms > div:not(.form-components),
 .cc-forms > p {
   display: none;
