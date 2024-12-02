@@ -49,13 +49,7 @@ class Textfield {
           break;
         case 'placeholder':
           i.setAttribute('placeholder', this.fieldConfig[ck].innerText.trim());
-          if (i.nodeName === 'TEXTAREA') {
-            const lines = this.fieldConfig[ck].querySelectorAll('p');
-            [...lines].forEach((line) => {
-              i.innerHTML += line.innerText;
-              i.innerHTML += '\n\n';
-            });
-          }
+          if (i.nodeName === 'TEXTAREA') i.innerHTML = this.fieldConfig[ck].innerText.trim();
           break;
         case 'optional':
           i.removeAttribute('required');
