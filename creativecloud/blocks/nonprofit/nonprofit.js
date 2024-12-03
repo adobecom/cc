@@ -484,8 +484,8 @@ function getSelectedOrganizationTag() {
 
     addressTag.textContent = organization.address || '-';
     addressTag.setAttribute('title', organization.address);
-    idTag.textContent = organization.id;
-    idTag.setAttribute('title', organization.id);
+    idTag.textContent = organization.registryId;
+    idTag.setAttribute('title', organization.registryId);
 
     containerTag.style.display = 'flex';
   }, false);
@@ -567,8 +567,8 @@ function renderSelectNonprofit(containerTag) {
       );
       const idTag = createTag(
         'span',
-        { class: 'np-organization-select-id', title: option.id },
-        option.id,
+        { class: 'np-organization-select-id', title: option.registryId },
+        option.registryId,
       );
 
       itemTag.append(nameTag, idTag);
