@@ -25,7 +25,7 @@ function delay(ms) {
 
 describe('nonprofit - General', () => {
   before(() => {
-    setConfig({ locale: { prefix: 'mx' } });
+    setConfig({ locale: { prefix: 'mx', ietf: 'es-MX' } });
     window.mph = {
       'nonprofit-title-select-non-profit': "What's your nonprofit organization?",
       'nonprofit-title-organization-details': 'Verify your organization details',
@@ -407,7 +407,7 @@ describe('nonprofit - Organization details', () => {
 
 describe('nonprofit - Address details', () => {
   before(() => {
-    setConfig({ locale: { prefix: 'mx' } });
+    setConfig({ locale: { prefix: 'mx', ietf: 'es-MX' } });
     window.mph = {};
   });
 
@@ -492,7 +492,7 @@ describe('nonprofit - Personal details', () => {
   };
 
   before(() => {
-    setConfig({ locale: { prefix: 'mx' } });
+    setConfig({ locale: { prefix: 'mx', ietf: 'es-MX' } });
     window.mph = {};
     window.lana = { log: () => {} };
   });

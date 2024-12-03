@@ -10,6 +10,7 @@ import nonprofitSelect from './nonprofit-select.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
+
 const removeOptionElements = (element) => {
   const children = element.querySelectorAll(':scope > div');
   children.forEach((child) => {
@@ -159,6 +160,8 @@ async function sendOrganizationData() {
     }
 
     let body;
+    const { locale } = getConfig();
+    const { ietf } = locale;
     if (foundInSearch) {
       body = JSON.stringify({
         validationInviteId,
@@ -166,7 +169,7 @@ async function sendOrganizationData() {
         firstName: nonprofitFormData.firstName,
         lastName: nonprofitFormData.lastName,
         email: nonprofitFormData.email,
-        language: 'en-US',
+        language: ietf,
       });
     } else {
       body = JSON.stringify({
@@ -184,7 +187,7 @@ async function sendOrganizationData() {
         firstName: nonprofitFormData.firstName,
         lastName: nonprofitFormData.lastName,
         email: nonprofitFormData.email,
-        language: 'en-US',
+        language: ietf,
       });
     }
 
