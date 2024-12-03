@@ -161,7 +161,7 @@ async function sendOrganizationData() {
 
     let body;
     const { locale } = getConfig();
-    const ietf = locale.language;
+    const ietf = locale.ietf;
     if (foundInSearch) {
       body = JSON.stringify({
         validationInviteId,
