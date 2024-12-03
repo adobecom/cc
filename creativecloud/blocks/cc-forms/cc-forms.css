@@ -25,6 +25,10 @@
   margin: 0;
 }
 
+.form-item .fragment .cc-forms {
+  padding: 0;
+}
+
 .cc-forms > div:not(.form-components),
 .cc-forms > p {
   display: none;
@@ -254,6 +258,10 @@
   background-color: transparent;
   border: 2px solid var(--link-color);
   color: var(--link-color);
+}
+
+.cc-forms .form-item:has(.con-button.submit) {
+  justify-content: center;
 }
 
 .cc-forms .thank-you {
