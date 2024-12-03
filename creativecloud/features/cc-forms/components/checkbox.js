@@ -87,23 +87,23 @@ class Checkbox {
     return cfgKeys;
   }
 
-  showMessage(type) {
-    const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
-    if (elem) elem.classList.remove(CLASS_HIDDEN);
-  }
-
-  hideMessage(type) {
-    const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
-    if (elem) elem.classList.add(CLASS_HIDDEN);
-  }
-
   isValid() {
     this.valid = false;
     if (!this.required) this.valid = true;
     if (this.required && this.checkboxInput.checked) this.valid = true;
     this.checkboxInput.setAttribute('data-valid', this.valid);
-    this.hideMessage('required');
-    if (!this.valid) this.showMessage('required');
+    if (!this.valid){
+      const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+      console.log('elemelemelemelemelemelem', this.checkboxInput);
+      this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+      this.checkboxInput.reportValidity();
+      const cb = () => {
+        this.checkboxInput.setCustomValidity('');
+        this.checkboxInput.reportValidity();
+        this.checkboxInput.removeEventListener('input', cb);
+      };
+      this.checkboxInput.addEventListener('input', cb);
+    }
     return this.valid;
   }
 }

@@ -115,16 +115,6 @@ class Textfield {
     return i;
   }
 
-  showMessage(type) {
-    const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
-    if (elem) elem.classList.remove(CLASS_HIDDEN);
-  }
-
-  hideMessage(type) {
-    const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}${type}`);
-    if (elem) elem.classList.add(CLASS_HIDDEN);
-  }
-
   isValid() {
     this.value = this.textfield.value;
     this.valid = false;
@@ -134,12 +124,26 @@ class Textfield {
     if (this.required && this.value === '') this.valid = false;
     if (this.readonly) this.valid = true;
     this.textfield.setAttribute('data-valid', this.valid);
-    this.hideMessage('invalid');
-    this.hideMessage('required');
     if (!this.valid && this.value === '') {
-      this.showMessage('required');
+      const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+      this.textfield.setCustomValidity(`${elem.innerText}`);
+      this.textfield.reportValidity();
+      const cb = () => {
+        el.setCustomValidity('');
+        el.reportValidity();
+        this.textfield.removeEventListener('input', cb);
+      };
+      this.textfield.addEventListener('input', cb);
     } else if (!this.valid) {
-      this.showMessage('invalid');
+      const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
+      this.textfield.setCustomValidity(`${elem.innerText}`);
+      this.textfield.reportValidity();
+      const cb = () => {
+        el.setCustomValidity('');
+        el.reportValidity();
+        this.textfield.removeEventListener('input', cb);
+      };
+      this.textfield.addEventListener('input', cb);
     }
     return this.valid;
   }
