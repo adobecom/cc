@@ -3,7 +3,7 @@
 import { createTag } from '../../../scripts/utils.js';
 
 const CLASS_HIDDEN = 'is-hidden';
-const SELECTOR_PREFIX_MESSAGE = '.error-message';
+const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 const ATTR_DROPDOWN_TYPE = 'data-dropdown-type';
 const ATTR_DROPDOWN_PARENT = 'data-dropdown-parent';
 const ATTR_DROPDOWN_SOURCE = 'data-dropdown-source';
@@ -233,8 +233,16 @@ class Dropdown {
       this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.add(CLASS_HIDDEN);
       return this.valid;
     }
-    this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.remove(CLASS_HIDDEN);
-    this.dropdown.classList.add('is-invalid');
+    const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+    console.log('elemelemelemelemelemelem', this.dropdown);
+    this.dropdown.setCustomValidity(`${elem.innerText}`);
+    this.dropdown.reportValidity();
+    const cb = () => {
+      this.dropdown.setCustomValidity('');
+      this.dropdown.reportValidity();
+      this.dropdown.removeEventListener('input', cb);
+    };
+    this.dropdown.addEventListener('input', cb);
     return this.valid;
   }
 
@@ -245,7 +253,7 @@ class Dropdown {
     }
     if (this.type === 'independent' && this.source) this.loadData();
     if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
-    this.dropdown.addEventListener('blur', () => this.isValid());
+    this.dropdown.addEventListener('change', () => this.isValid());
     if (this.name === 'productsku') this.handleProductSKUChange();
     else if (this.name === 'purchaseintent') this.handlePurchaseIntentChange();
     else {
