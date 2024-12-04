@@ -2,6 +2,11 @@
   --cc-forms-error: #E34850;
 }
 
+.section.half-width {
+  width: 50%;
+  margin: 0 auto;
+}
+
 .cc-forms {
   --input-border-radius: 4px;
   border-radius: var(--card-border-radius-l);
