@@ -4,13 +4,10 @@
 
 .cc-forms {
   --input-border-radius: 4px;
-
-  padding: var(--spacing-xl);
   border-radius: var(--card-border-radius-l);
   filter: var(--image-filter-drop-shadow-small);
   border: solid 1px var(--bg-color-grey);
   box-sizing: border-box;
-  max-width: 800px;
   margin: 0 auto;
   color: #2C2C2C;
 }
@@ -45,9 +42,23 @@
 .cc-forms .form-item {
   width: 100%;
   display: flex;
-  margin-bottom: var(--spacing-xxs);
   flex-wrap: wrap;
-  padding: var(--spacing-xs) 0;
+}
+
+.cc-forms.spacing-xxs .form-item {
+  padding-bottom: var(--spacing-xxs);
+}
+
+.cc-forms.spacing-xs .form-item {
+  padding-bottom: var(--spacing-xs);
+}
+
+.cc-forms.spacing-m .form-item {
+  padding-bottom: var(--spacing-m);
+}
+
+.cc-forms.spacing-l .form-item {
+  padding-bottom: var(--spacing-l);
 }
 
 .cc-forms .form-item .section .content,
