@@ -14,9 +14,14 @@ function getUnityLibs(prodLibs = '/unitylibs') {
 
 export default async function init(el) {
   const unitylibs = getUnityLibs();
-  const pr1 = loadScript(`${unitylibs}/core/workflow/workflow.js`, 'module');
-  const pr2 = new Promise((res) => { loadLink(`${unitylibs}/core/styles/styles.css`, { rel: 'stylesheet', callback: res }); });
-  await Promise.all([pr1, pr2]);
+  await Promise.all([
+    loadScript(`${unitylibs}/core/workflow/workflow.js`, 'module'),
+    loadScript(`${unitylibs}/scripts/utils.js`, 'module'),
+    loadScript(`${unitylibs}/core/workflow/workflow-photoshop/widget.js`, 'module'),
+    loadScript(`${unitylibs}/core/workflow/workflow-photoshop/action-binder.js`, 'module'),
+    new Promise((res) => { loadLink(`${unitylibs}/core/styles/styles.css`, { rel: 'stylesheet', callback: res }); }),
+    new Promise((res) => { loadLink(`${unitylibs}/core/workflow/workflow-photoshop/widget.css`, { rel: 'stylesheet', callback: res }); }),
+  ]);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
   await wfinit(el, 'cc', unitylibs);
 }
