@@ -21,6 +21,7 @@ const ADDRESS_MAIL_TO = 'data-imsAddressMailValue';
 const USER_PROFILE = 'data-userProfileValue';
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
 const INPUT_FIELDS = '.cc-form-component.text';
+const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 const STATUS_REDIRECT_MAP = {
   'thank-you-redirect': 'thankyoupage',
   'error-redirect-generic': 'genericerrorpage',
@@ -279,7 +280,7 @@ class Trials {
     this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
     this.event = new Event('checkValidation');
     this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
-    this.checkValidElements();
+    // this.checkValidElements();
     this.setFormConfig();
     this.handleEnterKeyPress();
   }
@@ -294,10 +295,23 @@ class Trials {
 
   checkValidElements() {
     this.valid = true;
-    this.elements.forEach((element) => {
-      if (element.getAttribute('data-valid') === 'false') this.valid = false;
-    });
-  }
+    for (const element of this.elements) {
+        if (element.getAttribute('data-valid') === 'false') {
+            this.valid = false;
+            const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+            element.setCustomValidity(`${elem.innerText}`);
+            element.reportValidity();
+            const cb = () => {
+                element.setCustomValidity('');
+                element.reportValidity();
+                element.removeEventListener('input', cb);
+            };
+            element.addEventListener('input', cb);
+            break;
+        }
+    }
+}
+
 
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
