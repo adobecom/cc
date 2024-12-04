@@ -186,7 +186,7 @@ export const [setLibs, getLibs] = (() => {
 const miloLibs = setLibs('/libs');
 
 const { createTag, localizeLink, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
-export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
+export { createTag, loadStyle, loadLink, loadScript, localizeLink, createIntersectionObserver, getConfig };
 
 function defineDeviceByScreenSize() {
   const DESKTOP_SIZE = 1200;
