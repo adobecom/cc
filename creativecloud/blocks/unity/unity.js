@@ -1,4 +1,4 @@
-import { loadStyle } from '../../scripts/utils.js';
+import { loadLink, loadScript } from '../../scripts/utils.js';
 
 function getUnityLibs(prodLibs = '/unitylibs') {
   const { hostname } = window.location;
@@ -14,10 +14,7 @@ function getUnityLibs(prodLibs = '/unitylibs') {
 
 export default async function init(el) {
   const unitylibs = getUnityLibs();
-  const stylePromise = new Promise((resolve) => {
-    loadStyle(`${unitylibs}/core/styles/styles.css`, resolve);
-  });
-  await stylePromise;
-  const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
+  const promiseArr = [loadLink(`${unitylibs}/core/styles/styles.css`, { rel: 'stylesheet', callback: res }), loadScript(`${unitylibs}/core/workflow/workflow.js`, 'module', { mode: 'async' }];
+  const { default: wfinit } = await Promise.all(promiseArr);
   await wfinit(el, 'cc', unitylibs);
 }
