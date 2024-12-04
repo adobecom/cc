@@ -16,6 +16,6 @@ export default async function init(el) {
   const unitylibs = getUnityLibs();
   const pr1 = loadScript(`${unitylibs}/core/workflow/workflow.js`, 'module', { mode: 'async' });
   const pr2 = new Promise((res) => { loadLink(`${unitylibs}/core/styles/styles.css`, { rel: 'stylesheet', callback: res }); });
-  const [{ default: wfinit },] = await Promise.all([pr1, pr2]);
+  const [{ default: wfinit }] = await Promise.all([pr1, pr2]);
   await wfinit(el, 'cc', unitylibs);
 }
