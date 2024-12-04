@@ -77,7 +77,7 @@ class CCForms {
     let formel = null;
     if (this.formConfig.type === 'default') formel = createTag('div', { class: 'form-components' });
     else formel = createTag('form', { novalidate: '' });
-    const x = [...this.el.classList].filter((className => className.startsWith('spacing')))[0];
+    const x = [...this.el.classList].filter(((cn) => cn.startsWith('spacing')))[0] || 'spacing-m';
     const d = createTag('div', { class: `cc-forms ${this.formConfig.type} ${x}` }, formel);
     this.el.classList.remove('cc-forms');
     this.el.classList.add('cc-forms-config');
