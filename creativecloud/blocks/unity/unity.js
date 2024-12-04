@@ -14,7 +14,7 @@ function getUnityLibs(prodLibs = '/unitylibs') {
 
 export default async function init(el) {
   const unitylibs = getUnityLibs();
-  const promiseArr = [loadLink(`${unitylibs}/core/styles/styles.css`, { rel: 'stylesheet', callback: res }), loadScript(`${unitylibs}/core/workflow/workflow.js`, 'module', { mode: 'async' }];
+  const promiseArr = [loadLink(`${unitylibs}/core/styles/styles.css`, { rel: 'stylesheet', callback: res }), loadScript(`${unitylibs}/core/workflow/workflow.js`, 'module', { mode: 'async' })];
   const { default: wfinit } = await Promise.all(promiseArr);
   await wfinit(el, 'cc', unitylibs);
 }
