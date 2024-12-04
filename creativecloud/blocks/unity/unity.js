@@ -21,7 +21,7 @@ export default async function init(el) {
     loadScript(`${unitylibs}/core/workflow/workflow-photoshop/action-binder.js`, 'module'),
     new Promise((res) => { loadLink(`${unitylibs}/core/styles/styles.css`, { rel: 'stylesheet', callback: res }); }),
     new Promise((res) => { loadLink(`${unitylibs}/core/workflow/workflow-photoshop/widget.css`, { rel: 'stylesheet', callback: res }); }),
-    new Promise((res) => { loadLink(`${unitylibs}/core/workflow/workflow-photoshop/target-config.json`, { as: 'fetch', crossorigin: 'anonymous', rel: 'preload', callback: res  }); }
+    new Promise((res) => { loadLink(`${unitylibs}/core/workflow/workflow-photoshop/target-config.json`, { as: 'fetch', crossorigin: 'anonymous', rel: 'preload', callback: res  }); }),
   ]);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
   await wfinit(el, 'cc', unitylibs);
