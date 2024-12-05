@@ -32,7 +32,14 @@ const formConfig = {
   },
   connect: {
     type: 'connect',
-    ...odinConfig,
+    jsPath: '/creativecloud/features/cc-forms/forms/connect.js',
+    blockDataset: {
+      clientname: 'connecttrial',
+      endpoint: '/api2/connect_trial_creation_service',
+      'form-type': 'form.connect.action',
+      'form-submit': 'trials',
+      ...odinConfig,
+    },
   },
   subscribe: {
     type: 'subscribe',
