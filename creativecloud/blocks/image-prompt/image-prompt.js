@@ -1,11 +1,19 @@
 import { createTag } from '../../scripts/utils.js';
 
 function moveButton(promptLink, desktopButtonWrapper) {
-  promptLink.addEventListener('mousemove', function (event) {
+  promptLink.addEventListener('mousemove', (event) => {
     const containerRect = promptLink.getBoundingClientRect();
-    const mouseX = event.clientX - containerRect.left;
-    const mouseY = event.clientY - containerRect.top;
-    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+    let mouseX = event.clientX - containerRect.left;
+    let mouseY = event.clientY - containerRect.top;
+    const buttonWidth = desktopButtonWrapper.style.widthidth;
+    const buttonHeight = desktopButtonWrapper.offsetHeight;
+    if (mouseX < 0) mouseX = 0;
+    if (mouseX + buttonWidth > containerRect.width) mouseX = containerRect.width - buttonWidth;
+    if (mouseY < 0) mouseY = 0;
+    if (mouseY + buttonHeight > containerRect.height) {
+      mouseY = containerRect.height - buttonHeight - 10;
+    }
+    const isRtl = document.dir === 'rtl';
     if (isRtl) {
       desktopButtonWrapper.style.right = `${containerRect.width - mouseX}px`;
     } else {
@@ -45,7 +53,7 @@ function handleMobile(el) {
       prompt.style.zIndex = 2;
     }
   });
-  document.addEventListener('click', function (e) {
+  document.addEventListener('click', (e) => {
     if (!aTag.contains(e.target)) {
       mobileHover.style.opacity = 0;
       mobileHover.style.zIndex = '';
@@ -53,7 +61,6 @@ function handleMobile(el) {
     }
   });
 }
-
 
 export default async function init(el) {
   const rows = [...el.querySelectorAll(':scope > div')];
@@ -64,7 +71,6 @@ export default async function init(el) {
   const prompt = createTag('div', { class: 'prompt' });
   const promptText = createTag('p', { class: 'prompt-text' });
   promptText.innerText = rows[0].textContent.trim();
-
 
   prompt.append(promptText);
   promptLink.append(prompt);
@@ -87,15 +93,15 @@ export default async function init(el) {
   desktopButtonWrapper.append(desktopButtonSvg, desktopButton);
   hoverDiv.append(desktopButtonWrapper);
   moveButton(promptLink, desktopButtonWrapper);
-  document.addEventListener('keydown', function (event) {
-    if ((event.key === 'Escape' || event.key === 'Esc') && window.getComputedStyle(hoverDiv).opacity === "1") {
+  document.addEventListener('keydown', (event) => {
+    if ((event.key === 'Escape' || event.key === 'Esc') && window.getComputedStyle(hoverDiv).opacity === '1') {
       hoverDiv.style.opacity = '0';
       prompt.style.display = 'block';
       prompt.style.opacity = '1';
       promptHover.style.opacity = '0';
     }
   });
-  promptLink.addEventListener('mouseenter', function () {
+  promptLink.addEventListener('mouseenter', () => {
     hoverDiv.style.opacity = '';
     prompt.style.display = '';
     prompt.style.opacity = '';
@@ -105,7 +111,7 @@ export default async function init(el) {
   const mobileLinkWrapper = createTag('div', { class: 'hover-wrapper' });
   const mobileLink = createTag('div', { class: 'hover-link' }, rows[2]?.textContent.replace('|', '').trim());
   const mobileIcon = rows[2]?.querySelector('img[src*=".svg"]');
-  const mobilesvg = await loadSvg(new URL(mobileIcon.src))
+  const mobilesvg = await loadSvg(new URL(mobileIcon.src));
   const mobileLinkSvg = createTag('div', { class: 'hover-svg' });
   mobileLinkSvg.innerHTML = `${mobilesvg}`;
   mobileLinkWrapper.append(mobileLink, mobileLinkSvg);
@@ -116,13 +122,13 @@ export default async function init(el) {
   const avatarImg = rows[1]?.querySelector(':scope img');
   avatarName.innerText = rows[1]?.textContent.trim();
   avatar.append(avatarImg, avatarName);
-  const mobileAvatar = avatar.cloneNode(true)
+  const mobileAvatar = avatar.cloneNode(true);
   hoverDiv.append(avatar);
   hoverMobileDiv.append(mobileAvatar);
 
   promptLink.append(hoverDiv, hoverMobileDiv);
   promptBlock.append(promptLink);
-  rows.forEach(row => row.remove());
+  rows.forEach((row) => row.remove());
   el.append(promptBlock);
   handleMobile(el, 2000);
 }
