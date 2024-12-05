@@ -59,9 +59,8 @@ class ConnectTrials extends trials {
     constructor(form) {
         super(form);
         this.form = form;
-        const notice = document.querySelector(`#${NOTICE_ID}`);
-        const dxf = notice.querySelector('.dxf');
-        if (notice && dxf !== null) {
+        const notice = document.querySelector(NOTICE_ID);
+        if (notice) {
             const xf = notice.querySelector('.fragment');
             if (xf) {
                 this.buttonListener();
@@ -70,25 +69,15 @@ class ConnectTrials extends trials {
             }
         }
         window.adobeid.api_parameters = { authorize: { state: { ac: 'Adobe.com_ctrials_connect' }, ctx_id: 'ct_connect' } };
-        // after imslib loads
-        window.feds.utilities.imslib.onReady()
-            .then(() => {
-                const userProfilePromise = window.feds.utilities.imslib.getProfile();
-                userProfilePromise.then((profile) => {
-                    if (profile.userId !== undefined) {
-                        this.imsUserId = profile.userId;
-                    } else {
-                        debug.log('Insufficient IMS data');
-                    }
-                });
-            })
-            .catch(() => {
-                debug.log('Error loading imslib');
-            });
+        const userProfilePromise = this.imslib.getProfile();
+        userProfilePromise.then((profile) => {
+        if (!profile.userId) return;
+        this.imsUserId = profile.userId;
+        });
     }
 
     submitAction() {
-        this.accesstoken = window.feds.utilities.imslib.getAccessToken();
+        this.accesstoken = this.imslib.getAccessToken();
         this.createPayload();
         this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
     }
@@ -206,7 +195,7 @@ class ConnectTrials extends trials {
                 userProfile: this.imsProfile || {},
 
                 browser_info: browserName.concat(' ', browserVersion),
-                access_token: window.feds.utilities.imslib.getAccessToken(),
+                access_token: this.imslib.getAccessToken(),
                 adobeid: this.imsUserId,
                 renga_token: null,
                 renga_uds: {},
