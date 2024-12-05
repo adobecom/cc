@@ -59,19 +59,15 @@ class ConnectTrials extends trials {
     constructor(form) {
         super(form);
         this.form = form;
-        // wait for consent notice dxf to load
         const notice = document.querySelector(`#${NOTICE_ID}`);
         const dxf = notice.querySelector('.dxf');
         if (notice && dxf !== null) {
-            window.addEventListener('dexter:DXFsReady', () => {
+            const xf = notice.querySelector('.fragment');
+            if (xf) {
                 this.buttonListener();
-            });
-            notice.addEventListener('load', () => {
-                this.buttonListener();
-            });
-        } else {
-            // if consent notice dxf is not authored
-            this.buttonListener();
+            } else {
+                notice.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
+            }
         }
         window.adobeid.api_parameters = { authorize: { state: { ac: 'Adobe.com_ctrials_connect' }, ctx_id: 'ct_connect' } };
         // after imslib loads
