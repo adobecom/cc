@@ -1,177 +1,279 @@
-/* eslint-disable max-classes-per-file */
-import { createTag, getConfig } from '../../scripts/utils.js';
-import Textfield from '../../features/cc-forms/components/textfield.js';
-import Dropdown from '../../features/cc-forms/components/dropdown.js';
-import Checkbox from '../../features/cc-forms/components/checkbox.js';
-import { TextContent, Button, ConsentNotice } from '../../features/cc-forms/forms/trials.js';
+import Debug from '@dexter/dexterui-tools/lib/utils/debug/debug';
+import getPropertySafely from '@dexter/dexterui-tools/lib/utils/lang/getPropertySafely';
+import Url from '@dexter/dexterui-tools/lib/utils/string/url';
+import trials from './trials';
 
-function getOdinEndpoint() {
-  const cfg = getConfig();
-  const { host } = window.location;
-  if (host.includes('stage.adobe.com') || host.includes('hlx.live')) return cfg.stage.odinEndpoint;
-  if (host.includes('adobe.com')) return cfg.prod.odinEndpoint;
-  return cfg.live.odinEndpoint;
-}
-
-const odinConfig = {
-  odinenvironment: getOdinEndpoint(),
-  'odin-prepopulate-api': `${getOdinEndpoint()}graphql/execute.json/acom/listvalidationsbylocale;path=/content/dam/acom/validation`,
+const ipaasParamMap = {
+    postalcode: 'postalZip',
+    state: 'stateProv',
+    country: 'countryCode',
+    fname: 'first_name',
+    lname: 'last_name',
+    phonenumber: 'phoneNumber',
+    email: 'email',
+    orgname: 'company',
+    jobfunction: 'job_function',
+    jobtitle: 'job_title',
+    industry: 'industry',
+    orgsize: 'org_size',
+    region: 'region',
+    timezone: 'timeZone',
+    connectProduct: 'connectProduct',
 };
 
-const formConfig = {
-  perpeptual: {
-    type: 'perpeptual',
-    jsPath: '/creativecloud/features/cc-forms/forms/perpeptual.js',
-    blockDataset: {
-      clientname: 'trials',
-      endpoint: '/api2/marketing_common_service',
-      'form-type': 'form.perpetual.action',
-      'form-submit': 'trials',
-      ...odinConfig,
-    },
-  },
-  connect: {
-    type: 'connect',
-    jsPath: '/creativecloud/features/cc-forms/forms/connect.js',
-    blockDataset: {
-      clientname: 'connecttrial',
-      endpoint: '/api2/connect_trial_creation_service',
-      'form-type': 'form.connect.action',
-      'form-submit': 'trials',
-      ...odinConfig,
-    },
-  },
-  subscribe: {
-    type: 'subscribe',
-    ...odinConfig,
-  },
-  unsubscribe: {
-    type: 'unsubscribe',
-    ...odinConfig,
-  },
-  default: {
-    type: 'default',
-    blockDataset: { ...odinConfig },
-  },
+const localeTOBamaLocaleMap = {
+    en: 'en',
+    pt: 'pt_br',
+    ko: 'ko',
+    it: 'it',
+    de: 'de',
+    fr: 'fr',
+    nl: 'nl',
+    zhHans: 'zh_cn',
+    es: 'es',
+    ja: 'ja',
 };
 
-class CCForms {
-  constructor(el) {
-    this.el = el;
-    this.formConfig = this.getFormConfig();
-    this.form = this.initForm();
-    this.setFormDataAttributes();
-    this.createFormComponents();
-    this.demandBaseConfig = {
-      'demandbase-endpoint': 'https://api.demandbase.com/autocomplete',
-      'demandbase-apiKey': 'e4086fa3ea9d74ac2aae2719a0e5285dc7075d7b',
-      'demandbase-delay': 400,
-    };
-  }
+const debugForm = Url.getQueryParam('debugForm');
+const debug = new Debug({ debug: (debugForm), control: 'ConnectTrials' });
 
-  getFormConfig() {
-    switch (true) {
-      case this.el.classList.contains('perpeptual'):
-        return formConfig.perpeptual;
-      case this.el.classList.contains('connect'):
-        return formConfig.connect;
-      default:
-        return formConfig.default;
-    }
-  }
+const TRACKING_ID = 'trackingid';
+const P_ID = 'prid';
+const C_ID = 'campaignid';
+const TID = 'TID';
+const PROMO_ID = 'promoid';
+const S_ID = 'sdid';
+const PSS_ID = 'pss';
+const ANYP_ID = 'ANYPROMO';
+const UNKNOWN = 'unknown';
+const ORG_SIZE = 'orgsize';
+const REGION = '#region';
+const PURCHASE = 'purchaseintent';
+const ASSIGNEE_ID = 'assigned_id';
+const TEMPLATE_ID = 'template_id';
+const NOTICE_ID = 'noticeplaceholder';
+const FNAME = 'fname';
+const LNAME = 'lname';
 
-  initForm() {
-    let formel = null;
-    if (this.formConfig.type === 'default') formel = createTag('div', { class: 'form-components' });
-    else formel = createTag('form', { novalidate: '' });
-    const x = [...this.el.classList].filter(((cn) => cn.startsWith('spacing')))[0] || 'spacing-m';
-    const d = createTag('div', { class: `cc-forms ${this.formConfig.type} ${x}` }, formel);
-    this.el.classList.remove('cc-forms');
-    this.el.classList.add('cc-forms-config');
-    this.el.insertAdjacentElement('beforebegin', d);
-    return formel;
-  }
-
-  setFormDataAttributes() {
-    Object.keys(this.formConfig.blockDataset).forEach((k) => {
-      this.form.setAttribute(`data-${k}`, this.formConfig.blockDataset[k]);
-    });
-  }
-
-  createFormComponents() {
-    const formComponents = this.el.querySelectorAll(':scope > div > div:nth-child(1) span[class*="cc-form-"]');
-    const formMetadata = [...this.el.querySelectorAll(':scope > div > div:nth-child(1) .icon')];
-    [...formComponents].forEach(() => {
-      const componentConfig = {};
-      const c = formMetadata.shift();
-      const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
-      componentConfig.type = componentName.toLowerCase();
-      if (c.parentElement.nextElementSibling) {
-        componentConfig.value = c.parentElement.nextElementSibling;
-      }
-      while (formMetadata.length && !(/cc-form-/.test(formMetadata[0].classList))) {
-        const s = formMetadata.shift();
-        const keyName = [...s.classList].find((cn) => cn.includes('icon-')).split('icon-')[1].toLowerCase();
-        if (componentName.startsWith('cc-form-consent')) {
-          if (!componentConfig.concentCfgs) componentConfig.concentCfgs = [];
-          componentConfig.concentCfgs.push({ bucketNoticeType: keyName, consetFragment: s.closest('div').nextElementSibling });
-        } else {
-          componentConfig[keyName] = s.closest('div').nextElementSibling;
+class ConnectTrials extends trials {
+    constructor(form) {
+        super(form);
+        this.form = form;
+        const notice = document.querySelector(NOTICE_ID);
+        if (notice) {
+            const xf = notice.querySelector('.fragment');
+            if (xf) {
+                this.buttonListener();
+            } else {
+                notice.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
+            }
         }
-      }
-      switch (true) {
-        case componentName.startsWith('cc-form-text'):
-          // eslint-disable-next-line no-unused-vars
-          { const tf = new Textfield(this.form, componentConfig); }
-          break;
-        case componentName.startsWith('cc-form-checkbox'):
-          // eslint-disable-next-line no-unused-vars
-          { const cb = new Checkbox(this.form, componentConfig); }
-          break;
-        case componentName.startsWith('cc-form-dropdown'):
-          // eslint-disable-next-line no-unused-vars
-          { const dd = new Dropdown(this.form, componentConfig); }
-          break;
-        case componentName.startsWith('cc-form-consent'):
-          if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
-            // eslint-disable-next-line no-unused-vars
-            const cn = new ConsentNotice(this.form, componentConfig);
-          }
-          break;
-        case componentName.startsWith('cc-form-content'):
-          // eslint-disable-next-line no-unused-vars
-          { const tc = new TextContent(this.form, componentConfig); }
-          break;
-        case componentName.startsWith('cc-form-button'):
-          // eslint-disable-next-line no-unused-vars
-          { const btn = new Button(this.form, componentConfig); }
-          break;
-        default:
-          break;
-      }
-    });
-  }
-}
-
-function imsInitialized(interval = 200) {
-  return new Promise((resolve) => {
-    function poll() {
-      if (window.adobeIMS?.initialized) resolve();
-      else setTimeout(poll, interval);
+        window.adobeid.api_parameters = { authorize: { state: { ac: 'Adobe.com_ctrials_connect' }, ctx_id: 'ct_connect' } };
+        const userProfilePromise = this.imslib.getProfile();
+        userProfilePromise.then((profile) => {
+        if (!profile.userId) return;
+        this.imsUserId = profile.userId;
+        });
     }
-    poll();
-  });
+
+    submitAction() {
+        this.accesstoken = this.imslib.getAccessToken();
+        this.createPayload();
+        this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
+    }
+
+    urlParam(name) {
+        const sPageURL = window.location.search.substring(1);
+        const sURLVariables = sPageURL.split('&');
+        for (let i = 0; i < sURLVariables.length; i += 1) {
+            const sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] === name) {
+                return sParameterName[1];
+            }
+        }
+        return null;
+    }
+
+    getTreatmentID() {
+        let tid;
+        if (this.urlParam(TRACKING_ID)) {
+            tid = this.urlParam(TRACKING_ID);
+        } else if (this.urlParam(P_ID)) {
+            tid = this.urlParam(P_ID);
+        } else if (this.getCookieValueByName(TID)) {
+            tid = this.getCookieValueByName(TID);
+        } else if (this.urlParam(PROMO_ID)) {
+            tid = this.urlParam(PROMO_ID);
+        } else if (this.urlParam(S_ID)) {
+            tid = this.urlParam(S_ID);
+        } else if (this.urlParam(PSS_ID)) {
+            tid = this.urlParam(PSS_ID);
+        } else if (this.urlParam(C_ID)) {
+            tid = this.urlParam(C_ID);
+        } else if (this.getCookieValueByName(ANYP_ID)) {
+            tid = this.getCookieValueByName(ANYP_ID);
+        } else {
+            tid = UNKNOWN;
+        }
+        return tid;
+    }
+
+    getTemplateId(region, product) {
+        const production = (window.location.href.indexOf('https://www.adobe.com') === 0);
+
+        const regionProductMap = {
+            0: {
+                meetings: 2072160908,
+                webinars: 2072658282,
+                learning: 2072160830,
+                enterprise: 21576,
+            },
+            10: {
+                meetings: 1893205894,
+                webinars: 1893205689,
+                learning: 1893512660,
+                enterprise: 21576,
+            },
+            20: {
+                meetings: 1098936735,
+                webinars: 1098936619,
+                learning: 1098943952,
+                enterprise: 21576,
+            },
+            30: {
+                meetings: 2072658282,
+                webinars: 2072658282,
+                learning: 2072160830,
+                enterprise: 21576,
+            },
+        };
+        const regionNonProdProductMap = {
+            0: {
+                meetings: 69864144,
+                webinars: 69864814,
+                learning: 69864741,
+                enterprise: 21576,
+            },
+            10: {
+                meetings: 63685994,
+                webinars: 63686422,
+                learning: 63686128,
+                enterprise: 21308,
+            },
+            20: {
+                meetings: 62775284,
+                webinars: 62775417,
+                learning: 62775345,
+                enterprise: 21404,
+            },
+            30: {
+                meetings: 62701595,
+                webinars: 62701728,
+                learning: 62701656,
+                enterprise: 31566,
+            },
+        };
+
+        // Return the template id by region and product type
+        if (production && regionProductMap[region] != null
+            && regionProductMap[region][product] != null) {
+            return regionProductMap[region][product];
+        }
+        if (!production && regionNonProdProductMap[region] != null
+            && regionNonProdProductMap[region][product] != null) {
+            return regionNonProdProductMap[region][product];
+        }
+        return 0;
+    }
+
+    createPayload() {
+        const browserName = getPropertySafely(window, 'feds.data.technology.browser.name');
+        const browserVersion = getPropertySafely(window, 'feds.data.technology.browser.version');
+        const JsonPayload = {
+            ims: {
+                ims_client_id: 'trials1',
+                userProfile: this.imsProfile || {},
+
+                browser_info: browserName.concat(' ', browserVersion),
+                access_token: this.imslib.getAccessToken(),
+                adobeid: this.imsUserId,
+                renga_token: null,
+                renga_uds: {},
+            },
+            actions: ['bama', 'apo', 'lead'],
+            custom: {},
+            client_name: (!this.clientName) ? 'trials' : this.clientName,
+            message_uuid: this.getUUID(),
+        };
+        const firstName = this.getValue(`[name=${FNAME}]`);
+        const lastName = this.getValue(`[name=${LNAME}]`);
+        JsonPayload.ims.userProfile.name = `${firstName} ${lastName}`;
+        JsonPayload.ims.userProfile.displayName = `${firstName} ${lastName}`;
+
+        if (document.getElementsByName(ORG_SIZE) && document.getElementsByName(ORG_SIZE)[0]) {
+            const orgEl = document.getElementsByName(ORG_SIZE)[0];
+            JsonPayload.ims.renga_uds.org_size = orgEl.value;
+        }
+
+        for (let i = 0; i < this.userprofile.length; i += 1) {
+            JsonPayload.ims.userProfile[ipaasParamMap[
+                this.userprofile[i]]] = this.getValue(`[name=${this.userprofile[i]}]`);
+        }
+
+        if (typeof JsonPayload.ims.userProfile.address === 'undefined') {
+            JsonPayload.ims.userProfile['address.mail_to'] = {};
+            JsonPayload.ims.userProfile['address.mail_to'].primary = true;
+
+            for (let i = 0; i < this.address_mail_to.length; i += 1) {
+                JsonPayload.ims.userProfile['address.mail_to'][ipaasParamMap[this.address_mail_to[i]]] = (this.getValue(`[name=${this.address_mail_to[i]}]`) === null) ? '' : this.getValue(`[name=${this.address_mail_to[i]}]`);
+            }
+        }
+
+        const actionName = this.form.getAttribute('data-form-type');
+        JsonPayload.custom.type = (actionName === 'form.connect.enterprise.action') ? 'enterprise' : 'standard';
+        JsonPayload.custom.language = localeTOBamaLocaleMap[document.getElementsByTagName('html')[0].getAttribute('lang')] || 'en';
+
+        const customGroup = this.formContainer.getAttribute('data-customValue').split(',') || '';
+        for (let i = 0; i < customGroup.length; i += 1) {
+            JsonPayload.custom[ipaasParamMap[customGroup[i]]] = parseInt(this.getValue(`[name=${customGroup[i]}]`), 10);
+        }
+        JsonPayload.custom.assignedId = this.urlParam(ASSIGNEE_ID)
+            ? this.urlParam(ASSIGNEE_ID) : null;
+
+        if (this.urlParam(TEMPLATE_ID)) {
+            JsonPayload.custom.accountTemplateId = this.urlParam(TEMPLATE_ID);
+        } else {
+            JsonPayload.custom.accountTemplateId = (actionName === 'form.connect.enterprise.action') ? this.getTemplateId(this.getValue(REGION), 'enterprise') : this.getTemplateId(this.getValue(REGION), this.getValue(PURCHASE));
+        }
+
+        JsonPayload.custom.connectProduct = (actionName === 'form.connect.enterprise.action') ? 'enterprise' : '';
+        if (document.getElementsByName(PURCHASE) && document.getElementsByName(PURCHASE)[0]) {
+            const purchaseEl = document.getElementsByName(PURCHASE)[0];
+            JsonPayload.custom.connectProduct = purchaseEl.value;
+        }
+        JsonPayload.custom.treatmentid = this.getTreatmentID();
+
+        // added for gdpr
+        const currentUrl = this.getValue('#current_url');
+        if (currentUrl) {
+            JsonPayload.custom.current_url = currentUrl;
+        }
+
+        // add consent notice and marketing permission into payload
+        const noticeBody = this.getValue('#noticeplaceholder', 'data-notice-body');
+        JsonPayload.custom.consent_notice = noticeBody;
+        const marketingPermissions = this.getValue('#noticeplaceholder', 'data-marketing-permissions');
+        JsonPayload.custom.marketing_permissions = JSON.parse(marketingPermissions);
+
+        if (typeof this.getValue('#website') !== 'undefined' && this.getValue('#website').length > 0) {
+            JsonPayload.custom.website = this.getValue('#website');
+        }
+
+        JsonPayload.custom.dateandtime = new Date().toUTCString();
+        // calling this from trials
+        this.constructDemandbaseValues(JsonPayload);
+        this.payLoad = JsonPayload;
+    }
 }
 
-export default async function init(el) {
-  const formComponent = new CCForms(el);
-  if (formComponent.formConfig.type === 'default') return el.remove();
-  imsInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
-    const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
-    const fc = new FormConfigurator(formComponent.form);
-    el.remove();
-    return fc;
-  });
-  return 1;
-}
+export default ConnectTrials;
