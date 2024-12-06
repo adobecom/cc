@@ -1,5 +1,5 @@
 // import getPropertySafely from '@dexter/dexterui-tools/lib/utils/lang/getPropertySafely';
-import trials from './trials';
+import Trials from './trials.js';
 
 const ipaasParamMap = {
     postalcode: 'postalZip',
@@ -50,7 +50,7 @@ const NOTICE_ID = 'noticeplaceholder';
 const FNAME = 'fname';
 const LNAME = 'lname';
 
-class ConnectTrials extends trials {
+class ConnectTrials extends Trials {
     constructor(form) {
         super(form);
         this.form = form;
