@@ -46,7 +46,7 @@ const REGION = '#region';
 const PURCHASE = 'purchaseintent';
 const ASSIGNEE_ID = 'assigned_id';
 const TEMPLATE_ID = 'template_id';
-const NOTICE_ID = 'noticeplaceholder';
+const NOTICE_ID = '#noticeplaceholder';
 const FNAME = 'fname';
 const LNAME = 'lname';
 
