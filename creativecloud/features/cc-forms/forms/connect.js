@@ -1,6 +1,4 @@
-import Debug from '@dexter/dexterui-tools/lib/utils/debug/debug';
-import getPropertySafely from '@dexter/dexterui-tools/lib/utils/lang/getPropertySafely';
-import Url from '@dexter/dexterui-tools/lib/utils/string/url';
+// import getPropertySafely from '@dexter/dexterui-tools/lib/utils/lang/getPropertySafely';
 import trials from './trials';
 
 const ipaasParamMap = {
@@ -33,9 +31,6 @@ const localeTOBamaLocaleMap = {
     es: 'es',
     ja: 'ja',
 };
-
-const debugForm = Url.getQueryParam('debugForm');
-const debug = new Debug({ debug: (debugForm), control: 'ConnectTrials' });
 
 const TRACKING_ID = 'trackingid';
 const P_ID = 'prid';
@@ -187,14 +182,14 @@ class ConnectTrials extends trials {
     }
 
     createPayload() {
-        const browserName = getPropertySafely(window, 'feds.data.technology.browser.name');
-        const browserVersion = getPropertySafely(window, 'feds.data.technology.browser.version');
+        // const browserName = getPropertySafely(window, 'feds.data.technology.browser.name');
+        // const browserVersion = getPropertySafely(window, 'feds.data.technology.browser.version');
         const JsonPayload = {
             ims: {
                 ims_client_id: 'trials1',
                 userProfile: this.imsProfile || {},
 
-                browser_info: browserName.concat(' ', browserVersion),
+                // browser_info: browserName.concat(' ', browserVersion),
                 access_token: this.imslib.getAccessToken(),
                 adobeid: this.imsUserId,
                 renga_token: null,
