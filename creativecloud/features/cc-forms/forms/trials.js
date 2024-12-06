@@ -56,7 +56,15 @@ export class Button {
     a.addEventListener('click', (e) => e.preventDefault());
     const d = createTag('div', { class: 'form-item' }, a);
     this.form.append(d);
+    this.setRedirectAttributes();
     return a;
+  }
+
+  setRedirectAttributes() {
+    Object.keys(this.fieldConfig).forEach((kraw) => {
+      if (!STATUS_REDIRECT_MAP[kraw]) return;
+      this.form.setAttribute(`data-${STATUS_REDIRECT_MAP[kraw].toLowerCase()}`, this.fieldConfig[kraw].querySelector('a').href);
+    });
   }
 }
 
