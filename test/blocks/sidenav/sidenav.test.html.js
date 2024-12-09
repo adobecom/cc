@@ -48,7 +48,8 @@ runTests(async () => {
     };
 
     it('does create nice categories default sidenav', async () => {
-      await testCategorySidenav('.categories', 24, 18);
+      const result = await testCategorySidenav('.categories', 24, 18);
+      expect(result).to.be.undefined;
     });
 
     it('does create nice reordered categories sidenav', async () => {

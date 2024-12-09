@@ -18,6 +18,7 @@
 const fetch = require('node-fetch-commonjs');
 const { getConfig, getResourceIndexData, getAccessToken, getItemId, sharepointHeaders, previewIndex } = require('./sharepoint');
 
+const PATH_PREFIX = '/cc-shared/fragments/merch/';
 const config = getConfig();
 
 let sessionId;
@@ -135,6 +136,29 @@ const findIndex = (cellAddress) => {
   return parseInt(cell.replace('A', ''), 10) - 2;
 }
 
+const isSupported = (path) => {
+  if (path.startsWith(PATH_PREFIX)) return true;
+  let supported = false;
+  if (config.PREVIEW_LOCALES) {
+    config.PREVIEW_LOCALES.split(',').forEach((locale) => {
+      if (path.startsWith(`/${locale}${PATH_PREFIX}`)) supported = true;
+    });
+  }
+  return supported;
+}
+
+const getLocale = (path) => {
+  if (path.startsWith(PATH_PREFIX)) return '';
+  return path.split('/')[1];
+}
+
+const getPreviewIndexFilePath = (path) => {
+  if (path.startsWith(PATH_PREFIX)) return config.PREVIEW_INDEX_FILE;
+
+  const locale = path.split('/')[1];
+  return config.PREVIEW_INDEX_FILE.replace('www/', `www/${locale}/`);
+}
+
 /**
  * Path of the resource that needs to be indexed will be read from the event "resource-previewed".
  * It ends with '.md' extension that needs to be removed.
@@ -159,11 +183,11 @@ const reindex = async () => {
   }
 
   const path = process.env.npm_config_path;
-  if (!path || path.endsWith('.json') || !path.includes('/merch-card/') || !path.startsWith('/cc-shared/fragments/merch/')) {
+  if (!path || path.endsWith('.json') || !path.includes('/merch-card/') || !isSupported(path)) {
     return;
   }
 
-  const itemId = await getItemId(config.PREVIEW_INDEX_FILE);
+  const itemId = await getItemId(getPreviewIndexFilePath(path));
   if (!itemId) {
     console.error('No index item id found.');
     return;
@@ -186,7 +210,7 @@ const reindex = async () => {
     await addTableRow(itemId, resData);
   }
 
-  await previewIndex();
+  await previewIndex(getLocale(path));
 }
 
 reindex();

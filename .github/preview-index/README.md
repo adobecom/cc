@@ -10,6 +10,7 @@ The script for full reindex:
 * delete all rows from /cc-shared/assets/query-index-cards-preview.xslx, 'raw_index' sheet, 'Table1'
 * add new generated rows to the index
 * preview the index
+* every card will be indexed in the query-index-cards-preview.xslx created in the locale of that card, if that locale is supported in configuration
 
 
 ## Usage
@@ -48,12 +49,14 @@ CONSUMER="..."
 PREVIEW_INDEX_FILE="..."
 PREVIEW_INDEX_JSON="..."
 PREVIEW_RESOURCES_FOLDER="..."
+PREVIEW_LOCALES="..."
 ENABLED=y
 ```
 
 `SHAREPOINT_CLIENT_ID` and `SHAREPOINT_TENANT_ID` can be found on the azure app 'Essential' tab, see 'Application (client) ID' and 'Directory (tenant) ID'.
 `PREVIEW_INDEX_FILE` path to the target index file, e.g. "milo/drafts/mariia/preview-index/query-index-cards-preview.xlsx"
 `PREVIEW_RESOURCES_FOLDER` path to resource to index, e.g. "/drafts/mariia/preview-index/*". Folder path is not sharepoint path, but mapped *hlx.page location. So if your sharepoint folder is CC/www/cc-shared/myfolder, please specify /cc-shared/myfolder.
+`PREVIEW_LOCALES` comma separated string of locales supported appart from us e.g. ca,at_de,au
 
 Azure app: [CC preview index](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/94136756-61af-4f63-af05-6991a719b872/isMSAApp~/false)
 
