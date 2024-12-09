@@ -28,6 +28,10 @@ indices:
       - /partners/**
       - /pdf-page/**
       - /offers/**
+      - /investor-relations/**
+      - /howtobuy/**
+      - /legal/**
+      - /heroes/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -95,6 +99,10 @@ indices:
       - /au/partners/**
       - /au/pdf-page/**
       - /au/offers/**
+      - /au/investor-relations/**
+      - /au/howtobuy/**
+      - /au/legal/**
+      - /au/heroes/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -125,6 +133,10 @@ indices:
       - /de/partners/**
       - /de/pdf-page/**
       - /de/offers/**
+      - /de/investor-relations/**
+      - /de/howtobuy/**
+      - /de/legal/**
+      - /de/heroes/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -155,6 +167,10 @@ indices:
       - /es/partners/**
       - /es/pdf-page/**
       - /es/offers/**
+      - /es/investor-relations/**
+      - /es/howtobuy/**
+      - /es/legal/**
+      - /es/heroes/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -185,6 +201,10 @@ indices:
       - /fr/partners/**
       - /fr/pdf-page/**
       - /fr/offers/**
+      - /fr/investor-relations/**
+      - /fr/howtobuy/**
+      - /fr/legal/**
+      - /fr/heroes/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -215,6 +235,10 @@ indices:
       - /it/partners/**
       - /it/pdf-page/**
       - /it/offers/**
+      - /it/investor-relations/**
+      - /it/howtobuy/**
+      - /it/legal/**
+      - /it/heroes/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -245,6 +269,10 @@ indices:
       - /jp/partners/**
       - /jp/pdf-page/**
       - /jp/offers/**
+      - /jp/investor-relations/**
+      - /jp/howtobuy/**
+      - /jp/legal/**
+      - /jp/heroes/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -275,6 +303,10 @@ indices:
       - /kr/partners/**
       - /kr/pdf-page/**
       - /kr/offers/**
+      - /kr/investor-relations/**
+      - /kr/howtobuy/**
+      - /kr/legal/**
+      - /kr/heroes/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -305,6 +337,10 @@ indices:
       - /ru/partners/**
       - /ru/pdf-page/**
       - /ru/offers/**
+      - /ru/investor-relations/**
+      - /ru/howtobuy/**
+      - /ru/legal/**
+      - /ru/heroes/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -335,6 +371,10 @@ indices:
       - /hk_zh/partners/**
       - /hk_zh/pdf-page/**
       - /hk_zh/offers/**
+      - /hk_zh/investor-relations/**
+      - /hk_zh/howtobuy/**
+      - /hk_zh/legal/**
+      - /hk_zh/heroes/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -365,6 +405,10 @@ indices:
       - /tw/partners/**
       - /tw/pdf-page/**
       - /tw/offers/**
+      - /tw/investor-relations/**
+      - /tw/howtobuy/**
+      - /tw/legal/**
+      - /tw/heroes/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -395,6 +439,10 @@ indices:
       - /nl/partners/**
       - /nl/pdf-page/**
       - /nl/offers/**
+      - /nl/investor-relations/**
+      - /nl/howtobuy/**
+      - /nl/legal/**
+      - /nl/heroes/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -425,6 +473,10 @@ indices:
       - /pl/partners/**
       - /pl/pdf-page/**
       - /pl/offers/**
+      - /pl/investor-relations/**
+      - /pl/howtobuy/**
+      - /pl/legal/**
+      - /pl/heroes/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -455,6 +507,10 @@ indices:
       - /tr/partners/**
       - /tr/pdf-page/**
       - /tr/offers/**
+      - /tr/investor-relations/**
+      - /tr/howtobuy/**
+      - /tr/legal/**
+      - /tr/heroes/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -485,6 +541,10 @@ indices:
       - /uk/partners/**
       - /uk/pdf-page/**
       - /uk/offers/**
+      - /uk/investor-relations/**
+      - /uk/howtobuy/**
+      - /uk/legal/**
+      - /uk/heroes/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -515,6 +575,10 @@ indices:
       - /ca/partners/**
       - /ca/pdf-page/**
       - /ca/offers/**
+      - /ca/investor-relations/**
+      - /ca/howtobuy/**
+      - /ca/legal/**
+      - /ca/heroes/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -545,6 +609,10 @@ indices:
       - /cn/partners/**
       - /cn/pdf-page/**
       - /cn/offers/**
+      - /cn/investor-relations/**
+      - /cn/howtobuy/**
+      - /cn/legal/**
+      - /cn/heroes/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -575,6 +643,10 @@ indices:
       - /ae_ar/partners/**
       - /ae_ar/pdf-page/**
       - /ae_ar/offers/**
+      - /ae_ar/investor-relations/**
+      - /ae_ar/howtobuy/**
+      - /ae_ar/legal/**
+      - /ae_ar/heroes/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -605,6 +677,10 @@ indices:
       - /ae_en/partners/**
       - /ae_en/pdf-page/**
       - /ae_en/offers/**
+      - /ae_en/investor-relations/**
+      - /ae_en/howtobuy/**
+      - /ae_en/legal/**
+      - /ae_en/heroes/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -635,6 +711,10 @@ indices:
       - /at/partners/**
       - /at/pdf-page/**
       - /at/offers/**
+      - /at/investor-relations/**
+      - /at/howtobuy/**
+      - /at/legal/**
+      - /at/heroes/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -665,6 +745,10 @@ indices:
       - /be_en/partners/**
       - /be_en/pdf-page/**
       - /be_en/offers/**
+      - /be_en/investor-relations/**
+      - /be_en/howtobuy/**
+      - /be_en/legal/**
+      - /be_en/heroes/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -695,6 +779,10 @@ indices:
       - /be_fr/partners/**
       - /be_fr/pdf-page/**
       - /be_fr/offers/**
+      - /be_fr/investor-relations/**
+      - /be_fr/howtobuy/**
+      - /be_fr/legal/**
+      - /be_fr/heroes/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -725,6 +813,10 @@ indices:
       - /ca_fr/partners/**
       - /ca_fr/pdf-page/**
       - /ca_fr/offers/**
+      - /ca_fr/investor-relations/**
+      - /ca_fr/howtobuy/**
+      - /ca_fr/legal/**
+      - /ca_fr/heroes/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -755,6 +847,10 @@ indices:
       - /ch_de/partners/**
       - /ch_de/pdf-page/**
       - /ch_de/offers/**
+      - /ch_de/investor-relations/**
+      - /ch_de/howtobuy/**
+      - /ch_de/legal/**
+      - /ch_de/heroes/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -785,6 +881,10 @@ indices:
       - /ch_fr/partners/**
       - /ch_fr/pdf-page/**
       - /ch_fr/offers/**
+      - /ch_fr/investor-relations/**
+      - /ch_fr/howtobuy/**
+      - /ch_fr/legal/**
+      - /ch_fr/heroes/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -815,6 +915,10 @@ indices:
       - /cl/partners/**
       - /cl/pdf-page/**
       - /cl/offers/**
+      - /cl/investor-relations/**
+      - /cl/howtobuy/**
+      - /cl/legal/**
+      - /cl/heroes/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -845,6 +949,10 @@ indices:
       - /gr_en/partners/**
       - /gr_en/pdf-page/**
       - /gr_en/offers/**
+      - /gr_en/investor-relations/**
+      - /gr_en/howtobuy/**
+      - /gr_en/legal/**
+      - /gr_en/heroes/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -875,6 +983,10 @@ indices:
       - /hk_en/partners/**
       - /hk_en/pdf-page/**
       - /hk_en/offers/**
+      - /hk_en/investor-relations/**
+      - /hk_en/howtobuy/**
+      - /hk_en/legal/**
+      - /hk_en/heroes/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -905,6 +1017,10 @@ indices:
       - /ie/partners/**
       - /ie/pdf-page/**
       - /ie/offers/**
+      - /ie/investor-relations/**
+      - /ie/howtobuy/**
+      - /ie/legal/**
+      - /ie/heroes/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -935,6 +1051,10 @@ indices:
       - /il_en/partners/**
       - /il_en/pdf-page/**
       - /il_en/offers/**
+      - /il_en/investor-relations/**
+      - /il_en/howtobuy/**
+      - /il_en/legal/**
+      - /il_en/heroes/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -965,6 +1085,10 @@ indices:
       - /in/partners/**
       - /in/pdf-page/**
       - /in/offers/**
+      - /in/investor-relations/**
+      - /in/howtobuy/**
+      - /in/legal/**
+      - /in/heroes/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -995,6 +1119,10 @@ indices:
       - /lt/partners/**
       - /lt/pdf-page/**
       - /lt/offers/**
+      - /lt/investor-relations/**
+      - /lt/howtobuy/**
+      - /lt/legal/**
+      - /lt/heroes/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -1025,6 +1153,10 @@ indices:
       - /lu_de/partners/**
       - /lu_de/pdf-page/**
       - /lu_de/offers/**
+      - /lu_de/investor-relations/**
+      - /lu_de/howtobuy/**
+      - /lu_de/legal/**
+      - /lu_de/heroes/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -1055,6 +1187,10 @@ indices:
       - /lu_en/partners/**
       - /lu_en/pdf-page/**
       - /lu_en/offers/**
+      - /lu_en/investor-relations/**
+      - /lu_en/howtobuy/**
+      - /lu_en/legal/**
+      - /lu_en/heroes/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -1085,6 +1221,10 @@ indices:
       - /lu_fr/partners/**
       - /lu_fr/pdf-page/**
       - /lu_fr/offers/**
+      - /lu_fr/investor-relations/**
+      - /lu_fr/howtobuy/**
+      - /lu_fr/legal/**
+      - /lu_fr/heroes/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -1115,6 +1255,10 @@ indices:
       - /mena_en/partners/**
       - /mena_en/pdf-page/**
       - /mena_en/offers/**
+      - /mena_en/investor-relations/**
+      - /mena_en/howtobuy/**
+      - /mena_en/legal/**
+      - /mena_en/heroes/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -1145,6 +1289,10 @@ indices:
       - /nz/partners/**
       - /nz/pdf-page/**
       - /nz/offers/**
+      - /nz/investor-relations/**
+      - /nz/howtobuy/**
+      - /nz/legal/**
+      - /nz/heroes/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -1175,6 +1323,10 @@ indices:
       - /sa_ar/partners/**
       - /sa_ar/pdf-page/**
       - /sa_ar/offers/**
+      - /sa_ar/investor-relations/**
+      - /sa_ar/howtobuy/**
+      - /sa_ar/legal/**
+      - /sa_ar/heroes/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -1205,6 +1357,10 @@ indices:
       - /sa_en/partners/**
       - /sa_en/pdf-page/**
       - /sa_en/offers/**
+      - /sa_en/investor-relations/**
+      - /sa_en/howtobuy/**
+      - /sa_en/legal/**
+      - /sa_en/heroes/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
   cards-sa_en:
@@ -1235,6 +1391,10 @@ indices:
       - /th_en/partners/**
       - /th_en/pdf-page/**
       - /th_en/offers/**
+      - /th_en/investor-relations/**
+      - /th_en/howtobuy/**
+      - /th_en/legal/**
+      - /th_en/heroes/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -1259,6 +1419,16 @@ indices:
       - /th_th/confirmation/**
       - /th_th/devnet/**
       - /th_th/diversity/**
+      - /th_th/privacy/**
+      - /th_th/offer-terms/**
+      - /th_th/procurement/**
+      - /th_th/partners/**
+      - /th_th/pdf-page/**
+      - /th_th/offers/**
+      - /th_th/investor-relations/**
+      - /th_th/howtobuy/**
+      - /th_th/legal/**
+      - /th_th/heroes/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -1289,6 +1459,10 @@ indices:
       - /za/partners/**
       - /za/pdf-page/**
       - /za/offers/**
+      - /za/investor-relations/**
+      - /za/howtobuy/**
+      - /za/legal/**
+      - /za/heroes/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -1319,6 +1493,10 @@ indices:
       - /africa/partners/**
       - /africa/pdf-page/**
       - /africa/offers/**
+      - /africa/investor-relations/**
+      - /africa/howtobuy/**
+      - /africa/legal/**
+      - /africa/heroes/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -1349,6 +1527,10 @@ indices:
       - /ar/partners/**
       - /ar/pdf-page/**
       - /ar/offers/**
+      - /ar/investor-relations/**
+      - /ar/howtobuy/**
+      - /ar/legal/**
+      - /ar/heroes/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -1379,6 +1561,10 @@ indices:
       - /co/partners/**
       - /co/pdf-page/**
       - /co/offers/**
+      - /co/investor-relations/**
+      - /co/howtobuy/**
+      - /co/legal/**
+      - /co/heroes/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -1409,6 +1595,10 @@ indices:
       - /cr/partners/**
       - /cr/pdf-page/**
       - /cr/offers/**
+      - /cr/investor-relations/**
+      - /cr/howtobuy/**
+      - /cr/legal/**
+      - /cr/heroes/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -1439,6 +1629,10 @@ indices:
       - /ec/partners/**
       - /ec/pdf-page/**
       - /ec/offers/**
+      - /ec/investor-relations/**
+      - /ec/howtobuy/**
+      - /ec/legal/**
+      - /ec/heroes/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -1469,6 +1663,10 @@ indices:
       - /eg_ar/partners/**
       - /eg_ar/pdf-page/**
       - /eg_ar/offers/**
+      - /eg_ar/investor-relations/**
+      - /eg_ar/howtobuy/**
+      - /eg_ar/legal/**
+      - /eg_ar/heroes/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -1499,6 +1697,10 @@ indices:
       - /eg_en/partners/**
       - /eg_en/pdf-page/**
       - /eg_en/offers/**
+      - /eg_en/investor-relations/**
+      - /eg_en/howtobuy/**
+      - /eg_en/legal/**
+      - /eg_en/heroes/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -1529,6 +1731,10 @@ indices:
       - /gr_el/partners/**
       - /gr_el/pdf-page/**
       - /gr_el/offers/**
+      - /gr_el/investor-relations/**
+      - /gr_el/howtobuy/**
+      - /gr_el/legal/**
+      - /gr_el/heroes/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -1559,6 +1765,10 @@ indices:
       - /gt/partners/**
       - /gt/pdf-page/**
       - /gt/offers/**
+      - /gt/investor-relations/**
+      - /gt/howtobuy/**
+      - /gt/legal/**
+      - /gt/heroes/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -1589,6 +1799,10 @@ indices:
       - /id_en/partners/**
       - /id_en/pdf-page/**
       - /id_en/offers/**
+      - /id_en/investor-relations/**
+      - /id_en/howtobuy/**
+      - /id_en/legal/**
+      - /id_en/heroes/**
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -1619,6 +1833,10 @@ indices:
       - /id_id/partners/**
       - /id_id/pdf-page/**
       - /id_id/offers/**
+      - /id_id/investor-relations/**
+      - /id_id/howtobuy/**
+      - /id_id/legal/**
+      - /id_id/heroes/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -1649,6 +1867,10 @@ indices:
       - /in_hi/partners/**
       - /in_hi/pdf-page/**
       - /in_hi/offers/**
+      - /in_hi/investor-relations/**
+      - /in_hi/howtobuy/**
+      - /in_hi/legal/**
+      - /in_hi/heroes/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -1679,6 +1901,10 @@ indices:
       - /kw_ar/partners/**
       - /kw_ar/pdf-page/**
       - /kw_ar/offers/**
+      - /kw_ar/investor-relations/**
+      - /kw_ar/howtobuy/**
+      - /kw_ar/legal/**
+      - /kw_ar/heroes/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -1703,12 +1929,16 @@ indices:
       - /kw_en/confirmation/**
       - /kw_en/devnet/**
       - /kw_en/diversity/**
-      - /kw_ar/privacy/**
-      - /kw_ar/offer-terms/**
-      - /kw_ar/procurement/**
-      - /kw_ar/partners/**
-      - /kw_ar/pdf-page/**
-      - /kw_ar/offers/**
+      - /kw_en/privacy/**
+      - /kw_en/offer-terms/**
+      - /kw_en/procurement/**
+      - /kw_en/partners/**
+      - /kw_en/pdf-page/**
+      - /kw_en/offers/**
+      - /kw_en/investor-relations/**
+      - /kw_en/howtobuy/**
+      - /kw_en/legal/**
+      - /kw_en/heroes/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -1739,6 +1969,10 @@ indices:
       - /my_en/partners/**
       - /my_en/pdf-page/**
       - /my_en/offers/**
+      - /my_en/investor-relations/**
+      - /my_en/howtobuy/**
+      - /my_en/legal/**
+      - /my_en/heroes/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -1769,6 +2003,10 @@ indices:
       - /my_ms/partners/**
       - /my_ms/pdf-page/**
       - /my_ms/offers/**
+      - /my_ms/investor-relations/**
+      - /my_ms/howtobuy/**
+      - /my_ms/legal/**
+      - /my_ms/heroes/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -1799,6 +2037,10 @@ indices:
       - /ng/partners/**
       - /ng/pdf-page/**
       - /ng/offers/**
+      - /ng/investor-relations/**
+      - /ng/howtobuy/**
+      - /ng/legal/**
+      - /ng/heroes/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -1829,6 +2071,10 @@ indices:
       - /pe/partners/**
       - /pe/pdf-page/**
       - /pe/offers/**
+      - /pe/investor-relations/**
+      - /pe/howtobuy/**
+      - /pe/legal/**
+      - /pe/heroes/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -1859,6 +2105,10 @@ indices:
       - /ph_en/partners/**
       - /ph_en/pdf-page/**
       - /ph_en/offers/**
+      - /ph_en/investor-relations/**
+      - /ph_en/howtobuy/**
+      - /ph_en/legal/**
+      - /ph_en/heroes/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -1889,6 +2139,10 @@ indices:
       - /ph_fil/partners/**
       - /ph_fil/pdf-page/**
       - /ph_fil/offers/**
+      - /ph_fil/investor-relations/**
+      - /ph_fil/howtobuy/**
+      - /ph_fil/legal/**
+      - /ph_fil/heroes/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -1919,6 +2173,10 @@ indices:
       - /pr/partners/**
       - /pr/pdf-page/**
       - /pr/offers/**
+      - /pr/investor-relations/**
+      - /pr/howtobuy/**
+      - /pr/legal/**
+      - /pr/heroes/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -1949,6 +2207,10 @@ indices:
       - /qa_ar/partners/**
       - /qa_ar/pdf-page/**
       - /qa_ar/offers/**
+      - /qa_ar/investor-relations/**
+      - /qa_ar/howtobuy/**
+      - /qa_ar/legal/**
+      - /qa_ar/heroes/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -1979,6 +2241,10 @@ indices:
       - /qa_en/partners/**
       - /qa_en/pdf-page/**
       - /qa_en/offers/**
+      - /qa_en/investor-relations/**
+      - /qa_en/howtobuy/**
+      - /qa_en/legal/**
+      - /qa_en/heroes/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -2009,6 +2275,10 @@ indices:
       - /vn_en/partners/**
       - /vn_en/pdf-page/**
       - /vn_en/offers/**
+      - /vn_en/investor-relations/**
+      - /vn_en/howtobuy/**
+      - /vn_en/legal/**
+      - /vn_en/heroes/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -2039,6 +2309,10 @@ indices:
       - /vn_vi/partners/**
       - /vn_vi/pdf-page/**
       - /vn_vi/offers/**
+      - /vn_vi/investor-relations/**
+      - /vn_vi/howtobuy/**
+      - /vn_vi/legal/**
+      - /vn_vi/heroes/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -2069,6 +2343,10 @@ indices:
       - /dk/partners/**
       - /dk/pdf-page/**
       - /dk/offers/**
+      - /dk/investor-relations/**
+      - /dk/howtobuy/**
+      - /dk/legal/**
+      - /dk/heroes/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -2099,6 +2377,10 @@ indices:
       - /fi/partners/**
       - /fi/pdf-page/**
       - /fi/offers/**
+      - /fi/investor-relations/**
+      - /fi/howtobuy/**
+      - /fi/legal/**
+      - /fi/heroes/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -2129,6 +2411,10 @@ indices:
       - /no/partners/**
       - /no/pdf-page/**
       - /no/offers/**
+      - /no/investor-relations/**
+      - /no/howtobuy/**
+      - /no/legal/**
+      - /no/heroes/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -2159,6 +2445,10 @@ indices:
       - /se/partners/**
       - /se/pdf-page/**
       - /se/offers/**
+      - /se/investor-relations/**
+      - /se/howtobuy/**
+      - /se/legal/**
+      - /se/heroes/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -2189,6 +2479,10 @@ indices:
       - /la/partners/**
       - /la/pdf-page/**
       - /la/offers/**
+      - /la/investor-relations/**
+      - /la/howtobuy/**
+      - /la/legal/**
+      - /la/heroes/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -2219,6 +2513,10 @@ indices:
       - /mx/partners/**
       - /mx/pdf-page/**
       - /mx/offers/**
+      - /mx/investor-relations/**
+      - /mx/howtobuy/**
+      - /mx/legal/**
+      - /mx/heroes/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -2249,6 +2547,10 @@ indices:
       - /be_nl/partners/**
       - /be_nl/pdf-page/**
       - /be_nl/offers/**
+      - /be_nl/investor-relations/**
+      - /be_nl/howtobuy/**
+      - /be_nl/legal/**
+      - /be_nl/heroes/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -2279,6 +2581,10 @@ indices:
       - /bg/partners/**
       - /bg/pdf-page/**
       - /bg/offers/**
+      - /bg/investor-relations/**
+      - /bg/howtobuy/**
+      - /bg/legal/**
+      - /bg/heroes/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -2309,6 +2615,10 @@ indices:
       - /ch_it/partners/**
       - /ch_it/pdf-page/**
       - /ch_it/offers/**
+      - /ch_it/investor-relations/**
+      - /ch_it/howtobuy/**
+      - /ch_it/legal/**
+      - /ch_it/heroes/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -2339,6 +2649,10 @@ indices:
       - /cz/partners/**
       - /cz/pdf-page/**
       - /cz/offers/**
+      - /cz/investor-relations/**
+      - /cz/howtobuy/**
+      - /cz/legal/**
+      - /cz/heroes/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -2369,6 +2683,10 @@ indices:
       - /ee/partners/**
       - /ee/pdf-page/**
       - /ee/offers/**
+      - /ee/investor-relations/**
+      - /ee/howtobuy/**
+      - /ee/legal/**
+      - /ee/heroes/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -2399,6 +2717,10 @@ indices:
       - /hu/partners/**
       - /hu/pdf-page/**
       - /hu/offers/**
+      - /hu/investor-relations/**
+      - /hu/howtobuy/**
+      - /hu/legal/**
+      - /hu/heroes/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -2429,6 +2751,10 @@ indices:
       - /il_he/partners/**
       - /il_he/pdf-page/**
       - /il_he/offers/**
+      - /il_he/investor-relations/**
+      - /il_he/howtobuy/**
+      - /il_he/legal/**
+      - /il_he/heroes/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -2459,6 +2785,10 @@ indices:
       - /lv/partners/**
       - /lv/pdf-page/**
       - /lv/offers/**
+      - /lv/investor-relations/**
+      - /lv/howtobuy/**
+      - /lv/legal/**
+      - /lv/heroes/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -2489,6 +2819,10 @@ indices:
       - /mena_ar/partners/**
       - /mena_ar/pdf-page/**
       - /mena_ar/offers/**
+      - /mena_ar/investor-relations/**
+      - /mena_ar/howtobuy/**
+      - /mena_ar/legal/**
+      - /mena_ar/heroes/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -2519,6 +2853,10 @@ indices:
       - /pt/partners/**
       - /pt/pdf-page/**
       - /pt/offers/**
+      - /pt/investor-relations/**
+      - /pt/howtobuy/**
+      - /pt/legal/**
+      - /pt/heroes/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -2549,6 +2887,10 @@ indices:
       - /ro/partners/**
       - /ro/pdf-page/**
       - /ro/offers/**
+      - /ro/investor-relations/**
+      - /ro/howtobuy/**
+      - /ro/legal/**
+      - /ro/heroes/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -2579,6 +2921,10 @@ indices:
       - /si/partners/**
       - /si/pdf-page/**
       - /si/offers/**
+      - /si/investor-relations/**
+      - /si/howtobuy/**
+      - /si/legal/**
+      - /si/heroes/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -2609,6 +2955,10 @@ indices:
       - /sk/partners/**
       - /sk/pdf-page/**
       - /sk/offers/**
+      - /sk/investor-relations/**
+      - /sk/howtobuy/**
+      - /sk/legal/**
+      - /sk/heroes/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -2639,6 +2989,10 @@ indices:
       - /ua/partners/**
       - /ua/pdf-page/**
       - /ua/offers/**
+      - /ua/investor-relations/**
+      - /ua/howtobuy/**
+      - /ua/legal/**
+      - /ua/heroes/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -2669,6 +3023,10 @@ indices:
       - /sg/partners/**
       - /sg/pdf-page/**
       - /sg/offers/**
+      - /sg/investor-relations/**
+      - /sg/howtobuy/**
+      - /sg/legal/**
+      - /sg/heroes/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -2699,6 +3057,10 @@ indices:
       - /br/partners/**
       - /br/pdf-page/**
       - /br/offers/**
+      - /br/investor-relations/**
+      - /br/howtobuy/**
+      - /br/legal/**
+      - /br/heroes/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -2729,6 +3091,10 @@ indices:
       - /cis_en/partners/**
       - /cis_en/pdf-page/**
       - /cis_en/offers/**
+      - /cis_en/investor-relations/**
+      - /cis_en/howtobuy/**
+      - /cis_en/legal/**
+      - /cis_en/heroes/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -2759,6 +3125,10 @@ indices:
       - /cis_ru/partners/**
       - /cis_ru/pdf-page/**
       - /cis_ru/offers/**
+      - /cis_ru/investor-relations/**
+      - /cis_ru/howtobuy/**
+      - /cis_ru/legal/**
+      - /cis_ru/heroes/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
