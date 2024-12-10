@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-import { createTag } from '../../../scripts/utils.js';
 import Trials from './trials.js';
 
 const SELECTOR = {
@@ -158,9 +157,6 @@ class PerpetualTrials extends Trials {
   downloadFile(downloadUrl) {
     if (!downloadUrl) return;
     window.localStorage.setItem('productSkuDownloadUrl', downloadUrl);
-    // const a = createTag('a', { class: 'is-hidden', href: downloadUrl, id: 'productSkuDownload' }, downloadUrl);
-    // document.querySelector('body').append(a);
-    // a.click();
   }
 
   getTIDCookie() {
