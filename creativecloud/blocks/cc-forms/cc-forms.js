@@ -115,7 +115,7 @@ class CCForms {
       }
       while (formMetadata.length && !(/cc-form-/.test(formMetadata[0].classList))) {
         const s = formMetadata.shift();
-        const keyName = [...s.classList].find((cn) => cn.includes('icon-')).split('icon-')[1].toLowerCase();
+        const keyName = [...s.classList].find((cn) => cn.includes('icon-')).split('icon-')[1];
         if (componentName.startsWith('cc-form-consent')) {
           if (!componentConfig.concentCfgs) componentConfig.concentCfgs = [];
           componentConfig.concentCfgs.push({ bucketNoticeType: keyName, consetFragment: s.closest('div').nextElementSibling });
