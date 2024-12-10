@@ -52,12 +52,28 @@ export class Button {
   }
 
   createButton() {
-    const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig.label.innerText.trim());
-    a.addEventListener('click', (e) => e.preventDefault());
-    const d = createTag('div', { class: 'form-item' }, a);
-    this.form.append(d);
-    this.setRedirectAttributes();
-    return a;
+    const fieldType = this.fieldConfig.type.split('cc-form-button-').pop();
+    switch (fieldType) {
+      case 'submit': {
+        const a = createTag('a', { href: '#', class: 'con-button blue button-l cc-form-component submit' }, this.fieldConfig.label.innerText.trim());
+        a.addEventListener('click', (e) => e.preventDefault());
+        const d = createTag('div', { class: 'form-item' }, a);
+        this.form.append(d);
+        this.setRedirectAttributes();
+        return a;
+      }
+      case 'productskudownload': {
+        const downloadURL = window.localStorage.getItem('productSkuDownloadUrl');
+        if (!downloadURL) return;
+        const a = createTag('a', { href: downloadURL, class: 'is-hidden' });
+        this.form.append(a);
+        a.click();
+        window.localStorage.removeItem('productSkuDownloadUrl');
+        break;
+      }
+      default:
+        break;
+    }
   }
 
   setRedirectAttributes() {
