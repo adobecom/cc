@@ -45,7 +45,7 @@ export default async function init(el) {
   ];
   await priorityLoad(promiseArr);
   const promiseSvgArr = []
-  [[...document.querySelectorAll('.unity img[src*=svg]')].slice(0, 5)].forEach((s) => promiseSvgArr.push(s.src));
+  [[...el.querySelectorAll('.unity img[src*=svg]')].slice(0, 5)].forEach((s) => promiseSvgArr.push(s.src));
   await priorityLoad(promiseSvgArr);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
   await wfinit(el, 'cc', unitylibs);
