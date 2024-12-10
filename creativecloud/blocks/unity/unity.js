@@ -16,7 +16,9 @@ async function priorityLoad(parr) {
       promiseArr.push(fetch(p));
     }
   });
-  await Promise.all(promiseArr);
+  try {
+    await Promise.all(promiseArr);
+  } catch (e) { /* do not error out if call fails */ }
 }
 
 function getUnityLibs(prodLibs = '/unitylibs') {
