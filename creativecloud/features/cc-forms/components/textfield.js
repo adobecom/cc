@@ -80,15 +80,16 @@ class Textfield {
   }
 
   setTypeAttributes(i) {
+    if (this.fieldConfig.type.startsWith('cc-form-text-textarea')) {
+      const ta = createTag('textarea', {});
+      const taid = this.fieldConfig.type.startsWith('cc-form-text-textarea-') ? this.fieldConfig.type.split('cc-form-text-textarea-')?.pop() : 'textarea';
+      ta.setAttribute('name', taid);
+      ta.setAttribute('id', taid);
+      i.replaceWith(createTag('textarea', {}));
+      return ta;
+    }
     const fieldType = this.fieldConfig.type.split('cc-form-text-').pop();
     switch (fieldType) {
-      case 'textarea': {
-        const ta = createTag('textarea', {});
-        i.setAttribute('name', fieldType);
-        i.setAttribute('id', fieldType);
-        i.replaceWith(createTag('textarea', {}));
-        return ta;
-      }
       case 'contributor':
         i.setAttribute('pattern', '^[^,.?{}()\\[\\]]+$');
         break;
