@@ -1,4 +1,4 @@
-import { loadStyle, loadLink ,loadScript } from '../../scripts/utils.js';
+import { loadLink, loadScript } from '../../scripts/utils.js';
 
 async function priorityLoad(parr) {
   const promiseArr = [];
@@ -9,10 +9,9 @@ async function priorityLoad(parr) {
     } else if (p.endsWith('.css')) {
       const pr = new Promise((res) => { loadLink(p, { rel: 'stylesheet', callback: res }); });
       promiseArr.push(pr);
-    }else if (p.endsWith('.json')) {
+    } else if (p.endsWith('.json')) {
       const pr = new Promise((res) => { loadLink(p, { as: 'fetch', crossorigin: 'anonymous', rel: 'preload', callback: res  }); });
       promiseArr.push(pr);
-      
     } else {
       promiseArr.push(fetch(p));
     }
