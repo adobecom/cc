@@ -132,7 +132,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '^--cc--adobecom.(hlx|aem).live': {
+  '--cc--adobecom.(hlx|aem).live': {
     'www.adobe.com': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
@@ -143,7 +143,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '^--cc--adobecom.(hlx|aem).page': {
+  '--cc--adobecom.(hlx|aem).page': {
     'www.adobe.com': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
