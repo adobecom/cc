@@ -157,9 +157,10 @@ class PerpetualTrials extends Trials {
   // eslint-disable-next-line class-methods-use-this
   downloadFile(downloadUrl) {
     if (!downloadUrl) return;
-    const a = createTag('a', { class: 'is-hidden', href: downloadUrl, id: 'productSkuDownload' }, downloadUrl);
-    document.querySelector('body').append(a);
-    a.click();
+    window.localStorage.setItem('productSkuDownloadUrl', downloadUrl);
+    // const a = createTag('a', { class: 'is-hidden', href: downloadUrl, id: 'productSkuDownload' }, downloadUrl);
+    // document.querySelector('body').append(a);
+    // a.click();
   }
 
   getTIDCookie() {
