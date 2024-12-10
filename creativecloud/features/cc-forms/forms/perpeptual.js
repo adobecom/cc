@@ -114,7 +114,7 @@ class PerpetualTrials extends Trials {
   setOrgSize() {
     this.setOrgFlag = true;
     const rengaJson = {
-      guid: this.imslib.isSignedInUser(),
+      guid: this.imslib.isSignedIn(),
       rengatoken: this.getCookieValueByName('WCDServer'),
       appdomain: 'ACOM_ECOM',
     };
