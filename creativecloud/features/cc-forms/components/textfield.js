@@ -85,7 +85,7 @@ class Textfield {
       const taid = this.fieldConfig.type.startsWith('cc-form-text-textarea-') ? this.fieldConfig.type.split('cc-form-text-textarea-')?.pop() : 'textarea';
       ta.setAttribute('name', taid);
       ta.setAttribute('id', taid);
-      i.replaceWith(createTag('textarea', {}));
+      i.replaceWith(ta);
       return ta;
     }
     const fieldType = this.fieldConfig.type.split('cc-form-text-').pop();
