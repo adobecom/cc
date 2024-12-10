@@ -1,6 +1,6 @@
 import { loadStyle } from '../../scripts/utils.js';
 
-function priorityLoad(parr) {
+async function priorityLoad(parr) {
   const promiseArr = [];
   parr.forEach((p) => {
     if (p.endsWith('.js')) {
@@ -42,7 +42,7 @@ export default async function init(el) {
     `${unitylibs}/core/workflow/workflow-photoshop/workflow-photoshop.css`,
     `${unitylibs}/core/steps/upload-btn.js`
   ];
-  priorityLoad(promiseArr);
+  await priorityLoad(promiseArr);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
   await wfinit(el, 'cc', unitylibs);
 }
