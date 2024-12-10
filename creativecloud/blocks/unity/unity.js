@@ -46,9 +46,10 @@ export default async function init(el) {
   ];
   await priorityLoad(promiseArr);
   const promiseSvgArr = [];
+  const unityHost = new URL(unitylibs).origin;
   [...el.querySelectorAll('img[src*=svg]')].slice(0, 6).forEach((s) => {
     const u = new URL(s.src);
-    promiseSvgArr.push(`${unitylibs}${u.pathname}`);
+    promiseSvgArr.push(`${unityHost}${u.pathname}`);
   });
   await priorityLoad(promiseSvgArr);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
