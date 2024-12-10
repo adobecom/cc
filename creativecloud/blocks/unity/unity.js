@@ -1,4 +1,4 @@
-import { loadStyle } from '../../scripts/utils.js';
+import { loadStyle, loadLink ,loadScript } from '../../scripts/utils.js';
 
 async function priorityLoad(parr) {
   const promiseArr = [];
