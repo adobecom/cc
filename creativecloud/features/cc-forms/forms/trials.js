@@ -381,7 +381,7 @@ class Trials {
   }
 
   postSubmitFailure(response) {
-    let destination = this.getFormConfig(`${data}-CONF_KEY_ERROR_GENERIC`);
+    let destination = this.getFormConfig(`data-${CONF_KEY_ERROR_GENERIC}`);
     if (response.status === 502 || response.status === 503) {
       destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);
     }
