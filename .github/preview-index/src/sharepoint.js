@@ -35,7 +35,7 @@ const ENABLED = process.env.ENABLED;
 
 const PREVIEW_STATUS_URL = `https://admin.hlx.page/status/adobecom/${CONSUMER}/main/*`;
 const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${PREVIEW_INDEX_JSON}`;
-const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.hlx.page`;
+const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.aem.page`;
 const GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0';
 const SHEET_RAW_INDEX = 'raw_index';
 const TABLE_NAME = 'Table1';
