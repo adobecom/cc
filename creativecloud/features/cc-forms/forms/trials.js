@@ -319,23 +319,21 @@ class Trials {
 
   checkValidElements() {
     this.valid = true;
-    for (const element of this.elements) {
-        if (element.getAttribute('data-valid') === 'false') {
-            this.valid = false;
-            const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-            element.setCustomValidity(`${elem.innerText}`);
-            element.reportValidity();
-            const cb = () => {
-                element.setCustomValidity('');
-                element.reportValidity();
-                element.removeEventListener('input', cb);
-            };
-            element.addEventListener('input', cb);
-            break;
-        }
-    }
-}
-
+    this.elements.forEach((element) => {
+      if (element.getAttribute('data-valid') === 'false') {
+        this.valid = false;
+        const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+        element.setCustomValidity(`${elem.innerText}`);
+        element.reportValidity();
+        const cb = () => {
+          element.setCustomValidity('');
+          element.reportValidity();
+          element.removeEventListener('input', cb);
+        };
+        element.addEventListener('input', cb);
+      }
+    });
+  }
 
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
