@@ -36,7 +36,6 @@ const formConfig = {
     blockDataset: {
       clientname: 'connecttrial',
       endpoint: '/api2/connect_trial_creation_service',
-      'form-type': this.el.classList.contains('enterprise') ? 'form.connect.enterprise.action' : 'form.connect.action',
       'form-submit': 'trials',
       customValue: 'region,timezone',
       imsAddressMailValue: 'postalcode,state,country',
@@ -78,6 +77,7 @@ class CCForms {
       case this.el.classList.contains('perpeptual'):
         return formConfig.perpeptual;
       case this.el.classList.contains('connect'):
+        formConfig.connect.blockDataset['form-type'] = this.el.classList.contains('enterprise') ? 'form.connect.enterprise.action' : 'form.connect.action';
         return formConfig.connect;
       default:
         return formConfig.default;
