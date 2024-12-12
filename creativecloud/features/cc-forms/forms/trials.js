@@ -319,20 +319,21 @@ class Trials {
 
   checkValidElements() {
     this.valid = true;
+    // eslint-disable-next-line no-restricted-syntax
     for (const element of this.elements) {
-        if (element.getAttribute('data-valid') === 'false') {
-            this.valid = false;
-            const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-            element.setCustomValidity(`${elem.innerText}`);
-            element.reportValidity();
-            const cb = () => {
-                element.setCustomValidity('');
-                element.reportValidity();
-                element.removeEventListener('input', cb);
-            };
-            element.addEventListener('input', cb);
-            break;
-        }
+      if (element.getAttribute('data-valid') === 'false') {
+        this.valid = false;
+        const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+        element.setCustomValidity(`${elem.innerText}`);
+        element.reportValidity();
+        const cb = () => {
+          element.setCustomValidity('');
+          element.reportValidity();
+          element.removeEventListener('input', cb);
+        };
+        element.addEventListener('input', cb);
+        break;
+      }
     }
 }
 
