@@ -92,9 +92,8 @@ class Checkbox {
     if (!this.required) this.valid = true;
     if (this.required && this.checkboxInput.checked) this.valid = true;
     this.checkboxInput.setAttribute('data-valid', this.valid);
-    if (!this.valid){
+    if (!this.valid) {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-      console.log('elemelemelemelemelemelem', this.checkboxInput);
       this.checkboxInput.setCustomValidity(`${elem.innerText}`);
       this.checkboxInput.reportValidity();
       const cb = () => {
