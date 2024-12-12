@@ -1,0 +1,245 @@
+import { createTag } from '../../../scripts/utils.js';
+
+const SELECTOR_MENU = '.db-Menu';
+const SELECTOR_MENU_ITEM = '.db-Menu-item';
+const ATTRIBUTE_DEMAND_BASE_VALUE = 'data-demandbase-value';
+
+class DemandBase {
+  constructor(dbConf) {
+    if (typeof dbConf !== 'object') {
+      return;
+    }
+    this.element = dbConf;
+    this.form = this.element.parentNode;
+    this.endpoint = this.element.endpoint;
+    this.apiKey = this.element.apiKey;
+    this.delay = this.element.delay;
+    this.industryMapping = this.element.industryMapping;
+    this.fieldMapping = this.element.fieldMapping;
+    this.payLoadMapping = this.element.payLoadMapping;
+
+    this.registerDemandBaseHandlers();
+  }
+
+  waitAndFireDemandBase(event) {
+    const content = event.target.value;
+    switch (event.keyCode) {
+      case 27:
+      case 9:
+        this.clearSuggestionList(event);
+        break;
+      case 13:
+        this.handleEnterKey(event);
+        break;
+      case 38:
+        this.handleUpArrow(event);
+        break;
+      case 40:
+        this.handleDownArrow(event);
+        break;
+      default:
+        setTimeout(
+          this.doDemandBase.bind(this, event, content + event.key),
+          this.delay,
+        );
+    }
+  }
+
+  clearSuggestionList(event) {
+    this.popoverHide(event);
+    event.target.removeAttribute('list');
+  }
+
+  getSuggestionListItem(object, className) {
+    const listName = object.getAttribute('list');
+
+    if (listName) {
+      let selector = ' li';
+      if (className) {
+        selector = `${selector}.${className}`;
+      }
+      return this.form.querySelector(`#${listName}${selector}`);
+    }
+    return [];
+  }
+
+  handleEnterKey(event) {
+    event.preventDefault();
+    const itemHighlighted = event.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
+    event.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+    this.popoverHide(event);
+    const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
+    this.prepopulateFields(itemData);
+  }
+
+  isShowingSuggestionList(target) {
+    return this.getSuggestionListItem(target).length > 0;
+  }
+
+  handleUpArrow(event) {
+    const list = this.getListElement(event);
+    const items = list.querySelectorAll(SELECTOR_MENU_ITEM);
+    const itemHighlighted = this.getItemHighlighted(list);
+    let itemHighlight = items.length - 1;
+    if (itemHighlighted > 0) {
+      itemHighlight = itemHighlighted - 1;
+    }
+    if (items[itemHighlighted] instanceof HTMLElement) {
+      items[itemHighlighted].classList.remove('is-highlighted');
+    }
+    items[itemHighlight].classList.add('is-highlighted');
+  }
+
+  handleDownArrow(event) {
+    const list = this.getListElement(event);
+    const items = list.querySelectorAll(SELECTOR_MENU_ITEM);
+    const itemHighlighted = this.getItemHighlighted(list);
+    let itemHighlight = 0;
+    if (itemHighlighted > -1) {
+      itemHighlight = itemHighlighted + 1;
+    }
+    if (itemHighlighted >= items.length - 1) {
+      itemHighlight = 0;
+    }
+
+    if (items[itemHighlighted] instanceof HTMLElement) {
+      items[itemHighlighted].classList.remove('is-highlighted');
+    }
+
+    items[itemHighlight].classList.add('is-highlighted');
+  }
+
+  getItemHighlighted(list) {
+    const items = list.querySelectorAll('li');
+    let highlightedItem = -1;
+    items.forEach((item, index) => {
+      if (item.classList.contains('is-highlighted')) {
+        highlightedItem = index;
+      }
+    });
+    return highlightedItem;
+  }
+
+  popoverShow(event) {
+    event.target.parentNode.classList.add('is-open');
+    event.target.parentNode.querySelector('.db-Popover')
+      .classList
+      .add('is-open');
+  }
+
+  popoverHide(event) {
+    event.target.parentNode.classList.remove('is-open');
+    event.target.parentNode.querySelector('.db-Popover')
+      .classList
+      .remove('is-open');
+  }
+
+  doDemandBase(event, contentThen) {
+    const contentNow = event.target.value;
+    if (contentNow !== contentThen) return;
+    const payload = {
+      auth: this.apiKey,
+      term: contentNow,
+    };
+    fetch(this.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.fillList(event, json);
+        this.popoverShow(event);
+      })
+      .catch((err) => console.error('Parsing failed:', err));
+  }
+
+  getListElement(event) {
+    let list = event.target.parentNode.querySelector(SELECTOR_MENU);
+    if (!list) {
+      const popover = createTag('div', { class: 'db-Popover is-open' });
+      popover.style.marginTop = `${event.target.offsetHeight + 5}px`;
+      list = createTag('ul', { class: 'db-Menu' });
+      list.setAttribute('role', 'listbox');
+      list.style.width = `${event.target.offsetWidth}px`;
+      popover.appendChild(list);
+      event.target.parentNode.appendChild(popover);
+    }
+    return list;
+  }
+
+  fillList(event, json) {
+    const list = this.getListElement(event);
+    list.innerHTML = '';
+    json.picks.forEach((item) => {
+      const li = createTag('li', { class: 'db-Menu-item' });
+      const label = createTag('div', { class: 'db-Menu-itemLabel' });
+      li.setAttribute('role', 'option');
+      li.setAttribute(ATTRIBUTE_DEMAND_BASE_VALUE, item.company_name);
+      li.setAttribute('data-demandbase-json', JSON.stringify(item));
+      label.innerHTML = `${item.company_name}<div>${item.street_address || ''} ${item.city || ''} ${item.country_name || ''}</div>`;
+      li.appendChild(label);
+      list.appendChild(li);
+    });
+    const listItems = list.querySelectorAll('[data-demandbase-value]');
+    listItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const itemData = JSON.parse(item.getAttribute('data-demandbase-json'));
+        event.target.parentNode.querySelector('.cc-form-component[name="orgname"]').value = item.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+        this.popoverHide(event);
+        this.prepopulateFields(itemData);
+      });
+    });
+  }
+
+  prepopulateFields(itemData) {
+    const { fieldMapping } = this;
+    Object.keys(fieldMapping).forEach((key) => {
+      if (fieldMapping[key] === 'company_name' || fieldMapping[key].indexOf('.') !== -1 || fieldMapping[key].indexOf(',') !== -1) {
+        return;
+      }
+      const fieldName = fieldMapping[key];
+      const fieldValue = this.convert(itemData[fieldName], fieldName);
+      if (fieldName && (fieldName.indexOf('.') !== -1 || document.querySelector(`[name=${fieldName}]:disabled`))) {
+        return;
+      }
+
+      if (document.querySelector(`input.cc-form-component[name=${key}]`)) {
+        document.querySelector(`[name=${key}]`).value = fieldValue;
+      } else if (document.querySelector(`select.cc-form-component[name=${key}]`)) {
+        const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
+        const op = createTag('option', { value: fieldValue, selected: 'selected' });
+        op.text = fieldValue;
+        selectEl.add(op);
+        selectEl.value = op.value;
+      }
+
+      if (fieldName === 'country') {
+        if (itemData.state) {
+          document.querySelector('[name=state]').attr('prefetchval', itemData.state);
+        }
+        document.querySelector(`[name=${fieldName}]`).trigger('change');
+      }
+    });
+  }
+
+  convert(fieldValue, fieldName) {
+    let convertedValue = fieldValue;
+    if (fieldName === 'industry') {
+      convertedValue = this.industryMapping[fieldValue];
+    }
+    if (!convertedValue || convertedValue === 'Unknown') convertedValue = '';
+    return convertedValue;
+  }
+
+  registerDemandBaseHandlers() {
+    const elem = this.form.querySelector('input.cc-form-component[name="orgname"]');
+    if (!(elem instanceof HTMLElement)) {
+      return;
+    }
+    elem.setAttribute('autocomplete', 'off');
+    elem.addEventListener('keydown', (e) => this.waitAndFireDemandBase(e));
+  }
+}
+
+export default DemandBase;
