@@ -319,8 +319,7 @@ class Trials {
 
   checkValidElements() {
     this.valid = true;
-    // eslint-disable-next-line no-restricted-syntax
-    for (const element of this.elements) {
+    this.elements.forEach((element) => {
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
         const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
@@ -332,11 +331,9 @@ class Trials {
           element.removeEventListener('input', cb);
         };
         element.addEventListener('input', cb);
-        break;
       }
-    }
-}
-
+    });
+  }
 
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
