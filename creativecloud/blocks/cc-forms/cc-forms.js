@@ -36,7 +36,7 @@ const formConfig = {
     blockDataset: {
       clientname: 'connecttrial',
       endpoint: '/api2/connect_trial_creation_service',
-      'form-type': 'form.connect.action',
+      'form-type': this.el.classList.contains('enterprise') ? 'form.connect.enterprise.action' : 'form.connect.action',
       'form-submit': 'trials',
       customValue: 'region,timezone',
       imsAddressMailValue: 'postalcode,state,country',
