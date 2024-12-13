@@ -51,7 +51,7 @@ class DemandBase {
   }
 
   handleEnterKey(e) {
-    e.preDefault();
+    e.preventDefault();
     const itemHighlighted = e.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
     e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
     this.popoverHide(e);
@@ -166,7 +166,7 @@ class DemandBase {
     });
     const listItems = list.querySelectorAll('[data-demandbase-value]');
     listItems.forEach((item) => {
-      item.addeListener('click', () => {
+      item.addEventListener('click', () => {
         const itemData = JSON.parse(item.getAttribute('data-demandbase-json'));
         e.target.parentNode.querySelector('.cc-form-component[name="orgname"]').value = item.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
         this.popoverHide(e);
@@ -221,7 +221,7 @@ class DemandBase {
       return;
     }
     elem.setAttribute('autocomplete', 'off');
-    elem.addeListener('keydown', (e) => this.waitAndFireDemandBase(e));
+    elem.addEventListener('keydown', (e) => this.waitAndFireDemandBase(e));
   }
 }
 
