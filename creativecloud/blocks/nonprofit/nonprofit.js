@@ -4,7 +4,7 @@
 /* eslint-disable max-len */
 import ReactiveStore from './reactiveStore.js';
 import { setLibs } from '../../scripts/utils.js';
-import { countries } from './constants.js';
+// import { countries } from './constants.js';
 import { getNonprofitIconTag, NONPRFIT_ICONS } from './icons.js';
 import nonprofitSelect from './nonprofit-select.js';
 
@@ -40,6 +40,8 @@ export const stepperStore = new ReactiveStore({
   pending: false,
 });
 
+export const countriesStore = new ReactiveStore([]);
+
 export const organizationsStore = new ReactiveStore([]);
 
 export const registriesStore = new ReactiveStore([]);
@@ -68,6 +70,33 @@ async function validatePercentResponse(response) {
 // #endregion
 
 let nextOrganizationsPageUrl;
+
+async function fetchCountries(abortController) {
+  try {
+    countriesStore.startLoading(true);
+    const response = await fetch(`${PERCENT_API_URL}/countries`, {
+      cache: 'force-cache',
+      signal: abortController?.signal,
+      headers: { Authorization: PERCENT_PUBLISHABLE_KEY },
+    });
+
+    const result = await validatePercentResponse(response);
+
+    console.log(result);
+
+    const userLanguage = navigator.language || 'en';
+    const localizedCountries = result.data.map((country) => ({
+      code: country.code,
+      name: country.endonyms[userLanguage] || country.name, // Fallback to default name
+    }));
+
+    countriesStore.update(localizedCountries);
+  } catch (error) {
+    countriesStore.update([]);
+    console.error('Error fetching countries:', error);
+  }
+}
+fetchCountries();
 
 async function fetchOrganizations(search, countryCode, abortController) {
   try {
@@ -543,7 +572,7 @@ function renderSelectNonprofit(containerTag) {
     name: 'country',
     label: window.mph['nonprofit-country'],
     placeholder: window.mph['nonprofit-country-placeholder'],
-    options: countries,
+    store: countriesStore, // Use the reactive store directly
     labelKey: 'name',
     valueKey: 'code',
   });
@@ -676,7 +705,7 @@ function renderOrganizationDetails(containerTag) {
     name: 'country',
     label: window.mph['nonprofit-country'],
     placeholder: window.mph['nonprofit-country-placeholder'],
-    options: countries,
+    store: countriesStore, // Use the reactive store directly
     labelKey: 'name',
     valueKey: 'code',
   });
