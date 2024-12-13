@@ -138,7 +138,6 @@ class CCForms {
     const formMetadata = [...this.el.querySelectorAll(':scope > div > div:nth-child(1) .icon')];
     // demandbase
     const db = formMetadata.find((el) => el.classList.contains('icon-demandbase-on'));
-    this.demandBaseConfig.delay = db?.closest('div').nextElementSibling.innerText;
     [...formComponents].forEach(() => {
       const componentConfig = {};
       const c = formMetadata.shift();
@@ -209,7 +208,7 @@ export default async function init(el) {
   const formComponent = new CCForms(el);
   if (formComponent.formConfig.type === 'default') return el.remove();
   imsInitialized().then(async () => {
-    // if (!window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
     const fc = new FormConfigurator(formComponent.form);
     el.remove();

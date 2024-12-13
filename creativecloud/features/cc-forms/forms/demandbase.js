@@ -50,19 +50,6 @@ class DemandBase {
     event.target.removeAttribute('list');
   }
 
-  getSuggestionListItem(object, className) {
-    const listName = object.getAttribute('list');
-
-    if (listName) {
-      let selector = ' li';
-      if (className) {
-        selector = `${selector}.${className}`;
-      }
-      return this.form.querySelector(`#${listName}${selector}`);
-    }
-    return [];
-  }
-
   handleEnterKey(event) {
     event.preventDefault();
     const itemHighlighted = event.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
@@ -70,10 +57,6 @@ class DemandBase {
     this.popoverHide(event);
     const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
     this.prepopulateFields(itemData);
-  }
-
-  isShowingSuggestionList(target) {
-    return this.getSuggestionListItem(target).length > 0;
   }
 
   handleUpArrow(event) {
