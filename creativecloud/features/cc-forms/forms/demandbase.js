@@ -21,46 +21,46 @@ class DemandBase {
     this.registerDemandBaseHandlers();
   }
 
-  waitAndFireDemandBase(event) {
-    const content = event.target.value;
-    switch (event.keyCode) {
+  waitAndFireDemandBase(e) {
+    const content = e.target.value;
+    switch (e.keyCode) {
       case 27:
       case 9:
-        this.clearSuggestionList(event);
+        this.clearSuggestionList(e);
         break;
       case 13:
-        this.handleEnterKey(event);
+        this.handleEnterKey(e);
         break;
       case 38:
-        this.handleUpArrow(event);
+        this.handleUpArrow(e);
         break;
       case 40:
-        this.handleDownArrow(event);
+        this.handleDownArrow(e);
         break;
       default:
         setTimeout(
-          this.doDemandBase.bind(this, event, content + event.key),
+          this.doDemandBase.bind(this, e, content + e.key),
           this.delay,
         );
     }
   }
 
-  clearSuggestionList(event) {
-    this.popoverHide(event);
-    event.target.removeAttribute('list');
+  clearSuggestionList(e) {
+    this.popoverHide(e);
+    e.target.removeAttribute('list');
   }
 
-  handleEnterKey(event) {
-    event.preventDefault();
-    const itemHighlighted = event.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
-    event.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
-    this.popoverHide(event);
+  handleEnterKey(e) {
+    e.preDefault();
+    const itemHighlighted = e.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
+    e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+    this.popoverHide(e);
     const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
     this.prepopulateFields(itemData);
   }
 
-  handleUpArrow(event) {
-    const list = this.getListElement(event);
+  handleUpArrow(e) {
+    const list = this.getListElement(e);
     const items = list.querySelectorAll(SELECTOR_MENU_ITEM);
     const itemHighlighted = this.getItemHighlighted(list);
     let itemHighlight = items.length - 1;
@@ -73,8 +73,8 @@ class DemandBase {
     items[itemHighlight].classList.add('is-highlighted');
   }
 
-  handleDownArrow(event) {
-    const list = this.getListElement(event);
+  handleDownArrow(e) {
+    const list = this.getListElement(e);
     const items = list.querySelectorAll(SELECTOR_MENU_ITEM);
     const itemHighlighted = this.getItemHighlighted(list);
     let itemHighlight = 0;
@@ -103,22 +103,22 @@ class DemandBase {
     return highlightedItem;
   }
 
-  popoverShow(event) {
-    event.target.parentNode.classList.add('is-open');
-    event.target.parentNode.querySelector('.db-Popover')
+  popoverShow(e) {
+    e.target.parentNode.classList.add('is-open');
+    e.target.parentNode.querySelector('.db-Popover')
       .classList
       .add('is-open');
   }
 
-  popoverHide(event) {
-    event.target.parentNode.classList.remove('is-open');
-    event.target.parentNode.querySelector('.db-Popover')
+  popoverHide(e) {
+    e.target.parentNode.classList.remove('is-open');
+    e.target.parentNode.querySelector('.db-Popover')
       .classList
       .remove('is-open');
   }
 
-  doDemandBase(event, contentThen) {
-    const contentNow = event.target.value;
+  doDemandBase(e, contentThen) {
+    const contentNow = e.target.value;
     if (contentNow !== contentThen) return;
     const payload = {
       auth: this.apiKey,
@@ -131,28 +131,28 @@ class DemandBase {
     })
       .then((response) => response.json())
       .then((json) => {
-        this.fillList(event, json);
-        this.popoverShow(event);
+        this.fillList(e, json);
+        this.popoverShow(e);
       })
       .catch((err) => console.error('Parsing failed:', err));
   }
 
-  getListElement(event) {
-    let list = event.target.parentNode.querySelector(SELECTOR_MENU);
+  getListElement(e) {
+    let list = e.target.parentNode.querySelector(SELECTOR_MENU);
     if (!list) {
       const popover = createTag('div', { class: 'db-Popover is-open' });
-      popover.style.marginTop = `${event.target.offsetHeight + 5}px`;
+      popover.style.marginTop = `${e.target.offsetHeight + 5}px`;
       list = createTag('ul', { class: 'db-Menu' });
       list.setAttribute('role', 'listbox');
-      list.style.width = `${event.target.offsetWidth}px`;
+      list.style.width = `${e.target.offsetWidth}px`;
       popover.appendChild(list);
-      event.target.parentNode.appendChild(popover);
+      e.target.parentNode.appendChild(popover);
     }
     return list;
   }
 
-  fillList(event, json) {
-    const list = this.getListElement(event);
+  fillList(e, json) {
+    const list = this.getListElement(e);
     list.innerHTML = '';
     json.picks.forEach((item) => {
       const li = createTag('li', { class: 'db-Menu-item' });
@@ -166,10 +166,10 @@ class DemandBase {
     });
     const listItems = list.querySelectorAll('[data-demandbase-value]');
     listItems.forEach((item) => {
-      item.addEventListener('click', () => {
+      item.addeListener('click', () => {
         const itemData = JSON.parse(item.getAttribute('data-demandbase-json'));
-        event.target.parentNode.querySelector('.cc-form-component[name="orgname"]').value = item.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
-        this.popoverHide(event);
+        e.target.parentNode.querySelector('.cc-form-component[name="orgname"]').value = item.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+        this.popoverHide(e);
         this.prepopulateFields(itemData);
       });
     });
@@ -221,7 +221,7 @@ class DemandBase {
       return;
     }
     elem.setAttribute('autocomplete', 'off');
-    elem.addEventListener('keydown', (e) => this.waitAndFireDemandBase(e));
+    elem.addeListener('keydown', (e) => this.waitAndFireDemandBase(e));
   }
 }
 
