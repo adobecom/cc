@@ -293,6 +293,75 @@
   color: var(--cc-forms-error);
 }
 
+.cc-forms .db-Popover {
+  position: absolute;
+  background-color: #fff;
+  border-color: #d3d3d3;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  transition: transform 0.13s ease-in-out, opacity 0.13s ease-in-out, visibility 0ms linear 0.13s;
+  opacity: 0;
+  pointer-events: none;
+  transition-delay: 0ms;
+  visibility: hidden;
+  z-index: 100;
+  left: 0;
+  width: 100%;
+}
+
+.cc-forms .db-Popover.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0ms;
+  visibility: visible;
+}
+
+.cc-forms .db-Menu {
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: transparent;
+  box-sizing: border-box;
+  display: inline-block;
+  list-style-type: none;
+  margin: 4px 0;
+  overflow: auto;
+  padding: 0;
+}
+
+.cc-forms .db-Menu-item {
+  background-color: transparent;
+  color: #505050;
+  align-items: center;
+  border-left: 2px solid transparent;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  margin: 0;
+  min-height: 32px;
+  padding: 7px 12px 7px 10px;
+  position: relative;
+  text-decoration: none;
+}
+
+.cc-forms .db-Menu-item.is-highlighted,
+.cc-forms .db-Menu-item.is-open,
+.cc-forms .db-Menu-item:hover {
+  background-color: rgba(50, 50, 50, .04);
+  outline: none;
+  color: #505050;
+}
+
 @media screen and (min-width: 600px) {
   .cc-forms form,
   .cc-forms .form-component {
