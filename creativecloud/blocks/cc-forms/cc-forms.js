@@ -4,6 +4,7 @@ import Textfield from '../../features/cc-forms/components/textfield.js';
 import Dropdown from '../../features/cc-forms/components/dropdown.js';
 import Checkbox from '../../features/cc-forms/components/checkbox.js';
 import { TextContent, Button, ConsentNotice } from '../../features/cc-forms/forms/trials.js';
+import DemandBase from '../../features/cc-forms/forms/demandbase.js';
 
 function getOdinEndpoint() {
   const cfg = getConfig();
@@ -64,12 +65,42 @@ class CCForms {
     this.formConfig = this.getFormConfig();
     this.form = this.initForm();
     this.setFormDataAttributes();
-    this.createFormComponents();
     this.demandBaseConfig = {
-      'demandbase-endpoint': 'https://api.demandbase.com/autocomplete',
-      'demandbase-apiKey': 'e4086fa3ea9d74ac2aae2719a0e5285dc7075d7b',
-      'demandbase-delay': 400,
+      endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
+      apiKey: 'DcJ5JpU7attMHR6KoFgKA1oWr7djrtGidd4pC7dD',
+      delay: 400, // default
+      parentNode: this.form.parentElement,
+      fieldMapping: {
+        orgname: 'company_name',
+        postalcode: 'zip',
+        'custom.questions_comments': 'company_name, phone, industry, sub_industry, annual_sales, fortune_1000, forbes_2000, web_site',
+        orgsize: 'employee_range',
+        industry: 'industry',
+        state: 'state',
+        country: 'country_name',
+      },
+      industryMapping: {
+        TRANSPORTATION_WAREHOUSING: 'Transportation & Logistics',
+        TECHNOLOGY_SOFTWARE_SERVICES: 'Software & Technology',
+        EDUCATION_HIGHER_ED: 'Education',
+        PROFESSIONAL_TECHNICALSERVICES: 'Business Services',
+        TRAVEL_LEISURE_HOSPITALITY: 'Food & Beverage',
+        MANUFACTURING_AUTOMOTIVE: 'Automotive',
+        ENERGY_MINING_OIL_GAS: 'Mining',
+        TECHNOLOGY_HARDWARE: 'Hardware',
+        TELECOMMUNICATIONS: 'Telecommunications',
+        GOVERNMENT_FEDERAL: 'Government',
+        HEALTH_CARE: 'Healthcare & Medical',
+        PHARMACEUTICALS_BIOTECH: 'Biotech',
+        FINANCIAL_SERVICES: 'Financial Services',
+        CONSTRUCTION: 'Construction',
+        MEDIA_ENTERTAINMENT: ' Media & Entertainment',
+        MANUFACTURING: 'Manufacturing',
+        AGRICULTURE_AND_FORESTRY: 'Agriculture',
+      },
+      payloadMappings: { 'custom.questions_comments': 'company_name, phone, industry, sub_industry, annual_sales, fortune_1000, forbes_2000, web_site' },
     };
+    this.createFormComponents();
   }
 
   getFormConfig() {
@@ -105,6 +136,8 @@ class CCForms {
   createFormComponents() {
     const formComponents = this.el.querySelectorAll(':scope > div > div:nth-child(1) span[class*="cc-form-"]');
     const formMetadata = [...this.el.querySelectorAll(':scope > div > div:nth-child(1) .icon')];
+    // demandbase
+    const db = formMetadata.find((el) => el.classList.contains('icon-demandbase-on'));
     [...formComponents].forEach(() => {
       const componentConfig = {};
       const c = formMetadata.shift();
@@ -154,6 +187,10 @@ class CCForms {
           break;
       }
     });
+    if (db) {
+      // eslint-disable-next-line no-unused-vars
+      const demandBase = new DemandBase(this.demandBaseConfig);
+    }
   }
 }
 
