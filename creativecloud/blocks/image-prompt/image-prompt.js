@@ -66,7 +66,8 @@ export default async function init(el) {
   const rows = [...el.querySelectorAll(':scope > div')];
   const promptLink = rows[0]?.querySelector(':scope a');
   promptLink.classList.add('prompt-link');
-  promptLink.setAttribute('aria-label', rows[2]?.textContent.replace('|', '').trim());
+  const buttonText = rows[2]?.textContent.replace(/\|/g, '').trim();
+  promptLink.setAttribute('aria-label', buttonText);
   const promptBlock = createTag('div');
   const prompt = createTag('div', { class: 'prompt' });
   const promptText = createTag('p', { class: 'prompt-text' });
@@ -84,7 +85,7 @@ export default async function init(el) {
   hoverDiv.append(promptHover);
 
   const desktopButtonWrapper = createTag('div', { class: 'button-wrapper' });
-  const desktopButton = createTag('button', { class: 'moving-button', tabindex: '-1' }, rows[2]?.textContent.replace('|', '').trim());
+  const desktopButton = createTag('button', { class: 'moving-button', tabindex: '-1' }, buttonText);
   const desktopsvg = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11" fill="none">
   <circle cx="5.53223" cy="5.5" r="4.5" fill="#5258E4" stroke="white"/>
   </svg>`;
@@ -109,7 +110,7 @@ export default async function init(el) {
   });
 
   const mobileLinkWrapper = createTag('div', { class: 'hover-wrapper' });
-  const mobileLink = createTag('div', { class: 'hover-link' }, rows[2]?.textContent.replace('|', '').trim());
+  const mobileLink = createTag('div', { class: 'hover-link' }, buttonText);
   const mobileIcon = rows[2]?.querySelector('img[src*=".svg"]');
   const mobilesvg = await loadSvg(new URL(mobileIcon.src));
   const mobileLinkSvg = createTag('div', { class: 'hover-svg' });
