@@ -130,5 +130,5 @@ export default async function init(el) {
   promptBlock.append(promptLink);
   rows.forEach((row) => row.remove());
   el.append(promptBlock);
-  handleMobile(el, 2000);
+  handleMobile(el);
 }

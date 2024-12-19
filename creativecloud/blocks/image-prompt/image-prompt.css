@@ -90,6 +90,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   overflow: hidden;
   color: var(--color-white);
   font-size: var(--type-body-xs-size);
@@ -101,25 +102,25 @@
   margin-top: 4px;
 }
 
-.button-wrapper {
+.image-prompt .button-wrapper {
   position: relative;
   pointer-events: none;
   max-height: 40px;
 }
 
-.moving-svg {
+.image-prompt .moving-svg {
   position: absolute;
   top: 0;
   left: 0;
   transform: translate(-50%, -50%);
 }
 
-[dir="rtl"] .moving-svg {
+[dir="rtl"] .image-prompt .moving-svg {
   right: -12px;
   left: auto;
 }
 
-.moving-button {
+.image-prompt .moving-button {
   color: var(--color-white);
   font-size: var(--type-body-s-size);
   font-weight: 400;
