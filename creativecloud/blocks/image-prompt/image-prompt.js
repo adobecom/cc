@@ -68,6 +68,7 @@ export default async function init(el) {
   promptLink.classList.add('prompt-link');
   const buttonText = rows[2]?.textContent.replace(/\|/g, '').trim();
   promptLink.setAttribute('aria-label', buttonText);
+  promptLink.setAttribute('aria-describedby', promptLink.querySelector('picture img').getAttribute('alt'));
   const promptBlock = createTag('div');
   const prompt = createTag('div', { class: 'prompt' });
   const promptText = createTag('p', { class: 'prompt-text' });
