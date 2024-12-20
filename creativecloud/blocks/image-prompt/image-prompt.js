@@ -23,12 +23,6 @@ function moveButton(promptLink, desktopButtonWrapper) {
   });
 }
 
-function togglePressedState(link) {
-  const currentState = link.getAttribute('aria-pressed');
-  const newState = (currentState === 'true') ? 'false' : 'true';
-  link.setAttribute('aria-pressed', newState);
-}
-
 async function loadSvg(src) {
   try {
     const res = await fetch(src, { mode: 'no-cors' });
@@ -57,7 +51,6 @@ function handleMobile(el) {
       mobileHover.style.opacity = 1;
       mobileHover.style.zIndex = 1;
       prompt.style.zIndex = 2;
-      togglePressedState(aTag);
     }
   });
   document.addEventListener('click', (e) => {
@@ -65,7 +58,6 @@ function handleMobile(el) {
       mobileHover.style.opacity = 0;
       mobileHover.style.zIndex = '';
       prompt.style.zIndex = '';
-      togglePressedState(aTag);
     }
   });
 }
@@ -77,7 +69,6 @@ export default async function init(el) {
   const buttonText = rows[2]?.textContent.replace(/\|/g, '').trim();
   promptLink.setAttribute('aria-label', buttonText);
   promptLink.setAttribute('aria-describedby', promptLink.querySelector('picture img').getAttribute('alt'));
-  promptLink.setAttribute('aria-pressed', false);
   const promptBlock = createTag('div');
   const prompt = createTag('div', { class: 'prompt' });
   const promptText = createTag('p', { class: 'prompt-text' });
