@@ -1,6 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 
 export function decorateText(el) {
+  if (!el) return;
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
   heading.classList.add('heading-xl');
@@ -9,7 +10,7 @@ export function decorateText(el) {
 }
 
 export function extendButtonsClass(text) {
-  text.querySelectorAll('.con-button').forEach((button) => {
+  text?.querySelectorAll('.con-button').forEach((button) => {
     button.classList.add('button-justified-mobile');
   });
 }
@@ -59,10 +60,10 @@ export default async function init(el) {
     children[0].classList.add('background');
     decorateBlockBg(el, children[0], { useHandleFocalpoint: true });
   }
-  foreground.classList.add('foreground', 'container');
-  const headline = foreground.querySelector('h1, h2, h3, h4, h5, h6');
-  const text = headline.closest('div');
-  text.classList.add('text');
+  foreground?.classList.add('foreground', 'container');
+  const headline = foreground?.querySelector('h1, h2, h3, h4, h5, h6');
+  const text = headline?.closest('div');
+  text?.classList.add('text');
   decorateText(text);
   decorateButtons(text, 'button-l');
   extendButtonsClass(text);
@@ -71,5 +72,5 @@ export default async function init(el) {
   if (el.classList.contains('countdown-timer')) {
     promiseArr.push(loadCDT(text, el.classList));
   }
-  await Promise.all(promiseArr);
+  await Promise.allSettled(promiseArr);
 }
