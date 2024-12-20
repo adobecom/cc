@@ -1,0 +1,218 @@
+  /* stylelint-disable property-no-vendor-prefix */
+    /* stylelint-disable value-no-vendor-prefix */
+.image-prompt {
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.image-prompt .prompt-link {
+  display: flex;
+  aspect-ratio: var(--aspect-ratio-wide);
+  max-height: 240px;
+  min-height: 160px;
+  width: 100%;
+  height: auto;
+}
+
+.image-prompt .prompt-link img {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.image-prompt .prompt,
+.image-prompt .prompt-hover {
+  position: absolute;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: linear-gradient(94deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.70) 100%);
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  z-index: auto;
+  margin: 12px;
+  bottom: 0;
+  width: calc(100% - 26px);
+}
+
+.image-prompt .prompt-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  color: var(--color-black);
+  text-overflow: ellipsis;
+  font-size: var(--type-body-xs-size);
+  line-height: var(--type-body-xs-lh);
+  font-style: normal;
+  font-weight: 700;
+  margin: 8px 12px;
+}
+
+.image-prompt .prompt-link .hover-container,
+.image-prompt .prompt-link .hover-mobile {
+  position: absolute;
+  width: auto;
+  height: 100%;
+  aspect-ratio: var(--aspect-ratio-wide);
+  background-color: #212121A8;
+  opacity: 0;
+  display: flex;
+  border-radius: 8px;
+  transition: opacity 200ms ease-in-out;
+  z-index: auto;
+}
+
+.image-prompt .avatar {
+  position: absolute;
+  display: flex;
+  margin-inline-start: 12px;
+  margin-top: 12px;
+  gap: var(--spacing-xxs);
+  max-width: 327px;
+  max-height: 184px;
+}
+
+.image-prompt .hover-container .avatar {
+  margin-top: -16px;
+}
+
+.image-prompt .avatar img {
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  box-sizing: content-box;
+}
+
+.image-prompt .avatar .avatar-name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  color: var(--color-white);
+  font-size: var(--type-body-xs-size);
+  font-style: normal;
+  font-weight: 700;
+  line-height: var(--type-body-xxs-lh);
+  height: 24px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.image-prompt .button-wrapper {
+  position: relative;
+  pointer-events: none;
+  max-height: 40px;
+}
+
+.image-prompt .moving-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+[dir="rtl"] .image-prompt .moving-svg {
+  right: -12px;
+  left: auto;
+}
+
+.image-prompt .moving-button {
+  color: var(--color-white);
+  font-size: var(--type-body-s-size);
+  font-weight: 400;
+  line-height: var(--type-body-xs-lh);
+  padding: 4px 12px;
+  background-color: #5258E4;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+}
+
+.image-prompt .hover-wrapper {
+  display: flex;
+  position: absolute;
+  gap: 10px;
+  top: 40%;
+  left: 46%;
+  transform: translate(-40%, -46%);
+}
+
+.image-prompt .hover-wrapper .hover-link {
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration-line: underline;
+}
+
+.image-prompt .hover-wrapper .hover-svg {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: flex-start;
+}
+
+.image-prompt .prompt-link .hover-container {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  .image-prompt .prompt-link {
+    height: 240px;
+  }
+
+  .image-prompt .prompt,
+  .image-prompt .prompt-hover {
+    width: 340px;
+  }
+
+  .image-prompt .prompt-text {
+    margin: 12px 16px;
+  }
+
+  .image-prompt .avatar {
+    max-width: 303px;
+    max-height: 24px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .image-prompt .prompt-link .hover-container {
+    display: block;
+  }
+
+  .image-prompt .prompt-link .hover-mobile {
+    display: none;
+  }
+
+  .image-prompt .prompt-link:hover .hover-container,
+  .image-prompt .prompt-link:focus .hover-container,
+  .image-prompt .prompt-link:active .hover-container {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .image-prompt .prompt-link:hover .hover-container .prompt-hover,
+  .image-prompt .prompt-link:focus .hover-container .prompt-hover,
+  .image-prompt .prompt-link:active .hover-container .prompt-hover {
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+  }
+
+  .image-prompt .prompt-link:hover .prompt,
+  .image-prompt .prompt-link:focus .prompt,
+  .image-prompt .prompt-link:active .prompt {
+    opacity: 0;
+    transition: opacity 200ms ease-in-out;
+  }
+
+  .image-prompt .prompt-link:focus .button-wrapper {
+    top: 50%;
+    left: 50%;
+    transition: (-50%, -50%);
+  }
+}
