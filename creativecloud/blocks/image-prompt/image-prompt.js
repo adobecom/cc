@@ -110,7 +110,6 @@ export default async function init(el) {
       prompt.style.display = 'block';
       prompt.style.opacity = '1';
       promptHover.style.opacity = '0';
-      togglePressedState(promptLink);
     }
   });
   promptLink.addEventListener('mouseenter', () => {
@@ -118,7 +117,6 @@ export default async function init(el) {
     prompt.style.display = '';
     prompt.style.opacity = '';
     promptHover.style.opacity = '';
-    togglePressedState(promptLink);
   });
 
   const mobileLinkWrapper = createTag('div', { class: 'hover-wrapper' });
