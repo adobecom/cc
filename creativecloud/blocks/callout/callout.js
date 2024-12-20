@@ -5,8 +5,8 @@ const groupElementsIntoBlocks = (container, createTag) => {
   const blocks = [];
 
   if (!elements.length) {
-    // one block with only one paragraph
-    const content = container.querySelector('div > div > div > div')?.innerHTML;
+    // one block with one paragraph
+    const content = container.querySelector('div > div > div')?.innerHTML;
     if (content) blocks.push(createTag('div', { class: 'callout-item' }, createTag('p', false, content)));
     return blocks;
   }
