@@ -104,6 +104,9 @@ async function createDisplayVideo(target, video, src, poster = '') {
     video?.load();
     video.oncanplaythrough = async () => {
       await video.play();
+      const miloLibs = getLibs('/libs');
+      const { syncPausePlayIcon } = await import(`${miloLibs}/utils/decorate.js`);
+      syncPausePlayIcon(video);
     };
   } catch (err) { return; }
   target.classList.add('show-video');
@@ -113,7 +116,7 @@ async function createDisplayVideo(target, video, src, poster = '') {
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
   const trgtPic = stepInfo.target.querySelector(':scope > picture');
-  const trgtVideo = stepInfo.target.querySelector(':scope > video');
+  const trgtVideo = stepInfo.target.querySelector(':scope  video');
   if (transitionCfg.useCfg) {
     if (transitionCfg.src) {
       await createDisplayImg(stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt);
@@ -123,7 +126,7 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     return;
   }
   const displayPics = config.querySelectorAll(':scope > p > picture img[src*="media_"]');
-  const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"], :scope > p > video');
+  const displayVideos = config.querySelectorAll(':scope > p > a[href*=".mp4"], :scope > p video');
   const { displayPath } = stepInfo;
   if (displayPics.length) {
     const imgIdx = (displayPath < displayPics.length) ? displayPath : 0;
@@ -223,7 +226,7 @@ function createInteractiveArea(el, asset) {
   const newPic = asset.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
-  const imgElem = asset.querySelector('img');
+  const imgElem = asset.querySelector('img:not(.accessibility-control)');
   let assetElem = '';
   if (imgElem) {
     imgElem.src = getImgSrc(asset);
@@ -253,7 +256,7 @@ async function getTargetArea(el) {
     intEnb.classList.add('interactive-enabled');
     await intEnbReendered(intEnb);
   } catch (err) { return null; }
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset video, .image video');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset .video-holder, .image video');
   const container = assets[assets.length - 1].closest('p');
   const iArea = createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');
