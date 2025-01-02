@@ -92,7 +92,7 @@ async function createDisplayImg(target, replaceEl, src, alt) {
   target.classList.add('show-image');
   target.classList.remove('show-video');
 }
-
+let first = true;
 async function createDisplayVideo(target, video, src, poster = '') {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
@@ -104,9 +104,12 @@ async function createDisplayVideo(target, video, src, poster = '') {
     video?.load();
     video.oncanplaythrough = async () => {
       await video.play();
-      const miloLibs = getLibs('/libs');
-      const { syncPausePlayIcon } = await import(`${miloLibs}/utils/decorate.js`);
-      syncPausePlayIcon(video);
+      if (!first) {
+        const miloLibs = getLibs('/libs');
+        const { syncPausePlayIcon } = await import(`${miloLibs}/utils/decorate.js`);
+        syncPausePlayIcon(video);
+      }
+      first = false;
     };
   } catch (err) { return; }
   target.classList.add('show-video');
@@ -331,5 +334,7 @@ export default async function init(el) {
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);
+    // console.log(el);
   });
+  // console.log(el);
 }
