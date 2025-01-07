@@ -94,7 +94,7 @@ class Textfield {
         i.setAttribute('pattern', '^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$');
         break;
       case 'email':
-        i.setAttribute('pattern', '^[a-zA-Z0-9_.\-]+@[a-zA-Z0-9_.\-]+\.[a-z]{2,6}$');
+        i.setAttribute('pattern', '^[a-zA-Z0-9_.\\-]+@[a-zA-Z0-9_.\\-]+\\.[a-z]{2,6}$');
         break;
       case 'phonenumber':
         i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
