@@ -5,7 +5,7 @@ function moveButton(promptLink, desktopButtonWrapper) {
     const containerRect = promptLink.getBoundingClientRect();
     let mouseX = event.clientX - containerRect.left;
     let mouseY = event.clientY - containerRect.top;
-    const buttonWidth = desktopButtonWrapper.style.widthidth;
+    const buttonWidth = desktopButtonWrapper.style.width;
     const buttonHeight = desktopButtonWrapper.offsetHeight;
     if (mouseX < 0) mouseX = 0;
     if (mouseX + buttonWidth > containerRect.width) mouseX = containerRect.width - buttonWidth;
