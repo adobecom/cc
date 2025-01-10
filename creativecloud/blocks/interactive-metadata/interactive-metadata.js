@@ -92,7 +92,7 @@ async function createDisplayImg(target, replaceEl, src, alt) {
   target.classList.add('show-image');
   target.classList.remove('show-video');
 }
-let first = true;
+
 async function createDisplayVideo(target, video, src, poster = '') {
   const { pathname, hash } = new URL(src);
   const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
@@ -104,12 +104,6 @@ async function createDisplayVideo(target, video, src, poster = '') {
     video?.load();
     video.oncanplaythrough = async () => {
       await video.play();
-      if (!first) {
-        const miloLibs = getLibs('/libs');
-        const { syncPausePlayIcon } = await import(`${miloLibs}/utils/decorate.js`);
-        syncPausePlayIcon(video);
-      }
-      first = false;
     };
   } catch (err) { return; }
   target.classList.add('show-video');
@@ -141,6 +135,11 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
       const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
       await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
     } else if (displayVideos[vidIdx].nodeName === 'VIDEO') {
+      if (trgtVideo.paused && trgtVideo.played.length !== 0 && trgtVideo.closest('.video-holder')) {
+        const miloLibs = getLibs('/libs');
+        const { syncPausePlayIcon } = await import(`${miloLibs}/utils/decorate.js`);
+        syncPausePlayIcon(trgtVideo);
+      }
       const posterImg = displayVideos[vidIdx].getAttribute('poster') ? displayVideos[vidIdx].getAttribute('poster') : '';
       await createDisplayVideo(
         stepInfo.target,
@@ -259,7 +258,7 @@ async function getTargetArea(el) {
     intEnb.classList.add('interactive-enabled');
     await intEnbReendered(intEnb);
   } catch (err) { return null; }
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset .video-holder, .image video');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset .video-holder, .asset:not(:has(.video-holder)) video, .image video');
   const container = assets[assets.length - 1].closest('p');
   const iArea = createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');
@@ -334,7 +333,5 @@ export default async function init(el) {
   if (workflow.length === 1) return;
   el.addEventListener('cc:interactive-switch', async () => {
     await renderLayer(stepInfo);
-    // console.log(el);
   });
-  // console.log(el);
 }
