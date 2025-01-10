@@ -10,6 +10,7 @@ import nonprofitSelect from './nonprofit-select.js';
 
 const miloLibs = setLibs('/libs');
 const { createTag, getConfig } = await import(`${miloLibs}/utils/utils.js`);
+
 const removeOptionElements = (element) => {
   const children = element.querySelectorAll(':scope > div');
   children.forEach((child) => {
@@ -19,9 +20,9 @@ const removeOptionElements = (element) => {
 
 // #region Constants
 
-const PERCENT_API_URL = 'https://sandbox-api.poweredbypercent.com/v1';
-const PERCENT_VALIDATION_API_URL = 'https://sandbox-validate.poweredbypercent.com/adobe-acrobat';
-const PERCENT_PUBLISHABLE_KEY = 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b';
+const PERCENT_API_URL = 'https://api.goodstack.io/v1';
+const PERCENT_VALIDATION_API_URL = 'https://validate.goodstack.org/adobe-acrobat';
+const PERCENT_PUBLISHABLE_KEY = 'pk_ea675372-2eb2-4cf1-8b6a-358087bf8df5';
 export const SCENARIOS = Object.freeze({
   FOUND_IN_SEARCH: 'FOUND_IN_SEARCH',
   NOT_FOUND_IN_SEARCH: 'NOT_FOUND_IN_SEARCH',
@@ -159,6 +160,8 @@ async function sendOrganizationData() {
     }
 
     let body;
+    const { locale } = getConfig();
+    const { ietf } = locale;
     if (foundInSearch) {
       body = JSON.stringify({
         validationInviteId,
@@ -166,7 +169,7 @@ async function sendOrganizationData() {
         firstName: nonprofitFormData.firstName,
         lastName: nonprofitFormData.lastName,
         email: nonprofitFormData.email,
-        language: 'en-US',
+        language: ietf,
       });
     } else {
       body = JSON.stringify({
@@ -184,7 +187,7 @@ async function sendOrganizationData() {
         firstName: nonprofitFormData.firstName,
         lastName: nonprofitFormData.lastName,
         email: nonprofitFormData.email,
-        language: 'en-US',
+        language: ietf,
       });
     }
 
@@ -484,8 +487,8 @@ function getSelectedOrganizationTag() {
 
     addressTag.textContent = organization.address || '-';
     addressTag.setAttribute('title', organization.address);
-    idTag.textContent = organization.id;
-    idTag.setAttribute('title', organization.id);
+    idTag.textContent = organization.registryId;
+    idTag.setAttribute('title', organization.registryId);
 
     containerTag.style.display = 'flex';
   }, false);
@@ -567,8 +570,8 @@ function renderSelectNonprofit(containerTag) {
       );
       const idTag = createTag(
         'span',
-        { class: 'np-organization-select-id', title: option.id },
-        option.id,
+        { class: 'np-organization-select-id', title: option.registryId },
+        option.registryId,
       );
 
       itemTag.append(nameTag, idTag);
