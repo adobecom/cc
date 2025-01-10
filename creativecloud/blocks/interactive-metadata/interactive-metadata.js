@@ -258,7 +258,7 @@ async function getTargetArea(el) {
     intEnb.classList.add('interactive-enabled');
     await intEnbReendered(intEnb);
   } catch (err) { return null; }
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset .video-holder, .asset:not(:has(.video-holder)) video, .image video');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset .video-holder, .asset:not(:has(.video-holder)) video, .image .video-holder, .image:not(:has(.video-holder)) video');
   const container = assets[assets.length - 1].closest('p');
   const iArea = createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');
