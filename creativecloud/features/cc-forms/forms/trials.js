@@ -325,7 +325,6 @@ class Trials {
     this.elements.forEach((element) => {
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
-        this.validationFailedAction();
         const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
         element.setCustomValidity(`${elem.innerText}`);
         element.reportValidity();
@@ -345,12 +344,11 @@ class Trials {
       try {
         this.checkValidElements();
       } catch (e) { }
-      // this.checkValidElements();
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
         setTimeout(() => { this.submitAction(); }, 1);
       } else {
-        // this.validationFailedAction();
+        this.validationFailedAction();
       }
     });
   }
