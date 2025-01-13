@@ -26,6 +26,13 @@ class Checkbox {
     const checkWrap = createTag('div', { class: 'check-item-wrap checkbox-input-wrap' }, i);
     const checkIcon = createTag('span', { class: 'check-item-button checkbox-button' , tabindex: "0" });
     checkWrap.append(checkIcon);
+    checkIcon.addEventListener('keydown', (event) => {
+      if (event.key === ' ') {
+        event.preventDefault();
+        i.checked = !i.checked;
+        this.isValid();
+      }
+    });
     const d = createTag('div', { class: 'form-item' }, checkWrap);
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i);

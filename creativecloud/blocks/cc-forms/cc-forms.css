@@ -168,6 +168,7 @@
   inset: 0;
   cursor: pointer;
   z-index: 1;
+  width: auto;
 }
 
 .cc-forms .check-item-button {

@@ -100,7 +100,7 @@ class Textfield {
         i.setAttribute('pattern', '^\\+?[0-9]{1,3}[ .-]?(\\([0-9]{3}\\)|[0-9]{3})[ .-]?[0-9]{3}[ .-]?[0-9]{4}$');
         break;
       case 'postalcode':
-        i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
+        i.setAttribute('pattern', '^[0-9a-zA-Z\s-]*$');
         break;
       case 'website':
         i.setAttribute('pattern', '^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$');
