@@ -77,6 +77,9 @@ class ConnectTrials extends Trials {
         this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
     }
 
+    validationFailedAction() {
+    }
+
     urlParam(name) {
         const sPageURL = window.location.search.substring(1);
         const sURLVariables = sPageURL.split('&');
