@@ -131,8 +131,10 @@ class DemandBase {
     })
       .then((response) => response.json())
       .then((json) => {
-        this.fillList(e, json);
-        this.popoverShow(e);
+        if (json.picks?.length) {
+          this.fillList(e, json);
+          this.popoverShow(e);
+        }
       })
       .catch((err) => console.error('Parsing failed:', err));
   }
