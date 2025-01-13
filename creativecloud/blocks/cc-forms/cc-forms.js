@@ -101,6 +101,7 @@ class CCForms {
       payloadMappings: { 'custom.questions_comments': 'company_name, phone, industry, sub_industry, annual_sales, fortune_1000, forbes_2000, web_site' },
     };
     this.createFormComponents();
+    el.remove();
   }
 
   getFormConfig() {
