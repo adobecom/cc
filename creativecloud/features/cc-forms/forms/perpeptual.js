@@ -150,7 +150,7 @@ class PerpetualTrials extends Trials {
       const digitalDataObj = window.alloy_all.data._adobe_corpnew.digitalData;
       const pageName = digitalDataObj?.page?.pageInfo?.pageName ? digitalDataObj.page.pageInfo.pageName : '';
       eventInfo.eventName = `${pageName}_submitfailed`;
-      eventInfo.eventAction = 'event142222';
+      eventInfo.eventAction = 'event15';
       primaryEvent.eventInfo = eventInfo;
       window.digitalData.primaryEvent = primaryEvent;
     }
