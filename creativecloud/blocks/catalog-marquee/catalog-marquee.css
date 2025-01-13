@@ -14,12 +14,7 @@
 }
 
 .catalog-marquee .mnemonic-list {
-  margin: 0 0 var(--spacing-s);
-}
-
-.catalog-marquee .mnemonic-list .product-list {
-  justify-content: flex-start;
-  text-align: start;
+  display: none;
 }
 
 .catalog-marquee .action-area {
@@ -75,11 +70,6 @@
 
 @media screen and (min-width: 600px) {
   .catalog-marquee {
-    text-align: center;
-  }
-
-  .catalog-marquee .mnemonic-list .product-list {
-    justify-content: center;
     text-align: center;
   }
 
@@ -140,6 +130,11 @@
 
   .catalog-marquee .foreground .text {
     max-width: var(--grid-container-width);
+  }
+
+  .catalog-marquee .mnemonic-list {
+    display: block;
+    margin: 0 0 var(--spacing-s);
   }
 }
 
