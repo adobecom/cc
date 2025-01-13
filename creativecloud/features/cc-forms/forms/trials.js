@@ -65,7 +65,7 @@ export class Button {
       case 'productskudownload': {
         const downloadURL = window.localStorage.getItem('productSkuDownloadUrl');
         if (!downloadURL) return;
-        const a = createTag('a', { href: downloadURL, class: 'is-hidden' });
+        const a = createTag('a', { href: downloadURL, class: 'is-hidden' }, "Download Started");
         this.form.append(a);
         a.click();
         window.localStorage.removeItem('productSkuDownloadUrl');
@@ -345,6 +345,18 @@ class Trials {
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
         setTimeout(() => { this.submitAction(); }, 1);
+      } else {
+        if (window.digitalData && ptDownloadForm !== null) {
+          const primaryEvent = window.digitalData.primaryEvent ? window.digitalData.primaryEvent : {};
+          const eventInfo = primaryEvent.eventInfo ? primaryEvent.eventInfo : {};
+          const digitalDataObj = window.alloy_all.data._adobe_corpnew.digitalData;
+          const pageName = digitalDataObj?.page?.pageInfo?.pageName ? digitalDataObj.page.pageInfo.pageName : '';
+          eventInfo.eventName = `${pageName}_submitfailed`;
+          eventInfo.eventAction = 'event142222';
+          primaryEvent.eventInfo = eventInfo;
+          window.digitalData.primaryEvent = primaryEvent;
+        }
+        if (window._satellite) window._satellite.track('trackPerpetualTrialValidationFailed');
       }
     });
   }
