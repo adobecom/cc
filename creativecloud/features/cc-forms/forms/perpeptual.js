@@ -142,21 +142,6 @@ class PerpetualTrials extends Trials {
     this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
   }
 
-  validationFailedAction() {
-    const ptDownloadForm = document.getElementById('ptDownloadForm');
-    if (window.digitalData && ptDownloadForm !== null) {
-      const primaryEvent = window.digitalData.primaryEvent ? window.digitalData.primaryEvent : {};
-      const eventInfo = primaryEvent.eventInfo ? primaryEvent.eventInfo : {};
-      const digitalDataObj = window.alloy_all.data._adobe_corpnew.digitalData;
-      const pageName = digitalDataObj?.page?.pageInfo?.pageName ? digitalDataObj.page.pageInfo.pageName : '';
-      eventInfo.eventName = `${pageName}_submitfailed`;
-      eventInfo.eventAction = 'event14';
-      primaryEvent.eventInfo = eventInfo;
-      window.digitalData.primaryEvent = primaryEvent;
-    }
-    if (window._satellite) window._satellite.track('trackPerpetualTrialDownloadFormSubmit');
-  }
-
   setDownloadFile() {
     const productSkuValue = this.getValue(SELECTOR.PRODUCT_SKU);
     let date = new Date();
