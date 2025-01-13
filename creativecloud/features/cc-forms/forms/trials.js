@@ -346,7 +346,7 @@ class Trials {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
         setTimeout(() => { this.submitAction(); }, 1);
       } else {
-        setTimeout(() => { this.validationFailedAction(); }, 1);
+        this.validationFailedAction();
       }
     });
   }
