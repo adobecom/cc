@@ -311,13 +311,10 @@ class PerpetualTrials extends Trials {
     })
       .then(() => {
         if (this.thankyouPage) {
-          this.circleLoaderHide();
           window.location.href = this.thankyouPage;
         }
       })
-      .catch(() => {
-        this.circleLoaderHide();
-      });
+      .catch(() => { });
   }
 }
 

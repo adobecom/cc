@@ -380,7 +380,6 @@ class Trials {
     && response.reason && response.reason !== 'SUCCESS') {
       destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
     }
-    this.circleLoaderHide();
     window.location.href = destination;
   }
 
@@ -389,7 +388,6 @@ class Trials {
     if (response.status === 502 || response.status === 503) {
       destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);
     }
-    this.circleLoaderHide();
     window.location.href = destination;
   }
 
