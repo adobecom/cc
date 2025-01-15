@@ -309,8 +309,15 @@ class PerpetualTrials extends Trials {
       },
       body: JSON.stringify(payLoad),
     })
-      .then(() => { if (this.thankyouPage) window.location.href = this.thankyouPage; })
-      .catch(() => { });
+      .then(() => {
+        if (this.thankyouPage) {
+          this.circleLoaderHide();
+          window.location.href = this.thankyouPage;
+        }
+      })
+      .catch(() => {
+        this.circleLoaderHide();
+      });
   }
 }
 
