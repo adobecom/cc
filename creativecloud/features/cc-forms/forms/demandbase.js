@@ -185,7 +185,7 @@ class DemandBase {
       }
       const fieldName = fieldMapping[key];
       const fieldValue = this.convert(itemData[fieldName], fieldName);
-      if (fieldName && (fieldName.indexOf('.') !== -1 || document.querySelector(`[name=${fieldName}]:disabled`))) {
+      if (fieldName && (fieldName.indexOf('.') !== -1)) {
         return;
       }
 
@@ -197,6 +197,8 @@ class DemandBase {
         op.text = fieldValue;
         selectEl.add(op);
         selectEl.value = op.value;
+        op.removeAttribute('disabled');
+        selectEl.removeAttribute('disabled');
       }
 
       if (fieldName === 'country') {
