@@ -27,7 +27,7 @@ class Checkbox {
     const checkIcon = createTag('span', { class: 'check-item-button checkbox-button' , tabindex: "0" });
     checkWrap.append(checkIcon);
     checkIcon.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         i.checked = !i.checked;
         this.isValid();
