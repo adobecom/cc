@@ -97,7 +97,7 @@ class Textfield {
         i.setAttribute('pattern', '^[a-zA-Z0-9_.-]+@[a-z0-9_.-]{3,}\.[a-z]{2,6}$');
         break;
       case 'phonenumber':
-        i.setAttribute('pattern', '^(\+?[0-9]{1,3}\\s?)?(\\([0-9]{3}\\))?[\\s\\-\\.]?([0-9]{3})[\\s\\-\\.]?([0-9]{4})$');
+        i.setAttribute('pattern', '^\\(\\+?[0-9]{1,3}\\s?\\)?(\\([0-9]{3}\\))?[\\s\\-\\.]?([0-9]{3})[\\s\\-\\.]?([0-9]{4})$');
         break;
       case 'postalcode':
         i.setAttribute('pattern', '^[^,.?{}()\\[\\]]+$');
