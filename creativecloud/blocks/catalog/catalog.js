@@ -65,6 +65,20 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
   });
 }
 
+function addCheckboxGroupAttributes(sidenav) {
+  const cbGroup = sidenav.querySelector('merch-sidenav-checkbox-group');
+  if (!cbGroup) return;
+
+  const checkboxGroupId = 'sidenav-checkbox-group-title';
+  const h3El = cbGroup.shadowRoot.querySelector('h3');
+  h3El?.setAttribute('id', checkboxGroupId);
+
+  cbGroup.querySelectorAll('sp-checkbox').forEach((checkboxEl) => {
+    checkboxEl.setAttribute('role', 'group');
+    checkboxEl.setAttribute('aria-labelledby', checkboxGroupId);
+  });
+}
+
 /** container block */
 export default async function init(el) {
   el.classList.add('app');
@@ -85,6 +99,7 @@ export default async function init(el) {
       const sidenav = await initSidenav(sidenavEl);
       el.prepend(sidenav);
       await sidenav.updateComplete;
+      addCheckboxGroupAttributes(sidenav);
       if (merchCards) {
         merchCards.sidenav = sidenav;
         merchCards.requestUpdate();
