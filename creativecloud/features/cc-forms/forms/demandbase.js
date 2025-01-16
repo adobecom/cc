@@ -53,10 +53,12 @@ class DemandBase {
   handleEnterKey(e) {
     e.preventDefault();
     const itemHighlighted = e.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
-    e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+    if (itemHighlighted) {
+      e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+      const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
+      this.prepopulateFields(itemData);
+    }
     this.popoverHide(e);
-    const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
-    this.prepopulateFields(itemData);
   }
 
   handleUpArrow(e) {
@@ -105,15 +107,13 @@ class DemandBase {
 
   popoverShow(e) {
     e.target.parentNode.classList.add('is-open');
-    e.target.parentNode.querySelector('.db-Popover')
-      .classList
+    e.target.parentNode.querySelector('.db-Popover')?.classList
       .add('is-open');
   }
 
   popoverHide(e) {
     e.target.parentNode.classList.remove('is-open');
-    e.target.parentNode.querySelector('.db-Popover')
-      .classList
+    e.target.parentNode.querySelector('.db-Popover')?.classList
       .remove('is-open');
   }
 
