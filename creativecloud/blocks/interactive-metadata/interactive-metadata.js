@@ -107,7 +107,7 @@ async function createDisplayVideo(target, video, src, poster = '') {
       target.classList.add('show-video');
       target.classList.remove('show-image');
     };
-  } catch (err) { return; }
+  } catch (err) { /* pass */ }
 }
 
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
