@@ -105,10 +105,18 @@ class DemandBase {
     return highlightedItem;
   }
 
+  handleClickOutside(e) {
+    if (!e.target.classList.contains('db-Popover')) {
+      this.popoverHide(e);
+      document.removeEventListener('click', this.handleClickOutside);
+    }
+  }
+
   popoverShow(e) {
     e.target.parentNode.classList.add('is-open');
     e.target.parentNode.querySelector('.db-Popover')?.classList
       .add('is-open');
+    document.addEventListener('click', this.handleClickOutside.bind(this));
   }
 
   popoverHide(e) {
