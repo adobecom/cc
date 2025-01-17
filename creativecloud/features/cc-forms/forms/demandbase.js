@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { createTag } from '../../../scripts/utils.js';
 
 const SELECTOR_MENU = '.db-Menu';
@@ -136,7 +137,7 @@ class DemandBase {
           this.popoverShow(e);
         }
       })
-      .catch((err) => console.error('Parsing failed:', err));
+      .catch(() => { });
   }
 
   getListElement(e) {
