@@ -110,6 +110,12 @@ async function createDisplayVideo(target, video, src, poster = '') {
   target.classList.remove('show-image');
 }
 
+const decorateFunctionPromise = (async function loadDecorateFunctions() {
+  const miloLibs = getLibs('/libs');
+  const { syncPausePlayIcon, applyAccessibilityEvents } = await import(`${miloLibs}/utils/decorate.js`);
+  return { syncPausePlayIcon, applyAccessibilityEvents };
+}());
+
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
   const trgtPic = stepInfo.target.querySelector(':scope > picture');
@@ -131,15 +137,16 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[imgIdx].alt);
   } else if (displayVideos.length) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
+    if (trgtVideo.closest('.video-holder')) {
+      if (trgtVideo.paused && trgtVideo.played.length !== 0 && trgtVideo.autoplay) {
+        const { syncPausePlayIcon } = await decorateFunctionPromise;
+        syncPausePlayIcon(trgtVideo);
+      }
+    }
     if (displayVideos[vidIdx].nodeName === 'A') {
       const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
       await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
     } else if (displayVideos[vidIdx].nodeName === 'VIDEO') {
-      if (trgtVideo.paused && trgtVideo.played.length !== 0 && trgtVideo.closest('.video-holder')) {
-        const miloLibs = getLibs('/libs');
-        const { syncPausePlayIcon } = await import(`${miloLibs}/utils/decorate.js`);
-        syncPausePlayIcon(trgtVideo);
-      }
       const posterImg = displayVideos[vidIdx].getAttribute('poster') ? displayVideos[vidIdx].getAttribute('poster') : '';
       await createDisplayVideo(
         stepInfo.target,
@@ -233,6 +240,14 @@ function createInteractiveArea(el, asset) {
   if (imgElem) {
     imgElem.src = getImgSrc(asset);
     assetElem = createTag('video');
+    const videoHolder = el.querySelector('.video-holder');
+    if (videoHolder) {
+      assetElem = videoHolder.cloneNode(true);
+      const videoEl = assetElem.querySelector('video');
+      decorateFunctionPromise.then(({ applyAccessibilityEvents }) => {
+        applyAccessibilityEvents(videoEl);
+      });
+    }
     iArea.classList.add('show-image');
     [...asset.querySelectorAll('source')].forEach((s) => s.remove());
   } else {
