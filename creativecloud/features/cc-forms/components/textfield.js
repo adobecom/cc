@@ -91,19 +91,19 @@ class Textfield {
     const fieldType = this.fieldConfig.type.split('cc-form-text-').pop();
     switch (fieldType) {
       case 'contributor':
-        i.setAttribute('pattern', '^[^,.?{}()\\[\\]]+$');
+        i.setAttribute('pattern', '^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$');
         break;
       case 'email':
-        i.setAttribute('pattern', '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
+        i.setAttribute('pattern', '^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$');
         break;
       case 'phonenumber':
-        i.setAttribute('pattern', '^[0-9\\s()+\\-]*$');
+        i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
         break;
       case 'postalcode':
-        i.setAttribute('pattern', '^[0-9a-zA-Z\\s-]*$');
+        i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
         break;
       case 'website':
-        i.setAttribute('pattern', '^((ftp|http|https):\\/\\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\\.[a-zA-Z]+)+((\\/)[\\w#]+)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?$');
+        i.setAttribute('pattern', '^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$');
         break;
       case 'orgname':
         i.setAttribute('pattern', '^[^,.?{}()\\[\\]]+$');
