@@ -232,7 +232,7 @@ export class ConsentNotice {
   setNoticetags(userCountry) {
     const consentBody = this.getUserGroup(userCountry);
     if (consentBody?.countryCode) {
-      const { childNodes } = consentBody.consentFragment.childNodes;
+      const { childNodes } = consentBody.consentFragment;
       childNodes.forEach((child) => {
         this.noticeEl.appendChild(child);
       });
