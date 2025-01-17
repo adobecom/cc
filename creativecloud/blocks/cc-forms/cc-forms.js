@@ -8,8 +8,9 @@ import DemandBase from '../../features/cc-forms/forms/demandbase.js';
 
 function getOdinEndpoint() {
   const cfg = getConfig();
-  if (cfg.env.name === 'prod') return cfg.stage.odinEndpoint;
-  return cfg.stage.odinEndpoint;
+  if (cfg.env.name === 'prod') return cfg.prod.odinEndpoint;
+  if (cfg.env.name === 'stage') return cfg.stage.odinEndpoint;
+  throw new Error('Unknown environment');
 }
 
 const odinConfig = {
