@@ -106,7 +106,6 @@ class Textfield {
         i.setAttribute('pattern', '^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$');
         break;
       case 'orgname':
-        i.setAttribute('pattern', '');
         break;
       case 'fname':
         i.setAttribute('pattern', '[a-zA-Z0-9]+');
