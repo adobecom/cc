@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 // import getPropertySafely from '@dexter/dexterui-tools/lib/utils/lang/getPropertySafely';
 import Trials from './trials.js';
+import { getConfig } from '../../scripts/utils.js';
 
 const ipaasParamMap = {
   postalcode: 'postalZip',
@@ -115,7 +116,8 @@ class ConnectTrials extends Trials {
   }
 
   getTemplateId(region, product) {
-    const production = (window.location.href.indexOf('https://www.adobe.com') === 0);
+    const cfg = getConfig();
+    const production = (cfg.env.name === 'prod');
     const regionProductMap = {
       0: {
         meetings: 2072160908,
