@@ -8,9 +8,8 @@ import DemandBase from '../../features/cc-forms/forms/demandbase.js';
 
 function getOdinEndpoint() {
   const cfg = getConfig();
-  const { host } = window.location;
-  if (host.includes('stage.adobe.com') || host.includes('hlx.live')) return cfg.stage.odinEndpoint;
-  if (host.includes('adobe.com')) return cfg.prod.odinEndpoint;
+  if (window.location.includes('stage.adobe.com') || window.location.includes('hlx.live')) return cfg.stage.odinEndpoint;
+  if (window.location.includes('adobe.com')) return cfg.prod.odinEndpoint;
   return cfg.live.odinEndpoint;
 }
 
