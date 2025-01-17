@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 // import getPropertySafely from '@dexter/dexterui-tools/lib/utils/lang/getPropertySafely';
 import Trials from './trials.js';
-import { getConfig } from '../../scripts/utils.js';
+import { getConfig } from '../../../scripts/utils.js';
 
 const ipaasParamMap = {
   postalcode: 'postalZip',
