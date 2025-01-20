@@ -29,3 +29,12 @@
   order: 1;
   padding: 0;
 }
+
+.catalog.app .checkbox-group-id {
+  top: 0;
+  left: -2px;
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  overflow: hidden;
+}

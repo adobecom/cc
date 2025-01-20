@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, createTag } from '../../scripts/utils.js';
 
 const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
@@ -71,7 +71,11 @@ function addCheckboxGroupAttributes(sidenav) {
 
   const checkboxGroupId = 'sidenav-checkbox-group-title';
   const h3El = cbGroup.shadowRoot.querySelector('h3');
-  h3El?.setAttribute('id', checkboxGroupId);
+  if (!h3El) return;
+
+  const groupIdEl = createTag('div', { class: 'checkbox-group-id', id: checkboxGroupId });
+  groupIdEl.textContent = h3El.textContent;
+  cbGroup.append(groupIdEl);
 
   cbGroup.querySelectorAll('sp-checkbox').forEach((checkboxEl) => {
     checkboxEl.setAttribute('role', 'group');
