@@ -17,6 +17,11 @@
   color: #2C2C2C;
 }
 
+.cc-forms input,
+.cc-forms select {
+  color: #2C2C2C;
+}
+
 .cc-forms .form-item h1,
 .cc-forms .form-item h2,
 .cc-forms .form-item h3,
