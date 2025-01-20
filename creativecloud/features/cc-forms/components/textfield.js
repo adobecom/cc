@@ -128,10 +128,10 @@ class Textfield {
     this.value = this.textfield.value;
     this.valid = false;
     if (!this.pattern && !this.required) this.valid = true;
-    if (!this.pattern && this.required && this.value !== '') this.valid = true;
+    if (!this.pattern && this.required && this.value.trim() !== '') this.valid = true;
     if (this.pattern && this.textfield.validity.valid) this.valid = true;
-    if (this.required && this.value === '') this.valid = false;
-    if (!this.required && this.value === '') this.valid = true;
+    if (this.required && this.value.trim() === '') this.valid = false;
+    if (!this.required && this.value.trim() === '') this.valid = true;
     if (this.readonly) this.valid = true;
     this.textfield.setAttribute('data-valid', this.valid);
     if (this.required && (!this.valid || this.value.trim() === '')) {
