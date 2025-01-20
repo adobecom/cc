@@ -67,6 +67,8 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
 
 /** container block */
 export default async function init(el) {
+  const { polyfills } = await import(`${miloLibs}/blocks/merch/merch.js`);
+  await polyfills();
   el.classList.add('app');
   const libs = getLibs();
   const sidenavEl = el.querySelector('.sidenav');
