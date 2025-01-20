@@ -134,7 +134,7 @@ class Textfield {
     if (!this.required && this.value === '') this.valid = true;
     if (this.readonly) this.valid = true;
     this.textfield.setAttribute('data-valid', this.valid);
-    if (this.required && (!this.valid && this.value === '')) {
+    if (this.required && (!this.valid && this.value.trim() === '')) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
