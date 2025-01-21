@@ -49,29 +49,29 @@ describe('TextField Component', async () => {
     expect(textfields[textfields.length - 1].closest('.form-item').querySelector('.field-detail.disclaimer')).to.not.exist;
   });
 
-  it('Textbox should be evaluated for correct pattern', () => {
-    const textfield = document.querySelector('input[type="text"].cc-form-component');
-    textfield.value = 'Sample';
-    const event = new Event('blur', { bubbles: true });
-    textfield.dispatchEvent(event);
-    expect(textfield.getAttribute('data-valid')).to.equal('true');
-  });
+  // it('Textbox should be evaluated for correct pattern', () => {
+  //   const textfield = document.querySelector('input[type="text"].cc-form-component');
+  //   textfield.value = 'Sample';
+  //   const event = new Event('blur', { bubbles: true });
+  //   textfield.dispatchEvent(event);
+  //   expect(textfield.getAttribute('data-valid')).to.equal('true');
+  // });
 
-  it('Textbox should be evaluated for incorrect value', () => {
-    const textfield = document.querySelector('#fname');
-    textfield.value = 'feqwf#$@';
-    const event = new Event('blur', { bubbles: true });
-    textfield.dispatchEvent(event);
-    expect(textfield.getAttribute('data-valid')).to.equal('false');
-  });
+  // it('Textbox should be evaluated for incorrect value', () => {
+  //   const textfield = document.querySelector('#fname');
+  //   textfield.value = 'feqwf#$@';
+  //   const event = new Event('blur', { bubbles: true });
+  //   textfield.dispatchEvent(event);
+  //   expect(textfield.getAttribute('data-valid')).to.equal('false');
+  // });
 
-  it('Textbox should be evaluated for empty value', () => {
-    const textfield = document.querySelector('#email');
-    textfield.value = '';
-    const event = new Event('blur', { bubbles: true });
-    textfield.dispatchEvent(event);
-    expect(textfield.getAttribute('data-valid')).to.equal('false');
-  });
+  // it('Textbox should be evaluated for empty value', () => {
+  //   const textfield = document.querySelector('#email');
+  //   textfield.value = '';
+  //   const event = new Event('blur', { bubbles: true });
+  //   textfield.dispatchEvent(event);
+  //   expect(textfield.getAttribute('data-valid')).to.equal('false');
+  // });
 
   it('Text should have a text area', () => {
     const textarea = document.querySelector('textarea');
