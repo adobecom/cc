@@ -65,15 +65,6 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
   });
 }
 
-function removeAriaHidden(sidenav) {
-  const spIcon = sidenav.querySelector('sp-icon-link-out-light');
-  if (spIcon) {
-    spIcon.removeAttribute('aria-hidden');
-    const svg = spIcon.shadowRoot.querySelector('svg');
-    svg?.removeAttribute('aria-hidden');
-  }
-}
-
 /** container block */
 export default async function init(el) {
   el.classList.add('app');
@@ -94,7 +85,6 @@ export default async function init(el) {
       const sidenav = await initSidenav(sidenavEl);
       el.prepend(sidenav);
       await sidenav.updateComplete;
-      removeAriaHidden(sidenav);
       if (merchCards) {
         merchCards.sidenav = sidenav;
         merchCards.requestUpdate();
