@@ -17,7 +17,7 @@ export default async function stepInit(data) {
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#' });
-  const svg = config.querySelector('picture img[src*=".svg"]:not(.accessibility-control)')?.closest('picture');
+  const svg = config.querySelector('picture img[src*=".svg"]:not(.accessibility-control)');
   if (svg) {
     svg.insertAdjacentElement('afterend', svg.cloneNode(true));
     startOverCTA.append(svg);
