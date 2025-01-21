@@ -61,8 +61,10 @@ class ConnectTrials extends Trials {
       if (xf) {
         this.buttonListener();
       } else {
-        notice.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
+        this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
       }
+    } else {
+      this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
     }
     window.adobeid.api_parameters = { authorize: { state: { ac: 'Adobe.com_ctrials_connect' }, ctx_id: 'ct_connect' } };
     const userProfilePromise = this.imslib.getProfile();
