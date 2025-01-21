@@ -93,7 +93,7 @@ class PerpetualTrials extends Trials {
     this.setValue(SELECTOR.PRODUCT_SKU, this.autoSelectBit());
     this.setValue(SELECTOR.JOB_FUNCTION, this.imsProfile.job_function);
     this.setValue(SELECTOR.POSTAL_CODE, this.imsProfile['address.mail_to'] && this.imsProfile['address.mail_to'].postalZip ? this.imsProfile['address.mail_to'].postalZip : '');
-    if (this.form.querySelector(SELECTOR.ORG_SIZE)) this.setOrgSize();
+    // if (this.form.querySelector(SELECTOR.ORG_SIZE)) this.setOrgSize();
   }
 
   // eslint-disable-next-line class-methods-use-this
