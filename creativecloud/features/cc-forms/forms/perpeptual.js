@@ -46,8 +46,10 @@ class PerpetualTrials extends Trials {
       if (xf) {
         this.buttonListener();
       } else {
-        notice.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
+        this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
       }
+    } else {
+      this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
     }
     const ptDownloadForm = document.getElementById('ptDownloadForm');
     if (ptDownloadForm) {
