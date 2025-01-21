@@ -9,7 +9,7 @@ import DemandBase from '../../features/cc-forms/forms/demandbase.js';
 function getOdinEndpoint() {
   const cfg = getConfig();
   if (cfg.env.name === 'prod') return cfg.prod.odinEndpoint;
-  if (cfg.env.name === 'stage') return cfg.stage.odinEndpoint;
+  if (cfg.env.name === 'stage' || cfg.env.name === 'local') return cfg.stage.odinEndpoint;
   throw new Error('Unknown environment');
 }
 
@@ -194,10 +194,10 @@ class CCForms {
   }
 }
 
-function imsInitialized(interval = 200) {
+function isSignedInInitialized(interval = 200) {
   return new Promise((resolve) => {
     function poll() {
-      if (window.adobeIMS?.initialized) resolve();
+      if (window.adobeIMS?.isSignedInUser) resolve();
       else setTimeout(poll, interval);
     }
     poll();
@@ -205,10 +205,12 @@ function imsInitialized(interval = 200) {
 }
 
 export default async function init(el) {
-  const formComponent = new CCForms(el);
-  if (formComponent.formConfig.type === 'default') return el.remove();
-  imsInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) window.adobeIMS.signIn();
+  isSignedInInitialized().then(async () => {
+    if (!window.adobeIMS.isSignedInUser()) {
+      return window.adobeIMS.signIn();
+    }
+    const formComponent = new CCForms(el);
+    if (formComponent.formConfig.type === 'default') return el.remove();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
     const fc = new FormConfigurator(formComponent.form);
     el.remove();
