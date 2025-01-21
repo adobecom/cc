@@ -155,9 +155,9 @@ function appendResources(rootNav, resourceLink) {
     link.append(document.createTextNode(label));
     const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon' });
     link.append(icon);
-    setTimeout(() => {
+    link.updateComplete.then(() => {
       link.shadowRoot?.querySelector('a')?.setAttribute('aria-label', ariaLabel);
-    }, 500);
+    });
   }
   tag.append(link);
   rootNav.append(merchTag);
