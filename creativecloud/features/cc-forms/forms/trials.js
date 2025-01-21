@@ -65,7 +65,7 @@ export class Button {
       case 'productskudownload': {
         const downloadURL = window.localStorage.getItem('productSkuDownloadUrl');
         if (!downloadURL) return;
-        const a = createTag('a', { href: downloadURL, class: 'is-hidden' }, "Download Started");
+        const a = createTag('a', { href: downloadURL, class: 'is-hidden' }, 'Download Started');
         this.form.append(a);
         a.click();
         window.localStorage.removeItem('productSkuDownloadUrl');
@@ -198,7 +198,6 @@ export class ConsentNotice {
     const promise = this.imsReady();
     return promise.then(() => {
       this.processOnLoggedInUser();
-      this.noticeEl.dispatchEvent(new CustomEvent('cc:consent-ready'));
     }).catch(() => {});
   }
 
@@ -211,6 +210,7 @@ export class ConsentNotice {
       this.setNoticetags(profile.countryCode);
       this.setNoticeBody();
       this.observeNoticeCheckboxes();
+      this.form.dispatchEvent(new CustomEvent('cc:consent-ready'));
     }).catch(() => {});
   }
 
@@ -232,8 +232,8 @@ export class ConsentNotice {
   setNoticetags(userCountry) {
     const consentBody = this.getUserGroup(userCountry);
     if (consentBody?.countryCode) {
-      const childNodes = consentBody.consentFragment.childNodes;
-      childNodes.forEach(child => {
+      const { childNodes } = consentBody.consentFragment;
+      childNodes.forEach((child) => {
         this.noticeEl.appendChild(child);
       });
       this.setNoticeChannels(consentBody.bucketType, consentBody.noticeType);
@@ -343,7 +343,7 @@ class Trials {
       this.formContainer.dispatchEvent(this.event);
       try {
         this.checkValidElements();
-      } catch (e) { }
+      } catch (e) { /* pass */ }
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
         setTimeout(() => { this.submitAction(); }, 1);
@@ -352,10 +352,7 @@ class Trials {
   }
 
   getUUID() {
-    function rs() {
-      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return `${rs() + rs()}-${rs()}-${rs()}-${rs()}-${rs()}${rs()}${rs()}`;
+    return window.crypto.randomUUID();
   }
 
   setFormConfig() {

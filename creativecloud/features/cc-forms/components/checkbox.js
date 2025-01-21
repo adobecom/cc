@@ -22,9 +22,9 @@ class Checkbox {
   }
 
   createCheckbox() {
-    const i = createTag('input', { type: 'checkbox', class: 'cc-form-component check-item-input checkbox-input', tabindex: "-1"  });
+    const i = createTag('input', { type: 'checkbox', class: 'cc-form-component check-item-input checkbox-input', tabindex: '-1' });
     const checkWrap = createTag('div', { class: 'check-item-wrap checkbox-input-wrap' }, i);
-    const checkIcon = createTag('span', { class: 'check-item-button checkbox-button' , tabindex: "0" });
+    const checkIcon = createTag('span', { class: 'check-item-button checkbox-button', tabindex: '0' });
     checkWrap.append(checkIcon);
     checkIcon.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {

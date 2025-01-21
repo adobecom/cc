@@ -94,19 +94,18 @@ class Textfield {
         i.setAttribute('pattern', '^[^\\^,\\.\\?\\{\\}\\(\\)\\[\\]]+$');
         break;
       case 'email':
-        i.setAttribute('pattern', '^[a-zA-Z0-9_.-]+@[a-z0-9_.-]{3,}\.[a-z]{2,6}$');
+        i.setAttribute('pattern', '^[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$');
         break;
       case 'phonenumber':
-        i.setAttribute('pattern', '^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$');
+        i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
         break;
       case 'postalcode':
-        i.setAttribute('pattern', '^[^,.?{}()\\[\\]]+$');
+        i.setAttribute('pattern', '^[0-9a-zA-Z\\-]*$');
         break;
       case 'website':
-        i.setAttribute('pattern', '(^[a-zA-Z0-9_\-\.]+@[a-z0-9_\-\.]{3,}\.[a-z]{2,6})');
+        i.setAttribute('pattern', '^((ftp|http|https):\\/\\/)??(www\\.)?(?!.*(ftp|http|https|www\\.)).+[a-zA-Z0-9_\\-]+(\\.[a-zA-Z]+)+((\\/\\w*)*(\\/\\w+\\?[a-zA-Z0-9_]+=\\w+(&[a-zA-Z0-9_]+=\\w+)*)?)?\\/?$');
         break;
       case 'orgname':
-        i.setAttribute('pattern', '^[^,.?{}()\\[\\]]+$');
         break;
       case 'fname':
         i.setAttribute('pattern', '[a-zA-Z0-9]+');
@@ -129,13 +128,13 @@ class Textfield {
     this.value = this.textfield.value;
     this.valid = false;
     if (!this.pattern && !this.required) this.valid = true;
-    if (!this.pattern && this.required && this.value !== '') this.valid = true;
+    if (!this.pattern && this.required && this.value.trim() !== '') this.valid = true;
     if (this.pattern && this.textfield.validity.valid) this.valid = true;
-    if (this.required && this.value === '') this.valid = false;
-    if (!this.required && this.value === '') this.valid = true;
+    if (this.required && this.value.trim() === '') this.valid = false;
+    if (!this.required && this.value.trim() === '') this.valid = true;
     if (this.readonly) this.valid = true;
     this.textfield.setAttribute('data-valid', this.valid);
-    if (this.required && (!this.valid && this.value === '')) {
+    if (this.required && (!this.valid || this.value.trim() === '')) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();

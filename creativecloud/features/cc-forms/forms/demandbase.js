@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { createTag } from '../../../scripts/utils.js';
 
 const SELECTOR_MENU = '.db-Menu';
@@ -53,10 +54,12 @@ class DemandBase {
   handleEnterKey(e) {
     e.preventDefault();
     const itemHighlighted = e.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
-    e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+    if (itemHighlighted) {
+      e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+      const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
+      this.prepopulateFields(itemData);
+    }
     this.popoverHide(e);
-    const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
-    this.prepopulateFields(itemData);
   }
 
   handleUpArrow(e) {
@@ -103,17 +106,23 @@ class DemandBase {
     return highlightedItem;
   }
 
+  handleClickOutside(e) {
+    if (!e.target.classList.contains('db-Popover')) {
+      this.popoverHide(e);
+      document.removeEventListener('click', this.handleClickOutside);
+    }
+  }
+
   popoverShow(e) {
     e.target.parentNode.classList.add('is-open');
-    e.target.parentNode.querySelector('.db-Popover')
-      .classList
+    e.target.parentNode.querySelector('.db-Popover')?.classList
       .add('is-open');
+    document.addEventListener('click', this.handleClickOutside.bind(this));
   }
 
   popoverHide(e) {
     e.target.parentNode.classList.remove('is-open');
-    e.target.parentNode.querySelector('.db-Popover')
-      .classList
+    e.target.parentNode.querySelector('.db-Popover')?.classList
       .remove('is-open');
   }
 
@@ -136,7 +145,7 @@ class DemandBase {
           this.popoverShow(e);
         }
       })
-      .catch((err) => console.error('Parsing failed:', err));
+      .catch(() => { });
   }
 
   getListElement(e) {
