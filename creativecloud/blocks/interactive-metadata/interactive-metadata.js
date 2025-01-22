@@ -112,8 +112,8 @@ async function createDisplayVideo(target, video, src, poster = '') {
 
 const decorateFunctionPromise = (async function loadDecorateFunctions() {
   const miloLibs = getLibs('/libs');
-  const { syncPausePlayIcon, applyAccessibilityEvents } = await import(`${miloLibs}/utils/decorate.js`);
-  return { syncPausePlayIcon, applyAccessibilityEvents };
+  const { syncPausePlayIcon, applyAccessibilityEvents, addAccessibilityControl } = await import(`${miloLibs}/utils/decorate.js`);
+  return { syncPausePlayIcon, applyAccessibilityEvents, addAccessibilityControl };
 }());
 
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
@@ -230,7 +230,7 @@ function decorateMobileHeading(intEnb) {
   intEnb.querySelector('.image, .asset').prepend(hTxtTop);
 }
 
-function createInteractiveArea(el, asset) {
+async function createInteractiveArea(el, asset) {
   const iArea = createTag('div', { class: 'interactive-holder' });
   const newPic = asset.cloneNode(true);
   const p = createTag('p', {}, newPic);
@@ -240,13 +240,14 @@ function createInteractiveArea(el, asset) {
   if (imgElem) {
     imgElem.src = getImgSrc(asset);
     assetElem = createTag('video');
-    const videoHolder = el.querySelector('.video-holder');
-    if (videoHolder) {
-      assetElem = videoHolder.cloneNode(true);
-      const videoEl = assetElem.querySelector('video');
-      decorateFunctionPromise.then(({ applyAccessibilityEvents }) => {
-        applyAccessibilityEvents(videoEl);
-      });
+    const avideoTag = el.querySelector('a[href*=".mp4"]');
+    if (!avideoTag?.href.includes('_hide-controls')) {
+      assetElem = createTag('div');
+      const { addAccessibilityControl, applyAccessibilityEvents } = await decorateFunctionPromise;
+      const videoText = addAccessibilityControl('<video></video>', 'autoplay', 0);
+      assetElem.insertAdjacentHTML('beforeend', videoText);
+      const video = assetElem.querySelector('video');
+      applyAccessibilityEvents(video);
     }
     iArea.classList.add('show-image');
     [...asset.querySelectorAll('source')].forEach((s) => s.remove());
@@ -275,7 +276,7 @@ async function getTargetArea(el) {
   } catch (err) { return null; }
   const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset .video-holder, .asset:not(:has(.video-holder)) video, .image .video-holder, .image:not(:has(.video-holder)) video');
   const container = assets[assets.length - 1].closest('p');
-  const iArea = createInteractiveArea(el, assets[assets.length - 1]);
+  const iArea = await createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');
   if (container) container.replaceWith(iArea);
   else assetArea.append(iArea);

@@ -106,7 +106,7 @@
 
 .interactive-enabled .foreground.container .interactive-holder.show-image > picture img,
 .interactive-enabled .foreground.container .interactive-holder.show-image > picture,
-.interactive-enabled .foreground.container .interactive-holder.show-video > :has(.video-holder, video) {
+.interactive-enabled .foreground.container .interactive-holder.show-video :is(video, .video-container.video-holder) {
   width: 100%;
   aspect-ratio: 1;
   height: auto;
@@ -114,7 +114,7 @@
   z-index: 1;
 }
 
-.interactive-enabled .foreground.container .interactive-holder.show-image > :has(.video-holder, video) {
+.interactive-enabled .foreground.container .interactive-holder.show-image :is(video, .video-container.video-holder) {
   display: none;
 }
 
