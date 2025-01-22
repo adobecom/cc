@@ -143,7 +143,7 @@ class Textfield {
         this.textfield.reportValidity();
         // this.textfield.removeEventListener('input', cb);
       };
-      this.textfield.addEventListener('input', cb, { once: true });
+      this.textfield.addEventListener('input', cb);
     } else if (!this.valid) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
@@ -153,7 +153,7 @@ class Textfield {
         this.textfield.reportValidity();
         // this.textfield.removeEventListener('input', cb);
       };
-      this.textfield.addEventListener('input', cb, { once: true });
+      this.textfield.addEventListener('input', cb);
     }
     return this.valid;
   }

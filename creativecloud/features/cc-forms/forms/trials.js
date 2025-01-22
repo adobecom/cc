@@ -321,6 +321,7 @@ class Trials {
   }
 
   checkValidElements() {
+    console.log('checkValidElements');
     this.valid = true;
     this.elements.forEach((element) => {
       if (element.getAttribute('data-valid') === 'false') {
@@ -340,6 +341,7 @@ class Trials {
 
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
+      console.log('buttonListener');
       this.formContainer.dispatchEvent(this.event);
       try {
         this.checkValidElements();
@@ -381,6 +383,7 @@ class Trials {
   }
 
   postSubmitFailure(response) {
+    console.log('postSubmitFailure');
     let destination = this.getFormConfig(`data-${CONF_KEY_ERROR_GENERIC}`);
     if (response.status === 502 || response.status === 503) {
       destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);

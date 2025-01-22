@@ -124,6 +124,7 @@ class PerpetualTrials extends Trials {
   }
 
   submitAction() {
+    console.log('submitAction');
     const ptDownloadForm = document.getElementById('ptDownloadForm');
     if (window.digitalData && ptDownloadForm !== null) {
       const primaryEvent = window.digitalData.primaryEvent ? window.digitalData.primaryEvent : {};
