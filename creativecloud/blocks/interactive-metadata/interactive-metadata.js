@@ -60,7 +60,7 @@ function loadImg(img) {
 
 function preloadAsset(nextStepIndex, stepInfo) {
   const das = stepInfo.stepConfigs[nextStepIndex]
-    .querySelectorAll(':scope > div > p > picture img[src*="media_"], :scope > div > p > a[href*=".mp4"]');
+    .querySelectorAll(':scope > div > p > picture img[src*="media_"], :scope > div > p > a[href*=".mp4"], :scope > div > p video');
   if (!das.length) return;
   const { displayPath } = stepInfo;
   const daIdx = (displayPath < das.length) ? displayPath : 0;
@@ -104,10 +104,10 @@ async function createDisplayVideo(target, video, src, poster = '') {
     video?.load();
     video.oncanplaythrough = async () => {
       await video.play();
+      target.classList.add('show-video');
+      target.classList.remove('show-image');
     };
-  } catch (err) { return; }
-  target.classList.add('show-video');
-  target.classList.remove('show-image');
+  } catch (err) { /* pass */ }
 }
 
 const decorateFunctionPromise = (async function loadDecorateFunctions() {
