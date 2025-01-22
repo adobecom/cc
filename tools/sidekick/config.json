@@ -154,7 +154,6 @@
       "environments": [ "edit", "dev", "preview", "live" ],
       "url": "https://main--cc--adobecom.hlx.page/tools/bulk-publish"
     },
-    
     {
       "containerId": "tools",
       "id": "rollout",
