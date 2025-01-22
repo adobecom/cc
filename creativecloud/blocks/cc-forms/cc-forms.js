@@ -208,7 +208,7 @@ export default async function init(el) {
   const formComponent = new CCForms(el);
   if (formComponent.formConfig.type === 'default') return el.remove();
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    // if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
     const fc = new FormConfigurator(formComponent.form);
     el.remove();

@@ -125,6 +125,7 @@ class Textfield {
   }
 
   isValid() {
+    console.log('inside is valid', SELECTOR_PREFIX_MESSAGE);
     this.value = this.textfield.value;
     this.valid = false;
     if (!this.pattern && !this.required) this.valid = true;
@@ -135,20 +136,26 @@ class Textfield {
     if (this.readonly) this.valid = true;
     this.textfield.setAttribute('data-valid', this.valid);
     if (this.required && (!this.valid || this.value.trim() === '')) {
+      console.log('if 1');
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+      console.log('elem innertext', elem.innerText);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
       const cb = () => {
+        console.log('if 1 cb');
         this.textfield.setCustomValidity('');
         this.textfield.reportValidity();
         this.textfield.removeEventListener('input', cb);
       };
       this.textfield.addEventListener('input', cb);
     } else if (!this.valid) {
+      console.log('if 2');
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
+      console.log('elem innertext', elem.innerText);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
       const cb = () => {
+        console.log('if 2 cb');
         this.textfield.setCustomValidity('');
         this.textfield.reportValidity();
         this.textfield.removeEventListener('input', cb);
