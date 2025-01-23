@@ -149,11 +149,15 @@ function appendResources(rootNav, resourceLink) {
   const merchTag = createTag('merch-sidenav-list', { sidenavListTitle, 'daa-ll': generateDaaLL(sidenavListTitle, 'resources') });
   merchTag.append(tag);
   const label = literals[1].trim();
+  const ariaLabel = resourceLink.getAttribute('aria-label') || '';
   const link = createTag('sp-sidenav-item', { href: resourceLink.href, 'daa-ll': generateDaaLL(sidenavListTitle, 'special-offers'), target: '_blank', selected: false });
   if (resourceLink.href && resourceLink.href.startsWith('http')) {
     link.append(document.createTextNode(label));
-    const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon' });
+    const icon = createTag('sp-icon-link-out-light', { class: 'right', slot: 'icon', label });
     link.append(icon);
+    link.updateComplete.then(() => {
+      link.shadowRoot?.querySelector('a')?.setAttribute('aria-label', ariaLabel);
+    });
   }
   tag.append(link);
   rootNav.append(merchTag);
