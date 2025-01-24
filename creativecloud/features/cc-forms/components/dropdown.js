@@ -234,10 +234,15 @@ class Dropdown {
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+    if (!this.elem) return;
     this.dropdown.setCustomValidity(`${elem.innerText}`);
+    this.dropdown.blur();
+    this.dropdown.focus();
     this.dropdown.reportValidity();
     const cb = () => {
       this.dropdown.setCustomValidity('');
+      this.dropdown.blur();
+      this.dropdown.focus();
       this.dropdown.reportValidity();
       this.dropdown.removeEventListener('input', cb);
     };

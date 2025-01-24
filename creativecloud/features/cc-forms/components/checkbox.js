@@ -101,10 +101,15 @@ class Checkbox {
     this.checkboxInput.setAttribute('data-valid', this.valid);
     if (!this.valid) {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+      if (!this.elem) return;
       this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+      this.checkboxInput.blur();
+      this.checkboxInput.focus();
       this.checkboxInput.reportValidity();
       const cb = () => {
         this.checkboxInput.setCustomValidity('');
+        this.checkboxInput.blur(); // Trigger blur
+        this.checkboxInput.focus();
         this.checkboxInput.reportValidity();
         this.checkboxInput.removeEventListener('input', cb);
       };
