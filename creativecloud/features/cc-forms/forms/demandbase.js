@@ -225,5 +225,4 @@ class DemandBase {
     elem.addEventListener('keydown', (e) => this.waitAndFireDemandBase(e));
   }
 }
-
 export default DemandBase;

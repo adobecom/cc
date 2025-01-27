@@ -326,15 +326,6 @@ class Trials {
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
         return;
-        // const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-        // element.setCustomValidity(`${elem.innerText}`);
-        // element.reportValidity();
-        // const cb = () => {
-        //   element.setCustomValidity('');
-        //   element.reportValidity();
-        //   element.removeEventListener('input', cb);
-        // };
-        // element.addEventListener('input', cb);
       }
     });
   }
