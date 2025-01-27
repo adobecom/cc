@@ -325,15 +325,16 @@ class Trials {
     this.elements.forEach((element) => {
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
-        const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-        element.setCustomValidity(`${elem.innerText}`);
-        element.reportValidity();
-        const cb = () => {
-          element.setCustomValidity('');
-          element.reportValidity();
-          element.removeEventListener('input', cb);
-        };
-        element.addEventListener('input', cb);
+        return;
+        // const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+        // element.setCustomValidity(`${elem.innerText}`);
+        // element.reportValidity();
+        // const cb = () => {
+        //   element.setCustomValidity('');
+        //   element.reportValidity();
+        //   element.removeEventListener('input', cb);
+        // };
+        // element.addEventListener('input', cb);
       }
     });
   }
@@ -341,17 +342,13 @@ class Trials {
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
       this.formContainer.dispatchEvent(this.event);
+      try {
+        this.checkValidElements();
+      } catch (e) { /* pass */ }
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
         setTimeout(() => { this.submitAction(); }, 1);
       }
-      // try {
-      //   this.checkValidElements();
-      // } catch (e) { /* pass */ }
-      // if (this.valid) {
-      //   this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
-      //   setTimeout(() => { this.submitAction(); }, 1);
-      // }
     });
   }
 
