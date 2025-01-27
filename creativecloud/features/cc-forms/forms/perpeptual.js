@@ -319,5 +319,4 @@ class PerpetualTrials extends Trials {
       .catch(() => { });
   }
 }
-
 export default PerpetualTrials;
