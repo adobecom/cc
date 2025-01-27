@@ -2,6 +2,8 @@ import { getLibs } from '../../scripts/utils.js';
 
 const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const { polyfills } = await import(`${miloLibs}/blocks/merch/merch.js`);
+
 const DEFAULT_LH = 'b1|catalog';
 
 // Helps with TBT: MWPW-145127
@@ -67,7 +69,6 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
 
 /** container block */
 export default async function init(el) {
-  const { polyfills } = await import(`${miloLibs}/blocks/merch/merch.js`);
   await polyfills();
   el.classList.add('app');
   const libs = getLibs();
