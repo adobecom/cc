@@ -23,7 +23,7 @@ class Textfield {
 
   init() {
     this.textfield.addEventListener('input', () => this.isValid());
-    // this.form.addEventListener('checkValidation', () => this.isValid());
+    this.form.addEventListener('checkValidation', () => this.isValid());
   }
 
   createTextField() {
