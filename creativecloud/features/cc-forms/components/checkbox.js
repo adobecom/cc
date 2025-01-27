@@ -103,7 +103,7 @@ class Checkbox {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       if (!this.elem) return;
       this.checkboxInput.setCustomValidity(`${elem.innerText}`);
-      this.checkboxInput.scrollIntoView({ behavior: "smooth", block: 'center' });
+      this.checkboxInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
       this.checkboxInput.reportValidity();
       const cb = () => {
         this.checkboxInput.setCustomValidity('');
