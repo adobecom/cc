@@ -158,5 +158,4 @@ class Textfield {
     return this.valid;
   }
 }
-
 export default Textfield;
