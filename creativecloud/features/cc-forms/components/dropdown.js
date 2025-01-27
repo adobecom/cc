@@ -287,7 +287,7 @@ class Dropdown {
       this.updateDropdown();
     }
     if (this.type === 'independent' && this.source) this.loadData();
-    if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
+    // if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
     this.dropdown.addEventListener('change', () => this.isValid());
     if (this.name === 'productsku') this.handleProductSKUChange();
     else if (this.name === 'purchaseintent') this.handlePurchaseIntentChange();
