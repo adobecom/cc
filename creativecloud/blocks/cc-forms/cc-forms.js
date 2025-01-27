@@ -67,7 +67,7 @@ class CCForms {
     this.demandBaseConfig = {
       endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
       apiKey: 'DcJ5JpU7attMHR6KoFgKA1oWr7djrtGidd4pC7dD',
-      delay: 400, // default
+      delay: 400,
       parentNode: this.form.parentElement,
       fieldMapping: {
         orgname: 'company_name',
