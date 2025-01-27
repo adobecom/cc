@@ -325,7 +325,6 @@ class Trials {
     this.elements.forEach((element) => {
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
-        
       }
     });
   }
