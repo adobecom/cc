@@ -270,7 +270,7 @@ class Dropdown {
       setTimeout(() => {
         this.dropdown.focus({ preventScroll: true });
         this.dropdown.reportValidity();
-      }, 100);
+      }, 50);
     };
     scrollToElement();
     const resetValidity = () => {
