@@ -165,6 +165,7 @@
   display: inline-flex;
   align-items: center;
   width: 100%;
+  gap: 10px;
 }
 
 .cc-forms .check-item-input {
@@ -396,6 +397,10 @@
 
   .cc-forms button {
     width: initial;
+  }
+
+  .cc-forms .check-item-wrap {
+    gap: 0;
   }
 }
 
