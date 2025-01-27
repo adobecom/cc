@@ -234,7 +234,7 @@ class Dropdown {
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-    if (!elem) return;
+    if (!elem) return this.valid;
     this.dropdown.setCustomValidity(`${elem.innerText}`);
     this.dropdown.reportValidity();
     const cb = () => {
