@@ -137,13 +137,9 @@ class Textfield {
     if (this.required && (!this.valid || this.value.trim() === '')) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
-      this.textfield.blur();
-      this.textfield.focus();
       this.textfield.reportValidity();
       const cb = () => {
         this.textfield.setCustomValidity('');
-        this.textfield.blur();
-        this.textfield.focus();
         this.textfield.reportValidity();
         this.textfield.removeEventListener('input', cb);
       };
@@ -151,13 +147,9 @@ class Textfield {
     } else if (!this.valid) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
-      this.textfield.blur();
-      this.textfield.focus();
       this.textfield.reportValidity();
       const cb = () => {
         this.textfield.setCustomValidity('');
-        this.textfield.blur();
-        this.textfield.focus();
         this.textfield.reportValidity();
         this.textfield.removeEventListener('input', cb);
       };

@@ -222,64 +222,62 @@ class Dropdown {
     return cfgKeys;
   }
 
-  // isValid() {
-  //   this.value = this.dropdown.value;
-  //   this.valid = false;
-  //   if (!this.required) this.valid = true;
-  //   if (this.required && !!(this.value)) this.valid = true;
-  //   if (this.required && this.dropdown.disabled) this.valid = true;
-  //   this.dropdown.setAttribute('data-valid', this.valid);
-  //   if (this.valid) {
-  //     this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.add(CLASS_HIDDEN);
-  //     return this.valid;
-  //   }
-  //   const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-  //   if (!this.elem) return;
-  //   this.dropdown.setCustomValidity(`${elem.innerText}`);
-  //   this.dropdown.scrollIntoView({ behavior: "smooth", block: "center" });
-  //   this.dropdown.focus();
-  //   this.dropdown.reportValidity();
-  //   const cb = () => {
-  //     this.dropdown.setCustomValidity('');
-  //     this.dropdown.scrollIntoView({ behavior: "smooth", block: "center" });
-  //     this.dropdown.focus();
-  //     this.dropdown.reportValidity();
-  //     this.dropdown.removeEventListener('input', cb);
-  //   };
-  //   this.dropdown.addEventListener('input', cb);
-  //   return this.valid;
-  // }
-
   isValid() {
     this.value = this.dropdown.value;
     this.valid = false;
     if (!this.required) this.valid = true;
-    if (this.required && !!this.value) this.valid = true;
+    if (this.required && !!(this.value)) this.valid = true;
     if (this.required && this.dropdown.disabled) this.valid = true;
     this.dropdown.setAttribute('data-valid', this.valid);
     if (this.valid) {
-      const messageElem = this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE);
-      messageElem?.classList.add(CLASS_HIDDEN);
+      this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.add(CLASS_HIDDEN);
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-    if (!elem) return;
+    if (!this.elem) return;
     this.dropdown.setCustomValidity(`${elem.innerText}`);
-    const scrollToElement = () => {
-      this.dropdown.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => {
-        this.dropdown.focus({ preventScroll: true });
-        this.dropdown.reportValidity();
-      }, 50);
-    };
-    scrollToElement();
-    const resetValidity = () => {
+    this.dropdown.reportValidity();
+    const cb = () => {
       this.dropdown.setCustomValidity('');
-      this.dropdown.removeEventListener('input', resetValidity);
+      this.dropdown.reportValidity();
+      this.dropdown.removeEventListener('input', cb);
     };
-    this.dropdown.addEventListener('input', resetValidity);
+    this.dropdown.addEventListener('input', cb);
     return this.valid;
   }
+
+  // isValid() {
+  //   this.value = this.dropdown.value;
+  //   this.valid = false;
+  //   if (!this.required) this.valid = true;
+  //   if (this.required && !!this.value) this.valid = true;
+  //   if (this.required && this.dropdown.disabled) this.valid = true;
+  //   this.dropdown.setAttribute('data-valid', this.valid);
+  //   if (this.valid) {
+  //     const messageElem = this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE);
+  //     messageElem?.classList.add(CLASS_HIDDEN);
+  //     return this.valid;
+  //   }
+  //   const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+  //   if (!elem) return;
+  //   this.dropdown.setCustomValidity(`${elem.innerText}`);
+  //   const scrollToElement = () => {
+  //     this.dropdown.scrollIntoView({ behavior: "smooth", block: "center" });
+  //     setTimeout(() => {
+  //       this.dropdown.focus({ preventScroll: true });
+  //       this.dropdown.reportValidity();
+  //     }, 50);
+  //   };
+  //   scrollToElement();
+  //   const resetValidity = () => {
+  //     this.dropdown.setCustomValidity('');
+  //     this.dropdown.removeEventListener('input', resetValidity);
+  //   };
+  //   this.dropdown.addEventListener('input', resetValidity);
+  //   return this.valid;
+  // }
+
+
 
   init() {
     if (this.type === 'dependent' && this.parentName) {

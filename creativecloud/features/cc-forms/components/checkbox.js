@@ -104,12 +104,9 @@ class Checkbox {
       if (!this.elem) return;
       this.checkboxInput.setCustomValidity(`${elem.innerText}`);
       this.checkboxInput.scrollIntoView({ behavior: "smooth", block: "center" });
-      this.checkboxInput.focus();
       this.checkboxInput.reportValidity();
       const cb = () => {
         this.checkboxInput.setCustomValidity('');
-        this.checkboxInput.blur(); // Trigger blur
-        this.checkboxInput.focus();
         this.checkboxInput.reportValidity();
         this.checkboxInput.removeEventListener('input', cb);
       };
