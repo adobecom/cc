@@ -234,6 +234,7 @@ class Dropdown {
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+    if (!elem) return this.valid;
     this.dropdown.setCustomValidity(`${elem.innerText}`);
     this.dropdown.reportValidity();
     const cb = () => {
@@ -245,6 +246,36 @@ class Dropdown {
     return this.valid;
   }
 
+  // isValid() {
+  //   this.value = this.dropdown.value;
+  //   this.valid = false;
+  //   if (!this.required) this.valid = true;
+  //   if (this.required && !!this.value) this.valid = true;
+  //   if (this.required && this.dropdown.disabled) this.valid = true;
+  //   this.dropdown.setAttribute('data-valid', this.valid);
+  //   if (this.valid) {
+  //     const messageElem = this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE);
+  //     messageElem?.classList.add(CLASS_HIDDEN);
+  //     return this.valid;
+  //   }
+  //   const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
+  //   if (!elem) return;
+  //   this.dropdown.setCustomValidity(`${elem.innerText}`);
+  //   const scrollToElement = () => {
+  //     this.dropdown.scrollIntoView({ behavior: "smooth", block: "center" });
+  //     setTimeout(() => {
+  //       this.dropdown.focus({ preventScroll: true });
+  //       this.dropdown.reportValidity();
+  //     }, 50);
+  //   };
+  //   scrollToElement();
+  //   const resetValidity = () => {
+  //     this.dropdown.setCustomValidity('');
+  //     this.dropdown.removeEventListener('input', resetValidity);
+  //   };
+  //   this.dropdown.addEventListener('input', resetValidity);
+  //   return this.valid;
+  // }
   init() {
     if (this.type === 'dependent' && this.parentName) {
       this.listenParentChanges();

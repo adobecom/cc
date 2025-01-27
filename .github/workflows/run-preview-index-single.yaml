@@ -51,3 +51,4 @@ jobs:
           PREVIEW_INDEX_FILE: ${{vars.PREVIEW_INDEX_FILE}}
           ENABLED: ${{vars.ENABLED}}
           PREVIEW_INDEX_JSON: ${{vars.PREVIEW_INDEX_JSON}}
+          PREVIEW_LOCALES: ${{vars.PREVIEW_LOCALES}}
