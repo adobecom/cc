@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable eqeqeq */
 import { createTag } from '../../../scripts/utils.js';
