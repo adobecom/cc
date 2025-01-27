@@ -18,7 +18,7 @@ class Checkbox {
 
   init() {
     this.form.addEventListener('checkValidation', () => this.isValid());
-    // this.checkboxInput.addEventListener('change', () => this.isValid());
+    this.checkboxInput.addEventListener('change', () => this.isValid());
   }
 
   createCheckbox() {

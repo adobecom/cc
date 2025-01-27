@@ -341,13 +341,17 @@ class Trials {
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
       this.formContainer.dispatchEvent(this.event);
-      try {
-        this.checkValidElements();
-      } catch (e) { /* pass */ }
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
         setTimeout(() => { this.submitAction(); }, 1);
       }
+      // try {
+      //   this.checkValidElements();
+      // } catch (e) { /* pass */ }
+      // if (this.valid) {
+      //   this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
+      //   setTimeout(() => { this.submitAction(); }, 1);
+      // }
     });
   }
 
