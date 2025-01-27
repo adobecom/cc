@@ -112,6 +112,7 @@ class Checkbox {
       };
       this.checkboxInput.addEventListener('input', cb);
     }
+    // eslint-disable-next-line consistent-return
     return this.valid;
   }
 }
