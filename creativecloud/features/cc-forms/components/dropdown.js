@@ -237,10 +237,12 @@ class Dropdown {
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-    if (!elem && this.showError) return this.valid;
-    this.dropdown.setCustomValidity(`${elem.innerText}`);
-    this.dropdown.reportValidity();
-    this.showError = false;
+    if (!elem) return this.valid;
+    if (this.showError) {
+      this.dropdown.setCustomValidity(`${elem.innerText}`);
+      this.dropdown.reportValidity();
+      this.showError = false;
+    }
     return this.valid;
   }
  
