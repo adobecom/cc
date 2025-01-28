@@ -307,7 +307,6 @@ class Trials {
     this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
     this.event = new Event('checkValidation');
     this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
-    this.showError = true;
     // this.checkValidElements();
     this.setFormConfig();
     this.handleEnterKeyPress();
