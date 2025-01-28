@@ -136,14 +136,16 @@ class Textfield {
     if (!this.required && this.value.trim() === '') this.valid = true;
     if (this.readonly) this.valid = true;
     this.textfield.setAttribute('data-valid', this.valid);
-    if (this.required && this.value.trim() === '') {
+    if (this.required && this.value.trim() === '' && this.showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
-    } else if (!this.valid) {
+      this.showError = false;
+    } else if (!this.valid && this.showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
+      this.showError = false;
     }
     return this.valid;
   }
