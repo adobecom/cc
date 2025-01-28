@@ -21,7 +21,7 @@ const ADDRESS_MAIL_TO = 'data-imsAddressMailValue';
 const USER_PROFILE = 'data-userProfileValue';
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
 const INPUT_FIELDS = '.cc-form-component.text';
-const SELECTOR_PREFIX_MESSAGE = '.error-message-';
+// const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 const STATUS_REDIRECT_MAP = {
   'thank-you-redirect': 'thankyoupage',
   'error-redirect-generic': 'genericerrorpage',
@@ -325,7 +325,6 @@ class Trials {
     this.elements.forEach((element) => {
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
-        return;
       }
     });
   }

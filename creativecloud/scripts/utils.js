@@ -122,7 +122,7 @@ const locales = {
 
 const stageDomainsMap = {
   'www.stage.adobe.com': {
-    'www.adobe.com': 'origin',
+    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -133,7 +133,7 @@ const stageDomainsMap = {
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.live': {
-    'www.adobe.com': 'origin',
+    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -144,7 +144,7 @@ const stageDomainsMap = {
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.hlx.page': {
-    'www.adobe.com': 'origin',
+    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -154,6 +154,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
+  '.graybox.adobe.com': { 'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin' },
 };
 
 /**
@@ -185,8 +186,10 @@ export const [setLibs, getLibs] = (() => {
 
 const miloLibs = setLibs('/libs');
 
-const { createTag, localizeLink, getConfig, loadStyle, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
-export { createTag, loadStyle, localizeLink, createIntersectionObserver, getConfig };
+// eslint-disable-next-line object-curly-newline
+const { createTag, localizeLink, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+// eslint-disable-next-line max-len
+export { createTag, loadStyle, loadLink, loadScript, localizeLink, createIntersectionObserver, getConfig };
 
 function defineDeviceByScreenSize() {
   const DESKTOP_SIZE = 1200;
@@ -373,6 +376,7 @@ const CONFIG = {
   htmlExclude: [
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?learn(\/.*)?/,
   ],
 };
 

@@ -54,10 +54,12 @@ class DemandBase {
   handleEnterKey(e) {
     e.preventDefault();
     const itemHighlighted = e.target.parentNode.querySelector(`${SELECTOR_MENU} .is-highlighted`);
-    e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+    if (itemHighlighted) {
+      e.target.value = itemHighlighted.getAttribute(ATTRIBUTE_DEMAND_BASE_VALUE);
+      const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
+      this.prepopulateFields(itemData);
+    }
     this.popoverHide(e);
-    const itemData = JSON.parse(itemHighlighted.getAttribute('data-demandbase-json'));
-    this.prepopulateFields(itemData);
   }
 
   handleUpArrow(e) {
@@ -104,17 +106,23 @@ class DemandBase {
     return highlightedItem;
   }
 
+  handleClickOutside(e) {
+    if (!e.target.classList.contains('db-Popover')) {
+      this.popoverHide(e);
+      document.removeEventListener('click', this.handleClickOutside);
+    }
+  }
+
   popoverShow(e) {
     e.target.parentNode.classList.add('is-open');
-    e.target.parentNode.querySelector('.db-Popover')
-      .classList
+    e.target.parentNode.querySelector('.db-Popover')?.classList
       .add('is-open');
+    document.addEventListener('click', this.handleClickOutside.bind(this));
   }
 
   popoverHide(e) {
     e.target.parentNode.classList.remove('is-open');
-    e.target.parentNode.querySelector('.db-Popover')
-      .classList
+    e.target.parentNode.querySelector('.db-Popover')?.classList
       .remove('is-open');
   }
 
@@ -132,8 +140,10 @@ class DemandBase {
     })
       .then((response) => response.json())
       .then((json) => {
-        this.fillList(e, json);
-        this.popoverShow(e);
+        if (json.picks?.length) {
+          this.fillList(e, json);
+          this.popoverShow(e);
+        }
       })
       .catch(() => { });
   }
@@ -184,7 +194,7 @@ class DemandBase {
       }
       const fieldName = fieldMapping[key];
       const fieldValue = this.convert(itemData[fieldName], fieldName);
-      if (fieldName && (fieldName.indexOf('.') !== -1 || document.querySelector(`[name=${fieldName}]:disabled`))) {
+      if (fieldName && (fieldName.indexOf('.') !== -1)) {
         return;
       }
 
@@ -196,6 +206,8 @@ class DemandBase {
         op.text = fieldValue;
         selectEl.add(op);
         selectEl.value = op.value;
+        op.removeAttribute('disabled');
+        selectEl.removeAttribute('disabled');
       }
 
       if (fieldName === 'country') {

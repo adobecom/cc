@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable eqeqeq */
 import { createTag } from '../../../scripts/utils.js';
@@ -234,7 +235,7 @@ class Dropdown {
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-    if (!elem) return;
+    if (!elem) return this.valid;
     this.dropdown.setCustomValidity(`${elem.innerText}`);
     this.dropdown.reportValidity();
     const cb = () => {
@@ -245,7 +246,7 @@ class Dropdown {
     this.dropdown.addEventListener('input', cb);
     return this.valid;
   }
-
+ 
   init() {
     if (this.type === 'dependent' && this.parentName) {
       this.listenParentChanges();
