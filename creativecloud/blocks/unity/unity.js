@@ -25,6 +25,8 @@ function getUnityLibs(prodLibs = '/unitylibs') {
   const { hostname } = window.location;
   if (!hostname.includes('hlx.page')
     && !hostname.includes('hlx.live')
+    && !hostname.includes('aem.page')
+    && !hostname.includes('aem.live')
     && !hostname.includes('localhost')) {
     return prodLibs;
   }
@@ -39,12 +41,9 @@ export default async function init(el) {
     `${unitylibs}/core/styles/styles.css`,
     `${unitylibs}/core/workflow/workflow.js`,
     `${unitylibs}/scripts/utils.js`,
-    `${unitylibs}/core/workflow/workflow-photoshop/workflow-photoshop.js`,
-    `${unitylibs}/core/workflow/workflow-photoshop/workflow-photoshop.css`,
-    `${unitylibs}/core/steps/upload-btn.js`,
-    `${unitylibs}/core/steps/app-connector.js`,
+    `${unitylibs}/core/workflow/workflow.js`,
   ];
   await priorityLoad(promiseArr);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
-  await wfinit(el, 'cc', unitylibs);
+  await wfinit(el, 'cc', unitylibs, 'v2');
 }
