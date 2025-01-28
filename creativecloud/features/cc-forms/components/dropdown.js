@@ -246,7 +246,6 @@ class Dropdown {
     this.dropdown.addEventListener('input', cb);
     return this.valid;
   }
- 
   init() {
     if (this.type === 'dependent' && this.parentName) {
       this.listenParentChanges();
