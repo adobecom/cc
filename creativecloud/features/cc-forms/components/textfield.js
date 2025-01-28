@@ -140,12 +140,10 @@ class Textfield {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
-      this.textfield.addEventListener('input', cb);
     } else if (!this.valid) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
-      this.textfield.addEventListener('input', cb);
     }
     return this.valid;
   }
