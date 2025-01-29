@@ -201,13 +201,35 @@ class DemandBase {
       if (document.querySelector(`input.cc-form-component[name=${key}]`)) {
         document.querySelector(`[name=${key}]`).value = fieldValue;
       } else if (document.querySelector(`select.cc-form-component[name=${key}]`)) {
-        const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
-        const op = createTag('option', { value: fieldValue, selected: 'selected' });
-        op.text = fieldValue;
-        selectEl.add(op);
-        selectEl.value = op.value;
-        op.removeAttribute('disabled');
-        selectEl.removeAttribute('disabled');
+        if (key === 'orgsize') {
+          const opts = document.querySelectorAll('[name=orgsize] > option');
+          for (let i = 1; i < opts.length; i += 1) {
+            if (!opts[i].value) {
+              // pass
+            } else if (opts[i].value.includes('-')) {
+              const [lr, ur] = opts[i].value.split('-');
+              if (fieldValue >= parseInt(lr, 10) && fieldValue <= parseInt(ur, 10)) {
+                document.querySelector('[name=orgsize] > option[selected]')?.forEach((s) => s.removeAttribute('selected'));
+                opts[i].setAttribute('selected', 'selected');
+                break;
+              }
+            } else if (opts[i].value.endsWith('+')) {
+              if (fieldValue >= parseInt(opts[i].value, 10)) {
+                document.querySelectorAll('[name=orgsize] > option[selected]')?.forEach((s) => s.removeAttribute('selected'));
+                opts[i].setAttribute('selected', 'selected');
+              }
+              break;
+            }
+          }
+        } else {
+          const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
+          const op = createTag('option', { value: fieldValue, selected: 'selected' });
+          op.text = fieldValue;
+          selectEl.add(op);
+          selectEl.value = op.value;
+          op.removeAttribute('disabled');
+          selectEl.removeAttribute('disabled');
+        }
       }
 
       if (fieldName === 'country') {
