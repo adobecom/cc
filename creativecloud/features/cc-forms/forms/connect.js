@@ -75,7 +75,7 @@ class ConnectTrials extends Trials {
   }
 
   submitAction() {
-    this.accesstoken = this.imslib.getAccessToken();
+    this.accesstoken = this.imslib.getAccessToken().token;
     this.createPayload();
     this.postCommonService(this.accesstoken, this.payLoad, this.endPoint);
   }
@@ -189,9 +189,8 @@ class ConnectTrials extends Trials {
       ims: {
         ims_client_id: 'trials1',
         userProfile: this.imsProfile || {},
-
-        // browser_info: browserName.concat(' ', browserVersion),
-        access_token: this.imslib.getAccessToken(),
+        browser_info: window.navigator.userAgent,
+        access_token: this.imslib.getAccessToken().token,
         adobeid: this.imsUserId,
         renga_token: null,
         renga_uds: {},
