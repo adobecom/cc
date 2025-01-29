@@ -40,7 +40,7 @@ const formConfig = {
       customValue: 'region,timezone',
       imsAddressMailValue: 'postalcode,state,country',
       rengaUDSValue: 'orgsize',
-      userProfileValue: '[country,fname,lname,phonenumber,email,orgname,jobfunction,industry]',
+      userProfileValue: 'country,fname,lname,phonenumber,email,orgname,jobfunction,industry',
       ...odinConfig,
     },
   },

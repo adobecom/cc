@@ -212,8 +212,7 @@ class ConnectTrials extends Trials {
     }
 
     for (let i = 0; i < this.userprofile.length; i += 1) {
-      JsonPayload.ims.userProfile[ipaasParamMap[
-        this.userprofile[i]]] = this.getValue(`[name=${this.userprofile[i]}]`);
+      JsonPayload.ims.userProfile[ipaasParamMap[this.userprofile[i]]] = this.getValue(`[name=${this.userprofile[i]}]`);
     }
 
     if (typeof JsonPayload.ims.userProfile.address === 'undefined') {
