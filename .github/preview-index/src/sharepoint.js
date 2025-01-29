@@ -31,6 +31,7 @@ const CONSUMER = process.env.CONSUMER;
 const PREVIEW_INDEX_JSON = process.env.PREVIEW_INDEX_JSON;
 const PREVIEW_INDEX_FILE = process.env.PREVIEW_INDEX_FILE;
 const PREVIEW_RESOURCES_FOLDER = process.env.PREVIEW_RESOURCES_FOLDER;
+const PREVIEW_LOCALES = process.env.PREVIEW_LOCALES;
 const ENABLED = process.env.ENABLED;
 
 const PREVIEW_STATUS_URL = `https://admin.hlx.page/status/adobecom/${CONSUMER}/main/*`;
@@ -103,8 +104,8 @@ const getConfig = () => {
     TABLE_NAME,
     PREVIEW_RESOURCES_FOLDER,
     PREVIEW_STATUS_URL,
-    PREVIEW_UPDATE_URL,
     FETCH_RETRY,
+    PREVIEW_LOCALES,
   }
 };
 
@@ -195,7 +196,9 @@ const getItemId = async (indexPath) => {
   return null;
 };
 
-const previewIndex = async () => {
+const previewIndex = async (locale) => {
+  const previewIndexJson = locale ? `${locale}/${PREVIEW_INDEX_JSON}` : PREVIEW_INDEX_JSON;
+  const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${previewIndexJson}`;
   console.log('Preview update url: ' + PREVIEW_UPDATE_URL);
   const previewResponse = await fetch(PREVIEW_UPDATE_URL, {
     method: 'POST',

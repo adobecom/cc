@@ -105,13 +105,10 @@ const deleteAllRows = async (url) => {
   }
 }
 
-const reindex = async () => {
-  if (!config) {
-    return;
-  }
-
-  const indexPath = config.PREVIEW_INDEX_FILE;
-  const folder = config.PREVIEW_RESOURCES_FOLDER;
+const reindex = async (locale) => {
+  console.log(`Reindex ${locale}`);
+  const indexPath = locale ? config.PREVIEW_INDEX_FILE.replace('www/', `www/${locale}/`) : config.PREVIEW_INDEX_FILE;
+  const folder = locale ? `/${locale}${config.PREVIEW_RESOURCES_FOLDER}` : config.PREVIEW_RESOURCES_FOLDER;
 
   const indexData = await getPreviewResources(folder, getResourceIndexData);
   // todo think if we want to delete rows in index table in case no cards found..
@@ -141,8 +138,22 @@ const reindex = async () => {
     console.log(`Failed to add index rows: ${response.status} - ${response.statusText}`);
   }
 
-  await previewIndex();
+  await previewIndex(locale);
   console.log(`Reindexed folder ${folder}`);
 };
 
-reindex();
+const reindexAllLocales = () => {
+  if (!config) {
+    return;
+  }
+
+  reindex(''); // US
+
+  if (config.PREVIEW_LOCALES) {
+    config.PREVIEW_LOCALES.split(',').forEach((locale) => {
+      reindex(locale);
+    })
+  }
+};
+
+reindexAllLocales();
