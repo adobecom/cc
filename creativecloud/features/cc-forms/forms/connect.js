@@ -189,7 +189,7 @@ class ConnectTrials extends Trials {
       ims: {
         ims_client_id: 'trials1',
         userProfile: this.imsProfile || {},
-        browser_info: window.navigator.userAgent,
+        browser_info: '',
         access_token: this.imslib.getAccessToken().token,
         adobeid: this.imsUserId,
         renga_token: null,
