@@ -209,13 +209,13 @@ class DemandBase {
             } else if (opts[i].value.includes('-')) {
               const [lr, ur] = opts[i].value.split('-');
               if (fieldValue >= parseInt(lr, 10) && fieldValue <= parseInt(ur, 10)) {
-                document.querySelector('[name=orgsize] > option[selected]')?.forEach(s => s.removeAttribute('selected'));
+                document.querySelector('[name=orgsize] > option[selected]')?.forEach((s) => s.removeAttribute('selected'));
                 opts[i].setAttribute('selected', 'selected');
                 break;
               }
             } else if (opts[i].value.endsWith('+')) {
               if (fieldValue >= parseInt(opts[i].value, 10)) {
-                document.querySelectorAll('[name=orgsize] > option[selected]')?.forEach(s => s.removeAttribute('selected'));
+                document.querySelectorAll('[name=orgsize] > option[selected]')?.forEach((s) => s.removeAttribute('selected'));
                 opts[i].setAttribute('selected', 'selected');
               }
               break;
