@@ -110,10 +110,16 @@ async function createDisplayVideo(target, video, src, poster = '') {
   } catch (err) { /* pass */ }
 }
 
+async function loadDecorateFunctions() {
+  const miloLibs = getLibs('/libs');
+  const { syncPausePlayIcon, applyAccessibilityEvents, addAccessibilityControl } = await import(`${miloLibs}/utils/decorate.js`);
+  return { syncPausePlayIcon, applyAccessibilityEvents, addAccessibilityControl };
+}
+
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
   const trgtPic = stepInfo.target.querySelector(':scope > picture');
-  const trgtVideo = stepInfo.target.querySelector(':scope > video');
+  const trgtVideo = stepInfo.target.querySelector(':scope  video');
   if (transitionCfg.useCfg) {
     if (transitionCfg.src) {
       await createDisplayImg(stepInfo.target, trgtPic, transitionCfg.src, transitionCfg.alt);
@@ -131,6 +137,12 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     await createDisplayImg(stepInfo.target, trgtPic, picSrc, displayPics[imgIdx].alt);
   } else if (displayVideos.length) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
+    if (trgtVideo.closest('.video-holder')) {
+      if (trgtVideo.paused && trgtVideo.played.length !== 0 && trgtVideo.autoplay) {
+        const { syncPausePlayIcon } = await loadDecorateFunctions();
+        syncPausePlayIcon(trgtVideo);
+      }
+    }
     if (displayVideos[vidIdx].nodeName === 'A') {
       const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
       await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
@@ -218,16 +230,25 @@ function decorateMobileHeading(intEnb) {
   intEnb.querySelector('.image, .asset').prepend(hTxtTop);
 }
 
-function createInteractiveArea(el, asset) {
+async function createInteractiveArea(el, asset) {
   const iArea = createTag('div', { class: 'interactive-holder' });
   const newPic = asset.cloneNode(true);
   const p = createTag('p', {}, newPic);
   el.querySelector(':scope > div > div').prepend(p);
-  const imgElem = asset.querySelector('img');
+  const imgElem = asset.querySelector('img:not(.accessibility-control)');
   let assetElem = '';
   if (imgElem) {
     imgElem.src = getImgSrc(asset);
     assetElem = createTag('video');
+    const avideoTag = el.querySelector('a[href*=".mp4"]');
+    if (!avideoTag?.href.includes('_hide-controls')) {
+      assetElem = createTag('div');
+      const { addAccessibilityControl, applyAccessibilityEvents } = await loadDecorateFunctions();
+      const videoText = addAccessibilityControl('<video></video>', 'autoplay', 0);
+      assetElem.insertAdjacentHTML('beforeend', videoText);
+      const video = assetElem.querySelector('video');
+      applyAccessibilityEvents(video);
+    }
     iArea.classList.add('show-image');
     [...asset.querySelectorAll('source')].forEach((s) => s.remove());
   } else {
@@ -253,9 +274,9 @@ async function getTargetArea(el) {
     intEnb.classList.add('interactive-enabled');
     await intEnbReendered(intEnb);
   } catch (err) { return null; }
-  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset video, .image video');
+  const assets = intEnb.querySelectorAll('.asset picture, .image picture, .asset a.video, .image a.video, .asset .video-holder, .asset:not(:has(.video-holder)) video, .image .video-holder, .image:not(:has(.video-holder)) video');
   const container = assets[assets.length - 1].closest('p');
-  const iArea = createInteractiveArea(el, assets[assets.length - 1]);
+  const iArea = await createInteractiveArea(el, assets[assets.length - 1]);
   const assetArea = intEnb.querySelector('.asset, .image');
   if (container) container.replaceWith(iArea);
   else assetArea.append(iArea);
