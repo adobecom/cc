@@ -110,11 +110,11 @@ async function createDisplayVideo(target, video, src, poster = '') {
   } catch (err) { /* pass */ }
 }
 
-const decorateFunctionPromise = (async function loadDecorateFunctions() {
+async function loadDecorateFunctions() {
   const miloLibs = getLibs('/libs');
   const { syncPausePlayIcon, applyAccessibilityEvents, addAccessibilityControl } = await import(`${miloLibs}/utils/decorate.js`);
   return { syncPausePlayIcon, applyAccessibilityEvents, addAccessibilityControl };
-}());
+}
 
 export async function handleImageTransition(stepInfo, transitionCfg = {}) {
   const config = stepInfo.stepConfigs[stepInfo.stepIndex].querySelector('div');
@@ -139,7 +139,7 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     const vidIdx = (displayPath < displayVideos.length) ? displayPath : 0;
     if (trgtVideo.closest('.video-holder')) {
       if (trgtVideo.paused && trgtVideo.played.length !== 0 && trgtVideo.autoplay) {
-        const { syncPausePlayIcon } = await decorateFunctionPromise;
+        const { syncPausePlayIcon } = await loadDecorateFunctions();
         syncPausePlayIcon(trgtVideo);
       }
     }
@@ -243,7 +243,7 @@ async function createInteractiveArea(el, asset) {
     const avideoTag = el.querySelector('a[href*=".mp4"]');
     if (!avideoTag?.href.includes('_hide-controls')) {
       assetElem = createTag('div');
-      const { addAccessibilityControl, applyAccessibilityEvents } = await decorateFunctionPromise;
+      const { addAccessibilityControl, applyAccessibilityEvents } = await loadDecorateFunctions();
       const videoText = addAccessibilityControl('<video></video>', 'autoplay', 0);
       assetElem.insertAdjacentHTML('beforeend', videoText);
       const video = assetElem.querySelector('video');
