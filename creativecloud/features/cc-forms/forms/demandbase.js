@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-continue */
 /* eslint-disable class-methods-use-this */
 import { createTag } from '../../../scripts/utils.js';
 
@@ -186,71 +188,67 @@ class DemandBase {
     });
   }
 
+  updateSelectField(selectEl, fieldValue) {
+    selectEl.value = fieldValue;
+    selectEl.querySelectorAll('option[selected]')?.forEach((o) => o.removeAttribute('selected'));
+    selectEl.querySelector(`option[value="${fieldValue}"]`)?.setAttribute('selected', 'selected');
+  }
+
+  handleSelectField(selectEl, key, fieldValue) {
+    if (key === 'orgsize') {
+      this.handleOrgSizeSelect(selectEl, fieldValue);
+    } else if (key === 'state') {
+      setTimeout(() => {
+        this.updateSelectField(selectEl, fieldValue);
+        selectEl.querySelector(`option[value="${fieldValue}"]`)?.removeAttribute('disabled');
+        selectEl.removeAttribute('disabled');
+      }, 100);
+    } else {
+      this.updateSelectField(selectEl, fieldValue);
+      selectEl.querySelector(`option[value="${fieldValue}"]`)?.removeAttribute('disabled');
+      selectEl.removeAttribute('disabled');
+    }
+  }
+
+  handleOrgSizeSelect(selectEl, fieldValue) {
+    const options = selectEl.querySelectorAll('option');
+    for (const opt of options) {
+      if (!opt.value) continue;
+      if (opt.value.includes('-')) {
+        const [lr, ur] = opt.value.split('-').map(Number);
+        if (fieldValue >= lr && fieldValue <= ur) {
+          this.updateSelectField(selectEl, opt.value);
+          break;
+        }
+      } else if (opt.value.endsWith('+') && fieldValue >= parseInt(opt.value, 10)) {
+        this.updateSelectField(selectEl, opt.value);
+        break;
+      }
+    }
+  }
+
   prepopulateFields(itemData) {
     const { fieldMapping } = this;
     const keyArr = ['country', ...Object.keys(fieldMapping)];
     fieldMapping.country = 'country';
+
     keyArr.forEach((key) => {
-      if (fieldMapping[key] === 'company_name' || fieldMapping[key].indexOf('.') !== -1 || fieldMapping[key].indexOf(',') !== -1) {
-        return;
-      }
       const fieldName = fieldMapping[key];
+      if (!fieldName || fieldName === 'company_name' || /[.,]/.test(fieldName)) return;
       const fieldValue = this.convert(itemData[fieldName], fieldName);
+      const inputEl = document.querySelector(`input.cc-form-component[name=${key}]`);
+      const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
 
-      if (fieldName === 'country') {
-        const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
-        selectEl.value = fieldValue;
-        selectEl.querySelectorAll('option[selected]')?.forEach((s) => s.removeAttribute('selected'));
-        selectEl.querySelector(`option[value="${itemData[fieldName]}"]`)?.setAttribute('selected', 'selected');
-        const event = new Event('change', { bubbles: true });
-        document.querySelector(`[name=${fieldName}]`).dispatchEvent(event);
-      }
-      if (fieldName && (fieldName.indexOf('.') !== -1)) {
+      if (key === 'country' && selectEl) {
+        this.updateSelectField(selectEl, fieldValue);
+        selectEl?.dispatchEvent(new Event('change', { bubbles: true }));
         return;
       }
 
-      if (document.querySelector(`input.cc-form-component[name=${key}]`)) {
-        document.querySelector(`[name=${key}]`).value = fieldValue;
-      } else if (document.querySelector(`select.cc-form-component[name=${key}]`)) {
-        if (key === 'orgsize') {
-          const opts = document.querySelectorAll('[name=orgsize] > option');
-          for (let i = 1; i < opts.length; i += 1) {
-            if (!opts[i].value) {
-              // pass
-            } else if (opts[i].value.includes('-')) {
-              const [lr, ur] = opts[i].value.split('-');
-              if (fieldValue >= parseInt(lr, 10) && fieldValue <= parseInt(ur, 10)) {
-                document.querySelector('[name=orgsize] > option[selected]')?.forEach((s) => s.removeAttribute('selected'));
-                opts[i].setAttribute('selected', 'selected');
-                break;
-              }
-            } else if (opts[i].value.endsWith('+')) {
-              if (fieldValue >= parseInt(opts[i].value, 10)) {
-                document.querySelectorAll('[name=orgsize] > option[selected]')?.forEach((s) => s.removeAttribute('selected'));
-                opts[i].setAttribute('selected', 'selected');
-              }
-              break;
-            }
-          }
-        } else if (fieldName === 'state') {
-          setTimeout(() => {
-            const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
-            selectEl.value = fieldValue;
-            selectEl.querySelectorAll('option[selected]')?.forEach((s) => s.removeAttribute('selected'));
-            const opt = selectEl.querySelector(`option[value="${itemData[fieldName]}"]`);
-            opt?.setAttribute('selected', 'selected');
-            opt?.removeAttribute('disabled');
-            selectEl.removeAttribute('disabled');
-          }, 100);
-        } else {
-          const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
-          selectEl.value = fieldValue;
-          selectEl.querySelectorAll('option[selected]')?.forEach((s) => s.removeAttribute('selected'));
-          const opt = selectEl.querySelector(`option[value="${itemData[fieldName]}"]`);
-          opt?.setAttribute('selected', 'selected');
-          opt?.removeAttribute('disabled');
-          selectEl.removeAttribute('disabled');
-        }
+      if (inputEl) {
+        inputEl.value = fieldValue;
+      } else if (selectEl) {
+        this.handleSelectField(selectEl, key, fieldValue);
       }
     });
   }
