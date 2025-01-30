@@ -188,12 +188,23 @@ class DemandBase {
 
   prepopulateFields(itemData) {
     const { fieldMapping } = this;
-    Object.keys(fieldMapping).forEach((key) => {
+    const keyArr = ['country', ...Object.keys(fieldMapping)];
+    fieldMapping.country = 'country';
+    keyArr.forEach((key) => {
       if (fieldMapping[key] === 'company_name' || fieldMapping[key].indexOf('.') !== -1 || fieldMapping[key].indexOf(',') !== -1) {
         return;
       }
       const fieldName = fieldMapping[key];
       const fieldValue = this.convert(itemData[fieldName], fieldName);
+
+      if (fieldName === 'country') {
+        const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
+        selectEl.value = fieldValue;
+        selectEl.querySelectorAll('option[selected]')?.forEach((s) => s.removeAttribute('selected'));
+        selectEl.querySelector(`option[value="${itemData[fieldName]}"]`)?.setAttribute('selected', 'selected');
+        const event = new Event('change', { bubbles: true });
+        document.querySelector(`[name=${fieldName}]`).dispatchEvent(event);
+      }
       if (fieldName && (fieldName.indexOf('.') !== -1)) {
         return;
       }
@@ -221,22 +232,25 @@ class DemandBase {
               break;
             }
           }
+        } else if (fieldName === 'state') {
+          setTimeout(() => {
+            const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
+            selectEl.value = fieldValue;
+            selectEl.querySelectorAll('option[selected]')?.forEach((s) => s.removeAttribute('selected'));
+            const opt = selectEl.querySelector(`option[value="${itemData[fieldName]}"]`);
+            opt?.setAttribute('selected', 'selected');
+            opt?.removeAttribute('disabled');
+            selectEl.removeAttribute('disabled');
+          }, 100);
         } else {
           const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
-          const op = createTag('option', { value: fieldValue, selected: 'selected' });
-          op.text = fieldValue;
-          selectEl.add(op);
-          selectEl.value = op.value;
-          op.removeAttribute('disabled');
+          selectEl.value = fieldValue;
+          selectEl.querySelectorAll('option[selected]')?.forEach((s) => s.removeAttribute('selected'));
+          const opt = selectEl.querySelector(`option[value="${itemData[fieldName]}"]`);
+          opt?.setAttribute('selected', 'selected');
+          opt?.removeAttribute('disabled');
           selectEl.removeAttribute('disabled');
         }
-      }
-
-      if (fieldName === 'country') {
-        if (itemData.state) {
-          document.querySelector('[name=state]').attr('prefetchval', itemData.state);
-        }
-        document.querySelector(`[name=${fieldName}]`).trigger('change');
       }
     });
   }
