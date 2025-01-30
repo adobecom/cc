@@ -40,7 +40,7 @@ const formConfig = {
       customValue: 'region,timezone',
       imsAddressMailValue: 'postalcode,state,country',
       rengaUDSValue: 'orgsize',
-      userProfileValue: '[country,fname,lname,phonenumber,email,orgname,jobfunction,industry]',
+      userProfileValue: 'country,fname,lname,phonenumber,email,orgname,jobfunction,industry',
       ...odinConfig,
     },
   },
@@ -61,22 +61,23 @@ const formConfig = {
 class CCForms {
   constructor(el) {
     this.el = el;
+    this.showError = true;
     this.formConfig = this.getFormConfig();
     this.form = this.initForm();
     this.setFormDataAttributes();
     this.demandBaseConfig = {
       endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
       apiKey: 'DcJ5JpU7attMHR6KoFgKA1oWr7djrtGidd4pC7dD',
-      delay: 400, // default
+      delay: 400,
       parentNode: this.form.parentElement,
       fieldMapping: {
         orgname: 'company_name',
         postalcode: 'zip',
         'custom.questions_comments': 'company_name, phone, industry, sub_industry, annual_sales, fortune_1000, forbes_2000, web_site',
-        orgsize: 'employee_range',
+        orgsize: 'employee_count',
         industry: 'industry',
         state: 'state',
-        country: 'country_name',
+        country: 'country',
       },
       industryMapping: {
         TRANSPORTATION_WAREHOUSING: 'Transportation & Logistics',
@@ -191,6 +192,9 @@ class CCForms {
       // eslint-disable-next-line no-unused-vars
       const demandBase = new DemandBase(this.demandBaseConfig);
     }
+    const currUrlVal = window.location.origin + window.location.pathname;
+    const currUrlObj = createTag('input', { type: 'hidden', id: 'current_url', name: 'current_url', value: currUrlVal });
+    this.form.append(currUrlObj);
   }
 }
 

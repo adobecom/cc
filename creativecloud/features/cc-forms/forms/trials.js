@@ -21,7 +21,7 @@ const ADDRESS_MAIL_TO = 'data-imsAddressMailValue';
 const USER_PROFILE = 'data-userProfileValue';
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
 const INPUT_FIELDS = '.cc-form-component.text';
-const SELECTOR_PREFIX_MESSAGE = '.error-message-';
+// const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 const STATUS_REDIRECT_MAP = {
   'thank-you-redirect': 'thankyoupage',
   'error-redirect-generic': 'genericerrorpage',
@@ -325,15 +325,6 @@ class Trials {
     this.elements.forEach((element) => {
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
-        const elem = element.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-        element.setCustomValidity(`${elem.innerText}`);
-        element.reportValidity();
-        const cb = () => {
-          element.setCustomValidity('');
-          element.reportValidity();
-          element.removeEventListener('input', cb);
-        };
-        element.addEventListener('input', cb);
       }
     });
   }
@@ -343,6 +334,7 @@ class Trials {
       this.formContainer.dispatchEvent(this.event);
       try {
         this.checkValidElements();
+        setTimeout(() => {this.showError == true}, 100);
       } catch (e) { /* pass */ }
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));

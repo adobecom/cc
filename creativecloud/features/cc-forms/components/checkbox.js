@@ -96,20 +96,21 @@ class Checkbox {
 
   isValid() {
     this.valid = false;
+    this.checkboxInput.setCustomValidity('');
+    this.checkboxInput.reportValidity();
     if (!this.required) this.valid = true;
     if (this.required && this.checkboxInput.checked) this.valid = true;
     this.checkboxInput.setAttribute('data-valid', this.valid);
     if (!this.valid) {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-      this.checkboxInput.setCustomValidity(`${elem.innerText}`);
-      this.checkboxInput.reportValidity();
-      const cb = () => {
-        this.checkboxInput.setCustomValidity('');
+      if (!elem) return;
+      if (this.showError) {
+        this.checkboxInput.setCustomValidity(`${elem.innerText}`);
         this.checkboxInput.reportValidity();
-        this.checkboxInput.removeEventListener('input', cb);
-      };
-      this.checkboxInput.addEventListener('input', cb);
+        this.showError = false;
+      }
     }
+    // eslint-disable-next-line consistent-return
     return this.valid;
   }
 }

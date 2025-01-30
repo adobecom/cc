@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable eqeqeq */
 import { createTag } from '../../../scripts/utils.js';
@@ -225,6 +226,8 @@ class Dropdown {
   isValid() {
     this.value = this.dropdown.value;
     this.valid = false;
+    this.dropdown.setCustomValidity('');
+    this.dropdown.reportValidity();
     if (!this.required) this.valid = true;
     if (this.required && !!(this.value)) this.valid = true;
     if (this.required && this.dropdown.disabled) this.valid = true;
@@ -234,14 +237,12 @@ class Dropdown {
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-    this.dropdown.setCustomValidity(`${elem.innerText}`);
-    this.dropdown.reportValidity();
-    const cb = () => {
-      this.dropdown.setCustomValidity('');
+    if (!elem) return this.valid;
+    if (this.showError) {
+      this.dropdown.setCustomValidity(`${elem.innerText}`);
       this.dropdown.reportValidity();
-      this.dropdown.removeEventListener('input', cb);
-    };
-    this.dropdown.addEventListener('input', cb);
+      this.showError = false;
+    }
     return this.valid;
   }
 
