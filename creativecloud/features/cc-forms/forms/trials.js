@@ -182,7 +182,7 @@ export class ConsentNotice {
       let count = 0;
       function poll() {
         count += 1;
-        if (window.adobeIMS?.initialized) {
+        if (window.adobeIMS?.isSignedInUser) {
           resolve();
         } else if (count + 1 > maxAttempts) {
           resolve();
