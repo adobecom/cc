@@ -334,7 +334,8 @@ class Trials {
       this.formContainer.dispatchEvent(this.event);
       try {
         this.checkValidElements();
-        setTimeout(() => {this.showError == true}, 100);
+        // eslint-disable-next-line chai-friendly/no-unused-expressions
+        setTimeout(() => { this.showError === true; }, 100);
       } catch (e) { /* pass */ }
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
