@@ -189,5 +189,5 @@ describe('Perpeptual Form', async () => {
     // checkbox2.checked = true;
     // const changeEvent2 = new Event('change', { bubbles: true });
     // checkbox2.dispatchEvent(changeEvent2);
-  }).timeout(10000);;
+  }).timeout(10000);
 });
