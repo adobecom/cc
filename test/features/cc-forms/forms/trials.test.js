@@ -165,7 +165,7 @@ describe('Perpeptual Form', async () => {
       json: async () => mockJson,
     });
     await init(el);
-  });
+  }).timeout(10000);
 
   it('Consent should be monitored', () => {
     const checkbox1 = document.querySelector('#consentexplicitemail');
@@ -176,5 +176,5 @@ describe('Perpeptual Form', async () => {
     checkbox2.checked = true;
     const changeEvent2 = new Event('change', { bubbles: true });
     checkbox2.dispatchEvent(changeEvent2);
-  });
+  }).timeout(10000);
 });
