@@ -117,7 +117,7 @@ class Dropdown {
 
   createDropdown() {
     const i = createTag('select', { class: 'menu cc-form-component' });
-    const d = createTag('div', { class: 'form-item' }, i);
+    const d = createTag('div', { class: 'form-item', 'data-loading': 'loading' }, i);
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i, d);
     [...cfgKeys].forEach((ckraw) => {
@@ -250,6 +250,7 @@ class Dropdown {
     if (this.type === 'dependent' && this.parentName) {
       this.listenParentChanges();
       this.updateDropdown();
+      this.dropdown.removeAttribute('data-loading');
     }
     if (this.type === 'independent' && this.source) this.loadData();
     if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
@@ -314,7 +315,11 @@ class Dropdown {
       .then((data) => {
         this.dataMapping(data);
       })
-      .catch(() => {});
+      .catch(() => {
+      })
+      .finally(() => {
+        this.dropdown.removeAttribute('data-loading');
+      });
   }
 
   dataMapping(data) {
