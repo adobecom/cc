@@ -106,12 +106,16 @@
 
 .interactive-enabled .foreground.container .interactive-holder.show-image > picture img,
 .interactive-enabled .foreground.container .interactive-holder.show-image > picture,
-.interactive-enabled .foreground.container .interactive-holder.show-video > video {
+.interactive-enabled .foreground.container .interactive-holder.show-video :is(video, .video-container.video-holder) {
   width: 100%;
   aspect-ratio: 1;
   height: auto;
   opacity: 1;
   z-index: 1;
+}
+
+.interactive-enabled .foreground.container .interactive-holder.show-image :is(video, .video-container.video-holder) {
+  display: none;
 }
 
 .interactive-enabled .layer.show-layer {
@@ -128,6 +132,11 @@
   justify-content: center;
   border-radius: 0 0 8px 8px;
   z-index: 2;
+}
+
+.interactive-enabled .show-video .layer.show-layer {
+  width: 80%;
+  justify-self: center;
 }
 
 .interactive-enabled .step-slider-tray .layer.show-layer {
