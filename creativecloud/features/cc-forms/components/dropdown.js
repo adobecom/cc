@@ -394,6 +394,7 @@ class Dropdown {
     this.parent = this.form.querySelector(`.menu[data-dropdown-name="${this.parentName}"]`);
     if (!(this.parent instanceof HTMLElement)) return;
     this.parent.addEventListener('change', (event) => {
+      this.dropdown.setAttribute('data-loading', 'loading');
       if (this.parentName === 'country') {
         let fetchRegionSource;
         const countrySourceAPI = this.parent.getAttribute(ATTR_DROPDOWN_SOURCE);
@@ -421,6 +422,7 @@ class Dropdown {
             }
             this.updateList(items);
             this.updateDropdown();
+            this.dropdown.removeAttribute('data-loading');
           })
           .catch(() => { });
       } else {
@@ -430,6 +432,7 @@ class Dropdown {
         if (items !== null && items.length > 0) this.sortList(items);
         this.updateList(items);
         this.updateDropdown();
+        this.dropdown.removeAttribute('data-loading');
       }
     });
   }
