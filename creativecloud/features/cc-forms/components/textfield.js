@@ -4,8 +4,9 @@ const CLASS_HIDDEN = 'is-hidden';
 const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 
 class Textfield {
-  constructor(formEl, config) {
+  constructor(formEl, config, showError) {
     this.form = formEl;
+    this.showError = showError;
     this.fieldConfig = config;
     this.textfield = this.createTextField();
     this.id = this.textfield.id;
@@ -125,27 +126,32 @@ class Textfield {
   }
 
   isValid() {
+    if (!this.showError.value) return this.valid;
     this.value = this.textfield.value;
     this.valid = false;
     this.textfield.setCustomValidity('');
     this.textfield.reportValidity();
-    if (!this.pattern && !this.required) this.valid = true;
-    if (!this.pattern && this.required && this.value.trim() !== '') this.valid = true;
-    if (this.pattern && this.textfield.validity.valid) this.valid = true;
-    if (this.required && this.value.trim() === '') this.valid = false;
-    if (!this.required && this.value.trim() === '') this.valid = true;
-    if (this.readonly) this.valid = true;
+    if (this.readonly || (!this.pattern && !this.required) || (!this.pattern && this.required && this.value.trim() !== '') || (this.pattern && this.textfield.validity.valid) || (!this.required && this.value.trim() === '')) {
+      this.valid = true;
+    }
+    if (this.required && this.value.trim() === '') {
+      this.valid = false;
+    }
     this.textfield.setAttribute('data-valid', this.valid);
-    if (this.required && this.value.trim() === '' && this.showError) {
+    if (this.required && this.value.trim() === '' && this.showError.value) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
+      this.textfield.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
       this.textfield.reportValidity();
-      this.showError = false;
-    } else if (!this.valid && this.showError) {
+      this.showError.value = false;
+      setTimeout(() => {this.showError.value = true}, 1);
+    } else if (!this.valid && this.showError.value) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
-      this.showError = false;
     }
     return this.valid;
   }

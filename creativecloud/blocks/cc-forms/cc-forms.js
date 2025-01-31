@@ -61,7 +61,7 @@ const formConfig = {
 class CCForms {
   constructor(el) {
     this.el = el;
-    this.showError = true;
+    this.showError = { value: true }
     this.formConfig = this.getFormConfig();
     this.form = this.initForm();
     this.setFormDataAttributes();
@@ -160,29 +160,29 @@ class CCForms {
       switch (true) {
         case componentName.startsWith('cc-form-text'):
           // eslint-disable-next-line no-unused-vars
-          { const tf = new Textfield(this.form, componentConfig); }
+          { const tf = new Textfield(this.form, componentConfig, this.showError); }
           break;
         case componentName.startsWith('cc-form-checkbox'):
           // eslint-disable-next-line no-unused-vars
-          { const cb = new Checkbox(this.form, componentConfig); }
+          { const cb = new Checkbox(this.form, componentConfig, this.showError); }
           break;
         case componentName.startsWith('cc-form-dropdown'):
           // eslint-disable-next-line no-unused-vars
-          { const dd = new Dropdown(this.form, componentConfig); }
+          { const dd = new Dropdown(this.form, componentConfig, this.showError); }
           break;
         case componentName.startsWith('cc-form-consent'):
           if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
             // eslint-disable-next-line no-unused-vars
-            const cn = new ConsentNotice(this.form, componentConfig);
+            const cn = new ConsentNotice(this.form, componentConfig, this.showError);
           }
           break;
         case componentName.startsWith('cc-form-content'):
           // eslint-disable-next-line no-unused-vars
-          { const tc = new TextContent(this.form, componentConfig); }
+          { const tc = new TextContent(this.form, componentConfig, this.showError); }
           break;
         case componentName.startsWith('cc-form-button'):
           // eslint-disable-next-line no-unused-vars
-          { const btn = new Button(this.form, componentConfig); }
+          { const btn = new Button(this.form, componentConfig, this.showError); }
           break;
         default:
           break;
@@ -214,7 +214,7 @@ export default async function init(el) {
   isSignedInInitialized().then(async () => {
     if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
-    const fc = new FormConfigurator(formComponent.form);
+    const fc = new FormConfigurator(formComponent.form, formComponent.showError);
     el.remove();
     return fc;
   });
