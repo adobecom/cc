@@ -24,8 +24,9 @@ const SLASH = '/';
 class Dropdown {
   data = [];
 
-  constructor(formEl, config) {
+  constructor(formEl, config, showError) {
     this.form = formEl;
+    this.showError = showError;
     this.fieldConfig = config;
     this.dropdown = this.createDropdown();
     this.type = this.dropdown.getAttribute(ATTR_DROPDOWN_TYPE);
@@ -224,6 +225,7 @@ class Dropdown {
   }
 
   isValid() {
+    if (!this.showError.value) return this.valid;
     this.value = this.dropdown.value;
     this.valid = false;
     this.dropdown.setCustomValidity('');
@@ -232,16 +234,18 @@ class Dropdown {
     if (this.required && !!(this.value)) this.valid = true;
     if (this.required && this.dropdown.disabled) this.valid = true;
     this.dropdown.setAttribute('data-valid', this.valid);
+    console.log('this.showError', this.showError.value);
     if (this.valid) {
       this.dropdown.closest('.form-item').querySelector(SELECTOR_PREFIX_MESSAGE)?.classList.add(CLASS_HIDDEN);
       return this.valid;
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
     if (!elem) return this.valid;
-    if (this.showError) {
+    if (this.showError.value) {
       this.dropdown.setCustomValidity(`${elem.innerText}`);
       this.dropdown.reportValidity();
-      this.showError = false;
+      this.showError.value = false;
+      setTimeout(() => {this.showError.value = true}, 1);
     }
     return this.valid;
   }

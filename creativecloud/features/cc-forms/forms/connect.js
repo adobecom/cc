@@ -52,9 +52,10 @@ const FNAME = 'fname';
 const LNAME = 'lname';
 
 class ConnectTrials extends Trials {
-  constructor(form) {
-    super(form);
+  constructor(form, showError) {
+    super(form, showError);
     this.form = form;
+    this.showError = showError
     const notice = document.querySelector(NOTICE_ID);
     if (notice) {
       const xf = notice.querySelector('.fragment');

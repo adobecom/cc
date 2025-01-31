@@ -289,9 +289,11 @@ export class ConsentNotice {
   }
 }
 class Trials {
-  constructor(formContainer) {
+  constructor(formContainer, showError) {
     this.imslib = window.adobeIMS;
+    this.showError = showError;
     this.formContainer = formContainer;
+    console.log('this.formContainer', this.showError.value);
     this.valid = true;
     this.formConfig = [];
     this.payLoad = {};
@@ -334,7 +336,7 @@ class Trials {
       this.formContainer.dispatchEvent(this.event);
       try {
         this.checkValidElements();
-        setTimeout(() => {this.showError == true}, 100);
+        // setTimeout(() => {this.showError.value = true}, 1);
       } catch (e) { /* pass */ }
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
