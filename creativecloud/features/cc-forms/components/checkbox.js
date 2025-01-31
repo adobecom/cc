@@ -109,6 +109,10 @@ class Checkbox {
       if (!elem) return;
       if (this.showError.value) {
         this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+        this.checkboxInput.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
         this.checkboxInput.reportValidity();
         this.showError.value = false;
         setTimeout(() => {this.showError.value = true}, 1);
