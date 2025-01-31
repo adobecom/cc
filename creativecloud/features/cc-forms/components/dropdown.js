@@ -116,8 +116,8 @@ class Dropdown {
   }
 
   createDropdown() {
-    const i = createTag('select', { class: 'menu cc-form-component' });
-    const d = createTag('div', { class: 'form-item', 'data-loading': 'loading' }, i);
+    const i = createTag('select', { class: 'menu cc-form-component', 'data-loading': 'loading' });
+    const d = createTag('div', { class: 'form-item' }, i);
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i, d);
     [...cfgKeys].forEach((ckraw) => {
