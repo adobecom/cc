@@ -242,6 +242,10 @@ class Dropdown {
     if (!elem) return this.valid;
     if (this.showError.value) {
       this.dropdown.setCustomValidity(`${elem.innerText}`);
+      this.dropdown.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
       this.dropdown.reportValidity();
       this.showError.value = false;
       setTimeout(() => {this.showError.value = true}, 1);
