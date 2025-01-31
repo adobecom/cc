@@ -170,15 +170,15 @@ describe('Perpeptual Form', async () => {
 
   it('Form should be rendered', () => {
     expect(document.querySelector('.cc-forms form')).to.exist;
-  }).timeout(10000);;
+  }).timeout(10000);
 
   it('Consent should be rendered', () => {
     expect(document.querySelector('.cc-forms #noticeplaceholder .fragment')).to.exist;
-  }).timeout(10000);;
+  }).timeout(10000);
 
   it('Invalid component should be handled', () => {
     expect(document.querySelector('.cc-forms .submit')).to.exist;
-  }).timeout(10000);;
+  }).timeout(10000);
 
   it('Consent should be monitored', () => {
     // const checkbox1 = document.querySelector('#consentexplicitemail')
