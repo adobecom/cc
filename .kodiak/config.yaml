@@ -9,17 +9,15 @@ notifications:
       project: MWPW # Mandatory
       filters:
         include:
-          risk_rating: R5
+          risk_rating: R3
       fields:
         assignee:
           name: sumanh
-        customfield_11800: MWPW-140779 #epic link
+        customfield_11800: MWPW-164516 #epic link
         customfield_12900: 
           value: Brahmos
         watchers:
           - casalino
-          - jmichnow
-          - mauchley
           - saljain
           - mathuria
           - dstrong
