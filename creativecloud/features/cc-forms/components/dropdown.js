@@ -314,10 +314,9 @@ class Dropdown {
       .then((response) => response.json())
       .then((data) => {
         this.dataMapping(data);
+        this.dropdown.removeAttribute('data-loading');
       })
       .catch(() => {
-      })
-      .finally(() => {
         this.dropdown.removeAttribute('data-loading');
       });
   }
