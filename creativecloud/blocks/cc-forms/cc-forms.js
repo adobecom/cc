@@ -66,6 +66,7 @@ class CCForms {
     this.formConfig = this.getFormConfig();
     this.form = this.initForm();
     this.setFormDataAttributes();
+    this.demandbaseOn = false;
     this.demandBaseConfig = {
       endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
       apiKey: 'DcJ5JpU7attMHR6KoFgKA1oWr7djrtGidd4pC7dD',
@@ -149,8 +150,7 @@ class CCForms {
   async createFormComponents() {
     const formComponents = this.el.querySelectorAll(':scope > div > div:nth-child(1) span[class*="cc-form-"]');
     const formMetadata = [...this.el.querySelectorAll(':scope > div > div:nth-child(1) .icon')];
-    // demandbase
-    const db = formMetadata.find((el) => el.classList.contains('icon-demandbase-on'));
+    this.demandbaseOn = formMetadata.find((el) => el.classList.contains('icon-demandbase-on'));
     [...formComponents].forEach(() => {
       const componentConfig = {};
       const c = formMetadata.shift();
@@ -194,14 +194,14 @@ class CCForms {
           break;
       }
     });
-    if (db) {
-      const demandBase = new DemandBase(this.demandBaseConfig);
-    }
     const currUrlVal = window.location.origin + window.location.pathname;
     const currUrlObj = createTag('input', { type: 'hidden', id: 'current_url', name: 'current_url', value: currUrlVal });
     this.form.append(currUrlObj);
-    await this.waitForDataRender();
     this.el.remove();
+  }
+
+  initializeDemandbase() {
+    const demandBase = new DemandBase(this.demandBaseConfig);
   }
 }
 
@@ -221,8 +221,10 @@ export default async function init(el) {
   if (ccFormObj.formConfig.type === 'default') return;
   isSignedInInitialized().then(async () => {
     if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form);
+    if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
     el.remove();
     return fc;
   });
