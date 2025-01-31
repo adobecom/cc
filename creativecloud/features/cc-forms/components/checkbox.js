@@ -3,8 +3,9 @@ import { createTag } from '../../../scripts/utils.js';
 const CLASS_HIDDEN = 'is-hidden';
 const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 class Checkbox {
-  constructor(formEl, config) {
+  constructor(formEl, config, showError) {
     this.form = formEl;
+    this.showError = showError;
     this.fieldConfig = config;
     this.checkboxInput = this.createCheckbox();
     this.id = this.checkboxInput.id;
@@ -95,19 +96,26 @@ class Checkbox {
   }
 
   isValid() {
+    if (!this.showError.value) return this.valid;
     this.valid = false;
     this.checkboxInput.setCustomValidity('');
     this.checkboxInput.reportValidity();
     if (!this.required) this.valid = true;
     if (this.required && this.checkboxInput.checked) this.valid = true;
+    console.log('this.showError', this.showError.value);
     this.checkboxInput.setAttribute('data-valid', this.valid);
     if (!this.valid) {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       if (!elem) return;
-      if (this.showError) {
+      if (this.showError.value) {
         this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+        this.checkboxInput.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
         this.checkboxInput.reportValidity();
-        this.showError = false;
+        this.showError.value = false;
+        setTimeout(() => {this.showError.value = true}, 1);
       }
     }
     // eslint-disable-next-line consistent-return
