@@ -35,10 +35,6 @@ window.adobeid = {
   locale: 'en',
 };
 
-function delay(ms) {
-  return new Promise((res) => { setTimeout(() => { res(); }, ms); });
-}
-
 const { default: init } = await import('../../../../creativecloud/blocks/cc-forms/cc-forms.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/perpeptual-body.html' });
