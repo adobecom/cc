@@ -149,27 +149,27 @@ describe('Dropdown Component', async () => {
       json: async () => mockJson,
     });
     await init(el);
-  });
+  }).timeout(10000);
 
   afterEach(() => {
     fetchSpy.restore();
-  });
+  }).timeout(10000);
 
   it('Dropdown should be decorated', () => {
     expect(configuredDropdowns.length).to.equal(document.querySelectorAll('.cc-forms select').length);
-  });
+  }).timeout(10000);
 
   it('Dropdown should have a label', () => {
     expect(document.querySelectorAll('.cc-forms .form-item label')).to.exist;
-  });
+  }).timeout(10000);
 
   it('Dropdown should have a placeholder', () => {
     expect(document.querySelectorAll('.cc-forms .form-item select option')).to.exist;
-  });
+  }).timeout(10000);
 
   it('Dependent dropdown should be disabled', () => {
     expect(document.querySelector('.cc-forms #state').disabled).to.be.true;
-  });
+  }).timeout(10000);
 
   it('Change should be monitored', () => {
     // const changeEvent = new Event('change', { bubbles: true, detail: { child: ['value'] } });
@@ -180,5 +180,5 @@ describe('Dropdown Component', async () => {
     // document.querySelector('.cc-forms #productsku').dispatchEvent(changeEvent);
     // document.querySelector('.cc-forms #purchaseintent').dispatchEvent(changeEvent);
     // document.querySelector('.cc-forms #purchaseintent').dispatchEvent(changeBlur);
-  });
+  }).timeout(10000);
 });

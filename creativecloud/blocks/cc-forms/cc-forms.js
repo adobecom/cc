@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-classes-per-file */
 import { createTag, getConfig } from '../../scripts/utils.js';
 import Textfield from '../../features/cc-forms/components/textfield.js';
@@ -65,6 +66,7 @@ class CCForms {
     this.formConfig = this.getFormConfig();
     this.form = this.initForm();
     this.setFormDataAttributes();
+    this.demandbaseOn = false;
     this.demandBaseConfig = {
       endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
       apiKey: 'DcJ5JpU7attMHR6KoFgKA1oWr7djrtGidd4pC7dD',
@@ -100,8 +102,6 @@ class CCForms {
       },
       payloadMappings: { 'custom.questions_comments': 'company_name, phone, industry, sub_industry, annual_sales, fortune_1000, forbes_2000, web_site' },
     };
-    this.createFormComponents();
-    el.remove();
   }
 
   getFormConfig() {
@@ -134,11 +134,23 @@ class CCForms {
     });
   }
 
-  createFormComponents() {
+  async waitForDataRender() {
+    return new Promise((resolve, reject) => {
+      let attempts = 0;
+      function checkFields(f) {
+        attempts += 1;
+        if (attempts >= 25) resolve();
+        else if (f.querySelector(['.form-item[data-loading]'])) setTimeout(() => { checkFields(f); }, 200);
+        else resolve();
+      }
+      checkFields(this.form);
+    });
+  }
+
+  async createFormComponents() {
     const formComponents = this.el.querySelectorAll(':scope > div > div:nth-child(1) span[class*="cc-form-"]');
     const formMetadata = [...this.el.querySelectorAll(':scope > div > div:nth-child(1) .icon')];
-    // demandbase
-    const db = formMetadata.find((el) => el.classList.contains('icon-demandbase-on'));
+    this.demandbaseOn = formMetadata.find((el) => el.classList.contains('icon-demandbase-on'));
     [...formComponents].forEach(() => {
       const componentConfig = {};
       const c = formMetadata.shift();
@@ -159,42 +171,37 @@ class CCForms {
       }
       switch (true) {
         case componentName.startsWith('cc-form-text'):
-          // eslint-disable-next-line no-unused-vars
           { const tf = new Textfield(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-checkbox'):
-          // eslint-disable-next-line no-unused-vars
           { const cb = new Checkbox(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-dropdown'):
-          // eslint-disable-next-line no-unused-vars
           { const dd = new Dropdown(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-consent'):
           if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
-            // eslint-disable-next-line no-unused-vars
             const cn = new ConsentNotice(this.form, componentConfig);
           }
           break;
         case componentName.startsWith('cc-form-content'):
-          // eslint-disable-next-line no-unused-vars
           { const tc = new TextContent(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-button'):
-          // eslint-disable-next-line no-unused-vars
           { const btn = new Button(this.form, componentConfig); }
           break;
         default:
           break;
       }
     });
-    if (db) {
-      // eslint-disable-next-line no-unused-vars
-      const demandBase = new DemandBase(this.demandBaseConfig);
-    }
     const currUrlVal = window.location.origin + window.location.pathname;
     const currUrlObj = createTag('input', { type: 'hidden', id: 'current_url', name: 'current_url', value: currUrlVal });
     this.form.append(currUrlObj);
+    this.el.remove();
+  }
+
+  initializeDemandbase() {
+    const demandBase = new DemandBase(this.demandBaseConfig);
   }
 }
 
@@ -209,14 +216,16 @@ function isSignedInInitialized(interval = 200) {
 }
 
 export default async function init(el) {
-  const formComponent = new CCForms(el);
-  if (formComponent.formConfig.type === 'default') return el.remove();
+  const ccFormObj = new CCForms(el);
+  await ccFormObj.createFormComponents();
+  if (ccFormObj.formConfig.type === 'default') return;
   isSignedInInitialized().then(async () => {
     if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
-    const { default: FormConfigurator } = await import(formComponent.formConfig.jsPath);
-    const fc = new FormConfigurator(formComponent.form);
+    await ccFormObj.waitForDataRender();
+    const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
+    const fc = new FormConfigurator(ccFormObj.form);
+    if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
     el.remove();
     return fc;
   });
-  return 1;
 }
