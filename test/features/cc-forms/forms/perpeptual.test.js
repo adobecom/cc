@@ -76,6 +76,5 @@ describe('Perpeptual Form', async () => {
     const postalcode = document.body.querySelector('#postalcode');
     postalcode.value = 'postal code';
     postalcode.dispatchEvent(new Event('input'));
-    console.log('mathuria', postalcode.validity.valid);
   });
 });
