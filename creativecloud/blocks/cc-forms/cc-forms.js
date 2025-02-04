@@ -224,6 +224,7 @@ export default async function init(el) {
   ccFormObj.form.querySelectorAll("select")[1].id = "targetType";
   ccFormObj.form.querySelectorAll("select")[1].innerHTML += '<option value = "da">DA</option>';
   ccFormObj.form.querySelectorAll("select")[1].selectedIndex = 1;
+  debugger
   ccFormObj.form.querySelector("submit").addEventListener('click', () => {
     const src = ccFormObj.form.querySelector('#sourcefigma');
     const trgt = ccFormObj.form.querySelector('#targetda');
