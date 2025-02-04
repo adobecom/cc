@@ -4,9 +4,8 @@ const CLASS_HIDDEN = 'is-hidden';
 const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 
 class Textfield {
-  constructor(formEl, config, showError) {
+  constructor(formEl, config) {
     this.form = formEl;
-    this.showError = showError;
     this.fieldConfig = config;
     this.textfield = this.createTextField();
     this.id = this.textfield.id;
@@ -126,7 +125,8 @@ class Textfield {
   }
 
   isValid() {
-    if (!this.showError.value) return this.valid;
+    this.showError = JSON.parse(this.form.dataset.showError);
+    if (!this.showError) return this.valid;
     this.value = this.textfield.value;
     this.valid = false;
     this.textfield.setCustomValidity('');
@@ -138,7 +138,7 @@ class Textfield {
       this.valid = false;
     }
     this.textfield.setAttribute('data-valid', this.valid);
-    if (this.required && this.value.trim() === '' && this.showError.value) {
+    if (this.required && this.value.trim() === '' && this.showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.scrollIntoView({
@@ -146,9 +146,9 @@ class Textfield {
         block: 'center',
       });
       this.textfield.reportValidity();
-      this.showError.value = false;
-      setTimeout(() => {this.showError.value = true}, 1);
-    } else if (!this.valid && this.showError.value) {
+      this.form.dataset.showError = "false";
+      setTimeout(() => {this.form.dataset.showError = "true"}, 1);
+    } else if (!this.valid && this.showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();

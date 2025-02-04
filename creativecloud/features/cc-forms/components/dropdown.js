@@ -24,9 +24,8 @@ const SLASH = '/';
 class Dropdown {
   data = [];
 
-  constructor(formEl, config, showError) {
+  constructor(formEl, config) {
     this.form = formEl;
-    this.showError = showError;
     this.fieldConfig = config;
     this.dropdown = this.createDropdown();
     this.type = this.dropdown.getAttribute(ATTR_DROPDOWN_TYPE);
@@ -225,7 +224,8 @@ class Dropdown {
   }
 
   isValid() {
-    if (!this.showError.value) return this.valid;
+    this.showError = JSON.parse(this.form.dataset.showError);
+    if (!this.showError) return this.valid;
     this.value = this.dropdown.value;
     this.valid = false;
     this.dropdown.setCustomValidity('');
@@ -240,15 +240,15 @@ class Dropdown {
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
     if (!elem) return this.valid;
-    if (this.showError.value) {
+    if (this.showError) {
       this.dropdown.setCustomValidity(`${elem.innerText}`);
       this.dropdown.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
       });
       this.dropdown.reportValidity();
-      this.showError.value = false;
-      setTimeout(() => {this.showError.value = true}, 1);
+      this.form.dataset.showError = "false";
+      setTimeout(() => {this.form.dataset.showError = "true";}, 1);
     }
     return this.valid;
   }
