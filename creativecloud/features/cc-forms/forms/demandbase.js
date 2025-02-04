@@ -8,7 +8,7 @@ const SELECTOR_MENU_ITEM = '.db-Menu-item';
 const ATTRIBUTE_DEMAND_BASE_VALUE = 'data-demandbase-value';
 
 class DemandBase {
-  constructor(dbConf) {
+  constructor(dbConf, ccFormsInstance) {
     if (typeof dbConf !== 'object') {
       return;
     }
@@ -20,6 +20,7 @@ class DemandBase {
     this.industryMapping = this.element.industryMapping;
     this.fieldMapping = this.element.fieldMapping;
     this.payLoadMapping = this.element.payLoadMapping;
+    this.ccForms = ccFormsInstance;
 
     this.registerDemandBaseHandlers();
   }
@@ -191,23 +192,23 @@ class DemandBase {
   updateSelectField(selectEl, fieldValue) {
     selectEl.value = fieldValue;
     selectEl.querySelectorAll('option[selected]')?.forEach((o) => o.removeAttribute('selected'));
-    selectEl.querySelector(`option[value="${fieldValue}"]`)?.setAttribute('selected', 'selected');
+    let optionMatch = selectEl.querySelector(`option[value="${fieldValue}"]`);
+    if (!optionMatch) {
+      optionMatch = Array.from(selectEl.options).find(
+        (option) => option.text.trim() === fieldValue,
+      );
+    }
+    optionMatch.setAttribute('selected', 'selected');
   }
 
   handleSelectField(selectEl, key, fieldValue) {
     if (key === 'orgsize') {
       this.handleOrgSizeSelect(selectEl, fieldValue);
-    } else if (key === 'state') {
-      setTimeout(() => {
-        this.updateSelectField(selectEl, fieldValue);
-        selectEl.querySelector(`option[value="${fieldValue}"]`)?.removeAttribute('disabled');
-        selectEl.removeAttribute('disabled');
-      }, 100);
-    } else {
-      this.updateSelectField(selectEl, fieldValue);
-      selectEl.querySelector(`option[value="${fieldValue}"]`)?.removeAttribute('disabled');
-      selectEl.removeAttribute('disabled');
+      return;
     }
+    this.updateSelectField(selectEl, fieldValue);
+    selectEl.querySelector(`option[value="${fieldValue}"]`)?.removeAttribute('disabled');
+    selectEl.removeAttribute('disabled');
   }
 
   handleOrgSizeSelect(selectEl, fieldValue) {
@@ -227,12 +228,25 @@ class DemandBase {
     }
   }
 
+  async waitForDataRender(el) {
+    return new Promise((resolve) => {
+      let attempts = 0;
+      function checkFields(e) {
+        attempts += 1;
+        if (attempts >= 25) resolve();
+        else if (e.hasAttribute('data-loading')) setTimeout(() => { checkFields(e); }, 200);
+        else resolve();
+      }
+      checkFields(el);
+    });
+  }
+
   prepopulateFields(itemData) {
     const { fieldMapping } = this;
     const keyArr = ['country', ...Object.keys(fieldMapping)];
     fieldMapping.country = 'country';
 
-    keyArr.forEach((key) => {
+    keyArr.forEach(async (key) => {
       const fieldName = fieldMapping[key];
       if (!fieldName || fieldName === 'company_name' || /[.,]/.test(fieldName)) return;
       const fieldValue = this.convert(itemData[fieldName], fieldName);
@@ -243,6 +257,10 @@ class DemandBase {
         this.updateSelectField(selectEl, fieldValue);
         selectEl?.dispatchEvent(new Event('change', { bubbles: true }));
         return;
+      }
+
+      if (key === 'state' && selectEl) {
+        await this.waitForDataRender(selectEl);
       }
 
       if (inputEl) {
