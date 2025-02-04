@@ -6,9 +6,9 @@ name: Create CMR in ServiceNow
 on:
   pull_request:
     types:
-      - closed
+    #  - closed
     branches:
-      - main
+    #  - main
 
 permissions:
   contents: read
