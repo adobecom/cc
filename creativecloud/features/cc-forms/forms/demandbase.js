@@ -8,7 +8,7 @@ const SELECTOR_MENU_ITEM = '.db-Menu-item';
 const ATTRIBUTE_DEMAND_BASE_VALUE = 'data-demandbase-value';
 
 class DemandBase {
-  constructor(dbConf, ccFormsInstance) {
+  constructor(dbConf) {
     if (typeof dbConf !== 'object') {
       return;
     }
@@ -20,7 +20,6 @@ class DemandBase {
     this.industryMapping = this.element.industryMapping;
     this.fieldMapping = this.element.fieldMapping;
     this.payLoadMapping = this.element.payLoadMapping;
-    this.ccForms = ccFormsInstance;
 
     this.registerDemandBaseHandlers();
   }
