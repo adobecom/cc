@@ -220,12 +220,12 @@ export default async function init(el) {
   await ccFormObj.createFormComponents();
   ccFormObj.form.querySelector("select").id = "sourceType";
   ccFormObj.form.querySelector("select").innerHTML += '<option value = "figma">Figma</option>';
-  ccFormObj.form.querySelector("select").pattern = '';
+  ccFormObj.form.querySelector("select").removeAttribute('pattern');
   ccFormObj.form.querySelector("select").selectedIndex = 1;
   ccFormObj.form.querySelectorAll("select")[1].id = "targetType";
   ccFormObj.form.querySelectorAll("select")[1].innerHTML += '<option value = "da">DA</option>';
   ccFormObj.form.querySelectorAll("select")[1].selectedIndex = 1;
-  ccFormObj.form.querySelectorAll("select")[1].pattern = '';
+  ccFormObj.form.querySelectorAll("select")[1].removeAttribute('pattern');
   ccFormObj.form.querySelector(".submit").addEventListener('click', () => {
     const src = ccFormObj.form.querySelector('#sourcefigma').value;
     const trgt = ccFormObj.form.querySelector('#targetda').value;
