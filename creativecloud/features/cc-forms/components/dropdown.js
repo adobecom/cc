@@ -116,7 +116,7 @@ class Dropdown {
   }
 
   createDropdown() {
-    const i = createTag('select', { class: 'menu cc-form-component' });
+    const i = createTag('select', { class: 'menu cc-form-component', 'data-loading': 'loading' });
     const d = createTag('div', { class: 'form-item' }, i);
     this.form.append(d);
     const cfgKeys = this.setTypeAttributes(i, d);
@@ -250,6 +250,7 @@ class Dropdown {
     if (this.type === 'dependent' && this.parentName) {
       this.listenParentChanges();
       this.updateDropdown();
+      this.dropdown.removeAttribute('data-loading');
     }
     if (this.type === 'independent' && this.source) this.loadData();
     if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
@@ -313,8 +314,11 @@ class Dropdown {
       .then((response) => response.json())
       .then((data) => {
         this.dataMapping(data);
+        this.dropdown.removeAttribute('data-loading');
       })
-      .catch(() => {});
+      .catch(() => {
+        this.dropdown.removeAttribute('data-loading');
+      });
   }
 
   dataMapping(data) {
@@ -389,6 +393,7 @@ class Dropdown {
     this.parent = this.form.querySelector(`.menu[data-dropdown-name="${this.parentName}"]`);
     if (!(this.parent instanceof HTMLElement)) return;
     this.parent.addEventListener('change', (event) => {
+      this.dropdown.setAttribute('data-loading', 'loading');
       if (this.parentName === 'country') {
         let fetchRegionSource;
         const countrySourceAPI = this.parent.getAttribute(ATTR_DROPDOWN_SOURCE);
@@ -416,6 +421,7 @@ class Dropdown {
             }
             this.updateList(items);
             this.updateDropdown();
+            this.dropdown.removeAttribute('data-loading');
           })
           .catch(() => { });
       } else {
@@ -425,6 +431,7 @@ class Dropdown {
         if (items !== null && items.length > 0) this.sortList(items);
         this.updateList(items);
         this.updateDropdown();
+        this.dropdown.removeAttribute('data-loading');
       }
     });
   }

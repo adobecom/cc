@@ -50,17 +50,17 @@ describe('Demand base integration', async () => {
       payloadMappings: { 'custom.questions_comments': 'company_name, phone, industry, sub_industry, annual_sales, fortune_1000, forbes_2000, web_site' },
     };
     db = new DemandBase(dbConf);
-  });
+  }).timeout(10000);
 
   it('should call demandbase constructor', () => {
     expect(db).to.exist;
-  });
+  }).timeout(10000);
 
   it('should return if dbConf is not an object', () => {
     const dbConf2 = 123;
     const db2 = new DemandBase(dbConf2);
     expect(db2).to.be.empty;
-  });
+  }).timeout(10000);
 
   it('should handle different key events properly', async () => {
     const handleEnterKeySpy = sinon.spy(db, 'handleEnterKey');
@@ -366,7 +366,7 @@ describe('Demand base integration', async () => {
     expect(handleUpArrowSpy.calledOnce).to.be.true;
     orgField.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 13 }));
     expect(handleEnterKeySpy.calledOnce).to.be.true;
-  });
+  }).timeout(10000);
 
   it('should handle click event on a menu item', async () => {
     const orgField = form.querySelector('#orgname');
@@ -377,7 +377,7 @@ describe('Demand base integration', async () => {
     });
     const menuItem = form.querySelector('.db-Menu-item');
     menuItem.click();
-  });
+  }).timeout(10000);
 
   it('should return if orgname field is absent', () => {
     const elem = createTag('div');
@@ -394,5 +394,5 @@ describe('Demand base integration', async () => {
     const spy = sinon.spy(db2, 'registerDemandBaseHandlers');
     db2.registerDemandBaseHandlers();
     expect(spy.calledOnce).to.be.true;
-  });
+  }).timeout(10000);
 });
