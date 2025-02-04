@@ -218,6 +218,19 @@ function isSignedInInitialized(interval = 200) {
 export default async function init(el) {
   const ccFormObj = new CCForms(el);
   await ccFormObj.createFormComponents();
+  ccform.form.querySelector("select").id = "sourceType";
+  ccform.form.querySelector("select").innerHTML += '<option value = "figma">Figma</option>';
+  ccform.form.querySelector("select").selectedIndex = 1;
+  ccform.form.querySelectorAll("select")[1].id = "targetType";
+  ccform.form.querySelectorAll("select")[1].innerHTML += '<option value = "da">DA</option>';
+  ccform.form.querySelectorAll("select")[1].selectedIndex = 1;
+  ccform.form.submit.addEventListener('click', () => {
+    const src = ccform.form.querySelector('#sourcefigma');
+    const trgt = ccform.form.querySelector('#targetda');
+    const srcVal = 'figma';
+    const trgtVal = 'da'
+    debugger;
+  })
   
   // isSignedInInitialized().then(async () => {
   //   if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
