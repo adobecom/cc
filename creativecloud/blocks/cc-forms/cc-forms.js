@@ -224,22 +224,12 @@ export default async function init(el) {
   ccFormObj.form.querySelectorAll("select")[1].id = "targetType";
   ccFormObj.form.querySelectorAll("select")[1].innerHTML += '<option value = "da">DA</option>';
   ccFormObj.form.querySelectorAll("select")[1].selectedIndex = 1;
-  debugger
   ccFormObj.form.querySelector(".submit").addEventListener('click', () => {
-    const src = ccFormObj.form.querySelector('#sourcefigma');
-    const trgt = ccFormObj.form.querySelector('#targetda');
+    const src = ccFormObj.form.querySelector('#sourcefigma').value;
+    const trgt = ccFormObj.form.querySelector('#targetda').value;
     const srcVal = 'figma';
-    const trgtVal = 'da'
-    debugger;
+    const trgtVal = 'da';
+    const url = `https://develop--da-helpx-gem--adobecom.hlx.page/preview.html?source=figma&target=da&targetUrl=${src}&contentUrl=${trgt}`;
+    window.open(url, '_blank');
   })
-  
-  // isSignedInInitialized().then(async () => {
-  //   if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
-  //   await ccFormObj.waitForDataRender();
-  //   const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
-  //   const fc = new FormConfigurator(ccFormObj.form);
-  //   if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
-  //   el.remove();
-  //   return fc;
-  // });
 }
