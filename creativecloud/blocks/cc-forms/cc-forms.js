@@ -5,7 +5,6 @@ import Textfield from '../../features/cc-forms/components/textfield.js';
 import Dropdown from '../../features/cc-forms/components/dropdown.js';
 import Checkbox from '../../features/cc-forms/components/checkbox.js';
 import { TextContent, Button, ConsentNotice } from '../../features/cc-forms/forms/trials.js';
-import DemandBase from '../../features/cc-forms/forms/demandbase.js';
 
 function getOdinEndpoint() {
   const cfg = getConfig();
