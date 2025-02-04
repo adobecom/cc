@@ -218,14 +218,14 @@ function isSignedInInitialized(interval = 200) {
 export default async function init(el) {
   const ccFormObj = new CCForms(el);
   await ccFormObj.createFormComponents();
-  if (ccFormObj.formConfig.type === 'default') return;
-  isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
-    await ccFormObj.waitForDataRender();
-    const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
-    const fc = new FormConfigurator(ccFormObj.form);
-    if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
-    el.remove();
-    return fc;
-  });
+  
+  // isSignedInInitialized().then(async () => {
+  //   if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+  //   await ccFormObj.waitForDataRender();
+  //   const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
+  //   const fc = new FormConfigurator(ccFormObj.form);
+  //   if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
+  //   el.remove();
+  //   return fc;
+  // });
 }
