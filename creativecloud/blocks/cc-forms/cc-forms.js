@@ -5,7 +5,6 @@ import Textfield from '../../features/cc-forms/components/textfield.js';
 import Dropdown from '../../features/cc-forms/components/dropdown.js';
 import Checkbox from '../../features/cc-forms/components/checkbox.js';
 import { TextContent, Button, ConsentNotice } from '../../features/cc-forms/forms/trials.js';
-import DemandBase from '../../features/cc-forms/forms/demandbase.js';
 
 function getOdinEndpoint() {
   const cfg = getConfig();
@@ -218,14 +217,20 @@ function isSignedInInitialized(interval = 200) {
 export default async function init(el) {
   const ccFormObj = new CCForms(el);
   await ccFormObj.createFormComponents();
-  if (ccFormObj.formConfig.type === 'default') return;
-  isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
-    await ccFormObj.waitForDataRender();
-    const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
-    const fc = new FormConfigurator(ccFormObj.form);
-    if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
-    el.remove();
-    return fc;
-  });
+  ccFormObj.form.querySelector("select").id = "sourceType";
+  ccFormObj.form.querySelector("select").innerHTML += '<option value = "figma">Figma</option>';
+  ccFormObj.form.querySelector("#sourcefigma").removeAttribute('pattern');
+  ccFormObj.form.querySelector("#targetda").removeAttribute('pattern');
+  ccFormObj.form.querySelector("select").selectedIndex = 1;
+  ccFormObj.form.querySelectorAll("select")[1].id = "targetType";
+  ccFormObj.form.querySelectorAll("select")[1].innerHTML += '<option value = "da">DA</option>';
+  ccFormObj.form.querySelectorAll("select")[1].selectedIndex = 1;
+  ccFormObj.form.querySelector(".submit").addEventListener('click', () => {
+    const src = ccFormObj.form.querySelector('#sourcefigma').value;
+    const trgt = ccFormObj.form.querySelector('#targetda').value;
+    const srcVal = 'figma';
+    const trgtVal = 'da';
+    const url = `https://develop--da-helpx-gem--adobecom.hlx.page/preview.html?source=figma&target=da&targetUrl=${src}&contentUrl=${trgt}`;
+    window.open(url, '_blank');
+  })
 }
