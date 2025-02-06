@@ -79,7 +79,6 @@ class CCForms {
         orgsize: 'employee_count',
         industry: 'industry',
         state: 'state',
-        country: 'country',
       },
       industryMapping: {
         TRANSPORTATION_WAREHOUSING: 'Transportation & Logistics',
