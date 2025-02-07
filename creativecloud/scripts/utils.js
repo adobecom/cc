@@ -132,7 +132,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '--cc--adobecom.hlx.live': {
+  '--cc--adobecom.(hlx|aem).live': {
     'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
@@ -143,7 +143,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '--cc--adobecom.hlx.page': {
+  '--cc--adobecom.(hlx|aem).page': {
     'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
@@ -171,14 +171,16 @@ export const [setLibs, getLibs] = (() => {
       const { hostname } = window.location;
       if (!hostname.includes('hlx.page')
         && !hostname.includes('hlx.live')
+        && !hostname.includes('aem.page')
+        && !hostname.includes('aem.live')
         && !hostname.includes('localhost')) {
         libs = prodLibs;
         return libs;
       }
       const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
       if (branch === 'local') { libs = 'http://localhost:6456/libs'; return libs; }
-      if (branch.indexOf('--') > -1) { libs = `https://${branch}.hlx.live/libs`; return libs; }
-      libs = `https://${branch}--milo--adobecom.hlx.live/libs`;
+      if (branch.indexOf('--') > -1) { libs = `https://${branch}.aem.live/libs`; return libs; }
+      libs = `https://${branch}--milo--adobecom.aem.live/libs`;
       return libs;
     }, () => libs,
   ];
@@ -356,6 +358,7 @@ const CONFIG = {
     pdfViewerClientId: '9f7f19a46bd542e2b8548411e51eb4d4',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
     psUrl: 'https://stage.photoshop.adobe.com',
+    odinEndpoint: 'https://stage-odin.adobe.com/',
   },
   live: {
     pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
@@ -365,6 +368,7 @@ const CONFIG = {
     pdfViewerClientId: '409019ebd2d546c0be1a0b5a61fe65df',
     pdfViewerReportSuite: 'adbadobenonacdcprod',
     psUrl: 'https://photoshop.adobe.com',
+    odinEndpoint: 'https://odin.adobe.com/',
   },
   jarvis: {
     id: 'adobedotcom2',
@@ -380,6 +384,16 @@ const CONFIG = {
 
 export const scriptInit = async () => {
   const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
+  const trialsCheck = document.querySelector('head > meta[name="trialsims"]');
+  if (trialsCheck && trialsCheck.content.toLowerCase() === 'on') {
+    CONFIG.imsClientId = 'trials1';
+    CONFIG.adobeid = {
+      api_parameters: {},
+      scope: 'AdobeID,openid,gnav,update_profile.mrktPerm,update_profile.job_function,update_profile.industry,update_profile.phoneNumber,update_profile.address.mail_to,update_profile.job_title,update_profile.company,additional_info.address.mail_to,additional_info.job_function,additional_info.industry,additional_info.job_title,additional_info.company,trials_ro,pps.read,firefly_api,additional_info.roles,read_organizations',
+      is_mandatory_sign_in: true,
+      redirect_uri: window.location.href,
+    };
+  }
   const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   if (isSignedInHomepage) acomsisCookieHandler();
