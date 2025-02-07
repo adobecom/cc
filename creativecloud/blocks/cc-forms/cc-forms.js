@@ -63,7 +63,6 @@ class CCForms {
     this.el = el;
     this.formConfig = this.getFormConfig();
     this.form = this.initForm();
-    this.form.dataset.showError = "true";
     this.setFormDataAttributes();
     this.demandBaseConfig = {
       endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
