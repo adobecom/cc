@@ -22,7 +22,10 @@ class Textfield {
   }
 
   init() {
-    this.textfield.addEventListener('input', () => this.isValid());
+    this.textfield.addEventListener('input', () => {
+      this.form.setAttribute('data-show-error', "true");
+      this.isValid()
+    });
     this.form.addEventListener('checkValidation', () => this.isValid());
   }
 
@@ -125,7 +128,7 @@ class Textfield {
   }
 
   isValid() {
-    this.showError = JSON.parse(this.form.dataset.showError);
+    this.showError = this.form.getAttribute('data-show-error') == 'true' ? true : false;
     if (!this.showError) return this.valid;
     this.value = this.textfield.value;
     this.valid = false;
@@ -146,8 +149,7 @@ class Textfield {
         block: 'center',
       });
       this.textfield.reportValidity();
-      this.form.dataset.showError = "false";
-      setTimeout(() => {this.form.dataset.showError = "true"}, 1);
+      this.form.setAttribute('data-show-error', "false");
     } else if (!this.valid && this.showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
