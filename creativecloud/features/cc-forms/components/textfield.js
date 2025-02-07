@@ -134,9 +134,12 @@ class Textfield {
     this.valid = false;
     this.textfield.setCustomValidity('');
     this.textfield.reportValidity();
-    if (this.readonly || (!this.pattern && !this.required) || (!this.pattern && this.required && this.value.trim() !== '') || (this.pattern && this.textfield.validity.valid) || (!this.required && this.value.trim() === '')) {
-      this.valid = true;
-    }
+    if (!this.pattern && !this.required) this.valid = true;
+    if (!this.pattern && this.required && this.value.trim() !== '') this.valid = true;
+    if (this.pattern && this.textfield.validity.valid) this.valid = true;
+    if (this.required && this.value.trim() === '') this.valid = false;
+    if (!this.required && this.value.trim() === '') this.valid = true;
+    if (this.readonly) this.valid = true;
     if (this.required && this.value.trim() === '') {
       this.valid = false;
     }
