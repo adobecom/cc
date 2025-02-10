@@ -44,7 +44,6 @@ describe('Demand base integration', async () => {
       op.setAttribute('sku', 'undefined');
       osField.appendChild(op);
     });
-    console.log('form', form);
     const dbConf = {
       endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
       apiKey: 'DcJ5JpU7attMHR6KoFgKA1oWr7djrtGidd4pC7dD',
