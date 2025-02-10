@@ -23,7 +23,7 @@ class Textfield {
 
   init() {
     this.textfield.addEventListener('input', () => {
-      this.form.setAttribute('data-show-error', "true");
+      this.form.setAttribute('data-show-error', 'true');
       this.isValid()
     });
     this.form.addEventListener('checkValidation', () => this.isValid());
@@ -128,8 +128,8 @@ class Textfield {
   }
 
   isValid() {
-    this.showError = this.form.getAttribute('data-show-error') == 'true' ? true : false;
-    if (!this.showError) return this.valid;
+    const showError = this.form.getAttribute('data-show-error') == 'true';
+    if (!showError) return this.valid;
     this.value = this.textfield.value;
     this.valid = false;
     this.textfield.setCustomValidity('');
@@ -144,7 +144,7 @@ class Textfield {
       this.valid = false;
     }
     this.textfield.setAttribute('data-valid', this.valid);
-    if (this.required && this.value.trim() === '' && this.showError) {
+    if (this.required && this.value.trim() === '' && showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.scrollIntoView({
@@ -152,8 +152,8 @@ class Textfield {
         block: 'center',
       });
       this.textfield.reportValidity();
-      this.form.setAttribute('data-show-error', "false");
-    } else if (!this.valid && this.showError) {
+      this.form.setAttribute('data-show-error', 'false');
+    } else if (!this.valid && showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
