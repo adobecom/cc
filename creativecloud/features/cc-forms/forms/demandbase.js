@@ -189,15 +189,18 @@ class DemandBase {
   }
 
   updateSelectField(selectEl, fieldValue) {
-    selectEl.value = fieldValue;
-    selectEl.querySelectorAll('option[selected]')?.forEach((o) => o.removeAttribute('selected'));
     let optionMatch = selectEl.querySelector(`option[value="${fieldValue}"]`);
     if (!optionMatch) {
       optionMatch = Array.from(selectEl.options).find(
         (option) => option.text.trim() === fieldValue,
       );
     }
-    optionMatch.setAttribute('selected', 'selected');
+    if (optionMatch) {
+      selectEl.querySelectorAll('option[selected]')?.forEach((o) => o.removeAttribute('selected'));
+      if (selectEl.id === 'country') selectEl?.dispatchEvent(new Event('change', { bubbles: true }));
+      selectEl.value = fieldValue;
+      optionMatch.setAttribute('selected', 'selected');
+    }
   }
 
   handleSelectField(selectEl, key, fieldValue) {
@@ -254,7 +257,6 @@ class DemandBase {
 
       if (key === 'country' && selectEl) {
         this.updateSelectField(selectEl, fieldValue);
-        selectEl?.dispatchEvent(new Event('change', { bubbles: true }));
         return;
       }
 
