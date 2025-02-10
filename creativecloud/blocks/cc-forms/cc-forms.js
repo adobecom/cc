@@ -219,7 +219,7 @@ export default async function init(el) {
   await ccFormObj.createFormComponents();
   if (ccFormObj.formConfig.type === 'default') return;
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    // if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form);
