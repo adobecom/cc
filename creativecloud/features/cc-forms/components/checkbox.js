@@ -108,7 +108,7 @@ class Checkbox {
     this.checkboxInput.setAttribute('data-valid', this.valid);
     if (!this.valid) {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-      if (!elem) return;
+      if (!elem) return this.valid;
       if (showError) {
         this.checkboxInput.setCustomValidity(`${elem.innerText}`);
         this.checkboxInput.scrollIntoView({
