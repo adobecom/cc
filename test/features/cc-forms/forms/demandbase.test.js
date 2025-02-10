@@ -19,7 +19,7 @@ function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });
 }
 
-document.body.innerHTML = await readFile({ path: '../../../blocks/cc-forms/mocks/body.html' });
+document.body.innerHTML = await readFile({ path: '../../../features/cc-forms/forms/mocks/demandbase-body.html' });
 describe('Demand base integration', async () => {
   let form;
   let db;
