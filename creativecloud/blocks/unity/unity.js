@@ -31,7 +31,7 @@ function getUnityLibs(prodLibs = '/unitylibs') {
     return prodLibs;
   }
   const branch = new URLSearchParams(window.location.search).get('unitylibs') || 'main';
-  const env = hostname.includes('.aem.') ? 'aem' : 'hlx';
+  const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
   if (branch.indexOf('--') > -1) return `https://${branch}.${env}.live/unitylibs`;
   return `https://${branch}--unity--adobecom.${env}.live/unitylibs`;
 }

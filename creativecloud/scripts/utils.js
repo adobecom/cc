@@ -179,7 +179,7 @@ export const [setLibs, getLibs] = (() => {
       }
       const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
       if (branch === 'local') { libs = 'http://localhost:6456/libs'; return libs; }
-      const env = hostname.includes('.aem.') ? 'aem' : 'hlx';
+      const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
       if (branch.indexOf('--') > -1) { libs = `https://${branch}.${env}.live/libs`; return libs; }
       libs = `https://${branch}--milo--adobecom.${env}.live/libs`;
       return libs;
