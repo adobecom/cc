@@ -347,7 +347,7 @@ const CONFIG = {
   imsClientId: 'adobedotcom-cc',
   locales,
   geoRouting: 'on',
-  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
+  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com', 'creativecloud.adobe.com'],
   stageDomainsMap,
   decorateArea,
   adobeid: {
