@@ -62,7 +62,6 @@ const formConfig = {
 class CCForms {
   constructor(el) {
     this.el = el;
-    this.showError = true;
     this.formConfig = this.getFormConfig();
     this.form = this.initForm();
     this.setFormDataAttributes();

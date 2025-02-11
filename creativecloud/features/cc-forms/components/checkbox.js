@@ -18,7 +18,10 @@ class Checkbox {
 
   init() {
     this.form.addEventListener('checkValidation', () => this.isValid());
-    this.checkboxInput.addEventListener('change', () => this.isValid());
+    this.checkboxInput.addEventListener('change', () => {
+      this.form.setAttribute('data-show-error', 'true');
+      this.isValid();
+    });
   }
 
   createCheckbox() {
@@ -95,6 +98,8 @@ class Checkbox {
   }
 
   isValid() {
+    const showError = this.form.getAttribute('data-show-error') === 'true';
+    if (!showError) return this.valid;
     this.valid = false;
     this.checkboxInput.setCustomValidity('');
     this.checkboxInput.reportValidity();
@@ -103,11 +108,15 @@ class Checkbox {
     this.checkboxInput.setAttribute('data-valid', this.valid);
     if (!this.valid) {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-      if (!elem) return;
-      if (this.showError) {
+      if (!elem) return this.valid;
+      if (showError) {
         this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+        this.checkboxInput.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
         this.checkboxInput.reportValidity();
-        this.showError = false;
+        this.form.setAttribute('data-show-error', 'false');
       }
     }
     // eslint-disable-next-line consistent-return
