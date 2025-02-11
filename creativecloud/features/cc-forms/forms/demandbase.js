@@ -197,8 +197,6 @@ class DemandBase {
     }
     if (optionMatch) {
       selectEl.querySelectorAll('option[selected]')?.forEach((o) => o.removeAttribute('selected'));
-      selectEl.value = fieldValue;
-      optionMatch.setAttribute('selected', 'selected');
       selectEl.selectedIndex = optionMatch.index;
       if (selectEl.id === 'country') selectEl?.dispatchEvent(new Event('change', { bubbles: true }));
     }
