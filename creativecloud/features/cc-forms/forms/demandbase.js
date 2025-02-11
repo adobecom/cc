@@ -189,15 +189,11 @@ class DemandBase {
   }
 
   updateSelectField(selectEl, fieldValue) {
-    selectEl.value = fieldValue;
+    const optionMatch = selectEl.querySelector(`option[value="${fieldValue}"]`);
+    if (!optionMatch) return;
     selectEl.querySelectorAll('option[selected]')?.forEach((o) => o.removeAttribute('selected'));
-    let optionMatch = selectEl.querySelector(`option[value="${fieldValue}"]`);
-    if (!optionMatch) {
-      optionMatch = Array.from(selectEl.options).find(
-        (option) => option.text.trim() === fieldValue,
-      );
-    }
-    optionMatch.setAttribute('selected', 'selected');
+    selectEl.selectedIndex = optionMatch.index;
+    if (selectEl.id === 'country') selectEl?.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   handleSelectField(selectEl, key, fieldValue) {
@@ -206,8 +202,6 @@ class DemandBase {
       return;
     }
     this.updateSelectField(selectEl, fieldValue);
-    selectEl.querySelector(`option[value="${fieldValue}"]`)?.removeAttribute('disabled');
-    selectEl.removeAttribute('disabled');
   }
 
   handleOrgSizeSelect(selectEl, fieldValue) {
@@ -249,12 +243,12 @@ class DemandBase {
       const fieldName = fieldMapping[key];
       if (!fieldName || fieldName === 'company_name' || /[.,]/.test(fieldName)) return;
       const fieldValue = this.convert(itemData[fieldName], fieldName);
-      const inputEl = document.querySelector(`input.cc-form-component[name=${key}]`);
-      const selectEl = document.querySelector(`select.cc-form-component[name=${key}]`);
+      const inputEl = this.form.querySelector(`input.cc-form-component[name=${key}]`);
+      const selectEl = this.form.querySelector(`select.cc-form-component[name=${key}]`);
 
       if (key === 'country' && selectEl) {
+        if (selectEl.disabled) return;
         this.updateSelectField(selectEl, fieldValue);
-        selectEl?.dispatchEvent(new Event('change', { bubbles: true }));
         return;
       }
 
