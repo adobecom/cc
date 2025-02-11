@@ -2,7 +2,6 @@ import sinon from 'sinon';
 import { readFile } from '@web/test-runner-commands';
 import { setLibs, getLibs } from '../../../../creativecloud/scripts/utils.js';
 import { expect } from '@esm-bundle/chai';
-import ConnectTrials from '../../../../creativecloud/features/cc-forms/forms/connect.js';
 
 const miloLibs = '/libs';
 setLibs(miloLibs);
@@ -15,15 +14,15 @@ const CONFIG = {
 setConfig(CONFIG);
 
 window.adobeIMS = {
-    initialized: true,
-    getProfile: () => {
-      const pr = new Promise((res) => res({ countryCode: 'US', userId: 'mathuria' }));
-      return pr;
-    },
-    isSignedInUser: () => true,
-    getAccessToken: () => 'token',
-    adobeid: { locale: 'en' },
-  };
+ initialized: true,
+ getProfile: () => {
+    const pr = new Promise((res) => res({ countryCode: 'US', userId: 'mathuria' }));
+    return pr;
+ },
+ isSignedInUser: () => true,
+ getAccessToken: () => 'token',
+ adobeid: { locale: 'en' },
+};
   
 window.adobeid = {
 api_parameters: {},
