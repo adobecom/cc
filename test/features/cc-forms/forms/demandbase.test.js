@@ -19,7 +19,7 @@ function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });
 }
 
-document.body.innerHTML = await readFile({ path: '../../../blocks/cc-forms/mocks/body.html' });
+document.body.innerHTML = await readFile({ path: '../../../features/cc-forms/forms/mocks/demandbase-body.html' });
 describe('Demand base integration', async () => {
   let form;
   let db;
@@ -28,6 +28,22 @@ describe('Demand base integration', async () => {
     const el = document.querySelector('.cc-forms');
     await init(el);
     form = document.querySelector('.cc-forms form');
+    const osField = form.querySelector('#orgsize');
+    const opts = [
+      { value: '1-499', text: '1-499' },
+      { value: '500-999', text: '500-999' },
+      { value: '1000+', text: '1000+' },
+    ];
+    opts.forEach((opt) => {
+      const op = document.createElement('option');
+      op.value = opt.value;
+      op.textContent = opt.text;
+      op.setAttribute('data-value', opt.value);
+      op.setAttribute('data-istop', 'undefined');
+      op.setAttribute('role', 'option');
+      op.setAttribute('sku', 'undefined');
+      osField.appendChild(op);
+    });
     const dbConf = {
       endpoint: 'https://autocomplete.demandbase.com/forms/autocomplete',
       apiKey: 'DcJ5JpU7attMHR6KoFgKA1oWr7djrtGidd4pC7dD',
@@ -50,17 +66,17 @@ describe('Demand base integration', async () => {
       payloadMappings: { 'custom.questions_comments': 'company_name, phone, industry, sub_industry, annual_sales, fortune_1000, forbes_2000, web_site' },
     };
     db = new DemandBase(dbConf);
-  }).timeout(10000);
+  });
 
   it('should call demandbase constructor', () => {
     expect(db).to.exist;
-  }).timeout(10000);
+  });
 
   it('should return if dbConf is not an object', () => {
     const dbConf2 = 123;
     const db2 = new DemandBase(dbConf2);
     expect(db2).to.be.empty;
-  }).timeout(10000);
+  });
 
   it('should handle different key events properly', async () => {
     const handleEnterKeySpy = sinon.spy(db, 'handleEnterKey');
@@ -366,7 +382,7 @@ describe('Demand base integration', async () => {
     expect(handleUpArrowSpy.calledOnce).to.be.true;
     orgField.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 13 }));
     expect(handleEnterKeySpy.calledOnce).to.be.true;
-  }).timeout(10000);
+  });
 
   it('should handle click event on a menu item', async () => {
     const orgField = form.querySelector('#orgname');
@@ -377,7 +393,7 @@ describe('Demand base integration', async () => {
     });
     const menuItem = form.querySelector('.db-Menu-item');
     menuItem.click();
-  }).timeout(10000);
+  });
 
   it('should return if orgname field is absent', () => {
     const elem = createTag('div');
@@ -394,5 +410,5 @@ describe('Demand base integration', async () => {
     const spy = sinon.spy(db2, 'registerDemandBaseHandlers');
     db2.registerDemandBaseHandlers();
     expect(spy.calledOnce).to.be.true;
-  }).timeout(10000);
+  });
 });
