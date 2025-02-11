@@ -331,6 +331,7 @@ class Trials {
 
   buttonListener() {
     this.formContainer.querySelector(SELECTOR_BUTTON).addEventListener('click', () => {
+      this.form.setAttribute('data-show-error', 'true');
       this.formContainer.dispatchEvent(this.event);
       try {
         this.checkValidElements();
