@@ -25,8 +25,6 @@ function getUnityLibs(prodLibs = '/unitylibs') {
   const { hostname } = window.location;
   if (!hostname.includes('hlx.page')
     && !hostname.includes('hlx.live')
-    && !hostname.includes('aem.page')
-    && !hostname.includes('aem.live')
     && !hostname.includes('localhost')) {
     return prodLibs;
   }
