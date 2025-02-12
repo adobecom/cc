@@ -21,7 +21,6 @@ const ADDRESS_MAIL_TO = 'data-imsAddressMailValue';
 const USER_PROFILE = 'data-userProfileValue';
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
 const INPUT_FIELDS = '.cc-form-component.text';
-// const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 const STATUS_REDIRECT_MAP = {
   'thank-you-redirect': 'thankyoupage',
   'error-redirect-generic': 'genericerrorpage',
@@ -365,11 +364,17 @@ class Trials {
   }
 
   postSubmitSuccess(response) {
+    const errorMap = {
+      NOT_ELIGIBLE_FOR_TRIAL: 'restrictionerrorpage',
+      INVALID_PAYLOAD: 'invalidformdataerrorpage',
+      UNEXPECTED_JMS_ERROR: 'bamaunknownerrorpage',
+      UNEXPECTED_BAMA_ERROR: 'bamaunknownerrorpage',
+    };
     let destination = this.thankyouPage;
     if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
     || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
     && response.reason && response.reason !== 'SUCCESS') {
-      destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
+      destination = this.getFormConfig(errorMap[response.reason]);
     }
     window.location.href = destination;
   }
