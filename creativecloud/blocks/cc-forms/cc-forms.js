@@ -195,7 +195,6 @@ class CCForms {
     const currUrlVal = window.location.origin + window.location.pathname;
     const currUrlObj = createTag('input', { type: 'hidden', id: 'current_url', name: 'current_url', value: currUrlVal });
     this.form.append(currUrlObj);
-    this.el.remove();
   }
 
   initializeDemandbase() {
@@ -216,12 +215,15 @@ function isSignedInInitialized(interval = 200) {
 export default async function init(el) {
   const ccFormObj = new CCForms(el);
   await ccFormObj.createFormComponents();
-  if (ccFormObj.formConfig.type === 'default') return;
+  if (ccFormObj.formConfig.type === 'default') {
+    el.remove();
+    return;
+  }
   isSignedInInitialized().then(async () => {
     if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
-    const fc = new FormConfigurator(ccFormObj.form);
+    const fc = new FormConfigurator(ccFormObj.form, el);
     if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
     el.remove();
     return fc;

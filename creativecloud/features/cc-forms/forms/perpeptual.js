@@ -35,12 +35,13 @@ const ATTRIBUTE = {
 };
 
 class PerpetualTrials extends Trials {
-  constructor(form) {
-    super(form);
+  constructor(form, authConfig) {
+    super(form, authConfig);
     this.form = form;
+    this.authConfig = authConfig;
     this.initVars();
     this.thankyouPage = this.form.getAttribute(ATTRIBUTE.DATA_THANK_YOU_PAGE);
-    const notice = document.querySelector(NOTICE_ID);
+    const notice = this.form.querySelector(NOTICE_ID);
     if (notice) {
       const xf = notice.querySelector('.fragment');
       if (xf) {
