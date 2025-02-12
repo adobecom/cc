@@ -289,9 +289,10 @@ export class ConsentNotice {
   }
 }
 class Trials {
-  constructor(formContainer) {
+  constructor(formContainer, authConfig) {
     this.imslib = window.adobeIMS;
     this.formContainer = formContainer;
+    this.authConfig = authConfig;
     this.valid = true;
     this.formConfig = [];
     this.payLoad = {};
@@ -307,7 +308,6 @@ class Trials {
     this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
     this.event = new Event('checkValidation');
     this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
-    // this.checkValidElements();
     this.setFormConfig();
     this.handleEnterKeyPress();
   }
@@ -352,7 +352,7 @@ class Trials {
   setFormConfig() {
     const formConfig = [];
     Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
-      const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
+      const redirectUrl = this.authConfig.querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
       if (!redirectUrl) return;
       this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
       formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
