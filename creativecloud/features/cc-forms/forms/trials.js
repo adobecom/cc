@@ -365,11 +365,17 @@ class Trials {
   }
 
   postSubmitSuccess(response) {
+    const errorMap = {
+      NOT_ELIGIBLE_FOR_TRIAL: 'restrictionerrorpage',
+      INVALID_PAYLOAD: 'invalidformdataerrorpage',
+      UNEXPECTED_JMS_ERROR: 'bamaunknownerrorpage',
+      UNEXPECTED_BAMA_ERROR: 'bamaunknownerrorpage',
+    };
     let destination = this.thankyouPage;
     if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
     || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
     && response.reason && response.reason !== 'SUCCESS') {
-      destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
+      destination = this.getFormConfig(STATUS_REDIRECT_MAP[errorMap[response.reason]]);
     }
     window.location.href = destination;
   }
