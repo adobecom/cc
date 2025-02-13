@@ -24,8 +24,8 @@ const config = getConfig();
  * Fetch all previewed resources in specified folder. Bulk status job is asynchronyous, 
  * so the method will keep re-fetching the status till the job is done. Interval - 5 seconds.
  * When Bulk Status returned all previewed resource paths, map each path to a function that will 
- * request this path content from aem.page and map it to index row.
- * Concurrent Requests to aem.page are limited to 20 in order not to overload EDS. aem.page is an uncached endpoint.
+ * request this path content from hlx.page and map it to index row.
+ * Concurrent Requests to hlx.page are limited to 20 in order not to overload EDS. hlx.page is an uncached endpoint.
  * Promise.allSettled instead of Promise.all insures the script will execute for rest of paths, even if one of them failed.
  * @param {*} folder 
  * @param {*} parseIndexFc 
