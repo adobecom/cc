@@ -21,7 +21,6 @@ const ADDRESS_MAIL_TO = 'data-imsAddressMailValue';
 const USER_PROFILE = 'data-userProfileValue';
 const REQUEST_CONTENT_TYPE = 'application/json; charset=utf-8';
 const INPUT_FIELDS = '.cc-form-component.text';
-// const SELECTOR_PREFIX_MESSAGE = '.error-message-';
 const STATUS_REDIRECT_MAP = {
   'thank-you-redirect': 'thankyoupage',
   'error-redirect-generic': 'genericerrorpage',
@@ -289,9 +288,10 @@ export class ConsentNotice {
   }
 }
 class Trials {
-  constructor(formContainer) {
+  constructor(formContainer, authConfig) {
     this.imslib = window.adobeIMS;
     this.formContainer = formContainer;
+    this.authConfig = authConfig;
     this.valid = true;
     this.formConfig = [];
     this.payLoad = {};
@@ -307,7 +307,6 @@ class Trials {
     this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
     this.event = new Event('checkValidation');
     this.inputElements = this.formContainer.querySelectorAll(INPUT_FIELDS);
-    // this.checkValidElements();
     this.setFormConfig();
     this.handleEnterKeyPress();
   }
@@ -352,7 +351,7 @@ class Trials {
   setFormConfig() {
     const formConfig = [];
     Object.keys(STATUS_REDIRECT_MAP).forEach((k) => {
-      const redirectUrl = this.formContainer.closest('.cc-forms').querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
+      const redirectUrl = this.authConfig.querySelector(`.icon-${k}`)?.parentElement?.nextElementSibling?.querySelector('a')?.href;
       if (!redirectUrl) return;
       this.formContainer.setAttribute(`data-${STATUS_REDIRECT_MAP[k]}`, redirectUrl);
       formConfig[STATUS_REDIRECT_MAP[k]] = redirectUrl;
@@ -365,11 +364,17 @@ class Trials {
   }
 
   postSubmitSuccess(response) {
+    const errorMap = {
+      NOT_ELIGIBLE_FOR_TRIAL: 'restrictionerrorpage',
+      INVALID_PAYLOAD: 'invalidformdataerrorpage',
+      UNEXPECTED_JMS_ERROR: 'bamaunknownerrorpage',
+      UNEXPECTED_BAMA_ERROR: 'bamaunknownerrorpage',
+    };
     let destination = this.thankyouPage;
     if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
     || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
     && response.reason && response.reason !== 'SUCCESS') {
-      destination = this.getFormConfig(STATUS_REDIRECT_MAP[response.reason]);
+      destination = this.getFormConfig(errorMap[response.reason]);
     }
     window.location.href = destination;
   }

@@ -32,7 +32,7 @@ const swcImportMaps = Object.fromEntries([
   'icons/cross.js',
 ].map((file) => [`/libs/features/spectrum-web-components/dist/${file}`, `/node_modules/@adobecom/milo/libs/features/spectrum-web-components/dist/${file}`]));
 
-const miloImportMaps = { 'libs/': 'https://main--milo--adobecom.aem.live/libs/' };
+const miloImportMaps = { 'libs/': 'https://main--milo--adobecom.hlx.live/libs/' };
 
 export default {
   coverageConfig: {
