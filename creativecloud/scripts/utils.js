@@ -132,7 +132,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '--cc--adobecom.hlx.live': {
+  '--cc--adobecom.(hlx|aem).live': {
     'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
@@ -143,7 +143,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '--cc--adobecom.hlx.page': {
+  '--cc--adobecom.(hlx|aem).page': {
     'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
@@ -171,14 +171,16 @@ export const [setLibs, getLibs] = (() => {
       const { hostname } = window.location;
       if (!hostname.includes('hlx.page')
         && !hostname.includes('hlx.live')
+        && !hostname.includes('aem.page')
+        && !hostname.includes('aem.live')
         && !hostname.includes('localhost')) {
         libs = prodLibs;
         return libs;
       }
       const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
       if (branch === 'local') { libs = 'http://localhost:6456/libs'; return libs; }
-      if (branch.indexOf('--') > -1) { libs = `https://${branch}.hlx.live/libs`; return libs; }
-      libs = `https://${branch}--milo--adobecom.hlx.live/libs`;
+      if (branch.indexOf('--') > -1) { libs = `https://${branch}.aem.live/libs`; return libs; }
+      libs = `https://${branch}--milo--adobecom.aem.live/libs`;
       return libs;
     }, () => libs,
   ];
