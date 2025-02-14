@@ -224,6 +224,8 @@ class Dropdown {
   }
 
   isValid() {
+    const showError = this.form.getAttribute('data-show-error') === 'true';
+    if (!showError) return this.valid;
     this.value = this.dropdown.value;
     this.valid = false;
     this.dropdown.setCustomValidity('');
@@ -238,10 +240,14 @@ class Dropdown {
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
     if (!elem) return this.valid;
-    if (this.showError) {
+    if (showError) {
       this.dropdown.setCustomValidity(`${elem.innerText}`);
+      this.dropdown.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
       this.dropdown.reportValidity();
-      this.showError = false;
+      this.form.setAttribute('data-show-error', 'false');
     }
     return this.valid;
   }
@@ -254,7 +260,10 @@ class Dropdown {
     }
     if (this.type === 'independent' && this.source) this.loadData();
     if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
-    this.dropdown.addEventListener('change', () => this.isValid());
+    this.dropdown.addEventListener('change', () => {
+      this.form.setAttribute('data-show-error', 'true');
+      this.isValid();
+    });
     if (this.name === 'productsku') this.handleProductSKUChange();
     else if (this.name === 'purchaseintent') this.handlePurchaseIntentChange();
     else {
