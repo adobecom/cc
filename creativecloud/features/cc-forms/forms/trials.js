@@ -26,7 +26,7 @@ const STATUS_REDIRECT_MAP = {
   'error-redirect-generic': 'genericerrorpage',
   'error-redirect-restriction': 'restrictionerrorpage',
   'error-redirect-invalid-format': 'invalidformdataerrorpage',
-  'error-redirect-jms': 'bamaunknownerrorpage',
+  'error-redirect-jms': 'jmsunknownerrorpage',
   'error-redirect-bama': 'bamaunknownerrorpage',
   'error-redirect-service-unavailable': 'serviceunavailableerrorpage',
 };
@@ -367,7 +367,7 @@ class Trials {
     const errorMap = {
       NOT_ELIGIBLE_FOR_TRIAL: 'restrictionerrorpage',
       INVALID_PAYLOAD: 'invalidformdataerrorpage',
-      UNEXPECTED_JMS_ERROR: 'bamaunknownerrorpage',
+      UNEXPECTED_JMS_ERROR: 'jmsunknownerrorpage',
       UNEXPECTED_BAMA_ERROR: 'bamaunknownerrorpage',
     };
     let destination = this.thankyouPage;
