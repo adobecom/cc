@@ -151,8 +151,8 @@ class Textfield {
       this.textfield.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
-      }, 100);
-      // this.textfield.reportValidity();
+      });
+      this.textfield.reportValidity();
       this.form.setAttribute('data-show-error', 'false');
     } else if (!this.valid && showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
