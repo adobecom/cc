@@ -321,11 +321,30 @@ class Trials {
 
   checkValidElements() {
     this.valid = true;
-    this.elements.forEach((element) => {
+    this.elem = '';
+    for (let i = 0; i < this.elements.length; i++) {
+      const element = this.elements[i];
+      // element.setCustomValidity('');
+      // element.reportValidity();
       if (element.getAttribute('data-valid') === 'false') {
         this.valid = false;
       }
-    });
+      if (element.getAttribute('data-required-error') === 'false') {
+        this.elem = element.closest('.form-item').querySelector('.error-message-required');
+      } else if (element.getAttribute('data-invalid-error') === 'false') {
+        this.elem = element.closest('.form-item').querySelector('.error-message-invalid');
+      }
+      if (this.elem) {
+        element.setCustomValidity(`${this.elem.innerText}`);
+        element.reportValidity();
+        // element.scrollIntoView({
+        //   behavior: 'smooth',
+        //   block: 'center',
+        // });
+        // element.reportValidity();
+        break;
+      }
+    }
   }
 
   buttonListener() {
@@ -334,8 +353,6 @@ class Trials {
       this.formContainer.dispatchEvent(this.event);
       try {
         this.checkValidElements();
-        // eslint-disable-next-line chai-friendly/no-unused-expressions
-        setTimeout(() => { this.showError === true; }, 100);
       } catch (e) { /* pass */ }
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));

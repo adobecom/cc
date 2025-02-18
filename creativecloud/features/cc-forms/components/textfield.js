@@ -19,14 +19,17 @@ class Textfield {
     this.placeholder = this.textfield.getAttribute('placeholder');
     this.valid = true;
     this.init();
+    this.isValid();
   }
 
   init() {
     this.textfield.addEventListener('input', () => {
-      this.form.setAttribute('data-show-error', 'true');
+      // this.form.setAttribute('data-show-error', 'true');
+      this.textfield.setAttribute('data-required-error', 'true');
+      this.textfield.setAttribute('data-invalid-error', 'true');
       this.isValid();
     });
-    this.form.addEventListener('checkValidation', () => this.isValid());
+    // this.form.addEventListener('checkValidation', () => this.isValid());
   }
 
   createTextField() {
@@ -128,8 +131,8 @@ class Textfield {
   }
 
   isValid() {
-    const showError = this.form.getAttribute('data-show-error') === 'true';
-    if (!showError) return this.valid;
+    // const showError = this.form.getAttribute('data-show-error') === 'true';
+    // if (!showError) return this.valid;
     this.value = this.textfield.value;
     this.valid = false;
     this.textfield.setCustomValidity('');
@@ -144,7 +147,7 @@ class Textfield {
       this.valid = false;
     }
     this.textfield.setAttribute('data-valid', this.valid);
-    if (this.required && this.value.trim() === '' && showError) {
+    if (this.required && this.value.trim() === '') {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
@@ -153,11 +156,13 @@ class Textfield {
         block: 'center',
       });
       this.textfield.reportValidity();
-      this.form.setAttribute('data-show-error', 'false');
-    } else if (!this.valid && showError) {
+      // this.form.setAttribute('data-show-error', 'false');
+      this.textfield.setAttribute('data-required-error', 'false');
+    } else if (!this.valid) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
+      this.textfield.setAttribute('data-invalid-error', 'false');
     }
     return this.valid;
   }

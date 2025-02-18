@@ -43,6 +43,7 @@ class Dropdown {
     this.valid = true;
     this.required = !!(this.dropdown.getAttribute('data-form-required'));
     this.init();
+    this.isValid();
   }
 
   getDroprownConfigurations(dtype) {
@@ -224,8 +225,8 @@ class Dropdown {
   }
 
   isValid() {
-    const showError = this.form.getAttribute('data-show-error') === 'true';
-    if (!showError) return this.valid;
+    // const showError = this.form.getAttribute('data-show-error') === 'true';
+    // if (!showError) return this.valid;
     this.value = this.dropdown.value;
     this.valid = false;
     this.dropdown.setCustomValidity('');
@@ -240,15 +241,24 @@ class Dropdown {
     }
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
     if (!elem) return this.valid;
-    if (showError) {
-      this.dropdown.setCustomValidity(`${elem.innerText}`);
+    this.dropdown.setAttribute('data-required-error', 'false');
+         this.dropdown.setCustomValidity(`${elem.innerText}`);
+      this.dropdown.reportValidity();
       this.dropdown.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
       });
       this.dropdown.reportValidity();
-      this.form.setAttribute('data-show-error', 'false');
-    }
+    // if (showError) {
+    //   this.dropdown.setCustomValidity(`${elem.innerText}`);
+    //   this.dropdown.reportValidity();
+    //   this.dropdown.scrollIntoView({
+    //     behavior: 'smooth',
+    //     block: 'center',
+    //   });
+    //   this.dropdown.reportValidity();
+    //   this.form.setAttribute('data-show-error', 'false');
+    // }
     return this.valid;
   }
 
@@ -259,9 +269,10 @@ class Dropdown {
       this.dropdown.removeAttribute('data-loading');
     }
     if (this.type === 'independent' && this.source) this.loadData();
-    if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
+    // if (this.form) this.form.addEventListener('checkValidation', () => this.isValid());
     this.dropdown.addEventListener('change', () => {
-      this.form.setAttribute('data-show-error', 'true');
+      // this.form.setAttribute('data-show-error', 'true');
+      this.dropdown.setAttribute('data-required-error', 'true');
       this.isValid();
     });
     if (this.name === 'productsku') this.handleProductSKUChange();

@@ -14,12 +14,14 @@ class Checkbox {
     this.value = this.checkboxInput.value;
     this.valid = true;
     this.init();
+    this.isValid();
   }
 
   init() {
-    this.form.addEventListener('checkValidation', () => this.isValid());
+    // this.form.addEventListener('checkValidation', () => this.isValid());
     this.checkboxInput.addEventListener('change', () => {
-      this.form.setAttribute('data-show-error', 'true');
+      // this.form.setAttribute('data-show-error', 'true');
+      this.checkboxInput.setAttribute('data-required-error', 'true');
       this.isValid();
     });
   }
@@ -98,8 +100,8 @@ class Checkbox {
   }
 
   isValid() {
-    const showError = this.form.getAttribute('data-show-error') === 'true';
-    if (!showError) return this.valid;
+    // const showError = this.form.getAttribute('data-show-error') === 'true';
+    // if (!showError) return this.valid;
     this.valid = false;
     this.checkboxInput.setCustomValidity('');
     this.checkboxInput.reportValidity();
@@ -109,15 +111,24 @@ class Checkbox {
     if (!this.valid) {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       if (!elem) return this.valid;
-      if (showError) {
-        this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+      this.checkboxInput.setAttribute('data-required-error', 'false');
+          this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+        this.checkboxInput.reportValidity();
         this.checkboxInput.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         });
         this.checkboxInput.reportValidity();
-        this.form.setAttribute('data-show-error', 'false');
-      }
+      // if (showError) {
+      //   this.checkboxInput.setCustomValidity(`${elem.innerText}`);
+      //   this.checkboxInput.reportValidity();
+      //   this.checkboxInput.scrollIntoView({
+      //     behavior: 'smooth',
+      //     block: 'center',
+      //   });
+      //   this.checkboxInput.reportValidity();
+      //   this.form.setAttribute('data-show-error', 'false');
+      // }
     }
     // eslint-disable-next-line consistent-return
     return this.valid;
