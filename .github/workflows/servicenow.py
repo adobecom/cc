@@ -97,7 +97,6 @@ def get_cmr_id_operation():
 
   return JSON_PARSE["result"]["changeId"]
 
-
 # Execute Script logic:
 # python3 servicenow.py
 if __name__ == "__main__":
