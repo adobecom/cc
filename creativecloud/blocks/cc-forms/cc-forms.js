@@ -231,6 +231,6 @@ export default async function init(el) {
     const srcVal = 'figma';
     const trgtVal = 'da';
     const url = `https://develop--da-helpx-gem--adobecom.hlx.page/preview.html?source=figma&target=da&targetUrl=${src}&contentUrl=${trgt}`;
-    window.open(url, '_blank');
+    window.open(url, '_self');
   })
 }
