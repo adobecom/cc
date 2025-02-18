@@ -230,7 +230,8 @@ export default async function init(el) {
     const trgt = ccFormObj.form.querySelector('#targetda').value;
     const srcVal = 'figma';
     const trgtVal = 'da';
-    const url = `https://develop--da-helpx-gem--adobecom.hlx.page/preview.html?source=figma&target=da&targetUrl=${trgt}&contentUrl=${src}`;
+    const tkn = new URLSearchParams(window.location.search).get('token');
+    const url = `https://develop--da-helpx-gem--adobecom.hlx.page/preview.html?source=figma&target=da&targetUrl=${trgt}&contentUrl=${src}&token=${tkn}`;
     window.open(url, '_self');
   })
 }
