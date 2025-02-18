@@ -133,7 +133,6 @@ class Textfield {
     this.value = this.textfield.value;
     this.valid = false;
     this.textfield.setCustomValidity('');
-    this.textfield.reportValidity();
     if (!this.pattern && !this.required) this.valid = true;
     if (!this.pattern && this.required && this.value.trim() !== '') this.valid = true;
     if (this.pattern && this.textfield.validity.valid) this.valid = true;
@@ -147,10 +146,6 @@ class Textfield {
     if (this.required && this.value.trim() === '' && showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       this.textfield.setCustomValidity(`${elem.innerText}`);
-      this.textfield.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
       this.textfield.reportValidity();
       this.form.setAttribute('data-show-error', 'false');
     } else if (!this.valid && showError) {
