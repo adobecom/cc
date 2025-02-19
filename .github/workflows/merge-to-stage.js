@@ -5,8 +5,8 @@ const SEEN = {};
 let github, owner, repo;
 let body = `
 **Creative cloud:**
-- Before: https://${PROD}--cc--adobecom.aem.live/?martech=off
-- After: https://${STAGE}--cc--adobecom.aem.live/?martech=off
+- Before: https://${PROD}--cc--adobecom.hlx.live/?martech=off
+- After: https://${STAGE}--cc--adobecom.hlx.live/?martech=off
 `;
 const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
 const LABELS = {
