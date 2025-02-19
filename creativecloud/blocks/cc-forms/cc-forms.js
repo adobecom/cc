@@ -220,7 +220,9 @@ export default async function init(el) {
   ccFormObj.form.querySelector("select").id = "sourceType";
   ccFormObj.form.querySelector("select").innerHTML += '<option value = "figma">Figma</option>';
   ccFormObj.form.querySelector("#sourcefigma").removeAttribute('pattern');
+  ccFormObj.form.querySelector("#sourcefigma").value = 'https://www.figma.com/design/qQ7Qr5E810zfp6E3WA9OBd/figma_files_cc_1?node-id=187-2078&p=f&t=fyQjdInX8DbQ4O2n-0';
   ccFormObj.form.querySelector("#targetda").removeAttribute('pattern');
+  ccFormObj.form.querySelector("#targetda").value = 'https://admin.da.live/source/adobecom/da-helpx-gem/drafts/adisharm/test';
   ccFormObj.form.querySelector("select").selectedIndex = 1;
   ccFormObj.form.querySelectorAll("select")[1].id = "targetType";
   ccFormObj.form.querySelectorAll("select")[1].innerHTML += '<option value = "da">DA</option>';
