@@ -213,8 +213,7 @@
   block-size: 10px;
   inline-size: 10px;
   inset: 0;
-  top: 2px;
-  left: 2px;
+  margin: auto;
   scale: 0;
   opacity: 0;
   transition: scale 0.13s ease-in-out, opacity 0.13s;
