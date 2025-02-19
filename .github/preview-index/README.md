@@ -5,7 +5,7 @@ There are 2 scripts here, one for full reindex and one to reindex a single docum
 The script for full reindex:
 * query all 'previewed' resources in folder /cc-shared/fragments/merch/*
 * filter out .json or urls that don't contain /merch-card/ in the path
-* for each merch-card resource, it will request .aem.page content 
+* for each merch-card resource, it will request .hlx.page content 
 * parse the content to the index table row, similar to the 'merch-cards' index definition in 'helix-query.yaml'
 * delete all rows from /cc-shared/assets/query-index-cards-preview.xslx, 'raw_index' sheet, 'Table1'
 * add new generated rows to the index
@@ -26,7 +26,7 @@ If you do a change to .env file, remember to re-run 'npm i' before running 'npm 
 The script for reindexing of a single document
 * is triggered on 'resource-previewed' event
 * will work only if resource path contains /merch-card/ and does not end with .json
-* for the resource path it requests .aem.page content
+* for the resource path it requests .hlx.page content
 * it searches for the existing row in /cc-shared/assets/query-index-cards-preview.xslx for this resource 
 * if it exists, it updates that row with new details
 * otherwise it inserts new row
@@ -55,7 +55,7 @@ ENABLED=y
 
 `SHAREPOINT_CLIENT_ID` and `SHAREPOINT_TENANT_ID` can be found on the azure app 'Essential' tab, see 'Application (client) ID' and 'Directory (tenant) ID'.
 `PREVIEW_INDEX_FILE` path to the target index file, e.g. "milo/drafts/mariia/preview-index/query-index-cards-preview.xlsx"
-`PREVIEW_RESOURCES_FOLDER` path to resource to index, e.g. "/drafts/mariia/preview-index/*". Folder path is not sharepoint path, but mapped *aem.page location. So if your sharepoint folder is CC/www/cc-shared/myfolder, please specify /cc-shared/myfolder.
+`PREVIEW_RESOURCES_FOLDER` path to resource to index, e.g. "/drafts/mariia/preview-index/*". Folder path is not sharepoint path, but mapped *hlx.page location. So if your sharepoint folder is CC/www/cc-shared/myfolder, please specify /cc-shared/myfolder.
 `PREVIEW_LOCALES` comma separated string of locales supported appart from us e.g. ca,at_de,au
 
 Azure app: [CC preview index](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/94136756-61af-4f63-af05-6991a719b872/isMSAApp~/false)
@@ -75,7 +75,7 @@ curl -v -X POST --header "Authorization: token admin_token" -H "Content-Type: ap
 ## EDS Get page content
 Admin token and access token are different values!
 ```
-curl -v --header "Authorization: token access_token" -H "Content-Type: application/json" 'https://main--cc--adobecom.aem.page/cc-shared/fragments/merch/products/catalog/merch-card/ec/target/default'
+curl -v --header "Authorization: token access_token" -H "Content-Type: application/json" 'https://main--cc--adobecom.hlx.page/cc-shared/fragments/merch/products/catalog/merch-card/ec/target/default'
 ```
 
 ## GRAPH API: Get index file Item ID

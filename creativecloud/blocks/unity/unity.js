@@ -25,14 +25,12 @@ function getUnityLibs(prodLibs = '/unitylibs') {
   const { hostname } = window.location;
   if (!hostname.includes('hlx.page')
     && !hostname.includes('hlx.live')
-    && !hostname.includes('aem.page')
-    && !hostname.includes('aem.live')
     && !hostname.includes('localhost')) {
     return prodLibs;
   }
   const branch = new URLSearchParams(window.location.search).get('unitylibs') || 'main';
-  if (branch.indexOf('--') > -1) return `https://${branch}.aem.live/unitylibs`;
-  return `https://${branch}--unity--adobecom.aem.live/unitylibs`;
+  if (branch.indexOf('--') > -1) return `https://${branch}.hlx.live/unitylibs`;
+  return `https://${branch}--unity--adobecom.hlx.live/unitylibs`;
 }
 
 export default async function init(el) {
