@@ -1,5 +1,7 @@
 {
   "project": "Creative Cloud",
+  "previewHost": "main--cc--adobecom.hlx.page",
+  "liveHost": "main--cc--adobecom.hlx.live",
   "plugins": [
     {
       "id": "path",
