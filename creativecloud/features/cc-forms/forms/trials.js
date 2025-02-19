@@ -26,7 +26,7 @@ const STATUS_REDIRECT_MAP = {
   'error-redirect-generic': 'genericerrorpage',
   'error-redirect-restriction': 'restrictionerrorpage',
   'error-redirect-invalid-format': 'invalidformdataerrorpage',
-  'error-redirect-jms': 'jmsunknownerrorpage',
+  'error-redirect-jms': 'bamaunknownerrorpage',
   'error-redirect-bama': 'bamaunknownerrorpage',
   'error-redirect-service-unavailable': 'serviceunavailableerrorpage',
 };
@@ -367,14 +367,14 @@ class Trials {
     const errorMap = {
       NOT_ELIGIBLE_FOR_TRIAL: 'restrictionerrorpage',
       INVALID_PAYLOAD: 'invalidformdataerrorpage',
-      UNEXPECTED_JMS_ERROR: 'jmsunknownerrorpage',
+      UNEXPECTED_JMS_ERROR: 'bamaunknownerrorpage',
       UNEXPECTED_BAMA_ERROR: 'bamaunknownerrorpage',
     };
     let destination = this.thankyouPage;
     if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
     || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
     && response.reason && response.reason !== 'SUCCESS') {
-      destination = this.getFormConfig(`data-${errorMap[response.reason]}`);
+      destination = this.getFormConfig(errorMap[response.reason]);
     }
     window.location.href = destination;
   }
@@ -382,7 +382,7 @@ class Trials {
   postSubmitFailure(response) {
     let destination = this.getFormConfig(`data-${CONF_KEY_ERROR_GENERIC}`);
     if (response.status === 502 || response.status === 503) {
-      destination = this.getFormConfig(`data-${CONF_KEY_ERROR_UNAVAILABLE}`);
+      destination = this.getFormConfig(CONF_KEY_ERROR_UNAVAILABLE);
     }
     window.location.href = destination;
   }
