@@ -229,7 +229,6 @@ class Dropdown {
     this.value = this.dropdown.value;
     this.valid = false;
     this.dropdown.setCustomValidity('');
-    this.dropdown.reportValidity();
     if (!this.required) this.valid = true;
     if (this.required && !!(this.value)) this.valid = true;
     if (this.required && this.dropdown.disabled) this.valid = true;
@@ -242,10 +241,6 @@ class Dropdown {
     if (!elem) return this.valid;
     if (showError) {
       this.dropdown.setCustomValidity(`${elem.innerText}`);
-      this.dropdown.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
       this.dropdown.reportValidity();
       this.form.setAttribute('data-show-error', 'false');
     }
