@@ -371,7 +371,8 @@ const CONFIG = {
     psUrl: 'https://photoshop.adobe.com',
     odinEndpoint: 'https://odin.adobe.com/',
   },
-  page: { pdfViewerClientId: '7cb8376db6774989a4d549182e747890' },
+  // page: { pdfViewerClientId: '7cb8376db6774989a4d549182e747890' },
+  page: { pdfViewerClientId: 'a95510d4ce7d422fb9c95ab7eaa75169' },
   hlxPage: { pdfViewerClientId: 'b70362e4031e4fdfb4ad5ce1ffef61a0' },
   hlxLive: { pdfViewerClientId: 'fb748b00ec814d308f5115dbc1daeea5' },
   jarvis: {
