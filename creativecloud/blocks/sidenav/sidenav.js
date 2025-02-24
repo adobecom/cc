@@ -44,7 +44,6 @@ const getCategories = (items, isMultilevel, mapCategories) => {
       });
       if (item.icon) {
         item.icon.setAttribute('slot', 'icon');
-        item.icon.setAttribute('fill', 'currentColor');
         itemTag.append(item.icon);
       }
       if (isParent) {
