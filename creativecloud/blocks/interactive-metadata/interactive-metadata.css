@@ -136,7 +136,7 @@
 
 .interactive-enabled .show-video .layer.show-layer {
   width: 80%;
-  justify-self: center;
+  margin: auto;
 }
 
 .interactive-enabled .step-slider-tray .layer.show-layer {
