@@ -240,6 +240,10 @@ class Dropdown {
     const elem = this.dropdown.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
     if (!elem) return this.valid;
     if (showError) {
+      this.dropdown.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
       this.dropdown.setCustomValidity(`${elem.innerText}`);
       this.dropdown.reportValidity();
       this.form.setAttribute('data-show-error', 'false');
