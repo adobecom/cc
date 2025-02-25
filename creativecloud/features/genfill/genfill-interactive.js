@@ -1,5 +1,17 @@
-import { createEnticement } from '../interactive-elements/interactive-elements.js';
 import defineDeviceByScreenSize from '../../scripts/decorate.js';
+import { getLibs } from '../../scripts/utils.js';
+
+async function createEnticement(enticementDetail, mode) {
+  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+  const enticementDiv = createTag('div', { class: 'enticement-container' });
+  const svgImage = createTag('img', { class: 'enticement-arrow', alt: '' });
+  let arrowText;
+  [arrowText, svgImage.src] = enticementDetail.split('|');
+  const enticementText = createTag('p', { class: 'enticement-text' }, arrowText.trim());
+  enticementDiv.append(enticementText, svgImage);
+  if (mode === 'light') enticementText.classList.add('light');
+  return enticementDiv;
+}
 
 async function addEnticement(container, enticement, mode) {
   const svgUrl = enticement.querySelector('a').href;
