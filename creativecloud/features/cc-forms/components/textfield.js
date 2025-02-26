@@ -162,6 +162,7 @@ class Textfield {
       this.textfield.focus();
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
+      this.form.setAttribute('data-show-error', 'false');
     }
     return this.valid;
   }
