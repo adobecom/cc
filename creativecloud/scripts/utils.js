@@ -144,7 +144,7 @@ const stageDomainsMap = {
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.(hlx|aem).page': {
-    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals|genuine.html)\\/\\S*)': 'origin',
+    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals|genuine(\\.html|\\/)))\\/\\S*': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
