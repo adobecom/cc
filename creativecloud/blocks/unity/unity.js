@@ -40,6 +40,7 @@ export default async function init(el) {
   const unitylibs = getUnityLibs();
   const promiseArr = [
     `${unitylibs}/core/styles/styles.css`,
+    `${unitylibs}/core/workflow/workflow.js`,
     `${unitylibs}/scripts/utils.js`,
     `${unitylibs}/core/workflow/workflow.js`,
   ];
