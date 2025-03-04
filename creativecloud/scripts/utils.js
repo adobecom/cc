@@ -347,7 +347,7 @@ const CONFIG = {
   imsClientId: 'adobedotcom-cc',
   locales,
   geoRouting: 'on',
-  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com', 'creativecloud.adobe.com'],
+  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   stageDomainsMap,
   decorateArea,
   adobeid: {
@@ -362,7 +362,7 @@ const CONFIG = {
     odinEndpoint: 'https://stage-odin.adobe.com/',
   },
   live: {
-    pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
+    pdfViewerClientId: '9047b46d4bbe4033a0eed98f74d7d9d2',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   prod: {
@@ -371,6 +371,9 @@ const CONFIG = {
     psUrl: 'https://photoshop.adobe.com',
     odinEndpoint: 'https://odin.adobe.com/',
   },
+  page: { pdfViewerClientId: '9f6ffa6b76bf4c87a3e09e20b218d439' },
+  hlxPage: { pdfViewerClientId: 'b70362e4031e4fdfb4ad5ce1ffef61a0' },
+  hlxLive: { pdfViewerClientId: 'fb748b00ec814d308f5115dbc1daeea5' },
   jarvis: {
     id: 'adobedotcom2',
     version: '1.83',
