@@ -134,11 +134,6 @@
   z-index: 2;
 }
 
-.interactive-enabled .show-video .layer.show-layer {
-  width: 80%;
-  justify-self: center;
-}
-
 .interactive-enabled .step-slider-tray .layer.show-layer {
   min-height: 205px;
 }
@@ -405,6 +400,11 @@
   .interactive-enabled .layer .gray-button.animated::before {
     width: 56px;
     height: 56px;
+  }
+
+  .interactive-enabled .show-video .layer.show-layer {
+    width: 80%;
+    margin: auto;
   }
 }
 
