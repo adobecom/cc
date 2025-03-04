@@ -145,21 +145,16 @@ class Textfield {
     this.textfield.setAttribute('data-valid', this.valid);
     if (this.required && this.value.trim() === '' && showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
-      this.textfield.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
+      this.textfield.focus();
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
       this.form.setAttribute('data-show-error', 'false');
     } else if (!this.valid && showError) {
       const elem = this.textfield.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}invalid`);
-      this.textfield.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
+      this.textfield.focus();
       this.textfield.setCustomValidity(`${elem.innerText}`);
       this.textfield.reportValidity();
+      this.form.setAttribute('data-show-error', 'false');
     }
     return this.valid;
   }
