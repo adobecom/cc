@@ -40,10 +40,14 @@ export default async function init(el) {
   const unitylibs = getUnityLibs();
   const promiseArr = [
     `${unitylibs}/core/styles/styles.css`,
-    `${unitylibs}/scripts/utils.js`,
     `${unitylibs}/core/workflow/workflow.js`,
+    `${unitylibs}/scripts/utils.js`,
+    `${unitylibs}/core/workflow/workflow-photoshop/workflow-photoshop.js`,
+    `${unitylibs}/core/workflow/workflow-photoshop/workflow-photoshop.css`,
+    `${unitylibs}/core/steps/upload-btn.js`,
+    `${unitylibs}/core/steps/app-connector.js`,
   ];
   await priorityLoad(promiseArr);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
-  await wfinit(el, 'cc', unitylibs, 'v2');
+  await wfinit(el, 'cc', unitylibs);
 }
