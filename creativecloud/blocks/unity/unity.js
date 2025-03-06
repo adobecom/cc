@@ -31,22 +31,19 @@ function getUnityLibs(prodLibs = '/unitylibs') {
     return prodLibs;
   }
   const branch = new URLSearchParams(window.location.search).get('unitylibs') || 'main';
-  if (branch.indexOf('--') > -1) return `https://${branch}.aem.live/unitylibs`;
-  return `https://${branch}--unity--adobecom.aem.live/unitylibs`;
+  const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
+  if (branch.indexOf('--') > -1) return `https://${branch}.${env}.live/unitylibs`;
+  return `https://${branch}--unity--adobecom.${env}.live/unitylibs`;
 }
 
 export default async function init(el) {
   const unitylibs = getUnityLibs();
   const promiseArr = [
     `${unitylibs}/core/styles/styles.css`,
-    `${unitylibs}/core/workflow/workflow.js`,
     `${unitylibs}/scripts/utils.js`,
-    `${unitylibs}/core/workflow/workflow-photoshop/workflow-photoshop.js`,
-    `${unitylibs}/core/workflow/workflow-photoshop/workflow-photoshop.css`,
-    `${unitylibs}/core/steps/upload-btn.js`,
-    `${unitylibs}/core/steps/app-connector.js`,
+    `${unitylibs}/core/workflow/workflow.js`,
   ];
   await priorityLoad(promiseArr);
   const { default: wfinit } = await import(`${unitylibs}/core/workflow/workflow.js`);
-  await wfinit(el, 'cc', unitylibs);
+  await wfinit(el, 'cc', unitylibs, 'v2');
 }
