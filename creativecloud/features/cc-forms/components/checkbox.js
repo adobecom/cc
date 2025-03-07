@@ -102,7 +102,6 @@ class Checkbox {
     if (!showError) return this.valid;
     this.valid = false;
     this.checkboxInput.setCustomValidity('');
-    this.checkboxInput.reportValidity();
     if (!this.required) this.valid = true;
     if (this.required && this.checkboxInput.checked) this.valid = true;
     this.checkboxInput.setAttribute('data-valid', this.valid);
@@ -110,11 +109,11 @@ class Checkbox {
       const elem = this.checkboxInput.closest('.form-item').querySelector(`${SELECTOR_PREFIX_MESSAGE}required`);
       if (!elem) return this.valid;
       if (showError) {
-        this.checkboxInput.setCustomValidity(`${elem.innerText}`);
         this.checkboxInput.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
         });
+        this.checkboxInput.setCustomValidity(`${elem.innerText}`);
         this.checkboxInput.reportValidity();
         this.form.setAttribute('data-show-error', 'false');
       }
