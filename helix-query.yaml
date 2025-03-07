@@ -10,6 +10,7 @@ indices:
       - '**/fragments/**'
     include:
       - /creativecloud/**
+      - /accessibility/**
       - /products/**
       - /ai/**
       - /education/**
@@ -81,6 +82,7 @@ indices:
     <<: *def
     include:
       - /au/creativecloud/**
+      - /au/accessibility/**
       - /au/products/**
       - /au/ai/**
       - /au/education/**
@@ -115,6 +117,7 @@ indices:
     <<: *def
     include:
       - /de/creativecloud/**
+      - /de/accessibility/**
       - /de/products/**
       - /de/ai/**
       - /de/education/**
@@ -149,6 +152,7 @@ indices:
     <<: *def
     include:
       - /es/creativecloud/**
+      - /es/accessibility/**
       - /es/products/**
       - /es/ai/**
       - /es/education/**
@@ -183,6 +187,7 @@ indices:
     <<: *def
     include:
       - /fr/creativecloud/**
+      - /fr/accessibility/**
       - /fr/products/**
       - /fr/ai/**
       - /fr/education/**
@@ -217,6 +222,7 @@ indices:
     <<: *def
     include:
       - /it/creativecloud/**
+      - /it/accessibility/**
       - /it/products/**
       - /it/ai/**
       - /it/education/**
@@ -251,6 +257,7 @@ indices:
     <<: *def
     include:
       - /jp/creativecloud/**
+      - /jp/accessibility/**
       - /jp/products/**
       - /jp/ai/**
       - /jp/education/**
@@ -285,6 +292,7 @@ indices:
     <<: *def
     include:
       - /kr/creativecloud/**
+      - /kr/accessibility/**
       - /kr/products/**
       - /kr/ai/**
       - /kr/education/**
@@ -319,6 +327,7 @@ indices:
     <<: *def
     include:
       - /ru/creativecloud/**
+      - /ru/accessibility/**
       - /ru/products/**
       - /ru/ai/**
       - /ru/education/**
@@ -353,6 +362,7 @@ indices:
     <<: *def
     include:
       - /hk_zh/creativecloud/**
+      - /hk_zh/accessibility/**
       - /hk_zh/products/**
       - /hk_zh/ai/**
       - /hk_zh/education/**
@@ -387,6 +397,7 @@ indices:
     <<: *def
     include:
       - /tw/creativecloud/**
+      - /tw/accessibility/**
       - /tw/products/**
       - /tw/ai/**
       - /tw/education/**
@@ -421,6 +432,7 @@ indices:
     <<: *def
     include:
       - /nl/creativecloud/**
+      - /nl/accessibility/**
       - /nl/products/**
       - /nl/ai/**
       - /nl/education/**
@@ -455,6 +467,7 @@ indices:
     <<: *def
     include:
       - /pl/creativecloud/**
+      - /pl/accessibility/**
       - /pl/products/**
       - /pl/ai/**
       - /pl/education/**
@@ -489,6 +502,7 @@ indices:
     <<: *def
     include:
       - /tr/creativecloud/**
+      - /tr/accessibility/**
       - /tr/products/**
       - /tr/ai/**
       - /tr/education/**
@@ -523,6 +537,7 @@ indices:
     <<: *def
     include:
       - /uk/creativecloud/**
+      - /uk/accessibility/**
       - /uk/products/**
       - /uk/ai/**
       - /uk/education/**
@@ -557,6 +572,7 @@ indices:
     <<: *def
     include:
       - /ca/creativecloud/**
+      - /ca/accessibility/**
       - /ca/products/**
       - /ca/ai/**
       - /ca/education/**
@@ -591,6 +607,7 @@ indices:
     <<: *def
     include:
       - /cn/creativecloud/**
+      - /cn/accessibility/**
       - /cn/products/**
       - /cn/ai/**
       - /cn/education/**
@@ -625,6 +642,7 @@ indices:
     <<: *def
     include:
       - /ae_ar/creativecloud/**
+      - /ae_ar/accessibility/**
       - /ae_ar/products/**
       - /ae_ar/ai/**
       - /ae_ar/education/**
@@ -659,6 +677,7 @@ indices:
     <<: *def
     include:
       - /ae_en/creativecloud/**
+      - /ae_en/accessibility/**
       - /ae_en/products/**
       - /ae_en/ai/**
       - /ae_en/education/**
@@ -693,6 +712,7 @@ indices:
     <<: *def
     include:
       - /at/creativecloud/**
+      - /at/accessibility/**
       - /at/products/**
       - /at/ai/**
       - /at/education/**
@@ -727,6 +747,7 @@ indices:
     <<: *def
     include:
       - /be_en/creativecloud/**
+      - /be_en/accessibility/**
       - /be_en/products/**
       - /be_en/ai/**
       - /be_en/education/**
@@ -761,6 +782,7 @@ indices:
     <<: *def
     include:
       - /be_fr/creativecloud/**
+      - /be_fr/accessibility/**
       - /be_fr/products/**
       - /be_fr/ai/**
       - /be_fr/education/**
@@ -795,6 +817,7 @@ indices:
     <<: *def
     include:
       - /ca_fr/creativecloud/**
+      - /ca_fr/accessibility/**
       - /ca_fr/products/**
       - /ca_fr/ai/**
       - /ca_fr/education/**
@@ -829,6 +852,7 @@ indices:
     <<: *def
     include:
       - /ch_de/creativecloud/**
+      - /ch_de/accessibility/**
       - /ch_de/products/**
       - /ch_de/ai/**
       - /ch_de/education/**
@@ -863,6 +887,7 @@ indices:
     <<: *def
     include:
       - /ch_fr/creativecloud/**
+      - /ch_fr/accessibility/**
       - /ch_fr/products/**
       - /ch_fr/ai/**
       - /ch_fr/education/**
@@ -897,6 +922,7 @@ indices:
     <<: *def
     include:
       - /cl/creativecloud/**
+      - /cl/accessibility/**
       - /cl/products/**
       - /cl/ai/**
       - /cl/education/**
@@ -931,6 +957,7 @@ indices:
     <<: *def
     include:
       - /gr_en/creativecloud/**
+      - /gr_en/accessibility/**
       - /gr_en/products/**
       - /gr_en/ai/**
       - /gr_en/education/**
@@ -965,6 +992,7 @@ indices:
     <<: *def
     include:
       - /hk_en/creativecloud/**
+      - /hk_en/accessibility/**
       - /hk_en/products/**
       - /hk_en/ai/**
       - /hk_en/education/**
@@ -999,6 +1027,7 @@ indices:
     <<: *def
     include:
       - /ie/creativecloud/**
+      - /ie/accessibility/**
       - /ie/products/**
       - /ie/ai/**
       - /ie/education/**
@@ -1033,6 +1062,7 @@ indices:
     <<: *def
     include:
       - /il_en/creativecloud/**
+      - /il_en/accessibility/**
       - /il_en/products/**
       - /il_en/ai/**
       - /il_en/education/**
@@ -1067,6 +1097,7 @@ indices:
     <<: *def
     include:
       - /in/creativecloud/**
+      - /in/accessibility/**
       - /in/products/**
       - /in/ai/**
       - /in/education/**
@@ -1101,6 +1132,7 @@ indices:
     <<: *def
     include:
       - /lt/creativecloud/**
+      - /lt/accessibility/**
       - /lt/products/**
       - /lt/ai/**
       - /lt/education/**
@@ -1135,6 +1167,7 @@ indices:
     <<: *def
     include:
       - /lu_de/creativecloud/**
+      - /lu_de/accessibility/**
       - /lu_de/products/**
       - /lu_de/ai/**
       - /lu_de/education/**
@@ -1169,6 +1202,7 @@ indices:
     <<: *def
     include:
       - /lu_en/creativecloud/**
+      - /lu_en/accessibility/**
       - /lu_en/products/**
       - /lu_en/ai/**
       - /lu_en/education/**
@@ -1203,6 +1237,7 @@ indices:
     <<: *def
     include:
       - /lu_fr/creativecloud/**
+      - /lu_fr/accessibility/**
       - /lu_fr/products/**
       - /lu_fr/ai/**
       - /lu_fr/education/**
@@ -1237,6 +1272,7 @@ indices:
     <<: *def
     include:
       - /mena_en/creativecloud/**
+      - /mena_en/accessibility/**
       - /mena_en/products/**
       - /mena_en/ai/**
       - /mena_en/education/**
@@ -1271,6 +1307,7 @@ indices:
     <<: *def
     include:
       - /nz/creativecloud/**
+      - /nz/accessibility/**
       - /nz/products/**
       - /nz/ai/**
       - /nz/education/**
@@ -1305,6 +1342,7 @@ indices:
     <<: *def
     include:
       - /sa_ar/creativecloud/**
+      - /sa_ar/accessibility/**
       - /sa_ar/products/**
       - /sa_ar/ai/**
       - /sa_ar/education/**
@@ -1339,6 +1377,7 @@ indices:
     <<: *def
     include:
       - /sa_en/creativecloud/**
+      - /sa_en/accessibility/**
       - /sa_en/products/**
       - /sa_en/ai/**
       - /sa_en/education/**
@@ -1373,6 +1412,7 @@ indices:
     <<: *def
     include:
       - /th_en/creativecloud/**
+      - /th_en/accessibility/**
       - /th_en/products/**
       - /th_en/ai/**
       - /th_en/education/**
@@ -1407,6 +1447,7 @@ indices:
     <<: *def
     include:
       - /th_th/creativecloud/**
+      - /th_th/accessibility/**
       - /th_th/products/**
       - /th_th/ai/**
       - /th_th/education/**
@@ -1441,6 +1482,7 @@ indices:
     <<: *def
     include:
       - /za/creativecloud/**
+      - /za/accessibility/**
       - /za/products/**
       - /za/ai/**
       - /za/education/**
@@ -1475,6 +1517,7 @@ indices:
     <<: *def
     include:
       - /africa/creativecloud/**
+      - /africa/accessibility/**
       - /africa/products/**
       - /africa/ai/**
       - /africa/education/**
@@ -1509,6 +1552,7 @@ indices:
     <<: *def
     include:
       - /ar/creativecloud/**
+      - /ar/accessibility/**
       - /ar/products/**
       - /ar/ai/**
       - /ar/education/**
@@ -1543,6 +1587,7 @@ indices:
     <<: *def
     include:
       - /co/creativecloud/**
+      - /co/accessibility/**
       - /co/products/**
       - /co/ai/**
       - /co/education/**
@@ -1577,6 +1622,7 @@ indices:
     <<: *def
     include:
       - /cr/creativecloud/**
+      - /cr/accessibility/**
       - /cr/products/**
       - /cr/ai/**
       - /cr/education/**
@@ -1611,6 +1657,7 @@ indices:
     <<: *def
     include:
       - /ec/creativecloud/**
+      - /ec/accessibility/**
       - /ec/products/**
       - /ec/ai/**
       - /ec/education/**
@@ -1645,6 +1692,7 @@ indices:
     <<: *def
     include:
       - /eg_ar/creativecloud/**
+      - /eg_ar/accessibility/**
       - /eg_ar/products/**
       - /eg_ar/ai/**
       - /eg_ar/education/**
@@ -1679,6 +1727,7 @@ indices:
     <<: *def
     include:
       - /eg_en/creativecloud/**
+      - /eg_en/accessibility/**
       - /eg_en/products/**
       - /eg_en/ai/**
       - /eg_en/education/**
@@ -1713,6 +1762,7 @@ indices:
     <<: *def
     include:
       - /gr_el/creativecloud/**
+      - /gr_el/accessibility/**
       - /gr_el/products/**
       - /gr_el/ai/**
       - /gr_el/education/**
@@ -1747,6 +1797,7 @@ indices:
     <<: *def
     include:
       - /gt/creativecloud/**
+      - /gt/accessibility/**
       - /gt/products/**
       - /gt/ai/**
       - /gt/education/**
@@ -1781,6 +1832,7 @@ indices:
     <<: *def
     include:
       - /id_en/creativecloud/**
+      - /id_en/accessibility/**
       - /id_en/products/**
       - /id_en/ai/**
       - /id_en/education/**
@@ -1815,6 +1867,7 @@ indices:
     <<: *def
     include:
       - /id_id/creativecloud/**
+      - /id_id/accessibility/**
       - /id_id/products/**
       - /id_id/ai/**
       - /id_id/education/**
@@ -1849,6 +1902,7 @@ indices:
     <<: *def
     include:
       - /in_hi/creativecloud/**
+      - /in_hi/accessibility/**
       - /in_hi/products/**
       - /in_hi/ai/**
       - /in_hi/education/**
@@ -1883,6 +1937,7 @@ indices:
     <<: *def
     include:
       - /kw_ar/creativecloud/**
+      - /kw_ar/accessibility/**
       - /kw_ar/products/**
       - /kw_ar/ai/**
       - /kw_ar/education/**
@@ -1917,6 +1972,7 @@ indices:
     <<: *def
     include:
       - /kw_en/creativecloud/**
+      - /kw_en/accessibility/**
       - /kw_en/products/**
       - /kw_en/ai/**
       - /kw_en/education/**
@@ -1951,6 +2007,7 @@ indices:
     <<: *def
     include:
       - /my_en/creativecloud/**
+      - /my_en/accessibility/**
       - /my_en/products/**
       - /my_en/ai/**
       - /my_en/education/**
@@ -1985,6 +2042,7 @@ indices:
     <<: *def
     include:
       - /my_ms/creativecloud/**
+      - /my_ms/accessibility/**
       - /my_ms/products/**
       - /my_ms/ai/**
       - /my_ms/education/**
@@ -2019,6 +2077,7 @@ indices:
     <<: *def
     include:
       - /ng/creativecloud/**
+      - /ng/accessibility/**
       - /ng/products/**
       - /ng/ai/**
       - /ng/education/**
@@ -2053,6 +2112,7 @@ indices:
     <<: *def
     include:
       - /pe/creativecloud/**
+      - /pe/accessibility/**
       - /pe/products/**
       - /pe/ai/**
       - /pe/education/**
@@ -2087,6 +2147,7 @@ indices:
     <<: *def
     include:
       - /ph_en/creativecloud/**
+      - /ph_en/accessibility/**
       - /ph_en/products/**
       - /ph_en/ai/**
       - /ph_en/education/**
@@ -2121,6 +2182,7 @@ indices:
     <<: *def
     include:
       - /ph_fil/creativecloud/**
+      - /ph_fil/accessibility/**
       - /ph_fil/products/**
       - /ph_fil/ai/**
       - /ph_fil/education/**
@@ -2155,6 +2217,7 @@ indices:
     <<: *def
     include:
       - /pr/creativecloud/**
+      - /pr/accessibility/**
       - /pr/products/**
       - /pr/ai/**
       - /pr/education/**
@@ -2189,6 +2252,7 @@ indices:
     <<: *def
     include:
       - /qa_ar/creativecloud/**
+      - /qa_ar/accessibility/**
       - /qa_ar/products/**
       - /qa_ar/ai/**
       - /qa_ar/education/**
@@ -2223,6 +2287,7 @@ indices:
     <<: *def
     include:
       - /qa_en/creativecloud/**
+      - /qa_en/accessibility/**
       - /qa_en/products/**
       - /qa_en/ai/**
       - /qa_en/education/**
@@ -2257,6 +2322,7 @@ indices:
     <<: *def
     include:
       - /vn_en/creativecloud/**
+      - /vn_en/accessibility/**
       - /vn_en/products/**
       - /vn_en/ai/**
       - /vn_en/education/**
@@ -2291,6 +2357,7 @@ indices:
     <<: *def
     include:
       - /vn_vi/creativecloud/**
+      - /vn_vi/accessibility/**
       - /vn_vi/products/**
       - /vn_vi/ai/**
       - /vn_vi/education/**
@@ -2325,6 +2392,7 @@ indices:
     <<: *def
     include:
       - /dk/creativecloud/**
+      - /dk/accessibility/**
       - /dk/products/**
       - /dk/ai/**
       - /dk/education/**
@@ -2359,6 +2427,7 @@ indices:
     <<: *def
     include:
       - /fi/creativecloud/**
+      - /fi/accessibility/**
       - /fi/products/**
       - /fi/ai/**
       - /fi/education/**
@@ -2393,6 +2462,7 @@ indices:
     <<: *def
     include:
       - /no/creativecloud/**
+      - /no/accessibility/**
       - /no/products/**
       - /no/ai/**
       - /no/education/**
@@ -2427,6 +2497,7 @@ indices:
     <<: *def
     include:
       - /se/creativecloud/**
+      - /se/accessibility/**
       - /se/products/**
       - /se/ai/**
       - /se/education/**
@@ -2461,6 +2532,7 @@ indices:
     <<: *def
     include:
       - /la/creativecloud/**
+      - /la/accessibility/**
       - /la/products/**
       - /la/ai/**
       - /la/education/**
@@ -2495,6 +2567,7 @@ indices:
     <<: *def
     include:
       - /mx/creativecloud/**
+      - /mx/accessibility/**
       - /mx/products/**
       - /mx/ai/**
       - /mx/education/**
@@ -2529,6 +2602,7 @@ indices:
     <<: *def
     include:
       - /be_nl/creativecloud/**
+      - /be_nl/accessibility/**
       - /be_nl/products/**
       - /be_nl/ai/**
       - /be_nl/education/**
@@ -2563,6 +2637,7 @@ indices:
     <<: *def
     include:
       - /bg/creativecloud/**
+      - /bg/accessibility/**
       - /bg/products/**
       - /bg/ai/**
       - /bg/education/**
@@ -2597,6 +2672,7 @@ indices:
     <<: *def
     include:
       - /ch_it/creativecloud/**
+      - /ch_it/accessibility/**
       - /ch_it/products/**
       - /ch_it/ai/**
       - /ch_it/education/**
@@ -2631,6 +2707,7 @@ indices:
     <<: *def
     include:
       - /cz/creativecloud/**
+      - /cz/accessibility/**
       - /cz/products/**
       - /cz/ai/**
       - /cz/education/**
@@ -2665,6 +2742,7 @@ indices:
     <<: *def
     include:
       - /ee/creativecloud/**
+      - /ee/accessibility/**
       - /ee/products/**
       - /ee/ai/**
       - /ee/education/**
@@ -2699,6 +2777,7 @@ indices:
     <<: *def
     include:
       - /hu/creativecloud/**
+      - /hu/accessibility/**
       - /hu/products/**
       - /hu/ai/**
       - /hu/education/**
@@ -2733,6 +2812,7 @@ indices:
     <<: *def
     include:
       - /il_he/creativecloud/**
+      - /il_he/accessibility/**
       - /il_he/products/**
       - /il_he/ai/**
       - /il_he/education/**
@@ -2767,6 +2847,7 @@ indices:
     <<: *def
     include:
       - /lv/creativecloud/**
+      - /lv/accessibility/**
       - /lv/products/**
       - /lv/ai/**
       - /lv/education/**
@@ -2801,6 +2882,7 @@ indices:
     <<: *def
     include:
       - /mena_ar/creativecloud/**
+      - /mena_ar/accessibility/**
       - /mena_ar/products/**
       - /mena_ar/ai/**
       - /mena_ar/education/**
@@ -2835,6 +2917,7 @@ indices:
     <<: *def
     include:
       - /pt/creativecloud/**
+      - /pt/accessibility/**
       - /pt/products/**
       - /pt/ai/**
       - /pt/education/**
@@ -2869,6 +2952,7 @@ indices:
     <<: *def
     include:
       - /ro/creativecloud/**
+      - /ro/accessibility/**
       - /ro/products/**
       - /ro/ai/**
       - /ro/education/**
@@ -2903,6 +2987,7 @@ indices:
     <<: *def
     include:
       - /si/creativecloud/**
+      - /si/accessibility/**
       - /si/products/**
       - /si/ai/**
       - /si/education/**
@@ -2937,6 +3022,7 @@ indices:
     <<: *def
     include:
       - /sk/creativecloud/**
+      - /sk/accessibility/**
       - /sk/products/**
       - /sk/ai/**
       - /sk/education/**
@@ -2971,6 +3057,7 @@ indices:
     <<: *def
     include:
       - /ua/creativecloud/**
+      - /ua/accessibility/**
       - /ua/products/**
       - /ua/ai/**
       - /ua/education/**
@@ -3005,6 +3092,7 @@ indices:
     <<: *def
     include:
       - /sg/creativecloud/**
+      - /sg/accessibility/**
       - /sg/products/**
       - /sg/ai/**
       - /sg/education/**
@@ -3039,6 +3127,7 @@ indices:
     <<: *def
     include:
       - /br/creativecloud/**
+      - /br/accessibility/**
       - /br/products/**
       - /br/ai/**
       - /br/education/**
@@ -3073,6 +3162,7 @@ indices:
     <<: *def
     include:
       - /cis_en/creativecloud/**
+      - /cis_en/accessibility/**
       - /cis_en/products/**
       - /cis_en/ai/**
       - /cis_en/education/**
@@ -3107,6 +3197,7 @@ indices:
     <<: *def
     include:
       - /cis_ru/creativecloud/**
+      - /cis_ru/accessibility/**
       - /cis_ru/products/**
       - /cis_ru/ai/**
       - /cis_ru/education/**
