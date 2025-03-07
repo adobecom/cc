@@ -142,7 +142,7 @@ class DemandBase {
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.picks?.length) {
+        if (json?.picks?.length) {
           this.fillList(e, json);
           this.popoverShow(e);
         }
@@ -164,6 +164,15 @@ class DemandBase {
     return list;
   }
 
+  escapeHTML(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   fillList(e, json) {
     const list = this.getListElement(e);
     list.innerHTML = '';
@@ -173,7 +182,7 @@ class DemandBase {
       li.setAttribute('role', 'option');
       li.setAttribute(ATTRIBUTE_DEMAND_BASE_VALUE, item.company_name);
       li.setAttribute('data-demandbase-json', JSON.stringify(item));
-      label.innerHTML = `${item.company_name}<div>${item.street_address || ''} ${item.city || ''} ${item.country_name || ''}</div>`;
+      label.innerHTML = `${this.escapeHTML(item.company_name)}<div>${this.escapeHTML(item.street_address) || ''} ${this.escapeHTML(item.city) || ''} ${this.escapeHTML(item.country_name) || ''}</div>`;
       li.appendChild(label);
       list.appendChild(li);
     });
