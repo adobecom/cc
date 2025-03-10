@@ -71,7 +71,9 @@ class Dropdown {
       },
       country: {
         'dropdown-name': 'country',
-        'dropdown-source': 'graphql/execute.json/acom/listallcountries',
+        'dropdown-source': odinLocale == 'us/en'
+          ? 'graphql/execute.json/acom/listallcountries'
+          : `graphql/execute.json/acom/listallcountriesbypath;path=/content/dam/acom/country/${odinLocale}`,
       },
       estunitship: {
         'dropdown-name': 'estunitship',
