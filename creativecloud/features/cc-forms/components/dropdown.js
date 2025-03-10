@@ -123,7 +123,7 @@ class Dropdown {
       },
       'existing-user': {
         'dropdown-name': 'usertype',
-        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/existinguser/${odinLocale}`,
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/existinguser/us/en',
       },
     };
     return dropdownConfigurations[dtype] ? dropdownConfigurations[dtype] : null;
