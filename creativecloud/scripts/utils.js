@@ -408,6 +408,9 @@ export const scriptInit = async () => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
       link.setAttribute('href', path);
+      link.onload = () => {
+        document.documentElement.style.display = 'block';
+      };
       document.head.appendChild(link);
     });
   }());
