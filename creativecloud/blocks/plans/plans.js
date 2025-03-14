@@ -1,13 +1,9 @@
 import { getLibs } from '../../scripts/utils.js';
 
 const miloLibs = getLibs('/libs');
-const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 const { polyfills } = await import(`${miloLibs}/blocks/merch/merch.js`);
 
 const DEFAULT_LH = 'b1|plans';
-
-// Helps with TBT: MWPW-145127
-loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
 
 function handleCustomAnalyticsEvent(eventName, element) {
   let daaLhValue = '';
