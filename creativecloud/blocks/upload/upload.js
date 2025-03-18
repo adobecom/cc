@@ -11,41 +11,60 @@ function decorateMultiViewport(foreground) {
   return foreground;
 }
 
-function dropZoneAction(para, dropZone) {
-  const btn = createTag('button', { type: 'button', class: 'con-button blue action-button button-xl' }, para.innerHTML);
-  const input = createTag('input', { type: 'file', name: 'file-upload', id: 'file-upload', class: 'file-upload hide', accept: 'image/*' });
-  const clickEls = [btn, dropZone];
+function decorateUploadEls(para) {
+  if (!para) return;
+  const btn = createTag(
+    'button',
+    {
+      type: 'button',
+      class: 'con-button blue action-button button-xl',
+    },
+    para.innerHTML,
+  );
+  const input = createTag(
+    'input', 
+    {
+      type: 'file',
+      name: 'file-upload',
+      id: 'file-upload',
+      class: 'file-upload hide',
+      accept: 'image/*'
+    },
+  );
   para.classList.add('upload-action-container');
   para.textContent = '';
   para.append(btn, input);
-
-  // Click button or drop zone to trigger file upload
-  [...clickEls].forEach((el) => {
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      input.click();
-    });
-  });
+  return para;
 }
 
-function decorateBlockColumns(content, el) {
+function decorateBlockColumns(content) {
   const mediaContainer = createTag('div', { class: 'media-container' });
   const dropZone = createTag('div', { class: 'drop-zone' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
   const media = content.querySelector('picture, video');
-  media.parentElement.textContent.trim() === '' ? media.parentElement.remove() : media.parentElement;
+  media?.parentElement.textContent.trim() === '' ? media?.parentElement.remove() : media?.parentElement;
 
   const terms = content.querySelector('p:last-child');
-  const paras = content.querySelectorAll('p:not(last-child)'); 
-
-  [...paras].forEach((para) => {
-    if (para?.querySelector('span[class*=icon-share], span[class*=icon-upload]')) dropZoneAction(para, dropZone);
-  });
+  const paras = content.querySelectorAll('p:not(last-child)');
+  const getUploadPara = [...paras].filter(para => 
+    para?.querySelector('span[class*=icon-share], span[class*=icon-upload], img[src$=".svg"]')
+  )[0];
+  const uploadEls = decorateUploadEls(getUploadPara, dropZoneContainer, dropZone);
 
   mediaContainer.append(media);
   dropZone.append(...paras);
-  dropZoneContainer.append(dropZone, terms);
+  dropZoneContainer.append(dropZone, uploadEls, terms);
   content.append(mediaContainer, dropZoneContainer);
+
+  // Click button or drop zone to trigger file upload
+  const clickEls = [uploadEls?.firstChild, dropZone];
+  [...clickEls].forEach((el) => {
+    if (!el) return;
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      uploadEls.lastChild.click();
+    });
+  });
 }
 
 export default async function init(el) {
