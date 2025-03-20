@@ -47,7 +47,15 @@ const formConfig = {
   },
   subscribe: {
     type: 'subscribe',
-    ...odinConfig,
+    jsPath: '/creativecloud/features/cc-forms/forms/subscribe.js',
+    blockDataset: {
+      clientname: 'trials',
+      endpoint: '/api2/subscribe_v1',
+      'form-submit': 'trials',
+      'form-type': 'form.subscribe.action',
+      userProfileValue: 'email,fname,lname,phonenumber,address1,address2,city,state,postalcode,country,orgname,preferred_language',
+      ...odinConfig,
+    },
   },
   unsubscribe: {
     type: 'unsubscribe',
@@ -109,6 +117,8 @@ class CCForms {
       case this.el.classList.contains('connect'):
         formConfig.connect.blockDataset['form-type'] = this.el.classList.contains('enterprise') ? 'form.connect.enterprise.action' : 'form.connect.action';
         return formConfig.connect;
+      case this.el.classList.contains('subscribe'):
+        return formConfig.subscribe;
       default:
         return formConfig.default;
     }
@@ -220,7 +230,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    // if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);
