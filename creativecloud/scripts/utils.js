@@ -414,5 +414,9 @@ export const scriptInit = async () => {
   (async function loadPage() {
     loadLana({ clientId: 'cc' });
     await loadArea();
+    if (document.querySelector('.quick-link')) {
+      const { loadPrivacy } = await import(`${miloLibs}/scripts/delayed.js`);
+      loadPrivacy(getConfig, loadScript);
+    }
   }());
 };
