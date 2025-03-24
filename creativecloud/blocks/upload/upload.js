@@ -2,6 +2,7 @@ import { createTag } from '../../scripts/utils.js';
 
 function decorateMultiViewport(foreground) {
   const viewports = ['mobile-up', 'tablet-up', 'desktop-up'];
+  foreground.firstElementChild.classList.add('upload-grid');
   if (foreground.childElementCount === 2 || foreground.childElementCount === 3) {
     [...foreground.children].forEach((child, index) => {
       child.classList.add('upload-grid', viewports[index]);
@@ -12,7 +13,6 @@ function decorateMultiViewport(foreground) {
 }
 
 function decorateUploadEls(para) {
-  if (!para) return;
   const btn = createTag(
     'button',
     {
@@ -42,14 +42,19 @@ function decorateBlockColumns(content) {
   const dropZone = createTag('div', { class: 'drop-zone' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
   const media = content.querySelector('picture, video');
+  // eslint-disable-next-line chai-friendly/no-unused-expressions
   media?.parentElement.textContent.trim() === '' ? media?.parentElement.remove() : media?.parentElement;
 
   const terms = content.querySelector('p:last-child');
   const paras = content.querySelectorAll('p:not(last-child)');
-  const getUploadPara = [...paras].filter((para) =>
-    para?.querySelector('span[class*=icon-share], span[class*=icon-upload], img[src$=".svg"]'))[0];
-  const uploadEls = decorateUploadEls(getUploadPara, dropZoneContainer, dropZone);
+  const getUploadPara = [...paras].filter((para) => para?.querySelector('span[class*=icon-share], span[class*=icon-upload], img[src$=".svg"]'))[0];
 
+  if (!getUploadPara) {
+    window.lana?.log(`Failed to create upload button. Upload button equals ${getUploadPara}.`);
+    return;
+  }
+
+  const uploadEls = decorateUploadEls(getUploadPara, dropZoneContainer, dropZone);
   mediaContainer.append(media);
   dropZone.append(...paras);
   dropZoneContainer.append(dropZone, uploadEls, terms);
