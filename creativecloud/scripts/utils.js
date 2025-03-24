@@ -401,7 +401,7 @@ export const scriptInit = async () => {
   
   const trustCenterCheck = document.querySelector('head > meta[name="trustcenter"]');
   if (trustCenterCheck && trustCenterCheck.content.toLowerCase() === 'enable') {
-    document.querySelector('.section.nda-document').style.display = 'flex';
+    document.querySelector('.section.nda-sign').style.display = 'flex';
   }
   
   const { loadArea, setConfig, loadLana } = await import(`${miloLibs}/utils/utils.js`);
