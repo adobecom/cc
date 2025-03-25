@@ -1,54 +1,38 @@
 class CommunityCards {
   constructor(el) {
     this.el = el;
-    this.cardData = [
-      {
-        imageUrl: 'https://picsum.photos/400/300',
-        headerText: 'Adobe Creative Cloud',
-        descriptionText: 'Access the world\'s best creative apps and services',
-        appIcon: 'https://picsum.photos/50/50',
-        url: 'https://www.adobe.com/creativecloud.html'
-      },
-      {
-        imageUrl: 'https://picsum.photos/400/301',
-        headerText: 'Adobe Stock',
-        descriptionText: 'High-quality stock photos, videos, and graphics',
-        appIcon: 'https://picsum.photos/50/51',
-        url: 'https://stock.adobe.com'
-      },
-      {
-        imageUrl: 'https://picsum.photos/400/302',
-        headerText: 'Adobe Fonts',
-        descriptionText: 'Thousands of fonts from the world\'s leading foundries',
-        appIcon: 'https://picsum.photos/50/52',
-        url: 'https://fonts.adobe.com'
-      },
-      {
-        imageUrl: 'https://picsum.photos/400/303',
-        headerText: 'Adobe Portfolio',
-        descriptionText: 'Create your professional portfolio website',
-        appIcon: 'https://picsum.photos/50/53',
-        url: 'https://portfolio.adobe.com'
-      },
-      {
-        imageUrl: 'https://picsum.photos/400/304',
-        headerText: 'Adobe Color',
-        descriptionText: 'Create and explore color combinations',
-        appIcon: 'https://picsum.photos/50/54',
-        url: 'https://color.adobe.com'
-      }
-    ];
+    this.cardData = [];
     this.init();
   }
 
-  init() {
-    this.renderCards();
-    this.cards = this.el.querySelectorAll('.community-cards__card');
-    this.cards.forEach((cardElement) => {
-      cardElement.addEventListener('click', () => {
-        this.handleCardClick(cardElement);
+  async init() {
+    try {
+      await this.fetchCardData();
+      this.renderCards();
+      this.cards = this.el.querySelectorAll('.community-cards__card');
+      this.cards.forEach((cardElement) => {
+        cardElement.addEventListener('click', () => {
+          this.handleCardClick(cardElement);
+        });
       });
-    });
+    } catch (error) {
+      console.error('Error loading community cards:', error);
+      // You might want to show an error message to the user here
+    }
+  }
+
+  async fetchCardData() {
+    try {
+      const response = await fetch('/blocks/community-cards/community-cards.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      this.cardData = data.cards;
+    } catch (error) {
+      console.error('Error fetching card data:', error);
+      throw error;
+    }
   }
 
   renderCards() {
