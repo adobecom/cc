@@ -49,11 +49,12 @@ const formConfig = {
     type: 'subscribe',
     jsPath: '/creativecloud/features/cc-forms/forms/subscribe.js',
     blockDataset: {
-      clientname: 'trials',
       endpoint: '/api2/subscribe_v1',
       'form-submit': 'trials',
       'form-type': 'form.subscribe.action',
       userProfileValue: 'email,fname,lname,phonenumber,address1,address2,city,state,postalcode,country,orgname,preferred_language',
+      sname: '',
+      'seed-formvalidation': '',
       ...odinConfig,
     },
   },
@@ -176,6 +177,11 @@ class CCForms {
         } else {
           componentConfig[keyName] = s.closest('div').nextElementSibling;
         }
+        if (keyName === 'internal-service-name' && this.formConfig.type === 'subscribe') {
+          const sval = s.closest('div').nextElementSibling.textContent;
+          this.formConfig.sname = sval;
+          this.form.setAttribute('data-sname', sval);
+        }
       }
       switch (true) {
         case componentName.startsWith('cc-form-text'):
@@ -188,7 +194,7 @@ class CCForms {
           { const dd = new Dropdown(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-consent'):
-          if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
+          if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect' || this.formConfig.type === 'subscribe')) {
             const cn = new ConsentNotice(this.form, componentConfig);
           }
           break;
@@ -230,7 +236,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    // if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);

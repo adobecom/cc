@@ -19,7 +19,6 @@ const CUR_URL = '#current_url';
 class Subscribe extends trials {
   constructor(form, authConfig) {
     super(form, authConfig);
-    console.log('Subscribe constructor', authConfig);
     this.form = form;
     this.authConfig = authConfig;
     this.buttonListener();
@@ -56,7 +55,6 @@ class Subscribe extends trials {
     }
 
     this.payLoad = JsonPayload;
-    console.log('Subscribe payload', this.payLoad);
   }
 }
 
