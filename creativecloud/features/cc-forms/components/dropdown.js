@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable eqeqeq */
-import { createTag } from '../../../scripts/utils.js';
+import { createTag, getConfig } from '../../../scripts/utils.js';
 
 const CLASS_HIDDEN = 'is-hidden';
 const SELECTOR_PREFIX_MESSAGE = '.error-message-';
@@ -20,6 +20,18 @@ const PRODUCT_CODE_DETAILS = 'graphql/execute.json/acom/listskuproductandversion
 const GRAPHQL_ENDPOINT = 'graphql/execute.json/acom/';
 const DATA_ODIN_US_PATH = '/content/dam/acom/country/us/en/';
 const SLASH = '/';
+const ODIN_LOCALE_MAP = {
+  'de-AT': 'de/de',
+  'de-CH': 'de/de',
+  'de-DE': 'de/de',
+  'de-LU': 'de/de',
+  'fr-BE': 'fr/fr',
+  'fr-CH': 'fr/fr',
+  'fr-FR': 'fr/fr',
+  'fr-LU': 'fr/fr',
+  'fr-CA': 'fr/fr',
+  'ja-JP': 'jp/ja',
+};
 
 class Dropdown {
   data = [];
@@ -46,38 +58,42 @@ class Dropdown {
   }
 
   getDroprownConfigurations(dtype) {
+    const { locale } = getConfig();
+    const odinLocale = ODIN_LOCALE_MAP[locale.ietf] ? ODIN_LOCALE_MAP[locale.ietf] : 'us/en';
     const dropdownConfigurations = {
       'freemium-purchase-intent': {
         'dropdown-name': 'freemiumpurchaseintent',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectfreemium/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectfreemium/${odinLocale}`,
       },
       'connect-purchase-intent': {
         'dropdown-name': 'connectpurchaseintent',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connecttrialpurchaseintent/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connecttrialpurchaseintent/${odinLocale}`,
       },
       country: {
         'dropdown-name': 'country',
-        'dropdown-source': 'graphql/execute.json/acom/listallcountries',
+        'dropdown-source': odinLocale == 'us/en'
+          ? 'graphql/execute.json/acom/listallcountries'
+          : `graphql/execute.json/acom/listallcountriesbypath;path=/content/dam/acom/country/${odinLocale}`,
       },
       estunitship: {
         'dropdown-name': 'estunitship',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/estunitship/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/estunitship/${odinLocale}`,
       },
       industry: {
         'dropdown-name': 'industry',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/industry/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/industry/${odinLocale}`,
       },
       jobfunction: {
         'dropdown-name': 'jobfunction',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobfunction/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobfunction/${odinLocale}`,
       },
       jobtitle: {
         'dropdown-name': 'jobtitle',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/jobtitle/${odinLocale}`,
       },
       orgsize: {
         'dropdown-name': 'orgsize',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/orgsize/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/orgsize/${odinLocale}`,
       },
       'product-sku': {
         'dropdown-name': 'productsku',
@@ -85,7 +101,7 @@ class Dropdown {
       },
       'purchase-intent': {
         'dropdown-name': 'purchaseintent',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/purchaseintent/${odinLocale}`,
       },
       state: {
         'dropdown-name': 'state',
@@ -93,19 +109,19 @@ class Dropdown {
       },
       region: {
         'dropdown-name': 'region',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connectregions/${odinLocale}`,
       },
       timeframe: {
         'dropdown-name': 'timeframe',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timeframe/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timeframe/${odinLocale}`,
       },
       timezone: {
         'dropdown-name': 'timezone',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timezone/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/timezone/${odinLocale}`,
       },
       'user-type': {
         'dropdown-name': 'usertype',
-        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/usertype/us/en',
+        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/usertype/${odinLocale}`,
       },
       'existing-user': {
         'dropdown-name': 'usertype',
