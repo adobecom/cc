@@ -1,5 +1,8 @@
 .community-cards {
   padding: 2rem 0;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .community-cards__container {
@@ -9,6 +12,8 @@
   padding: 1rem 0;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  margin: 0 auto;
+  width: 100%;
 }
 
 .community-cards__container::-webkit-scrollbar {
