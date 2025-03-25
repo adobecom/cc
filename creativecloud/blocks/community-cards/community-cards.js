@@ -43,7 +43,7 @@ class CommunityCards {
 
   init() {
     this.renderCards();
-    this.cards.forEach((card) => {
+    this.cardData.forEach((card) => {
       card.addEventListener('click', () => {
         this.handleCardClick(card);
       });
@@ -71,7 +71,7 @@ class CommunityCards {
   }
 
   handleCardClick(card) {
-    const cardIndex = Array.from(this.cards).indexOf(card);
+    const cardIndex = Array.from(this.cardData).indexOf(card);
     if (cardIndex !== -1 && this.cardData[cardIndex]) {
       window.location.href = this.cardData[cardIndex].url;
     }
