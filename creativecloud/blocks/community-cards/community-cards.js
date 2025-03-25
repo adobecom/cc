@@ -23,7 +23,7 @@ class CommunityCards {
 
   async fetchCardData() {
     try {
-      const response = await fetch('/blocks/community-cards/community-cards.json');
+      const response = await fetch('/creativecloud/blocks/community-cards/community-cards.json');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
