@@ -43,9 +43,10 @@ class CommunityCards {
 
   init() {
     this.renderCards();
-    this.cardData.forEach((card) => {
-      card.addEventListener('click', () => {
-        this.handleCardClick(card);
+    this.cards = this.el.querySelectorAll('.community-cards__card');
+    this.cards.forEach((cardElement) => {
+      cardElement.addEventListener('click', () => {
+        this.handleCardClick(cardElement);
       });
     });
   }
@@ -70,8 +71,8 @@ class CommunityCards {
     });
   }
 
-  handleCardClick(card) {
-    const cardIndex = Array.from(this.cardData).indexOf(card);
+  handleCardClick(cardElement) {
+    const cardIndex = Array.from(this.cards).indexOf(cardElement);
     if (cardIndex !== -1 && this.cardData[cardIndex]) {
       window.location.href = this.cardData[cardIndex].url;
     }
