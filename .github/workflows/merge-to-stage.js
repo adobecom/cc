@@ -245,6 +245,7 @@ const getStageToMainPR = () =>
     .then(({ data } = {}) => data.find(({ title } = {}) => title.includes('[Release] Stage to Main')))
     .then((pr) => pr && addLabels({ pr, github, owner, repo }))
     .then((pr) => pr && addFiles({ pr, github, owner, repo }))
+    .then((pr) => pr && getReviews({ pr, github, owner, repo }))
     .then((pr) => {
       pr?.files.forEach((file) => (SEEN[file] = true));
       return pr;
