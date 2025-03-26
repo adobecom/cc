@@ -200,7 +200,7 @@ const getPRs = async (stageToMainPR) => {
     }
     if (!labels.includes(LABELS.readyForStage)) {
       commentOnPR(
-        `Skipped merging ${number}: ${title} due to missing ${LABELS.readyForStage} label. kindly make sure that the PR is ${readyForStage}`,
+        `Skipped merging ${number}: ${title} due to missing ${LABELS.readyForStage} label. kindly make sure that the PR is ${LABELS.readyForStage}`,
         number
       );
       return false;
