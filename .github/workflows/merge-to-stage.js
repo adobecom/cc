@@ -8,7 +8,7 @@ let body = `
 - Before: https://${PROD}--cc--adobecom.aem.live/?martech=off
 - After: https://${STAGE}--cc--adobecom.aem.live/?martech=off
 `;
-const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
+const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 1;
 const LABELS = {
   highPriority: 'high priority',
   readyForStage: 'ready for stage',
