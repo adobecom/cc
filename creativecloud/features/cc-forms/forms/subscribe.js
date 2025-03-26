@@ -15,16 +15,30 @@ const subscribeIpaasParamMap = {
   preferred_language: 'preferred_language',
 };
 const CUR_URL = '#current_url';
+const NOTICE_ID = '#noticeplaceholder';
 
 class Subscribe extends trials {
   constructor(form, authConfig) {
     super(form, authConfig);
     this.form = form;
     this.authConfig = authConfig;
-    this.buttonListener();
+    const notice = this.form.querySelector(NOTICE_ID);
+    if (notice) {
+      const xf = notice.querySelector('.fragment');
+      if (xf) {
+        this.buttonListener();
+      } else {
+        this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
+      }
+    } else {
+      this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
+    }
+    // window.adobeid.api_parameters = { authorize:
+    // { state: { ac: ptrialAC }, ctx_id: contextId } };
   }
 
   submitAction() {
+    this.accesstoken = this.imslib.getAccessToken().token;
     this.createPayLoad();
     this.postCommonService(this.accessToken, this.payLoad, this.endPoint);
   }
@@ -49,10 +63,10 @@ class Subscribe extends trials {
     if (typeof currentUrl !== 'undefined' && currentUrl.length > 0) {
       JsonPayload.current_url = currentUrl;
     }
-    const consentNotice = document.querySelector(`[daa-ll=${'consentnotice'}]`);
-    if (typeof consentNotice !== 'undefined' && consentNotice !== null) {
-      JsonPayload.consent_notice = consentNotice.innerHTML;
-    }
+    const noticeBody = this.getValue('#noticeplaceholder', 'data-notice-body');
+    JsonPayload.custom.consent_notice = noticeBody;
+    const marketingPermissions = this.getValue('#noticeplaceholder', 'data-marketing-permissions');
+    JsonPayload.custom.marketing_permissions = JSON.parse(marketingPermissions);
 
     this.payLoad = JsonPayload;
   }
