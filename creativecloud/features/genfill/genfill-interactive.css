@@ -5,6 +5,7 @@
   -webkit-user-select: none;
   user-select: none;
   display: none;
+  top: 0;
 }
 
 .genfill .enticement-detail,
