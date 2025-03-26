@@ -191,9 +191,16 @@ const getPRs = async (stageToMainPR) => {
       );
       return false;
     }
-    if (!labels.includes(LABELS.verified) || !labels.includes(LABELS.readyForStage)) {
+     if (!labels.includes(LABELS.verified)) {
       commentOnPR(
         `Skipped merging ${number}: ${title} due to missing verified label. kindly make sure that the PR has been verified`,
+        number
+      );
+      return false;
+    }
+    if (!labels.includes(LABELS.readyForStage)) {
+      commentOnPR(
+        `Skipped merging ${number}: ${title} due to missing ${LABELS.readyForStage} label. kindly make sure that the PR is ${readyForStage}`,
         number
       );
       return false;
