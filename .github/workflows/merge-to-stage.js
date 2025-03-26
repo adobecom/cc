@@ -172,7 +172,7 @@ const openStageToMainPR = async () => {
   }
 };
 
-const getPRs = async () => {
+const getPRs = async (stageToMainPR) => {
   let prs = await github.rest.pulls
     .list({ owner, repo, state: 'open', per_page: 100, base: STAGE })
     .then(({ data }) => data);
@@ -182,6 +182,7 @@ const getPRs = async () => {
     ...prs.map((pr) => getChecks({ pr, github, owner, repo })),
     ...prs.map((pr) => getReviews({ pr, github, owner, repo })),
   ]);
+  const StagePrApprovals = stageToMainPR?.reviews.filter(({ state }) => state === 'APPROVED');
   prs = prs.filter(({ checks, reviews, number, title, labels }) => {
     if (hasFailingChecks(checks)) {
       commentOnPR(
@@ -203,6 +204,13 @@ const getPRs = async () => {
       commentOnPR(
         `Skipped merging ${number}: ${title} due to insufficient approvals. Required: ${REQUIRED_APPROVALS} approvals`,
         number
+      );
+      return false;
+    }
+    if (StagePrApprovals?.length < REQUIRED_APPROVALS) {
+      commentOnPR(
+        `Skipped merging as stage to main PR already exists with two approvals, Merging will be attempted in the next batch.`,
+        stageToMainPR?.number
       );
       return false;
     }
@@ -243,7 +251,7 @@ const main = async (params) => {
     const stageToMainPR = await getStageToMainPR();
     console.log("Stage to main PR exits", !!stageToMainPR);
     if (stageToMainPR) body = stageToMainPR.body;
-    const { zeroImpactPRs, highImpactPRs, normalPRs } = await getPRs();
+    const { zeroImpactPRs, highImpactPRs, normalPRs } = await getPRs(stageToMainPR);
     await merge({ prs: zeroImpactPRs, type: LABELS.zeroImpact });
     if (stageToMainPR?.labels.some((label) => label.includes(LABELS.SOTPrefix)))
       return console.log('PR exists & testing started. Stopping execution.');
