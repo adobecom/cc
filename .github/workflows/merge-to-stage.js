@@ -214,7 +214,7 @@ const getPRs = async (stageToMainPR) => {
       );
       return false;
     }
-    if (StagePrApprovals?.length < REQUIRED_APPROVALS) {
+    if (StagePrApprovals?.length >= REQUIRED_APPROVALS) {
       commentOnPR(
         `Skipped merging as stage to main PR already exists with two approvals, Merging will be attempted in the next batch.`,
         stageToMainPR?.number
