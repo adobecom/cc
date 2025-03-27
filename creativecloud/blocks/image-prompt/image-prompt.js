@@ -33,6 +33,14 @@ async function loadSvg(src) {
   }
 }
 
+function sanitizeSvg(svg) {
+  return svg
+    .replace(/<script[^>]*>.*?<\/script>/gi, '')
+    .replace(/ on\w+="[^"]*"/g, '')
+    .replace(/ on\w+='[^']*'/g, '')
+    .replace(/<[^>]+(on\w+="[^"]*"|on\w+='[^']*')/g, '<$1');
+}
+
 function handleMobile(el) {
   const aTag = el.querySelector('.prompt-link');
   const mobileHover = el.querySelector('.hover-mobile');
@@ -115,7 +123,7 @@ export default async function init(el) {
   const mobileIcon = rows[2]?.querySelector('img[src*=".svg"]');
   const mobilesvg = await loadSvg(new URL(mobileIcon.src));
   const mobileLinkSvg = createTag('div', { class: 'hover-svg' });
-  mobileLinkSvg.innerHTML = `${mobilesvg}`;
+  mobileLinkSvg.innerHTML = sanitizeSvg(mobilesvg);
   mobileLinkWrapper.append(mobileLink, mobileLinkSvg);
   hoverMobileDiv.append(mobileLinkWrapper);
 
