@@ -2,6 +2,7 @@ import { loadLink, loadScript } from '../../scripts/utils.js';
 
 async function priorityLoad(parr) {
   const promiseArr = [];
+  const allowedBaseUrl = getUnityLibs(); 
   parr.forEach((p) => {
     if (p.endsWith('.js')) {
       const pr = loadScript(p, 'module', { mode: 'async' });
@@ -13,7 +14,7 @@ async function priorityLoad(parr) {
       const pr = new Promise((res) => { loadLink(p, { as: 'fetch', crossorigin: 'anonymous', rel: 'preload', callback: res }); });
       promiseArr.push(pr);
     } else {
-      promiseArr.push(fetch(p));
+      p.startsWith(allowedBaseUrl) && promiseArr.push(fetch(p));
     }
   });
   try {
