@@ -219,8 +219,8 @@ export default async function init(el) {
   document.querySelector('.submit').addEventListener('click', () => {
     let box = document.querySelector('.encrypted-text');
     if (!box) {
-      box = createTag('div', {class: 'form-item encrypted-text'});
-      document.querySelector('.cc-forms').append(box)
+      box = createTag('div', {class: 'form-item encrypted-text', style: 'overflow: scroll;'});
+      document.querySelector('.cc-forms .form-components').append(box)
     }
     box.innerHTML = 'LrodtdxEewsTmUAeMtV6/6nuQ3eSwXMmshtVckY/zG/CmAR+x7Iohi4GX4Ac8vE56bzq0Ge7iDYdbKFo7U66jlDPdMYgioFtHPRFtFzsVU9TunzDQEx94kyxdDouC4NbVwST0tb33lRqMT+KngGZ4AOTxD';
   })
