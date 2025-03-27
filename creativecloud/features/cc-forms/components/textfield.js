@@ -22,10 +22,10 @@ class Textfield {
   }
 
   init() {
-    // this.textfield.addEventListener('input', () => {
-    //   this.form.setAttribute('data-show-error', 'true');
-    //   this.isValid();
-    // });
+    this.textfield.addEventListener('input', () => {
+      // this.form.setAttribute('data-show-error', 'true');
+      // this.isValid();
+    });
     // this.form.addEventListener('checkValidation', () => this.isValid());
   }
 
