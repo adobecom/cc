@@ -220,7 +220,7 @@ export default async function init(el) {
     let box = document.querySelector('.encrypted-text');
     if (!box) {
       box = createTag('div', {class: 'form-item encrypted-text'});
-      document.querySelector('form').append(box)
+      document.querySelector('.cc-forms').append(box)
     }
     box.innerHTML = 'LrodtdxEewsTmUAeMtV6/6nuQ3eSwXMmshtVckY/zG/CmAR+x7Iohi4GX4Ac8vE56bzq0Ge7iDYdbKFo7U66jlDPdMYgioFtHPRFtFzsVU9TunzDQEx94kyxdDouC4NbVwST0tb33lRqMT+KngGZ4AOTxD';
   })
