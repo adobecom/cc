@@ -218,8 +218,8 @@ export default async function init(el) {
 
   document.querySelector('.submit').addEventListener('click', () => {
     let box = document.querySelector('.encrypted-text');
-    if (!box) box = createTag('div', {'class': 'encrypted-text'});
-    div.innerHTML.append('LrodtdxEewsTmUAeMtV6/6nuQ3eSwXMmshtVckY/zG/CmAR+x7Iohi4GX4Ac8vE56bzq0Ge7iDYdbKFo7U66jlDPdMYgioFtHPRFtFzsVU9TunzDQEx94kyxdDouC4NbVwST0tb33lRqMT+KngGZ4AOTxD')
+    if (!box) box = createTag('div', {class: 'encrypted-text'});
+    box.innerHTML = 'LrodtdxEewsTmUAeMtV6/6nuQ3eSwXMmshtVckY/zG/CmAR+x7Iohi4GX4Ac8vE56bzq0Ge7iDYdbKFo7U66jlDPdMYgioFtHPRFtFzsVU9TunzDQEx94kyxdDouC4NbVwST0tb33lRqMT+KngGZ4AOTxD';
   })
   
   // if (ccFormObj.formConfig.type === 'default') {
