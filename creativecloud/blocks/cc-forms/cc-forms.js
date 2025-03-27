@@ -222,17 +222,17 @@ export default async function init(el) {
     div.innerHTML.append('LrodtdxEewsTmUAeMtV6/6nuQ3eSwXMmshtVckY/zG/CmAR+x7Iohi4GX4Ac8vE56bzq0Ge7iDYdbKFo7U66jlDPdMYgioFtHPRFtFzsVU9TunzDQEx94kyxdDouC4NbVwST0tb33lRqMT+KngGZ4AOTxD')
   })
   
-  if (ccFormObj.formConfig.type === 'default') {
-    el.remove();
-    return;
-  }
-  isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
-    await ccFormObj.waitForDataRender();
-    const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
-    const fc = new FormConfigurator(ccFormObj.form, el);
-    if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
-    el.remove();
-    return fc;
-  });
+  // if (ccFormObj.formConfig.type === 'default') {
+  //   el.remove();
+  //   return;
+  // }
+  // isSignedInInitialized().then(async () => {
+  //   if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+  //   await ccFormObj.waitForDataRender();
+  //   const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
+  //   const fc = new FormConfigurator(ccFormObj.form, el);
+  //   if (ccFormObj.demandbaseOn) ccFormObj.initializeDemandbase();
+  //   el.remove();
+  //   return fc;
+  // });
 }
