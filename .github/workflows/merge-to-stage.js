@@ -9,6 +9,7 @@ let body = `
 - After: https://${STAGE}--cc--adobecom.aem.live/?martech=off
 `;
 const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
+const MIN_APPROVAL_TO_STOP_MERGE = 1;
 const LABELS = {
   highPriority: 'high priority',
   readyForStage: 'ready for stage',
@@ -172,7 +173,7 @@ const openStageToMainPR = async () => {
   }
 };
 
-const getPRs = async () => {
+const getPRs = async (stageToMainPR) => {
   let prs = await github.rest.pulls
     .list({ owner, repo, state: 'open', per_page: 100, base: STAGE })
     .then(({ data }) => data);
@@ -182,6 +183,7 @@ const getPRs = async () => {
     ...prs.map((pr) => getChecks({ pr, github, owner, repo })),
     ...prs.map((pr) => getReviews({ pr, github, owner, repo })),
   ]);
+  const StagePrApprovals = stageToMainPR?.reviews.filter(({ state }) => state === 'APPROVED');
   prs = prs.filter(({ checks, reviews, number, title, labels }) => {
     if (hasFailingChecks(checks)) {
       commentOnPR(
@@ -190,9 +192,16 @@ const getPRs = async () => {
       );
       return false;
     }
-    if (!labels.includes(LABELS.verified) || !labels.includes(LABELS.readyForStage)) {
+    if (!labels.includes(LABELS.verified)) {
       commentOnPR(
         `Skipped merging ${number}: ${title} due to missing verified label. kindly make sure that the PR has been verified`,
+        number
+      );
+      return false;
+    }
+    if (!labels.includes(LABELS.readyForStage)) {
+      commentOnPR(
+        `Skipped merging ${number}: ${title} due to missing ${LABELS.readyForStage} label. kindly make sure that the PR is ${LABELS.readyForStage}`,
         number
       );
       return false;
@@ -202,6 +211,13 @@ const getPRs = async () => {
     if (approvals.length < REQUIRED_APPROVALS) {
       commentOnPR(
         `Skipped merging ${number}: ${title} due to insufficient approvals. Required: ${REQUIRED_APPROVALS} approvals`,
+        number
+      );
+      return false;
+    }
+    if (StagePrApprovals?.length >= MIN_APPROVAL_TO_STOP_MERGE) {
+      commentOnPR(
+        `Skipped merging as stage to main PR already exists with one or more approvals, Merging will be attempted in the next batch.`,
         number
       );
       return false;
@@ -230,6 +246,7 @@ const getStageToMainPR = () =>
     .then(({ data } = {}) => data.find(({ title } = {}) => title.includes('[Release] Stage to Main')))
     .then((pr) => pr && addLabels({ pr, github, owner, repo }))
     .then((pr) => pr && addFiles({ pr, github, owner, repo }))
+    .then((pr) => pr && getReviews({ pr, github, owner, repo }))
     .then((pr) => {
       pr?.files.forEach((file) => (SEEN[file] = true));
       return pr;
@@ -243,7 +260,7 @@ const main = async (params) => {
     const stageToMainPR = await getStageToMainPR();
     console.log("Stage to main PR exits", !!stageToMainPR);
     if (stageToMainPR) body = stageToMainPR.body;
-    const { zeroImpactPRs, highImpactPRs, normalPRs } = await getPRs();
+    const { zeroImpactPRs, highImpactPRs, normalPRs } = await getPRs(stageToMainPR);
     await merge({ prs: zeroImpactPRs, type: LABELS.zeroImpact });
     if (stageToMainPR?.labels.some((label) => label.includes(LABELS.SOTPrefix)))
       return console.log('PR exists & testing started. Stopping execution.');
