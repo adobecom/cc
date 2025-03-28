@@ -244,7 +244,7 @@ async function createInteractiveArea(el, asset) {
     if (!avideoTag?.href.includes('_hide-controls')) {
       assetElem = createTag('div');
       const { addAccessibilityControl, applyAccessibilityEvents } = await loadDecorateFunctions();
-      const videoText = addAccessibilityControl('<video></video>', 'autoplay', 0);
+      const videoText = addAccessibilityControl('<video autoplay></video>', 'autoplay', 0);
       assetElem.insertAdjacentHTML('beforeend', videoText);
       const video = assetElem.querySelector('video');
       applyAccessibilityEvents(video);
