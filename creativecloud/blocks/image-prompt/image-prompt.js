@@ -34,11 +34,11 @@ async function loadSvg(src) {
 }
 
 function sanitizeSvg(svg) {
-    svg = svg.replace(/<script[^>]*>[\s\S]*?<\/script\s*>/gi, '');
-    svg = svg.replace(/\s+on\w+="[^"]*"/g, '');
-    svg = svg.replace(/\s+on\w+='[^']*'/g, '');
-    svg = svg.replace(/\s+style="[^"]*"/g, '');
-    return svg;
+  return svg
+    .replace(/<script[^>]*>.*?<\/script>/gi, '')
+    .replace(/ on\w+="[^"]*"/g, '')
+    .replace(/ on\w+='[^']*'/g, '')
+    .replace(/<[^>]+(on\w+="[^"]*"|on\w+='[^']*')/g, '<$1');
 }
 
 function handleMobile(el) {
