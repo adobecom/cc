@@ -134,8 +134,7 @@ async function fetchRegistries(countryCode, abortController) {
 
 async function sendOrganizationData() {
   try {
-    const { locale } = getConfig();
-    const { ietf } = locale;
+    const { locale: { ietf } } = getConfig();
     const inviteResponse = await fetch(`${PERCENT_VALIDATION_API_URL}?lng=${ietf}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${PERCENT_PUBLISHABLE_KEY}` },
