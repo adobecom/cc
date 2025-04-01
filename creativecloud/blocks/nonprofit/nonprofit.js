@@ -134,7 +134,8 @@ async function fetchRegistries(countryCode, abortController) {
 
 async function sendOrganizationData() {
   try {
-    const inviteResponse = await fetch(PERCENT_VALIDATION_API_URL, {
+    const { locale: { ietf } } = getConfig();
+    const inviteResponse = await fetch(`${PERCENT_VALIDATION_API_URL}?lng=${ietf}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${PERCENT_PUBLISHABLE_KEY}` },
     });
@@ -160,8 +161,6 @@ async function sendOrganizationData() {
     }
 
     let body;
-    const { locale } = getConfig();
-    const { ietf } = locale;
     if (foundInSearch) {
       body = JSON.stringify({
         validationInviteId,
@@ -366,7 +365,7 @@ function getNonprofitInput(params) {
     inputTag.style.display = 'none';
     const textTag = createTag('input', {
       type: 'text',
-      class: 'np-input',
+      class: 'np-input np-input-file',
       placeholder,
       readonly: 'readonly',
       'data-for': name,
