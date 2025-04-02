@@ -4,21 +4,21 @@
       "id": "code-assistance",
       "title": "Code Assistance",
       "description": "Get help with coding, debugging, and best practices",
-      "icon": "/assets/icons/code.svg",
+      "icon": "https://picsum.photos/50/51",
       "imageUrl": "https://picsum.photos/400/300"
     },
     {
       "id": "natural-language",
       "title": "Natural Language Processing",
       "description": "Convert natural language to code or documentation",
-      "icon": "/assets/icons/chat.svg",
+      "icon": "https://picsum.photos/50/51",
       "imageUrl": "https://picsum.photos/400/301"
     },
     {
       "id": "code-review",
       "title": "Code Review",
       "description": "Get instant code reviews and suggestions",
-      "icon": "/assets/icons/review.svg",
+      "icon": "https://picsum.photos/50/51",
       "imageUrl": "https://picsum.photos/400/302"
     }
   ],
