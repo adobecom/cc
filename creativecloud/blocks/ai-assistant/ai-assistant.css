@@ -1,0 +1,222 @@
+.ai-assistant {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Features Screen */
+.ai-assistant__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.ai-assistant__feature-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  min-height: 300px;
+}
+
+.ai-assistant__feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ai-assistant__feature-icon {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  background: white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ai-assistant__feature-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.ai-assistant__feature-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.ai-assistant__feature-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ai-assistant__feature-content {
+  padding: 1.5rem;
+}
+
+.ai-assistant__feature-content h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.ai-assistant__feature-content p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Options Screen */
+.ai-assistant__options {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.ai-assistant__options h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.ai-assistant__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ai-assistant__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ai-assistant__field label {
+  font-weight: 500;
+  color: #444;
+}
+
+.ai-assistant__field select,
+.ai-assistant__field textarea {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.ai-assistant__field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.checkbox-option,
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.ai-assistant__submit {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ai-assistant__submit:hover {
+  background: #0052a3;
+}
+
+/* Chat Screen */
+.ai-assistant__chat {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.ai-assistant__chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ai-assistant__message {
+  max-width: 80%;
+  padding: 1rem;
+  border-radius: 12px;
+  line-height: 1.5;
+}
+
+.ai-assistant__message--user {
+  align-self: flex-end;
+  background: #0066cc;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-assistant__message--ai {
+  align-self: flex-start;
+  background: #f0f0f0;
+  color: #333;
+  border-bottom-left-radius: 4px;
+}
+
+.ai-assistant__chat-input {
+  border-top: 1px solid #eee;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  background: white;
+}
+
+.ai-assistant__chat-input textarea {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  resize: none;
+  min-height: 40px;
+  max-height: 120px;
+  line-height: 1.5;
+}
+
+.ai-assistant__chat-input button {
+  padding: 0.75rem 1.5rem;
+  background: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ai-assistant__chat-input button:hover {
+  background: #0052a3;
+} 

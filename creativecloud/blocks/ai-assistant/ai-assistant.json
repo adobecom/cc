@@ -1,0 +1,112 @@
+{
+  "features": [
+    {
+      "id": "code-assistance",
+      "title": "Code Assistance",
+      "description": "Get help with coding, debugging, and best practices",
+      "icon": "/assets/icons/code.svg",
+      "imageUrl": "/assets/features/code-assistance.jpg"
+    },
+    {
+      "id": "natural-language",
+      "title": "Natural Language Processing",
+      "description": "Convert natural language to code or documentation",
+      "icon": "/assets/icons/chat.svg",
+      "imageUrl": "/assets/features/nlp.jpg"
+    },
+    {
+      "id": "code-review",
+      "title": "Code Review",
+      "description": "Get instant code reviews and suggestions",
+      "icon": "/assets/icons/review.svg",
+      "imageUrl": "/assets/features/code-review.jpg"
+    }
+  ],
+  "options": {
+    "code-assistance": {
+      "title": "Code Assistance Options",
+      "fields": [
+        {
+          "type": "select",
+          "id": "language",
+          "label": "Programming Language",
+          "options": ["JavaScript", "Python", "Java", "C++", "Other"],
+          "required": true
+        },
+        {
+          "type": "textarea",
+          "id": "code-context",
+          "label": "Code Context",
+          "placeholder": "Paste your code here...",
+          "required": true
+        },
+        {
+          "type": "radio",
+          "id": "assistance-type",
+          "label": "Type of Assistance",
+          "options": [
+            "Debug existing code",
+            "Optimize performance",
+            "Improve readability",
+            "Add documentation"
+          ],
+          "required": true
+        }
+      ]
+    },
+    "natural-language": {
+      "title": "Natural Language Processing Options",
+      "fields": [
+        {
+          "type": "select",
+          "id": "output-type",
+          "label": "Output Type",
+          "options": ["Code", "Documentation", "Test Cases", "Comments"],
+          "required": true
+        },
+        {
+          "type": "textarea",
+          "id": "prompt",
+          "label": "Your Request",
+          "placeholder": "Describe what you want to create...",
+          "required": true
+        },
+        {
+          "type": "checkbox",
+          "id": "preferences",
+          "label": "Preferences",
+          "options": [
+            "Include examples",
+            "Add comments",
+            "Follow best practices",
+            "Include error handling"
+          ]
+        }
+      ]
+    },
+    "code-review": {
+      "title": "Code Review Options",
+      "fields": [
+        {
+          "type": "textarea",
+          "id": "code",
+          "label": "Code to Review",
+          "placeholder": "Paste the code you want to review...",
+          "required": true
+        },
+        {
+          "type": "checkbox",
+          "id": "review-aspects",
+          "label": "Review Aspects",
+          "options": [
+            "Security vulnerabilities",
+            "Performance issues",
+            "Code style",
+            "Best practices"
+          ],
+          "required": true
+        }
+      ]
+    }
+  }
+} 
