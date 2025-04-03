@@ -4,22 +4,22 @@
       "id": "creative-assistance",
       "title": "Creative Assistant",
       "description": "Get help with design ideas, color schemes, and creative concepts",
-      "icon": "/assets/icons/palette.svg",
-      "imageUrl": "/assets/features/creative-assistance.jpg"
+      "icon": "https://picsum.photos/50/50",
+      "imageUrl": "https://picsum.photos/400/300"
     },
     {
       "id": "content-writing",
       "title": "Content Writing",
       "description": "Generate engaging copy, headlines, and marketing content",
-      "icon": "/assets/icons/pen.svg",
-      "imageUrl": "/assets/features/content-writing.jpg"
+      "icon": "https://picsum.photos/50/51",
+      "imageUrl": "https://picsum.photos/400/301"
     },
     {
       "id": "image-enhancement",
       "title": "Image Enhancement",
       "description": "Improve and optimize your images with AI-powered suggestions",
-      "icon": "/assets/icons/image.svg",
-      "imageUrl": "/assets/features/image-enhancement.jpg"
+      "icon": "https://picsum.photos/50/52",
+      "imageUrl": "https://picsum.photos/400/302"
     }
   ],
   "options": {
