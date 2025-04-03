@@ -1,108 +1,108 @@
 {
   "features": [
     {
-      "id": "code-assistance",
-      "title": "Code Assistance",
-      "description": "Get help with coding, debugging, and best practices",
-      "icon": "https://picsum.photos/50/51",
-      "imageUrl": "https://picsum.photos/400/300"
+      "id": "creative-assistance",
+      "title": "Creative Assistant",
+      "description": "Get help with design ideas, color schemes, and creative concepts",
+      "icon": "/assets/icons/palette.svg",
+      "imageUrl": "/assets/features/creative-assistance.jpg"
     },
     {
-      "id": "natural-language",
-      "title": "Natural Language Processing",
-      "description": "Convert natural language to code or documentation",
-      "icon": "https://picsum.photos/50/51",
-      "imageUrl": "https://picsum.photos/400/301"
+      "id": "content-writing",
+      "title": "Content Writing",
+      "description": "Generate engaging copy, headlines, and marketing content",
+      "icon": "/assets/icons/pen.svg",
+      "imageUrl": "/assets/features/content-writing.jpg"
     },
     {
-      "id": "code-review",
-      "title": "Code Review",
-      "description": "Get instant code reviews and suggestions",
-      "icon": "https://picsum.photos/50/51",
-      "imageUrl": "https://picsum.photos/400/302"
+      "id": "image-enhancement",
+      "title": "Image Enhancement",
+      "description": "Improve and optimize your images with AI-powered suggestions",
+      "icon": "/assets/icons/image.svg",
+      "imageUrl": "/assets/features/image-enhancement.jpg"
     }
   ],
   "options": {
-    "code-assistance": {
-      "title": "Code Assistance Options",
+    "creative-assistance": {
+      "title": "Creative Assistant Options",
       "fields": [
         {
           "type": "select",
-          "id": "language",
-          "label": "Programming Language",
-          "options": ["JavaScript", "Python", "Java", "C++", "Other"],
+          "id": "project-type",
+          "label": "What type of project are you working on?",
+          "options": ["Website Design", "Social Media", "Print Design", "Brand Identity", "Other"],
           "required": true
         },
         {
           "type": "textarea",
-          "id": "code-context",
-          "label": "Code Context",
-          "placeholder": "Paste your code here...",
+          "id": "project-details",
+          "label": "Tell us about your project",
+          "placeholder": "Describe your project goals and requirements...",
           "required": true
         },
         {
           "type": "radio",
           "id": "assistance-type",
-          "label": "Type of Assistance",
+          "label": "What kind of help do you need?",
           "options": [
-            "Debug existing code",
-            "Optimize performance",
-            "Improve readability",
-            "Add documentation"
+            "Color palette suggestions",
+            "Layout ideas",
+            "Typography recommendations",
+            "Design inspiration"
           ],
           "required": true
         }
       ]
     },
-    "natural-language": {
-      "title": "Natural Language Processing Options",
+    "content-writing": {
+      "title": "Content Writing Options",
       "fields": [
         {
           "type": "select",
-          "id": "output-type",
-          "label": "Output Type",
-          "options": ["Code", "Documentation", "Test Cases", "Comments"],
+          "id": "content-type",
+          "label": "What type of content do you need?",
+          "options": ["Blog Post", "Social Media", "Product Description", "Email Campaign", "Website Copy"],
           "required": true
         },
         {
           "type": "textarea",
-          "id": "prompt",
-          "label": "Your Request",
-          "placeholder": "Describe what you want to create...",
+          "id": "content-brief",
+          "label": "Content Brief",
+          "placeholder": "Describe your target audience and key message...",
           "required": true
         },
         {
           "type": "checkbox",
-          "id": "preferences",
-          "label": "Preferences",
+          "id": "content-elements",
+          "label": "What elements should be included?",
           "options": [
-            "Include examples",
-            "Add comments",
-            "Follow best practices",
-            "Include error handling"
+            "Headlines",
+            "Call-to-action",
+            "Keywords",
+            "Meta descriptions"
           ]
         }
       ]
     },
-    "code-review": {
-      "title": "Code Review Options",
+    "image-enhancement": {
+      "title": "Image Enhancement Options",
       "fields": [
         {
           "type": "textarea",
-          "id": "code",
-          "label": "Code to Review",
-          "placeholder": "Paste the code you want to review...",
+          "id": "image-description",
+          "label": "Describe your image",
+          "placeholder": "Tell us about the image you want to enhance...",
           "required": true
         },
         {
           "type": "checkbox",
-          "id": "review-aspects",
-          "label": "Review Aspects",
+          "id": "enhancement-types",
+          "label": "What aspects should be enhanced?",
           "options": [
-            "Security vulnerabilities",
-            "Performance issues",
-            "Code style",
-            "Best practices"
+            "Color balance",
+            "Composition",
+            "Resolution",
+            "Background removal"
           ],
           "required": true
         }
