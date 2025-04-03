@@ -33,40 +33,34 @@ class Subscribe extends trials {
     } else {
       this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
     }
-    // window.adobeid.api_parameters = { authorize:
-    // { state: { ac: ptrialAC }, ctx_id: contextId } };
+    this.buttonListener();
   }
 
   submitAction() {
     this.accesstoken = this.imslib.getAccessToken().token;
     this.createPayLoad();
+    console.log('subscribe payload', this.payload);
     this.postCommonService(this.accessToken, this.payLoad, this.endPoint);
   }
 
   createPayLoad() {
     const JsonPayload = {};
-    // config call
     const userProfileParams = this.userprofile;
 
     for (let i = 0; i < userProfileParams.length; i += 1) {
-      // setting not present fields to undefined so they are ignored in payload on Stringify
-      JsonPayload[subscribeIpaasParamMap[userProfileParams[i]]] = this.form.querySelector(`[name=${userProfileParams[i]}]`) ? this.getValue(`[name=${userProfileParams[i]}]`) : undefined;
+      const val = this.getValue(`[name=${userProfileParams[i]}]`);
+      if (val) JsonPayload[subscribeIpaasParamMap[userProfileParams[i]]] = val;
     }
 
     JsonPayload.sname = this.formContainer.getAttribute('data-sname') || '';
-    JsonPayload.imstoken = this.imslib.isSignedInUser()
-      ? this.imslib.getAccessToken() : undefined;
-    JsonPayload.clientid = this.imslib.isSignedInUser() ? this.imslib.getClientID() : undefined;
 
-    // added for gdpr
+    // gdpr
     const currentUrl = this.getValue(CUR_URL);
-    if (typeof currentUrl !== 'undefined' && currentUrl.length > 0) {
+    if (currentUrl) {
       JsonPayload.current_url = currentUrl;
     }
-    const noticeBody = this.getValue('#noticeplaceholder', 'data-notice-body');
-    JsonPayload.custom.consent_notice = noticeBody;
-    const marketingPermissions = this.getValue('#noticeplaceholder', 'data-marketing-permissions');
-    JsonPayload.custom.marketing_permissions = JSON.parse(marketingPermissions);
+    const noticeBody = this.getValue(NOTICE_ID, 'data-notice-body');
+    JsonPayload.consent_notice = noticeBody;
 
     this.payLoad = JsonPayload;
   }
