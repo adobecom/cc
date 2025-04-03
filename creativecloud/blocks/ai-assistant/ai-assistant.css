@@ -9,33 +9,9 @@
 .ai-assistant__nav {
   display: flex;
   align-items: center;
-  gap: 1rem;
   margin-bottom: 2rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid #eee;
-}
-
-.ai-assistant__nav-back {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #f5f5f5;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: #666;
-  transition: background-color 0.3s ease;
-}
-
-.ai-assistant__nav-back:hover {
-  background: #e5e5e5;
-}
-
-.ai-assistant__nav-back::before {
-  content: "←";
-  font-size: 1.2rem;
 }
 
 .ai-assistant__breadcrumb {
@@ -50,11 +26,21 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ai-assistant__breadcrumb-item:hover {
+  background-color: #f5f5f5;
+  color: #0066cc;
 }
 
 .ai-assistant__breadcrumb-item:not(:last-child)::after {
   content: "/";
   color: #999;
+  margin-left: 0.5rem;
 }
 
 /* Features Screen */

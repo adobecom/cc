@@ -55,12 +55,6 @@ class AIAssistant {
     const nav = document.createElement('div');
     nav.className = 'ai-assistant__nav';
 
-    // Back button
-    const backButton = document.createElement('button');
-    backButton.className = 'ai-assistant__nav-back';
-    backButton.textContent = 'Back';
-    backButton.addEventListener('click', () => this.goBack());
-
     // Breadcrumb
     const breadcrumb = document.createElement('div');
     breadcrumb.className = 'ai-assistant__breadcrumb';
@@ -74,33 +68,47 @@ class AIAssistant {
       breadcrumbItems.push({ text: 'Chat', screen: 'chat' });
     }
 
-    breadcrumb.innerHTML = breadcrumbItems.map(item => `
-      <div class="ai-assistant__breadcrumb-item">${item.text}</div>
+    breadcrumb.innerHTML = breadcrumbItems.map((item, index) => `
+      <div class="ai-assistant__breadcrumb-item" data-screen="${item.screen}">${item.text}</div>
     `).join('');
 
-    nav.appendChild(backButton);
+    // Add click handlers to breadcrumb items
+    breadcrumb.querySelectorAll('.ai-assistant__breadcrumb-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const targetScreen = item.dataset.screen;
+        this.navigateToScreen(targetScreen);
+      });
+    });
+
     nav.appendChild(breadcrumb);
     this.el.appendChild(nav);
+  }
+
+  navigateToScreen(screen) {
+    switch (screen) {
+      case 'features':
+        this.currentScreen = 'features';
+        this.selectedFeature = null;
+        this.userSelections = {};
+        break;
+      case 'options':
+        if (this.selectedFeature) {
+          this.currentScreen = 'options';
+        }
+        break;
+      case 'chat':
+        if (this.selectedFeature && this.userSelections.feature) {
+          this.currentScreen = 'chat';
+        }
+        break;
+    }
+    this.renderScreen();
   }
 
   getFeatureTitle() {
     if (!this.selectedFeature || !this.data.features) return '';
     const feature = this.data.features.find(f => f.id === this.selectedFeature);
     return feature ? feature.title : '';
-  }
-
-  goBack() {
-    switch (this.currentScreen) {
-      case 'chat':
-        this.currentScreen = 'options';
-        break;
-      case 'options':
-        this.currentScreen = 'features';
-        this.selectedFeature = null;
-        this.userSelections = {};
-        break;
-    }
-    this.renderScreen();
   }
 
   renderFeatures() {
