@@ -32,6 +32,12 @@ class AIAssistant {
 
   renderScreen() {
     this.el.innerHTML = '';
+    
+    // Add navigation if not on features screen
+    if (this.currentScreen !== 'features') {
+      this.renderNavigation();
+    }
+
     switch (this.currentScreen) {
       case 'features':
         this.renderFeatures();
@@ -43,6 +49,58 @@ class AIAssistant {
         this.renderChat();
         break;
     }
+  }
+
+  renderNavigation() {
+    const nav = document.createElement('div');
+    nav.className = 'ai-assistant__nav';
+
+    // Back button
+    const backButton = document.createElement('button');
+    backButton.className = 'ai-assistant__nav-back';
+    backButton.textContent = 'Back';
+    backButton.addEventListener('click', () => this.goBack());
+
+    // Breadcrumb
+    const breadcrumb = document.createElement('div');
+    breadcrumb.className = 'ai-assistant__breadcrumb';
+    
+    const breadcrumbItems = [
+      { text: 'Features', screen: 'features' },
+      { text: this.getFeatureTitle(), screen: 'options' }
+    ];
+
+    if (this.currentScreen === 'chat') {
+      breadcrumbItems.push({ text: 'Chat', screen: 'chat' });
+    }
+
+    breadcrumb.innerHTML = breadcrumbItems.map(item => `
+      <div class="ai-assistant__breadcrumb-item">${item.text}</div>
+    `).join('');
+
+    nav.appendChild(backButton);
+    nav.appendChild(breadcrumb);
+    this.el.appendChild(nav);
+  }
+
+  getFeatureTitle() {
+    if (!this.selectedFeature || !this.data.features) return '';
+    const feature = this.data.features.find(f => f.id === this.selectedFeature);
+    return feature ? feature.title : '';
+  }
+
+  goBack() {
+    switch (this.currentScreen) {
+      case 'chat':
+        this.currentScreen = 'options';
+        break;
+      case 'options':
+        this.currentScreen = 'features';
+        this.selectedFeature = null;
+        this.userSelections = {};
+        break;
+    }
+    this.renderScreen();
   }
 
   renderFeatures() {
