@@ -255,9 +255,17 @@ class AIAssistant {
 }
 
 // Initialize the AI Assistant
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('.ai-assistant');
-  if (container) {
-    new AIAssistant(container);
+export default async function init(el) {
+  if (!el) return;
+  
+  // Create container if not exists
+  let container = el.querySelector('.ai-assistant');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'ai-assistant';
+    el.appendChild(container);
   }
-}); 
+  
+  // Initialize the assistant
+  new AIAssistant(container);
+} 
