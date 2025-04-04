@@ -57,14 +57,19 @@ class AIAssistant {
     // Home
     const homeItem = document.createElement('span');
     homeItem.className = 'ai-assistant__breadcrumb-item';
-    homeItem.textContent = 'Home';
-    homeItem.onclick = () => this.navigateTo('features');
+    
+    // Only make Home clickable if we're not on the features screen
+    if (this.currentScreen !== 'features') {
+      homeItem.classList.add('ai-assistant__breadcrumb-item--clickable');
+      homeItem.onclick = () => this.navigateTo('features');
+    }
+    
     breadcrumb.appendChild(homeItem);
     
     if (this.currentScreen === 'options' && this.selectedFeature) {
       // Feature
       const featureItem = document.createElement('span');
-      featureItem.className = 'ai-assistant__breadcrumb-item';
+      featureItem.className = 'ai-assistant__breadcrumb-item ai-assistant__breadcrumb-item--clickable';
       featureItem.textContent = this.selectedFeature.title;
       featureItem.onclick = () => this.navigateTo('features');
       breadcrumb.appendChild(featureItem);
@@ -73,7 +78,6 @@ class AIAssistant {
       const optionsItem = document.createElement('span');
       optionsItem.className = 'ai-assistant__breadcrumb-item';
       optionsItem.textContent = 'Options';
-      optionsItem.onclick = () => this.navigateTo('options');
       breadcrumb.appendChild(optionsItem);
     }
     
@@ -116,6 +120,10 @@ class AIAssistant {
     const title = document.createElement('h2');
     title.textContent = this.selectedFeature.title;
     optionsContainer.appendChild(title);
+    
+    // Create a flex container for form and chat
+    const contentContainer = document.createElement('div');
+    contentContainer.className = 'ai-assistant__options-content';
     
     const form = document.createElement('form');
     form.className = 'ai-assistant__form';
@@ -228,7 +236,7 @@ class AIAssistant {
     submitButton.textContent = 'Start Chat';
     form.appendChild(submitButton);
     
-    optionsContainer.appendChild(form);
+    contentContainer.appendChild(form);
     
     // Add chat container if chat has started
     if (this.chatStarted) {
@@ -264,9 +272,10 @@ class AIAssistant {
       inputContainer.appendChild(sendButton);
       chatContainer.appendChild(inputContainer);
       
-      optionsContainer.appendChild(chatContainer);
+      contentContainer.appendChild(chatContainer);
     }
     
+    optionsContainer.appendChild(contentContainer);
     this.container.appendChild(optionsContainer);
   }
 

@@ -43,6 +43,17 @@
   margin-left: 0.5rem;
 }
 
+.ai-assistant__breadcrumb-item--clickable {
+  cursor: pointer;
+  color: #0066cc;
+  transition: color 0.3s ease;
+}
+
+.ai-assistant__breadcrumb-item--clickable:hover {
+  color: #0052a3;
+  text-decoration: underline;
+}
+
 /* Features Screen */
 .ai-assistant__features {
   display: grid;
@@ -133,7 +144,14 @@
   color: #333;
 }
 
+.ai-assistant__options-content {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
 .ai-assistant__form {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -235,6 +253,7 @@
 
 /* Chat Screen */
 .ai-assistant__chat {
+  flex: 1;
   display: flex;
   flex-direction: column;
   height: 500px;
