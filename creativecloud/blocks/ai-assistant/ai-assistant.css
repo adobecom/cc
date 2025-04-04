@@ -39,12 +39,12 @@
 
 .ai-assistant__breadcrumb-item--clickable {
   cursor: pointer;
-  color: #0066cc;
+  color: #eb1000;
   transition: color 0.3s ease;
 }
 
 .ai-assistant__breadcrumb-item--clickable:hover {
-  color: #0052a3;
+  color: #cc0000;
   text-decoration: underline;
 }
 
@@ -193,12 +193,12 @@
 }
 
 .ai-assistant__field select:hover {
-  border-color: #0066cc;
+  border-color: #eb1000;
 }
 
 .ai-assistant__field select:focus {
   outline: none;
-  border-color: #0066cc;
+  border-color: #eb1000;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
 }
 
@@ -238,7 +238,7 @@
 .ai-assistant__submit {
   margin-top: 2rem;
   padding: 1rem 2rem;
-  background: #0066cc;
+  background: #eb1000;
   color: white;
   border: none;
   border-radius: 6px;
@@ -248,7 +248,7 @@
 }
 
 .ai-assistant__submit:hover {
-  background: #0052a3;
+  background: #cc0000;
 }
 
 /* Chat Screen */
@@ -271,7 +271,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #0066cc, #00a3ff);
+  background: linear-gradient(90deg, #eb1000, #ff4d4d);
   z-index: 1;
 }
 
@@ -308,7 +308,7 @@
 
 .ai-assistant__message--user {
   align-self: flex-end;
-  background: linear-gradient(135deg, #0066cc, #0052a3);
+  background: linear-gradient(135deg, #eb1000, #cc0000);
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -347,14 +347,14 @@
 
 .ai-assistant__chat-input textarea:focus {
   outline: none;
-  border-color: #0066cc;
+  border-color: #eb1000;
   background: white;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
 }
 
 .ai-assistant__chat-input button {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #0066cc, #0052a3);
+  background: linear-gradient(135deg, #eb1000, #cc0000);
   color: white;
   border: none;
   border-radius: 12px;
