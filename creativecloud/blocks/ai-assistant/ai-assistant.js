@@ -116,9 +116,13 @@ class AIAssistant {
     title.textContent = this.selectedFeature.title;
     optionsContainer.appendChild(title);
     
-    // Create a flex container for form and chat
+    // Create a container for the entire content
     const contentContainer = document.createElement('div');
     contentContainer.className = 'ai-assistant__options-content';
+    
+    // Create form container
+    const formContainer = document.createElement('div');
+    formContainer.className = 'ai-assistant__form-container';
     
     const form = document.createElement('form');
     form.className = 'ai-assistant__form';
@@ -231,10 +235,14 @@ class AIAssistant {
     submitButton.textContent = 'Start Chat';
     form.appendChild(submitButton);
     
-    contentContainer.appendChild(form);
+    formContainer.appendChild(form);
+    contentContainer.appendChild(formContainer);
     
     // Add chat container if chat has started
     if (this.chatStarted) {
+      // Hide the form container
+      formContainer.style.display = 'none';
+      
       const chatContainer = document.createElement('div');
       chatContainer.className = 'ai-assistant__chat';
       

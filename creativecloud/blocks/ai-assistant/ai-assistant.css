@@ -140,12 +140,18 @@
 
 .ai-assistant__options-content {
   display: flex;
+  flex-direction: column;
   gap: 2rem;
   margin-top: 2rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.ai-assistant__form-container {
+  width: 100%;
 }
 
 .ai-assistant__form {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -247,7 +253,7 @@
 
 /* Chat Screen */
 .ai-assistant__chat {
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   height: 500px;
@@ -392,5 +398,24 @@
 }
 
 .ai-assistant__chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Scrollbar Styling for Options Content */
+.ai-assistant__options-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ai-assistant__options-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.ai-assistant__options-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.ai-assistant__options-content::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 } 
