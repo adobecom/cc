@@ -122,7 +122,11 @@ class AIAssistant {
     form.onsubmit = (e) => this.handleOptionsSubmit(e);
     
     // Get options for the selected feature
-    const featureOptions = this.data.options[this.selectedFeature.id] || { fields: [] };
+    const featureOptions = this.data.options[this.selectedFeature.id];
+    if (!featureOptions || !featureOptions.fields) {
+      console.error('No options found for feature:', this.selectedFeature.id);
+      return;
+    }
     
     featureOptions.fields.forEach(field => {
       const fieldContainer = document.createElement('div');
@@ -163,9 +167,12 @@ class AIAssistant {
           break;
           
         case 'checkbox':
+          const checkboxContainer = document.createElement('div');
+          checkboxContainer.className = 'checkbox-group';
+          
           field.options.forEach(opt => {
-            const checkboxContainer = document.createElement('div');
-            checkboxContainer.className = 'checkbox-option';
+            const checkboxWrapper = document.createElement('div');
+            checkboxWrapper.className = 'checkbox-option';
             
             const input = document.createElement('input');
             input.type = 'checkbox';
@@ -177,16 +184,21 @@ class AIAssistant {
             optLabel.htmlFor = `${field.id}-${opt}`;
             optLabel.textContent = opt;
             
-            checkboxContainer.appendChild(input);
-            checkboxContainer.appendChild(optLabel);
-            fieldContainer.appendChild(checkboxContainer);
+            checkboxWrapper.appendChild(input);
+            checkboxWrapper.appendChild(optLabel);
+            checkboxContainer.appendChild(checkboxWrapper);
           });
+          
+          fieldContainer.appendChild(checkboxContainer);
           break;
           
         case 'radio':
+          const radioContainer = document.createElement('div');
+          radioContainer.className = 'radio-group';
+          
           field.options.forEach(opt => {
-            const radioContainer = document.createElement('div');
-            radioContainer.className = 'radio-option';
+            const radioWrapper = document.createElement('div');
+            radioWrapper.className = 'radio-option';
             
             const input = document.createElement('input');
             input.type = 'radio';
@@ -199,10 +211,12 @@ class AIAssistant {
             optLabel.htmlFor = `${field.id}-${opt}`;
             optLabel.textContent = opt;
             
-            radioContainer.appendChild(input);
-            radioContainer.appendChild(optLabel);
-            fieldContainer.appendChild(radioContainer);
+            radioWrapper.appendChild(input);
+            radioWrapper.appendChild(optLabel);
+            radioContainer.appendChild(radioWrapper);
           });
+          
+          fieldContainer.appendChild(radioContainer);
           break;
       }
       
