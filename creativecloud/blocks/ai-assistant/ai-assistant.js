@@ -132,24 +132,78 @@ class AIAssistant {
       label.textContent = field.label;
       fieldContainer.appendChild(label);
       
-      if (field.type === 'select') {
-        const select = document.createElement('select');
-        select.name = field.id;
-        select.required = field.required || false;
-        
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = 'Select an option';
-        select.appendChild(defaultOption);
-        
-        field.options.forEach(opt => {
-          const optionElement = document.createElement('option');
-          optionElement.value = opt;
-          optionElement.textContent = opt;
-          select.appendChild(optionElement);
-        });
-        
-        fieldContainer.appendChild(select);
+      switch (field.type) {
+        case 'select':
+          const select = document.createElement('select');
+          select.name = field.id;
+          select.required = field.required || false;
+          
+          const defaultOption = document.createElement('option');
+          defaultOption.value = '';
+          defaultOption.textContent = 'Select an option';
+          select.appendChild(defaultOption);
+          
+          field.options.forEach(opt => {
+            const optionElement = document.createElement('option');
+            optionElement.value = opt;
+            optionElement.textContent = opt;
+            select.appendChild(optionElement);
+          });
+          
+          fieldContainer.appendChild(select);
+          break;
+          
+        case 'textarea':
+          const textarea = document.createElement('textarea');
+          textarea.name = field.id;
+          textarea.required = field.required || false;
+          textarea.placeholder = field.placeholder || '';
+          textarea.rows = field.rows || 4;
+          fieldContainer.appendChild(textarea);
+          break;
+          
+        case 'checkbox':
+          field.options.forEach(opt => {
+            const checkboxContainer = document.createElement('div');
+            checkboxContainer.className = 'checkbox-option';
+            
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.name = field.id;
+            input.value = opt;
+            input.id = `${field.id}-${opt}`;
+            
+            const optLabel = document.createElement('label');
+            optLabel.htmlFor = `${field.id}-${opt}`;
+            optLabel.textContent = opt;
+            
+            checkboxContainer.appendChild(input);
+            checkboxContainer.appendChild(optLabel);
+            fieldContainer.appendChild(checkboxContainer);
+          });
+          break;
+          
+        case 'radio':
+          field.options.forEach(opt => {
+            const radioContainer = document.createElement('div');
+            radioContainer.className = 'radio-option';
+            
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = field.id;
+            input.value = opt;
+            input.id = `${field.id}-${opt}`;
+            input.required = field.required || false;
+            
+            const optLabel = document.createElement('label');
+            optLabel.htmlFor = `${field.id}-${opt}`;
+            optLabel.textContent = opt;
+            
+            radioContainer.appendChild(input);
+            radioContainer.appendChild(optLabel);
+            fieldContainer.appendChild(radioContainer);
+          });
+          break;
       }
       
       form.appendChild(fieldContainer);
