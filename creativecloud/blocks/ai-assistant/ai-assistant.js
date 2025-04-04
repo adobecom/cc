@@ -65,7 +65,7 @@ class AIAssistant {
       // Feature
       const featureItem = document.createElement('span');
       featureItem.className = 'ai-assistant__breadcrumb-item';
-      featureItem.textContent = this.selectedFeature.headerText;
+      featureItem.textContent = this.selectedFeature.title;
       featureItem.onclick = () => this.navigateTo('features');
       breadcrumb.appendChild(featureItem);
       
@@ -92,13 +92,13 @@ class AIAssistant {
       
       card.innerHTML = `
         <div class="ai-assistant__feature-icon">
-          <img src="${feature.iconUrl}" alt="${feature.headerText} icon">
+          <img src="${feature.icon}" alt="${feature.title} icon">
         </div>
         <div class="ai-assistant__feature-image">
-          <img src="${feature.imageUrl}" alt="${feature.headerText}">
+          <img src="${feature.imageUrl}" alt="${feature.title}">
         </div>
         <div class="ai-assistant__feature-content">
-          <h3>${feature.headerText}</h3>
+          <h3>${feature.title}</h3>
           <p>${feature.description}</p>
         </div>
       `;
@@ -114,41 +114,45 @@ class AIAssistant {
     optionsContainer.className = 'ai-assistant__options';
     
     const title = document.createElement('h2');
-    title.textContent = this.selectedFeature.headerText;
+    title.textContent = this.selectedFeature.title;
     optionsContainer.appendChild(title);
     
     const form = document.createElement('form');
     form.className = 'ai-assistant__form';
     form.onsubmit = (e) => this.handleOptionsSubmit(e);
     
-    this.selectedFeature.options.forEach(option => {
-      const field = document.createElement('div');
-      field.className = 'ai-assistant__field';
+    // Get options for the selected feature
+    const featureOptions = this.data.options[this.selectedFeature.id] || { fields: [] };
+    
+    featureOptions.fields.forEach(field => {
+      const fieldContainer = document.createElement('div');
+      fieldContainer.className = 'ai-assistant__field';
       
       const label = document.createElement('label');
-      label.textContent = option.label;
-      field.appendChild(label);
+      label.textContent = field.label;
+      fieldContainer.appendChild(label);
       
-      if (option.type === 'select') {
+      if (field.type === 'select') {
         const select = document.createElement('select');
-        select.required = true;
+        select.name = field.id;
+        select.required = field.required || false;
         
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
         defaultOption.textContent = 'Select an option';
         select.appendChild(defaultOption);
         
-        option.options.forEach(opt => {
+        field.options.forEach(opt => {
           const optionElement = document.createElement('option');
-          optionElement.value = opt.value;
-          optionElement.textContent = opt.label;
+          optionElement.value = opt;
+          optionElement.textContent = opt;
           select.appendChild(optionElement);
         });
         
-        field.appendChild(select);
+        fieldContainer.appendChild(select);
       }
       
-      form.appendChild(field);
+      form.appendChild(fieldContainer);
     });
     
     const submitButton = document.createElement('button');
@@ -234,7 +238,7 @@ class AIAssistant {
     setTimeout(() => {
       const aiMessage = document.createElement('div');
       aiMessage.className = 'ai-assistant__message ai-assistant__message--ai';
-      aiMessage.textContent = `I understand you want to work on ${this.selectedFeature.headerText} with these options: ${Object.values(this.selectedOptions).join(', ')}. How can I help you further?`;
+      aiMessage.textContent = `I understand you want to work on ${this.selectedFeature.title} with these options: ${Object.values(this.selectedOptions).join(', ')}. How can I help you further?`;
       messagesContainer.appendChild(aiMessage);
       
       // Scroll to bottom
