@@ -20,7 +20,10 @@ class AIAssistant {
 
   async fetchData() {
     try {
-      const response = await fetch('/blocks/ai-assistant/ai-assistant.json');
+      const response = await fetch('/creativecloud/blocks/ai-assistant/ai-assistant.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       this.data = await response.json();
     } catch (error) {
       console.error('Failed to fetch AI Assistant data:', error);
