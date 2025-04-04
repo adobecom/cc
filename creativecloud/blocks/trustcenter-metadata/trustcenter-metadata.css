@@ -2,6 +2,6 @@
   display: none;
 }
 
-div[class*="trustcenter-"].show {
+.section div[class*="trustcenter-"].show {
   display: flex;
 }
