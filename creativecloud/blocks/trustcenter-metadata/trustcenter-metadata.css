@@ -1,0 +1,7 @@
+.section div[class*="trustcenter-"] {
+  display: none;
+}
+
+div[class*="trustcenter-"].show {
+  display: flex;
+}
