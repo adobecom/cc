@@ -57,6 +57,7 @@ class AIAssistant {
     // Home
     const homeItem = document.createElement('span');
     homeItem.className = 'ai-assistant__breadcrumb-item';
+    homeItem.textContent = 'Home';
     
     // Only make Home clickable if we're not on the features screen
     if (this.currentScreen !== 'features') {
@@ -66,19 +67,13 @@ class AIAssistant {
     
     breadcrumb.appendChild(homeItem);
     
+    // Add feature title if we're on the options screen
     if (this.currentScreen === 'options' && this.selectedFeature) {
       // Feature
       const featureItem = document.createElement('span');
-      featureItem.className = 'ai-assistant__breadcrumb-item ai-assistant__breadcrumb-item--clickable';
+      featureItem.className = 'ai-assistant__breadcrumb-item';
       featureItem.textContent = this.selectedFeature.title;
-      featureItem.onclick = () => this.navigateTo('features');
       breadcrumb.appendChild(featureItem);
-      
-      // Options
-      const optionsItem = document.createElement('span');
-      optionsItem.className = 'ai-assistant__breadcrumb-item';
-      optionsItem.textContent = 'Options';
-      breadcrumb.appendChild(optionsItem);
     }
     
     nav.appendChild(breadcrumb);
