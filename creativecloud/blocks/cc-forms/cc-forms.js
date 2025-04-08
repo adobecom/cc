@@ -229,7 +229,7 @@ export default async function init(el) {
   ccFormObj.form.querySelectorAll("select")[1].selectedIndex = 1;
   ccFormObj.form.querySelector(".submit").addEventListener('click', () => {
     const src = ccFormObj.form.querySelector('#sourcefigma').value ? ccFormObj.form.querySelector('#sourcefigma').value : 'https://www.figma.com/design/qQ7Qr5E810zfp6E3WA9OBd/figma_files_cc_1?node-id=187-2078&p=f&t=fyQjdInX8DbQ4O2n-0';
-    const trgt = ccFormObj.form.querySelector('#targetda').value ? ccFormObj.form.querySelector('#targetda').value : 'https://admin.da.live/source/adobecom/da-helpx-gem/drafts/adisharm/test';
+    const trgt = ccFormObj.form.querySelector('#targetda').value ? ccFormObj.form.querySelector('#targetda').value : 'adobecom/da-helpx-gem/drafts/adisharm/test';
     const srcVal = 'figma';
     const trgtVal = 'da';
     const tkn = new URLSearchParams(window.location.search).get('token');
