@@ -33,7 +33,7 @@
   background: #FFF;
   border-radius: 10px;
   box-shadow: 0 0 20px 0 #00000029;
-  padding: 16px 16px 24px;
+  padding: 14px 14px 24px;
   position: relative;
   text-align: center;
   display: flex;
@@ -45,7 +45,7 @@
 .upload-block .drop-zone-container > p:last-child {
   font-size: 12px;
   line-height: 16px;
-  margin: 16px 0 0;
+  margin: 12px 0 0;
 }
 
 .upload-block .drop-zone {
@@ -54,12 +54,8 @@
   font-size: 14px;
   position: relative;
   margin-bottom: 24px;
-}
-
-.upload-block .drop-zone:hover {
-  border-color: #1473E6;
-  background-color: #E4F0FF;
-  cursor: pointer;
+  box-sizing: border-box;
+  border: 2px solid white;
 }
 
 .upload-block .drop-zone p:first-child {
@@ -69,7 +65,7 @@
 }
 
 .upload-block .drop-zone p:last-child {
-  margin: 0;
+  margin: 12px 0 0;
 }
 
 .upload-block .upload-action-container {
@@ -118,6 +114,11 @@
     display: none;
   }
 
+  .upload-block .media-container {
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
   /* Drop Zone */
   .upload-block .drop-zone-container {
     width: 75%;
@@ -138,7 +139,11 @@
     overflow: hidden;
   }
 
-  /* Drop Zone */
+  .upload-block .media-container {
+    overflow: initial;
+    border-radius: none
+  }
+
   .upload-block .drop-zone-container {
     border-radius: 0;
     position: static;
@@ -155,8 +160,20 @@
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='2' ry='8' stroke='silver' stroke-width='4' stroke-dasharray='5%2c 10' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
   }
 
+  .upload-block .drop-zone:hover,
+  .upload-block .drop-zone.active {
+    border: 2px solid #1473E6;
+    background-color: #E4F0FF;
+    background-image: none;
+    cursor: pointer;
+  }
+
   .upload-block .drop-zone p:first-child {
     align-content: center;
+  }
+
+  .upload-block .drop-zone p:last-child {
+    margin: 0;
   }
 
   .upload-block .foreground > .upload-grid,

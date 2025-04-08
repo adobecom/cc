@@ -59,7 +59,15 @@ function decorateBlockColumns(content) {
   dropZone.append(...paras);
   dropZoneContainer.append(dropZone, uploadEls, terms);
   content.append(mediaContainer, dropZoneContainer);
-
+  /* c8 ignore start */
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('active');
+  });
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('active');
+  });
+  /* c8 ignore end */
   // Click button or drop zone to trigger file upload
   const clickEls = [uploadEls?.firstChild, dropZone];
   [...clickEls].forEach((el) => {
