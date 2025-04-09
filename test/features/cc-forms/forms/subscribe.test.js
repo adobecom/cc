@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import { readFile } from '@web/test-runner-commands';
-// import { expect } from '@esm-bundle/chai';
+import { expect } from '@esm-bundle/chai';
 import { setLibs, getLibs } from '../../../../creativecloud/scripts/utils.js';
 
 const miloLibs = '/libs';
@@ -40,6 +40,7 @@ function delay(ms) {
 const { default: init } = await import('../../../../creativecloud/blocks/cc-forms/cc-forms.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/subscribe-body.html' });
+
 describe('Subscribe Form', () => {
   const fetchStub = sinon.stub(window, 'fetch');
   before(async () => {
@@ -60,15 +61,28 @@ describe('Subscribe Form', () => {
     fetchStub.restore();
   });
 
-  it('Consent notice', () => {
-    console.log(document.body);
-  });
-
-  it('Submit check', () => {
+  it('should perform submit action on clicking button', () => {
     document.body.querySelector('#email').value = 'email@gmail.com';
     document.body.querySelector('#fname').value = 'val';
     document.body.querySelector('#lname').value = 'val';
     document.body.querySelector('#country').value = 'val';
     document.body.querySelector('.cc-form-component.submit').dispatchEvent(new Event('click'));
+    const loader = document.body.querySelector('.spectrum-ProgressCircle-fillMask1');
+    expect(loader).to.exist;
+  });
+
+  it('should function without sname attribute', async () => {
+    const el = document.querySelector('.cc-forms');
+    const form = document.querySelector('form');
+    form.removeAttribute('data-sname');
+    await init(el);
+  });
+
+  it('covers the case when the notice body is absent', async () => {
+    const el = document.querySelector('.cc-forms');
+    const oldNotice = document.body.querySelector('#noticeplaceholder');
+    oldNotice.remove();
+    await init(el);
+    expect(document.body.querySelector('#noticeplaceholder')).to.not.exist;
   });
 });
