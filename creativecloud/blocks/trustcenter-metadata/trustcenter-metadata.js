@@ -1,13 +1,12 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
-/* global CustomEvent */
 
 // import HawksBase from '../../../publish/src/js/base';
 // import { isAuthor } from '@dexter/dexterui-tools/lib/environment';
 // import { lanaLog } from '../../../../../../globalnav/clientlibs/base/feds/src/js/utilities/helpers/lana';
 
-import { createTag, getConfig, isSignedInInitialized } from '../../scripts/utils.js'
+import { createTag, getConfig, isSignedInInitialized } from '../../scripts/utils.js';
 
 // const {
 //     closest, getCookieValue, setCookieValue, getPropertySafely, Debug,
