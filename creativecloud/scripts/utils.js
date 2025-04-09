@@ -376,6 +376,8 @@ export async function acomsisCookieHandler() {
   });
 }
 
+export const decorateArea = getDecorateAreaFn();
+
 const CONFIG = {
   contentRoot: '/cc-shared',
   codeRoot: '/creativecloud',
@@ -384,7 +386,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   stageDomainsMap,
-  decorateArea: getDecorateAreaFn,
+  decorateArea,
   adobeid: {
     api_parameters: { check_token: { guest_allowed: true } },
     enableGuestAccounts: true,
