@@ -39,7 +39,6 @@ class Subscribe extends trials {
   submitAction() {
     this.accesstoken = this.imslib.getAccessToken().token;
     this.createPayLoad();
-    console.log('subscribe payload', this.payload);
     this.postCommonService(this.accessToken, this.payLoad, this.endPoint);
   }
 
