@@ -295,17 +295,17 @@ function getDecorateAreaFn() {
       "무료 체험",
       "무료 체험판",
       "무료 체험하기",
-      "무료 체험하기 (Beta)",
+      "무료 체험하기 (beta)",
       "{{free-trial}}",
       "{{start-free-trial}}"
     ];
 
     ctas.forEach(a => {
       // Get the text content of the <a> tag and trim spaces for exact comparison
-      const linkText = a.textContent.trim();
+      const linkText = a.textContent;
 
       // Check if the trimmed text exactly matches any target text
-      if (targetTexts.includes(linkText)) {
+      if (targetTexts.includes(linkText.split('|')[0].trim().toLowerCase())) {
         const parent = a.parentElement; // Get the parent (em, strong, etc.)
 
         // Remove the entire <a> element, including its text
