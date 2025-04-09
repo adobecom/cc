@@ -288,9 +288,46 @@ function getDecorateAreaFn() {
     }
   }
 
+  function removeFreeTrialCTAs(area = document) {
+    const ctas = area.querySelectorAll('em a, strong a, p > a strong');
+    // List of target texts to match
+    const targetTexts = [
+      "무료 체험",
+      "무료 체험판",
+      "무료 체험하기",
+      "무료 체험하기 (Beta)",
+      "{{free-trial}}",
+      "{{start-free-trial}}"
+    ];
+
+    ctas.forEach(a => {
+      // Get the text content of the <a> tag and trim spaces for exact comparison
+      const linkText = a.textContent.trim();
+
+      // Check if the trimmed text exactly matches any target text
+      if (targetTexts.includes(linkText)) {
+        const parent = a.parentElement; // Get the parent (em, strong, etc.)
+
+        // Remove the entire <a> element, including its text
+        a.remove();
+
+        // Check if the parent has no other child elements (ignoring empty text nodes)
+        const hasOtherChildren = Array.from(parent.childNodes).some(node =>
+            node.nodeType === Node.ELEMENT_NODE || (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "")
+        );
+
+        // If no other meaningful children, remove the parent
+        if (!hasOtherChildren) {
+          parent.remove();
+        }
+      }
+    });
+  }
+
   return (area, options) => {
     if (isRootPage()) replaceDotMedia();
     if (!lcpImgSet || window.document.querySelector('body > main > div > div > a.fragment')) loadLCPImage(area, options);
+    removeFreeTrialCTAs(area)
   };
 }
 
@@ -339,8 +376,6 @@ export async function acomsisCookieHandler() {
   });
 }
 
-export const decorateArea = getDecorateAreaFn();
-
 const CONFIG = {
   contentRoot: '/cc-shared',
   codeRoot: '/creativecloud',
@@ -349,7 +384,7 @@ const CONFIG = {
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   stageDomainsMap,
-  decorateArea,
+  decorateArea: getDecorateAreaFn,
   adobeid: {
     api_parameters: { check_token: { guest_allowed: true } },
     enableGuestAccounts: true,
