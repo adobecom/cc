@@ -215,11 +215,18 @@
   color: var(--np-input-placeholder-color);
 }
 
+.np-input.np-input-file {
+  appearance: none;
+  padding-right: 40px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .np-control .np-icon {
   position: absolute;
   height: 12px;
   right: 15px;
-  top: 39px;
+  bottom: 14px;
   display: flex;
   cursor: pointer;
   pointer-events: none;

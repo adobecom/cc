@@ -122,7 +122,7 @@ const locales = {
 
 const stageDomainsMap = {
   'www.stage.adobe.com': {
-    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
+    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals|genuine(\\.html)?\\/?)\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -133,18 +133,18 @@ const stageDomainsMap = {
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
   '--cc--adobecom.(hlx|aem).live': {
-    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
-    'business.adobe.com': 'business.stage.adobe.com',
-    'helpx.adobe.com': 'helpx.stage.adobe.com',
-    'blog.adobe.com': 'blog.stage.adobe.com',
-    'developer.adobe.com': 'developer-stage.adobe.com',
-    'news.adobe.com': 'news.stage.adobe.com',
-    'firefly.adobe.com': 'firefly-stage.corp.adobe.com',
-    'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
-    'projectneo.adobe.com': 'stg.projectneo.adobe.com',
+    'www.adobe.com': 'www.adobe.com',
+    'business.adobe.com': 'business.adobe.com',
+    'helpx.adobe.com': 'helpx.adobe.com',
+    'blog.adobe.com': 'blog.adobe.com',
+    'developer.adobe.com': 'developer.adobe.com',
+    'news.adobe.com': 'news.adobe.com',
+    'firefly.adobe.com': 'firefly.adobe.com',
+    'creativecloud.adobe.com': 'creativecloud.adobe.com',
+    'projectneo.adobe.com': 'projectneo.adobe.com',
   },
   '--cc--adobecom.(hlx|aem).page': {
-    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin',
+    'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals|genuine(\\.html)?\\/?)\\S*)': 'origin',
     'business.adobe.com': 'business.stage.adobe.com',
     'helpx.adobe.com': 'helpx.stage.adobe.com',
     'blog.adobe.com': 'blog.stage.adobe.com',
@@ -154,7 +154,7 @@ const stageDomainsMap = {
     'creativecloud.adobe.com': 'stage.creativecloud.adobe.com',
     'projectneo.adobe.com': 'stg.projectneo.adobe.com',
   },
-  '.graybox.adobe.com': { 'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals)\\/\\S*)': 'origin' },
+  '.graybox.adobe.com': { 'www.adobe.com(?!\\/*\\S*\\/(mini-plans|plans-fragments\\/modals|genuine(\\.html)?\\/?)\\S*)': 'origin' },
 };
 
 /**
@@ -347,7 +347,7 @@ const CONFIG = {
   imsClientId: 'adobedotcom-cc',
   locales,
   geoRouting: 'on',
-  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com', 'creativecloud.adobe.com'],
+  prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   stageDomainsMap,
   decorateArea,
   adobeid: {
@@ -362,7 +362,7 @@ const CONFIG = {
     odinEndpoint: 'https://stage-odin.adobe.com/',
   },
   live: {
-    pdfViewerClientId: 'a26c77a2effb4c4aaa71e7c46385e0ed',
+    pdfViewerClientId: '9047b46d4bbe4033a0eed98f74d7d9d2',
     pdfViewerReportSuite: 'adbadobenonacdcqa',
   },
   prod: {
@@ -371,6 +371,9 @@ const CONFIG = {
     psUrl: 'https://photoshop.adobe.com',
     odinEndpoint: 'https://odin.adobe.com/',
   },
+  page: { pdfViewerClientId: '9f6ffa6b76bf4c87a3e09e20b218d439' },
+  hlxPage: { pdfViewerClientId: 'b70362e4031e4fdfb4ad5ce1ffef61a0' },
+  hlxLive: { pdfViewerClientId: 'fb748b00ec814d308f5115dbc1daeea5' },
   jarvis: {
     id: 'adobedotcom2',
     version: '1.83',
