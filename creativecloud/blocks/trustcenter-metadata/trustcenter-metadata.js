@@ -41,7 +41,6 @@ class TrustCenterApp {
     this.stageEndpoint = 'https://www.stage.adobe.com/trustcenter/api/';
     this.apiUrl = env.name === 'prod' ? this.prodEndpoint : this.stageEndpoint;
 
-
     this.processMetaSettings();
     this.decorateContainers();
     this.initializeTrustCenter();
@@ -384,7 +383,7 @@ class TrustCenterApp {
   }
 
   async openPdf(fileUrl) {
-    const anchorTag = createTag('a', { href: fileUrl }, fileUrl);
+    const anchorTag = createTag('a', { class: 'trustcenter-hidden', href: fileUrl }, fileUrl);
     const anchorContainer = createTag('div', { class: 'trustcenter-view-sdk-container' }, anchorTag);
     this.domElements.assetLink.insertAdjacentElement('afterend', anchorContainer);
     const miloLibs = getLibs();
