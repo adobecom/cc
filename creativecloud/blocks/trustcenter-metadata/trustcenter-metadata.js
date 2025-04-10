@@ -240,7 +240,7 @@ class TrustCenterApp {
     this.domElements.loader.classList.add(Config.selectors.hiddenItem);
   }
 
-  ioServiceRequest({ method, encryptedAssetLink, overrideEndpoint }) {
+  ioServiceRequest({ method, encryptedAssetLink }) {
     const accessToken = window.adobeIMS.getAccessToken().token;
     if (!accessToken) {
       const err = new Error('accessToken or userId could not be retrieved');
@@ -252,8 +252,7 @@ class TrustCenterApp {
       headers: { Authorization: `Bearer ${accessToken}` },
       redirect: 'follow',
     };
-    const endpointHost = overrideEndpoint || this.apiUrl;
-    const url = new URL(`${endpointHost}${method}`);
+    const url = new URL(`${this.apiUrl}${method}`);
     if (encryptedAssetLink) url.searchParams.append('code', encryptedAssetLink);
     return window
       .fetch(url, requestOptions)
@@ -364,7 +363,7 @@ class TrustCenterApp {
       });
       return;
     }
-    this.ioServiceRequest({ encryptedAssetLink, method: 'documenthandler', overrideEndpoint: this.prodEndpoint })
+    this.ioServiceRequest({ encryptedAssetLink, method: 'documenthandler' })
       .then(({ fileUrl, signNDARequired, isPdf, fileName, fileType }) => {
         this.hideLoader();
         if (signNDARequired) {
