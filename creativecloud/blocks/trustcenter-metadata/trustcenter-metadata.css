@@ -1,9 +1,9 @@
-.section div[class*="trustcenter-"] {
+.section .trustcenter-metadata,
+.section .trustcenter-nda-document,
+.section .trustcenter-nda-sign,
+.section .trustcenter-error,
+.section .trustcenter-hidden {
   display: none;
-}
-
-.section div[class*="trustcenter-"].show {
-  display: flex;
 }
 
 .trustcenter-nda-iframe {
@@ -27,12 +27,17 @@
   width: 64px
 }
 
+.trustcenter-progressCircle * {
+  box-sizing: border-box;
+}
+
 .trustcenter-progressCircle-track {
   border: 4px solid #e1e1e1;
   border-radius: 50%;
   height: 100%;
   width: 100%
 }
+
 
 .trustcenter-progressCircle-fills {
   animation: progressCircle-fills-rotate 1s cubic-bezier(.25,.78,.48,.89) infinite;
