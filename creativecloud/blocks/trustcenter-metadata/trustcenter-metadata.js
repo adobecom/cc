@@ -62,9 +62,10 @@ class TrustCenterApp {
     const parentSection = this.el.closest('.section');
     const signContainer = document.querySelector('.trustcenter-nda-sign');
     if (signContainer) {
+      signContainer.classList.add(Config.selectors.hiddenItem);
       signContainer.classList.remove('trustcenter-nda-sign');
       signContainer.id = Config.ids.ndaContainer;
-      const btnLink = signContainer.querySelector('strong a, em a, a strong, a em');
+      const btnLink = signContainer.querySelector('.con-button, strong a, em a, a strong, a em');
       if (btnLink) {
         const signInBtn = btnLink.nodeName === 'A' ? btnLink : btnLink.closest('a');
         signInBtn.id = Config.ids.signNdaCta;
@@ -73,14 +74,16 @@ class TrustCenterApp {
     }
     const errorContainer = document.querySelector('.trustcenter-error');
     if (errorContainer) {
+      errorContainer.classList.add(Config.selectors.hiddenItem);
       errorContainer.classList.remove('trustcenter-error');
       errorContainer.id = Config.ids.errorContainer;
     }
     const docContainer = document.querySelector('.trustcenter-nda-document');
     if (docContainer) {
+      docContainer.classList.add(Config.selectors.hiddenItem);
       docContainer.classList.remove('trustcenter-nda-document');
       docContainer.id = Config.ids.documentContainer;
-      const btnLink = docContainer.querySelector('strong a, em a, a strong, a em');
+      const btnLink = docContainer.querySelector('.con-button, strong a, em a, a strong, a em');
       if (btnLink) {
         const downloadBtn = btnLink.nodeName === 'A' ? btnLink : btnLink.closest('a');
         downloadBtn.id = Config.ids.nonPdfLink;
@@ -99,7 +102,7 @@ class TrustCenterApp {
     const ndaIframeContainer = createTag(
       'div',
       {
-        class: 'trustcenter-nda-iframe-container',
+        class: 'trustcenter-nda-iframe-container trustcenter-hidden',
         id: `${Config.ids.ndaiFrameContainer}`,
       },
       ndaIframe,
