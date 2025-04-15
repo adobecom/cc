@@ -25,11 +25,8 @@ class Subscribe extends trials {
     const notice = this.form.querySelector(NOTICE_ID);
     if (notice) {
       const xf = notice.querySelector('.fragment');
-      if (xf) {
-        this.buttonListener();
-      } else {
-        this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
-      }
+      if (xf) this.buttonListener();
+      else this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
     } else {
       this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
     }
