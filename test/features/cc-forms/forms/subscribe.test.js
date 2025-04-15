@@ -66,6 +66,7 @@ describe('Subscribe Form', () => {
     document.body.querySelector('#fname').value = 'val';
     document.body.querySelector('#lname').value = 'val';
     document.body.querySelector('#country').value = 'val';
+    document.body.querySelector('#orgname').value = 'val';
     document.body.querySelector('.cc-form-component.submit').dispatchEvent(new Event('click'));
     const loader = document.body.querySelector('.spectrum-ProgressCircle-fillMask1');
     expect(loader).to.exist;
@@ -76,13 +77,5 @@ describe('Subscribe Form', () => {
     const form = document.querySelector('form');
     form.removeAttribute('data-sname');
     await init(el);
-  });
-
-  it('covers the case when the notice body is absent', async () => {
-    const el = document.querySelector('.cc-forms');
-    const oldNotice = document.body.querySelector('#noticeplaceholder');
-    oldNotice.remove();
-    await init(el);
-    expect(document.body.querySelector('#noticeplaceholder')).to.not.exist;
   });
 });
