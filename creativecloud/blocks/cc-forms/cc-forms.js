@@ -236,7 +236,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser() && !document.querySelector('.subscribe')) return window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser() && !el.classList.contains('subscribe')) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);
