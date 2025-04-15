@@ -17,6 +17,10 @@
   color: #2C2C2C;
 }
 
+.cc-forms-config {
+  display: none;
+}
+
 .cc-forms input,
 .cc-forms select {
   color: #2C2C2C;

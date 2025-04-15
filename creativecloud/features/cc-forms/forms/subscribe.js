@@ -15,21 +15,12 @@ const subscribeIpaasParamMap = {
   preferred_language: 'preferred_language',
 };
 const CUR_URL = '#current_url';
-const NOTICE_ID = '#noticeplaceholder';
 
 class Subscribe extends trials {
   constructor(form, authConfig) {
     super(form, authConfig);
     this.form = form;
     this.authConfig = authConfig;
-    const notice = this.form.querySelector(NOTICE_ID);
-    if (notice) {
-      const xf = notice.querySelector('.fragment');
-      if (xf) this.buttonListener();
-      else this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
-    } else {
-      this.form.addEventListener('cc:consent-ready', () => { this.buttonListener(); });
-    }
     this.buttonListener();
   }
 
@@ -55,8 +46,10 @@ class Subscribe extends trials {
     if (currentUrl) {
       JsonPayload.current_url = currentUrl;
     }
-    const noticeBody = this.getValue(NOTICE_ID, 'data-notice-body');
-    JsonPayload.consent_notice = noticeBody;
+    const consentNotice = document.querySelector('.consentnotice');
+    if (typeof consentNotice !== 'undefined' && consentNotice !== null) {
+      JsonPayload.consent_notice = consentNotice.innerHTML;
+    }
 
     this.payLoad = JsonPayload;
   }
