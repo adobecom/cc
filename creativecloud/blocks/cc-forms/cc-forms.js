@@ -165,6 +165,11 @@ class CCForms {
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
       componentConfig.type = componentName.toLowerCase();
+      if (componentName === 'cc-form-internal-service-name' && this.formConfig.type === 'subscribe') {
+        const sval = c.parentElement.textContent;
+        this.formConfig.sname = sval;
+        this.form.setAttribute('data-sname', sval);
+      }
       if (c.parentElement.nextElementSibling) {
         componentConfig.value = c.parentElement.nextElementSibling;
       }
@@ -176,11 +181,6 @@ class CCForms {
           componentConfig.concentCfgs.push({ bucketNoticeType: keyName, consetFragment: s.closest('div').nextElementSibling });
         } else {
           componentConfig[keyName] = s.closest('div').nextElementSibling;
-        }
-        if (keyName === 'internal-service-name' && this.formConfig.type === 'subscribe') {
-          const sval = s.closest('div').nextElementSibling.textContent;
-          this.formConfig.sname = sval;
-          this.form.setAttribute('data-sname', sval);
         }
       }
       switch (true) {
@@ -236,7 +236,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser() && !document.querySelector('.subscribe')) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);

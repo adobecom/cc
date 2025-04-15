@@ -37,7 +37,7 @@ class Subscribe extends trials {
   }
 
   submitAction() {
-    this.accesstoken = this.imslib.getAccessToken().token;
+    this.accesstoken = this.imslib.getAccessToken()?.token;
     this.createPayLoad();
     this.postCommonService(this.accessToken, this.payLoad, this.endPoint);
   }
