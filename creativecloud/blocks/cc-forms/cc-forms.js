@@ -51,7 +51,15 @@ const formConfig = {
   },
   unsubscribe: {
     type: 'unsubscribe',
-    ...odinConfig,
+    jsPath: '/creativecloud/features/cc-forms/forms/unsubscribe.js',
+    blockDataset: {
+      clientname: 'trials',
+      endpoint: '/api2/unsubscribe_v2',
+      'form-type': 'form.unsubscribe.action',
+      'form-submit': 'trials',
+      'seed-formvalidation': '',
+      ...odinConfig,
+    },
   },
   default: {
     type: 'default',
@@ -109,6 +117,8 @@ class CCForms {
       case this.el.classList.contains('connect'):
         formConfig.connect.blockDataset['form-type'] = this.el.classList.contains('enterprise') ? 'form.connect.enterprise.action' : 'form.connect.action';
         return formConfig.connect;
+      case this.el.classList.contains('unsubscribe'):
+        return formConfig.unsubscribe;
       default:
         return formConfig.default;
     }
@@ -154,6 +164,11 @@ class CCForms {
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
       componentConfig.type = componentName.toLowerCase();
+      if (componentName === 'cc-form-snamefallback' && this.formConfig.type === 'unsubscribe') {
+        const snamefallback = c.parentElement.textContent;
+        this.formConfig.snamefallback = snamefallback;
+        this.form.setAttribute('data-snamefallback', snamefallback);
+      }
       if (c.parentElement.nextElementSibling) {
         componentConfig.value = c.parentElement.nextElementSibling;
       }
@@ -220,7 +235,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser() && !el.classList.contains('unsubscribe')) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);
