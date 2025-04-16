@@ -541,8 +541,14 @@ class Trials {
     const button = this.formContainer.querySelector(SELECTOR_BUTTON);
     if (disabled) {
       button.classList.add(BUTTON_DISABLED_CLASS);
+      button.setAttribute('disabled', 'disabled');
+      button.style.pointerEvents = 'none';
+      // button.setAttribute('aria-disabled', 'true');
     } else {
       button.classList.remove(BUTTON_DISABLED_CLASS);
+      button.removeAttribute('disabled');
+      button.style.pointerEvents = 'auto';
+      // button.setAttribute('aria-disabled', 'false');
     }
   }
 }
