@@ -1,0 +1,8 @@
+export const API_COOKIE = 'mbox=session%2382249219131822096922964842953077166662%2DKLkbAz%231727102380; ftrset=505; relay=5740e45c-a0ea-40da-9325-70153e81c0c0';
+export const API_CODE = 'eyJhbGciOiJSUzI1NiIsIng1dUI6Imltc19uYTEtc3RnMS1rZXktcGFjLTEuY2VyIiwia2lkIjoiaW1zX25hMS1zdGcxLWtleS1wYWMtMSIsIml0dCI6InBhYyJ9.eyJpZCI6ImNlLWZpcmVmYWxsLXBvY19zdGciLCJ0eXBlIjoiYXV0aG9yaXphdGlvbl9jb2RlIiwiY2xpZW50X2lkIjoiY2UtZmlyZWZhbGwtcG9jIiwidXNlcl9pZCI6ImNlLWZpcmVmYWxsLXBvY0BBZG9iZUlEIiwiYXMiOiJpbXMtbmExLXN0ZzEiLCJvdG8iOmZhbHNlLCJjcmVhdGVkX2F0IjoiMTY4NTUyNzc5OTMyNiIsInNjb3BlIjoic3lzdGVtIn0.38Ed_F8RHkxo7QueOQ6lHO2rwgZQ15oCVXb5OeuxWmICrft9Swg_uSHZMop2So2grevy01n2Fhgkvnuek2ycsqXIwJZqyg3Drvg3EPeBRIHufOwtE3bGmQQlc07Qh1pmN0ayTrfokbJQ4a88bkTPsmbOsq7Zr274TJHWHCUpTsw72RaLpqQvdSfx7_3c6eSgqJMB1ZZTR4ahuDci2YOK95Gd6YhBUol5IghjZY-slYY1KPEKCMSLn9r4v_Y--NLeBwUuYdiVMuKMmA_6j-2wqUHp1NyhJFRG480P08OSUX2rdGK54U0StlGJ3jb735QLJYt4L5anThGaOS-kcPVGMQ';
+export const API_CLIENT_SECRET = 's8e-bjMCCLX2dUX1yqjk5UQjPvGtg1bnMgpP';
+export const API_KEY = 'ce-firefall';
+export const API_ORG_ID = 'EE9332B3547CC74E0A4C98A1@AdobeOrg';
+export const API_CLIENT_ID = 'ce-firefall-poc';
+export const TOKEN_URL = `https://adobeid-na1-stg1.services.adobe.com/ims/token/v1?grant_type=authorization_code&client_id=${API_CLIENT_ID}`;
+export const FIRE_FALL_URL = 'https://firefall-stage.adobe.io/v1/chat/completions';
