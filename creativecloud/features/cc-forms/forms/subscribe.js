@@ -33,14 +33,11 @@ class Subscribe extends trials {
   createPayLoad() {
     const JsonPayload = {};
     const userProfileParams = this.userprofile;
-
     for (let i = 0; i < userProfileParams.length; i += 1) {
       const val = this.getValue(`[name=${userProfileParams[i]}]`);
       if (val) JsonPayload[subscribeIpaasParamMap[userProfileParams[i]]] = val;
     }
-
     JsonPayload.sname = this.formContainer.getAttribute('data-sname') || '';
-
     // gdpr
     const currentUrl = this.getValue(CUR_URL);
     if (currentUrl) {
@@ -50,7 +47,6 @@ class Subscribe extends trials {
     if (typeof consentNotice !== 'undefined' && consentNotice !== null) {
       JsonPayload.consent_notice = consentNotice.innerHTML;
     }
-
     this.payLoad = JsonPayload;
   }
 }

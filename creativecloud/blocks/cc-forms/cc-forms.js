@@ -165,7 +165,7 @@ class CCForms {
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
       componentConfig.type = componentName.toLowerCase();
-      if (componentName === 'cc-form-internal-service-name' && this.formConfig.type === 'subscribe') {
+      if (componentName === 'cc-form-internal-service-name') {
         const sval = c.parentElement.textContent;
         this.formConfig.sname = sval;
         this.form.setAttribute('data-sname', sval);
@@ -194,7 +194,7 @@ class CCForms {
           { const dd = new Dropdown(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-consent'):
-          if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect' || this.formConfig.type === 'subscribe')) {
+          if (this.formConfig && (['perpeptual', 'connect', 'subscribe'].includes(this.formConfig.type))) {
             const cn = new ConsentNotice(this.form, componentConfig);
           }
           break;
@@ -236,7 +236,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser() && !el.classList.contains('subscribe')) return window.adobeIMS.signIn();
+    if (!el.classList.contains('subscribe') && !window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);
