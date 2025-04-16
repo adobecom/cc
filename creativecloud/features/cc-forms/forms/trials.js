@@ -40,6 +40,8 @@ export class TextContent {
 
   init() {
     const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
+    const fieldType = this.fieldConfig.type.split('cc-form-content-').pop();
+    if (fieldType) d.classList.add(fieldType);
     this.form.append(d);
   }
 }

@@ -47,7 +47,16 @@ const formConfig = {
   },
   subscribe: {
     type: 'subscribe',
-    ...odinConfig,
+    jsPath: '/creativecloud/features/cc-forms/forms/subscribe.js',
+    blockDataset: {
+      endpoint: '/api2/subscribe_v1',
+      'form-submit': 'trials',
+      'form-type': 'form.subscribe.action',
+      userProfileValue: 'email,fname,lname,phonenumber,address1,address2,city,state,postalcode,country,orgname,preferred_language',
+      sname: '',
+      'seed-formvalidation': '',
+      ...odinConfig,
+    },
   },
   unsubscribe: {
     type: 'unsubscribe',
@@ -109,6 +118,8 @@ class CCForms {
       case this.el.classList.contains('connect'):
         formConfig.connect.blockDataset['form-type'] = this.el.classList.contains('enterprise') ? 'form.connect.enterprise.action' : 'form.connect.action';
         return formConfig.connect;
+      case this.el.classList.contains('subscribe'):
+        return formConfig.subscribe;
       default:
         return formConfig.default;
     }
@@ -154,6 +165,11 @@ class CCForms {
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
       componentConfig.type = componentName.toLowerCase();
+      if (componentName === 'cc-form-internal-service-name') {
+        const sval = c.parentElement.textContent;
+        this.formConfig.sname = sval;
+        this.form.setAttribute('data-sname', sval);
+      }
       if (c.parentElement.nextElementSibling) {
         componentConfig.value = c.parentElement.nextElementSibling;
       }
@@ -178,7 +194,7 @@ class CCForms {
           { const dd = new Dropdown(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-consent'):
-          if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
+          if (this.formConfig && (['perpeptual', 'connect', 'subscribe'].includes(this.formConfig.type))) {
             const cn = new ConsentNotice(this.form, componentConfig);
           }
           break;
@@ -220,7 +236,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    if (!el.classList.contains('subscribe') && !window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);
