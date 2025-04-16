@@ -392,7 +392,7 @@ async function GetAccessToken() {
   const options = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       Cookie: API_COOKIE
     },
     body: JSON.stringify({
