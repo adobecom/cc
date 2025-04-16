@@ -392,10 +392,10 @@ async function GetAccessToken() {
   const options = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
       Cookie: API_COOKIE
     },
-    body: JSON.stringify({
+    body: new URLSearchParams({
       code: API_CODE,
       client_secret: API_CLIENT_SECRET
     })
