@@ -402,9 +402,10 @@ async function GetAccessToken() {
   };
   
   const response = await fetch(TOKEN_URL, options);
+  console.log('response', response);
   if (!response.ok) throw new Error('Failed to get access token');
   const data = await response.json();
-  return data.access_token;
+  return '';
 }
 
 async function getAPICall(payload) {
