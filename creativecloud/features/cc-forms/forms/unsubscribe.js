@@ -13,11 +13,11 @@ class Unsubscribe extends Trials {
     this.authConfig = authConfig;
     this.campaignManifest = false;
     this.checkMandatoryParams();
-    this.buttonListener();
     this.replacePlaceholder();
     this.initialChecked();
     this.observeCheckBoxes();
     this.initializeClickHereLink();
+    this.buttonListener();
   }
 
   checkMandatoryParams() {
@@ -54,6 +54,9 @@ class Unsubscribe extends Trials {
   }
 
   getParam(name) {
+    if (!this.form) {
+      return undefined;
+    }
     const params = new URLSearchParams(window.location.search);
     const val = params.get(name);
     return val ? decodeURIComponent(val) : undefined;
@@ -108,11 +111,17 @@ class Unsubscribe extends Trials {
   }
 
   sanitizeHTML(str) {
+    if (!this.form) {
+      return str;
+    }
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   }
 
   validateEmail(str) {
+    if (!this.form) {
+      return false;
+    }
     return REGULAR_EXP_EMAIL.test(str);
   }
 
