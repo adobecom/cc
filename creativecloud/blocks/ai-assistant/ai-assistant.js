@@ -395,10 +395,10 @@ async function GetAccessToken() {
       'Content-Type': 'application/x-www-form-urlencoded',
       Cookie: API_COOKIE
     },
-    body: new URLSearchParams({
+    body: {
       code: API_CODE,
       client_secret: API_CLIENT_SECRET
-    })
+    }
   };
   
   const response = await fetch(TOKEN_URL, options);
