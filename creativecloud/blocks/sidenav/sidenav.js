@@ -165,6 +165,8 @@ function appendResources(rootNav, resourceLink) {
 
 export default async function init(el) {
   const libs = getLibs();
+  const { decorateLinks } = await import(`${libs}/utils/utils.js`);
+  decorateLinks(el);
   const [mainRow, categoryRow] = Array.from(el.children);
   const deps = Promise.all([
     import(`${libs}/deps/mas/merch-sidenav.js`),
