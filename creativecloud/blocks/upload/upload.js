@@ -12,13 +12,23 @@ function decorateMultiViewport(foreground) {
   return foreground;
 }
 
+export function sendAnalyticsEvent(event) {
+  const data = {
+    xdm: {},
+    data: { web: { webInteraction: { name: event?.type } } },
+  };
+  if (event?.detail) {
+    data.data._adobe_corpnew = { digitalData: event.detail };
+  }
+  window._satellite?.track('event', data);
+}
+
 function decorateUploadEls(para) {
   const btn = createTag(
     'button',
     {
       type: 'button',
       class: 'con-button blue action-button button-xl',
-      'daa-ll': 'Upload your photo|UnityWidget',
     },
     para.innerHTML,
   );
@@ -70,14 +80,19 @@ function decorateBlockColumns(content) {
   });
   /* c8 ignore end */
   // Click button or drop zone to trigger file upload
+  const handleClick = (e) => {
+  e.stopPropagation();
+  if (e.currentTarget === uploadEls.firstChild) {
+    sendAnalyticsEvent('Upload your photo|UnityWidget');
+  }
+  uploadEls.lastChild.click();
+  };
   const clickEls = [uploadEls?.firstChild, dropZone];
-  [...clickEls].forEach((el) => {
+  clickEls.forEach((el) => {
     if (!el) return;
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      uploadEls.lastChild.click();
-    });
+    el.addEventListener('click', handleClick);
   });
+
 }
 
 export default async function init(el) {
