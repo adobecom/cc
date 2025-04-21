@@ -20,7 +20,7 @@ const Config = {
   },
   selectors: { hiddenItem: 'trustcenter-hidden' },
   constants: {
-    adobeDomain: '.adobe.com',
+    adobeDomain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
     hasSignedCookie: 'trustcenter_nda_signed',
   },
 };
@@ -40,7 +40,6 @@ class TrustCenterApp {
     this.prodEndpoint = 'https://www.adobe.com/trustcenter/api/';
     this.stageEndpoint = 'https://www.stage.adobe.com/trustcenter/api/';
     this.apiUrl = env.name === 'prod' ? this.prodEndpoint : this.stageEndpoint;
-
     this.processMetaSettings();
     this.decorateContainers();
     this.initializeTrustCenter();
@@ -118,29 +117,20 @@ class TrustCenterApp {
   initializeTrustCenter() {
     isSignedInInitialized()
       .then(() => {
-        // eslint-disable-next-line no-underscore-dangle
-        this.pageName = window.alloy_all?.data?._adobe_corpnew?.digitalData.page.pageInfo.pageName;
         this.mapDomElements();
-        if (!this.areDomElementsValid()
-            || !this.domElements.assetLink.dataset
-            || !this.domElements.assetLink.dataset.encryptedassetlink) {
-          return;
-        }
-
-        if (!window.adobeIMS.isSignedInUser()) {
-          window.adobeIMS.signIn();
-          return;
-        }
-
+        if (!this.areDomElementsValid() || !this.domElements.assetLink.dataset || !this.domElements.assetLink.dataset.encryptedassetlink) return;
+        if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
         this.hideNDAiFrameListener = this.hideNDAiFrameListener.bind(this);
         const hasSignedNDA = getCookieValue(Config.constants.hasSignedCookie);
-        if (hasSignedNDA) this.showDocumentContainer();
-        else this.showNdaContainer();
+        if (hasSignedNDA) return this.showDocumentContainer();
+        this.showNdaContainer();
       })
       .catch((err = {}) => {
-        this.mapDomElements();
         if (this.domElements && this.domElements.errorContainer) {
-          this.showErrorContainer({ message: 'Trust Center - IMS onReady issues', errorMessage: err.message });
+          this.showErrorContainer({
+            message: 'Trust Center - IMS onReady issues',
+            errorMessage: err.message,
+          });
         }
       });
   }
@@ -152,11 +142,11 @@ class TrustCenterApp {
 
   mapDomElements() {
     this.domElements = {
+      errorContainer: document.querySelector(`#${Config.ids.errorContainer}`),
       assetLink: document.querySelector(`div[${Config.ids.encryptedAssetLink}]`),
       ndaContainer: document.querySelector(`#${Config.ids.ndaContainer}`),
       documentContainer: document.querySelector(`#${Config.ids.documentContainer}`),
       signNdaButton: document.querySelector(`#${Config.ids.signNdaCta}`),
-      errorContainer: document.querySelector(`#${Config.ids.errorContainer}`),
       ndaiFrameContainer: document.querySelector(`#${Config.ids.ndaiFrameContainer}`),
       ndaiFrame: document.querySelector(`#${Config.ids.ndaiFrame}`),
       loader: document.querySelector(`#${Config.ids.loader}`),
@@ -165,8 +155,6 @@ class TrustCenterApp {
   }
 
   track({ data, cta } = {}) {
-    // eslint-disable-next-line no-underscore-dangle
-    if (!this.pageName || !window._satellite || typeof window._satellite.track !== 'function') return;
     if (!analyticsWrapper || !analyticsWrapper.onReady) {
       lanaLog({
         message: 'Trust Center - track',
@@ -177,16 +165,13 @@ class TrustCenterApp {
     }
     analyticsWrapper.onReady()
       .then(() => {
-        if (cta) {
-          analyticsWrapper.set({
-            path: 'primaryEvent.eventInfo.eventName',
-            data,
-          });
-        }
-        analyticsWrapper.set({
-          path: 'page.pageInfo.customPageName',
-          data,
-        });
+        // eslint-disable-next-line no-underscore-dangle
+        this.pageName = window.alloy_all?.data?._adobe_corpnew?.digitalData.page.pageInfo.pageName;
+        // eslint-disable-next-line no-underscore-dangle
+        if (!this.pageName || !window._satellite || typeof window._satellite.track !== 'function') return;
+        const trackData = `${this.pageName}:${data}`;
+        if (cta) { analyticsWrapper.set({ path: 'primaryEvent.eventInfo.eventName', data: trackData }); }
+        analyticsWrapper.set({ path: 'page.pageInfo.customPageName', data: trackData });
         // eslint-disable-next-line no-underscore-dangle
         window._satellite.track('event');
       })
@@ -240,7 +225,7 @@ class TrustCenterApp {
     this.domElements.loader.classList.add(Config.selectors.hiddenItem);
   }
 
-  ioServiceRequest({ method, encryptedAssetLink }) {
+  async ioServiceRequest({ method, encryptedAssetLink }) {
     const accessToken = window.adobeIMS.getAccessToken().token;
     if (!accessToken) {
       const err = new Error('accessToken or userId could not be retrieved');
@@ -254,32 +239,29 @@ class TrustCenterApp {
     };
     const url = new URL(`${this.apiUrl}${method}`);
     if (encryptedAssetLink) url.searchParams.append('code', encryptedAssetLink);
-    return window
-      .fetch(url, requestOptions)
-      .then((response) => {
-        if (response.status === 200 || response.status === 403) {
-          return response.json();
-        }
-        throw new Error(`IORequest unsuccessful, API error. Response status ${response.status}. URL: ${url.href}`);
-      })
-      .catch((err = {}) => {
-        this.showErrorContainer({ message: 'Trust Center - IORequest failed.', errorMessage: err.message });
-        throw err;
-      });
+    try {
+      const response = await fetch(url, requestOptions);
+      if (response.status === 200 || response.status === 403) {
+        return await response.json();
+      }
+      throw new Error(`IORequest unsuccessful, API error. Response status ${response.status}. URL: ${url.href}`);
+    } catch (err) {
+      this.showErrorContainer({ message: 'Trust Center - IORequest failed.', errorMessage: err.message });
+      throw err;
+    }
   }
 
-  signNDA() {
-    this.track({ data: `${this.pageName}:sign now`, cta: true });
+  async signNDA() {
+    this.track({ data: 'sign now', cta: true });
     this.showLoader();
-    return this.ioServiceRequest({ method: 'ndahandler' })
-      .then(({ esignUrl, webAccessPoint, hasSigned }) => {
-        this.hideLoader();
-        if (hasSigned) this.showDocumentContainer();
-        else this.openNDAiFrame({ esignUrl, webAccessPoint });
-      })
-      .catch((err = {}) => {
-        this.showErrorContainer({ message: 'Trust Center - signNDA failed.', errorMessage: err.message });
-      });
+    try {
+      const { esignUrl, webAccessPoint, hasSigned } = await this.ioServiceRequest({ method: 'ndahandler' });
+      this.hideLoader();
+      if (hasSigned) this.showDocumentContainer();
+      else this.openNDAiFrame({ esignUrl, webAccessPoint });
+    } catch (err) {
+      this.showErrorContainer({ message: 'Trust Center - signNDA failed.', errorMessage: err.message });
+    }
   }
 
   hideNDAiFrameListener(e) {
@@ -352,7 +334,7 @@ class TrustCenterApp {
     }
   }
 
-  decryptDocument() {
+  async decryptDocument() {
     this.showLoader();
     const encryptedAssetLink = this.domElements.assetLink.dataset.encryptedassetlink;
     if (!encryptedAssetLink) {
@@ -363,22 +345,21 @@ class TrustCenterApp {
       });
       return;
     }
-    this.ioServiceRequest({ encryptedAssetLink, method: 'documenthandler' })
-      .then(({ fileUrl, signNDARequired, isPdf, fileName, fileType }) => {
-        this.hideLoader();
-        if (signNDARequired) {
-          this.removeHasSignedNdaCookie();
-          this.showNdaContainer();
-          return;
-        }
-        this.track({ data: `${this.pageName}:asset ready:${fileType}:${fileName}` });
-        this.displayFileUrl(fileUrl);
-        if (isPdf) this.openPdf(fileUrl);
-      })
-      .catch((err = {}) => {
-        const message = 'Trust Center - Could not decrypt trust center link';
-        lanaLog({ message, errorMessage: err.message, sampleRate: 10 });
-      });
+    try {
+      const { fileUrl, signNDARequired, isPdf, fileName, fileType } = await this.ioServiceRequest({ encryptedAssetLink, method: 'documenthandler' });
+      this.hideLoader();
+      if (signNDARequired) {
+        this.removeHasSignedNdaCookie();
+        this.showNdaContainer();
+        return;
+      }
+      this.track({ data: `asset ready:${fileType}:${fileName}` });
+      this.displayFileUrl(fileUrl);
+      if (isPdf) await this.openPdf(fileUrl);
+    } catch (err) {
+      const message = 'Trust Center - Could not decrypt trust center link';
+      lanaLog({ message, errorMessage: err.message, sampleRate: 10 });
+    }
   }
 
   async openPdf(fileUrl) {

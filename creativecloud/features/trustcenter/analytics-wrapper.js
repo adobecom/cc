@@ -1,18 +1,4 @@
 /* eslint-disable max-len */
-function isObject(obj) {
-  const val = (typeof obj === 'object') && !Array.isArray(obj) && obj !== null;
-  return val;
-}
-
-function isFunction(fn) {
-  return typeof fn === 'function';
-}
-
-function isEmptyString(str) {
-  const val = typeof str === 'string' ? str.length === 0 : true;
-  return val;
-}
-
 const CONFIG = {
   timeouts: {
     maxWait: 10000,
@@ -21,68 +7,68 @@ const CONFIG = {
   },
   strings: { alloyPrefix: 'data._adobe_corpnew.digitalData.' },
 };
-
 let onReadyPromise = null;
 let isAnalyticsReady = false;
+let onAlloyMethodReadyPromise = null;
+const analyticsWrapper = {};
+const isObject = (obj) => ((typeof obj === 'object') && !Array.isArray(obj) && obj !== null);
+const isFunction = (fn) => typeof fn === 'function';
+const isEmptyString = (str) => (typeof str === 'string' ? str.length === 0 : true);
 const isAlloyAnalyticsAvailable = () => isObject(window.alloy_all) && isFunction(window.alloy_all.set);
 // eslint-disable-next-line no-underscore-dangle
 const isLegacyAnalyticsAvailable = () => isObject(window.digitalData) && isFunction(window.digitalData._set);
-const analyticsWrapper = {};
 
 analyticsWrapper.onReady = () => {
   if (!onReadyPromise) {
+    // eslint-disable-next-line consistent-return
     onReadyPromise = new Promise((resolve, reject) => {
       const isAnalyticsAvailable = () => isAlloyAnalyticsAvailable() || isLegacyAnalyticsAvailable();
       const executeOnReady = () => {
         isAnalyticsReady = true;
         resolve();
       };
-      if (isAnalyticsAvailable()) {
-        executeOnReady();
-      } else {
-        let analyticsIntervalFn;
-        const waitTimeout = setTimeout(() => {
-          isAnalyticsReady = false;
-          clearInterval(analyticsIntervalFn);
-          reject();
-        }, CONFIG.timeouts.maxWait);
+      // eslint-disable-next-line no-promise-executor-return
+      if (isAnalyticsAvailable()) return executeOnReady();
+      let analyticsIntervalFn;
+      const waitTimeout = setTimeout(() => {
+        isAnalyticsReady = false;
+        clearInterval(analyticsIntervalFn);
+        reject();
+      }, CONFIG.timeouts.maxWait);
 
-        analyticsIntervalFn = setInterval(() => {
-          if (isAnalyticsAvailable()) {
-            clearInterval(analyticsIntervalFn);
-            clearTimeout(waitTimeout);
-            executeOnReady();
-          }
-        }, CONFIG.timeouts.checkInterval);
-      }
+      analyticsIntervalFn = setInterval(() => {
+        if (isAnalyticsAvailable()) {
+          clearInterval(analyticsIntervalFn);
+          clearTimeout(waitTimeout);
+          executeOnReady();
+        }
+      }, CONFIG.timeouts.checkInterval);
     });
   }
   return onReadyPromise;
 };
 
-let onAlloyMethodReadyPromise = null;
 analyticsWrapper.onAlloyMethodReady = () => {
   if (!onAlloyMethodReadyPromise) {
+    // eslint-disable-next-line consistent-return
     onAlloyMethodReadyPromise = new Promise((resolve, reject) => {
       // eslint-disable-next-line no-underscore-dangle
       const isAlloyMethodAvailable = () => isFunction(window.alloy) && isObject(window._satellite);
-      if (isAlloyMethodAvailable()) {
-        resolve();
-      } else {
-        let interval;
-        const timeout = setTimeout(() => {
-          clearInterval(interval);
-          reject();
-        }, CONFIG.timeouts.maxAlloyMethodWait);
+      // eslint-disable-next-line no-promise-executor-return
+      if (isAlloyMethodAvailable()) return resolve();
+      let interval;
+      const timeout = setTimeout(() => {
+        clearInterval(interval);
+        reject();
+      }, CONFIG.timeouts.maxAlloyMethodWait);
 
-        interval = setInterval(() => {
-          if (isAlloyMethodAvailable()) {
-            clearInterval(interval);
-            clearTimeout(timeout);
-            resolve();
-          }
-        }, CONFIG.timeouts.checkInterval);
-      }
+      interval = setInterval(() => {
+        if (isAlloyMethodAvailable()) {
+          clearInterval(interval);
+          clearTimeout(timeout);
+          resolve();
+        }
+      }, CONFIG.timeouts.checkInterval);
     });
   }
   return onAlloyMethodReadyPromise;
@@ -95,7 +81,6 @@ analyticsWrapper.set = ({ path, data, prefix = CONFIG.strings.alloyPrefix } = {}
       window.alloy_all.set(`${prefix}${path}`, data);
     } catch (e) { /* no action required */ }
   }
-
   if (isLegacyAnalyticsAvailable()) {
     try {
       // eslint-disable-next-line no-underscore-dangle
