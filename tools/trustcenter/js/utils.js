@@ -52,7 +52,9 @@ function onSubmitButtonAdded(node) {
       if (!linkUrl) throw new Error('Cannot have empty url');
       const search = new URLSearchParams(window.location.search);
       const nonprod = search.get('nonprod');
-      if (!nonprod && !linkUrl.startsWith('https://www.adobe.com')) {
+      const allowedHosts = ['www.adobe.com'];
+      const urlHost = new URL(linkUrl).host;
+      if (!nonprod && !allowedHosts.includes(urlHost)) {
         document.querySelector(PROTECTED_URL_ELEMENT).value = 'Please enter a www.adobe.com asset url';
         throw new Error('Please enter a www.adobe.com asset url');
       }
