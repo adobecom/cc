@@ -1,7 +1,10 @@
 import { getLibs } from '../../../creativecloud/scripts/utils.js';
 
-const PROTECTED_URL_ELEMENT = '#protected-url';
+const PROTECT_URL_SUBMIT = document.querySelector('#generate-protected-link');
+const PROTECTED_URL_ELEMENT = document.querySelector('#protected-url');
 const PROGRESS_CIRCLE_EL = '.cc-forms .form-item.progress-item';
+// const ENCRYPT_ENDPOINT = 'https://www.stage.adobe.com/trustcenter/api/encrypturl';
+const ENCRYPT_ENDPOINT = 'https://14257-trucsi-dev.adobeioruntime.net/api/v1/web/trucsi-0.0.1/encrypturl'; // to be removed before stage merge
 
 async function createProgressCircle() {
   if (document.querySelector('.progress-holder')) return;
@@ -38,50 +41,36 @@ async function getEncryptedText(linkUrl) {
     headers: { 'Content-Type': 'application/json' },
     body: `{"plainText":"${linkUrl}"}`,
   };
-  const response = await fetch('https://www.stage.adobe.com/trustcenter/api/encrypturl', options);
+  const response = await fetch(ENCRYPT_ENDPOINT, options);
   const responseJson = await response.json();
   return responseJson.encryptedCode;
 }
 
 function onSubmitButtonAdded(node) {
-  node.addEventListener('click', async () => {
+  node.addEventListener('click', async (e) => {
     try {
+      e.preventDefault();
       await createProgressCircle();
       showProgressCircle();
-      const linkUrl = document.querySelector('input').value;
+      const linkUrl = document.querySelector('#plaintexturl').value;
       if (!linkUrl) throw new Error('Cannot have empty url');
       const search = new URLSearchParams(window.location.search);
       const nonprod = search.get('nonprod');
       const allowedHosts = ['www.adobe.com'];
       const urlHost = new URL(linkUrl).host;
       if (!nonprod && !allowedHosts.includes(urlHost)) {
-        document.querySelector(PROTECTED_URL_ELEMENT).value = 'Please enter a www.adobe.com asset url';
+        PROTECTED_URL_ELEMENT.value = 'Please enter a www.adobe.com asset url';
         throw new Error('Please enter a www.adobe.com asset url');
       }
-      document.querySelector(PROTECTED_URL_ELEMENT).value = await getEncryptedText(linkUrl);
+      PROTECTED_URL_ELEMENT.value = await getEncryptedText(linkUrl);
       hideProgressCircle();
     } catch (err) {
       hideProgressCircle();
+      throw err;
     }
   });
 }
 
 (async function startObserving() {
-  const observer = new MutationObserver((mutationsList) => {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'childList') {
-        mutation.addedNodes.forEach((node) => {
-          if ((node.nodeType === Node.ELEMENT_NODE) && (node.querySelector('a.con-button:not(.submit-decorated)'))) {
-            node.querySelector('a.con-button').classList.add('submit-decorated');
-            onSubmitButtonAdded(node.querySelector('a.con-button'));
-          }
-        });
-      }
-    }
-  });
-  observer.observe(document.body.querySelector('main > div:nth-child(2)'), {
-    childList: true,
-    subtree: true,
-  });
+  if (PROTECT_URL_SUBMIT) onSubmitButtonAdded(PROTECT_URL_SUBMIT);
 }());

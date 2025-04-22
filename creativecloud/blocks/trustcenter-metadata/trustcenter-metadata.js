@@ -39,7 +39,8 @@ class TrustCenterApp {
     const { env } = getConfig();
     this.prodEndpoint = 'https://www.adobe.com/trustcenter/api/';
     this.stageEndpoint = 'https://www.stage.adobe.com/trustcenter/api/';
-    this.apiUrl = env.name === 'prod' ? this.prodEndpoint : this.stageEndpoint;
+    this.apiUrl = 'https://14257-trucsi-dev.adobeioruntime.net/api/v1/web/trucsi-0.0.1/'; // to be removed before stage merge
+    if (!this.apiUrl) this.apiUrl = env.name === 'prod' ? this.prodEndpoint : this.stageEndpoint;
     this.processMetaSettings();
     this.decorateContainers();
     this.initializeTrustCenter();
