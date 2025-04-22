@@ -154,7 +154,8 @@ class DemandBase {
     let list = e.target.parentNode.querySelector(SELECTOR_MENU);
     if (!list) {
       const popover = createTag('div', { class: 'db-Popover is-open' });
-      popover.style.marginTop = `${e.target.offsetHeight + 5}px`;
+      const labelHeight = e.target.previousElementSibling?.offsetHeight || 0;
+      popover.style.marginTop = `${e.target.offsetHeight + labelHeight + 5}px`;
       list = createTag('ul', { class: 'db-Menu' });
       list.setAttribute('role', 'listbox');
       list.style.width = `${e.target.offsetWidth}px`;
