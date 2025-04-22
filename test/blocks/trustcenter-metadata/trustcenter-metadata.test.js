@@ -9,7 +9,7 @@ window.lana = { log: ({ message, errorMessage, sampleRate }) => {} };
 window.adobeIMS = {
   isSignedInUser: () => true,
   // eslint-disable-next-line arrow-body-style
-  getAccessToken: () => { return { token: 'token' }},
+  getAccessToken: () => { return { token: 'token' }; },
 };
 
 const Config = {
@@ -32,8 +32,8 @@ const { default: init } = await import('../../../creativecloud/blocks/trustcente
 document.body.innerHTML = await readFile({ path: './mocks/trustcenter-metadata.html' });
 describe('trustcenter metadata', () => {
   setTimeout(() => {
-    window.alloy = () => {},
-    window._satellite = { track: (x) => {} },
+    window.alloy = () => {};
+    window._satellite = { track: (x) => {} };
     window.alloy_all = { set: (x) => {} };
     window.digitalData = { _set: (x) => {} };
   }, 4000);
