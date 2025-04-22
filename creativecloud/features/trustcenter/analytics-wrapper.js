@@ -9,7 +9,6 @@ const CONFIG = {
 };
 let onReadyPromise = null;
 let isAnalyticsReady = false;
-let onAlloyMethodReadyPromise = null;
 const analyticsWrapper = {};
 const isObject = (obj) => ((typeof obj === 'object') && !Array.isArray(obj) && obj !== null);
 const isFunction = (fn) => typeof fn === 'function';
@@ -46,32 +45,6 @@ analyticsWrapper.onReady = () => {
     });
   }
   return onReadyPromise;
-};
-
-analyticsWrapper.onAlloyMethodReady = () => {
-  if (!onAlloyMethodReadyPromise) {
-    // eslint-disable-next-line consistent-return
-    onAlloyMethodReadyPromise = new Promise((resolve, reject) => {
-      // eslint-disable-next-line no-underscore-dangle
-      const isAlloyMethodAvailable = () => isFunction(window.alloy) && isObject(window._satellite);
-      // eslint-disable-next-line no-promise-executor-return
-      if (isAlloyMethodAvailable()) return resolve();
-      let interval;
-      const timeout = setTimeout(() => {
-        clearInterval(interval);
-        reject();
-      }, CONFIG.timeouts.maxAlloyMethodWait);
-
-      interval = setInterval(() => {
-        if (isAlloyMethodAvailable()) {
-          clearInterval(interval);
-          clearTimeout(timeout);
-          resolve();
-        }
-      }, CONFIG.timeouts.checkInterval);
-    });
-  }
-  return onAlloyMethodReadyPromise;
 };
 
 analyticsWrapper.set = ({ path, data, prefix = CONFIG.strings.alloyPrefix } = {}) => {
