@@ -21,6 +21,10 @@
   justify-content: center;
 }
 
+.trustcenter-view-sdk-container {
+  height: 90vh;
+}
+
 .trustcenter-progressCircle {
   direction: ltr;
   display: inline-block;
