@@ -23,6 +23,7 @@
 
 .trustcenter-view-sdk-container {
   height: 90vh;
+  min-height: 90vh;
 }
 
 .trustcenter-progressCircle {
