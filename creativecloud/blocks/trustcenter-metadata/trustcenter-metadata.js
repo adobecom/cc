@@ -55,7 +55,7 @@ class TrustCenterApp {
       );
       metaSetting.replaceWith(d);
     });
-    const metaEl = createTag('meta', { name: 'pdf-embed-mode', content: 'full-width' });
+    const metaEl = createTag('meta', { name: 'pdf-embed-mode', content: 'full-window' });
     document.head.append(metaEl);
   }
 
