@@ -26,7 +26,7 @@
   min-height: 90vh;
 }
 
-.trustcenter-progressCircle {
+.trustcenter-progress-circle {
   direction: ltr;
   display: inline-block;
   height: 64px;
@@ -34,11 +34,11 @@
   width: 64px
 }
 
-.trustcenter-progressCircle * {
+.trustcenter-progress-circle * {
   box-sizing: border-box;
 }
 
-.trustcenter-progressCircle-track {
+.trustcenter-progress-circle-track {
   border: 4px solid #e1e1e1;
   border-radius: 50%;
   height: 100%;
@@ -46,8 +46,8 @@
 }
 
 
-.trustcenter-progressCircle-fills {
-  animation: progressCircle-fills-rotate 1s cubic-bezier(.25,.78,.48,.89) infinite;
+.trustcenter-progress-circle-fills {
+  animation: progress-circle-fills-rotate 1s cubic-bezier(.25,.78,.48,.89) infinite;
   height: 100%;
   left: 0;
   position: absolute;
@@ -58,13 +58,13 @@
   will-change: transform
 }
 
-html[dir=rtl] .trustcenter-progressCircle-fills {
+html[dir=rtl] .trustcenter-progress-circle-fills {
   left: auto;
   right: 0
 }
 
-.trustcenter-progressCircle-fillMask1,
-.trustcenter-progressCircle-fillMask2 {
+.trustcenter-progress-circle-fill-mask1,
+.trustcenter-progress-circle-fill-mask2 {
   height: 100%;
   overflow: hidden;
   position: absolute;
@@ -72,16 +72,16 @@ html[dir=rtl] .trustcenter-progressCircle-fills {
   width: 50%
 }
 
-.trustcenter-progressCircle-fillMask1 {
+.trustcenter-progress-circle-fill-mask1 {
   transform: rotate(180deg)
 }
 
-.trustcenter-progressCircle-fillMask2 {
+.trustcenter-progress-circle-fill-mask2 {
   transform: rotate(0deg)
 }
 
-.trustcenter-progressCircle-fillSubMask1,
-.trustcenter-progressCircle-fillSubMask2 {
+.trustcenter-progress-circle-fill-submask1,
+.trustcenter-progress-circle-fill-submask2 {
   height: 100%;
   overflow: hidden;
   transform: translateZ(0) rotate(-180deg);
@@ -90,22 +90,22 @@ html[dir=rtl] .trustcenter-progressCircle-fills {
   will-change: transform
 }
 
-.trustcenter-progressCircle-fillSubMask1 {
-  animation: progressCircle-fill-mask-1 1s linear infinite
+.trustcenter-progress-circle-fill-submask1 {
+  animation: progress-circle-fill-mask-1 1s linear infinite
 }
 
-.trustcenter-progressCircle-fillSubMask2 {
-  animation: progressCircle-fill-mask-2 1s linear infinite
+.trustcenter-progress-circle-fill-submask2 {
+  animation: progress-circle-fill-mask-2 1s linear infinite
 }
 
-.trustcenter-progressCircle-fill {
+.trustcenter-progress-circle-fill {
   border: 4px solid #1473e6;
   border-radius: 50%;
   height: 64px;
   width: 64px
 }
 
-@keyframes progressCircle-fills-rotate {
+@keyframes progress-circle-fills-rotate {
   0% {
       transform: rotate(-90deg)
   }
@@ -115,7 +115,7 @@ html[dir=rtl] .trustcenter-progressCircle-fills {
   }
 }
 
-@keyframes progressCircle-fill-mask-1 {
+@keyframes progress-circle-fill-mask-1 {
   0% {
       transform: rotate(90deg)
   }
@@ -289,7 +289,7 @@ html[dir=rtl] .trustcenter-progressCircle-fills {
   }
 }
 
-@keyframes progressCircle-fill-mask-2 {
+@keyframes progress-circle-fill-mask-2 {
   0% {
       transform: rotate(180deg)
   }

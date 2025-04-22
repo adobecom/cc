@@ -379,17 +379,17 @@ class TrustCenterApp {
 
   createTcProgressCircle() {
     return `
-      <div class="trustcenter-progressCircle">
-        <div class="trustcenter-progressCircle-track"></div>
-        <div class="trustcenter-progressCircle-fills">
-            <div class="trustcenter-progressCircle-fillMask1">
-                <div class="trustcenter-progressCircle-fillSubMask1">
-                    <div class="trustcenter-progressCircle-fill"></div>
+      <div class="trustcenter-progress-circle">
+        <div class="trustcenter-progress-circle-track"></div>
+        <div class="trustcenter-progress-circle-fills">
+            <div class="trustcenter-progress-circle-fill-mask1">
+                <div class="trustcenter-progress-circle-fill-submask1">
+                    <div class="trustcenter-progress-circle-fill"></div>
                 </div>
             </div>
-            <div class="trustcenter-progressCircle-fillMask2">
-                <div class="trustcenter-progressCircle-fillSubMask2">
-                    <div class="trustcenter-progressCircle-fill"></div>
+            <div class="trustcenter-progress-circle-fill-mask2">
+                <div class="trustcenter-progress-circle-fill-submask2">
+                    <div class="trustcenter-progress-circle-fill"></div>
                 </div>
             </div>
         </div>
