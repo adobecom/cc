@@ -65,6 +65,7 @@ function onSubmitButtonAdded(node) {
       PROTECTED_URL_ELEMENT.value = await getEncryptedText(linkUrl);
       hideProgressCircle();
     } catch (err) {
+      PROTECTED_URL_ELEMENT.value = 'Please enter a valid www.adobe.com asset url';
       hideProgressCircle();
       throw err;
     }
