@@ -11,14 +11,14 @@ const Config = {
     ndaContainer: 'trustcenter-nda-container',
     documentContainer: 'trustcenter-document-container',
     errorContainer: 'trustcenter-error-container',
-    signNdaCta: 'trustcenter-sign-nda-cta',
+    signNdaCta: 'sign-nda-cta',
     encryptedAssetLink: 'data-encryptedassetlink',
-    ndaiFrameContainer: 'trustcenter-nda-iframe-container',
-    ndaiFrame: 'trustcenter-nda-iframe',
-    loader: 'trustcenter-loader',
-    nonPdfLink: 'trustcenter-non-pdf-link',
+    ndaiFrameContainer: 'nda-iframe-container',
+    ndaiFrame: 'nda-iframe',
+    loader: 'loader',
+    nonPdfLink: 'non-pdf-link',
   },
-  selectors: { hiddenItem: 'trustcenter-hidden' },
+  selectors: { hiddenItem: 'hidden' },
   constants: {
     adobeDomain: window.location.host.endsWith('.adobe.com') ? '.adobe.com' : '',
     hasSignedCookie: 'trustcenter_nda_signed',
@@ -59,62 +59,82 @@ class TrustCenterApp {
     document.head.append(metaEl);
   }
 
-  decorateContainers() {
-    const parentSection = this.el.closest('.section');
-    const signContainer = document.querySelector('.trustcenter-nda-sign');
-    if (signContainer) {
-      signContainer.classList.add(Config.selectors.hiddenItem);
-      signContainer.classList.remove('trustcenter-nda-sign');
-      signContainer.id = Config.ids.ndaContainer;
-      const btnLink = signContainer.querySelector('.con-button, strong a, em a, a strong, a em');
-      if (btnLink) {
-        const signInBtn = btnLink.nodeName === 'A' ? btnLink : btnLink.closest('a');
-        signInBtn.id = Config.ids.signNdaCta;
-        signInBtn.href = '#';
-      }
+  handleSpacingTokens(containerEl) {
+    const spctkn = [...containerEl.classList].filter((cls) => cls.match(/-spacing/));
+    spctkn.forEach((s) => { containerEl.classList.remove(s); });
+    return spctkn[0]?.match(/-/g).length > 1 ? `${spctkn.split('-')[0]}-spacing` : spctkn[0];
+  }
+
+  decorateSignContainer(signContainer) {
+    signContainer.classList.add(Config.selectors.hiddenItem);
+    signContainer.classList.remove('trustcenter-nda-sign');
+    signContainer.id = Config.ids.ndaContainer;
+    const btnLink = signContainer.querySelector('.con-button, strong a, em a, a strong, a em');
+    if (btnLink) {
+      const signInBtn = btnLink.nodeName === 'A' ? btnLink : btnLink.closest('a');
+      signInBtn.id = Config.ids.signNdaCta;
+      signInBtn.href = '#';
     }
-    const errorContainer = document.querySelector('.trustcenter-error');
-    if (errorContainer) {
-      errorContainer.classList.add(Config.selectors.hiddenItem);
-      errorContainer.classList.remove('trustcenter-error');
-      errorContainer.id = Config.ids.errorContainer;
+  }
+
+  decorateErrorContainer(errorContainer) {
+    errorContainer.classList.add(Config.selectors.hiddenItem);
+    errorContainer.classList.remove('trustcenter-error');
+    errorContainer.id = Config.ids.errorContainer;
+    const spctkn = [...errorContainer.classList].filter((cls) => cls.match(/-spacing/));
+    spctkn.forEach((s) => { errorContainer.classList.remove(s); });
+  }
+
+  decorateDocContainer(docContainer, parentSection) {
+    docContainer.classList.add(Config.selectors.hiddenItem);
+    docContainer.classList.remove('trustcenter-nda-document');
+    docContainer.id = Config.ids.documentContainer;
+    const btnLink = docContainer.querySelector('.con-button, strong a, em a, a strong, a em');
+    if (btnLink) {
+      const downloadBtn = btnLink.nodeName === 'A' ? btnLink : btnLink.closest('a');
+      downloadBtn.id = Config.ids.nonPdfLink;
+      downloadBtn.href = '#';
     }
-    const docContainer = document.querySelector('.trustcenter-nda-document');
-    if (docContainer) {
-      docContainer.classList.add(Config.selectors.hiddenItem);
-      docContainer.classList.remove('trustcenter-nda-document');
-      docContainer.id = Config.ids.documentContainer;
-      const btnLink = docContainer.querySelector('.con-button, strong a, em a, a strong, a em');
-      if (btnLink) {
-        const downloadBtn = btnLink.nodeName === 'A' ? btnLink : btnLink.closest('a');
-        downloadBtn.id = Config.ids.nonPdfLink;
-        downloadBtn.href = '#';
-      }
-      if (this.el.querySelector('.nda-encrypted-link')) {
-        const encryptedLink = createTag('div', { class: 'trustcenter-encrypted-link', id: 'trustcenter-encrypted-link' });
-        encryptedLink.dataset.encryptedassetlink = this.el.querySelector('.nda-encrypted-link').innerText.trim();
-        parentSection.append(encryptedLink);
-      }
+    if (this.el.querySelector('.nda-encrypted-link')) {
+      const encryptedLink = createTag('div', { class: 'encrypted-link', id: 'encrypted-link' });
+      encryptedLink.dataset.encryptedassetlink = this.el.querySelector('.nda-encrypted-link').innerText.trim();
+      parentSection.append(encryptedLink);
     }
+  }
+
+  addNdaIframe(parentSection) {
     const ndaIframe = createTag('iframe', {
-      class: 'trustcenter-nda-iframe',
+      class: 'nda-iframe',
       id: `${Config.ids.ndaiFrame}`,
     });
     const ndaIframeContainer = createTag(
       'div',
       {
-        class: 'trustcenter-nda-iframe-container trustcenter-hidden',
+        class: 'nda-iframe-container hidden',
         id: `${Config.ids.ndaiFrameContainer}`,
       },
       ndaIframe,
     );
     parentSection.prepend(ndaIframeContainer);
-    const progressLoader = createTag(
-      'div',
-      { class: 'trustcenter-loader trustcenter-hidden', id: `${Config.ids.loader}` },
-      this.createTcProgressCircle(),
-    );
-    parentSection.append(progressLoader);
+  }
+
+  decorateContainers() {
+    const parentSection = this.el.closest('.section');
+    parentSection.classList.add('trustcenter-container');
+    const signContainer = document.querySelector('.trustcenter-nda-sign');
+    if (signContainer) this.decorateSignContainer(signContainer);
+    const errorContainer = document.querySelector('.trustcenter-error');
+    if (errorContainer) this.decorateErrorContainer(errorContainer);
+    const docContainer = document.querySelector('.trustcenter-nda-document');
+    if (docContainer) this.decorateDocContainer(docContainer, parentSection);
+    this.addNdaIframe(parentSection);
+    this.createTcProgressCircle(parentSection);
+    [signContainer, errorContainer, docContainer].forEach((txt) => {
+      const spacingToken = this.handleSpacingTokens(txt);
+      if (spacingToken && !parentSection.classList.contains(spacingToken)) {
+        parentSection.classList.add(spacingToken);
+      }
+    });
   }
 
   initializeTrustCenter() {
@@ -125,8 +145,8 @@ class TrustCenterApp {
         if (!window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
         this.hideNDAiFrameListener = this.hideNDAiFrameListener.bind(this);
         const hasSignedNDA = getCookieValue(Config.constants.hasSignedCookie);
-        if (hasSignedNDA) return this.showDocumentContainer();
-        this.showNdaContainer();
+        if (hasSignedNDA) this.showDocumentContainer();
+        else this.showNdaContainer();
       })
       .catch((err = {}) => {
         if (this.domElements && this.domElements.errorContainer) {
@@ -366,8 +386,8 @@ class TrustCenterApp {
   }
 
   async openPdf(fileUrl) {
-    const anchorTag = createTag('a', { class: 'trustcenter-hidden', href: fileUrl }, fileUrl);
-    const anchorContainer = createTag('div', { class: 'trustcenter-view-sdk-container' }, anchorTag);
+    const anchorTag = createTag('a', { class: 'hidden', href: fileUrl }, fileUrl);
+    const anchorContainer = createTag('div', { class: 'view-sdk-container' }, anchorTag);
     this.domElements.assetLink.insertAdjacentElement('afterend', anchorContainer);
     const miloLibs = getLibs();
     const { default: initPdfViewer } = await import(`${miloLibs}/blocks/pdf-viewer/pdf-viewer.js`);
@@ -379,24 +399,30 @@ class TrustCenterApp {
     this.domElements.nonPdfLinkEl.classList.remove(Config.selectors.hiddenItem);
   }
 
-  createTcProgressCircle() {
-    return `
-      <div class="trustcenter-progress-circle">
-        <div class="trustcenter-progress-circle-track"></div>
-        <div class="trustcenter-progress-circle-fills">
-            <div class="trustcenter-progress-circle-fill-mask1">
-                <div class="trustcenter-progress-circle-fill-submask1">
-                    <div class="trustcenter-progress-circle-fill"></div>
+  createTcProgressCircle(parentSection) {
+    const pcircleDom = `
+      <div class="progress-circle">
+        <div class="progress-circle-track"></div>
+        <div class="progress-circle-fills">
+            <div class="progress-circle-fill-mask1">
+                <div class="progress-circle-fill-submask1">
+                    <div class="progress-circle-fill"></div>
                 </div>
             </div>
-            <div class="trustcenter-progress-circle-fill-mask2">
-                <div class="trustcenter-progress-circle-fill-submask2">
-                    <div class="trustcenter-progress-circle-fill"></div>
+            <div class="progress-circle-fill-mask2">
+                <div class="progress-circle-fill-submask2">
+                    <div class="progress-circle-fill"></div>
                 </div>
             </div>
         </div>
       </div>
     `;
+    const progressLoader = createTag(
+      'div',
+      { class: 'loader hidden', id: `${Config.ids.loader}` },
+      pcircleDom,
+    );
+    parentSection.append(progressLoader);
   }
 }
 

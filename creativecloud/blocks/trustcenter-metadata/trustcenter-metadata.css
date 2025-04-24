@@ -1,12 +1,50 @@
-.section .trustcenter-metadata,
-.section .trustcenter-nda-document,
-.section .trustcenter-nda-sign,
-.section .trustcenter-error,
-.section .trustcenter-hidden {
-  display: none;
+.trustcenter-container .trustcenter-metadata,
+.trustcenter-container .trustcenter-nda-document,
+.trustcenter-container .trustcenter-nda-sign,
+.trustcenter-container .trustcenter-error,
+.trustcenter-container .hidden {
+  display: none !important;
 }
 
-.trustcenter-nda-iframe {
+.trustcenter-container #trustcenter-nda-container,
+.trustcenter-container #trustcenter-document-container,
+.trustcenter-container #trustcenter-error-container {
+  padding-bottom: var(--spacing-s);
+}
+
+.trustcenter-container.xxxl-spacing {
+  padding: var(--spacing-xxxl) 0;
+}
+
+.trustcenter-container.xxl-spacing {
+  padding: var(--spacing-xxl) 0;
+}
+
+.trustcenter-container.xl-spacing {
+  padding: var(--spacing-xl) 0;
+}
+
+.trustcenter-container.l-spacing {
+  padding: var(--spacing-l) 0;
+}
+
+.trustcenter-container.m-spacing {
+  padding: var(--spacing-m) 0;
+}
+
+.trustcenter-container.s-spacing {
+  padding: var(--spacing-s) 0;
+}
+
+.trustcenter-container.xs-spacing {
+  padding: var(--spacing-xs) 0;
+}
+
+.trustcenter-container.xxs-spacing {
+  padding: var(--spacing-xxs) 0;
+}
+
+.trustcenter-container .nda-iframe {
   height: 100%;
   left: 5%;
   position: fixed;
@@ -15,18 +53,22 @@
   z-index: 12;
 }
 
-.trustcenter-loader {
-  padding: 16px 0;
+.trustcenter-container .loader {
+  padding: 0;
   display: flex;
   justify-content: center;
 }
 
-.trustcenter-view-sdk-container {
+.trustcenter-container .loader.hidden {
+  display: none;
+}
+
+.trustcenter-container .view-sdk-container {
   height: 90vh;
   min-height: 90vh;
 }
 
-.trustcenter-progress-circle {
+.trustcenter-container .progress-circle {
   direction: ltr;
   display: inline-block;
   height: 64px;
@@ -34,19 +76,18 @@
   width: 64px
 }
 
-.trustcenter-progress-circle * {
+.trustcenter-container .progress-circle * {
   box-sizing: border-box;
 }
 
-.trustcenter-progress-circle-track {
+.trustcenter-container .progress-circle-track {
   border: 4px solid #e1e1e1;
   border-radius: 50%;
   height: 100%;
   width: 100%
 }
 
-
-.trustcenter-progress-circle-fills {
+.trustcenter-container .progress-circle-fills {
   animation: progress-circle-fills-rotate 1s cubic-bezier(.25,.78,.48,.89) infinite;
   height: 100%;
   left: 0;
@@ -58,13 +99,13 @@
   will-change: transform
 }
 
-html[dir=rtl] .trustcenter-progress-circle-fills {
+html[dir=rtl] .trustcenter-container .progress-circle-fills {
   left: auto;
   right: 0
 }
 
-.trustcenter-progress-circle-fill-mask1,
-.trustcenter-progress-circle-fill-mask2 {
+.trustcenter-container .progress-circle-fill-mask1,
+.trustcenter-container .progress-circle-fill-mask2 {
   height: 100%;
   overflow: hidden;
   position: absolute;
@@ -72,16 +113,16 @@ html[dir=rtl] .trustcenter-progress-circle-fills {
   width: 50%
 }
 
-.trustcenter-progress-circle-fill-mask1 {
+.trustcenter-container .progress-circle-fill-mask1 {
   transform: rotate(180deg)
 }
 
-.trustcenter-progress-circle-fill-mask2 {
+.trustcenter-container .progress-circle-fill-mask2 {
   transform: rotate(0deg)
 }
 
-.trustcenter-progress-circle-fill-submask1,
-.trustcenter-progress-circle-fill-submask2 {
+.trustcenter-container .progress-circle-fill-submask1,
+.trustcenter-container .progress-circle-fill-submask2 {
   height: 100%;
   overflow: hidden;
   transform: translateZ(0) rotate(-180deg);
@@ -90,15 +131,15 @@ html[dir=rtl] .trustcenter-progress-circle-fills {
   will-change: transform
 }
 
-.trustcenter-progress-circle-fill-submask1 {
+.trustcenter-container .progress-circle-fill-submask1 {
   animation: progress-circle-fill-mask-1 1s linear infinite
 }
 
-.trustcenter-progress-circle-fill-submask2 {
+.trustcenter-container .progress-circle-fill-submask2 {
   animation: progress-circle-fill-mask-2 1s linear infinite
 }
 
-.trustcenter-progress-circle-fill {
+.trustcenter-container .progress-circle-fill {
   border: 4px solid #1473e6;
   border-radius: 50%;
   height: 64px;
