@@ -62,7 +62,7 @@ class TrustCenterApp {
   handleSpacingTokens(containerEl) {
     const spctkn = [...containerEl.classList].filter((cls) => cls.match(/-spacing/));
     spctkn.forEach((s) => { containerEl.classList.remove(s); });
-    return spctkn[0]?.match(/-/g).length > 1 ? `${spctkn.split('-')[0]}-spacing` : spctkn[0];
+    return spctkn[0]?.match(/-/g).length > 1 ? `${spctkn[0].split('-')[0]}-spacing` : spctkn[0];
   }
 
   decorateSignContainer(signContainer) {
