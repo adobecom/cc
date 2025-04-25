@@ -6,6 +6,12 @@ import { createTag, getLibs, getConfig, isSignedInInitialized } from '../../scri
 import { isEmptyObject, getCookieValue, setCookieValue } from '../../features/trustcenter/cookie-wrapper.js';
 import analyticsWrapper from '../../features/trustcenter/analytics-wrapper.js';
 
+const targetMsgContent = {
+  rawSignMsg: 'trustcenter-nda-sign',
+  rawErrorMsg: 'trustcenter-error',
+  rawDownloadMsg: 'trustcenter-nda-document',
+};
+
 const Config = {
   ids: {
     ndaContainer: 'trustcenter-nda-container',
@@ -67,7 +73,7 @@ class TrustCenterApp {
 
   decorateSignContainer(signContainer) {
     signContainer.classList.add(Config.selectors.hiddenItem);
-    signContainer.classList.remove('trustcenter-nda-sign');
+    signContainer.classList.remove(targetMsgContent.rawSignMsg);
     signContainer.id = Config.ids.ndaContainer;
     const btnLink = signContainer.querySelector('.con-button, strong a, em a, a strong, a em');
     if (btnLink) {
@@ -79,7 +85,7 @@ class TrustCenterApp {
 
   decorateErrorContainer(errorContainer) {
     errorContainer.classList.add(Config.selectors.hiddenItem);
-    errorContainer.classList.remove('trustcenter-error');
+    errorContainer.classList.remove(targetMsgContent.rawErrorMsg);
     errorContainer.id = Config.ids.errorContainer;
     const spctkn = [...errorContainer.classList].filter((cls) => cls.match(/-spacing/));
     spctkn.forEach((s) => { errorContainer.classList.remove(s); });
@@ -87,7 +93,7 @@ class TrustCenterApp {
 
   decorateDocContainer(docContainer, parentSection) {
     docContainer.classList.add(Config.selectors.hiddenItem);
-    docContainer.classList.remove('trustcenter-nda-document');
+    docContainer.classList.remove(targetMsgContent.rawDownloadMsg);
     docContainer.id = Config.ids.documentContainer;
     const btnLink = docContainer.querySelector('.con-button, strong a, em a, a strong, a em');
     if (btnLink) {
@@ -121,11 +127,11 @@ class TrustCenterApp {
   decorateContainers() {
     const parentSection = this.el.closest('.section');
     parentSection.classList.add('trustcenter-container');
-    const signContainer = document.querySelector('.trustcenter-nda-sign');
+    const signContainer = document.querySelector(`.${targetMsgContent.rawSignMsg}`);
     if (signContainer) this.decorateSignContainer(signContainer);
-    const errorContainer = document.querySelector('.trustcenter-error');
+    const errorContainer = document.querySelector(`.${targetMsgContent.rawErrorMsg}`);
     if (errorContainer) this.decorateErrorContainer(errorContainer);
-    const docContainer = document.querySelector('.trustcenter-nda-document');
+    const docContainer = document.querySelector(`.${targetMsgContent.rawDownloadMsg}`);
     if (docContainer) this.decorateDocContainer(docContainer, parentSection);
     this.addNdaIframe(parentSection);
     this.createTcProgressCircle(parentSection);
@@ -426,7 +432,31 @@ class TrustCenterApp {
   }
 }
 
+function checkRenderStatus(targetSection, res, rej, etime, rtime) {
+  if (etime > 20000) {
+    rej();
+  } else if (targetSection.querySelector(`.${targetMsgContent.rawSignMsg}`)
+    && targetSection.querySelector(`.${targetMsgContent.rawErrorMsg}`)
+    && targetSection.querySelector(`.${targetMsgContent.rawDownloadMsg}`)
+  ) {
+    res();
+  } else {
+    setTimeout(() => checkRenderStatus(targetSection, res, rej, etime + rtime), rtime);
+  }
+}
+
+function trucsiContainersRendered(targetSection) {
+  return new Promise((res, rej) => {
+    try {
+      checkRenderStatus(targetSection, res, rej, 0, 100);
+    } catch (err) { rej(); }
+  });
+}
+
 export default function init(el) {
-  // eslint-disable-next-line no-unused-vars
-  const tc = new TrustCenterApp(el);
+  trucsiContainersRendered(el.closest('.section'))
+    .then(() => {
+      // eslint-disable-next-line no-unused-vars
+      const tc = new TrustCenterApp(el);
+    });
 }
