@@ -432,13 +432,16 @@ class TrustCenterApp {
   }
 }
 
+function isContentAvailable(targetSection) {
+  return (targetSection.querySelector(`.${targetMsgContent.rawSignMsg}`)
+  && targetSection.querySelector(`.${targetMsgContent.rawErrorMsg}`)
+  && targetSection.querySelector(`.${targetMsgContent.rawDownloadMsg}`))
+}
+
 function checkRenderStatus(targetSection, res, rej, etime, rtime) {
   if (etime > 20000) {
     rej();
-  } else if (targetSection.querySelector(`.${targetMsgContent.rawSignMsg}`)
-    && targetSection.querySelector(`.${targetMsgContent.rawErrorMsg}`)
-    && targetSection.querySelector(`.${targetMsgContent.rawDownloadMsg}`)
-  ) {
+  } else if (isContentAvailable(targetSection)) {
     res();
   } else {
     setTimeout(() => checkRenderStatus(targetSection, res, rej, etime + rtime), rtime);
@@ -454,9 +457,15 @@ function trucsiContainersRendered(targetSection) {
 }
 
 export default function init(el) {
-  trucsiContainersRendered(el.closest('.section'))
-    .then(() => {
-      // eslint-disable-next-line no-unused-vars
-      const tc = new TrustCenterApp(el);
-    });
+  const targetSection = el.closest('.section');
+  if (isContentAvailable(targetSection)) {
+    // eslint-disable-next-line no-unused-vars
+    const tc = new TrustCenterApp(el);
+  } else {
+    trucsiContainersRendered(targetSection)
+      .then(() => {
+        // eslint-disable-next-line no-unused-vars
+        const tc = new TrustCenterApp(el);
+      });
+  }
 }
