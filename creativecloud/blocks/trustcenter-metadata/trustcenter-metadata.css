@@ -1,7 +1,7 @@
-.trustcenter-container .trustcenter-metadata,
-.trustcenter-container .trustcenter-nda-document,
-.trustcenter-container .trustcenter-nda-sign,
-.trustcenter-container .trustcenter-error,
+.trustcenter-metadata,
+.trustcenter-nda-document,
+.trustcenter-nda-sign,
+.trustcenter-error,
 .trustcenter-container .hidden {
   display: none !important;
 }
