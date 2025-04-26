@@ -365,7 +365,7 @@ class TrustCenterApp {
 
   async decryptDocument() {
     this.showLoader();
-    const encryptedAssetLink = this.domElements.assetLink.dataset.encryptedassetlink;
+    const encryptedAssetLink = this.base64UrlSafe(this.domElements.assetLink.dataset.encryptedassetlink);
     if (!encryptedAssetLink) {
       this.showErrorContainer({
         message: 'Trust Center - decryptDocument failed.',
@@ -429,6 +429,10 @@ class TrustCenterApp {
       pcircleDom,
     );
     parentSection.append(progressLoader);
+  }
+
+  base64UrlSafe(encoded = '') {
+    return encoded.replace(/\+/g, '-').replace(/\//g, '_');
   }
 }
 
