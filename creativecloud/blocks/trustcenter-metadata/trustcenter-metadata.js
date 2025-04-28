@@ -247,10 +247,12 @@ class TrustCenterApp {
   }
 
   showLoader() {
+    this.domElements.nonPdfLinkEl.classList.add(Config.selectors.hiddenItem);
     this.domElements.loader.classList.remove(Config.selectors.hiddenItem);
   }
 
   hideLoader() {
+    this.domElements.nonPdfLinkEl.classList.remove(Config.selectors.hiddenItem);
     this.domElements.loader.classList.add(Config.selectors.hiddenItem);
   }
 
