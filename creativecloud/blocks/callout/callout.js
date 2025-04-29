@@ -35,6 +35,9 @@ const groupElementsIntoBlocks = (container, createTag) => {
 export default async function init(el) {
   const miloLibs = getLibs('/libs');
   const { createTag, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+  if (el.className.includes('-spacing')) {
+    el.classList.add('con-block');
+  }
   loadStyle(`${getConfig().base}/blocks/callout/callout.css`);
   const blocks = groupElementsIntoBlocks(el, createTag);
   el.replaceChildren(...blocks);
