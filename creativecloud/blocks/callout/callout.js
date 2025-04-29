@@ -43,6 +43,5 @@ export default async function init(el) {
       block.classList.add('foreground');
     });
   }
-  console.log(blocks);
   el.replaceChildren(...blocks);
 }
