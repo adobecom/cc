@@ -114,8 +114,11 @@ export default async function init(el) {
   const mobileLink = createTag('div', { class: 'hover-link' }, buttonText);
   const mobileIcon = rows[2]?.querySelector('img[src*=".svg"]');
   const mobilesvg = await loadSvg(new URL(mobileIcon.src));
+  const parser = new DOMParser();
+  const svgDoc = parser.parseFromString(mobilesvg, 'image/svg+xml');
+  const svgElement = svgDoc.documentElement;
   const mobileLinkSvg = createTag('div', { class: 'hover-svg' });
-  mobileLinkSvg.innerHTML = `${mobilesvg}`;
+  mobileLinkSvg.appendChild(svgElement);
   mobileLinkWrapper.append(mobileLink, mobileLinkSvg);
   hoverMobileDiv.append(mobileLinkWrapper);
 
