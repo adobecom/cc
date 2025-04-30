@@ -3,8 +3,6 @@ import { getLibs } from '../../../creativecloud/scripts/utils.js';
 const PROTECT_URL_SUBMIT = document.querySelector('#generate-protected-link');
 const PROTECTED_URL_ELEMENT = document.querySelector('#protected-url');
 const PROGRESS_CIRCLE_EL = '.cc-forms .form-item.progress-item';
-// const ENCRYPT_ENDPOINT = 'https://www.stage.adobe.com/trustcenter/api/encrypturl';
-const ENCRYPT_ENDPOINT = 'https://14257-trucsi-dev.adobeioruntime.net/api/v1/web/trucsi-0.0.1/encrypturl'; // to be removed before stage merge
 
 async function createProgressCircle() {
   if (document.querySelector('.progress-holder')) return;
@@ -35,13 +33,43 @@ function hideProgressCircle() {
   document.querySelector(PROGRESS_CIRCLE_EL).classList.remove('loading');
 }
 
+function getEncryptionEndpoint() {
+  const search = new URLSearchParams(window.location.search);
+  const nonprod = search.get('nonprod');
+  const ENCRYPT_STAGE_ENDPOINT = 'https://www.stage.adobe.com/trustcenter/api/encrypturl';
+  const ENCRYPT_PROD_ENDPOINT = 'https://www.adobe.com/trustcenter/api/encrypturl';
+
+  const allowedStageHosts = [
+    'dev--cc--adobecom.aem.page',
+    'main--cc--adobecom.aem.page',
+    'stage--cc--adobecom.aem.page',
+    'main--cc--adobecom.hlx.page',
+    'stage--cc--adobecom.hlx.page',
+    'stage.adobe.com',
+  ];
+
+  const allowedProdHosts = [
+    'dev--cc--adobecom.aem.live',
+    'main--cc--adobecom.aem.live',
+    'stage--cc--adobecom.aem.live',
+    'main--cc--adobecom.hlx.live',
+    'stage--cc--adobecom.hlx.live',
+    'dev--cc--adobecom.hlx.live',
+    'adobe.com',
+  ];
+
+  if (!nonprod && allowedProdHosts.includes(window.location.host)) return ENCRYPT_PROD_ENDPOINT;
+  if (nonprod && allowedProdHosts.includes(window.location.host)) return ENCRYPT_STAGE_ENDPOINT;
+  if (allowedStageHosts.includes(window.location.host)) return ENCRYPT_STAGE_ENDPOINT;
+}
+
 async function getEncryptedText(linkUrl) {
   const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: `{"plainText":"${linkUrl}"}`,
   };
-  const response = await fetch(ENCRYPT_ENDPOINT, options);
+  const response = await fetch(getEncryptionEndpoint(), options);
   const responseJson = await response.json();
   return responseJson.encryptedCode;
 }
@@ -54,8 +82,6 @@ function onSubmitButtonAdded(node) {
       showProgressCircle();
       const linkUrl = document.querySelector('#plaintexturl').value;
       if (!linkUrl) throw new Error('Cannot have empty url');
-      const search = new URLSearchParams(window.location.search);
-      const nonprod = search.get('nonprod');
       const allowedHosts = ['www.adobe.com'];
       const urlHost = new URL(linkUrl).host;
       if (!nonprod && !allowedHosts.includes(urlHost)) {

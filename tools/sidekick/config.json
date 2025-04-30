@@ -173,7 +173,7 @@
       "id": "urlprotect",
       "title": "Url Protect",
       "environments": [ "edit" ],
-      "url": "https://stage--cc--adobecom.aem.live/tools/trustcenter/protecturl.html",
+      "url": "https://main--cc--adobecom.aem.live/tools/trustcenter/protecturl.html",
       "includePaths": [ "**.docx**"]
     }
   ]
