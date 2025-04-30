@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-classes-per-file */
-import { createTag, getConfig } from '../../scripts/utils.js';
+import { createTag, getConfig, isSignedInInitialized } from '../../scripts/utils.js';
 import Textfield from '../../features/cc-forms/components/textfield.js';
 import Dropdown from '../../features/cc-forms/components/dropdown.js';
 import Checkbox from '../../features/cc-forms/components/checkbox.js';
@@ -216,16 +216,6 @@ class CCForms {
   initializeDemandbase() {
     const demandBase = new DemandBase(this.demandBaseConfig);
   }
-}
-
-function isSignedInInitialized(interval = 200) {
-  return new Promise((resolve) => {
-    function poll() {
-      if (window.adobeIMS?.isSignedInUser) resolve();
-      else setTimeout(poll, interval);
-    }
-    poll();
-  });
 }
 
 export default async function init(el) {
