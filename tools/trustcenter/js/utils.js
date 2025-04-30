@@ -33,10 +33,14 @@ function hideProgressCircle() {
   document.querySelector(PROGRESS_CIRCLE_EL).classList.remove('loading');
 }
 
-// eslint-disable-next-line consistent-return
-function getEncryptionEndpoint() {
+function isNonProd() {
   const search = new URLSearchParams(window.location.search);
   const nonprod = search.get('nonprod');
+  return !!nonprod;
+}
+
+// eslint-disable-next-line consistent-return
+function getEncryptionEndpoint() {
   const ENCRYPT_STAGE_ENDPOINT = 'https://www.stage.adobe.com/trustcenter/api/encrypturl';
   const ENCRYPT_PROD_ENDPOINT = 'https://www.adobe.com/trustcenter/api/encrypturl';
 
@@ -59,8 +63,8 @@ function getEncryptionEndpoint() {
     'adobe.com',
   ];
 
-  if (!nonprod && allowedProdHosts.includes(window.location.host)) return ENCRYPT_PROD_ENDPOINT;
-  if (nonprod && allowedProdHosts.includes(window.location.host)) return ENCRYPT_STAGE_ENDPOINT;
+  if (!isNonProd() && allowedProdHosts.includes(window.location.host)) return ENCRYPT_PROD_ENDPOINT;
+  if (isNonProd() && allowedProdHosts.includes(window.location.host)) return ENCRYPT_STAGE_ENDPOINT;
   if (allowedStageHosts.includes(window.location.host)) return ENCRYPT_STAGE_ENDPOINT;
 }
 
@@ -81,13 +85,11 @@ function onSubmitButtonAdded(node) {
       e.preventDefault();
       await createProgressCircle();
       showProgressCircle();
-      const search = new URLSearchParams(window.location.search);
-      const nonprod = search.get('nonprod');
       const linkUrl = document.querySelector('#plaintexturl').value;
       if (!linkUrl) throw new Error('Cannot have empty url');
       const allowedHosts = ['www.adobe.com'];
       const urlHost = new URL(linkUrl).host;
-      if (!nonprod && !allowedHosts.includes(urlHost)) {
+      if (!isNonProd() && !allowedHosts.includes(urlHost)) {
         PROTECTED_URL_ELEMENT.value = 'Please enter a www.adobe.com asset url';
         throw new Error('Please enter a www.adobe.com asset url');
       }
