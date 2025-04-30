@@ -12,17 +12,18 @@ window.adobeIMS = {
   getAccessToken: () => { return { token: 'token' }; },
 };
 
+const { setConfig } = await import(import.meta.resolve('libs/utils/utils.js'));
 const Config = {
   ids: {
     ndaContainer: 'trustcenter-nda-container',
     documentContainer: 'trustcenter-document-container',
     errorContainer: 'trustcenter-error-container',
-    signNdaCta: 'trustcenter-sign-nda-cta',
+    signNdaCta: 'sign-nda-cta',
     encryptedAssetLink: 'data-encryptedassetlink',
-    ndaiFrameContainer: 'trustcenter-nda-iframe-container',
-    ndaiFrame: 'trustcenter-nda-iframe',
-    loader: 'trustcenter-loader',
-    nonPdfLink: 'trustcenter-non-pdf-link',
+    ndaiFrameContainer: 'nda-iframe-container',
+    ndaiFrame: 'nda-iframe',
+    loader: 'loader',
+    nonPdfLink: 'non-pdf-link',
   },
 };
 
@@ -42,6 +43,7 @@ describe('trustcenter metadata', () => {
 
   before(async () => {
     setLibs('https://milo.adobe.com/libs');
+    setConfig({ env: 'test' });
     const trucsimtd = document.querySelector('.trustcenter-metadata');
     await init(trucsimtd);
     fetchStub.callsFake((url) => {
