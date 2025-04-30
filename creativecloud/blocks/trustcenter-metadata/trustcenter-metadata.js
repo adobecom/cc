@@ -440,7 +440,7 @@ class TrustCenterApp {
 function isContentAvailable(targetSection) {
   return (targetSection.querySelector(`.${targetMsgContent.rawSignMsg}`)
   && targetSection.querySelector(`.${targetMsgContent.rawErrorMsg}`)
-  && targetSection.querySelector(`.${targetMsgContent.rawDownloadMsg}`))
+  && targetSection.querySelector(`.${targetMsgContent.rawDownloadMsg}`));
 }
 
 function checkRenderStatus(targetSection, res, rej, etime, rtime) {
