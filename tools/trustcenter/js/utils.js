@@ -33,6 +33,7 @@ function hideProgressCircle() {
   document.querySelector(PROGRESS_CIRCLE_EL).classList.remove('loading');
 }
 
+// eslint-disable-next-line consistent-return
 function getEncryptionEndpoint() {
   const search = new URLSearchParams(window.location.search);
   const nonprod = search.get('nonprod');
@@ -80,6 +81,8 @@ function onSubmitButtonAdded(node) {
       e.preventDefault();
       await createProgressCircle();
       showProgressCircle();
+      const search = new URLSearchParams(window.location.search);
+      const nonprod = search.get('nonprod');
       const linkUrl = document.querySelector('#plaintexturl').value;
       if (!linkUrl) throw new Error('Cannot have empty url');
       const allowedHosts = ['www.adobe.com'];
