@@ -2,6 +2,7 @@
   "project": "Creative Cloud",
   "previewHost": "main--cc--adobecom.aem.page",
   "liveHost": "main--cc--adobecom.aem.live",
+  "trustedHosts": ["milo.adobe.com", "main--milo--adobecom.aem.page"],
   "plugins": [
     {
       "id": "path",
