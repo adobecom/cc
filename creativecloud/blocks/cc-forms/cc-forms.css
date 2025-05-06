@@ -325,8 +325,6 @@
   transition-delay: 0ms;
   visibility: hidden;
   z-index: 100;
-  left: 0;
-  width: 100%;
 }
 
 .cc-forms .db-Popover.is-open {
