@@ -12,11 +12,26 @@ function btnLoadDelay(layer, button, delay, once = true) {
   io.observe(layer);
 }
 
+function getClosestHeadingText(element) {
+  const section = element.closest('.section');
+  if (!section) return '';
+
+  const container = section.querySelector('.marquee, .aside');
+  if (!container) return '';
+
+  const textBlock = container.querySelector('.text');
+  if (!textBlock) return '';
+
+  const heading = textBlock.querySelector('h1, h2, h3, h4, h5, h6');
+  return heading ? heading.textContent.trim() : '';
+}
+
 export default async function stepInit(data) {
+  const ariaLabel = getClosestHeadingText(data.el);
   data.target.classList.add('step-start-over');
   const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#' });
+  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#', ...(ariaLabel && { 'aria-label': ariaLabel }) });
   const svg = config.querySelector('picture img[src*=".svg"]:not(.accessibility-control)');
   if (svg) {
     svg.insertAdjacentElement('afterend', svg.cloneNode(true));
