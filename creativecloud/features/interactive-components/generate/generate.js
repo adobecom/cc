@@ -33,7 +33,7 @@ export default async function stepInit(data) {
   const genfillDiv = createTag('div', { class: 'generate-prompt-button body-m' });
   const searchBar = createTag('div', { class: 'generate-text' }, searchText);
   const searchBarContainer = createTag('div', { class: 'generate-text-container' }, searchBar);
-  const generateBtn = createTag('a', { class: 'gray-button generate-button next-step', href: '#' });
+  const generateBtn = createTag('a', { class: 'gray-button generate-button next-step', href: '#', 'aria-label': `${btnText}, ${searchText}` });
   const analyticsHolder = createTag('div', { class: 'interactive-link-analytics-text' }, `${searchText} - `);
   const lastSvgPicture = svgElements[svgElements.length - 1]?.closest('picture');
   if (lastSvgPicture) {
