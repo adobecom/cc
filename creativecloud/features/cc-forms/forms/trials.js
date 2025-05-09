@@ -40,6 +40,8 @@ export class TextContent {
 
   init() {
     const d = createTag('div', { class: 'form-item' }, this.fieldConfig.value);
+    const fieldType = this.fieldConfig.type.split('cc-form-content-').pop();
+    if (fieldType) d.classList.add(fieldType);
     this.form.append(d);
   }
 }
@@ -372,7 +374,7 @@ class Trials {
     let destination = this.thankyouPage;
     if ((this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.action'
     || this.formContainer.getAttribute(DATA_FORM_TYPE) === 'form.connect.enterprise.action')
-    && response.reason && response.reason !== 'SUCCESS') {
+    && response.reason && response.reason !== 'SUCCESS' && Object.prototype.hasOwnProperty.call(errorMap, response.reason)) {
       destination = this.getFormConfig(`data-${errorMap[response.reason]}`);
     }
     window.location.href = destination;

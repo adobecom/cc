@@ -22,6 +22,10 @@
   color: #2C2C2C;
 }
 
+.cc-forms-config {
+  display: none;
+}
+
 .cc-forms input,
 .cc-forms select {
   color: #2C2C2C;
@@ -327,8 +331,6 @@
   transition-delay: 0ms;
   visibility: hidden;
   z-index: 100;
-  left: 0;
-  width: 100%;
 }
 
 .cc-forms .db-Popover.is-open {

@@ -207,6 +207,16 @@ function defineDeviceByScreenSize() {
   return 'TABLET';
 }
 
+export function isSignedInInitialized(interval = 200) {
+  return new Promise((resolve) => {
+    function poll() {
+      if (window.adobeIMS?.isSignedInUser) resolve();
+      else setTimeout(poll, interval);
+    }
+    poll();
+  });
+}
+
 function heroForegroundImage(firstBlock) {
   const rows = [...firstBlock.querySelectorAll(':scope > div')];
   if (rows.length > 1 && rows[0].textContent !== '') rows.shift();

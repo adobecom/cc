@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-classes-per-file */
-import { createTag, getConfig } from '../../scripts/utils.js';
+import { createTag, getConfig, isSignedInInitialized } from '../../scripts/utils.js';
 import Textfield from '../../features/cc-forms/components/textfield.js';
 import Dropdown from '../../features/cc-forms/components/dropdown.js';
 import Checkbox from '../../features/cc-forms/components/checkbox.js';
@@ -47,7 +47,16 @@ const formConfig = {
   },
   subscribe: {
     type: 'subscribe',
-    ...odinConfig,
+    jsPath: '/creativecloud/features/cc-forms/forms/subscribe.js',
+    blockDataset: {
+      endpoint: '/api2/subscribe_v1',
+      'form-submit': 'trials',
+      'form-type': 'form.subscribe.action',
+      userProfileValue: 'email,fname,lname,phonenumber,address1,address2,city,state,postalcode,country,orgname,preferred_language',
+      sname: '',
+      'seed-formvalidation': '',
+      ...odinConfig,
+    },
   },
   unsubscribe: {
     type: 'unsubscribe',
@@ -119,6 +128,8 @@ class CCForms {
         return formConfig.connect;
       case this.el.classList.contains('unsubscribe'):
         return formConfig.unsubscribe;
+      case this.el.classList.contains('subscribe'):
+        return formConfig.subscribe;
       default:
         return formConfig.default;
     }
@@ -168,6 +179,10 @@ class CCForms {
         const snamefallback = c.parentElement.textContent;
         this.formConfig.snamefallback = snamefallback;
         this.form.setAttribute('data-snamefallback', snamefallback);
+      if (componentName === 'cc-form-internal-service-name') {
+        const sval = c.parentElement.textContent;
+        this.formConfig.sname = sval;
+        this.form.setAttribute('data-sname', sval);
       }
       if (c.parentElement.nextElementSibling) {
         componentConfig.value = c.parentElement.nextElementSibling;
@@ -193,7 +208,7 @@ class CCForms {
           { const dd = new Dropdown(this.form, componentConfig); }
           break;
         case componentName.startsWith('cc-form-consent'):
-          if (this.formConfig && (this.formConfig.type === 'perpeptual' || this.formConfig.type === 'connect')) {
+          if (this.formConfig && (['perpeptual', 'connect', 'subscribe'].includes(this.formConfig.type))) {
             const cn = new ConsentNotice(this.form, componentConfig);
           }
           break;
@@ -217,16 +232,6 @@ class CCForms {
   }
 }
 
-function isSignedInInitialized(interval = 200) {
-  return new Promise((resolve) => {
-    function poll() {
-      if (window.adobeIMS?.isSignedInUser) resolve();
-      else setTimeout(poll, interval);
-    }
-    poll();
-  });
-}
-
 export default async function init(el) {
   const ccFormObj = new CCForms(el);
   await ccFormObj.createFormComponents();
@@ -235,7 +240,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!window.adobeIMS.isSignedInUser() && !el.classList.contains('unsubscribe')) return window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser() && !el.classList.contains('unsubscribe') && !el.classList.contains('subscribe')) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);
