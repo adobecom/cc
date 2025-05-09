@@ -7,6 +7,11 @@
   margin: 0 auto;
 }
 
+.section.s-container {
+  width: 63.33%;
+  margin: 0 auto;
+}
+
 .cc-forms {
   --input-border-radius: 4px;
   border-radius: var(--card-border-radius-l);
@@ -245,6 +250,7 @@
   font-weight: normal;
   margin-left: var(--spacing-xxs);
   padding-bottom: 0;
+  width: auto;
 }
 
 .cc-forms .cc-forms-legal-wrapper p {
@@ -370,6 +376,25 @@
   background-color: rgba(50, 50, 50, .04);
   outline: none;
   color: #505050;
+}
+
+.cc-forms.unsubscribe .form-item {
+  justify-content: center;
+  text-align: center;
+}
+
+.cc-forms.cc-forms.unsubscribe .check-item-wrap {
+  width: auto;
+}
+
+.cc-forms.unsubscribe .form-item:has(input[toggle-hideshow]) {
+  display: none;
+}
+
+.con-button.submit.is-disabled {
+  background-color: #f4f4f4;
+  border-color: #f4f4f4;
+  color: #bcbcbc;
 }
 
 @media screen and (min-width: 600px) {

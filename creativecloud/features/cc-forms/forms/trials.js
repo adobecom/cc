@@ -303,7 +303,6 @@ class Trials {
     this.thankyouPage = this.formContainer.getAttribute(DATA_THANK_YOU_PAGE) || '';
     this.apikey = this.formContainer.getAttribute(DATA_APIKEY) || '';
     this.endPoint = this.formContainer.getAttribute(DATA_ENDPOINT) || '';
-    this.submitButton = this.formContainer.querySelector(SELECTOR_BUTTON);
     this.address_mail_to = this.formContainer.hasAttribute(ADDRESS_MAIL_TO) ? this.formContainer.getAttribute(ADDRESS_MAIL_TO).split(',') : '';
     this.userprofile = this.formContainer.hasAttribute(USER_PROFILE) ? this.formContainer.getAttribute(USER_PROFILE).split(',') : '';
     this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
@@ -541,8 +540,16 @@ class Trials {
   }
 
   toggleSubmitButton(disabled) {
-    if (disabled) return this.submitButton.classList.add(BUTTON_DISABLED_CLASS);
-    this.submitButton.classList.remove(BUTTON_DISABLED_CLASS);
+    const button = this.formContainer.querySelector(SELECTOR_BUTTON);
+    if (disabled) {
+      button.classList.add(BUTTON_DISABLED_CLASS);
+      button.setAttribute('disabled', 'disabled');
+      button.style.pointerEvents = 'none';
+    } else {
+      button.classList.remove(BUTTON_DISABLED_CLASS);
+      button.removeAttribute('disabled');
+      button.style.pointerEvents = 'auto';
+    }
   }
 }
 
