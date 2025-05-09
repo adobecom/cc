@@ -27,20 +27,20 @@ function getClosestHeadingText(element) {
 }
 
 export default async function stepInit(data) {
+  const config = data.stepConfigs[data.stepIndex];
+  const lastp = config.querySelector(':scope > div > p:last-child');
+  const btnConfig = lastp.textContent.trim();
+  const btnLink = lastp.querySelector('a');
+  const [btnText, delay] = btnConfig.split('|');
   const ariaLabel = getClosestHeadingText(data.el);
   data.target.classList.add('step-start-over');
-  const config = data.stepConfigs[data.stepIndex];
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#', ...(ariaLabel && { 'aria-label': ariaLabel }) });
+  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#', ...(ariaLabel && { 'aria-label': `${btnText}, ${ariaLabel}` }) });
   const svg = config.querySelector('picture img[src*=".svg"]:not(.accessibility-control)');
   if (svg) {
     svg.insertAdjacentElement('afterend', svg.cloneNode(true));
     startOverCTA.append(svg);
   }
-  const lastp = config.querySelector(':scope > div > p:last-child');
-  const btnConfig = lastp.textContent.trim();
-  const btnLink = lastp.querySelector('a');
-  const [btnText, delay] = btnConfig.split('|');
   if (btnText) startOverCTA.appendChild(document.createTextNode(btnText.trim()));
   if (btnLink) startOverCTA.href = btnLink.href;
   if (!btnLink) {
