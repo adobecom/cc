@@ -67,7 +67,7 @@ class Dropdown {
       },
       'connect-purchase-intent': {
         'dropdown-name': 'connectpurchaseintent',
-        'dropdown-source': `graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connecttrialpurchaseintent/${odinLocale}`,
+        'dropdown-source': 'graphql/execute.json/acom/fieldvalues;path=/content/dam/acom/connecttrialpurchaseintent/us/en',
       },
       country: {
         'dropdown-name': 'country',
