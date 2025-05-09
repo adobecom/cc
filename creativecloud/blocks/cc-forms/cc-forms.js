@@ -179,6 +179,7 @@ class CCForms {
         const snamefallback = c.parentElement.textContent;
         this.formConfig.snamefallback = snamefallback;
         this.form.setAttribute('data-snamefallback', snamefallback);
+      }
       if (componentName === 'cc-form-internal-service-name') {
         const sval = c.parentElement.textContent;
         this.formConfig.sname = sval;
