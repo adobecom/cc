@@ -60,7 +60,15 @@ const formConfig = {
   },
   unsubscribe: {
     type: 'unsubscribe',
-    ...odinConfig,
+    jsPath: '/creativecloud/features/cc-forms/forms/unsubscribe.js',
+    blockDataset: {
+      clientname: 'trials',
+      endpoint: '/api2/unsubscribe_v2',
+      'form-type': 'form.unsubscribe.action',
+      'form-submit': 'trials',
+      'seed-formvalidation': '',
+      ...odinConfig,
+    },
   },
   default: {
     type: 'default',
@@ -118,6 +126,8 @@ class CCForms {
       case this.el.classList.contains('connect'):
         formConfig.connect.blockDataset['form-type'] = this.el.classList.contains('enterprise') ? 'form.connect.enterprise.action' : 'form.connect.action';
         return formConfig.connect;
+      case this.el.classList.contains('unsubscribe'):
+        return formConfig.unsubscribe;
       case this.el.classList.contains('subscribe'):
         return formConfig.subscribe;
       default:
@@ -165,6 +175,11 @@ class CCForms {
       const c = formMetadata.shift();
       const componentName = [...c.classList].find((cn) => cn.includes('icon-cc-form')).split('icon-')[1];
       componentConfig.type = componentName.toLowerCase();
+      if (componentName === 'cc-form-snamefallback' && this.formConfig.type === 'unsubscribe') {
+        const snamefallback = c.parentElement.textContent;
+        this.formConfig.snamefallback = snamefallback;
+        this.form.setAttribute('data-snamefallback', snamefallback);
+      }
       if (componentName === 'cc-form-internal-service-name') {
         const sval = c.parentElement.textContent;
         this.formConfig.sname = sval;
@@ -226,7 +241,7 @@ export default async function init(el) {
     return;
   }
   isSignedInInitialized().then(async () => {
-    if (!el.classList.contains('subscribe') && !window.adobeIMS.isSignedInUser()) return window.adobeIMS.signIn();
+    if (!window.adobeIMS.isSignedInUser() && !el.classList.contains('unsubscribe') && !el.classList.contains('subscribe')) return window.adobeIMS.signIn();
     await ccFormObj.waitForDataRender();
     const { default: FormConfigurator } = await import(ccFormObj.formConfig.jsPath);
     const fc = new FormConfigurator(ccFormObj.form, el);
