@@ -114,6 +114,12 @@ class ConnectTrials extends Trials {
     } else {
       tid = UNKNOWN;
     }
+    if (
+      tid !== UNKNOWN
+      && (tid.trim().length === 0 || tid.trim().search('^[0-9a-z A-Z-/]*$') === -1)
+    ) {
+      tid = UNKNOWN;
+    }
     return tid;
   }
 
