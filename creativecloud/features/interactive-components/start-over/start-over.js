@@ -32,7 +32,7 @@ export default async function stepInit(data) {
   const btnConfig = lastp.textContent.trim();
   const btnLink = lastp.querySelector('a');
   const [btnText, delay] = btnConfig.split('|');
-  const ariaLabel = getClosestHeadingText(data.el);
+  const ariaLabel = getClosestHeadingText(data.target);
   data.target.classList.add('step-start-over');
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#', ...(ariaLabel && { 'aria-label': `${btnText}, ${ariaLabel}` }) });
