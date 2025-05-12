@@ -84,6 +84,10 @@ class Checkbox {
         i.setAttribute('name', 'consentsoft');
         i.setAttribute('id', 'consentsoft');
         break;
+      case 'unsubscribe-all':
+        i.setAttribute('toggle-hideShow', 'hide');
+        i.setAttribute('id', 'unsubscribe-all');
+        break;
       default:
         i.setAttribute('name', fieldType);
         i.setAttribute('id', fieldType);

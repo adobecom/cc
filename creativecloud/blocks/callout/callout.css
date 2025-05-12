@@ -9,7 +9,6 @@
   padding: var(--spacing-s);
   text-align: center;
   border: 1px solid #E1E1E1;
-  font-size: var(--type-body-m-size);
   border-radius: 16px;
 }
 
