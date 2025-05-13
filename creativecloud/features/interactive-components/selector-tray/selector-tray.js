@@ -20,7 +20,11 @@ function getStartingPathIdx(data) {
 function createSelectorThumbnail(pic, pathId, displayImg) {
   const src = getImgSrc(pic);
   const outline = createTag('div', { class: 'tray-thumbnail-outline' });
-  const a = createTag('a', { class: 'tray-thumbnail-img', href: '#' }, outline);
+  const a = createTag('a', {
+    class: 'tray-thumbnail-img',
+    href: '#',
+    ...(pic.querySelector('img') && pic.querySelector('img').alt && { 'aria-label': pic.querySelector('img').alt }),
+  }, outline);
   a.style.backgroundImage = `url(${src})`;
   [a.dataset.dispSrc, a.dataset.dispAlt] = displayImg;
   a.dataset.dispPth = pathId;
