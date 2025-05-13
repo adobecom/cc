@@ -133,6 +133,10 @@
   background-size: 1em 1em;
 }
 
+[dir='rtl'] .cc-forms select {
+  background-position: 2% 50%;
+}
+
 .cc-forms label {
   display: block;
   padding-bottom: var(--spacing-xxs);
