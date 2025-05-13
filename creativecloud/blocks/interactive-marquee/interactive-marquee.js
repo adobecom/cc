@@ -3,6 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 typeSizes.sort((a, b) => a - b);// modified to for local test
+//test comment
 
 function decorateText(el, createTag, isMwebMarquee = false) {
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
