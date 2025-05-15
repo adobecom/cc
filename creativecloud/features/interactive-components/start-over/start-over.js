@@ -14,16 +14,10 @@ function btnLoadDelay(layer, button, delay, once = true) {
 
 function getClosestHeadingText(element) {
   const section = element.closest('.section');
-  if (!section) return '';
-
   const container = section.querySelector('.marquee, .aside');
-  if (!container) return '';
-
   const textBlock = container.querySelector('.text');
-  if (!textBlock) return '';
-
   const heading = textBlock.querySelector('h1, h2, h3, h4, h5, h6');
-  return heading ? heading.textContent.trim() : '';
+  return heading.textContent.trim();
 }
 
 export default async function stepInit(data) {
