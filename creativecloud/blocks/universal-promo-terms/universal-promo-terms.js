@@ -32,6 +32,55 @@ const replacePlaceholderText = (text, params) => {
 };
 
 /**
+ * Sanitizes an HTML string by removing disallowed tags and attributes.
+ *
+ * @param {string} html - The HTML string to sanitize.
+ * @returns {string} - The sanitized HTML string.
+ *
+ * @description
+ * This function parses the input HTML string into a DOM structure, then iterates
+ * through all elements and their attributes. It removes any elements that are not
+ * in the allowedTags list and removes attributes that are not in the allowedAttrs
+ * list or are deemed unsafe (e.g., JavaScript URLs or event handlers).
+ *
+ * Allowed tags: ['p', 'strong', 'em', 'b', 'i', 'a', 'ul', 'ol', 'li', 'br', 'span']
+ * Allowed attributes:
+ *   - 'a': ['href']
+ *   - 'span': ['style']
+ *
+ * Unsafe attributes:
+ *   - Attributes starting with "on" (e.g., onclick)
+ *   - 'href' attributes with "javascript:" URLs
+ */
+const sanitizeHtml = (html) => {
+  const allowedTags = ['p', 'strong', 'em', 'b', 'i', 'a', 'ul', 'ol', 'li', 'br', 'span'];
+  const allowedAttrs = { a: ['href'], span: ['style'] };
+
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  [...doc.body.querySelectorAll('*')].forEach((el) => {
+    if (!allowedTags.includes(el.tagName.toLowerCase())) {
+      el.remove();
+      return;
+    }
+
+    [...el.attributes].forEach((attr) => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+      const tag = el.tagName.toLowerCase();
+
+      const safeAttr = (allowedAttrs[tag] || []).includes(name);
+      const unsafeValue = name === 'href' && /^javascript:/i.test(value);
+      const isEvent = name.startsWith('on');
+
+      if (!safeAttr || unsafeValue || isEvent) el.removeAttribute(attr.name);
+    });
+  });
+
+  return doc.body.innerHTML;
+};
+
+/**
  * Returns promo term HTML from API
  * @param {*} params
  * @param {*} el
@@ -66,7 +115,9 @@ async function getTermsHTML(params, el, env, search) {
     return false;
   }
   const termsHtml = replacePlaceholderText(promoTerms.text, params);
-  return `<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${termsHtml}</p></div>`;
+  const safeHtml = sanitizeHtml(termsHtml);
+  const safeHeader = sanitizeHtml(promoTerms.header);
+  return `<div class="container">${el.innerHTML}<h1>${safeHeader}</h1><div>${safeHtml}</div></div>`;
 }
 
 export default async function init(el, search) {
