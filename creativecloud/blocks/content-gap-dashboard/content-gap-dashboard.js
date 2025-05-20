@@ -1,5 +1,3 @@
-import { getLibs } from '../../scripts/utils.js';
-
 export default async function init(el) {
   el.innerHTML = `
     <header class="topbar">
@@ -16,7 +14,6 @@ export default async function init(el) {
     </div>
 
     <nav class="sidebar hidden" id="sidebar">
-      <h2>📊 Dashboard</h2>
       <a href="#contentSuggestions">📝 Content Improvements</a>
       <a href="#visualSuggestions">🎨 Visual Enhancements</a>
       <a href="#compareUrls">🔗 Compare URLs</a>
