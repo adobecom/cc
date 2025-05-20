@@ -109,6 +109,7 @@ section {
 .card-body {
     font-size: 0.95rem;
     color: #333;
+    font-weight: 400;
 }
 .empty-message {
     font-style: italic;
