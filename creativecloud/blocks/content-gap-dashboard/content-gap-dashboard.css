@@ -1,0 +1,123 @@
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: #f4f6f8;
+}
+.topbar {
+    height: 60px;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.topbar-content img {
+    height: 36px;
+    width: auto;
+    padding-left: 10px;
+}
+.search-screen {
+    height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search-bar {
+    display: flex;
+    gap: 1rem;
+}
+.search-bar input,
+.search-topbar input {
+    padding: 0.75rem 1rem;
+    width: 400px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+.search-bar button,
+.search-topbar button {
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.sidebar {
+    width: 220px;
+    background: #2c3e50;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+}
+.sidebar a:hover {
+    background: #34495e;
+}
+.main-content {
+    margin-left: 240px;
+    padding: 1rem;
+}
+.hidden {
+    display: none;
+}
+.dashboard-header {
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.dashboard-grid {
+    display: grid;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+section {
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+.suggestion-card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 5px solid #007bff;
+    border-radius: 4px;
+}
+.card-header {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.card-body {
+    font-size: 0.95rem;
+    color: #333;
+}
+.empty-message {
+    font-style: italic;
+    color: #777;
+}
+.compare-list {
+    list-style-type: circle;
+    padding-left: 1.25rem;
+}
+.compare-list li {
+    margin: 0.5rem 0;
+}
