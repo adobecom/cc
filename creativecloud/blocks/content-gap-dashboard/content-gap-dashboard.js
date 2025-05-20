@@ -51,7 +51,7 @@ export default async function init(el) {
   };
 
   async function fetchData(query) {
-    const res = await fetch('./mock-data.json'); // Replace with real API later
+    const res = await fetch('mock-data.json'); // Replace with real API later
     if (!res.ok) throw new Error('Failed to fetch');
     return await res.json();
   }
