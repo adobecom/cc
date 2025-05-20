@@ -1,10 +1,10 @@
 export default async function init(el) {
   el.innerHTML = `
-    <header class="topbar">
-      <div class="topbar-content" id="topbarContent">
-        <img loading="lazy" src="https://www.adobe.com/federal/assets/svgs/adobe-logo.svg" alt="Adobe, Inc.">
-      </div>
-    </header>
+    // <header class="topbar">
+    //   <div class="topbar-content" id="topbarContent">
+    //     <img loading="lazy" src="https://www.adobe.com/federal/assets/svgs/adobe-logo.svg" alt="Adobe, Inc.">
+    //   </div>
+    // </header>
 
     <div class="search-screen" id="searchScreen">
       <div class="search-bar">
