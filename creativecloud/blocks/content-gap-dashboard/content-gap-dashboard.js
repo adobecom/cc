@@ -1,10 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 
 export default async function init(el) {
-  const miloLibs = getLibs('/libs');
-  const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-  loadStyle('/blocks/seo-dashboard/seo-dashboard.css');
-
   el.innerHTML = `
     <header class="topbar">
       <div class="topbar-content" id="topbarContent">
