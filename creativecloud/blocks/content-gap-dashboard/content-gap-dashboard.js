@@ -260,6 +260,15 @@ export default async function init(el) {
       : '<p class="empty-message">No competitor URLs found.</p>';
   }
 
+  function formatSourceContent(text) {
+    const linkedText = text.replace(/\((https?:\/\/[^\s)]+)\)/g, '<a href="$1" target="_blank">$1</a>');
+    const parts = linkedText.match(/\d+\.\s.*?(?=(?:\d+\.|$))/gs);
+    if (parts && parts.length >= 2) {
+      return '<ul>' + parts.map(p => `<li>${p.trim()}</li>`).join('') + '</ul>';
+    }
+    return linkedText;
+  }
+
   function createCard(item) {
     const icons = {
       'content addition': '➕',
@@ -271,11 +280,8 @@ export default async function init(el) {
     };
 
     const formattedSource = item.source_content
-      ? item.source_content.replace(
-          /\((https?:\/\/[^\s)]+)\)/g,
-          '<a href="$1" target="_blank">$1</a>'
-        )
-      : '';
+    ? formatSourceContent(item.source_content)
+    : '';
 
     return `
       <div class="suggestion-card">
