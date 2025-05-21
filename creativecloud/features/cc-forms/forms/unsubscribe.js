@@ -63,6 +63,17 @@ class Unsubscribe extends Trials {
           handleCheckboxChange(elem, index);
         }
       });
+
+      const spanButton = elem.nextElementSibling;
+      if (spanButton && spanButton.classList.contains('checkbox-button')) {
+        spanButton.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            elem.checked = !elem.checked;
+            handleCheckboxChange(elem, index);
+          }
+        });
+      }
     });
   }
 
