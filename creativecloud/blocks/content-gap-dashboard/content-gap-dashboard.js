@@ -4,7 +4,7 @@ export default async function init(el) {
     <div class="project-header">
       <h1>🔍 Content Gap Explorer</h1>
     </div>
-    <div class="search-screen hidden" id="searchScreen">
+    <div class="search-screen" id="searchScreen">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search a query..." />
         <button id="searchBtn"><i class="fa fa-search"></i> Search</button>
@@ -248,8 +248,7 @@ export default async function init(el) {
   // 5) Show dashboard & inject data
   function renderDashboard(query, data) {
     // move UI from splash to dashboard
-    searchScreen.classList.remove('hidden');
-    searchScreen.classList.add('hidden');  // hide full-screen
+    searchScreen.classList.add('hidden');   // now hides properly
     sidebar.classList.remove('hidden');
     mainContent.classList.remove('hidden');
 
