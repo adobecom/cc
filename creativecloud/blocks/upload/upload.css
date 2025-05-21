@@ -7,8 +7,8 @@
 .upload-block .foreground > .tablet-up,
 .upload-block .foreground > .tablet-up.desktop-up,
 .upload-block .foreground > .desktop-up {
-    display: none;
-  }
+  display: none;
+}
 
 /* Media Zone */
 .upload-block .media-container picture {
@@ -96,6 +96,11 @@
   line-height: 0;
   margin-top: -6px;
 }
+
+.upload-block .media-container .video-container .pause-play-wrapper {
+  bottom: auto;
+  top: 2%;
+} 
 
 /* Tablet up */
 @media screen and (min-width: 600px) {
@@ -185,5 +190,12 @@
   .upload-block .foreground > .mobile-up,
   .upload-block .foreground > .tablet-up {
     display: none;
+  }
+
+  .upload-block .media-container .video-container .pause-play-wrapper {
+    top: auto;
+    right: auto;
+    left: 2%;
+    bottom: 2%;
   }
 }
