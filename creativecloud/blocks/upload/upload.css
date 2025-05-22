@@ -96,6 +96,9 @@
   line-height: 0;
   margin-top: -6px;
 }
+.upload-block .media-container .video-container {
+  width: 100%;
+}
 
 .upload-block .media-container .video-container .pause-play-wrapper {
   bottom: auto;
