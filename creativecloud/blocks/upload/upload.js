@@ -41,13 +41,13 @@ function decorateBlockColumns(content) {
   const mediaContainer = createTag('div', { class: 'media-container' });
   const dropZone = createTag('div', { class: 'drop-zone' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
-  const media = content.querySelector('picture, .video-container.video-holder');
+  const media = content.querySelector('picture, video');
   // eslint-disable-next-line chai-friendly/no-unused-expressions
   media?.parentElement.textContent.trim() === '' ? media?.parentElement.remove() : media?.parentElement;
 
   const terms = content.querySelector('p:last-child');
   const paras = content.querySelectorAll('p:not(last-child)');
-  const getUploadPara = [...paras].filter((para) => para?.querySelector('span[class*=icon-share], span[class*=icon-upload], img[src$=".svg"]'))[1];
+  const getUploadPara = [...paras].filter((para) => para?.querySelector('span[class*=icon-share], span[class*=icon-upload], img[src$=".svg"]'))[0];
 
   if (!getUploadPara) {
     window.lana?.log(`Failed to create upload button. Upload button equals ${getUploadPara}.`);
