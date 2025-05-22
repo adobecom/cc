@@ -37,5 +37,11 @@ export default async function init(el) {
   const { createTag, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
   loadStyle(`${getConfig().base}/blocks/callout/callout.css`);
   const blocks = groupElementsIntoBlocks(el, createTag);
+  if (el.className.match(/(-spacing|max-width-)/)) {
+    el.classList.add('con-block');
+    blocks.forEach((block) => {
+      block.classList.add('foreground');
+    });
+  }
   el.replaceChildren(...blocks);
 }

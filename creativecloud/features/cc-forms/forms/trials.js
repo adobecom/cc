@@ -303,7 +303,6 @@ class Trials {
     this.thankyouPage = this.formContainer.getAttribute(DATA_THANK_YOU_PAGE) || '';
     this.apikey = this.formContainer.getAttribute(DATA_APIKEY) || '';
     this.endPoint = this.formContainer.getAttribute(DATA_ENDPOINT) || '';
-    this.submitButton = this.formContainer.querySelector(SELECTOR_BUTTON);
     this.address_mail_to = this.formContainer.hasAttribute(ADDRESS_MAIL_TO) ? this.formContainer.getAttribute(ADDRESS_MAIL_TO).split(',') : '';
     this.userprofile = this.formContainer.hasAttribute(USER_PROFILE) ? this.formContainer.getAttribute(USER_PROFILE).split(',') : '';
     this.circleLoader = this.formContainer.querySelector(SELECTOR_CIRCLE_LOADER);
@@ -342,6 +341,8 @@ class Trials {
       if (this.valid) {
         this.circleLoaderShow(this.formContainer.querySelector(SELECTOR_BUTTON));
         setTimeout(() => { this.submitAction(); }, 1);
+      } else {
+        this.trackFormError();
       }
     });
   }
@@ -541,8 +542,39 @@ class Trials {
   }
 
   toggleSubmitButton(disabled) {
-    if (disabled) return this.submitButton.classList.add(BUTTON_DISABLED_CLASS);
-    this.submitButton.classList.remove(BUTTON_DISABLED_CLASS);
+    const button = this.formContainer.querySelector(SELECTOR_BUTTON);
+    if (disabled) {
+      button.classList.add(BUTTON_DISABLED_CLASS);
+      button.setAttribute('disabled', 'disabled');
+      button.style.pointerEvents = 'none';
+    } else {
+      button.classList.remove(BUTTON_DISABLED_CLASS);
+      button.removeAttribute('disabled');
+      button.style.pointerEvents = 'auto';
+    }
+  }
+
+  trackFormError() {
+    // eslint-disable-next-line no-underscore-dangle
+    if (window._satellite) {
+      const formType = this.formContainer.getAttribute(DATA_FORM_TYPE) || 'Unknown';
+      const formName = formType.split('.')[1]
+        ? formType.split('.')[1].charAt(0).toUpperCase() + formType.split('.')[1].slice(1).toLowerCase()
+        : 'Unknown';
+      // eslint-disable-next-line no-underscore-dangle
+      window._satellite?.track('event', {
+        xdm: {},
+        data: {
+          web: {
+            webInteraction: {
+              name: `${formName} Form Error`,
+              type: 'other',
+              linkClicks: { value: 1 },
+            },
+          },
+        },
+      });
+    }
   }
 }
 
