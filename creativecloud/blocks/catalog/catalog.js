@@ -60,8 +60,9 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
   sidenav.setAttribute('daa-lh', 'nopzn|catalog');
   sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
     if (!target || target.oldValue === target.selectedValue) return;
+    const hasDaaLh = !!catalogEl.getAttribute('daa-lh');
     updateCatalogLh(catalog, target.selectedValue);
-    handleCustomAnalyticsEvent(`${target.selectedValue}--cat`, target);
+    if (hasDaaLh) handleCustomAnalyticsEvent(`${target.selectedValue}--cat`, target);
     target.oldValue = target.selectedValue;
   });
 }
