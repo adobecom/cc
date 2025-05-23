@@ -4,7 +4,7 @@ const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 const { polyfills } = await import(`${miloLibs}/blocks/merch/merch.js`);
 
-const DEFAULT_LH = 'b1|catalog';
+const DEFAULT_LH = 'nopzn|catalog';
 
 // Helps with TBT: MWPW-145127
 loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
@@ -29,10 +29,9 @@ function handleCustomAnalyticsEvent(eventName, element) {
 
 export function updateCatalogLh(catalogEl, newValue) {
   if (newValue) {
-    const lh = catalogEl.getAttribute('daa-lh');
-    const value = (lh?.indexOf(DEFAULT_LH) === 0) ? lh?.substring(DEFAULT_LH.length) : lh;
-    const mepValue = value?.substring(value.indexOf('|')) || '';
-    catalogEl.setAttribute('daa-lh', `${newValue || 'all'}${mepValue}`);
+    const daaLh = catalogEl.getAttribute('daa-lh');
+    const newDaaLh = daaLh ? `${newValue}|${DEFAULT_LH}` : `s2|${newValue}|${DEFAULT_LH}`;
+    catalogEl.setAttribute('daa-lh', newDaaLh);
   }
 }
 
@@ -63,7 +62,10 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
   });
 
   sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
-    updateCatalogLh(catalog, target?.selectedValue);
+    if (!target || target.oldValue == target.selectedValue) return;
+    updateCatalogLh(catalog, target.selectedValue);
+    handleCustomAnalyticsEvent(`${target.selectedValue}--cat`, target);
+    target.oldValue = target.selectedValue;
   });
 }
 
@@ -93,6 +95,9 @@ export default async function init(el) {
         merchCards.requestUpdate();
         enableAnalytics(el, merchCards, sidenav);
       }
+      el.querySelectorAll('sp-sidenav-item').forEach((item) => {
+        item.removeAttribute('daa-ll');
+      });
     });
   }
   return el;
