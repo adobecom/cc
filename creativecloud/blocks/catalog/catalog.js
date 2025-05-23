@@ -62,7 +62,7 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
   });
 
   sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
-    if (!target || target.oldValue == target.selectedValue) return;
+    if (!target || target.oldValue === target.selectedValue) return;
     updateCatalogLh(catalog, target.selectedValue);
     handleCustomAnalyticsEvent(`${target.selectedValue}--cat`, target);
     target.oldValue = target.selectedValue;
