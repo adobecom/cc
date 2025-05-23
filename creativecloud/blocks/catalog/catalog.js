@@ -27,9 +27,7 @@ function handleCustomAnalyticsEvent(eventName, element) {
 
 export function updateCatalogLh(catalogEl, newValue) {
   if (newValue) {
-    const daaLh = catalogEl.getAttribute('daa-lh');
-    const newDaaLh = daaLh ? newValue : `s2|${newValue}`;
-    catalogEl.setAttribute('daa-lh', newDaaLh);
+    catalogEl.setAttribute('daa-lh', newValue);
   }
 }
 

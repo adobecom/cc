@@ -20,10 +20,10 @@ runTests(async () => {
     it('updates catalog block lh attribute depending on selected value, and current attribute value', async () => {
       const catalogEl = document.querySelector('.catalog');
       updateCatalogLh(catalogEl, 'all');
-      expect(catalogEl.getAttribute('daa-lh')).to.equal('s2|all|nopzn|catalog');
-      catalogEl.setAttribute('daa-lh', 'all|nopzn|catalog');
+      expect(catalogEl.getAttribute('daa-lh')).to.equal('all');
+      catalogEl.setAttribute('daa-lh', 'all');
       updateCatalogLh(catalogEl, 'photo');
-      expect(catalogEl.getAttribute('daa-lh')).to.equal('photo|nopzn|catalog');
+      expect(catalogEl.getAttribute('daa-lh')).to.equal('photo');
     });
 
     it('enable working analytics', () => {
@@ -47,10 +47,10 @@ runTests(async () => {
       dispatchEvent(card, 'merch-card:action-menu-toggle', { card: card.name });
       card.querySelector('merch-icon').click();
       expect(satelliteSpy.getCall(0).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'photoshop--search|photo|nopzn|catalog' } } } });
-      expect(satelliteSpy.getCall(1).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'popularity--sort|photo|nopzn|catalog' } } } });
-      expect(satelliteSpy.getCall(2).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'showmore|photo|nopzn|catalog' } } } });
-      expect(satelliteSpy.getCall(3).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'menu-toggle--photoshop|photo|nopzn|catalog' } } } });
-      expect(satelliteSpy.getCall(4).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'merch-icon-click--photoshop|photo|nopzn|catalog' } } } });
+      expect(satelliteSpy.getCall(1).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'popularity--sort|photo' } } } });
+      expect(satelliteSpy.getCall(2).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'showmore|photo' } } } });
+      expect(satelliteSpy.getCall(3).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'menu-toggle--photoshop|photo' } } } });
+      expect(satelliteSpy.getCall(4).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'merch-icon-click--photoshop|photo' } } } });
     });
   });
 });
