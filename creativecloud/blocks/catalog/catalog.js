@@ -4,8 +4,6 @@ const miloLibs = getLibs('/libs');
 const { loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 const { polyfills } = await import(`${miloLibs}/blocks/merch/merch.js`);
 
-const DEFAULT_LH = 'nopzn|catalog';
-
 // Helps with TBT: MWPW-145127
 loadStyle(`${miloLibs}/blocks/global-navigation/features/profile/dropdown.css`);
 
@@ -30,7 +28,7 @@ function handleCustomAnalyticsEvent(eventName, element) {
 export function updateCatalogLh(catalogEl, newValue) {
   if (newValue) {
     const daaLh = catalogEl.getAttribute('daa-lh');
-    const newDaaLh = daaLh ? `${newValue}|${DEFAULT_LH}` : `s2|${newValue}|${DEFAULT_LH}`;
+    const newDaaLh = daaLh ? newValue : `s2|${newValue}`;
     catalogEl.setAttribute('daa-lh', newDaaLh);
   }
 }
@@ -61,6 +59,7 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
     }
   });
 
+  sidenav.setAttribute('daa-lh', 'nopzn|catalog');
   sidenav.filters.addEventListener('merch-sidenav:select', ({ target }) => {
     if (!target || target.oldValue === target.selectedValue) return;
     updateCatalogLh(catalog, target.selectedValue);
