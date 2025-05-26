@@ -42,14 +42,38 @@ class Unsubscribe extends Trials {
     const unsubscribeForm = this;
     const { form } = this;
     const checkboxes = this.form.querySelectorAll(CHECKBOX_INPUT_CLASS);
+
+    const handleCheckboxChange = (checkbox, index) => {
+      if (checkbox.checked) {
+        checkboxes[index ? 0 : 1].checked = false;
+      }
+      const checkboxChecked = form.querySelector(CHECKBOX_INPUT_CHECKED);
+      unsubscribeForm.toggleSubmitButton(!(checkboxChecked instanceof HTMLElement));
+    };
+
     Array.prototype.forEach.call(checkboxes, (elem, index) => {
       elem.addEventListener('change', (elemChanged) => {
-        if (elemChanged.target.checked) {
-          checkboxes[index ? 0 : 1].checked = false;
-        }
-        const checkboxChecked = form.querySelector(CHECKBOX_INPUT_CHECKED);
-        unsubscribeForm.toggleSubmitButton(!(checkboxChecked instanceof HTMLElement));
+        handleCheckboxChange(elemChanged.target, index);
       });
+
+      elem.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          elem.checked = !elem.checked;
+          handleCheckboxChange(elem, index);
+        }
+      });
+
+      const spanButton = elem.nextElementSibling;
+      if (spanButton && spanButton.classList.contains('checkbox-button')) {
+        spanButton.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            elem.checked = !elem.checked;
+            handleCheckboxChange(elem, index);
+          }
+        });
+      }
     });
   }
 
@@ -68,7 +92,7 @@ class Unsubscribe extends Trials {
     data.p = this.getParam('p');
     data.n = this.getParam('n');
     data.src = this.getParam('src');
-    if (this.getParam('type') !== 'instructional' && this.getParam('sname') === null) {
+    if (this.getParam('type') !== 'instructional' && this.getParam('sname') === undefined) {
       data.type = 'marketing';
     }
     if (this.form.querySelector('.checkbox-input#unsubscribe-all:checked')) {
