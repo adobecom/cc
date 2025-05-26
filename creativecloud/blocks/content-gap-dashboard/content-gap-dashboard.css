@@ -33,6 +33,9 @@ body {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;     /* <-- center the bar when shown at top */
+  align-items: center;
+  margin-bottom: 1rem;
 }
 .search-bar input,
 .search-topbar input {
@@ -61,7 +64,7 @@ body {
   padding: 1rem;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-  margin-top: 1rem;
+  margin-top: 0;  /* flush under search-topbar */
 }
 .info-left p,
 .info-right p {
@@ -93,41 +96,37 @@ body {
   font-weight: bold;
 }
 
-/* Tables */
-.suggestion-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Panels container */
+.panels {
   margin-top: 1rem;
-}
-.suggestion-table th,
-.suggestion-table td {
-  border: 1px solid #ddd;
-  padding: 0.5rem;
-  text-align: left;
-}
-.suggestion-table th {
-  background: #f9f9f9;
 }
 
-/* Iframe preview panel (if still used) */
-.iframe-panel {
+/* Accordion styles */
+.accordion-item {
   background: #fff;
-  padding: 1rem;
-  margin-top: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-}
-.iframe-panel h4 {
-  margin-top: 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-.iframe-panel iframe {
-  width: 100%;
-  height: 500px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  margin-bottom: 0.5rem;
   border-radius: 4px;
-  margin-top: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.accordion-header {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.accordion-header:hover {
+  background: #f0f0f0;
+}
+.accordion-body {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #ddd;
+}
+.accordion-body.hidden {
+  display: none;
 }
 
 /* Utility */
