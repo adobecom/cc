@@ -1,4 +1,5 @@
 export default async function init(el) {
+  // 1) Inject initial HTML
   el.innerHTML = `
     <div class="project-header">
       <h1>🔍 Content Gap Explorer</h1>
@@ -12,31 +13,27 @@ export default async function init(el) {
     </div>
 
     <div class="main-content hidden" id="mainContent">
-      <header class="dashboard-header" id="dashboardHeader">
+      <header class="dashboard-header">
         <div class="search-topbar" id="searchContainer">
           <input type="text" id="searchInputTop" placeholder="Search a query..." />
           <button id="searchBtnTop"><i class="fa fa-search"></i> Search</button>
         </div>
-
-        <!-- INFO PANEL (left/right) -->
         <div id="infoPanel" class="info-panel"></div>
       </header>
 
-      <!-- TABS -->
       <div class="tabs">
-        <button class="tab active" data-target="contentTable">Content Improvements</button>
-        <button class="tab"        data-target="visualTable">Visual Enhancements</button>
+        <button class="tab active" data-target="contentPanel">Content Improvements</button>
+        <button class="tab"        data-target="visualPanel">Visual Enhancements</button>
       </div>
 
-      <!-- TABLES -->
-      <div class="tables">
-        <table id="contentTable" class="suggestion-table"></table>
-        <table id="visualTable"  class="suggestion-table hidden"></table>
+      <div class="panels">
+        <div id="contentPanel"></div>
+        <div id="visualPanel" class="hidden"></div>
       </div>
     </div>
   `;
 
-  // -- grab elements --
+  // 2) Grab references
   const searchScreen   = document.getElementById('searchScreen');
   const mainContent    = document.getElementById('mainContent');
   const searchInput    = document.getElementById('searchInput');
@@ -44,29 +41,31 @@ export default async function init(el) {
   const searchInputTop = document.getElementById('searchInputTop');
   const searchBtnTop   = document.getElementById('searchBtnTop');
 
-  const infoPanel      = document.getElementById('infoPanel');
-  const contentTable   = document.getElementById('contentTable');
-  const visualTable    = document.getElementById('visualTable');
-  const tabs           = document.querySelectorAll('.tab');
+  const infoPanel    = document.getElementById('infoPanel');
+  const tabs         = document.querySelectorAll('.tab');
+  const contentPanel = document.getElementById('contentPanel');
+  const visualPanel  = document.getElementById('visualPanel');
 
-  // helper to choose color class by rank
+  // 3) Utility: color class by rank
   function rankClass(rank) {
     if (rank <= 2) return 'green';
     if (rank <= 5) return 'yellow';
     return 'red';
   }
 
-  // helper to convert "(http...)" → <a>
+  // 4) Utility: convert "(http...)" → clickable link
   function formatSource(text) {
-    return text?.replace(
+    return text.replace(
       /\((https?:\/\/[^\s)]+)\)/g,
       '<a href="$1" target="_blank">$1</a>'
-    ) || '';
+    );
   }
 
-  // simulate fetch
-  async function fetchData(q) {
-    // replace with real API call
+  // 5) Fetch data (swap URL for real API)
+  async function fetchData(query) {
+    // const res = await fetch(`/api/seo-gap?query=${encodeURIComponent(query)}`);
+    // return await res.json();
+    // === simulate: ===
     return {
       "articleTitle": "Generate vector shape fills using text prompts",
   "articleURL": "https://helpx.adobe.com/illustrator/using/generative-shape-fill.html?akamaiLocale=en_US",
@@ -238,36 +237,37 @@ export default async function init(el) {
     };
   }
 
-  // bind search on both bars
+  // 6) Wire up search buttons
   function bindSearch(input, button) {
-    button.onclick = async () => {
+    button.addEventListener('click', async () => {
       const q = input.value.trim();
       if (!q) return;
       const data = await fetchData(q);
       renderDashboard(q, data);
-    };
+    });
   }
   bindSearch(searchInput, searchBtn);
   bindSearch(searchInputTop, searchBtnTop);
 
-  // tab switching
+  // 7) Tab switching logic
   tabs.forEach(tab => {
-    tab.onclick = () => {
+    tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       const target = tab.dataset.target;
-      contentTable.classList.toggle('hidden', target !== 'contentTable');
-      visualTable.classList.toggle('hidden',  target !== 'visualTable');
-    };
+      contentPanel.classList.toggle('hidden', target !== 'contentPanel');
+      visualPanel.classList.toggle('hidden',  target !== 'visualPanel');
+    });
   });
 
-  // render everything
+  // 8) Render the dashboard after search
   function renderDashboard(query, data) {
+    // hide splash, show main
     searchScreen.classList.add('hidden');
     mainContent.classList.remove('hidden');
     searchInputTop.value = query;
 
-    // info panel: left/right
+    // Info panel: query / HelpX Link / our rank
     infoPanel.innerHTML = `
       <div class="info-left">
         <p>🔎 <strong>Query:</strong> ${query}</p>
@@ -290,41 +290,55 @@ export default async function init(el) {
       </div>
     `;
 
-    // Content Improvements table
-    contentTable.innerHTML = `
-      <thead>
-        <tr><th>ID</th><th>Title</th><th>Description</th><th>Type</th><th>Source</th></tr>
-      </thead>
-      <tbody>
-        ${data.suggestions.map(s => `
-          <tr>
-            <td>${s.id}</td>
-            <td>${s.title}</td>
-            <td>${s.description}</td>
-            <td>${s.type}</td>
-            <td>${formatSource(s.source_content)}</td>
-          </tr>
-        `).join('')}
-      </tbody>
+    // Clear panels
+    contentPanel.innerHTML = '';
+    visualPanel.innerHTML  = '';
+
+    // Populate accordions
+    data.suggestions.forEach(item => {
+      contentPanel.appendChild(createAccordionItem(item, false));
+    });
+    data.visual_suggestions.forEach(item => {
+      visualPanel.appendChild(createAccordionItem(item, true));
+    });
+  }
+
+  // 9) Build a single accordion item
+  function createAccordionItem(item, isVisual) {
+    // header
+    const header = document.createElement('div');
+    header.className = 'accordion-header';
+    header.innerHTML = `
+      <span>${item.title}</span>
+      <span class="toggle-icon">+</span>
     `;
 
-    // Visual Enhancements table
-    visualTable.innerHTML = `
-      <thead>
-        <tr><th>ID</th><th>Title</th><th>Description</th><th>Type</th><th>Affected Area</th></tr>
-      </thead>
-      <tbody>
-        ${data.visual_suggestions.map(v => `
-          <tr>
-            <td>${v.id}</td>
-            <td>${v.title}</td>
-            <td>${v.description}</td>
-            <td>${v.type}</td>
-            <td>${v.affected_area || ''}</td>
-          </tr>
-        `).join('')}
-      </tbody>
+    // body
+    const body = document.createElement('div');
+    body.className = 'accordion-body hidden';
+    body.innerHTML = `
+      <p><strong>Description:</strong> ${item.description}</p>
+      <p><strong>Type:</strong> ${item.type}</p>
+      ${!isVisual && item.source_content
+        ? `<p><strong>Source:</strong> ${formatSource(item.source_content)}</p>`
+        : ''
+      }
+      ${isVisual && item.affected_area
+        ? `<p><strong>Affected Area:</strong> ${item.affected_area}</p>`
+        : ''
+      }
     `;
+
+    // toggle on click
+    header.addEventListener('click', () => {
+      body.classList.toggle('hidden');
+      header.querySelector('.toggle-icon').textContent =
+        body.classList.contains('hidden') ? '+' : '–';
+    });
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'accordion-item';
+    wrapper.append(header, body);
+    return wrapper;
   }
 }
-

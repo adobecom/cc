@@ -27,13 +27,13 @@ body {
   display: none;
 }
 
-/* Search bars */
+/* Search bars (both splash & top) */
 .search-bar,
 .search-topbar {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  justify-content: center;     /* <-- center the bar when shown at top */
+  justify-content: center;  /* center at top */
   align-items: center;
   margin-bottom: 1rem;
 }
@@ -64,7 +64,7 @@ body {
   padding: 1rem;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-  margin-top: 0;  /* flush under search-topbar */
+  margin-top: 0;
 }
 .info-left p,
 .info-right p {
@@ -96,12 +96,12 @@ body {
   font-weight: bold;
 }
 
-/* Panels container */
+/* Accordion container */
 .panels {
   margin-top: 1rem;
 }
 
-/* Accordion styles */
+/* Accordion items */
 .accordion-item {
   background: #fff;
   border: 1px solid #ddd;
@@ -120,6 +120,10 @@ body {
 }
 .accordion-header:hover {
   background: #f0f0f0;
+}
+.toggle-icon {
+  font-size: 1.2rem;
+  line-height: 1;
 }
 .accordion-body {
   padding: 0.75rem 1rem;
