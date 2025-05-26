@@ -1,213 +1,136 @@
-
+/* Base styles */
 body {
-    margin: 0;
-    font-family: sans-serif;
-    background: #f4f6f8;
+  margin: 0;
+  font-family: sans-serif;
+  background: #f4f6f8;
 }
-/* 1) Project header */
+
+/* Project header */
 .project-header {
-    background: #fff;
-    padding: 1rem;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
-  }
-  
-  /* 2) Rank & competitors panel */
-  .rank-competitors {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 0.5rem;
-    flex-wrap: wrap;
-  }
-  .rank-competitors > div {
-    font-size: 1rem;
-    color: #555;
-  }
-  .rank-competitors .competitors a {
-    color: #007bff;
-    text-decoration: none;
-    margin-right: 1rem;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-    transition: background 0.2s, color 0.2s;
-  }
-  .rank-competitors .competitors a:hover {
-    background: #007bff;
-    color: #fff;
-  }
-  
-  /* 3) Search-screen tweaks */
-  .search-screen.hidden {
-    display: none;
-  }
-  .search-screen {
-    display: flex;  /* ensure centering on splash */
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 60px);
-  }
-  
-  /* 4) Search-topbar (when moved up) */
-  .search-topbar {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  /* 5) Dashboard grid: two columns */
-  .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding-top: 1rem;
-  }
-  
-  /* 6) Iframe preview panel */
-  .iframe-panel {
-    background: #fff;
-    padding: 1rem;
-    margin-top: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-  }
-  .iframe-panel h4 {
-    margin-top: 0;
-    font-size: 1.1rem;
-    color: #333;
-  }
-  .iframe-panel iframe {
-    width: 100%;
-    height: 500px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 1rem;
-  }
-  
-  /* 7) Hide Compare URLs section entirely */
-  #compareUrls {
-    display: none !important;
-  }
-  
-.topbar {
-    height: 60px;
-    background: #fff;
-    border-bottom: 1px solid #ccc;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  background: #fff;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
 }
-.topbar-content img {
-    height: 36px;
-    width: auto;
-    padding-left: 10px;
-}
+
+/* Splash search screen */
 .search-screen {
-    height: calc(100vh - 60px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px);
 }
-.search-bar {
-    display: flex;
-    gap: 1rem;
+.search-screen.hidden {
+  display: none;
+}
+
+/* Search bars */
+.search-bar,
+.search-topbar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 .search-bar input,
 .search-topbar input {
-    padding: 0.75rem 1rem;
-    width: 400px;
-    border-radius: 50px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
+  padding: 0.75rem 1rem;
+  width: 400px;
+  border-radius: 50px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
 .search-bar button,
 .search-topbar button {
-    padding: 0.75rem 2rem;
-    border-radius: 50px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
 }
-.sidebar {
-    width: 220px;
-    background: #2c3e50;
-    color: white;
-    height: 100vh;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
+
+/* Info panel under topbar */
+.info-panel {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin-top: 1rem;
 }
-.sidebar a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem;
-    margin: 0.25rem 0;
-    border-radius: 4px;
+.info-left p,
+.info-right p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
 }
-.sidebar a:hover {
-    background: #34495e;
+.rank.green  { color: #228B22; font-weight: bold; }
+.rank.yellow { color: #DAA520; font-weight: bold; }
+.rank.red    { color: #B22222; font-weight: bold; }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-bottom: 1px solid #ccc;
 }
-.main-content {
-    margin-left: 240px;
-    padding: 1rem;
+.tab {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #555;
 }
+.tab.active {
+  border-bottom: 3px solid #007bff;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Tables */
+.suggestion-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.suggestion-table th,
+.suggestion-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+.suggestion-table th {
+  background: #f9f9f9;
+}
+
+/* Iframe preview panel (if still used) */
+.iframe-panel {
+  background: #fff;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+.iframe-panel h4 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+.iframe-panel iframe {
+  width: 100%;
+  height: 500px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+/* Utility */
 .hidden {
-    display: none;
-}
-.dashboard-header {
-    background: #fff;
-    padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-.dashboard-grid {
-    display: grid;
-    gap: 1rem;
-    padding-top: 1rem;
-}
-section {
-    background: #ffffff;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-}
-.suggestion-card {
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-left: 5px solid #007bff;
-    border-radius: 4px;
-}
-.card-header {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-.card-body {
-    font-size: 0.95rem;
-    color: #333;
-    font-weight: 400;
-}
-.empty-message {
-    font-style: italic;
-    color: #777;
-}
-.compare-list {
-    list-style-type: circle;
-    padding-left: 1.25rem;
-}
-.compare-list li {
-    margin: 0.5rem 0;
+  display: none;
 }

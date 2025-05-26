@@ -1,9 +1,9 @@
 export default async function init(el) {
-  // 1) Build initial HTML (with project title + no Compare URLs)
   el.innerHTML = `
     <div class="project-header">
       <h1>🔍 Content Gap Explorer</h1>
     </div>
+
     <div class="search-screen" id="searchScreen">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search a query..." />
@@ -11,57 +11,62 @@ export default async function init(el) {
       </div>
     </div>
 
-    <nav class="sidebar hidden" id="sidebar">
-      <a href="#contentSuggestions">📝 Content Improvements</a>
-      <a href="#visualSuggestions">🎨 Visual Enhancements</a>
-    </nav>
-
     <div class="main-content hidden" id="mainContent">
       <header class="dashboard-header" id="dashboardHeader">
         <div class="search-topbar" id="searchContainer">
           <input type="text" id="searchInputTop" placeholder="Search a query..." />
           <button id="searchBtnTop"><i class="fa fa-search"></i> Search</button>
         </div>
-        <!-- Rank & competitors will be injected here -->
-        <div id="rankCompetitors" class="rank-competitors"></div>
-        <div class="page-meta" id="pageMeta"></div>
+
+        <!-- INFO PANEL (left/right) -->
+        <div id="infoPanel" class="info-panel"></div>
       </header>
 
-      <main class="dashboard-grid" id="dashboardGrid">
-        <section id="contentSuggestions"><h3>✍️ Content Improvements</h3></section>
-        <section id="visualSuggestions"><h3>🎨 Visual Enhancements</h3></section>
-      </main>
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" data-target="contentTable">Content Improvements</button>
+        <button class="tab"        data-target="visualTable">Visual Enhancements</button>
+      </div>
 
-      <!-- iframe panel for competitor previews -->
-      <section id="previewSection" class="iframe-panel hidden">
-        <h4>📄 Competitor Preview</h4>
-        <iframe id="previewFrame" src="" frameborder="0"></iframe>
-      </section>
+      <!-- TABLES -->
+      <div class="tables">
+        <table id="contentTable" class="suggestion-table"></table>
+        <table id="visualTable"  class="suggestion-table hidden"></table>
+      </div>
     </div>
   `;
 
-  // 2) Grab all elements
+  // -- grab elements --
   const searchScreen   = document.getElementById('searchScreen');
-  const sidebar        = document.getElementById('sidebar');
   const mainContent    = document.getElementById('mainContent');
   const searchInput    = document.getElementById('searchInput');
   const searchBtn      = document.getElementById('searchBtn');
   const searchInputTop = document.getElementById('searchInputTop');
   const searchBtnTop   = document.getElementById('searchBtnTop');
 
-  const rankContainer       = document.getElementById('rankCompetitors');
-  const pageMeta            = document.getElementById('pageMeta');
-  const previewSection      = document.getElementById('previewSection');
-  const previewFrame        = document.getElementById('previewFrame');
+  const infoPanel      = document.getElementById('infoPanel');
+  const contentTable   = document.getElementById('contentTable');
+  const visualTable    = document.getElementById('visualTable');
+  const tabs           = document.querySelectorAll('.tab');
 
-  const sections = {
-    content: document.getElementById('contentSuggestions'),
-    visual:  document.getElementById('visualSuggestions')
-  };
+  // helper to choose color class by rank
+  function rankClass(rank) {
+    if (rank <= 2) return 'green';
+    if (rank <= 5) return 'yellow';
+    return 'red';
+  }
 
-  // 3) Simulated fetch (swap in real API later)
-  async function fetchData(query) {
-    // return await fetch(`/api/seo-gap?query=${encodeURIComponent(query)}`).then(r=>r.json());
+  // helper to convert "(http...)" → <a>
+  function formatSource(text) {
+    return text?.replace(
+      /\((https?:\/\/[^\s)]+)\)/g,
+      '<a href="$1" target="_blank">$1</a>'
+    ) || '';
+  }
+
+  // simulate fetch
+  async function fetchData(q) {
+    // replace with real API call
     return {
       "articleTitle": "Generate vector shape fills using text prompts",
   "articleURL": "https://helpx.adobe.com/illustrator/using/generative-shape-fill.html?akamaiLocale=en_US",
@@ -233,106 +238,93 @@ export default async function init(el) {
     };
   }
 
-  // 4) Bind search on both bars
+  // bind search on both bars
   function bindSearch(input, button) {
-    button.addEventListener('click', async () => {
+    button.onclick = async () => {
       const q = input.value.trim();
       if (!q) return;
       const data = await fetchData(q);
       renderDashboard(q, data);
-    });
+    };
   }
   bindSearch(searchInput, searchBtn);
   bindSearch(searchInputTop, searchBtnTop);
 
-  // 5) Show dashboard & inject data
-  function renderDashboard(query, data) {
-    // move UI from splash to dashboard
-    searchScreen.classList.add('hidden');   // now hides properly
-    sidebar.classList.remove('hidden');
-    mainContent.classList.remove('hidden');
+  // tab switching
+  tabs.forEach(tab => {
+    tab.onclick = () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.target;
+      contentTable.classList.toggle('hidden', target !== 'contentTable');
+      visualTable.classList.toggle('hidden',  target !== 'visualTable');
+    };
+  });
 
-    // sync top-bar search
+  // render everything
+  function renderDashboard(query, data) {
+    searchScreen.classList.add('hidden');
+    mainContent.classList.remove('hidden');
     searchInputTop.value = query;
 
-    // rank & competitors
-    rankContainer.innerHTML = `
-      <div><strong>Rank:</strong> ${data.search_rank}</div>
-      <div class="competitors">
-        ${data["Other Documents"].map(doc =>
-          `<a href="#" class="comp-link" data-url="${doc.url}">
-             Rank ${doc.search_rank}
-           </a>`
-        ).join(' ')}
+    // info panel: left/right
+    infoPanel.innerHTML = `
+      <div class="info-left">
+        <p>🔎 <strong>Query:</strong> ${query}</p>
+        <p>🔗 <a href="${data.articleURL}" target="_blank">HelpX Link</a></p>
+        <p>📈 <strong>Rank:</strong>
+          <span class="rank ${rankClass(data.search_rank)}">
+            ${data.search_rank}
+          </span>
+        </p>
+      </div>
+      <div class="info-right">
+        ${data["Other Documents"].map(doc => `
+          <p>
+            <a href="${doc.url}" target="_blank">${doc.url}</a>
+            (Rank <span class="rank ${rankClass(doc.search_rank)}">
+              ${doc.search_rank}
+            </span>)
+          </p>
+        `).join('')}
       </div>
     `;
-    // clicking competitor loads into iframe
-    rankContainer.querySelectorAll('.comp-link')
-      .forEach(a => a.onclick = e => {
-        e.preventDefault();
-        previewFrame.src = a.dataset.url;
-        previewSection.classList.remove('hidden');
-      });
 
-    // main article meta
-    pageMeta.innerHTML = `
-      <h2><span class="icon">📰</span>
-        <a href="${data.articleURL}" target="_blank">${data.articleTitle}</a>
-      </h2>
+    // Content Improvements table
+    contentTable.innerHTML = `
+      <thead>
+        <tr><th>ID</th><th>Title</th><th>Description</th><th>Type</th><th>Source</th></tr>
+      </thead>
+      <tbody>
+        ${data.suggestions.map(s => `
+          <tr>
+            <td>${s.id}</td>
+            <td>${s.title}</td>
+            <td>${s.description}</td>
+            <td>${s.type}</td>
+            <td>${formatSource(s.source_content)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
     `;
 
-    // suggestions
-    sections.content.innerHTML = `<h3>✍️ Content Improvements</h3>`
-      + data.suggestions.map(createCard).join('');
-    sections.visual.innerHTML = `<h3>🎨 Visual Enhancements</h3>`
-      + data.visual_suggestions.map(createCard).join('');
-  }
-
-  // 6) Card builder (no changes)
-  function createCard(item) {
-    const icons = {
-      'content addition':       '➕',
-      'content clarification':  '📝',
-      'content deletion':       '❌',
-      'content reorganization': '🔀',
-      'visual adjustment':      '🎨',
-      'visual addition/removal':'🖼️'
-    };
-    const icon = icons[item.type] || '📌';
-    const area = item.affected_area
-      ? `<p><strong>📍 Affected Area:</strong> ${item.affected_area}</p>`
-      : '';
-    const src  = item.source_content
-      ? `<details>
-           <summary>🔎 View Source</summary>
-           <blockquote>${
-             item.source_content
-               .replace(/\((https?:\/\/[^\s)]+)\)/g,
-                        `<a href="$1" target="_blank">$1</a>`)
-               .match(/\d+\.\s.*?(?=(?:\d+\.|$))/gs)  // if numbered
-               ? '<ul>' +
-                 item.source_content
-                   .replace(/\((https?:\/\/[^\s)]+)\)/g,
-                            `<a href="$1" target="_blank">$1</a>`)
-                   .match(/\d+\.\s.*?(?=(?:\d+\.|$))/gs)
-                   .map(p=>`<li>${p.trim()}</li>`).join('') +
-                 '</ul>'
-               : item.source_content
-           }</blockquote>
-         </details>`
-      : '';
-
-    return `
-      <div class="suggestion-card">
-        <div class="card-header">${icon} ${item.title}
-          <span class="tag">${item.type}</span>
-        </div>
-        <div class="card-body">
-          <p>${item.description}</p>
-          ${area}
-          ${src}
-        </div>
-      </div>
+    // Visual Enhancements table
+    visualTable.innerHTML = `
+      <thead>
+        <tr><th>ID</th><th>Title</th><th>Description</th><th>Type</th><th>Affected Area</th></tr>
+      </thead>
+      <tbody>
+        ${data.visual_suggestions.map(v => `
+          <tr>
+            <td>${v.id}</td>
+            <td>${v.title}</td>
+            <td>${v.description}</td>
+            <td>${v.type}</td>
+            <td>${v.affected_area || ''}</td>
+          </tr>
+        `).join('')}
+      </tbody>
     `;
   }
 }
+
