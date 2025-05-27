@@ -33,6 +33,8 @@ indices:
       - /howtobuy/**
       - /legal/**
       - /heroes/**
+      - /trust/**
+      - /subscription/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -105,6 +107,8 @@ indices:
       - /au/howtobuy/**
       - /au/legal/**
       - /au/heroes/**
+      - /au/trust/**
+      - /au/subscription/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -140,6 +144,8 @@ indices:
       - /de/howtobuy/**
       - /de/legal/**
       - /de/heroes/**
+      - /de/trust/**
+      - /de/subscription/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -175,6 +181,8 @@ indices:
       - /es/howtobuy/**
       - /es/legal/**
       - /es/heroes/**
+      - /es/trust/**
+      - /es/subscription/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -210,6 +218,8 @@ indices:
       - /fr/howtobuy/**
       - /fr/legal/**
       - /fr/heroes/**
+      - /fr/trust/**
+      - /fr/subscription/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -245,6 +255,8 @@ indices:
       - /it/howtobuy/**
       - /it/legal/**
       - /it/heroes/**
+      - /it/trust/**
+      - /it/subscription/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -280,6 +292,8 @@ indices:
       - /jp/howtobuy/**
       - /jp/legal/**
       - /jp/heroes/**
+      - /jp/trust/**
+      - /jp/subscription/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -315,6 +329,8 @@ indices:
       - /kr/howtobuy/**
       - /kr/legal/**
       - /kr/heroes/**
+      - /kr/trust/**
+      - /kr/subscription/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -350,6 +366,8 @@ indices:
       - /ru/howtobuy/**
       - /ru/legal/**
       - /ru/heroes/**
+      - /ru/trust/**
+      - /ru/subscription/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -385,6 +403,8 @@ indices:
       - /hk_zh/howtobuy/**
       - /hk_zh/legal/**
       - /hk_zh/heroes/**
+      - /hk_zh/trust/**
+      - /hk_zh/subscription/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -420,6 +440,8 @@ indices:
       - /tw/howtobuy/**
       - /tw/legal/**
       - /tw/heroes/**
+      - /tw/trust/**
+      - /tw/subscription/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -455,6 +477,8 @@ indices:
       - /nl/howtobuy/**
       - /nl/legal/**
       - /nl/heroes/**
+      - /nl/trust/**
+      - /nl/subscription/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -490,6 +514,8 @@ indices:
       - /pl/howtobuy/**
       - /pl/legal/**
       - /pl/heroes/**
+      - /pl/trust/**
+      - /pl/subscription/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -525,6 +551,8 @@ indices:
       - /tr/howtobuy/**
       - /tr/legal/**
       - /tr/heroes/**
+      - /tr/trust/**
+      - /tr/subscription/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -560,6 +588,8 @@ indices:
       - /uk/howtobuy/**
       - /uk/legal/**
       - /uk/heroes/**
+      - /uk/trust/**
+      - /uk/subscription/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -595,6 +625,8 @@ indices:
       - /ca/howtobuy/**
       - /ca/legal/**
       - /ca/heroes/**
+      - /ca/trust/**
+      - /ca/subscription/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -630,6 +662,8 @@ indices:
       - /cn/howtobuy/**
       - /cn/legal/**
       - /cn/heroes/**
+      - /cn/trust/**
+      - /cn/subscription/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -665,6 +699,8 @@ indices:
       - /ae_ar/howtobuy/**
       - /ae_ar/legal/**
       - /ae_ar/heroes/**
+      - /ae_ar/trust/**
+      - /ae_ar/subscription/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -700,6 +736,8 @@ indices:
       - /ae_en/howtobuy/**
       - /ae_en/legal/**
       - /ae_en/heroes/**
+      - /ae_en/trust/**
+      - /ae_en/subscription/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -735,6 +773,8 @@ indices:
       - /at/howtobuy/**
       - /at/legal/**
       - /at/heroes/**
+      - /at/trust/**
+      - /at/subscription/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -770,6 +810,8 @@ indices:
       - /be_en/howtobuy/**
       - /be_en/legal/**
       - /be_en/heroes/**
+      - /be_en/trust/**
+      - /be_en/subscription/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -805,6 +847,8 @@ indices:
       - /be_fr/howtobuy/**
       - /be_fr/legal/**
       - /be_fr/heroes/**
+      - /be_fr/trust/**
+      - /be_fr/subscription/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -840,6 +884,8 @@ indices:
       - /ca_fr/howtobuy/**
       - /ca_fr/legal/**
       - /ca_fr/heroes/**
+      - /ca_fr/trust/**
+      - /ca_fr/subscription/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -875,6 +921,8 @@ indices:
       - /ch_de/howtobuy/**
       - /ch_de/legal/**
       - /ch_de/heroes/**
+      - /ch_de/trust/**
+      - /ch_de/subscription/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -910,6 +958,8 @@ indices:
       - /ch_fr/howtobuy/**
       - /ch_fr/legal/**
       - /ch_fr/heroes/**
+      - /ch_fr/trust/**
+      - /ch_fr/subscription/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -945,6 +995,8 @@ indices:
       - /cl/howtobuy/**
       - /cl/legal/**
       - /cl/heroes/**
+      - /cl/trust/**
+      - /cl/subscription/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -980,6 +1032,8 @@ indices:
       - /gr_en/howtobuy/**
       - /gr_en/legal/**
       - /gr_en/heroes/**
+      - /gr_en/trust/**
+      - /gr_en/subscription/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -1015,6 +1069,8 @@ indices:
       - /hk_en/howtobuy/**
       - /hk_en/legal/**
       - /hk_en/heroes/**
+      - /hk_en/trust/**
+      - /hk_en/subscription/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -1050,6 +1106,8 @@ indices:
       - /ie/howtobuy/**
       - /ie/legal/**
       - /ie/heroes/**
+      - /ie/trust/**
+      - /ie/subscription/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -1085,6 +1143,8 @@ indices:
       - /il_en/howtobuy/**
       - /il_en/legal/**
       - /il_en/heroes/**
+      - /il_en/trust/**
+      - /il_en/subscription/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -1120,6 +1180,8 @@ indices:
       - /in/howtobuy/**
       - /in/legal/**
       - /in/heroes/**
+      - /in/trust/**
+      - /in/subscription/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -1155,6 +1217,8 @@ indices:
       - /lt/howtobuy/**
       - /lt/legal/**
       - /lt/heroes/**
+      - /lt/trust/**
+      - /lt/subscription/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -1190,6 +1254,8 @@ indices:
       - /lu_de/howtobuy/**
       - /lu_de/legal/**
       - /lu_de/heroes/**
+      - /lu_de/trust/**
+      - /lu_de/subscription/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -1225,6 +1291,8 @@ indices:
       - /lu_en/howtobuy/**
       - /lu_en/legal/**
       - /lu_en/heroes/**
+      - /lu_en/trust/**
+      - /lu_en/subscription/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -1260,6 +1328,8 @@ indices:
       - /lu_fr/howtobuy/**
       - /lu_fr/legal/**
       - /lu_fr/heroes/**
+      - /lu_fr/trust/**
+      - /lu_fr/subscription/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -1295,6 +1365,8 @@ indices:
       - /mena_en/howtobuy/**
       - /mena_en/legal/**
       - /mena_en/heroes/**
+      - /mena_en/trust/**
+      - /mena_en/subscription/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -1330,6 +1402,8 @@ indices:
       - /nz/howtobuy/**
       - /nz/legal/**
       - /nz/heroes/**
+      - /nz/trust/**
+      - /nz/subscription/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -1365,6 +1439,8 @@ indices:
       - /sa_ar/howtobuy/**
       - /sa_ar/legal/**
       - /sa_ar/heroes/**
+      - /sa_ar/trust/**
+      - /sa_ar/subscription/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -1400,6 +1476,8 @@ indices:
       - /sa_en/howtobuy/**
       - /sa_en/legal/**
       - /sa_en/heroes/**
+      - /sa_en/trust/**
+      - /sa_en/subscription/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
   cards-sa_en:
@@ -1435,6 +1513,8 @@ indices:
       - /th_en/howtobuy/**
       - /th_en/legal/**
       - /th_en/heroes/**
+      - /th_en/trust/**
+      - /th_en/subscription/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -1470,6 +1550,8 @@ indices:
       - /th_th/howtobuy/**
       - /th_th/legal/**
       - /th_th/heroes/**
+      - /th_th/trust/**
+      - /th_th/subscription/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -1505,6 +1587,8 @@ indices:
       - /za/howtobuy/**
       - /za/legal/**
       - /za/heroes/**
+      - /za/trust/**
+      - /za/subscription/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -1540,6 +1624,8 @@ indices:
       - /africa/howtobuy/**
       - /africa/legal/**
       - /africa/heroes/**
+      - /africa/trust/**
+      - /africa/subscription/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -1575,6 +1661,8 @@ indices:
       - /ar/howtobuy/**
       - /ar/legal/**
       - /ar/heroes/**
+      - /ar/trust/**
+      - /ar/subscription/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -1610,6 +1698,8 @@ indices:
       - /co/howtobuy/**
       - /co/legal/**
       - /co/heroes/**
+      - /co/trust/**
+      - /co/subscription/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -1645,6 +1735,8 @@ indices:
       - /cr/howtobuy/**
       - /cr/legal/**
       - /cr/heroes/**
+      - /cr/trust/**
+      - /cr/subscription/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -1680,6 +1772,8 @@ indices:
       - /ec/howtobuy/**
       - /ec/legal/**
       - /ec/heroes/**
+      - /ec/trust/**
+      - /ec/subscription/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -1715,6 +1809,8 @@ indices:
       - /eg_ar/howtobuy/**
       - /eg_ar/legal/**
       - /eg_ar/heroes/**
+      - /eg_ar/trust/**
+      - /eg_ar/subscription/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -1750,6 +1846,8 @@ indices:
       - /eg_en/howtobuy/**
       - /eg_en/legal/**
       - /eg_en/heroes/**
+      - /eg_en/trust/**
+      - /eg_en/subscription/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -1785,6 +1883,8 @@ indices:
       - /gr_el/howtobuy/**
       - /gr_el/legal/**
       - /gr_el/heroes/**
+      - /gr_el/trust/**
+      - /gr_el/subscription/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -1820,6 +1920,8 @@ indices:
       - /gt/howtobuy/**
       - /gt/legal/**
       - /gt/heroes/**
+      - /gt/trust/**
+      - /gt/subscription/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -1855,6 +1957,8 @@ indices:
       - /id_en/howtobuy/**
       - /id_en/legal/**
       - /id_en/heroes/**
+      - /id_en/trust/**
+      - /id_en/subscription/**
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -1890,6 +1994,8 @@ indices:
       - /id_id/howtobuy/**
       - /id_id/legal/**
       - /id_id/heroes/**
+      - /id_id/trust/**
+      - /id_id/subscription/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -1925,6 +2031,8 @@ indices:
       - /in_hi/howtobuy/**
       - /in_hi/legal/**
       - /in_hi/heroes/**
+      - /in_hi/trust/**
+      - /in_hi/subscription/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -1960,6 +2068,8 @@ indices:
       - /kw_ar/howtobuy/**
       - /kw_ar/legal/**
       - /kw_ar/heroes/**
+      - /kw_ar/trust/**
+      - /kw_ar/subscription/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -1995,6 +2105,8 @@ indices:
       - /kw_en/howtobuy/**
       - /kw_en/legal/**
       - /kw_en/heroes/**
+      - /kw_en/trust/**
+      - /kw_en/subscription/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -2030,6 +2142,8 @@ indices:
       - /my_en/howtobuy/**
       - /my_en/legal/**
       - /my_en/heroes/**
+      - /my_en/trust/**
+      - /my_en/subscription/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -2065,6 +2179,8 @@ indices:
       - /my_ms/howtobuy/**
       - /my_ms/legal/**
       - /my_ms/heroes/**
+      - /my_ms/trust/**
+      - /my_ms/subscription/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -2100,6 +2216,8 @@ indices:
       - /ng/howtobuy/**
       - /ng/legal/**
       - /ng/heroes/**
+      - /ng/trust/**
+      - /ng/subscription/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -2135,6 +2253,8 @@ indices:
       - /pe/howtobuy/**
       - /pe/legal/**
       - /pe/heroes/**
+      - /pe/trust/**
+      - /pe/subscription/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -2170,6 +2290,8 @@ indices:
       - /ph_en/howtobuy/**
       - /ph_en/legal/**
       - /ph_en/heroes/**
+      - /ph_en/trust/**
+      - /ph_en/subscription/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -2205,6 +2327,8 @@ indices:
       - /ph_fil/howtobuy/**
       - /ph_fil/legal/**
       - /ph_fil/heroes/**
+      - /ph_fil/trust/**
+      - /ph_fil/subscription/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -2240,6 +2364,8 @@ indices:
       - /pr/howtobuy/**
       - /pr/legal/**
       - /pr/heroes/**
+      - /pr/trust/**
+      - /pr/subscription/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -2275,6 +2401,8 @@ indices:
       - /qa_ar/howtobuy/**
       - /qa_ar/legal/**
       - /qa_ar/heroes/**
+      - /qa_ar/trust/**
+      - /qa_ar/subscription/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -2310,6 +2438,8 @@ indices:
       - /qa_en/howtobuy/**
       - /qa_en/legal/**
       - /qa_en/heroes/**
+      - /qa_en/trust/**
+      - /qa_en/subscription/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -2345,6 +2475,8 @@ indices:
       - /vn_en/howtobuy/**
       - /vn_en/legal/**
       - /vn_en/heroes/**
+      - /vn_en/trust/**
+      - /vn_en/subscription/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -2380,6 +2512,8 @@ indices:
       - /vn_vi/howtobuy/**
       - /vn_vi/legal/**
       - /vn_vi/heroes/**
+      - /vn_vi/trust/**
+      - /vn_vi/subscription/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -2415,6 +2549,8 @@ indices:
       - /dk/howtobuy/**
       - /dk/legal/**
       - /dk/heroes/**
+      - /dk/trust/**
+      - /dk/subscription/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -2450,6 +2586,8 @@ indices:
       - /fi/howtobuy/**
       - /fi/legal/**
       - /fi/heroes/**
+      - /fi/trust/**
+      - /fi/subscription/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -2485,6 +2623,8 @@ indices:
       - /no/howtobuy/**
       - /no/legal/**
       - /no/heroes/**
+      - /no/trust/**
+      - /no/subscription/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -2520,6 +2660,8 @@ indices:
       - /se/howtobuy/**
       - /se/legal/**
       - /se/heroes/**
+      - /se/trust/**
+      - /se/subscription/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -2555,6 +2697,8 @@ indices:
       - /la/howtobuy/**
       - /la/legal/**
       - /la/heroes/**
+      - /la/trust/**
+      - /la/subscription/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -2590,6 +2734,8 @@ indices:
       - /mx/howtobuy/**
       - /mx/legal/**
       - /mx/heroes/**
+      - /mx/trust/**
+      - /mx/subscription/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -2625,6 +2771,8 @@ indices:
       - /be_nl/howtobuy/**
       - /be_nl/legal/**
       - /be_nl/heroes/**
+      - /be_nl/trust/**
+      - /be_nl/subscription/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -2660,6 +2808,8 @@ indices:
       - /bg/howtobuy/**
       - /bg/legal/**
       - /bg/heroes/**
+      - /bg/trust/**
+      - /bg/subscription/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -2695,6 +2845,8 @@ indices:
       - /ch_it/howtobuy/**
       - /ch_it/legal/**
       - /ch_it/heroes/**
+      - /ch_it/trust/**
+      - /ch_it/subscription/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -2730,6 +2882,8 @@ indices:
       - /cz/howtobuy/**
       - /cz/legal/**
       - /cz/heroes/**
+      - /cz/trust/**
+      - /cz/subscription/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -2765,6 +2919,8 @@ indices:
       - /ee/howtobuy/**
       - /ee/legal/**
       - /ee/heroes/**
+      - /ee/trust/**
+      - /ee/subscription/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -2800,6 +2956,8 @@ indices:
       - /hu/howtobuy/**
       - /hu/legal/**
       - /hu/heroes/**
+      - /hu/trust/**
+      - /hu/subscription/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -2835,6 +2993,8 @@ indices:
       - /il_he/howtobuy/**
       - /il_he/legal/**
       - /il_he/heroes/**
+      - /il_he/trust/**
+      - /il_he/subscription/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -2870,6 +3030,8 @@ indices:
       - /lv/howtobuy/**
       - /lv/legal/**
       - /lv/heroes/**
+      - /lv/trust/**
+      - /lv/subscription/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -2905,6 +3067,8 @@ indices:
       - /mena_ar/howtobuy/**
       - /mena_ar/legal/**
       - /mena_ar/heroes/**
+      - /mena_ar/trust/**
+      - /mena_ar/subscription/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -2940,6 +3104,8 @@ indices:
       - /pt/howtobuy/**
       - /pt/legal/**
       - /pt/heroes/**
+      - /pt/trust/**
+      - /pt/subscription/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -2975,6 +3141,8 @@ indices:
       - /ro/howtobuy/**
       - /ro/legal/**
       - /ro/heroes/**
+      - /ro/trust/**
+      - /ro/subscription/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -3010,6 +3178,8 @@ indices:
       - /si/howtobuy/**
       - /si/legal/**
       - /si/heroes/**
+      - /si/trust/**
+      - /si/subscription/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -3045,6 +3215,8 @@ indices:
       - /sk/howtobuy/**
       - /sk/legal/**
       - /sk/heroes/**
+      - /sk/trust/**
+      - /sk/subscription/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -3080,6 +3252,8 @@ indices:
       - /ua/howtobuy/**
       - /ua/legal/**
       - /ua/heroes/**
+      - /ua/trust/**
+      - /ua/subscription/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -3115,6 +3289,8 @@ indices:
       - /sg/howtobuy/**
       - /sg/legal/**
       - /sg/heroes/**
+      - /sg/trust/**
+      - /sg/subscription/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -3150,6 +3326,8 @@ indices:
       - /br/howtobuy/**
       - /br/legal/**
       - /br/heroes/**
+      - /br/trust/**
+      - /br/subscription/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -3185,6 +3363,8 @@ indices:
       - /cis_en/howtobuy/**
       - /cis_en/legal/**
       - /cis_en/heroes/**
+      - /cis_en/trust/**
+      - /cis_en/subscription/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -3220,6 +3400,8 @@ indices:
       - /cis_ru/howtobuy/**
       - /cis_ru/legal/**
       - /cis_ru/heroes/**
+      - /cis_ru/trust/**
+      - /cis_ru/subscription/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
