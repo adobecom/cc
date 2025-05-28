@@ -61,7 +61,7 @@ function attachThumbnailEvents(a, data, layer) {
 
 function selectorTrayWithImgs(layer, data) {
   const selectorTray = createTag('div', { class: 'body-s selector-tray' });
-  const trayItems = createTag('div', { class: 'tray-items' });
+  const trayItems = createTag('div', { role: 'group', 'aria-labelledby': 'tray-title', class: 'tray-items' });
   const configTray = getTrayConfig(data);
   let pathIdx = getStartingPathIdx(data);
   const pics = [...configTray.querySelectorAll('li picture')];
@@ -85,7 +85,7 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const title = config.querySelector('p:first-child');
   let trayTitle = null;
-  if (title) trayTitle = createTag('div', { class: 'tray-title' }, title.innerText.trim());
+  if (title) trayTitle = createTag('div', { id: 'tray-title', class: 'tray-title' }, title.innerText.trim());
   const selectorTray = selectorTrayWithImgs(layer, data);
   if (title) selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
