@@ -36,22 +36,6 @@ function createSelectorThumbnail(pic, pathId, displayImg) {
   return a;
 }
 
-/**
- * Enables arrow key navigation for a group of elements with role="radio" within a container.
- *
- * @param {HTMLElement} container - The container element that holds the radio-role items.
- *
- * @description
- * This function adds a keyboard event listener to the container to handle arrow key presses:
- * - ArrowRight and ArrowDown move focus to the next radio item.
- * - ArrowLeft and ArrowUp move focus to the previous radio item.
- * Focus wraps around when reaching the first or last item.
- *
- * It queries all child elements with `role="radio"` inside the container to manage focus movement.
- * This enhances accessibility by allowing keyboard users to navigate between radio options
- * using arrow keys.
- */
-
 function attachArrowNavigation(container) {
   const getRadioItems = () => Array.from(container.querySelectorAll('a[role="radio"]'));
 
