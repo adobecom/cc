@@ -51,6 +51,12 @@ runTests(async () => {
       expect(satelliteSpy.getCall(2).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'showmore|photo' } } } });
       expect(satelliteSpy.getCall(3).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'menu-toggle--photoshop|photo' } } } });
       expect(satelliteSpy.getCall(4).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'merch-icon-click--photoshop|photo' } } } });
+      sidenav.filters.selectedValue = 'photo';
+      dispatchEvent(sidenav.filters, 'merch-sidenav:select', undefined);
+      expect(satelliteSpy.getCall(5).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'photo--cat|photo|nopzn|catalog' } } } });
+      sidenav.filters.selectedValue = 'illustration';
+      dispatchEvent(sidenav.filters, 'merch-sidenav:select', undefined);
+      expect(satelliteSpy.getCall(6).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'illustration--cat|illustration|nopzn|catalog' } } } });
     });
   });
 });
