@@ -35,6 +35,8 @@ indices:
       - /heroes/**
       - /trust/**
       - /subscription/**
+      - /about-adobe/**
+      - /corporate-responsibility/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -109,6 +111,8 @@ indices:
       - /au/heroes/**
       - /au/trust/**
       - /au/subscription/**
+      - /au/about-adobe/**
+      - /au/corporate-responsibility/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -146,6 +150,8 @@ indices:
       - /de/heroes/**
       - /de/trust/**
       - /de/subscription/**
+      - /de/about-adobe/**
+      - /de/corporate-responsibility/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -183,6 +189,8 @@ indices:
       - /es/heroes/**
       - /es/trust/**
       - /es/subscription/**
+      - /es/about-adobe/**
+      - /es/corporate-responsibility/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -220,6 +228,8 @@ indices:
       - /fr/heroes/**
       - /fr/trust/**
       - /fr/subscription/**
+      - /fr/about-adobe/**
+      - /fr/corporate-responsibility/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -257,6 +267,8 @@ indices:
       - /it/heroes/**
       - /it/trust/**
       - /it/subscription/**
+      - /it/about-adobe/**
+      - /it/corporate-responsibility/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -294,6 +306,8 @@ indices:
       - /jp/heroes/**
       - /jp/trust/**
       - /jp/subscription/**
+      - /jp/about-adobe/**
+      - /jp/corporate-responsibility/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -331,6 +345,8 @@ indices:
       - /kr/heroes/**
       - /kr/trust/**
       - /kr/subscription/**
+      - /kr/about-adobe/**
+      - /kr/corporate-responsibility/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -368,6 +384,8 @@ indices:
       - /ru/heroes/**
       - /ru/trust/**
       - /ru/subscription/**
+      - /ru/about-adobe/**
+      - /ru/corporate-responsibility/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -405,6 +423,8 @@ indices:
       - /hk_zh/heroes/**
       - /hk_zh/trust/**
       - /hk_zh/subscription/**
+      - /hk_zh/about-adobe/**
+      - /hk_zh/corporate-responsibility/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -442,6 +462,8 @@ indices:
       - /tw/heroes/**
       - /tw/trust/**
       - /tw/subscription/**
+      - /tw/about-adobe/**
+      - /tw/corporate-responsibility/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -479,6 +501,8 @@ indices:
       - /nl/heroes/**
       - /nl/trust/**
       - /nl/subscription/**
+      - /nl/about-adobe/**
+      - /nl/corporate-responsibility/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -516,6 +540,8 @@ indices:
       - /pl/heroes/**
       - /pl/trust/**
       - /pl/subscription/**
+      - /pl/about-adobe/**
+      - /pl/corporate-responsibility/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -553,6 +579,8 @@ indices:
       - /tr/heroes/**
       - /tr/trust/**
       - /tr/subscription/**
+      - /tr/about-adobe/**
+      - /tr/corporate-responsibility/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -590,6 +618,8 @@ indices:
       - /uk/heroes/**
       - /uk/trust/**
       - /uk/subscription/**
+      - /uk/about-adobe/**
+      - /uk/corporate-responsibility/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -627,6 +657,8 @@ indices:
       - /ca/heroes/**
       - /ca/trust/**
       - /ca/subscription/**
+      - /ca/about-adobe/**
+      - /ca/corporate-responsibility/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -664,6 +696,8 @@ indices:
       - /cn/heroes/**
       - /cn/trust/**
       - /cn/subscription/**
+      - /cn/about-adobe/**
+      - /cn/corporate-responsibility/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -701,6 +735,8 @@ indices:
       - /ae_ar/heroes/**
       - /ae_ar/trust/**
       - /ae_ar/subscription/**
+      - /ae_ar/about-adobe/**
+      - /ae_ar/corporate-responsibility/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -738,6 +774,8 @@ indices:
       - /ae_en/heroes/**
       - /ae_en/trust/**
       - /ae_en/subscription/**
+      - /ae_en/about-adobe/**
+      - /ae_en/corporate-responsibility/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -775,6 +813,8 @@ indices:
       - /at/heroes/**
       - /at/trust/**
       - /at/subscription/**
+      - /at/about-adobe/**
+      - /at/corporate-responsibility/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -812,6 +852,8 @@ indices:
       - /be_en/heroes/**
       - /be_en/trust/**
       - /be_en/subscription/**
+      - /be_en/about-adobe/**
+      - /be_en/corporate-responsibility/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -849,6 +891,8 @@ indices:
       - /be_fr/heroes/**
       - /be_fr/trust/**
       - /be_fr/subscription/**
+      - /be_fr/about-adobe/**
+      - /be_fr/corporate-responsibility/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -886,6 +930,8 @@ indices:
       - /ca_fr/heroes/**
       - /ca_fr/trust/**
       - /ca_fr/subscription/**
+      - /ca_fr/about-adobe/**
+      - /ca_fr/corporate-responsibility/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -923,6 +969,8 @@ indices:
       - /ch_de/heroes/**
       - /ch_de/trust/**
       - /ch_de/subscription/**
+      - /ch_de/about-adobe/**
+      - /ch_de/corporate-responsibility/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -960,6 +1008,8 @@ indices:
       - /ch_fr/heroes/**
       - /ch_fr/trust/**
       - /ch_fr/subscription/**
+      - /ch_fr/about-adobe/**
+      - /ch_fr/corporate-responsibility/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -997,6 +1047,8 @@ indices:
       - /cl/heroes/**
       - /cl/trust/**
       - /cl/subscription/**
+      - /cl/about-adobe/**
+      - /cl/corporate-responsibility/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -1034,6 +1086,8 @@ indices:
       - /gr_en/heroes/**
       - /gr_en/trust/**
       - /gr_en/subscription/**
+      - /gr_en/about-adobe/**
+      - /gr_en/corporate-responsibility/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -1071,6 +1125,8 @@ indices:
       - /hk_en/heroes/**
       - /hk_en/trust/**
       - /hk_en/subscription/**
+      - /hk_en/about-adobe/**
+      - /hk_en/corporate-responsibility/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -1108,6 +1164,8 @@ indices:
       - /ie/heroes/**
       - /ie/trust/**
       - /ie/subscription/**
+      - /ie/about-adobe/**
+      - /ie/corporate-responsibility/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -1145,6 +1203,8 @@ indices:
       - /il_en/heroes/**
       - /il_en/trust/**
       - /il_en/subscription/**
+      - /il_en/about-adobe/**
+      - /il_en/corporate-responsibility/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -1182,6 +1242,8 @@ indices:
       - /in/heroes/**
       - /in/trust/**
       - /in/subscription/**
+      - /in/about-adobe/**
+      - /in/corporate-responsibility/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -1219,6 +1281,8 @@ indices:
       - /lt/heroes/**
       - /lt/trust/**
       - /lt/subscription/**
+      - /lt/about-adobe/**
+      - /lt/corporate-responsibility/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -1256,6 +1320,8 @@ indices:
       - /lu_de/heroes/**
       - /lu_de/trust/**
       - /lu_de/subscription/**
+      - /lu_de/about-adobe/**
+      - /lu_de/corporate-responsibility/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -1293,6 +1359,8 @@ indices:
       - /lu_en/heroes/**
       - /lu_en/trust/**
       - /lu_en/subscription/**
+      - /lu_en/about-adobe/**
+      - /lu_en/corporate-responsibility/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -1330,6 +1398,8 @@ indices:
       - /lu_fr/heroes/**
       - /lu_fr/trust/**
       - /lu_fr/subscription/**
+      - /lu_fr/about-adobe/**
+      - /lu_fr/corporate-responsibility/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -1367,6 +1437,8 @@ indices:
       - /mena_en/heroes/**
       - /mena_en/trust/**
       - /mena_en/subscription/**
+      - /mena_en/about-adobe/**
+      - /mena_en/corporate-responsibility/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -1404,6 +1476,8 @@ indices:
       - /nz/heroes/**
       - /nz/trust/**
       - /nz/subscription/**
+      - /nz/about-adobe/**
+      - /nz/corporate-responsibility/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -1441,6 +1515,8 @@ indices:
       - /sa_ar/heroes/**
       - /sa_ar/trust/**
       - /sa_ar/subscription/**
+      - /sa_ar/about-adobe/**
+      - /sa_ar/corporate-responsibility/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -1478,6 +1554,8 @@ indices:
       - /sa_en/heroes/**
       - /sa_en/trust/**
       - /sa_en/subscription/**
+      - /sa_en/about-adobe/**
+      - /sa_en/corporate-responsibility/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
   cards-sa_en:
@@ -1515,6 +1593,8 @@ indices:
       - /th_en/heroes/**
       - /th_en/trust/**
       - /th_en/subscription/**
+      - /th_en/about-adobe/**
+      - /th_en/corporate-responsibility/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -1552,6 +1632,8 @@ indices:
       - /th_th/heroes/**
       - /th_th/trust/**
       - /th_th/subscription/**
+      - /th_th/about-adobe/**
+      - /th_th/corporate-responsibility/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -1589,6 +1671,8 @@ indices:
       - /za/heroes/**
       - /za/trust/**
       - /za/subscription/**
+      - /za/about-adobe/**
+      - /za/corporate-responsibility/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -1626,6 +1710,8 @@ indices:
       - /africa/heroes/**
       - /africa/trust/**
       - /africa/subscription/**
+      - /africa/about-adobe/**
+      - /africa/corporate-responsibility/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -1663,6 +1749,8 @@ indices:
       - /ar/heroes/**
       - /ar/trust/**
       - /ar/subscription/**
+      - /ar/about-adobe/**
+      - /ar/corporate-responsibility/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -1700,6 +1788,8 @@ indices:
       - /co/heroes/**
       - /co/trust/**
       - /co/subscription/**
+      - /co/about-adobe/**
+      - /co/corporate-responsibility/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -1737,6 +1827,8 @@ indices:
       - /cr/heroes/**
       - /cr/trust/**
       - /cr/subscription/**
+      - /cr/about-adobe/**
+      - /cr/corporate-responsibility/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -1774,6 +1866,8 @@ indices:
       - /ec/heroes/**
       - /ec/trust/**
       - /ec/subscription/**
+      - /ec/about-adobe/**
+      - /ec/corporate-responsibility/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -1811,6 +1905,8 @@ indices:
       - /eg_ar/heroes/**
       - /eg_ar/trust/**
       - /eg_ar/subscription/**
+      - /eg_ar/about-adobe/**
+      - /eg_ar/corporate-responsibility/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -1848,6 +1944,8 @@ indices:
       - /eg_en/heroes/**
       - /eg_en/trust/**
       - /eg_en/subscription/**
+      - /eg_en/about-adobe/**
+      - /eg_en/corporate-responsibility/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -1885,6 +1983,8 @@ indices:
       - /gr_el/heroes/**
       - /gr_el/trust/**
       - /gr_el/subscription/**
+      - /gr_el/about-adobe/**
+      - /gr_el/corporate-responsibility/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -1922,6 +2022,8 @@ indices:
       - /gt/heroes/**
       - /gt/trust/**
       - /gt/subscription/**
+      - /gt/about-adobe/**
+      - /gt/corporate-responsibility/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -1959,6 +2061,9 @@ indices:
       - /id_en/heroes/**
       - /id_en/trust/**
       - /id_en/subscription/**
+      - /id_en/about-adobe/**
+      - /id_en/corporate-responsibility/**
+
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -1996,6 +2101,8 @@ indices:
       - /id_id/heroes/**
       - /id_id/trust/**
       - /id_id/subscription/**
+      - /id_id/about-adobe/**
+      - /id_id/corporate-responsibility/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -2033,6 +2140,8 @@ indices:
       - /in_hi/heroes/**
       - /in_hi/trust/**
       - /in_hi/subscription/**
+      - /in_hi/about-adobe/**
+      - /in_hi/corporate-responsibility/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -2070,6 +2179,8 @@ indices:
       - /kw_ar/heroes/**
       - /kw_ar/trust/**
       - /kw_ar/subscription/**
+      - /kw_ar/about-adobe/**
+      - /kw_ar/corporate-responsibility/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -2107,6 +2218,8 @@ indices:
       - /kw_en/heroes/**
       - /kw_en/trust/**
       - /kw_en/subscription/**
+      - /kw_en/about-adobe/**
+      - /kw_en/corporate-responsibility/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -2144,6 +2257,8 @@ indices:
       - /my_en/heroes/**
       - /my_en/trust/**
       - /my_en/subscription/**
+      - /my_en/about-adobe/**
+      - /my_en/corporate-responsibility/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -2181,6 +2296,8 @@ indices:
       - /my_ms/heroes/**
       - /my_ms/trust/**
       - /my_ms/subscription/**
+      - /my_ms/about-adobe/**
+      - /my_ms/corporate-responsibility/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -2218,6 +2335,8 @@ indices:
       - /ng/heroes/**
       - /ng/trust/**
       - /ng/subscription/**
+      - /ng/about-adobe/**
+      - /ng/corporate-responsibility/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -2255,6 +2374,8 @@ indices:
       - /pe/heroes/**
       - /pe/trust/**
       - /pe/subscription/**
+      - /pe/about-adobe/**
+      - /pe/corporate-responsibility/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -2292,6 +2413,8 @@ indices:
       - /ph_en/heroes/**
       - /ph_en/trust/**
       - /ph_en/subscription/**
+      - /ph_en/about-adobe/**
+      - /ph_en/corporate-responsibility/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -2329,6 +2452,8 @@ indices:
       - /ph_fil/heroes/**
       - /ph_fil/trust/**
       - /ph_fil/subscription/**
+      - /ph_fil/about-adobe/**
+      - /ph_fil/corporate-responsibility/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -2366,6 +2491,8 @@ indices:
       - /pr/heroes/**
       - /pr/trust/**
       - /pr/subscription/**
+      - /pr/about-adobe/**
+      - /pr/corporate-responsibility/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -2403,6 +2530,8 @@ indices:
       - /qa_ar/heroes/**
       - /qa_ar/trust/**
       - /qa_ar/subscription/**
+      - /qa_ar/about-adobe/**
+      - /qa_ar/corporate-responsibility/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -2440,6 +2569,8 @@ indices:
       - /qa_en/heroes/**
       - /qa_en/trust/**
       - /qa_en/subscription/**
+      - /qa_en/about-adobe/**
+      - /qa_en/corporate-responsibility/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -2477,6 +2608,8 @@ indices:
       - /vn_en/heroes/**
       - /vn_en/trust/**
       - /vn_en/subscription/**
+      - /vn_en/about-adobe/**
+      - /vn_en/corporate-responsibility/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -2514,6 +2647,8 @@ indices:
       - /vn_vi/heroes/**
       - /vn_vi/trust/**
       - /vn_vi/subscription/**
+      - /vn_vi/about-adobe/**
+      - /vn_vi/corporate-responsibility/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -2551,6 +2686,8 @@ indices:
       - /dk/heroes/**
       - /dk/trust/**
       - /dk/subscription/**
+      - /dk/about-adobe/**
+      - /dk/corporate-responsibility/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -2588,6 +2725,8 @@ indices:
       - /fi/heroes/**
       - /fi/trust/**
       - /fi/subscription/**
+      - /fi/about-adobe/**
+      - /fi/corporate-responsibility/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -2625,6 +2764,8 @@ indices:
       - /no/heroes/**
       - /no/trust/**
       - /no/subscription/**
+      - /no/about-adobe/**
+      - /no/corporate-responsibility/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -2662,6 +2803,8 @@ indices:
       - /se/heroes/**
       - /se/trust/**
       - /se/subscription/**
+      - /se/about-adobe/**
+      - /se/corporate-responsibility/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -2699,6 +2842,8 @@ indices:
       - /la/heroes/**
       - /la/trust/**
       - /la/subscription/**
+      - /la/about-adobe/**
+      - /la/corporate-responsibility/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -2736,6 +2881,8 @@ indices:
       - /mx/heroes/**
       - /mx/trust/**
       - /mx/subscription/**
+      - /mx/about-adobe/**
+      - /mx/corporate-responsibility/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -2773,6 +2920,8 @@ indices:
       - /be_nl/heroes/**
       - /be_nl/trust/**
       - /be_nl/subscription/**
+      - /be_nl/about-adobe/**
+      - /be_nl/corporate-responsibility/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -2810,6 +2959,8 @@ indices:
       - /bg/heroes/**
       - /bg/trust/**
       - /bg/subscription/**
+      - /bg/about-adobe/**
+      - /bg/corporate-responsibility/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -2847,6 +2998,8 @@ indices:
       - /ch_it/heroes/**
       - /ch_it/trust/**
       - /ch_it/subscription/**
+      - /ch_it/about-adobe/**
+      - /ch_it/corporate-responsibility/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -2884,6 +3037,8 @@ indices:
       - /cz/heroes/**
       - /cz/trust/**
       - /cz/subscription/**
+      - /cz/about-adobe/**
+      - /cz/corporate-responsibility/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -2921,6 +3076,8 @@ indices:
       - /ee/heroes/**
       - /ee/trust/**
       - /ee/subscription/**
+      - /ee/about-adobe/**
+      - /ee/corporate-responsibility/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -2958,6 +3115,8 @@ indices:
       - /hu/heroes/**
       - /hu/trust/**
       - /hu/subscription/**
+      - /hu/about-adobe/**
+      - /hu/corporate-responsibility/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -2995,6 +3154,8 @@ indices:
       - /il_he/heroes/**
       - /il_he/trust/**
       - /il_he/subscription/**
+      - /il_he/about-adobe/**
+      - /il_he/corporate-responsibility/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -3032,6 +3193,8 @@ indices:
       - /lv/heroes/**
       - /lv/trust/**
       - /lv/subscription/**
+      - /lv/about-adobe/**
+      - /lv/corporate-responsibility/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -3069,6 +3232,8 @@ indices:
       - /mena_ar/heroes/**
       - /mena_ar/trust/**
       - /mena_ar/subscription/**
+      - /mena_ar/about-adobe/**
+      - /mena_ar/corporate-responsibility/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -3106,6 +3271,8 @@ indices:
       - /pt/heroes/**
       - /pt/trust/**
       - /pt/subscription/**
+      - /pt/about-adobe/**
+      - /pt/corporate-responsibility/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -3143,6 +3310,8 @@ indices:
       - /ro/heroes/**
       - /ro/trust/**
       - /ro/subscription/**
+      - /ro/about-adobe/**
+      - /ro/corporate-responsibility/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -3180,6 +3349,8 @@ indices:
       - /si/heroes/**
       - /si/trust/**
       - /si/subscription/**
+      - /si/about-adobe/**
+      - /si/corporate-responsibility/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -3217,6 +3388,8 @@ indices:
       - /sk/heroes/**
       - /sk/trust/**
       - /sk/subscription/**
+      - /sk/about-adobe/**
+      - /sk/corporate-responsibility/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -3254,6 +3427,8 @@ indices:
       - /ua/heroes/**
       - /ua/trust/**
       - /ua/subscription/**
+      - /ua/about-adobe/**
+      - /ua/corporate-responsibility/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -3291,6 +3466,8 @@ indices:
       - /sg/heroes/**
       - /sg/trust/**
       - /sg/subscription/**
+      - /sg/about-adobe/**
+      - /sg/corporate-responsibility/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -3328,6 +3505,8 @@ indices:
       - /br/heroes/**
       - /br/trust/**
       - /br/subscription/**
+      - /br/about-adobe/**
+      - /br/corporate-responsibility/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -3365,6 +3544,8 @@ indices:
       - /cis_en/heroes/**
       - /cis_en/trust/**
       - /cis_en/subscription/**
+      - /cis_en/about-adobe/**
+      - /cis_en/corporate-responsibility/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -3402,6 +3583,8 @@ indices:
       - /cis_ru/heroes/**
       - /cis_ru/trust/**
       - /cis_ru/subscription/**
+      - /cis_ru/about-adobe/**
+      - /cis_ru/corporate-responsibility/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
