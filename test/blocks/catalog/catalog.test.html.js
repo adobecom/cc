@@ -21,9 +21,9 @@ runTests(async () => {
       const catalogEl = document.querySelector('.catalog');
       updateCatalogLh(catalogEl, 'all');
       expect(catalogEl.getAttribute('daa-lh')).to.equal('all');
-      catalogEl.setAttribute('daa-lh', 'all|some|Mep|Value');
+      catalogEl.setAttribute('daa-lh', 'all');
       updateCatalogLh(catalogEl, 'photo');
-      expect(catalogEl.getAttribute('daa-lh')).to.equal('photo|some|Mep|Value');
+      expect(catalogEl.getAttribute('daa-lh')).to.equal('photo');
     });
 
     it('enable working analytics', () => {
@@ -46,11 +46,17 @@ runTests(async () => {
       dispatchEvent(merchCards, 'merch-card-collection:showmore', undefined);
       dispatchEvent(card, 'merch-card:action-menu-toggle', { card: card.name });
       card.querySelector('merch-icon').click();
-      expect(satelliteSpy.getCall(0).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'photoshop--search|photo|some|Mep|Value' } } } });
-      expect(satelliteSpy.getCall(1).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'popularity--sort|photo|some|Mep|Value' } } } });
-      expect(satelliteSpy.getCall(2).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'showmore|photo|some|Mep|Value' } } } });
-      expect(satelliteSpy.getCall(3).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'menu-toggle--photoshop|photo|some|Mep|Value' } } } });
-      expect(satelliteSpy.getCall(4).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'merch-icon-click--photoshop|photo|some|Mep|Value' } } } });
+      expect(satelliteSpy.getCall(0).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'photoshop--search|photo|nopzn|catalog' } } } });
+      expect(satelliteSpy.getCall(1).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'popularity--sort|photo' } } } });
+      expect(satelliteSpy.getCall(2).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'showmore|photo' } } } });
+      expect(satelliteSpy.getCall(3).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'menu-toggle--photoshop|photo' } } } });
+      expect(satelliteSpy.getCall(4).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'merch-icon-click--photoshop|photo' } } } });
+      sidenav.filters.selectedValue = 'photo';
+      dispatchEvent(sidenav.filters, 'merch-sidenav:select', undefined);
+      expect(satelliteSpy.getCall(5).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'photo--cat|photo|nopzn|catalog' } } } });
+      sidenav.filters.selectedValue = 'illustration';
+      dispatchEvent(sidenav.filters, 'merch-sidenav:select', undefined);
+      expect(satelliteSpy.getCall(6).args[1]).to.deep.equal({ xdm: {}, data: { web: { webInteraction: { name: 'illustration--cat|illustration|nopzn|catalog' } } } });
     });
   });
 });

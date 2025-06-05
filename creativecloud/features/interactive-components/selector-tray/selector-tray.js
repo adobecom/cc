@@ -23,6 +23,7 @@ function createSelectorThumbnail(pic, pathId, displayImg) {
   const a = createTag('a', {
     class: 'tray-thumbnail-img',
     href: '#',
+    role: 'radio',
     ...(pic.querySelector('img') && pic.querySelector('img').alt && { 'aria-label': pic.querySelector('img').alt }),
   }, outline);
   a.style.backgroundImage = `url(${src})`;
@@ -35,13 +36,35 @@ function createSelectorThumbnail(pic, pathId, displayImg) {
   return a;
 }
 
+function attachArrowNavigation(container) {
+  const getRadioItems = () => Array.from(container.querySelectorAll('a[role="radio"]'));
+
+  container.addEventListener('keydown', (e) => {
+    if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(e.key)) return;
+
+    const radios = getRadioItems();
+    const currentIndex = radios.indexOf(document.activeElement);
+    if (currentIndex === -1) return;
+
+    const direction = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : -1;
+    const nextIndex = (currentIndex + direction + radios.length) % radios.length;
+
+    radios[nextIndex].focus();
+    e.preventDefault();
+  });
+}
+
 function attachThumbnailEvents(a, data, layer) {
   ['mouseover', 'touchstart', 'focus', 'keyup'].forEach((event) => {
     a.addEventListener(event, async (e) => {
       const curra = e.target.nodeName === 'A' ? e.target : e.target.closest('a');
       const selected = e.target.closest('.tray-items')?.querySelectorAll('.thumbnail-selected');
-      [...selected].forEach((s) => s.classList.remove('thumbnail-selected'));
+      [...selected].forEach((s) => {
+        s.classList.remove('thumbnail-selected');
+        s.setAttribute('aria-checked', 'false');
+      });
       curra.classList.add('thumbnail-selected');
+      curra.setAttribute('aria-checked', 'true');
       const trObj = { src: curra.dataset.dispSrc, alt: curra.dataset.dispAlt, useCfg: true };
       await handleImageTransition(data, trObj);
     });
@@ -60,7 +83,7 @@ function attachThumbnailEvents(a, data, layer) {
 }
 
 function selectorTrayWithImgs(layer, data) {
-  const selectorTray = createTag('div', { class: 'body-s selector-tray' });
+  const selectorTray = createTag('div', { class: 'body-s selector-tray', role: 'radiogroup', 'aria-labelledby': 'tray-title' });
   const trayItems = createTag('div', { class: 'tray-items' });
   const configTray = getTrayConfig(data);
   let pathIdx = getStartingPathIdx(data);
@@ -76,6 +99,7 @@ function selectorTrayWithImgs(layer, data) {
     attachThumbnailEvents(a, data, layer);
   });
   selectorTray.append(trayItems);
+  attachArrowNavigation(selectorTray);
   return selectorTray;
 }
 
@@ -85,7 +109,7 @@ export default async function stepInit(data) {
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
   const title = config.querySelector('p:first-child');
   let trayTitle = null;
-  if (title) trayTitle = createTag('div', { class: 'tray-title' }, title.innerText.trim());
+  if (title) trayTitle = createTag('div', { class: 'tray-title', id: 'tray-title' }, title.innerText.trim());
   const selectorTray = selectorTrayWithImgs(layer, data);
   if (title) selectorTray.prepend(trayTitle);
   layer.append(selectorTray);
