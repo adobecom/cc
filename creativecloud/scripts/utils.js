@@ -255,6 +255,7 @@ function getDecorateAreaFn() {
 
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
     const firstBlock = fragmentLink ? area.querySelector('body > div > div') : area.querySelector('body > main > div > div');
+    const firstSection = area.querySelector('body > main > div');
     let fgDivs = null;
     switch (true) {
       case firstBlock?.classList.contains('changebg'): {
@@ -278,6 +279,17 @@ function getDecorateAreaFn() {
           const foreground = heroForegroundImage(firstBlock);
           const imageHidden = (viewport === 'TABLET' && firstBlock?.classList.contains('media-hidden-tablet')) || (viewport === 'MOBILE' && firstBlock?.classList.contains('media-hidden-mobile'));
           if (!imageHidden) eagerLoad(foreground.querySelector('img'));
+          const uploadBlock = firstSection?.querySelector(':scope > div.upload');
+          if (uploadBlock) {
+            const gridClass = {
+              MOBILE: '.upload-grid.mobile-up',
+              TABLET: '.upload-grid.tablet-up',
+              DESKTOP: '.upload-grid.desktop-up',
+            }[viewport];
+            const grid = uploadBlock.querySelector(gridClass);
+            const img = grid?.querySelector('.media-container img');
+            if (img) eagerLoad(img);
+          }
         } else eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
         break;
       }
