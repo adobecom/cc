@@ -279,15 +279,15 @@ function getDecorateAreaFn() {
           const foreground = heroForegroundImage(firstBlock);
           const imageHidden = (viewport === 'TABLET' && firstBlock?.classList.contains('media-hidden-tablet')) || (viewport === 'MOBILE' && firstBlock?.classList.contains('media-hidden-mobile'));
           if (!imageHidden) eagerLoad(foreground.querySelector('img'));
-          const uploadBlock = firstSection?.querySelector(':scope > div.upload');
+          const uploadBlock = firstSection?.querySelector(':scope > div.upload > div');
           if (uploadBlock) {
-            const gridClass = {
-              MOBILE: '.upload-grid.mobile-up',
-              TABLET: '.upload-grid.tablet-up',
-              DESKTOP: '.upload-grid.desktop-up',
+            const gridIndex = {
+              MOBILE: 1,
+              TABLET: 2,
+              DESKTOP: 3,
             }[viewport];
-            const grid = uploadBlock.querySelector(gridClass);
-            const img = grid?.querySelector('.media-container img');
+            const grid = uploadBlock.querySelector(`:scope > div:nth-child(${gridIndex})`);
+            const img = grid?.querySelector('picture > img');
             if (img) eagerLoad(img);
           }
         } else eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
