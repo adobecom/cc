@@ -257,6 +257,10 @@
   width: auto;
 }
 
+html[dir="rtl"] .cc-forms .check-item-label {
+  margin-right: var(--spacing-xxs);
+}
+
 .cc-forms .cc-forms-legal-wrapper p {
   font-size: var(--type-body-xxs-size);
   line-height: var(--type-body-xxs-lh);
