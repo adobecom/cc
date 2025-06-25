@@ -323,7 +323,7 @@ function replaceURL(tagObject) {
 
 function getDescriptionTag(title, subtitle) {
   const descriptionTag = createTag('div', { class: 'np-description' });
-  const titleTag = createTag('span', { class: 'np-title' }, title);
+  const titleTag = createTag('h1', { class: 'np-title' }, title);
 
   descriptionTag.append(titleTag);
 
