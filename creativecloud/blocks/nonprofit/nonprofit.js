@@ -270,7 +270,6 @@ function renderStepper(containerTag) {
       step1.classList.add('is-active');
       step2.setAttribute('aria-disabled', true);
       step3.setAttribute('aria-disabled', true);
-
     }
     if (step === 2) {
       step1.classList.add('is-cleared');
