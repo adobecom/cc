@@ -206,5 +206,7 @@ export default async function init(el) {
     await makePause();
     appendResources(rootNav, resourcesLink);
   }
+  const collection = document.querySelector('merch-card-collection');
+  collection?.attachSidenav(rootNav, false);
   return rootNav;
 }
