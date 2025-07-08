@@ -6,7 +6,7 @@
 }
 
 .callout.con-block {
-  padding-inline: var(--spacing-m);
+  padding-inline: var(--spacing-xs);
 }
 
 .callout-item {
