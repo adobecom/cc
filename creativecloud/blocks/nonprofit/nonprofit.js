@@ -4,7 +4,7 @@
 /* eslint-disable max-len */
 import ReactiveStore from './reactiveStore.js';
 import { setLibs } from '../../scripts/utils.js';
-import { countries } from './constants.js';
+import { countries, PERCENT_CONFIG_MAP } from './constants.js';
 import { getNonprofitIconTag, NONPRFIT_ICONS } from './icons.js';
 import nonprofitSelect from './nonprofit-select.js';
 
@@ -17,11 +17,11 @@ const removeOptionElements = (element) => {
     child.remove();
   });
 };
+let product = null;
 
 // #region Constants
 
 const PERCENT_API_URL = 'https://api.goodstack.io/v1';
-const PERCENT_VALIDATION_API_URL = 'https://validate.goodstack.org/adobe-acrobat';
 const PERCENT_PUBLISHABLE_KEY = 'pk_ea675372-2eb2-4cf1-8b6a-358087bf8df5';
 export const SCENARIOS = Object.freeze({
   FOUND_IN_SEARCH: 'FOUND_IN_SEARCH',
@@ -135,9 +135,11 @@ async function fetchRegistries(countryCode, abortController) {
 async function sendOrganizationData() {
   try {
     const { locale: { ietf } } = getConfig();
-    const inviteResponse = await fetch(`${PERCENT_VALIDATION_API_URL}?lng=${ietf}`, {
+    const { VALIDATION_URL, CONFIGURATION_ID } = PERCENT_CONFIG_MAP[product];
+    const inviteResponse = await fetch(`${VALIDATION_URL}?lng=${ietf}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${PERCENT_PUBLISHABLE_KEY}` },
+      body: JSON.stringify({ configurationId: CONFIGURATION_ID }),
     });
 
     const inviteResult = await validatePercentResponse(inviteResponse);
@@ -1018,6 +1020,7 @@ function renderStepContent(containerTag) {
 
 function initNonprofit(element) {
   const containerTag = createTag('div', { class: 'np-container' });
+  product = element.classList.value.split('nonprofit ')[1];
   renderStepper(containerTag);
   renderStepContent(containerTag);
   element.append(containerTag);
