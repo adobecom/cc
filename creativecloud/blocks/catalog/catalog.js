@@ -70,7 +70,7 @@ export function enableAnalytics(catalog, merchCards, sidenav) {
 /** container block */
 export default async function init(el) {
   await polyfills();
-  el.classList.add('collection-container', 'app');
+  el.classList.add('app');
   const libs = getLibs();
   const sidenavEl = el.querySelector('.sidenav');
   const merchCardsEl = el.querySelector('.merch-card-collection');
