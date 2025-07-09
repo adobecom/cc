@@ -1,26 +1,31 @@
 .catalog.app {
-  display: grid;
-  grid-template-columns: min-content auto;
-  grid-template-areas: 'sidenav header' 'sidenav content';
-  justify-content: center;
+  display: flex;
   min-height: 400px;
+  justify-content: center;
 }
 
+
 @media screen and (min-width: 1200px) {
-  .collection-container.catalog {
-    --merch-card-collection-sidenav-margin: 36px;
+  .catalog.app {
+    display: grid;
+    gap: 36px;
+    grid-template-columns: 240px auto;
+    min-height: 400px;
+  }
+
+  merch-sidenav {
+    min-width: 240px;
   }
 }
 
 .catalog.app > merch-sidenav {
-  grid-area: sidenav;
-}
-
-.catalog.app > merch-card-collection-header {
-  grid-area: header;
+  grid-column: 1 / span 1;
+  order: 0;
 }
 
 .catalog.app > merch-card-collection {
-  grid-area: content;
+  align-self: baseline;
+  grid-column: 2 / span 1;
+  order: 1;
   padding: 0;
 }
