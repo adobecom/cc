@@ -426,7 +426,7 @@ export const countries = [
   },
 ];
 
-export const PERCENT_CONFIG_MAP = {
+export const PRODUCT_VALIDATION_CONFIG = {
   acrobat: {
     VALIDATION_URL: 'https://validate.goodstack.org/adobe-acrobat',
     CONFIGURATION_ID: 'hostedconfiguration_000000d4csga8zhbgj7hha8ezasvi',
