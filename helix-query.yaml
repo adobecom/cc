@@ -12,6 +12,7 @@ indices:
       - /creativecloud/**
       - /accessibility/**
       - /products/**
+      - /solutions/**
       - /ai/**
       - /education/**
       - /partnerpromo/**
@@ -88,6 +89,7 @@ indices:
       - /au/creativecloud/**
       - /au/accessibility/**
       - /au/products/**
+      - /au/solutions/**
       - /au/ai/**
       - /au/education/**
       - /au/partnerpromo/**
@@ -127,6 +129,7 @@ indices:
       - /de/creativecloud/**
       - /de/accessibility/**
       - /de/products/**
+      - /de/solutions/**
       - /de/ai/**
       - /de/education/**
       - /de/partnerpromo/**
@@ -166,6 +169,7 @@ indices:
       - /es/creativecloud/**
       - /es/accessibility/**
       - /es/products/**
+      - /es/solutions/**
       - /es/ai/**
       - /es/education/**
       - /es/partnerpromo/**
@@ -205,6 +209,7 @@ indices:
       - /fr/creativecloud/**
       - /fr/accessibility/**
       - /fr/products/**
+      - /fr/solutions/**
       - /fr/ai/**
       - /fr/education/**
       - /fr/partnerpromo/**
@@ -244,6 +249,7 @@ indices:
       - /it/creativecloud/**
       - /it/accessibility/**
       - /it/products/**
+      - /it/solutions/**
       - /it/ai/**
       - /it/education/**
       - /it/partnerpromo/**
@@ -283,6 +289,7 @@ indices:
       - /jp/creativecloud/**
       - /jp/accessibility/**
       - /jp/products/**
+      - /jp/solutions/**
       - /jp/ai/**
       - /jp/education/**
       - /jp/partnerpromo/**
@@ -322,6 +329,7 @@ indices:
       - /kr/creativecloud/**
       - /kr/accessibility/**
       - /kr/products/**
+      - /kr/solutions/**
       - /kr/ai/**
       - /kr/education/**
       - /kr/partnerpromo/**
@@ -361,6 +369,7 @@ indices:
       - /ru/creativecloud/**
       - /ru/accessibility/**
       - /ru/products/**
+      - /ru/solutions/**
       - /ru/ai/**
       - /ru/education/**
       - /ru/partnerpromo/**
@@ -400,6 +409,7 @@ indices:
       - /hk_zh/creativecloud/**
       - /hk_zh/accessibility/**
       - /hk_zh/products/**
+      - /hk_zh/solutions/**
       - /hk_zh/ai/**
       - /hk_zh/education/**
       - /hk_zh/partnerpromo/**
@@ -439,6 +449,7 @@ indices:
       - /tw/creativecloud/**
       - /tw/accessibility/**
       - /tw/products/**
+      - /tw/solutions/**
       - /tw/ai/**
       - /tw/education/**
       - /tw/partnerpromo/**
@@ -478,6 +489,7 @@ indices:
       - /nl/creativecloud/**
       - /nl/accessibility/**
       - /nl/products/**
+      - /nl/solutions/**
       - /nl/ai/**
       - /nl/education/**
       - /nl/partnerpromo/**
@@ -517,6 +529,7 @@ indices:
       - /pl/creativecloud/**
       - /pl/accessibility/**
       - /pl/products/**
+      - /pl/solutions/**
       - /pl/ai/**
       - /pl/education/**
       - /pl/partnerpromo/**
@@ -556,6 +569,7 @@ indices:
       - /tr/creativecloud/**
       - /tr/accessibility/**
       - /tr/products/**
+      - /tr/solutions/**
       - /tr/ai/**
       - /tr/education/**
       - /tr/partnerpromo/**
@@ -595,6 +609,7 @@ indices:
       - /uk/creativecloud/**
       - /uk/accessibility/**
       - /uk/products/**
+      - /uk/solutions/**
       - /uk/ai/**
       - /uk/education/**
       - /uk/partnerpromo/**
@@ -634,6 +649,7 @@ indices:
       - /ca/creativecloud/**
       - /ca/accessibility/**
       - /ca/products/**
+      - /ca/solutions/**
       - /ca/ai/**
       - /ca/education/**
       - /ca/partnerpromo/**
@@ -673,6 +689,7 @@ indices:
       - /cn/creativecloud/**
       - /cn/accessibility/**
       - /cn/products/**
+      - /cn/solutions/**
       - /cn/ai/**
       - /cn/education/**
       - /cn/partnerpromo/**
@@ -712,6 +729,7 @@ indices:
       - /ae_ar/creativecloud/**
       - /ae_ar/accessibility/**
       - /ae_ar/products/**
+      - /ae_ar/solutions/**
       - /ae_ar/ai/**
       - /ae_ar/education/**
       - /ae_ar/partnerpromo/**
@@ -751,6 +769,7 @@ indices:
       - /ae_en/creativecloud/**
       - /ae_en/accessibility/**
       - /ae_en/products/**
+      - /ae_en/solutions/**
       - /ae_en/ai/**
       - /ae_en/education/**
       - /ae_en/partnerpromo/**
@@ -790,6 +809,7 @@ indices:
       - /at/creativecloud/**
       - /at/accessibility/**
       - /at/products/**
+      - /at/solutions/**
       - /at/ai/**
       - /at/education/**
       - /at/partnerpromo/**
@@ -829,6 +849,7 @@ indices:
       - /be_en/creativecloud/**
       - /be_en/accessibility/**
       - /be_en/products/**
+      - /be_en/solutions/**
       - /be_en/ai/**
       - /be_en/education/**
       - /be_en/partnerpromo/**
@@ -868,6 +889,7 @@ indices:
       - /be_fr/creativecloud/**
       - /be_fr/accessibility/**
       - /be_fr/products/**
+      - /be_fr/solutions/**
       - /be_fr/ai/**
       - /be_fr/education/**
       - /be_fr/partnerpromo/**
@@ -907,6 +929,7 @@ indices:
       - /ca_fr/creativecloud/**
       - /ca_fr/accessibility/**
       - /ca_fr/products/**
+      - /ca_fr/solutions/**
       - /ca_fr/ai/**
       - /ca_fr/education/**
       - /ca_fr/partnerpromo/**
@@ -946,6 +969,7 @@ indices:
       - /ch_de/creativecloud/**
       - /ch_de/accessibility/**
       - /ch_de/products/**
+      - /ch_de/solutions/**
       - /ch_de/ai/**
       - /ch_de/education/**
       - /ch_de/partnerpromo/**
@@ -985,6 +1009,7 @@ indices:
       - /ch_fr/creativecloud/**
       - /ch_fr/accessibility/**
       - /ch_fr/products/**
+      - /ch_fr/solutions/**
       - /ch_fr/ai/**
       - /ch_fr/education/**
       - /ch_fr/partnerpromo/**
@@ -1024,6 +1049,7 @@ indices:
       - /cl/creativecloud/**
       - /cl/accessibility/**
       - /cl/products/**
+      - /cl/solutions/**
       - /cl/ai/**
       - /cl/education/**
       - /cl/partnerpromo/**
@@ -1063,6 +1089,7 @@ indices:
       - /gr_en/creativecloud/**
       - /gr_en/accessibility/**
       - /gr_en/products/**
+      - /gr_en/solutions/**
       - /gr_en/ai/**
       - /gr_en/education/**
       - /gr_en/partnerpromo/**
@@ -1102,6 +1129,7 @@ indices:
       - /hk_en/creativecloud/**
       - /hk_en/accessibility/**
       - /hk_en/products/**
+      - /hk_en/solutions/**
       - /hk_en/ai/**
       - /hk_en/education/**
       - /hk_en/partnerpromo/**
@@ -1141,6 +1169,7 @@ indices:
       - /ie/creativecloud/**
       - /ie/accessibility/**
       - /ie/products/**
+      - /ie/solutions/**
       - /ie/ai/**
       - /ie/education/**
       - /ie/partnerpromo/**
@@ -1180,6 +1209,7 @@ indices:
       - /il_en/creativecloud/**
       - /il_en/accessibility/**
       - /il_en/products/**
+      - /il_en/solutions/**
       - /il_en/ai/**
       - /il_en/education/**
       - /il_en/partnerpromo/**
@@ -1219,6 +1249,7 @@ indices:
       - /in/creativecloud/**
       - /in/accessibility/**
       - /in/products/**
+      - /in/solutions/**
       - /in/ai/**
       - /in/education/**
       - /in/partnerpromo/**
@@ -1258,6 +1289,7 @@ indices:
       - /lt/creativecloud/**
       - /lt/accessibility/**
       - /lt/products/**
+      - /lt/solutions/**
       - /lt/ai/**
       - /lt/education/**
       - /lt/partnerpromo/**
@@ -1297,6 +1329,7 @@ indices:
       - /lu_de/creativecloud/**
       - /lu_de/accessibility/**
       - /lu_de/products/**
+      - /lu_de/solutions/**
       - /lu_de/ai/**
       - /lu_de/education/**
       - /lu_de/partnerpromo/**
@@ -1336,6 +1369,7 @@ indices:
       - /lu_en/creativecloud/**
       - /lu_en/accessibility/**
       - /lu_en/products/**
+      - /lu_en/solutions/**
       - /lu_en/ai/**
       - /lu_en/education/**
       - /lu_en/partnerpromo/**
@@ -1375,6 +1409,7 @@ indices:
       - /lu_fr/creativecloud/**
       - /lu_fr/accessibility/**
       - /lu_fr/products/**
+      - /lu_fr/solutions/**
       - /lu_fr/ai/**
       - /lu_fr/education/**
       - /lu_fr/partnerpromo/**
@@ -1414,6 +1449,7 @@ indices:
       - /mena_en/creativecloud/**
       - /mena_en/accessibility/**
       - /mena_en/products/**
+      - /mena_en/solutions/**
       - /mena_en/ai/**
       - /mena_en/education/**
       - /mena_en/partnerpromo/**
@@ -1453,6 +1489,7 @@ indices:
       - /nz/creativecloud/**
       - /nz/accessibility/**
       - /nz/products/**
+      - /nz/solutions/**
       - /nz/ai/**
       - /nz/education/**
       - /nz/partnerpromo/**
@@ -1492,6 +1529,7 @@ indices:
       - /sa_ar/creativecloud/**
       - /sa_ar/accessibility/**
       - /sa_ar/products/**
+      - /sa_ar/solutions/**
       - /sa_ar/ai/**
       - /sa_ar/education/**
       - /sa_ar/partnerpromo/**
@@ -1531,6 +1569,7 @@ indices:
       - /sa_en/creativecloud/**
       - /sa_en/accessibility/**
       - /sa_en/products/**
+      - /sa_en/solutions/**
       - /sa_en/ai/**
       - /sa_en/education/**
       - /sa_en/partnerpromo/**
@@ -1570,6 +1609,7 @@ indices:
       - /th_en/creativecloud/**
       - /th_en/accessibility/**
       - /th_en/products/**
+      - /th_en/solutions/**
       - /th_en/ai/**
       - /th_en/education/**
       - /th_en/partnerpromo/**
@@ -1609,6 +1649,7 @@ indices:
       - /th_th/creativecloud/**
       - /th_th/accessibility/**
       - /th_th/products/**
+      - /th_th/solutions/**
       - /th_th/ai/**
       - /th_th/education/**
       - /th_th/partnerpromo/**
@@ -1648,6 +1689,7 @@ indices:
       - /za/creativecloud/**
       - /za/accessibility/**
       - /za/products/**
+      - /za/solutions/**
       - /za/ai/**
       - /za/education/**
       - /za/partnerpromo/**
@@ -1687,6 +1729,7 @@ indices:
       - /africa/creativecloud/**
       - /africa/accessibility/**
       - /africa/products/**
+      - /africa/solutions/**
       - /africa/ai/**
       - /africa/education/**
       - /africa/partnerpromo/**
@@ -1726,6 +1769,7 @@ indices:
       - /ar/creativecloud/**
       - /ar/accessibility/**
       - /ar/products/**
+      - /ar/solutions/**
       - /ar/ai/**
       - /ar/education/**
       - /ar/partnerpromo/**
@@ -1765,6 +1809,7 @@ indices:
       - /co/creativecloud/**
       - /co/accessibility/**
       - /co/products/**
+      - /co/solutions/**
       - /co/ai/**
       - /co/education/**
       - /co/partnerpromo/**
@@ -1804,6 +1849,7 @@ indices:
       - /cr/creativecloud/**
       - /cr/accessibility/**
       - /cr/products/**
+      - /cr/solutions/**
       - /cr/ai/**
       - /cr/education/**
       - /cr/partnerpromo/**
@@ -1843,6 +1889,7 @@ indices:
       - /ec/creativecloud/**
       - /ec/accessibility/**
       - /ec/products/**
+      - /ec/solutions/**
       - /ec/ai/**
       - /ec/education/**
       - /ec/partnerpromo/**
@@ -1882,6 +1929,7 @@ indices:
       - /eg_ar/creativecloud/**
       - /eg_ar/accessibility/**
       - /eg_ar/products/**
+      - /eg_ar/solutions/**
       - /eg_ar/ai/**
       - /eg_ar/education/**
       - /eg_ar/partnerpromo/**
@@ -1921,6 +1969,7 @@ indices:
       - /eg_en/creativecloud/**
       - /eg_en/accessibility/**
       - /eg_en/products/**
+      - /eg_en/solutions/**
       - /eg_en/ai/**
       - /eg_en/education/**
       - /eg_en/partnerpromo/**
@@ -1960,6 +2009,7 @@ indices:
       - /gr_el/creativecloud/**
       - /gr_el/accessibility/**
       - /gr_el/products/**
+      - /gr_el/solutions/**
       - /gr_el/ai/**
       - /gr_el/education/**
       - /gr_el/partnerpromo/**
@@ -1999,6 +2049,7 @@ indices:
       - /gt/creativecloud/**
       - /gt/accessibility/**
       - /gt/products/**
+      - /gt/solutions/**
       - /gt/ai/**
       - /gt/education/**
       - /gt/partnerpromo/**
@@ -2038,6 +2089,7 @@ indices:
       - /id_en/creativecloud/**
       - /id_en/accessibility/**
       - /id_en/products/**
+      - /id_en/solutions/**
       - /id_en/ai/**
       - /id_en/education/**
       - /id_en/partnerpromo/**
@@ -2078,6 +2130,7 @@ indices:
       - /id_id/creativecloud/**
       - /id_id/accessibility/**
       - /id_id/products/**
+      - /id_id/solutions/**
       - /id_id/ai/**
       - /id_id/education/**
       - /id_id/partnerpromo/**
@@ -2117,6 +2170,7 @@ indices:
       - /in_hi/creativecloud/**
       - /in_hi/accessibility/**
       - /in_hi/products/**
+      - /in_hi/solutions/**
       - /in_hi/ai/**
       - /in_hi/education/**
       - /in_hi/partnerpromo/**
@@ -2156,6 +2210,7 @@ indices:
       - /kw_ar/creativecloud/**
       - /kw_ar/accessibility/**
       - /kw_ar/products/**
+      - /kw_ar/solutions/**
       - /kw_ar/ai/**
       - /kw_ar/education/**
       - /kw_ar/partnerpromo/**
@@ -2195,6 +2250,7 @@ indices:
       - /kw_en/creativecloud/**
       - /kw_en/accessibility/**
       - /kw_en/products/**
+      - /kw_en/solutions/**
       - /kw_en/ai/**
       - /kw_en/education/**
       - /kw_en/partnerpromo/**
@@ -2234,6 +2290,7 @@ indices:
       - /my_en/creativecloud/**
       - /my_en/accessibility/**
       - /my_en/products/**
+      - /my_en/solutions/**
       - /my_en/ai/**
       - /my_en/education/**
       - /my_en/partnerpromo/**
@@ -2273,6 +2330,7 @@ indices:
       - /my_ms/creativecloud/**
       - /my_ms/accessibility/**
       - /my_ms/products/**
+      - /my_ms/solutions/**
       - /my_ms/ai/**
       - /my_ms/education/**
       - /my_ms/partnerpromo/**
@@ -2312,6 +2370,7 @@ indices:
       - /ng/creativecloud/**
       - /ng/accessibility/**
       - /ng/products/**
+      - /ng/solutions/**
       - /ng/ai/**
       - /ng/education/**
       - /ng/partnerpromo/**
@@ -2351,6 +2410,7 @@ indices:
       - /pe/creativecloud/**
       - /pe/accessibility/**
       - /pe/products/**
+      - /pe/solutions/**
       - /pe/ai/**
       - /pe/education/**
       - /pe/partnerpromo/**
@@ -2390,6 +2450,7 @@ indices:
       - /ph_en/creativecloud/**
       - /ph_en/accessibility/**
       - /ph_en/products/**
+      - /ph_en/solutions/**
       - /ph_en/ai/**
       - /ph_en/education/**
       - /ph_en/partnerpromo/**
@@ -2429,6 +2490,7 @@ indices:
       - /ph_fil/creativecloud/**
       - /ph_fil/accessibility/**
       - /ph_fil/products/**
+      - /ph_fil/solutions/**
       - /ph_fil/ai/**
       - /ph_fil/education/**
       - /ph_fil/partnerpromo/**
@@ -2468,6 +2530,7 @@ indices:
       - /pr/creativecloud/**
       - /pr/accessibility/**
       - /pr/products/**
+      - /pr/solutions/**
       - /pr/ai/**
       - /pr/education/**
       - /pr/partnerpromo/**
@@ -2507,6 +2570,7 @@ indices:
       - /qa_ar/creativecloud/**
       - /qa_ar/accessibility/**
       - /qa_ar/products/**
+      - /qa_ar/solutions/**
       - /qa_ar/ai/**
       - /qa_ar/education/**
       - /qa_ar/partnerpromo/**
@@ -2546,6 +2610,7 @@ indices:
       - /qa_en/creativecloud/**
       - /qa_en/accessibility/**
       - /qa_en/products/**
+      - /qa_en/solutions/**
       - /qa_en/ai/**
       - /qa_en/education/**
       - /qa_en/partnerpromo/**
@@ -2585,6 +2650,7 @@ indices:
       - /vn_en/creativecloud/**
       - /vn_en/accessibility/**
       - /vn_en/products/**
+      - /vn_en/solutions/**
       - /vn_en/ai/**
       - /vn_en/education/**
       - /vn_en/partnerpromo/**
@@ -2624,6 +2690,7 @@ indices:
       - /vn_vi/creativecloud/**
       - /vn_vi/accessibility/**
       - /vn_vi/products/**
+      - /vn_vi/solutions/**
       - /vn_vi/ai/**
       - /vn_vi/education/**
       - /vn_vi/partnerpromo/**
@@ -2663,6 +2730,7 @@ indices:
       - /dk/creativecloud/**
       - /dk/accessibility/**
       - /dk/products/**
+      - /dk/solutions/**
       - /dk/ai/**
       - /dk/education/**
       - /dk/partnerpromo/**
@@ -2702,6 +2770,7 @@ indices:
       - /fi/creativecloud/**
       - /fi/accessibility/**
       - /fi/products/**
+      - /fi/solutions/**
       - /fi/ai/**
       - /fi/education/**
       - /fi/partnerpromo/**
@@ -2741,6 +2810,7 @@ indices:
       - /no/creativecloud/**
       - /no/accessibility/**
       - /no/products/**
+      - /no/solutions/**
       - /no/ai/**
       - /no/education/**
       - /no/partnerpromo/**
@@ -2780,6 +2850,7 @@ indices:
       - /se/creativecloud/**
       - /se/accessibility/**
       - /se/products/**
+      - /se/solutions/**
       - /se/ai/**
       - /se/education/**
       - /se/partnerpromo/**
@@ -2819,6 +2890,7 @@ indices:
       - /la/creativecloud/**
       - /la/accessibility/**
       - /la/products/**
+      - /la/solutions/**
       - /la/ai/**
       - /la/education/**
       - /la/partnerpromo/**
@@ -2858,6 +2930,7 @@ indices:
       - /mx/creativecloud/**
       - /mx/accessibility/**
       - /mx/products/**
+      - /mx/solutions/**
       - /mx/ai/**
       - /mx/education/**
       - /mx/partnerpromo/**
@@ -2897,6 +2970,7 @@ indices:
       - /be_nl/creativecloud/**
       - /be_nl/accessibility/**
       - /be_nl/products/**
+      - /be_nl/solutions/**
       - /be_nl/ai/**
       - /be_nl/education/**
       - /be_nl/partnerpromo/**
@@ -2936,6 +3010,7 @@ indices:
       - /bg/creativecloud/**
       - /bg/accessibility/**
       - /bg/products/**
+      - /bg/solutions/**
       - /bg/ai/**
       - /bg/education/**
       - /bg/partnerpromo/**
@@ -2975,6 +3050,7 @@ indices:
       - /ch_it/creativecloud/**
       - /ch_it/accessibility/**
       - /ch_it/products/**
+      - /ch_it/solutions/**
       - /ch_it/ai/**
       - /ch_it/education/**
       - /ch_it/partnerpromo/**
@@ -3014,6 +3090,7 @@ indices:
       - /cz/creativecloud/**
       - /cz/accessibility/**
       - /cz/products/**
+      - /cz/solutions/**
       - /cz/ai/**
       - /cz/education/**
       - /cz/partnerpromo/**
@@ -3053,6 +3130,7 @@ indices:
       - /ee/creativecloud/**
       - /ee/accessibility/**
       - /ee/products/**
+      - /ee/solutions/**
       - /ee/ai/**
       - /ee/education/**
       - /ee/partnerpromo/**
@@ -3092,6 +3170,7 @@ indices:
       - /hu/creativecloud/**
       - /hu/accessibility/**
       - /hu/products/**
+      - /hu/solutions/**
       - /hu/ai/**
       - /hu/education/**
       - /hu/partnerpromo/**
@@ -3131,6 +3210,7 @@ indices:
       - /il_he/creativecloud/**
       - /il_he/accessibility/**
       - /il_he/products/**
+      - /il_he/solutions/**
       - /il_he/ai/**
       - /il_he/education/**
       - /il_he/partnerpromo/**
@@ -3170,6 +3250,7 @@ indices:
       - /lv/creativecloud/**
       - /lv/accessibility/**
       - /lv/products/**
+      - /lv/solutions/**
       - /lv/ai/**
       - /lv/education/**
       - /lv/partnerpromo/**
@@ -3209,6 +3290,7 @@ indices:
       - /mena_ar/creativecloud/**
       - /mena_ar/accessibility/**
       - /mena_ar/products/**
+      - /mena_ar/solutions/**
       - /mena_ar/ai/**
       - /mena_ar/education/**
       - /mena_ar/partnerpromo/**
@@ -3248,6 +3330,7 @@ indices:
       - /pt/creativecloud/**
       - /pt/accessibility/**
       - /pt/products/**
+      - /pt/solutions/**
       - /pt/ai/**
       - /pt/education/**
       - /pt/partnerpromo/**
@@ -3287,6 +3370,7 @@ indices:
       - /ro/creativecloud/**
       - /ro/accessibility/**
       - /ro/products/**
+      - /ro/solutions/**
       - /ro/ai/**
       - /ro/education/**
       - /ro/partnerpromo/**
@@ -3326,6 +3410,7 @@ indices:
       - /si/creativecloud/**
       - /si/accessibility/**
       - /si/products/**
+      - /si/solutions/**
       - /si/ai/**
       - /si/education/**
       - /si/partnerpromo/**
@@ -3365,6 +3450,7 @@ indices:
       - /sk/creativecloud/**
       - /sk/accessibility/**
       - /sk/products/**
+      - /sk/solutions/**
       - /sk/ai/**
       - /sk/education/**
       - /sk/partnerpromo/**
@@ -3404,6 +3490,7 @@ indices:
       - /ua/creativecloud/**
       - /ua/accessibility/**
       - /ua/products/**
+      - /ua/solutions/**
       - /ua/ai/**
       - /ua/education/**
       - /ua/partnerpromo/**
@@ -3443,6 +3530,7 @@ indices:
       - /sg/creativecloud/**
       - /sg/accessibility/**
       - /sg/products/**
+      - /sg/solutions/**
       - /sg/ai/**
       - /sg/education/**
       - /sg/partnerpromo/**
@@ -3482,6 +3570,7 @@ indices:
       - /br/creativecloud/**
       - /br/accessibility/**
       - /br/products/**
+      - /br/solutions/**
       - /br/ai/**
       - /br/education/**
       - /br/partnerpromo/**
@@ -3521,6 +3610,7 @@ indices:
       - /cis_en/creativecloud/**
       - /cis_en/accessibility/**
       - /cis_en/products/**
+      - /cis_en/solutions/**
       - /cis_en/ai/**
       - /cis_en/education/**
       - /cis_en/partnerpromo/**
@@ -3560,6 +3650,7 @@ indices:
       - /cis_ru/creativecloud/**
       - /cis_ru/accessibility/**
       - /cis_ru/products/**
+      - /cis_ru/solutions/**
       - /cis_ru/ai/**
       - /cis_ru/education/**
       - /cis_ru/partnerpromo/**
