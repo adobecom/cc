@@ -1017,9 +1017,17 @@ function renderStepContent(containerTag, product) {
 }
 // #endregion
 
+function getProductFromClassList(element) {
+  const classes = [...element.classList];
+  const nonprofitIndex = classes.indexOf('nonprofit');
+  const product = nonprofitIndex !== -1 ? classes[nonprofitIndex + 1] : undefined;
+  if (!product) throw new Error('Product not found after "nonprofit" class');
+  return product;
+}
+
 function initNonprofit(element) {
   const containerTag = createTag('div', { class: 'np-container' });
-  const product = element.classList.value.split('nonprofit ')[1];
+  const product = getProductFromClassList(element);
   renderStepper(containerTag);
   renderStepContent(containerTag, product);
   element.append(containerTag);
