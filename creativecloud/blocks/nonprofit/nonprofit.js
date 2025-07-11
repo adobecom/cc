@@ -1021,7 +1021,7 @@ function getProductFromClassList(element) {
   const classes = [...element.classList];
   const nonprofitIndex = classes.indexOf('nonprofit');
   const product = nonprofitIndex !== -1 ? classes[nonprofitIndex + 1] : undefined;
-  if (!product) throw new Error('Product not found after "nonprofit" class');
+  if (!product) throw new Error('Product not found');
   return product;
 }
 
