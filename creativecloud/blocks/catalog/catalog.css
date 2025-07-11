@@ -12,6 +12,11 @@
   .collection-container.catalog {
     --merch-card-collection-sidenav-margin: 36px;
   }
+
+  /* Should remove this style after merging the Milo PR */
+  .collection-container.catalog > merch-sidenav {
+    margin-right: 36px;
+  }
 }
 
 .catalog.app > merch-sidenav {
