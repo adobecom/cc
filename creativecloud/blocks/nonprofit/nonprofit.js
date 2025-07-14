@@ -1020,8 +1020,7 @@ function renderStepContent(containerTag, product) {
 function getProductFromClassList(element) {
   const classes = [...element.classList];
   const nonprofitIndex = classes.indexOf('nonprofit');
-  const product = nonprofitIndex !== -1 ? classes[nonprofitIndex + 1] : undefined;
-  if (!product) throw new Error('Product not found');
+  const product = nonprofitIndex !== -1 ? classes[nonprofitIndex + 1] : 'acrobat';
   return product;
 }
 
