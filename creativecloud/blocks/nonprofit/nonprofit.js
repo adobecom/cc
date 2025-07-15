@@ -1019,8 +1019,10 @@ function renderStepContent(containerTag, product) {
 
 function getProductFromClassList(element) {
   const classes = [...element.classList];
+  if (classes.length === 1) return 'acrobat';
   const nonprofitIndex = classes.indexOf('nonprofit');
-  const product = nonprofitIndex !== -1 ? classes[nonprofitIndex + 1] : 'acrobat';
+  const product = nonprofitIndex !== -1 ? classes[nonprofitIndex + 1] : undefined;
+  if (!product) throw new Error('Product not found');
   return product;
 }
 
