@@ -206,5 +206,8 @@ export default async function init(el) {
     await makePause();
     appendResources(rootNav, resourcesLink);
   }
+  const collection = document.querySelector('merch-card-collection');
+  // Should remove this if after merging the 'plans' cumulative branch in Milo
+  if (collection && collection.attachSidenav) collection.attachSidenav(rootNav, false);
   return rootNav;
 }
