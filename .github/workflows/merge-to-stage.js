@@ -8,8 +8,7 @@ let body = `
 - After: https://${STAGE}--cc--adobecom.aem.live/?martech=off
 `;
 const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 1;
-const BASE_MAX_MERGES = process.env.MAX_PRS_PER_BATCH ? Number(process.env.MAX_PRS_PER_BATCH) : 9;
-const MAX_MERGES = BASE_MAX_MERGES + (isWithinPrePostRCP() ? 3 : 0);
+const MAX_MERGES = process.env.MAX_PRS_PER_BATCH ? Number(process.env.MAX_PRS_PER_BATCH) : 9;
 const MIN_APPROVAL_TO_STOP_MERGE = 1;
 let existingPRCount = 0;
 const LABELS = {
