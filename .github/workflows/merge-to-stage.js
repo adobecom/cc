@@ -1,4 +1,4 @@
-const STAGE = 'stage';
+const STAGE = 'stage_test';
 const PROD = 'main';
 const PR_TITLE = `[Release] Stage to Main ${new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}`;
 let github, owner, repo;
