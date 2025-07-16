@@ -268,16 +268,20 @@ function renderStepper(containerTag) {
 
     if (step === 1) {
       step1.classList.add('is-active');
+      step2.setAttribute('aria-disabled', true);
+      step3.setAttribute('aria-disabled', true);
     }
     if (step === 2) {
       step1.classList.add('is-cleared');
       step2.classList.add('is-active');
+      step2.removeAttribute('aria-disabled');
     }
     if (step === 3) {
       if (scenario === SCENARIOS.FOUND_IN_SEARCH) {
         step1.classList.add('is-cleared');
         step2.classList.add('is-cleared');
         step3.classList.add('is-active');
+        step3.removeAttribute('aria-disabled');
       } else {
         step1.classList.add('is-cleared');
         step2.classList.add('is-active');
@@ -286,11 +290,13 @@ function renderStepper(containerTag) {
     if (step === 4) {
       step1.classList.add('is-cleared');
       step2.classList.add('is-active');
+      step2.removeAttribute('aria-disabled');
     }
     if (step === 5) {
       step1.classList.add('is-cleared');
       step2.classList.add('is-cleared');
       step3.classList.add('is-active');
+      step3.removeAttribute('aria-disabled');
     }
   });
 
@@ -323,7 +329,7 @@ function replaceURL(tagObject) {
 
 function getDescriptionTag(title, subtitle) {
   const descriptionTag = createTag('div', { class: 'np-description' });
-  const titleTag = createTag('span', { class: 'np-title' }, title);
+  const titleTag = createTag('h1', { class: 'np-title' }, title);
 
   descriptionTag.append(titleTag);
 
@@ -943,7 +949,7 @@ function renderApplicationReview(containerTag) {
   const applicationReviewTag = createTag('div', { class: 'np-application-review-container' });
 
   const titleTag = createTag(
-    'span',
+    'h1',
     { class: 'np-title' },
     window.mph['nonprofit-title-application-review'],
   );
