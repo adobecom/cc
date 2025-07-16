@@ -1,15 +1,17 @@
 const STAGE = 'stage';
 const PROD = 'main';
 const PR_TITLE = `[Release] Stage to Main ${new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}`;
-const SEEN = {};
 let github, owner, repo;
 let body = `
 **Creative cloud:**
 - Before: https://${PROD}--cc--adobecom.aem.live/?martech=off
 - After: https://${STAGE}--cc--adobecom.aem.live/?martech=off
 `;
-const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
+const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 1;
+const BASE_MAX_MERGES = process.env.MAX_PRS_PER_BATCH ? Number(process.env.MAX_PRS_PER_BATCH) : 9;
+const MAX_MERGES = BASE_MAX_MERGES + (isWithinPrePostRCP() ? 3 : 0);
 const MIN_APPROVAL_TO_STOP_MERGE = 1;
+let existingPRCount = 0;
 const LABELS = {
   highPriority: 'high priority',
   readyForStage: 'ready for stage',
@@ -100,16 +102,7 @@ const merge = async ({ prs, type }) => {
 
   for await (const { number, files, html_url, title } of prs) {
     try {
-      if (files.some((file) => SEEN[file])) {
-        commentOnPR(
-          `Skipped ${number}: ${title} due to file overlap. Merging will be attempted in the next batch`,
-          number
-        );
-        continue;
-      }
-      if (type !== LABELS.zeroImpact) {
-        files.forEach((file) => (SEEN[file] = true));
-      }
+      if (mergeLimitExceeded()) return;
       if (!process.env.LOCAL_RUN) {
         await github.rest.pulls.merge({
           owner,
@@ -117,13 +110,16 @@ const merge = async ({ prs, type }) => {
           pull_number: number,
           merge_method: 'squash',
         });
-        const prefix = type === LABELS.zeroImpact ? ' [ZERO IMPACT]' : '';
-        body = `-${prefix} ${html_url}\n${body}`;
       }
+      if (type !== LABELS.zeroImpact) {
+        existingPRCount++;
+      }
+      console.log(`Current number of PRs merged: ${existingPRCount} (exluding Zero Impact)`);
+      const prefix = type === LABELS.zeroImpact ? ' [ZERO IMPACT]' : '';
+      body = `-${prefix} ${html_url}\n${body}`;
       await new Promise((resolve) => setTimeout(resolve, 5000));
     } catch (error) {
       commentOnPR(`Error merging ${number}: ${title} ` + error.message, number);
-      files.forEach((file) => (SEEN[file] = false));
     }
   }
 };
@@ -247,10 +243,8 @@ const getStageToMainPR = () =>
     .then((pr) => pr && addLabels({ pr, github, owner, repo }))
     .then((pr) => pr && addFiles({ pr, github, owner, repo }))
     .then((pr) => pr && getReviews({ pr, github, owner, repo }))
-    .then((pr) => {
-      pr?.files.forEach((file) => (SEEN[file] = true));
-      return pr;
-    });
+
+const mergeLimitExceeded = () => MAX_MERGES - existingPRCount < 0;
 
 const main = async (params) => {
   github = params.github;
