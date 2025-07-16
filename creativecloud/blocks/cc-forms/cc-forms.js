@@ -28,6 +28,7 @@ const formConfig = {
       endpoint: '/api2/marketing_common_service',
       'form-type': 'form.perpetual.action',
       'form-submit': 'trials',
+      'form-submit2': 'trials',
       ...odinConfig,
     },
   },
