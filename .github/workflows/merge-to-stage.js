@@ -1,4 +1,4 @@
-const STAGE = 'stage_test';
+const STAGE = 'stage';
 const PROD = 'main';
 const PR_TITLE = `[Release] Stage to Main ${new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}`;
 let github, owner, repo;
@@ -7,7 +7,7 @@ let body = `
 - Before: https://${PROD}--cc--adobecom.aem.live/?martech=off
 - After: https://${STAGE}--cc--adobecom.aem.live/?martech=off
 `;
-const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 1;
+const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS || 2;
 const MAX_MERGES = process.env.MAX_PRS_PER_BATCH ? Number(process.env.MAX_PRS_PER_BATCH) : 9;
 const MIN_APPROVAL_TO_STOP_MERGE = 1;
 let existingPRCount = 0;
