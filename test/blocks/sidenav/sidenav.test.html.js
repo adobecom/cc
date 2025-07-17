@@ -65,17 +65,30 @@ runTests(async () => {
     });
 
     it('does create nice plans sidenav', async () => {
-      const sidenavEl = document.querySelector('.plans');
-      const newRoot = await init(sidenavEl);
-      expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
-      expect(newRoot.sidenavTitle).to.equal('CATEGORIES');
-      const search = newRoot.querySelector('sp-search');
-      expect(search).to.be.null;
-      const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
-      expect(nestedItems.length).to.equal(0);
-      const iconItem = newRoot.querySelector('sp-sidenav-item[value=all] > picture');
-      expect(iconItem).to.not.be.null;
-      expect(iconItem.getAttribute('slot')).to.equal('icon');
+      // Mock fetch to capture the URL being called
+      let capturedUrl = null;
+      const originalFetch = window.fetch;
+      window.fetch = sinon.stub().callsFake((url) => {
+        capturedUrl = url;
+        return mockedTaxonomy();
+      });
+      try {
+        const sidenavEl = document.querySelector('.plans');
+        const newRoot = await init(sidenavEl);
+        expect(newRoot.tagName).to.equal('MERCH-SIDENAV');
+        expect(newRoot.sidenavTitle).to.equal('CATEGORIES');
+        const search = newRoot.querySelector('sp-search');
+        expect(search).to.be.null;
+        const nestedItems = newRoot.querySelectorAll('sp-sidenav-item > sp-sidenav-item');
+        expect(nestedItems.length).to.equal(0);
+        const iconItem = newRoot.querySelector('sp-sidenav-item[value=all] > picture');
+        expect(iconItem).to.not.be.null;
+        expect(iconItem.getAttribute('slot')).to.equal('icon');
+        expect(capturedUrl).to.include('/some/taxonomy.json');
+        expect(capturedUrl).to.not.include('Taxonomy Link');
+      } finally {
+        window.fetch = originalFetch;
+      }
     });
   });
 });
