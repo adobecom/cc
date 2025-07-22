@@ -21,7 +21,9 @@ const removeOptionElements = (element) => {
 // #region Constants
 
 const PERCENT_API_URL = 'https://api.goodstack.io/v1';
+const SANDBOX_PERCENT_API_URL = 'https://sandbox-api.goodstack.io/v1';
 const PERCENT_PUBLISHABLE_KEY = 'pk_ea675372-2eb2-4cf1-8b6a-358087bf8df5';
+const SANDBOX_PERCENT_PUBLISHABLE_KEY = 'sandbox_pk_8b320cc4-5950-4263-a3ac-828c64f6e19b';
 export const SCENARIOS = Object.freeze({
   FOUND_IN_SEARCH: 'FOUND_IN_SEARCH',
   NOT_FOUND_IN_SEARCH: 'NOT_FOUND_IN_SEARCH',
@@ -68,15 +70,17 @@ async function validatePercentResponse(response) {
 
 let nextOrganizationsPageUrl;
 
-async function fetchOrganizations(search, countryCode, abortController) {
+async function fetchOrganizations(search, countryCode, abortController, product) {
   try {
     organizationsStore.startLoading(true);
+    const url = product === 'acrobat' ? PERCENT_API_URL : SANDBOX_PERCENT_API_URL;
+    const auth = product === 'acrobat' ? PERCENT_PUBLISHABLE_KEY : SANDBOX_PERCENT_PUBLISHABLE_KEY;
     const response = await fetch(
-      `${PERCENT_API_URL}/organisations?countryCode=${countryCode}&query=${search}`,
+      `${url}/organisations?countryCode=${countryCode}&query=${search}`,
       {
         cache: 'force-cache',
         signal: abortController.signal,
-        headers: { Authorization: PERCENT_PUBLISHABLE_KEY },
+        headers: { Authorization: auth },
       },
     );
 
@@ -135,9 +139,10 @@ async function sendOrganizationData(product) {
   try {
     const { locale: { ietf } } = getConfig();
     const { VALIDATION_URL, CONFIGURATION_ID } = PRODUCT_VALIDATION_CONFIG[product];
+    const auth = product === 'acrobat' ? PERCENT_PUBLISHABLE_KEY : SANDBOX_PERCENT_PUBLISHABLE_KEY;
     const inviteResponse = await fetch(`${VALIDATION_URL}?lng=${ietf}`, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${PERCENT_PUBLISHABLE_KEY}` },
+      headers: { Authorization: `Bearer ${auth}` },
       body: JSON.stringify({ configurationId: CONFIGURATION_ID }),
     });
 
@@ -151,10 +156,10 @@ async function sendOrganizationData(product) {
       const evidenceUploadData = new FormData();
       evidenceUploadData.append('file', nonprofitFormData.evidenceNonProfitStatus);
       evidenceUploadData.append('validationInviteId', validationInviteId);
-
-      const uploadResponse = await fetch(`${PERCENT_API_URL}/validation-submission-documents`, {
+      const url = product === 'acrobat' ? PERCENT_API_URL : SANDBOX_PERCENT_API_URL;
+      const uploadResponse = await fetch(`${url}/validation-submission-documents`, {
         method: 'POST',
-        headers: { Authorization: PERCENT_PUBLISHABLE_KEY },
+        headers: { Authorization: auth },
         body: evidenceUploadData,
       });
 
@@ -191,11 +196,12 @@ async function sendOrganizationData(product) {
       });
     }
 
-    const submissionResponse = await fetch(`${PERCENT_API_URL}/validation-submissions`, {
+    const url = product === 'acrobat' ? PERCENT_API_URL : SANDBOX_PERCENT_API_URL;
+    const submissionResponse = await fetch(`${url}/validation-submissions`, {
       method: 'POST',
       body,
       headers: {
-        Authorization: PERCENT_PUBLISHABLE_KEY,
+        Authorization: auth,
         'Content-Type': 'application/json; charset=utf-8',
       },
     });
@@ -532,7 +538,7 @@ function trackSubmitCondition(formTag) {
 }
 
 // Select non-profit
-function renderSelectNonprofit(containerTag) {
+function renderSelectNonprofit(containerTag, product) {
   containerTag.setAttribute('daa-lh', 'find your nonprofit');
 
   // Description
@@ -611,7 +617,7 @@ function renderSelectNonprofit(containerTag) {
 
   organizationTag.onInput((value, abortController) => {
     if (!value) return;
-    fetchOrganizations(value, countryTag.getValue(), abortController);
+    fetchOrganizations(value, countryTag.getValue(), abortController, product);
   });
 
   organizationTag.onSelect((option) => {
@@ -666,7 +672,7 @@ function renderSelectNonprofit(containerTag) {
 }
 
 // Organization details
-function renderOrganizationDetails(containerTag) {
+function renderOrganizationDetails(containerTag, product) {
   containerTag.setAttribute('daa-lh', 'confirm org details');
 
   // Description
@@ -690,7 +696,7 @@ function renderOrganizationDetails(containerTag) {
   countryTag.onSelect((option) => {
     abortController?.abort();
     abortController = new AbortController();
-    fetchRegistries(option.code, abortController);
+    fetchRegistries(option.code, abortController, product);
   });
 
   const organizationNameTag = getNonprofitInput({
@@ -1004,9 +1010,9 @@ function renderStepContent(containerTag, product) {
     currentStep = step;
     currentScenario = scenario;
 
-    if (step === 1) renderSelectNonprofit(contentContainerTag);
+    if (step === 1) renderSelectNonprofit(contentContainerTag, product);
     if (step === 2 && scenario === SCENARIOS.FOUND_IN_SEARCH) renderPersonalData(contentContainerTag, product);
-    if (step === 2 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderOrganizationDetails(contentContainerTag);
+    if (step === 2 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderOrganizationDetails(contentContainerTag, product);
     if (step === 3 && scenario === SCENARIOS.FOUND_IN_SEARCH) renderApplicationReview(contentContainerTag);
     if (step === 3 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderOrganizationAddress(contentContainerTag);
     if (step === 4 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderPersonalData(contentContainerTag, product);
