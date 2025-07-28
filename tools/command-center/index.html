@@ -16,7 +16,12 @@
       <ul id="conversation-list"></ul>
     </div>
 
-    <button id="toggleSidebar" class="toggle-btn">
+    <button
+      id="toggleSidebar"
+      class="toggle-btn"
+      type="button"
+      title="Toggle Button"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"
@@ -59,10 +64,12 @@
     <div class="chat-wrapper">
       <div class="chat-background"></div>
       <h2 class="section-heading">
-        Welcome to&nbsp;<span class="cursive">
-          the Project Initiation & Planning Kit. </span
-        >&nbsp;Kickstart your project with the tools, templates, and guidance
-        you need to plan with confidence. What can I help with?
+        Welcome to the Project Initiation & Planning Kit.&nbsp;<span
+          class="cursive"
+        >
+          Kickstart your project with the tools, templates, and guidance you
+          need to plan with confidence. What would you like to begin with?</span
+        >
       </h2>
       <div id="chat-window" class="chat-window"></div>
       <div class="input-area" id="input-area">
@@ -118,10 +125,11 @@
                 class="card-icon"
                 data-gif="./assets/design.gif"
               />
-              <h3>Design from PRD</h3>
+              <h3>Generate a PPC Deck</h3>
             </div>
             <p class="card-text">
-              Receive a recommended figma layout tailored to the specific goals.
+              Turn your project vision into a clear, executive-ready PPC
+              presentation.
             </p>
           </div>
           <div class="card" data-placeholder="Create a DA page from the Figma">
@@ -132,10 +140,11 @@
                 class="card-icon"
                 data-gif="./assets/web-developer.gif"
               />
-              <h3>Figma to DA</h3>
+              <h3>Create Timelines</h3>
             </div>
             <p class="card-text">
-              Transform Figma design files into DA-compatible pages.
+              Visualize key milestones and dependencies to drive on-time
+              delivery.
             </p>
           </div>
           <div class="card" data-placeholder="Create AI generated content">
@@ -147,10 +156,11 @@
                 class="card-icon"
                 data-gif="./assets/artificial-intelligence.gif"
               />
-              <h3>Generate content</h3>
+              <h3>Create Capacity Planning</h3>
             </div>
             <p class="card-text">
-              Transform Figma designs into DA pages with intelligent content.
+              Align team resources with scope and timelines for optimal
+              execution.
             </p>
           </div>
           <div
@@ -164,10 +174,10 @@
                 class="card-icon"
                 data-gif="./assets/data-analysis.gif"
               />
-              <h3>Preflight</h3>
+              <h3>Create an Initiative</h3>
             </div>
             <p class="card-text">
-              Monitor live page performance and quality indicators.
+              Define a structured initiative to turn strategy into execution.
             </p>
           </div>
         </div>
@@ -176,7 +186,7 @@
     <div id="imgModal" class="modal">
       <span class="close" id="closeModal">&times;</span>
       <div class="modal-img-parent">
-        <img class="modal-content" id="modalImage" />
+        <img class="modal-content" id="modalImage" alt="model content" />
       </div>
     </div>
   </body>

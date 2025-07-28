@@ -337,6 +337,7 @@ body, html {
 .chat-wrapper .section-heading {
   font-size: 2.2rem;
   display: flex;
+  flex-direction: column;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -364,7 +365,8 @@ body, html {
   background-clip: text;
   color: transparent;
   animation: streambg 5s linear infinite;
-  font-size: 2.2rem;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
 }
 
 @keyframes streambg {
