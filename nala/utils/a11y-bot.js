@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const fs = require('fs');
 const { chromium } = require('playwright/test');
 const AxeBuilder = require('@axe-core/playwright');

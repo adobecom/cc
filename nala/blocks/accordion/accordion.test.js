@@ -69,7 +69,7 @@ test.describe('verify accordion showing up with authored question and answers wi
   // check the links are functional in the question summary
   test(`${features[3].name},${features[3].tags}`, async ({ page, baseURL }) => {
     console.info(`[Test Page]: ${baseURL}${features[3].path}`);
-    const { url } = features[3];
+    // const { url } = features[3];
     await test.step('links are functional in the question summary', async () => {
       await page.goto(`${baseURL}${features[3].path}`);
       await page.waitForLoadState('domcontentloaded');

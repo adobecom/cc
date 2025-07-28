@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable one-var-declaration-per-line */
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-unused-vars */
 
 const { devices } = require('@playwright/test');
 

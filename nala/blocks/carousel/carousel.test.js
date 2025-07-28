@@ -25,7 +25,7 @@ test.describe('verify carousel showing up with authored and navigations are work
       expect(await carousel.carouselButtonLeft).toBeTruthy();
       expect(await carousel.carouselButtonRight).toBeTruthy();
       expect(await carousel.carouselIndicators).toBeTruthy();
-      expect(await carousel.carouselFirstCard_default).toBeTruthy(); 
+      expect(await carousel.carouselFirstCard_default).toBeTruthy();
     });
   });
 
