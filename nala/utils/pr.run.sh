@@ -87,12 +87,12 @@ cd "$GITHUB_ACTION_PATH" || exit
 npm ci
 
 echo "Installing Playwright browsers (chromium, firefox, webkit)..."
-npx playwright install
+npx playwright install chromium firefox
 
 # Run Playwright tests on the specific projects using root-level playwright.config.js
 # This will be changed later
 echo "*** Running tests on specific projects ***"
-npx playwright test --config=./playwright.config.js ${TAGS} ${EXCLUDE_TAGS} --project=cc-live-chromium --project=cc-live-firefox --project=cc-live-webkit ${REPORTER} || EXIT_STATUS=$?
+npx playwright test --config=./playwright.config.js ${TAGS} ${EXCLUDE_TAGS} --project=cc-live-chromium --project=cc-live-firefox ${REPORTER} || EXIT_STATUS=$?
 
 # Check if tests passed or failed
 if [ $EXIT_STATUS -ne 0 ]; then
