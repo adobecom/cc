@@ -85,7 +85,9 @@ echo "*******************************"
 # Navigate to the GitHub Action path and install dependencies
 cd "$GITHUB_ACTION_PATH" || exit
 npm ci
-npx playwright install --with-deps
+
+echo "Installing Playwright browsers (chromium, firefox, webkit)..."
+npx playwright install --with-deps chromium firefox webkit
 
 # Run Playwright tests on the specific projects using root-level playwright.config.js
 # This will be changed later
