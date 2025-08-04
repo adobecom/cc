@@ -34,8 +34,8 @@ const groupElementsIntoBlocks = (container, createTag) => {
 
 export default async function init(el) {
   const miloLibs = getLibs('/libs');
-  const { createTag, getConfig, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
-  loadStyle(`${getConfig().base}/blocks/callout/callout.css`);
+  const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+  loadStyle('/creativecloud/blocks/callout/callout.css');
   const blocks = groupElementsIntoBlocks(el, createTag);
   if (el.className.match(/(-spacing|max-width-)/)) {
     el.classList.add('con-block');
