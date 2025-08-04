@@ -35,7 +35,6 @@ const PREVIEW_LOCALES = process.env.PREVIEW_LOCALES;
 const ENABLED = process.env.ENABLED;
 
 const PREVIEW_STATUS_URL = `https://admin.hlx.page/status/adobecom/${CONSUMER}/main/*`;
-const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${PREVIEW_INDEX_JSON}`;
 const PREVIEW_BASE_URL = `https://main--${CONSUMER}--adobecom.aem.page`;
 const GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0';
 const SHEET_RAW_INDEX = 'raw_index';
@@ -198,7 +197,7 @@ const getItemId = async (indexPath) => {
 
 const previewIndex = async (locale) => {
   const previewIndexJson = locale ? `${locale}/${PREVIEW_INDEX_JSON}` : PREVIEW_INDEX_JSON;
-  const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${previewIndexJson}`;
+  const PREVIEW_UPDATE_URL = `https://admin.aem.page/preview/adobecom/${CONSUMER}/main/${previewIndexJson}`;
   console.log('Preview update url: ' + PREVIEW_UPDATE_URL);
   const previewResponse = await fetch(PREVIEW_UPDATE_URL, {
     method: 'POST',
