@@ -406,6 +406,7 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?learn(\/.*)?/,
   ],
+  brandConciergeAA: 'cc:app-reco',
 };
 
 export const scriptInit = async () => {
