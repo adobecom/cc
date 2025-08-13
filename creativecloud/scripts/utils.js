@@ -367,6 +367,7 @@ const CONFIG = {
   contentRoot: '/cc-shared',
   codeRoot: '/creativecloud',
   imsClientId: 'adobedotcom-cc',
+  iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata'],
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],

@@ -197,7 +197,7 @@ const getItemId = async (indexPath) => {
 
 const previewIndex = async (locale) => {
   const previewIndexJson = locale ? `${locale}/${PREVIEW_INDEX_JSON}` : PREVIEW_INDEX_JSON;
-  const PREVIEW_UPDATE_URL = `https://admin.aem.page/preview/adobecom/${CONSUMER}/main/${previewIndexJson}`;
+  const PREVIEW_UPDATE_URL = `https://admin.hlx.page/preview/adobecom/${CONSUMER}/main/${previewIndexJson}`;
   console.log('Preview update url: ' + PREVIEW_UPDATE_URL);
   const previewResponse = await fetch(PREVIEW_UPDATE_URL, {
     method: 'POST',
