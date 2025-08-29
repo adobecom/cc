@@ -367,6 +367,7 @@ const CONFIG = {
   contentRoot: '/cc-shared',
   codeRoot: '/creativecloud',
   imsClientId: 'adobedotcom-cc',
+  iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata'],
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
@@ -405,7 +406,9 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?learn(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?benefits(\/.*)?/,
   ],
+  brandConciergeAA: 'cc:app-reco',
 };
 
 export const scriptInit = async () => {
