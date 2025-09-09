@@ -5,3 +5,7 @@ node_modules
 .DS_Store
 .idea
 .env
+
+test-html-results/
+test-results/
+test-a11y-results/
