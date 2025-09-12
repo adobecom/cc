@@ -12,6 +12,7 @@ indices:
       - /creativecloud/**
       - /accessibility/**
       - /products/**
+      - /solutions/**
       - /ai/**
       - /education/**
       - /partnerpromo/**
@@ -33,6 +34,11 @@ indices:
       - /howtobuy/**
       - /legal/**
       - /heroes/**
+      - /trust/**
+      - /subscription/**
+      - /about-adobe/**
+      - /corporate-responsibility/**
+      - /ventures/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -84,6 +90,7 @@ indices:
       - /au/creativecloud/**
       - /au/accessibility/**
       - /au/products/**
+      - /au/solutions/**
       - /au/ai/**
       - /au/education/**
       - /au/partnerpromo/**
@@ -105,6 +112,11 @@ indices:
       - /au/howtobuy/**
       - /au/legal/**
       - /au/heroes/**
+      - /au/trust/**
+      - /au/subscription/**
+      - /au/about-adobe/**
+      - /au/corporate-responsibility/**
+      - /au/ventures/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -119,6 +131,7 @@ indices:
       - /de/creativecloud/**
       - /de/accessibility/**
       - /de/products/**
+      - /de/solutions/**
       - /de/ai/**
       - /de/education/**
       - /de/partnerpromo/**
@@ -140,6 +153,11 @@ indices:
       - /de/howtobuy/**
       - /de/legal/**
       - /de/heroes/**
+      - /de/trust/**
+      - /de/subscription/**
+      - /de/about-adobe/**
+      - /de/corporate-responsibility/**
+      - /de/ventures/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -154,6 +172,7 @@ indices:
       - /es/creativecloud/**
       - /es/accessibility/**
       - /es/products/**
+      - /es/solutions/**
       - /es/ai/**
       - /es/education/**
       - /es/partnerpromo/**
@@ -175,6 +194,11 @@ indices:
       - /es/howtobuy/**
       - /es/legal/**
       - /es/heroes/**
+      - /es/trust/**
+      - /es/subscription/**
+      - /es/about-adobe/**
+      - /es/corporate-responsibility/**
+      - /es/ventures/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -189,6 +213,7 @@ indices:
       - /fr/creativecloud/**
       - /fr/accessibility/**
       - /fr/products/**
+      - /fr/solutions/**
       - /fr/ai/**
       - /fr/education/**
       - /fr/partnerpromo/**
@@ -210,6 +235,11 @@ indices:
       - /fr/howtobuy/**
       - /fr/legal/**
       - /fr/heroes/**
+      - /fr/trust/**
+      - /fr/subscription/**
+      - /fr/about-adobe/**
+      - /fr/corporate-responsibility/**
+      - /fr/ventures/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -224,6 +254,7 @@ indices:
       - /it/creativecloud/**
       - /it/accessibility/**
       - /it/products/**
+      - /it/solutions/**
       - /it/ai/**
       - /it/education/**
       - /it/partnerpromo/**
@@ -245,6 +276,11 @@ indices:
       - /it/howtobuy/**
       - /it/legal/**
       - /it/heroes/**
+      - /it/trust/**
+      - /it/subscription/**
+      - /it/about-adobe/**
+      - /it/corporate-responsibility/**
+      - /it/ventures/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -259,6 +295,7 @@ indices:
       - /jp/creativecloud/**
       - /jp/accessibility/**
       - /jp/products/**
+      - /jp/solutions/**
       - /jp/ai/**
       - /jp/education/**
       - /jp/partnerpromo/**
@@ -280,6 +317,11 @@ indices:
       - /jp/howtobuy/**
       - /jp/legal/**
       - /jp/heroes/**
+      - /jp/trust/**
+      - /jp/subscription/**
+      - /jp/about-adobe/**
+      - /jp/corporate-responsibility/**
+      - /jp/ventures/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -294,6 +336,7 @@ indices:
       - /kr/creativecloud/**
       - /kr/accessibility/**
       - /kr/products/**
+      - /kr/solutions/**
       - /kr/ai/**
       - /kr/education/**
       - /kr/partnerpromo/**
@@ -315,6 +358,11 @@ indices:
       - /kr/howtobuy/**
       - /kr/legal/**
       - /kr/heroes/**
+      - /kr/trust/**
+      - /kr/subscription/**
+      - /kr/about-adobe/**
+      - /kr/corporate-responsibility/**
+      - /kr/ventures/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -329,6 +377,7 @@ indices:
       - /ru/creativecloud/**
       - /ru/accessibility/**
       - /ru/products/**
+      - /ru/solutions/**
       - /ru/ai/**
       - /ru/education/**
       - /ru/partnerpromo/**
@@ -350,6 +399,11 @@ indices:
       - /ru/howtobuy/**
       - /ru/legal/**
       - /ru/heroes/**
+      - /ru/trust/**
+      - /ru/subscription/**
+      - /ru/about-adobe/**
+      - /ru/corporate-responsibility/**
+      - /ru/ventures/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -364,6 +418,7 @@ indices:
       - /hk_zh/creativecloud/**
       - /hk_zh/accessibility/**
       - /hk_zh/products/**
+      - /hk_zh/solutions/**
       - /hk_zh/ai/**
       - /hk_zh/education/**
       - /hk_zh/partnerpromo/**
@@ -385,6 +440,11 @@ indices:
       - /hk_zh/howtobuy/**
       - /hk_zh/legal/**
       - /hk_zh/heroes/**
+      - /hk_zh/trust/**
+      - /hk_zh/subscription/**
+      - /hk_zh/about-adobe/**
+      - /hk_zh/corporate-responsibility/**
+      - /hk_zh/ventures/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -399,6 +459,7 @@ indices:
       - /tw/creativecloud/**
       - /tw/accessibility/**
       - /tw/products/**
+      - /tw/solutions/**
       - /tw/ai/**
       - /tw/education/**
       - /tw/partnerpromo/**
@@ -420,6 +481,11 @@ indices:
       - /tw/howtobuy/**
       - /tw/legal/**
       - /tw/heroes/**
+      - /tw/trust/**
+      - /tw/subscription/**
+      - /tw/about-adobe/**
+      - /tw/corporate-responsibility/**
+      - /tw/ventures/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -434,6 +500,7 @@ indices:
       - /nl/creativecloud/**
       - /nl/accessibility/**
       - /nl/products/**
+      - /nl/solutions/**
       - /nl/ai/**
       - /nl/education/**
       - /nl/partnerpromo/**
@@ -455,6 +522,11 @@ indices:
       - /nl/howtobuy/**
       - /nl/legal/**
       - /nl/heroes/**
+      - /nl/trust/**
+      - /nl/subscription/**
+      - /nl/about-adobe/**
+      - /nl/corporate-responsibility/**
+      - /nl/ventures/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -469,6 +541,7 @@ indices:
       - /pl/creativecloud/**
       - /pl/accessibility/**
       - /pl/products/**
+      - /pl/solutions/**
       - /pl/ai/**
       - /pl/education/**
       - /pl/partnerpromo/**
@@ -490,6 +563,11 @@ indices:
       - /pl/howtobuy/**
       - /pl/legal/**
       - /pl/heroes/**
+      - /pl/trust/**
+      - /pl/subscription/**
+      - /pl/about-adobe/**
+      - /pl/corporate-responsibility/**
+      - /pl/ventures/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -504,6 +582,7 @@ indices:
       - /tr/creativecloud/**
       - /tr/accessibility/**
       - /tr/products/**
+      - /tr/solutions/**
       - /tr/ai/**
       - /tr/education/**
       - /tr/partnerpromo/**
@@ -525,6 +604,11 @@ indices:
       - /tr/howtobuy/**
       - /tr/legal/**
       - /tr/heroes/**
+      - /tr/trust/**
+      - /tr/subscription/**
+      - /tr/about-adobe/**
+      - /tr/corporate-responsibility/**
+      - /tr/ventures/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -539,6 +623,7 @@ indices:
       - /uk/creativecloud/**
       - /uk/accessibility/**
       - /uk/products/**
+      - /uk/solutions/**
       - /uk/ai/**
       - /uk/education/**
       - /uk/partnerpromo/**
@@ -560,6 +645,11 @@ indices:
       - /uk/howtobuy/**
       - /uk/legal/**
       - /uk/heroes/**
+      - /uk/trust/**
+      - /uk/subscription/**
+      - /uk/about-adobe/**
+      - /uk/corporate-responsibility/**
+      - /uk/ventures/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -574,6 +664,7 @@ indices:
       - /ca/creativecloud/**
       - /ca/accessibility/**
       - /ca/products/**
+      - /ca/solutions/**
       - /ca/ai/**
       - /ca/education/**
       - /ca/partnerpromo/**
@@ -595,6 +686,11 @@ indices:
       - /ca/howtobuy/**
       - /ca/legal/**
       - /ca/heroes/**
+      - /ca/trust/**
+      - /ca/subscription/**
+      - /ca/about-adobe/**
+      - /ca/corporate-responsibility/**
+      - /ca/ventures/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -609,6 +705,7 @@ indices:
       - /cn/creativecloud/**
       - /cn/accessibility/**
       - /cn/products/**
+      - /cn/solutions/**
       - /cn/ai/**
       - /cn/education/**
       - /cn/partnerpromo/**
@@ -630,6 +727,11 @@ indices:
       - /cn/howtobuy/**
       - /cn/legal/**
       - /cn/heroes/**
+      - /cn/trust/**
+      - /cn/subscription/**
+      - /cn/about-adobe/**
+      - /cn/corporate-responsibility/**
+      - /cn/ventures/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -644,6 +746,7 @@ indices:
       - /ae_ar/creativecloud/**
       - /ae_ar/accessibility/**
       - /ae_ar/products/**
+      - /ae_ar/solutions/**
       - /ae_ar/ai/**
       - /ae_ar/education/**
       - /ae_ar/partnerpromo/**
@@ -665,6 +768,11 @@ indices:
       - /ae_ar/howtobuy/**
       - /ae_ar/legal/**
       - /ae_ar/heroes/**
+      - /ae_ar/trust/**
+      - /ae_ar/subscription/**
+      - /ae_ar/about-adobe/**
+      - /ae_ar/corporate-responsibility/**
+      - /ae_ar/ventures/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -679,6 +787,7 @@ indices:
       - /ae_en/creativecloud/**
       - /ae_en/accessibility/**
       - /ae_en/products/**
+      - /ae_en/solutions/**
       - /ae_en/ai/**
       - /ae_en/education/**
       - /ae_en/partnerpromo/**
@@ -700,6 +809,11 @@ indices:
       - /ae_en/howtobuy/**
       - /ae_en/legal/**
       - /ae_en/heroes/**
+      - /ae_en/trust/**
+      - /ae_en/subscription/**
+      - /ae_en/about-adobe/**
+      - /ae_en/corporate-responsibility/**
+      - /ae_en/ventures/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -714,6 +828,7 @@ indices:
       - /at/creativecloud/**
       - /at/accessibility/**
       - /at/products/**
+      - /at/solutions/**
       - /at/ai/**
       - /at/education/**
       - /at/partnerpromo/**
@@ -735,6 +850,11 @@ indices:
       - /at/howtobuy/**
       - /at/legal/**
       - /at/heroes/**
+      - /at/trust/**
+      - /at/subscription/**
+      - /at/about-adobe/**
+      - /at/corporate-responsibility/**
+      - /at/ventures/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -749,6 +869,7 @@ indices:
       - /be_en/creativecloud/**
       - /be_en/accessibility/**
       - /be_en/products/**
+      - /be_en/solutions/**
       - /be_en/ai/**
       - /be_en/education/**
       - /be_en/partnerpromo/**
@@ -770,6 +891,11 @@ indices:
       - /be_en/howtobuy/**
       - /be_en/legal/**
       - /be_en/heroes/**
+      - /be_en/trust/**
+      - /be_en/subscription/**
+      - /be_en/about-adobe/**
+      - /be_en/corporate-responsibility/**
+      - /be_en/ventures/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -784,6 +910,7 @@ indices:
       - /be_fr/creativecloud/**
       - /be_fr/accessibility/**
       - /be_fr/products/**
+      - /be_fr/solutions/**
       - /be_fr/ai/**
       - /be_fr/education/**
       - /be_fr/partnerpromo/**
@@ -805,6 +932,11 @@ indices:
       - /be_fr/howtobuy/**
       - /be_fr/legal/**
       - /be_fr/heroes/**
+      - /be_fr/trust/**
+      - /be_fr/subscription/**
+      - /be_fr/about-adobe/**
+      - /be_fr/corporate-responsibility/**
+      - /be_fr/ventures/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -819,6 +951,7 @@ indices:
       - /ca_fr/creativecloud/**
       - /ca_fr/accessibility/**
       - /ca_fr/products/**
+      - /ca_fr/solutions/**
       - /ca_fr/ai/**
       - /ca_fr/education/**
       - /ca_fr/partnerpromo/**
@@ -840,6 +973,11 @@ indices:
       - /ca_fr/howtobuy/**
       - /ca_fr/legal/**
       - /ca_fr/heroes/**
+      - /ca_fr/trust/**
+      - /ca_fr/subscription/**
+      - /ca_fr/about-adobe/**
+      - /ca_fr/corporate-responsibility/**
+      - /ca_fr/ventures/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -854,6 +992,7 @@ indices:
       - /ch_de/creativecloud/**
       - /ch_de/accessibility/**
       - /ch_de/products/**
+      - /ch_de/solutions/**
       - /ch_de/ai/**
       - /ch_de/education/**
       - /ch_de/partnerpromo/**
@@ -875,6 +1014,11 @@ indices:
       - /ch_de/howtobuy/**
       - /ch_de/legal/**
       - /ch_de/heroes/**
+      - /ch_de/trust/**
+      - /ch_de/subscription/**
+      - /ch_de/about-adobe/**
+      - /ch_de/corporate-responsibility/**
+      - /ch_de/ventures/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -889,6 +1033,7 @@ indices:
       - /ch_fr/creativecloud/**
       - /ch_fr/accessibility/**
       - /ch_fr/products/**
+      - /ch_fr/solutions/**
       - /ch_fr/ai/**
       - /ch_fr/education/**
       - /ch_fr/partnerpromo/**
@@ -910,6 +1055,11 @@ indices:
       - /ch_fr/howtobuy/**
       - /ch_fr/legal/**
       - /ch_fr/heroes/**
+      - /ch_fr/trust/**
+      - /ch_fr/subscription/**
+      - /ch_fr/about-adobe/**
+      - /ch_fr/corporate-responsibility/**
+      - /ch_fr/ventures/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -924,6 +1074,7 @@ indices:
       - /cl/creativecloud/**
       - /cl/accessibility/**
       - /cl/products/**
+      - /cl/solutions/**
       - /cl/ai/**
       - /cl/education/**
       - /cl/partnerpromo/**
@@ -945,6 +1096,11 @@ indices:
       - /cl/howtobuy/**
       - /cl/legal/**
       - /cl/heroes/**
+      - /cl/trust/**
+      - /cl/subscription/**
+      - /cl/about-adobe/**
+      - /cl/corporate-responsibility/**
+      - /cl/ventures/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -959,6 +1115,7 @@ indices:
       - /gr_en/creativecloud/**
       - /gr_en/accessibility/**
       - /gr_en/products/**
+      - /gr_en/solutions/**
       - /gr_en/ai/**
       - /gr_en/education/**
       - /gr_en/partnerpromo/**
@@ -980,6 +1137,11 @@ indices:
       - /gr_en/howtobuy/**
       - /gr_en/legal/**
       - /gr_en/heroes/**
+      - /gr_en/trust/**
+      - /gr_en/subscription/**
+      - /gr_en/about-adobe/**
+      - /gr_en/corporate-responsibility/**
+      - /gr_en/ventures/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -994,6 +1156,7 @@ indices:
       - /hk_en/creativecloud/**
       - /hk_en/accessibility/**
       - /hk_en/products/**
+      - /hk_en/solutions/**
       - /hk_en/ai/**
       - /hk_en/education/**
       - /hk_en/partnerpromo/**
@@ -1015,6 +1178,11 @@ indices:
       - /hk_en/howtobuy/**
       - /hk_en/legal/**
       - /hk_en/heroes/**
+      - /hk_en/trust/**
+      - /hk_en/subscription/**
+      - /hk_en/about-adobe/**
+      - /hk_en/corporate-responsibility/**
+      - /hk_en/ventures/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -1029,6 +1197,7 @@ indices:
       - /ie/creativecloud/**
       - /ie/accessibility/**
       - /ie/products/**
+      - /ie/solutions/**
       - /ie/ai/**
       - /ie/education/**
       - /ie/partnerpromo/**
@@ -1050,6 +1219,11 @@ indices:
       - /ie/howtobuy/**
       - /ie/legal/**
       - /ie/heroes/**
+      - /ie/trust/**
+      - /ie/subscription/**
+      - /ie/about-adobe/**
+      - /ie/corporate-responsibility/**
+      - /ie/ventures/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -1064,6 +1238,7 @@ indices:
       - /il_en/creativecloud/**
       - /il_en/accessibility/**
       - /il_en/products/**
+      - /il_en/solutions/**
       - /il_en/ai/**
       - /il_en/education/**
       - /il_en/partnerpromo/**
@@ -1085,6 +1260,11 @@ indices:
       - /il_en/howtobuy/**
       - /il_en/legal/**
       - /il_en/heroes/**
+      - /il_en/trust/**
+      - /il_en/subscription/**
+      - /il_en/about-adobe/**
+      - /il_en/corporate-responsibility/**
+      - /il_en/ventures/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -1099,6 +1279,7 @@ indices:
       - /in/creativecloud/**
       - /in/accessibility/**
       - /in/products/**
+      - /in/solutions/**
       - /in/ai/**
       - /in/education/**
       - /in/partnerpromo/**
@@ -1120,6 +1301,11 @@ indices:
       - /in/howtobuy/**
       - /in/legal/**
       - /in/heroes/**
+      - /in/trust/**
+      - /in/subscription/**
+      - /in/about-adobe/**
+      - /in/corporate-responsibility/**
+      - /in/ventures/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -1134,6 +1320,7 @@ indices:
       - /lt/creativecloud/**
       - /lt/accessibility/**
       - /lt/products/**
+      - /lt/solutions/**
       - /lt/ai/**
       - /lt/education/**
       - /lt/partnerpromo/**
@@ -1155,6 +1342,11 @@ indices:
       - /lt/howtobuy/**
       - /lt/legal/**
       - /lt/heroes/**
+      - /lt/trust/**
+      - /lt/subscription/**
+      - /lt/about-adobe/**
+      - /lt/corporate-responsibility/**
+      - /lt/ventures/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -1169,6 +1361,7 @@ indices:
       - /lu_de/creativecloud/**
       - /lu_de/accessibility/**
       - /lu_de/products/**
+      - /lu_de/solutions/**
       - /lu_de/ai/**
       - /lu_de/education/**
       - /lu_de/partnerpromo/**
@@ -1190,6 +1383,11 @@ indices:
       - /lu_de/howtobuy/**
       - /lu_de/legal/**
       - /lu_de/heroes/**
+      - /lu_de/trust/**
+      - /lu_de/subscription/**
+      - /lu_de/about-adobe/**
+      - /lu_de/corporate-responsibility/**
+      - /lu_de/ventures/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -1204,6 +1402,7 @@ indices:
       - /lu_en/creativecloud/**
       - /lu_en/accessibility/**
       - /lu_en/products/**
+      - /lu_en/solutions/**
       - /lu_en/ai/**
       - /lu_en/education/**
       - /lu_en/partnerpromo/**
@@ -1225,6 +1424,11 @@ indices:
       - /lu_en/howtobuy/**
       - /lu_en/legal/**
       - /lu_en/heroes/**
+      - /lu_en/trust/**
+      - /lu_en/subscription/**
+      - /lu_en/about-adobe/**
+      - /lu_en/corporate-responsibility/**
+      - /lu_en/ventures/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -1239,6 +1443,7 @@ indices:
       - /lu_fr/creativecloud/**
       - /lu_fr/accessibility/**
       - /lu_fr/products/**
+      - /lu_fr/solutions/**
       - /lu_fr/ai/**
       - /lu_fr/education/**
       - /lu_fr/partnerpromo/**
@@ -1260,6 +1465,11 @@ indices:
       - /lu_fr/howtobuy/**
       - /lu_fr/legal/**
       - /lu_fr/heroes/**
+      - /lu_fr/trust/**
+      - /lu_fr/subscription/**
+      - /lu_fr/about-adobe/**
+      - /lu_fr/corporate-responsibility/**
+      - /lu_fr/ventures/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -1274,6 +1484,7 @@ indices:
       - /mena_en/creativecloud/**
       - /mena_en/accessibility/**
       - /mena_en/products/**
+      - /mena_en/solutions/**
       - /mena_en/ai/**
       - /mena_en/education/**
       - /mena_en/partnerpromo/**
@@ -1295,6 +1506,11 @@ indices:
       - /mena_en/howtobuy/**
       - /mena_en/legal/**
       - /mena_en/heroes/**
+      - /mena_en/trust/**
+      - /mena_en/subscription/**
+      - /mena_en/about-adobe/**
+      - /mena_en/corporate-responsibility/**
+      - /mena_en/ventures/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -1309,6 +1525,7 @@ indices:
       - /nz/creativecloud/**
       - /nz/accessibility/**
       - /nz/products/**
+      - /nz/solutions/**
       - /nz/ai/**
       - /nz/education/**
       - /nz/partnerpromo/**
@@ -1330,6 +1547,11 @@ indices:
       - /nz/howtobuy/**
       - /nz/legal/**
       - /nz/heroes/**
+      - /nz/trust/**
+      - /nz/subscription/**
+      - /nz/about-adobe/**
+      - /nz/corporate-responsibility/**
+      - /nz/ventures/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -1344,6 +1566,7 @@ indices:
       - /sa_ar/creativecloud/**
       - /sa_ar/accessibility/**
       - /sa_ar/products/**
+      - /sa_ar/solutions/**
       - /sa_ar/ai/**
       - /sa_ar/education/**
       - /sa_ar/partnerpromo/**
@@ -1365,6 +1588,11 @@ indices:
       - /sa_ar/howtobuy/**
       - /sa_ar/legal/**
       - /sa_ar/heroes/**
+      - /sa_ar/trust/**
+      - /sa_ar/subscription/**
+      - /sa_ar/about-adobe/**
+      - /sa_ar/corporate-responsibility/**
+      - /sa_ar/ventures/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -1379,6 +1607,7 @@ indices:
       - /sa_en/creativecloud/**
       - /sa_en/accessibility/**
       - /sa_en/products/**
+      - /sa_en/solutions/**
       - /sa_en/ai/**
       - /sa_en/education/**
       - /sa_en/partnerpromo/**
@@ -1400,6 +1629,11 @@ indices:
       - /sa_en/howtobuy/**
       - /sa_en/legal/**
       - /sa_en/heroes/**
+      - /sa_en/trust/**
+      - /sa_en/subscription/**
+      - /sa_en/about-adobe/**
+      - /sa_en/corporate-responsibility/**
+      - /sa_en/ventures/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
   cards-sa_en:
@@ -1414,6 +1648,7 @@ indices:
       - /th_en/creativecloud/**
       - /th_en/accessibility/**
       - /th_en/products/**
+      - /th_en/solutions/**
       - /th_en/ai/**
       - /th_en/education/**
       - /th_en/partnerpromo/**
@@ -1435,6 +1670,11 @@ indices:
       - /th_en/howtobuy/**
       - /th_en/legal/**
       - /th_en/heroes/**
+      - /th_en/trust/**
+      - /th_en/subscription/**
+      - /th_en/about-adobe/**
+      - /th_en/corporate-responsibility/**
+      - /th_en/ventures/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -1449,6 +1689,7 @@ indices:
       - /th_th/creativecloud/**
       - /th_th/accessibility/**
       - /th_th/products/**
+      - /th_th/solutions/**
       - /th_th/ai/**
       - /th_th/education/**
       - /th_th/partnerpromo/**
@@ -1470,6 +1711,11 @@ indices:
       - /th_th/howtobuy/**
       - /th_th/legal/**
       - /th_th/heroes/**
+      - /th_th/trust/**
+      - /th_th/subscription/**
+      - /th_th/about-adobe/**
+      - /th_th/corporate-responsibility/**
+      - /th_th/ventures/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -1484,6 +1730,7 @@ indices:
       - /za/creativecloud/**
       - /za/accessibility/**
       - /za/products/**
+      - /za/solutions/**
       - /za/ai/**
       - /za/education/**
       - /za/partnerpromo/**
@@ -1505,6 +1752,11 @@ indices:
       - /za/howtobuy/**
       - /za/legal/**
       - /za/heroes/**
+      - /za/trust/**
+      - /za/subscription/**
+      - /za/about-adobe/**
+      - /za/corporate-responsibility/**
+      - /za/ventures/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -1519,6 +1771,7 @@ indices:
       - /africa/creativecloud/**
       - /africa/accessibility/**
       - /africa/products/**
+      - /africa/solutions/**
       - /africa/ai/**
       - /africa/education/**
       - /africa/partnerpromo/**
@@ -1540,6 +1793,11 @@ indices:
       - /africa/howtobuy/**
       - /africa/legal/**
       - /africa/heroes/**
+      - /africa/trust/**
+      - /africa/subscription/**
+      - /africa/about-adobe/**
+      - /africa/corporate-responsibility/**
+      - /africa/ventures/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -1554,6 +1812,7 @@ indices:
       - /ar/creativecloud/**
       - /ar/accessibility/**
       - /ar/products/**
+      - /ar/solutions/**
       - /ar/ai/**
       - /ar/education/**
       - /ar/partnerpromo/**
@@ -1575,6 +1834,11 @@ indices:
       - /ar/howtobuy/**
       - /ar/legal/**
       - /ar/heroes/**
+      - /ar/trust/**
+      - /ar/subscription/**
+      - /ar/about-adobe/**
+      - /ar/corporate-responsibility/**
+      - /ar/ventures/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -1589,6 +1853,7 @@ indices:
       - /co/creativecloud/**
       - /co/accessibility/**
       - /co/products/**
+      - /co/solutions/**
       - /co/ai/**
       - /co/education/**
       - /co/partnerpromo/**
@@ -1610,6 +1875,11 @@ indices:
       - /co/howtobuy/**
       - /co/legal/**
       - /co/heroes/**
+      - /co/trust/**
+      - /co/subscription/**
+      - /co/about-adobe/**
+      - /co/corporate-responsibility/**
+      - /co/ventures/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -1624,6 +1894,7 @@ indices:
       - /cr/creativecloud/**
       - /cr/accessibility/**
       - /cr/products/**
+      - /cr/solutions/**
       - /cr/ai/**
       - /cr/education/**
       - /cr/partnerpromo/**
@@ -1645,6 +1916,11 @@ indices:
       - /cr/howtobuy/**
       - /cr/legal/**
       - /cr/heroes/**
+      - /cr/trust/**
+      - /cr/subscription/**
+      - /cr/about-adobe/**
+      - /cr/corporate-responsibility/**
+      - /cr/ventures/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -1659,6 +1935,7 @@ indices:
       - /ec/creativecloud/**
       - /ec/accessibility/**
       - /ec/products/**
+      - /ec/solutions/**
       - /ec/ai/**
       - /ec/education/**
       - /ec/partnerpromo/**
@@ -1680,6 +1957,11 @@ indices:
       - /ec/howtobuy/**
       - /ec/legal/**
       - /ec/heroes/**
+      - /ec/trust/**
+      - /ec/subscription/**
+      - /ec/about-adobe/**
+      - /ec/corporate-responsibility/**
+      - /ec/ventures/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -1694,6 +1976,7 @@ indices:
       - /eg_ar/creativecloud/**
       - /eg_ar/accessibility/**
       - /eg_ar/products/**
+      - /eg_ar/solutions/**
       - /eg_ar/ai/**
       - /eg_ar/education/**
       - /eg_ar/partnerpromo/**
@@ -1715,6 +1998,11 @@ indices:
       - /eg_ar/howtobuy/**
       - /eg_ar/legal/**
       - /eg_ar/heroes/**
+      - /eg_ar/trust/**
+      - /eg_ar/subscription/**
+      - /eg_ar/about-adobe/**
+      - /eg_ar/corporate-responsibility/**
+      - /eg_ar/ventures/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -1729,6 +2017,7 @@ indices:
       - /eg_en/creativecloud/**
       - /eg_en/accessibility/**
       - /eg_en/products/**
+      - /eg_en/solutions/**
       - /eg_en/ai/**
       - /eg_en/education/**
       - /eg_en/partnerpromo/**
@@ -1750,6 +2039,11 @@ indices:
       - /eg_en/howtobuy/**
       - /eg_en/legal/**
       - /eg_en/heroes/**
+      - /eg_en/trust/**
+      - /eg_en/subscription/**
+      - /eg_en/about-adobe/**
+      - /eg_en/corporate-responsibility/**
+      - /eg_en/ventures/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -1764,6 +2058,7 @@ indices:
       - /gr_el/creativecloud/**
       - /gr_el/accessibility/**
       - /gr_el/products/**
+      - /gr_el/solutions/**
       - /gr_el/ai/**
       - /gr_el/education/**
       - /gr_el/partnerpromo/**
@@ -1785,6 +2080,11 @@ indices:
       - /gr_el/howtobuy/**
       - /gr_el/legal/**
       - /gr_el/heroes/**
+      - /gr_el/trust/**
+      - /gr_el/subscription/**
+      - /gr_el/about-adobe/**
+      - /gr_el/corporate-responsibility/**
+      - /gr_el/ventures/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -1799,6 +2099,7 @@ indices:
       - /gt/creativecloud/**
       - /gt/accessibility/**
       - /gt/products/**
+      - /gt/solutions/**
       - /gt/ai/**
       - /gt/education/**
       - /gt/partnerpromo/**
@@ -1820,6 +2121,11 @@ indices:
       - /gt/howtobuy/**
       - /gt/legal/**
       - /gt/heroes/**
+      - /gt/trust/**
+      - /gt/subscription/**
+      - /gt/about-adobe/**
+      - /gt/corporate-responsibility/**
+      - /gt/ventures/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -1834,6 +2140,7 @@ indices:
       - /id_en/creativecloud/**
       - /id_en/accessibility/**
       - /id_en/products/**
+      - /id_en/solutions/**
       - /id_en/ai/**
       - /id_en/education/**
       - /id_en/partnerpromo/**
@@ -1855,6 +2162,12 @@ indices:
       - /id_en/howtobuy/**
       - /id_en/legal/**
       - /id_en/heroes/**
+      - /id_en/trust/**
+      - /id_en/subscription/**
+      - /id_en/about-adobe/**
+      - /id_en/corporate-responsibility/**
+      - /id_en/ventures/**
+
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -1869,6 +2182,7 @@ indices:
       - /id_id/creativecloud/**
       - /id_id/accessibility/**
       - /id_id/products/**
+      - /id_id/solutions/**
       - /id_id/ai/**
       - /id_id/education/**
       - /id_id/partnerpromo/**
@@ -1890,6 +2204,11 @@ indices:
       - /id_id/howtobuy/**
       - /id_id/legal/**
       - /id_id/heroes/**
+      - /id_id/trust/**
+      - /id_id/subscription/**
+      - /id_id/about-adobe/**
+      - /id_id/corporate-responsibility/**
+      - /id_id/ventures/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -1904,6 +2223,7 @@ indices:
       - /in_hi/creativecloud/**
       - /in_hi/accessibility/**
       - /in_hi/products/**
+      - /in_hi/solutions/**
       - /in_hi/ai/**
       - /in_hi/education/**
       - /in_hi/partnerpromo/**
@@ -1925,6 +2245,11 @@ indices:
       - /in_hi/howtobuy/**
       - /in_hi/legal/**
       - /in_hi/heroes/**
+      - /in_hi/trust/**
+      - /in_hi/subscription/**
+      - /in_hi/about-adobe/**
+      - /in_hi/corporate-responsibility/**
+      - /in_hi/ventures/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -1939,6 +2264,7 @@ indices:
       - /kw_ar/creativecloud/**
       - /kw_ar/accessibility/**
       - /kw_ar/products/**
+      - /kw_ar/solutions/**
       - /kw_ar/ai/**
       - /kw_ar/education/**
       - /kw_ar/partnerpromo/**
@@ -1960,6 +2286,11 @@ indices:
       - /kw_ar/howtobuy/**
       - /kw_ar/legal/**
       - /kw_ar/heroes/**
+      - /kw_ar/trust/**
+      - /kw_ar/subscription/**
+      - /kw_ar/about-adobe/**
+      - /kw_ar/corporate-responsibility/**
+      - /kw_ar/ventures/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -1974,6 +2305,7 @@ indices:
       - /kw_en/creativecloud/**
       - /kw_en/accessibility/**
       - /kw_en/products/**
+      - /kw_en/solutions/**
       - /kw_en/ai/**
       - /kw_en/education/**
       - /kw_en/partnerpromo/**
@@ -1995,6 +2327,11 @@ indices:
       - /kw_en/howtobuy/**
       - /kw_en/legal/**
       - /kw_en/heroes/**
+      - /kw_en/trust/**
+      - /kw_en/subscription/**
+      - /kw_en/about-adobe/**
+      - /kw_en/corporate-responsibility/**
+      - /kw_en/ventures/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -2009,6 +2346,7 @@ indices:
       - /my_en/creativecloud/**
       - /my_en/accessibility/**
       - /my_en/products/**
+      - /my_en/solutions/**
       - /my_en/ai/**
       - /my_en/education/**
       - /my_en/partnerpromo/**
@@ -2030,6 +2368,11 @@ indices:
       - /my_en/howtobuy/**
       - /my_en/legal/**
       - /my_en/heroes/**
+      - /my_en/trust/**
+      - /my_en/subscription/**
+      - /my_en/about-adobe/**
+      - /my_en/corporate-responsibility/**
+      - /my_en/ventures/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -2044,6 +2387,7 @@ indices:
       - /my_ms/creativecloud/**
       - /my_ms/accessibility/**
       - /my_ms/products/**
+      - /my_ms/solutions/**
       - /my_ms/ai/**
       - /my_ms/education/**
       - /my_ms/partnerpromo/**
@@ -2065,6 +2409,11 @@ indices:
       - /my_ms/howtobuy/**
       - /my_ms/legal/**
       - /my_ms/heroes/**
+      - /my_ms/trust/**
+      - /my_ms/subscription/**
+      - /my_ms/about-adobe/**
+      - /my_ms/corporate-responsibility/**
+      - /my_ms/ventures/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -2079,6 +2428,7 @@ indices:
       - /ng/creativecloud/**
       - /ng/accessibility/**
       - /ng/products/**
+      - /ng/solutions/**
       - /ng/ai/**
       - /ng/education/**
       - /ng/partnerpromo/**
@@ -2100,6 +2450,11 @@ indices:
       - /ng/howtobuy/**
       - /ng/legal/**
       - /ng/heroes/**
+      - /ng/trust/**
+      - /ng/subscription/**
+      - /ng/about-adobe/**
+      - /ng/corporate-responsibility/**
+      - /ng/ventures/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -2114,6 +2469,7 @@ indices:
       - /pe/creativecloud/**
       - /pe/accessibility/**
       - /pe/products/**
+      - /pe/solutions/**
       - /pe/ai/**
       - /pe/education/**
       - /pe/partnerpromo/**
@@ -2135,6 +2491,11 @@ indices:
       - /pe/howtobuy/**
       - /pe/legal/**
       - /pe/heroes/**
+      - /pe/trust/**
+      - /pe/subscription/**
+      - /pe/about-adobe/**
+      - /pe/corporate-responsibility/**
+      - /pe/ventures/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -2149,6 +2510,7 @@ indices:
       - /ph_en/creativecloud/**
       - /ph_en/accessibility/**
       - /ph_en/products/**
+      - /ph_en/solutions/**
       - /ph_en/ai/**
       - /ph_en/education/**
       - /ph_en/partnerpromo/**
@@ -2170,6 +2532,11 @@ indices:
       - /ph_en/howtobuy/**
       - /ph_en/legal/**
       - /ph_en/heroes/**
+      - /ph_en/trust/**
+      - /ph_en/subscription/**
+      - /ph_en/about-adobe/**
+      - /ph_en/corporate-responsibility/**
+      - /ph_en/ventures/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -2184,6 +2551,7 @@ indices:
       - /ph_fil/creativecloud/**
       - /ph_fil/accessibility/**
       - /ph_fil/products/**
+      - /ph_fil/solutions/**
       - /ph_fil/ai/**
       - /ph_fil/education/**
       - /ph_fil/partnerpromo/**
@@ -2205,6 +2573,11 @@ indices:
       - /ph_fil/howtobuy/**
       - /ph_fil/legal/**
       - /ph_fil/heroes/**
+      - /ph_fil/trust/**
+      - /ph_fil/subscription/**
+      - /ph_fil/about-adobe/**
+      - /ph_fil/corporate-responsibility/**
+      - /ph_fil/ventures/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -2219,6 +2592,7 @@ indices:
       - /pr/creativecloud/**
       - /pr/accessibility/**
       - /pr/products/**
+      - /pr/solutions/**
       - /pr/ai/**
       - /pr/education/**
       - /pr/partnerpromo/**
@@ -2240,6 +2614,11 @@ indices:
       - /pr/howtobuy/**
       - /pr/legal/**
       - /pr/heroes/**
+      - /pr/trust/**
+      - /pr/subscription/**
+      - /pr/about-adobe/**
+      - /pr/corporate-responsibility/**
+      - /pr/ventures/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -2254,6 +2633,7 @@ indices:
       - /qa_ar/creativecloud/**
       - /qa_ar/accessibility/**
       - /qa_ar/products/**
+      - /qa_ar/solutions/**
       - /qa_ar/ai/**
       - /qa_ar/education/**
       - /qa_ar/partnerpromo/**
@@ -2275,6 +2655,11 @@ indices:
       - /qa_ar/howtobuy/**
       - /qa_ar/legal/**
       - /qa_ar/heroes/**
+      - /qa_ar/trust/**
+      - /qa_ar/subscription/**
+      - /qa_ar/about-adobe/**
+      - /qa_ar/corporate-responsibility/**
+      - /qa_ar/ventures/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -2289,6 +2674,7 @@ indices:
       - /qa_en/creativecloud/**
       - /qa_en/accessibility/**
       - /qa_en/products/**
+      - /qa_en/solutions/**
       - /qa_en/ai/**
       - /qa_en/education/**
       - /qa_en/partnerpromo/**
@@ -2310,6 +2696,11 @@ indices:
       - /qa_en/howtobuy/**
       - /qa_en/legal/**
       - /qa_en/heroes/**
+      - /qa_en/trust/**
+      - /qa_en/subscription/**
+      - /qa_en/about-adobe/**
+      - /qa_en/corporate-responsibility/**
+      - /qa_en/ventures/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -2324,6 +2715,7 @@ indices:
       - /vn_en/creativecloud/**
       - /vn_en/accessibility/**
       - /vn_en/products/**
+      - /vn_en/solutions/**
       - /vn_en/ai/**
       - /vn_en/education/**
       - /vn_en/partnerpromo/**
@@ -2345,6 +2737,11 @@ indices:
       - /vn_en/howtobuy/**
       - /vn_en/legal/**
       - /vn_en/heroes/**
+      - /vn_en/trust/**
+      - /vn_en/subscription/**
+      - /vn_en/about-adobe/**
+      - /vn_en/corporate-responsibility/**
+      - /vn_en/ventures/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -2359,6 +2756,7 @@ indices:
       - /vn_vi/creativecloud/**
       - /vn_vi/accessibility/**
       - /vn_vi/products/**
+      - /vn_vi/solutions/**
       - /vn_vi/ai/**
       - /vn_vi/education/**
       - /vn_vi/partnerpromo/**
@@ -2380,6 +2778,11 @@ indices:
       - /vn_vi/howtobuy/**
       - /vn_vi/legal/**
       - /vn_vi/heroes/**
+      - /vn_vi/trust/**
+      - /vn_vi/subscription/**
+      - /vn_vi/about-adobe/**
+      - /vn_vi/corporate-responsibility/**
+      - /vn_vi/ventures/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -2394,6 +2797,7 @@ indices:
       - /dk/creativecloud/**
       - /dk/accessibility/**
       - /dk/products/**
+      - /dk/solutions/**
       - /dk/ai/**
       - /dk/education/**
       - /dk/partnerpromo/**
@@ -2415,6 +2819,11 @@ indices:
       - /dk/howtobuy/**
       - /dk/legal/**
       - /dk/heroes/**
+      - /dk/trust/**
+      - /dk/subscription/**
+      - /dk/about-adobe/**
+      - /dk/corporate-responsibility/**
+      - /dk/ventures/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -2429,6 +2838,7 @@ indices:
       - /fi/creativecloud/**
       - /fi/accessibility/**
       - /fi/products/**
+      - /fi/solutions/**
       - /fi/ai/**
       - /fi/education/**
       - /fi/partnerpromo/**
@@ -2450,6 +2860,11 @@ indices:
       - /fi/howtobuy/**
       - /fi/legal/**
       - /fi/heroes/**
+      - /fi/trust/**
+      - /fi/subscription/**
+      - /fi/about-adobe/**
+      - /fi/corporate-responsibility/**
+      - /fi/ventures/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -2464,6 +2879,7 @@ indices:
       - /no/creativecloud/**
       - /no/accessibility/**
       - /no/products/**
+      - /no/solutions/**
       - /no/ai/**
       - /no/education/**
       - /no/partnerpromo/**
@@ -2485,6 +2901,11 @@ indices:
       - /no/howtobuy/**
       - /no/legal/**
       - /no/heroes/**
+      - /no/trust/**
+      - /no/subscription/**
+      - /no/about-adobe/**
+      - /no/corporate-responsibility/**
+      - /no/ventures/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -2499,6 +2920,7 @@ indices:
       - /se/creativecloud/**
       - /se/accessibility/**
       - /se/products/**
+      - /se/solutions/**
       - /se/ai/**
       - /se/education/**
       - /se/partnerpromo/**
@@ -2520,6 +2942,11 @@ indices:
       - /se/howtobuy/**
       - /se/legal/**
       - /se/heroes/**
+      - /se/trust/**
+      - /se/subscription/**
+      - /se/about-adobe/**
+      - /se/corporate-responsibility/**
+      - /se/ventures/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -2534,6 +2961,7 @@ indices:
       - /la/creativecloud/**
       - /la/accessibility/**
       - /la/products/**
+      - /la/solutions/**
       - /la/ai/**
       - /la/education/**
       - /la/partnerpromo/**
@@ -2555,6 +2983,11 @@ indices:
       - /la/howtobuy/**
       - /la/legal/**
       - /la/heroes/**
+      - /la/trust/**
+      - /la/subscription/**
+      - /la/about-adobe/**
+      - /la/corporate-responsibility/**
+      - /la/ventures/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -2569,6 +3002,7 @@ indices:
       - /mx/creativecloud/**
       - /mx/accessibility/**
       - /mx/products/**
+      - /mx/solutions/**
       - /mx/ai/**
       - /mx/education/**
       - /mx/partnerpromo/**
@@ -2590,6 +3024,11 @@ indices:
       - /mx/howtobuy/**
       - /mx/legal/**
       - /mx/heroes/**
+      - /mx/trust/**
+      - /mx/subscription/**
+      - /mx/about-adobe/**
+      - /mx/corporate-responsibility/**
+      - /mx/ventures/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -2604,6 +3043,7 @@ indices:
       - /be_nl/creativecloud/**
       - /be_nl/accessibility/**
       - /be_nl/products/**
+      - /be_nl/solutions/**
       - /be_nl/ai/**
       - /be_nl/education/**
       - /be_nl/partnerpromo/**
@@ -2625,6 +3065,11 @@ indices:
       - /be_nl/howtobuy/**
       - /be_nl/legal/**
       - /be_nl/heroes/**
+      - /be_nl/trust/**
+      - /be_nl/subscription/**
+      - /be_nl/about-adobe/**
+      - /be_nl/corporate-responsibility/**
+      - /be_nl/ventures/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -2639,6 +3084,7 @@ indices:
       - /bg/creativecloud/**
       - /bg/accessibility/**
       - /bg/products/**
+      - /bg/solutions/**
       - /bg/ai/**
       - /bg/education/**
       - /bg/partnerpromo/**
@@ -2660,6 +3106,11 @@ indices:
       - /bg/howtobuy/**
       - /bg/legal/**
       - /bg/heroes/**
+      - /bg/trust/**
+      - /bg/subscription/**
+      - /bg/about-adobe/**
+      - /bg/corporate-responsibility/**
+      - /bg/ventures/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -2674,6 +3125,7 @@ indices:
       - /ch_it/creativecloud/**
       - /ch_it/accessibility/**
       - /ch_it/products/**
+      - /ch_it/solutions/**
       - /ch_it/ai/**
       - /ch_it/education/**
       - /ch_it/partnerpromo/**
@@ -2695,6 +3147,11 @@ indices:
       - /ch_it/howtobuy/**
       - /ch_it/legal/**
       - /ch_it/heroes/**
+      - /ch_it/trust/**
+      - /ch_it/subscription/**
+      - /ch_it/about-adobe/**
+      - /ch_it/corporate-responsibility/**
+      - /ch_it/ventures/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -2709,6 +3166,7 @@ indices:
       - /cz/creativecloud/**
       - /cz/accessibility/**
       - /cz/products/**
+      - /cz/solutions/**
       - /cz/ai/**
       - /cz/education/**
       - /cz/partnerpromo/**
@@ -2730,6 +3188,11 @@ indices:
       - /cz/howtobuy/**
       - /cz/legal/**
       - /cz/heroes/**
+      - /cz/trust/**
+      - /cz/subscription/**
+      - /cz/about-adobe/**
+      - /cz/corporate-responsibility/**
+      - /cz/ventures/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -2744,6 +3207,7 @@ indices:
       - /ee/creativecloud/**
       - /ee/accessibility/**
       - /ee/products/**
+      - /ee/solutions/**
       - /ee/ai/**
       - /ee/education/**
       - /ee/partnerpromo/**
@@ -2765,6 +3229,11 @@ indices:
       - /ee/howtobuy/**
       - /ee/legal/**
       - /ee/heroes/**
+      - /ee/trust/**
+      - /ee/subscription/**
+      - /ee/about-adobe/**
+      - /ee/corporate-responsibility/**
+      - /ee/ventures/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -2779,6 +3248,7 @@ indices:
       - /hu/creativecloud/**
       - /hu/accessibility/**
       - /hu/products/**
+      - /hu/solutions/**
       - /hu/ai/**
       - /hu/education/**
       - /hu/partnerpromo/**
@@ -2800,6 +3270,11 @@ indices:
       - /hu/howtobuy/**
       - /hu/legal/**
       - /hu/heroes/**
+      - /hu/trust/**
+      - /hu/subscription/**
+      - /hu/about-adobe/**
+      - /hu/corporate-responsibility/**
+      - /hu/ventures/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -2814,6 +3289,7 @@ indices:
       - /il_he/creativecloud/**
       - /il_he/accessibility/**
       - /il_he/products/**
+      - /il_he/solutions/**
       - /il_he/ai/**
       - /il_he/education/**
       - /il_he/partnerpromo/**
@@ -2835,6 +3311,11 @@ indices:
       - /il_he/howtobuy/**
       - /il_he/legal/**
       - /il_he/heroes/**
+      - /il_he/trust/**
+      - /il_he/subscription/**
+      - /il_he/about-adobe/**
+      - /il_he/corporate-responsibility/**
+      - /il_he/ventures/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -2849,6 +3330,7 @@ indices:
       - /lv/creativecloud/**
       - /lv/accessibility/**
       - /lv/products/**
+      - /lv/solutions/**
       - /lv/ai/**
       - /lv/education/**
       - /lv/partnerpromo/**
@@ -2870,6 +3352,11 @@ indices:
       - /lv/howtobuy/**
       - /lv/legal/**
       - /lv/heroes/**
+      - /lv/trust/**
+      - /lv/subscription/**
+      - /lv/about-adobe/**
+      - /lv/corporate-responsibility/**
+      - /lv/ventures/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -2884,6 +3371,7 @@ indices:
       - /mena_ar/creativecloud/**
       - /mena_ar/accessibility/**
       - /mena_ar/products/**
+      - /mena_ar/solutions/**
       - /mena_ar/ai/**
       - /mena_ar/education/**
       - /mena_ar/partnerpromo/**
@@ -2905,6 +3393,11 @@ indices:
       - /mena_ar/howtobuy/**
       - /mena_ar/legal/**
       - /mena_ar/heroes/**
+      - /mena_ar/trust/**
+      - /mena_ar/subscription/**
+      - /mena_ar/about-adobe/**
+      - /mena_ar/corporate-responsibility/**
+      - /mena_ar/ventures/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -2919,6 +3412,7 @@ indices:
       - /pt/creativecloud/**
       - /pt/accessibility/**
       - /pt/products/**
+      - /pt/solutions/**
       - /pt/ai/**
       - /pt/education/**
       - /pt/partnerpromo/**
@@ -2940,6 +3434,11 @@ indices:
       - /pt/howtobuy/**
       - /pt/legal/**
       - /pt/heroes/**
+      - /pt/trust/**
+      - /pt/subscription/**
+      - /pt/about-adobe/**
+      - /pt/corporate-responsibility/**
+      - /pt/ventures/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -2954,6 +3453,7 @@ indices:
       - /ro/creativecloud/**
       - /ro/accessibility/**
       - /ro/products/**
+      - /ro/solutions/**
       - /ro/ai/**
       - /ro/education/**
       - /ro/partnerpromo/**
@@ -2975,6 +3475,11 @@ indices:
       - /ro/howtobuy/**
       - /ro/legal/**
       - /ro/heroes/**
+      - /ro/trust/**
+      - /ro/subscription/**
+      - /ro/about-adobe/**
+      - /ro/corporate-responsibility/**
+      - /ro/ventures/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -2989,6 +3494,7 @@ indices:
       - /si/creativecloud/**
       - /si/accessibility/**
       - /si/products/**
+      - /si/solutions/**
       - /si/ai/**
       - /si/education/**
       - /si/partnerpromo/**
@@ -3010,6 +3516,11 @@ indices:
       - /si/howtobuy/**
       - /si/legal/**
       - /si/heroes/**
+      - /si/trust/**
+      - /si/subscription/**
+      - /si/about-adobe/**
+      - /si/corporate-responsibility/**
+      - /si/ventures/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -3024,6 +3535,7 @@ indices:
       - /sk/creativecloud/**
       - /sk/accessibility/**
       - /sk/products/**
+      - /sk/solutions/**
       - /sk/ai/**
       - /sk/education/**
       - /sk/partnerpromo/**
@@ -3045,6 +3557,11 @@ indices:
       - /sk/howtobuy/**
       - /sk/legal/**
       - /sk/heroes/**
+      - /sk/trust/**
+      - /sk/subscription/**
+      - /sk/about-adobe/**
+      - /sk/corporate-responsibility/**
+      - /sk/ventures/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -3059,6 +3576,7 @@ indices:
       - /ua/creativecloud/**
       - /ua/accessibility/**
       - /ua/products/**
+      - /ua/solutions/**
       - /ua/ai/**
       - /ua/education/**
       - /ua/partnerpromo/**
@@ -3080,6 +3598,11 @@ indices:
       - /ua/howtobuy/**
       - /ua/legal/**
       - /ua/heroes/**
+      - /ua/trust/**
+      - /ua/subscription/**
+      - /ua/about-adobe/**
+      - /ua/corporate-responsibility/**
+      - /ua/ventures/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -3094,6 +3617,7 @@ indices:
       - /sg/creativecloud/**
       - /sg/accessibility/**
       - /sg/products/**
+      - /sg/solutions/**
       - /sg/ai/**
       - /sg/education/**
       - /sg/partnerpromo/**
@@ -3115,6 +3639,11 @@ indices:
       - /sg/howtobuy/**
       - /sg/legal/**
       - /sg/heroes/**
+      - /sg/trust/**
+      - /sg/subscription/**
+      - /sg/about-adobe/**
+      - /sg/corporate-responsibility/**
+      - /sg/ventures/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -3129,6 +3658,7 @@ indices:
       - /br/creativecloud/**
       - /br/accessibility/**
       - /br/products/**
+      - /br/solutions/**
       - /br/ai/**
       - /br/education/**
       - /br/partnerpromo/**
@@ -3150,6 +3680,11 @@ indices:
       - /br/howtobuy/**
       - /br/legal/**
       - /br/heroes/**
+      - /br/trust/**
+      - /br/subscription/**
+      - /br/about-adobe/**
+      - /br/corporate-responsibility/**
+      - /br/ventures/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -3164,6 +3699,7 @@ indices:
       - /cis_en/creativecloud/**
       - /cis_en/accessibility/**
       - /cis_en/products/**
+      - /cis_en/solutions/**
       - /cis_en/ai/**
       - /cis_en/education/**
       - /cis_en/partnerpromo/**
@@ -3185,6 +3721,11 @@ indices:
       - /cis_en/howtobuy/**
       - /cis_en/legal/**
       - /cis_en/heroes/**
+      - /cis_en/trust/**
+      - /cis_en/subscription/**
+      - /cis_en/about-adobe/**
+      - /cis_en/corporate-responsibility/**
+      - /cis_en/ventures/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -3199,6 +3740,7 @@ indices:
       - /cis_ru/creativecloud/**
       - /cis_ru/accessibility/**
       - /cis_ru/products/**
+      - /cis_ru/solutions/**
       - /cis_ru/ai/**
       - /cis_ru/education/**
       - /cis_ru/partnerpromo/**
@@ -3220,6 +3762,11 @@ indices:
       - /cis_ru/howtobuy/**
       - /cis_ru/legal/**
       - /cis_ru/heroes/**
+      - /cis_ru/trust/**
+      - /cis_ru/subscription/**
+      - /cis_ru/about-adobe/**
+      - /cis_ru/corporate-responsibility/**
+      - /cis_ru/ventures/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:

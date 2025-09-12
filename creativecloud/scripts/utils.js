@@ -207,6 +207,16 @@ function defineDeviceByScreenSize() {
   return 'TABLET';
 }
 
+export function isSignedInInitialized(interval = 200) {
+  return new Promise((resolve) => {
+    function poll() {
+      if (window.adobeIMS?.isSignedInUser) resolve();
+      else setTimeout(poll, interval);
+    }
+    poll();
+  });
+}
+
 function heroForegroundImage(firstBlock) {
   const rows = [...firstBlock.querySelectorAll(':scope > div')];
   if (rows.length > 1 && rows[0].textContent !== '') rows.shift();
@@ -245,6 +255,7 @@ function getDecorateAreaFn() {
 
   async function loadLCPImage(area = document, { fragmentLink = null } = {}) {
     const firstBlock = fragmentLink ? area.querySelector('body > div > div') : area.querySelector('body > main > div > div');
+    const firstSection = area.querySelector('body > main > div');
     let fgDivs = null;
     switch (true) {
       case firstBlock?.classList.contains('changebg'): {
@@ -268,6 +279,17 @@ function getDecorateAreaFn() {
           const foreground = heroForegroundImage(firstBlock);
           const imageHidden = (viewport === 'TABLET' && firstBlock?.classList.contains('media-hidden-tablet')) || (viewport === 'MOBILE' && firstBlock?.classList.contains('media-hidden-mobile'));
           if (!imageHidden) eagerLoad(foreground.querySelector('img'));
+          const uploadBlock = firstSection?.querySelector(':scope > div.upload > div');
+          if (uploadBlock) {
+            const gridIndex = {
+              MOBILE: 1,
+              TABLET: 2,
+              DESKTOP: 3,
+            }[viewport];
+            const grid = uploadBlock.querySelector(`:scope > div:nth-child(${gridIndex})`);
+            const img = grid?.querySelector('picture > img');
+            if (img) eagerLoad(img);
+          }
         } else eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
         break;
       }
@@ -345,6 +367,7 @@ const CONFIG = {
   contentRoot: '/cc-shared',
   codeRoot: '/creativecloud',
   imsClientId: 'adobedotcom-cc',
+  iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata'],
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
@@ -383,7 +406,9 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?express(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?learn(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?benefits(\/.*)?/,
   ],
+  brandConciergeAA: 'cc:app-reco',
 };
 
 export const scriptInit = async () => {

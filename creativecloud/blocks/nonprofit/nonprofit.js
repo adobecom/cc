@@ -4,7 +4,7 @@
 /* eslint-disable max-len */
 import ReactiveStore from './reactiveStore.js';
 import { setLibs } from '../../scripts/utils.js';
-import { countries } from './constants.js';
+import { countries, PRODUCT_VALIDATION_CONFIG } from './constants.js';
 import { getNonprofitIconTag, NONPRFIT_ICONS } from './icons.js';
 import nonprofitSelect from './nonprofit-select.js';
 
@@ -21,7 +21,6 @@ const removeOptionElements = (element) => {
 // #region Constants
 
 const PERCENT_API_URL = 'https://api.goodstack.io/v1';
-const PERCENT_VALIDATION_API_URL = 'https://validate.goodstack.org/adobe-acrobat';
 const PERCENT_PUBLISHABLE_KEY = 'pk_ea675372-2eb2-4cf1-8b6a-358087bf8df5';
 export const SCENARIOS = Object.freeze({
   FOUND_IN_SEARCH: 'FOUND_IN_SEARCH',
@@ -132,12 +131,14 @@ async function fetchRegistries(countryCode, abortController) {
   }
 }
 
-async function sendOrganizationData() {
+async function sendOrganizationData(product) {
   try {
     const { locale: { ietf } } = getConfig();
-    const inviteResponse = await fetch(`${PERCENT_VALIDATION_API_URL}?lng=${ietf}`, {
+    const { VALIDATION_URL, CONFIGURATION_ID } = PRODUCT_VALIDATION_CONFIG[product];
+    const inviteResponse = await fetch(`${VALIDATION_URL}?lng=${ietf}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${PERCENT_PUBLISHABLE_KEY}` },
+      body: JSON.stringify({ configurationId: CONFIGURATION_ID }),
     });
 
     const inviteResult = await validatePercentResponse(inviteResponse);
@@ -268,16 +269,20 @@ function renderStepper(containerTag) {
 
     if (step === 1) {
       step1.classList.add('is-active');
+      step2.setAttribute('aria-disabled', true);
+      step3.setAttribute('aria-disabled', true);
     }
     if (step === 2) {
       step1.classList.add('is-cleared');
       step2.classList.add('is-active');
+      step2.removeAttribute('aria-disabled');
     }
     if (step === 3) {
       if (scenario === SCENARIOS.FOUND_IN_SEARCH) {
         step1.classList.add('is-cleared');
         step2.classList.add('is-cleared');
         step3.classList.add('is-active');
+        step3.removeAttribute('aria-disabled');
       } else {
         step1.classList.add('is-cleared');
         step2.classList.add('is-active');
@@ -286,11 +291,13 @@ function renderStepper(containerTag) {
     if (step === 4) {
       step1.classList.add('is-cleared');
       step2.classList.add('is-active');
+      step2.removeAttribute('aria-disabled');
     }
     if (step === 5) {
       step1.classList.add('is-cleared');
       step2.classList.add('is-cleared');
       step3.classList.add('is-active');
+      step3.removeAttribute('aria-disabled');
     }
   });
 
@@ -323,7 +330,7 @@ function replaceURL(tagObject) {
 
 function getDescriptionTag(title, subtitle) {
   const descriptionTag = createTag('div', { class: 'np-description' });
-  const titleTag = createTag('span', { class: 'np-title' }, title);
+  const titleTag = createTag('h1', { class: 'np-title' }, title);
 
   descriptionTag.append(titleTag);
 
@@ -840,7 +847,7 @@ function renderOrganizationAddress(containerTag) {
 }
 
 // Personal data
-function renderPersonalData(containerTag) {
+function renderPersonalData(containerTag, product) {
   containerTag.setAttribute('daa-lh', 'confirm your details');
 
   // Description
@@ -921,7 +928,7 @@ function renderPersonalData(containerTag) {
 
     stepperStore.update((prev) => ({ ...prev, pending: true }));
 
-    const ok = await sendOrganizationData();
+    const ok = await sendOrganizationData(product);
 
     if (!ok) {
       inputs.forEach((input) => {
@@ -943,7 +950,7 @@ function renderApplicationReview(containerTag) {
   const applicationReviewTag = createTag('div', { class: 'np-application-review-container' });
 
   const titleTag = createTag(
-    'span',
+    'h1',
     { class: 'np-title' },
     window.mph['nonprofit-title-application-review'],
   );
@@ -987,7 +994,7 @@ function renderApplicationReview(containerTag) {
   containerTag.replaceChildren(applicationReviewTag, returnToAcrobatForNonprofitsTag);
 }
 
-function renderStepContent(containerTag) {
+function renderStepContent(containerTag, product) {
   const contentContainerTag = createTag('div', { class: 'np-content-container' });
 
   let currentStep;
@@ -998,11 +1005,11 @@ function renderStepContent(containerTag) {
     currentScenario = scenario;
 
     if (step === 1) renderSelectNonprofit(contentContainerTag);
-    if (step === 2 && scenario === SCENARIOS.FOUND_IN_SEARCH) renderPersonalData(contentContainerTag);
+    if (step === 2 && scenario === SCENARIOS.FOUND_IN_SEARCH) renderPersonalData(contentContainerTag, product);
     if (step === 2 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderOrganizationDetails(contentContainerTag);
     if (step === 3 && scenario === SCENARIOS.FOUND_IN_SEARCH) renderApplicationReview(contentContainerTag);
     if (step === 3 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderOrganizationAddress(contentContainerTag);
-    if (step === 4 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderPersonalData(contentContainerTag);
+    if (step === 4 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderPersonalData(contentContainerTag, product);
     if (step === 5 && scenario === SCENARIOS.NOT_FOUND_IN_SEARCH) renderApplicationReview(contentContainerTag);
   });
 
@@ -1010,10 +1017,20 @@ function renderStepContent(containerTag) {
 }
 // #endregion
 
+function getProductFromClassList(element) {
+  const classes = [...element.classList];
+  if (classes.length === 1) return 'acrobat';
+  const nonprofitIndex = classes.indexOf('nonprofit');
+  const product = nonprofitIndex !== -1 ? classes[nonprofitIndex + 1] : undefined;
+  if (!product) throw new Error('Product not found');
+  return product;
+}
+
 function initNonprofit(element) {
   const containerTag = createTag('div', { class: 'np-container' });
+  const product = getProductFromClassList(element);
   renderStepper(containerTag);
-  renderStepContent(containerTag);
+  renderStepContent(containerTag, product);
   element.append(containerTag);
 }
 

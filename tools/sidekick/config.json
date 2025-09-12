@@ -2,6 +2,7 @@
   "project": "Creative Cloud",
   "previewHost": "main--cc--adobecom.aem.page",
   "liveHost": "main--cc--adobecom.aem.live",
+  "trustedHosts": ["milo.adobe.com", "main--milo--adobecom.aem.page"],
   "plugins": [
     {
       "id": "path",
@@ -167,6 +168,14 @@
       "url": "https://milo.adobe.com/tools/rollout",
       "includePaths": [ "**.docx**", "**.xlsx**" ],
       "paletteRect": "top: 40%; left: 50%; transform: translate(-50%,-50%); height: 350px; width: 500px; overflow: hidden; border-radius: 15px; box-shadow: 0 20px 35px 0px rgba(0, 0, 0, 0.5);"
+    },
+    {
+      "containerId": "tools",
+      "id": "urlprotect",
+      "title": "Url Protect",
+      "environments": [ "edit" ],
+      "url": "https://main--cc--adobecom.aem.live/tools/trustcenter/protecturl.html",
+      "includePaths": [ "**.docx**"]
     }
   ]
 }

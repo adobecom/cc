@@ -7,8 +7,8 @@
 .upload-block .foreground > .tablet-up,
 .upload-block .foreground > .tablet-up.desktop-up,
 .upload-block .foreground > .desktop-up {
-    display: none;
-  }
+  display: none;
+}
 
 /* Media Zone */
 .upload-block .media-container picture {
@@ -55,12 +55,8 @@
   font-size: 14px;
   position: relative;
   margin-bottom: 24px;
-}
-
-.upload-block .drop-zone:hover {
-  border-color: #1473E6;
-  background-color: #E4F0FF;
-  cursor: pointer;
+  box-sizing: border-box;
+  border: 2px solid white;
 }
 
 .upload-block .drop-zone p:first-child {
@@ -106,6 +102,15 @@
   margin-top: -6px;
 }
 
+.upload-block .media-container .video-container {
+  width: 100%;
+}
+
+.upload-block .media-container .video-container .pause-play-wrapper {
+  bottom: auto;
+  top: 2%;
+} 
+
 /* Tablet up */
 @media screen and (min-width: 600px) {
   .upload-block .foreground {
@@ -121,6 +126,11 @@
   .upload-block .foreground > .mobile-up,
   .upload-block .foreground > .desktop-up {
     display: none;
+  }
+
+  .upload-block .media-container {
+    overflow: hidden;
+    border-radius: 16px;
   }
 
   /* Drop Zone */
@@ -143,7 +153,11 @@
     overflow: hidden;
   }
 
-  /* Drop Zone */
+  .upload-block .media-container {
+    overflow: initial;
+    border-radius: none
+  }
+
   .upload-block .drop-zone-container {
     border-radius: 0;
     position: static;
@@ -160,6 +174,14 @@
     justify-content: space-evenly;
     margin-bottom: 24px;
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='2' ry='8' stroke='silver' stroke-width='4' stroke-dasharray='5%2c 10' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+  }
+
+  .upload-block .drop-zone:hover,
+  .upload-block .drop-zone.active {
+    border: 2px solid #1473E6;
+    background-color: #E4F0FF;
+    background-image: none;
+    cursor: pointer;
   }
 
   .upload-block .drop-zone p:first-child {
@@ -186,5 +208,12 @@
   .upload-block .foreground > .mobile-up,
   .upload-block .foreground > .tablet-up {
     display: none;
+  }
+
+  .upload-block .media-container .video-container .pause-play-wrapper {
+    top: auto;
+    right: auto;
+    left: 2%;
+    bottom: 2%;
   }
 }

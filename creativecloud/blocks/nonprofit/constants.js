@@ -425,3 +425,18 @@ export const countries = [
     name: 'Yemen',
   },
 ];
+
+export const PRODUCT_VALIDATION_CONFIG = {
+  acrobat: {
+    VALIDATION_URL: 'https://validate.goodstack.org/adobe-acrobat',
+    CONFIGURATION_ID: 'hostedconfiguration_000000d4csga8zhbgj7hha8ezasvi',
+  },
+  express: {
+    VALIDATION_URL: 'https://validate.goodstack.org/adobe-express',
+    CONFIGURATION_ID: 'hostedconfiguration_000000Ct5bOHoi04ENRR7EKfDb2cx',
+  },
+  'creative-cloud': {
+    VALIDATION_URL: 'https://validate.goodstack.org/adobe-creative-cloud',
+    CONFIGURATION_ID: 'hostedconfiguration_000000CUpdZN7S21XokeEKM1B600c',
+  },
+};
