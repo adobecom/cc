@@ -34,7 +34,7 @@
   border-radius: 10px;
   box-shadow: 0 0 20px 0 #00000029;
   box-sizing: border-box;
-  padding: 16px 16px 24px;
+  padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-s);
   position: relative;
   text-align: center;
   display: flex;
@@ -46,7 +46,7 @@
 .upload-block .drop-zone-container > p:last-child {
   font-size: var(--type-body-xxs-size);
   line-height: var(--type-body-xxs-lh);
-  margin: 16px 0 0;
+  margin: var(--spacing-xs) 0 0;
 }
 
 .upload-block .drop-zone {
@@ -63,7 +63,7 @@
   font-size: var(--type-body-xxl-size);
   font-weight: 700;
   margin-bottom: 0;
-  margin-top: 8px;
+  margin-top: var(--spacing-xxs);
   line-height: var(--type-body-xxl-lh);
 }
 
@@ -172,7 +172,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    margin-bottom: 24px;
+    margin-bottom: var(--spacing-s);
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='2' ry='8' stroke='silver' stroke-width='4' stroke-dasharray='5%2c 10' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
   }
 
