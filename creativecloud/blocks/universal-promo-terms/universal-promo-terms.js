@@ -52,9 +52,9 @@ function isPossiblyDangerous(name, value) {
   return false;
 }
 
-function removeAttributes(elements) {
-  elements.attributes.forEach((elem) => {
-    const { name, value } = elem;
+function removeAttributes(elem) {
+  elem.attributes.forEach((attr) => {
+    const { name, value } = attr;
     if (isPossiblyDangerous(name, value)) {
       elem.removeAttribute(name);
     }
