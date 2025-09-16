@@ -20,7 +20,7 @@ describe('universal-promo-terms', () => {
     expect(document.querySelector('.universal-promo-terms').textContent).to.not.equal('false');
   });
 
-  it('Sanitize HTML',  async () => {
+  it('Sanitize HTML', async () => {
     const htmlXss = await readFile({ path: './mocks/xss.html' });
     expect(htmlXss.includes('alert')).to.be.true;
     const html = sanitize(htmlXss);

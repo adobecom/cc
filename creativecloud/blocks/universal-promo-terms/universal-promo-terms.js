@@ -39,38 +39,40 @@ function stringToHTML(str) {
 
 function removeScripts(html) {
   const scripts = html.querySelectorAll('script');
-  for (const script of scripts) {
-    script.remove();
-  }
+  scripts.forEach((script) => script.remove());
 }
 
 function isPossiblyDangerous(name, value) {
   const val = value.replace(/\s+/g, '').toLowerCase();
   if (['src', 'href', 'xlink:href'].includes(name)) {
+    // eslint-disable-next-line no-script-url
     if (val.includes('javascript:') || val.includes('data:text/html')) return true;
   }
   if (name.startsWith('on')) return true;
+  return false;
 }
 
-function removeAttributes(elem) {
-  for (const { name, value } of elem.attributes) {
-    if (!isPossiblyDangerous(name, value)) continue;
-    elem.removeAttribute(name);
-  }
+function removeAttributes(elements) {
+  elements.attributes.forEach((elem) => {
+    const { name, value } = elem;
+    if (isPossiblyDangerous(name, value)) {
+      elem.removeAttribute(name);
+    }
+  });
 }
 
 function cleanAttributes(html) {
-  for (const node of html.children) {
+  html.children.forEach((node) => {
     removeAttributes(node);
     cleanAttributes(node);
-  }
+  });
 }
 
 export function sanitize(termsHTML) {
   const html = stringToHTML(termsHTML);
   removeScripts(html);
   cleanAttributes(html);
-  return html
+  return html;
 }
 
 /**
