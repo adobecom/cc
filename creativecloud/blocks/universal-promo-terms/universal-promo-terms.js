@@ -31,6 +31,48 @@ const replacePlaceholderText = (text, params) => {
   return finalText;
 };
 
+function stringToHTML(str) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(str, 'text/html');
+  return doc.body || document.createElement('body');
+}
+
+function removeScripts(html) {
+  const scripts = html.querySelectorAll('script');
+  for (const script of scripts) {
+    script.remove();
+  }
+}
+
+function isPossiblyDangerous(name, value) {
+  const val = value.replace(/\s+/g, '').toLowerCase();
+  if (['src', 'href', 'xlink:href'].includes(name)) {
+    if (val.includes('javascript:') || val.includes('data:text/html')) return true;
+  }
+  if (name.startsWith('on')) return true;
+}
+
+function removeAttributes(elem) {
+  for (const { name, value } of elem.attributes) {
+    if (!isPossiblyDangerous(name, value)) continue;
+    elem.removeAttribute(name);
+  }
+}
+
+function cleanAttributes(html) {
+  for (const node of html.children) {
+    removeAttributes(node);
+    cleanAttributes(node);
+  }
+}
+
+export function sanitize(termsHTML) {
+  const html = stringToHTML(termsHTML);
+  removeScripts(html);
+  cleanAttributes(html);
+  return html
+}
+
 /**
  * Returns promo term HTML from API
  * @param {*} params
@@ -76,6 +118,10 @@ export default async function init(el, search) {
   if (!termsHTML && env !== 'stage') {
     window.location = '404.html';
   } else {
-    el.innerHTML = termsHTML;
+    const html = sanitize(termsHTML);
+    while (el.firstChild) {
+      el.removeChild(el.lastChild);
+    }
+    el.append(html.firstChild);
   }
 }
