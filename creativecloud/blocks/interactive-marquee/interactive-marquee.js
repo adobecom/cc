@@ -108,6 +108,7 @@ export default async function init(el) {
         const { default: setMultiImageMarquee } = await import('../../features/firefly/firefly-masonry.js');
         await setMultiImageMarquee(el);
       } catch (err) {
+        //log
         window.lana?.log(`Failed to load firefly masonry: ${err}`);
       }
       break;
