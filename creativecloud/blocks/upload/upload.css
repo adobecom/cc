@@ -33,19 +33,20 @@
   background: #FFF;
   border-radius: 10px;
   box-shadow: 0 0 20px 0 #00000029;
-  padding: 14px 14px 24px;
+  box-sizing: border-box;
+  padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-s);
   position: relative;
   text-align: center;
   display: flex;
   flex-direction: column;
-  width: 80%;
+  max-width: var(--grid-container-width);
   margin: -15% auto 0;
 }
 
 .upload-block .drop-zone-container > p:last-child {
-  font-size: 12px;
-  line-height: 16px;
-  margin: 12px 0 0;
+  font-size: var(--type-body-xxs-size);
+  line-height: var(--type-body-xxs-lh);
+  margin: var(--spacing-xs) 0 0;
 }
 
 .upload-block .drop-zone {
@@ -59,13 +60,17 @@
 }
 
 .upload-block .drop-zone p:first-child {
-  font-size: 28px;
+  font-size: var(--type-body-xxl-size);
   font-weight: 700;
   margin-bottom: 0;
+  margin-top: var(--spacing-xxs);
+  line-height: var(--type-body-xxl-lh);
 }
 
 .upload-block .drop-zone p:last-child {
   margin: 12px 0 0;
+  line-height: var(--type-body-xs-lh);
+  font-size: var(--type-body-xs-size);
 }
 
 .upload-block .upload-action-container {
@@ -157,6 +162,7 @@
     border-radius: 0;
     position: static;
     width: unset;
+    max-width: unset;
     margin: initial;
     box-shadow: none;
   }
@@ -166,6 +172,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    margin-bottom: var(--spacing-s);
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='2' ry='8' stroke='silver' stroke-width='4' stroke-dasharray='5%2c 10' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
   }
 
@@ -183,6 +190,13 @@
 
   .upload-block .drop-zone p:last-child {
     margin: 0;
+    line-height: var(--type-body-s-lh);
+    font-size: var(--type-body-s-size);
+  }
+
+  .upload-block .drop-zone-container > p:last-child {
+    font-size: var(--type-body-xs-size);
+    line-height: var(--type-body-xs-lh);
   }
 
   .upload-block .foreground > .upload-grid,
