@@ -1,3 +1,5 @@
+import { getLibs } from '../../scripts/utils.js';
+
 const OFFER_ID_API_BASE = 'https://aos.adobe.io/offers/';
 const SELECTOR_ID_API_BASE = 'https://aos.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
@@ -30,50 +32,6 @@ const replacePlaceholderText = (text, params) => {
   });
   return finalText;
 };
-
-function stringToHTML(str) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(str, 'text/html');
-  return doc.body || document.createElement('body');
-}
-
-function removeScripts(html) {
-  const scripts = html.querySelectorAll('script');
-  scripts.forEach((script) => script.remove());
-}
-
-function isPossiblyDangerous(name, value) {
-  const val = value.replace(/\s+/g, '').toLowerCase();
-  if (['src', 'href', 'xlink:href'].includes(name)) {
-    // eslint-disable-next-line no-script-url
-    if (val.includes('javascript:') || val.includes('data:text/html')) return true;
-  }
-  if (name.startsWith('on')) return true;
-  return false;
-}
-
-function removeAttributes(elem) {
-  elem.attributes.forEach((attr) => {
-    const { name, value } = attr;
-    if (isPossiblyDangerous(name, value)) {
-      elem.removeAttribute(name);
-    }
-  });
-}
-
-function cleanAttributes(html) {
-  html.children.forEach((node) => {
-    removeAttributes(node);
-    cleanAttributes(node);
-  });
-}
-
-export function sanitize(termsHTML) {
-  const html = stringToHTML(termsHTML);
-  removeScripts(html);
-  cleanAttributes(html);
-  return html;
-}
 
 /**
  * Returns promo term HTML from API
@@ -120,10 +78,10 @@ export default async function init(el, search) {
   if (!termsHTML && env !== 'stage') {
     window.location = '404.html';
   } else {
-    const html = sanitize(termsHTML);
-    while (el.firstChild) {
-      el.removeChild(el.lastChild);
-    }
-    el.append(html.firstChild);
+    const miloLibs = getLibs('/libs');
+    const { sanitizeHtml } = await import(`${miloLibs}/utils/sanitizeHtml.js`);
+    const html = sanitizeHtml(termsHTML);
+    el.innerHTML = '';
+    el.append(html);
   }
 }
