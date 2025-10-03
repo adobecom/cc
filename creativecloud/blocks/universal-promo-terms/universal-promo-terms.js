@@ -34,7 +34,7 @@ const replacePlaceholderText = (text, params) => {
 };
 
 /**
- * Returns promo term HTML from API
+ * Returns promo term HTML from API.
  * @param {*} params
  * @param {*} el
  * @param {*} env
