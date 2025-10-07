@@ -37,10 +37,10 @@ const config = {
   use: {
     actionTimeout: 60000,
     trace: 'on-first-retry',
-    baseURL:
-      process.env.PR_BRANCH_LIVE_URL
-      || process.env.LOCAL_TEST_LIVE_URL
-      || BASE_URLS.main,
+    baseURL: 'https://stage--cc--adobecom.aem.live',
+    // process.env.PR_BRANCH_LIVE_URL
+    // || process.env.LOCAL_TEST_LIVE_URL
+    // || 'https://stage--cc--adobecom.aem.live',
   },
   projects: [
     {
