@@ -142,7 +142,7 @@ export const countries = [
   },
   {
     code: 'CZE',
-    name: 'Czech Republic',
+    name: 'Czechia',
   },
   {
     code: 'DNK',
