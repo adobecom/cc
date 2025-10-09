@@ -3,6 +3,7 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
 const { default: init } = await import('../../../creativecloud/blocks/universal-promo-terms/universal-promo-terms.js');
 
 describe('universal-promo-terms', () => {
@@ -13,6 +14,11 @@ describe('universal-promo-terms', () => {
 
   afterEach(() => {
     console.log.restore();
+  });
+
+  before(async () => {
+    // setLibs('https://milo.adobe.com/libs');
+    setLibs('https://mwpw172104sanitize2--milo--bozojovicic.aem.live/libs', true); // TODO remove this once Milo PR is merged to main
   });
 
   it('Get API from query parameters', async () => {
