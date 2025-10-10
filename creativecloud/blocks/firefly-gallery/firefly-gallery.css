@@ -95,6 +95,14 @@
   width: 100%;
 }
 
+.dark .firefly-gallery-fade {
+  background: linear-gradient(
+    0deg,
+    rgb(29 29 29 / 100%) 10%,
+    rgb(29 29 29 / 0%) 100%
+  );
+}
+
 /* Skeleton item base styles */
 .firefly-gallery-item {
   background-color: var(--color-gray-50);
