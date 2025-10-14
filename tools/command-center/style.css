@@ -11,6 +11,50 @@ body, html {
   color: #000;
 }
 
+.welcome-container {
+  display: flex;
+  width: 100%;
+  padding: 30px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.welcome-text {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.welcome-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.section-heading {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.body-text {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.body-bold-supplemental {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #555;
+}
+
 .sidebar * {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -46,22 +90,12 @@ body, html {
 }
 
 .chat-background {
-  /* background-image: url("https://main--cc--adobecom.aem.live/drafts/mathuria/figma-to-da/stream_bg/media_107c23847c06427fc79def01c9eee67464f8897d2.jpg?format=webply&optimize=medium"); */
-  /* background-repeat: no-repeat;  */
-  /* background-size: cover; */
-  /* object-fit: cover; */
-  /* background-position: 28% 50%; */
-  /* background-color: #fff7f6; */
   z-index: 0;
   position: fixed;
   display: flex;
   height: 100%;
   width: 100%;
   opacity: 0.6;
-  /* filter: saturate(0.7); */
-  background: linear-gradient(90deg, #D3D5FF 28%, #7F8099 100%);
-  background-size: 100% 42%;
-  background-repeat: no-repeat;
 }
 
 .conversation-mode .chat-background {

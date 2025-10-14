@@ -63,14 +63,23 @@
 
     <div class="chat-wrapper">
       <div class="chat-background"></div>
-      <h2 class="section-heading">
-        Welcome to the Project Initiation & Planning Kit.&nbsp;<span
-          class="cursive"
-        >
-          Kickstart your project with the tools, templates, and guidance you
-          need to plan with confidence. What would you like to begin with?</span
-        >
-      </h2>
+      <div class="welcome-container">
+        <div class="welcome-text">
+          <h2 class="section-heading">Welcome to CATALYST!</h2>
+          <p class="body-text">
+            CATALYST helps you transform your ideas into actionable plans.
+            Create PRDs, schedule resources, build timelines, and generate
+            executive presentations—all in one place.
+          </p>
+          <p class="body-bold-supplemental">
+            Select from our templates below or start a conversation to get
+            guidance on your next project.
+          </p>
+        </div>
+        <div class="welcome-image">
+          <img src="./assets/compass.jpg" alt="Compass" />
+        </div>
+      </div>
       <div id="chat-window" class="chat-window"></div>
       <div class="input-area" id="input-area">
         <textarea
@@ -78,7 +87,7 @@
           placeholder="Ready when you are..."
           rows="2"
         ></textarea>
-        <button id="send-btn">
+        <button id="send-btn" type="button" title="send-btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
