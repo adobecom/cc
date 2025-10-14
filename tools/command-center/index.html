@@ -81,27 +81,6 @@
         </div>
       </div>
       <div id="chat-window" class="chat-window"></div>
-      <div class="input-area" id="input-area">
-        <textarea
-          id="user-input"
-          placeholder="Ready when you are..."
-          rows="2"
-        ></textarea>
-        <button id="send-btn" type="button" title="send-btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M15.6485 7.9735C15.6482 7.67899 15.4769 7.41106 15.2059 7.29056L1.05752 0.932823C0.801331 0.817503 0.501292 0.855833 0.281711 1.03122C0.0617815 1.20765 -0.0411083 1.49146 0.0151617 1.76733L1.28678 8.00803L0.0648815 14.2384C0.0162015 14.4852 0.0949215 14.738 0.270312 14.9134C0.290682 14.9337 0.312782 14.9531 0.335222 14.9714C0.556192 15.1454 0.855192 15.182 1.11069 15.066L15.2086 8.65781C15.4773 8.53559 15.6489 8.26801 15.6485 7.9735ZM11.406 7.22716L2.66439 7.25379L1.77705 2.90084L11.406 7.22716ZM1.81711 13.0973L2.6694 8.75294L11.4323 8.72635L1.81711 13.0973Z"
-              fill="#292929"
-            />
-          </svg>
-        </button>
-      </div>
       <div class="card-section">
         <div class="card-container">
           <div
@@ -188,6 +167,25 @@
             <p class="card-text">
               Define a structured initiative to turn strategy into execution.
             </p>
+          </div>
+        </div>
+      </div>
+      <div class="input-area" id="input-area">
+        <div class="prompt-label">Prompt</div>
+        <div class="prompt-cta-wrapper">
+          <textarea
+            id="user-input"
+            placeholder="Describe the workflow you want to execute"
+            rows="2"
+          ></textarea>
+          <div class="input-actions">
+            <button id="suggestions-btn" class="action-button">
+              <span class="suggestions-icon"></span>
+              Suggestions
+            </button>
+            <button id="send-btn" class="action-button primary">
+              Generate
+            </button>
           </div>
         </div>
       </div>

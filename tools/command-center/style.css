@@ -160,19 +160,26 @@ body, html {
 
 .input-area {
   display: flex;
+  flex-direction: column;
   width: 90%;
-  margin: 20px auto;
-  padding: 0;
+  margin: 10px auto;
+  padding: 10px;
   bottom: 12%;
   z-index: 1;
-  border-radius: 200px;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
   box-shadow: 0 4px 5px rgb(0 0 0 / 44%);
+  background: #fff;
 }
 
-.input-area.to-bottom {
-  bottom: 3%;
-  transition: bottom 0.5s ease;
-  position: sticky;
+.prompt-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+.prompt-cta-wrapper {
+  display: flex;
+  align-items: end;
 }
 
 #user-input {
@@ -180,13 +187,9 @@ body, html {
   font-family: 'Adobe Clean', Helvetica, Arial, sans-serif;
   font-size: 1.2rem;
   border: none;
-  border-radius: 200px 0 0 200px;
   resize: none;
   background: #fff;
   color: #1f1f1f;
-  padding-left: 50px;
-  padding-top: 20px;
-  padding-bottom: 20px;
   outline: none;
   line-height: 1.5;
 }
@@ -195,28 +198,49 @@ body, html {
   color: #2d2d2d;
 }
 
+.input-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+#suggestions-btn{
+  display: none;
+}
+
+.action-button {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button.primary {
+  background-color: #1473e6;
+  color: #fff;
+  border: none;
+}
+
+.suggestions-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 12l10 10 10-10-10-10z"/></svg>');
+  background-size: contain;
+}
+
+
 .message.has-iframe {
   height: 75vh;
   max-height: 75vh;
   padding-bottom: 20px;
 }
 
-#send-btn {
-  background-color: #fff;
-  color: white;
-  border: none;
-  padding: 0 20px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  border-radius: 0 200px 200px 0;
-  transition: background-color 0.2s;
-  margin: 0;
-  width: 80px;
-}
-
-#send-btn:hover svg path {
-  fill: #2d2d2df0;
-}
 
 .message .icon {
   font-size: 18px;
@@ -361,11 +385,11 @@ body, html {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1400px;
   margin: auto;
   margin-top: 20px;
   margin-bottom: 20px;
   z-index: 1;
+  background-color: #D9D1C6;
 }
 
 .chat-wrapper .section-heading {

@@ -187,7 +187,7 @@ function sendMessage() {
   document.querySelector('.chat-window').style.display = 'flex';
   document.querySelector('.input-area').classList.add('to-bottom');
   document.querySelector('.card-section').style.display = 'none';
-  document.querySelector('.section-heading').style.display = 'none';
+  document.querySelector('.welcome-container').style.display = 'none';
   chatWrapper.classList.add('conversation-mode');
   document.getElementById('homeIcon').style.display = 'flex';
   if (!chatWindow.querySelector('.message.user')) restartObserver();
@@ -798,7 +798,7 @@ async function loadAllConversations() {
       const li = e.target.closest('li');
       const convId = li.querySelector('a').id;
       document.querySelector('.card-section').style.display = 'none';
-      document.querySelector('.section-heading').style.display = 'none';
+      document.querySelector('.welcome-container').style.display = 'none';
       chatWindow.style.display = 'flex';
       observer?.disconnect();
       observer = null;
