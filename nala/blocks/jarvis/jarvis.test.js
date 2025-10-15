@@ -17,7 +17,7 @@ test.describe('verify Jarvis presence CC pages', () => {
     await test.step('Jarvis logo shows in page', async () => {
       await page.waitForLoadState();
       // Javis has delay from its libraty, so wait is required here
-      await page.waitForTimeout(6000);
+      await page.waitForTimeout(9000);
       expect(await jarvis.jarvisFeature).toBeTruthy();
     });
   });
@@ -31,7 +31,7 @@ test.describe('verify Jarvis presence CC pages', () => {
     await test.step('Jarvis logo shows in page', async () => {
       await page.waitForLoadState();
       // Javis has delay from its libraty, so wait is required here
-      await page.waitForTimeout(6000);
+      await page.waitForTimeout(9000);
       await jarvis.jarvisFeature.click();
       expect(await jarvis.enableExpandChat).toBeTruthy();
     });
