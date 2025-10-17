@@ -284,7 +284,7 @@ function buildOverlayElement(
     class: 'firefly-gallery-overlay',
     href: fireflyUrl,
     target: '_blank',
-    rel: 'noopener',
+    rel: 'noopener nofollow',
     'aria-label': 'Open in Firefly',
     tabindex: '0',
   });
