@@ -175,8 +175,7 @@ export const [setLibs, getLibs] = (() => {
         && !hostname.includes('aem.live')
         && !hostname.includes('localhost')) {
         // libs = prodLibs;
-        // libs = 'https://artemis--milo--adobecom.aem.live/libs';
-        libs = 'https://hydra--milo--amitbikram.hlx.live/libs';
+        libs = 'https://artemis--milo--adobecom.aem.live/libs';
         return libs;
       }
       const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
