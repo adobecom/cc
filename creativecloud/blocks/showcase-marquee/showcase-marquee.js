@@ -63,21 +63,22 @@ export function createSearchBox(text) {
 }
 
 export async function initLogoRow(el) {
-  // Check if logo-row already exists
-  if (el.querySelector('.logo-row')) return;
+  const children = Array.from(el.children);
+  const logoRowContent = children.find((child) => child.querySelector('span.icon'));
 
-  const logoRow = createTag('div', { class: 'logo-row' });
+  if (!logoRowContent) return;
+
+  logoRowContent.classList.add('logo-row');
+
   const { default: initLogoRowFunc } = await import('../logo-row/logo-row.js');
-  initLogoRowFunc(logoRow);
-
-  el.appendChild(logoRow);
+  initLogoRowFunc(logoRowContent);
 }
 
 export default async function init(el) {
   const { decorateBlockBg, decorateButtons } = await import(`${miloLibs}/utils/decorate.js`);
 
   const children = el.querySelectorAll(':scope > div');
-  const foreground = children[children.length - 1];
+  const foreground = children[children.length - 2];
 
   // Setup background if exists
   if (children.length > 1) {
@@ -99,6 +100,6 @@ export default async function init(el) {
   // Create search box
   createSearchBox(text);
 
-  // Initialize logo row at the bottom
+  // Initialize logo row if present
   await initLogoRow(el);
 }
