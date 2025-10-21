@@ -284,10 +284,10 @@
 }
 
 .showcase-marquee .logo-row {
+  opacity: .3;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 3;
 }
 
