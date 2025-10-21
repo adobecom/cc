@@ -1,14 +1,35 @@
 /* Responsive styling with mobile-first approach */
 :root {
   --content-left-margin: 24px;
+  --showcase-padding-top: 40px;
   --content-width: 90%;
   --content-title-size: 48px;
+  --content-icon-size: 54px;
   --content-subtitle-size: 18px;
+  --gallery-column-dim: 163px;
+}
+
+.firefly-model-showcase {
+  display: grid;
+  grid-template-areas: "stack";
+  padding-top: var(--showcase-padding-top);
+   position: relative;
+  overflow: hidden;
+}
+
+.firefly-model-showcase > * {
+  grid-area: stack;
 }
 
 .firefly-model-showcase-content {
   margin-left: var(--content-left-margin);
   max-width: var(--content-width);
+  z-index: 2;
+}
+
+.firefly-model-showcase-content img {
+  width: var(--content-icon-size);
+  height: var(--content-icon-size);
 }
 
 .firefly-model-showcase-content p {
@@ -21,7 +42,6 @@
 }
 
 .firefly-model-showcase-content h1 {
-  color: #000;
   font-size: var(--content-title-size);
   font-style: normal;
   font-weight: 900;
@@ -34,11 +54,49 @@
   margin: 20px 0;
 }
 
+.firefly-model-showcase-gallery {
+  display: flex;
+  width: 125%;
+  margin-left: -12.5%;
+  overflow: hidden;
+  gap: 24px;
+  align-self: start;
+  transform: translateY(200px); /* Start 200px below and later animate */
+}
+.gallery-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+.gallery-column:nth-child(1) {
+  margin-top: 794px;
+}
+
+.gallery-column:nth-child(2) {
+  margin-top: 623px;
+}
+
+.gallery-column:nth-child(3) {
+  margin-top: 397px;
+}
+
+.gallery-column:nth-child(4) {
+  margin-top: 0px;
+}
+
+.gallery-cell {
+  width: 100%;
+  aspect-ratio: 1/1; /* Default square shape */
+  background-color: #F5F5F5; /* Remove later with images */
+  border-radius: 8px;
+}
+
 /* Tablet */
 @media screen and (min-width: 600px) {
   :root {
     --content-left-margin: 60px;
-    --content-width: 60%;
+    --content-width: 75%;
     --content-title-size: 72px;
     --content-subtitle-size: 16px;
   }
@@ -48,7 +106,7 @@
 @media screen and (min-width: 900px) {
   :root {
     --content-left-margin: 240px;
-    --content-width: 40%;
+    --content-width: 50%;
     --content-title-size: 96px;
     --content-subtitle-size: 16px;
   }
