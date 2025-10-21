@@ -7,7 +7,7 @@
 
 .logo-row .logo-container {
   display: flex;
-  gap: 96px;
+  gap: var(--logos-gap);
   animation: scroll-left 60s linear infinite;
   width: max-content;
 }
@@ -24,11 +24,16 @@
 
 .logo-row .logos-duplicate {
   display: flex;
-  gap: 96px;
+  gap: var(--logos-gap);
   flex: 0 0 auto;
 }
 
-.logo-row .logo {
-  height: 48px;
+.logo-row svg {
+  height: 20px;
 }
 
+@media screen and (min-width: 768px) {
+  .logo-row svg {
+    height: 40px;
+  }
+}
