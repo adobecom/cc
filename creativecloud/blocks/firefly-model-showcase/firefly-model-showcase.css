@@ -1,0 +1,55 @@
+/* Responsive styling with mobile-first approach */
+:root {
+  --content-left-margin: 24px;
+  --content-width: 90%;
+  --content-title-size: 48px;
+  --content-subtitle-size: 18px;
+}
+
+.firefly-model-showcase-content {
+  margin-left: var(--content-left-margin);
+  max-width: var(--content-width);
+}
+
+.firefly-model-showcase-content p {
+  color: #8283a5;
+  font-size: var(--content-subtitle-size);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  margin: 0;
+}
+
+.firefly-model-showcase-content h1 {
+  color: #000;
+  font-size: var(--content-title-size);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 100%;
+  letter-spacing: -1.92px;
+  margin: 20px 0;
+}
+
+.firefly-model-showcase-content .action-area {
+  margin: 20px 0;
+}
+
+/* Tablet */
+@media screen and (min-width: 600px) {
+  :root {
+    --content-left-margin: 60px;
+    --content-width: 60%;
+    --content-title-size: 72px;
+    --content-subtitle-size: 16px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 900px) {
+  :root {
+    --content-left-margin: 240px;
+    --content-width: 40%;
+    --content-title-size: 96px;
+    --content-subtitle-size: 16px;
+  }
+}
