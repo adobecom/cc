@@ -14,7 +14,8 @@
   grid-template-areas: "stack";
   padding-top: var(--showcase-padding-top);
    position: relative;
-  overflow: hidden;
+  overflow-y: visible;
+  overflow-x: clip;
   z-index: 2;
 }
 
@@ -25,6 +26,7 @@
 .firefly-model-showcase-content {
   margin-left: var(--content-left-margin);
   max-width: var(--content-width);
+  z-index: 3;
 }
 
 .firefly-model-showcase-content img {
@@ -59,7 +61,7 @@
   display: flex;
   width: 125%;
   margin-left: -12.5%;
-  overflow: hidden;
+  overflow: visible;
   gap: 24px;
   align-self: start;
   transform: translateY(200px); /* Start 200px below and later animate */

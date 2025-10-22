@@ -17,8 +17,8 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgb(0 0 0 / 30%) 0%,
-    rgb(0 0 0 / 50%) 100%
+    rgb(0 0 0 / 100%) 0%,
+    rgb(0 0 0 / 30%) 100%
   );
   z-index: 1;
 }
