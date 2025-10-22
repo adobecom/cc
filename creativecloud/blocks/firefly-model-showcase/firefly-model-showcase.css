@@ -89,10 +89,21 @@
 }
 
 .gallery-cell {
+  position: relative;
   width: 100%;
+  border-radius: 40px;
   aspect-ratio: 1/1; /* Default square shape */
-  background-color: #F5F5F5; /* Remove later with images */
-  border-radius: 8px;
+  background-color: #595959;
+}
+
+.gallery-cell-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  position: absolute;
+  border-radius: 40px;
+  top: 0;
+  left: 0;
 }
 
 /* Tablet */

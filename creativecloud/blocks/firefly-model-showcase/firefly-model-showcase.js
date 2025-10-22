@@ -31,11 +31,22 @@ async function fetchGalleryAssets() {
   return response.data;
 }
 
+async function populateGalleryCells(parentElem) {
+  const galleryCells = parentElem.querySelectorAll('.gallery-cell');
+  const galleryAssets = await fetchGalleryAssets();
+  galleryCells.forEach((cell, index) => {
+    const galleryImage = createTag('img', {
+      src: `${galleryAssets[index].img_url}?format=webply&width=500`,
+      class: 'gallery-cell-img',
+      alt: galleryAssets[index].alt_text,
+    });
+    cell.appendChild(galleryImage);
+  });
+}
+
 function buildGalleryOutline(parentElem) {
   // Gallery will be a masonry grid with 4 columns
-  const galleryOutline = createTag('div', {
-    class: 'firefly-model-showcase-gallery',
-  });
+  const galleryOutline = createTag('div', { class: 'firefly-model-showcase-gallery' });
 
   // Create 4 columns
   for (let i = 0; i < 4; i += 1) {
@@ -64,6 +75,7 @@ export default async function init(el) {
   await decorateButtons(el);
 
   buildGalleryOutline(el);
+  populateGalleryCells(el);
 
   addParallaxProgress(el);
 }
