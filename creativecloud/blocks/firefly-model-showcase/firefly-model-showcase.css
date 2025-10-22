@@ -44,6 +44,7 @@
 }
 
 .firefly-model-showcase-content h1 {
+  font-family: "Adobe Clean Display", sans-serif;
   font-size: var(--content-title-size);
   font-style: normal;
   font-weight: 900;
