@@ -7,7 +7,7 @@ export function decorateText(el) {
   if (!el) return;
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
-  heading.classList.add('heading-xxl');
+  heading.classList.add('heading');
   heading.nextElementSibling?.classList.add('body-l');
 }
 
@@ -62,16 +62,85 @@ export function createSearchBox(text) {
   actionArea.replaceWith(searchContainer);
 }
 
-export async function initLogoRow(el) {
-  const children = Array.from(el.children);
-  const logoRowContent = children.find((child) => child.querySelector('span.icon'));
+export function createRollingLogos(logos) {
+  const copies = Array.from({ length: 3 }, () => {
+    const copy = createTag('div', { class: 'logos-duplicate' });
+    logos.forEach((logo) => copy.append(logo.cloneNode(true)));
+    return copy;
+  });
 
+  const tabletMQ = window.matchMedia('(min-width: 600px)');
+
+  // Create a container to hold all duplicates and apply animation to it
+  const logoContainer = createTag('div', { class: 'logo-container' }, copies);
+
+  function handleResize(isTablet) {
+    const gap = isTablet ? 80 : 30;
+    logoContainer.style.setProperty('--scroll-distance', `-${copies[0].offsetWidth + gap}px`);
+    logoContainer.style.setProperty('--logos-gap', `${gap}px`);
+  }
+
+  function addScrolling() {
+    handleResize(tabletMQ.matches);
+    tabletMQ.addEventListener('change', ({ matches }) => handleResize(matches));
+
+    let lastScrollY = window.scrollY;
+    let targetScrollOffset = 0;
+    let currentScrollOffset = 0;
+    let rafId = null;
+
+    const updateScrollEffect = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+
+      const multiplier = 0.2;
+      targetScrollOffset += scrollDelta * multiplier;
+
+      const lerpFactor = 0.08;
+      currentScrollOffset += (targetScrollOffset - currentScrollOffset) * lerpFactor;
+
+      logoContainer.style.setProperty('--scroll-offset', `${currentScrollOffset}px`);
+      lastScrollY = currentScrollY;
+    };
+
+    const animate = () => {
+      updateScrollEffect();
+      const difference = Math.abs(targetScrollOffset - currentScrollOffset);
+      if (difference > 0.1) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        rafId = null;
+      }
+    };
+
+    const onScroll = () => {
+      if (!rafId) {
+        rafId = requestAnimationFrame(animate);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  return { addScrolling, logoContainer };
+}
+
+export async function initLogoRow(el) {
+  const logoRowContent = Array.from(el.children).find((child) => child.querySelector('span.icon'));
   if (!logoRowContent) return;
 
   logoRowContent.classList.add('logo-row');
+  const logos = logoRowContent.querySelectorAll('span.icon');
+  logoRowContent.innerHTML = '';
 
-  const { default: initLogoRowFunc } = await import('../logo-row/logo-row.js');
-  initLogoRowFunc(logoRowContent);
+  // TODO: cut down 1 level of DOM nesting
+  const { logoContainer, addScrolling } = createRollingLogos(logos);
+  logoRowContent.append(logoContainer);
+  new IntersectionObserver(([{ isIntersecting }], ob) => {
+    if (!isIntersecting) return;
+    ob.disconnect();
+    addScrolling();
+  }).observe(el);
 }
 
 export default async function init(el) {
@@ -92,6 +161,7 @@ export default async function init(el) {
   const headline = foreground?.querySelector('h1, h2, h3, h4, h5, h6');
   const text = headline?.closest('div');
   text?.classList.add('text');
+  text?.classList.add('copy');
 
   // Decorate text and buttons
   decorateText(text);

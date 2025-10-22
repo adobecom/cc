@@ -44,15 +44,56 @@ function getGalleryIcon(name) {
   return CHICKET_ICONS.find((icon) => icon.name === name).svg;
 }
 
+function createResponsiveImage(imageUrl, altText) {
+  // Create picture element
+  const picture = createTag('picture', {});
+
+  // Add WebP sources for different screen sizes
+  const sourceWebpLarge = createTag('source', {
+    type: 'image/webp',
+    srcset: `${imageUrl}?width=1000&format=webply&optimize=medium`,
+    media: '(min-width: 600px)',
+  });
+
+  const sourceWebpSmall = createTag('source', {
+    type: 'image/webp',
+    srcset: `${imageUrl}?width=500&format=webply&optimize=medium`,
+  });
+
+  // JPEG fallback
+  const sourceJpegLarge = createTag('source', {
+    type: 'image/jpeg',
+    srcset: `${imageUrl}?width=1000&format=jpg&optimize=medium`,
+    media: '(min-width: 600px)',
+  });
+
+  // img fallback
+  const img = createTag('img', {
+    src: `${imageUrl}?width=500&format=jpg&optimize=medium`,
+    alt: altText,
+    class: 'gallery-cell-img',
+    width: '750',
+    loading: 'eager',
+    fetchpriority: 'high',
+  });
+
+  picture.appendChild(sourceWebpLarge);
+  picture.appendChild(sourceWebpSmall);
+  picture.appendChild(sourceJpegLarge);
+  picture.appendChild(img);
+
+  return picture;
+}
+
 async function populateGalleryCells(parentElem) {
   const galleryCells = parentElem.querySelectorAll('.gallery-cell');
   const galleryAssets = await fetchGalleryAssets();
   galleryCells.forEach((cell, index) => {
-    const galleryImage = createTag('img', {
-      src: `${galleryAssets[index].img_url}?format=webply&width=1000`,
-      class: 'gallery-cell-img',
-      alt: galleryAssets[index].alt_text,
-    });
+    const galleryImage = createResponsiveImage(
+      galleryAssets[index].img_url,
+      galleryAssets[index].alt_text,
+    );
+
     const aiModelName = galleryAssets[index].ai_model;
     const cellIconElem = createTag('div', { class: `gallery-cell-icon bg-${aiModelName}` });
     cellIconElem.insertAdjacentHTML(
@@ -102,17 +143,18 @@ function contentIntersectionDetection(el) {
   }
 
   function checkIntersection() {
-    const isIntersecting = Array.from(galleryCells).some((cell) => areElementsIntersecting(contentContainer, cell));
+    const isIntersecting = Array.from(galleryCells)
+      .some((cell) => areElementsIntersecting(contentContainer, cell));
     showcaseContent.style.zIndex = isIntersecting ? '2' : '3';
   }
 
   let listenersAttached = false;
-  function handleListeners(isIntersecting) { 
+  function handleListeners(isIntersecting) {
     if (isIntersecting) {
       if (listenersAttached) return;
-        window.addEventListener('scroll', checkIntersection, { passive: true });
-        window.addEventListener('resize', checkIntersection, { passive: true });
-        listenersAttached = true;
+      window.addEventListener('scroll', checkIntersection, { passive: true });
+      window.addEventListener('resize', checkIntersection, { passive: true });
+      listenersAttached = true;
     } else {
       if (!listenersAttached) return;
       window.removeEventListener('scroll', checkIntersection);
@@ -125,7 +167,7 @@ function contentIntersectionDetection(el) {
     (entries) => {
       entries.forEach((entry) => handleListeners(entry.isIntersecting));
     },
-    { rootMargin: '100px' }
+    { rootMargin: '100px' },
   );
 
   observer.observe(contentContainer);
@@ -147,5 +189,5 @@ export default async function init(el) {
   populateGalleryCells(el);
 
   addParallaxProgress(el);
-  contentIntersectionDetection(el)
+  contentIntersectionDetection(el);
 }
