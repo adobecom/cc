@@ -84,6 +84,53 @@ function buildGalleryOutline(parentElem) {
   parentElem.appendChild(galleryOutline);
 }
 
+function contentIntersectionDetection(el) {
+  const contentContainer = el.querySelector('.content-container');
+  const galleryCells = el.querySelectorAll('.gallery-cell');
+  const showcaseContent = el.querySelector('.firefly-model-showcase-content');
+
+  function areElementsIntersecting(elem1, elem2) {
+    const rect1 = elem1.getBoundingClientRect();
+    const rect2 = elem2.getBoundingClientRect();
+
+    return !(
+      rect1.right < rect2.left
+      || rect1.left > rect2.right
+      || rect1.bottom < rect2.top
+      || rect1.top > rect2.bottom
+    );
+  }
+
+  function checkIntersection() {
+    const isIntersecting = Array.from(galleryCells).some((cell) => areElementsIntersecting(contentContainer, cell));
+    showcaseContent.style.zIndex = isIntersecting ? '2' : '3';
+  }
+
+  let listenersAttached = false;
+  function handleListeners(isIntersecting) { 
+    if (isIntersecting) {
+      if (listenersAttached) return;
+        window.addEventListener('scroll', checkIntersection, { passive: true });
+        window.addEventListener('resize', checkIntersection, { passive: true });
+        listenersAttached = true;
+    } else {
+      if (!listenersAttached) return;
+      window.removeEventListener('scroll', checkIntersection);
+      window.removeEventListener('resize', checkIntersection);
+      listenersAttached = false;
+    }
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => handleListeners(entry.isIntersecting));
+    },
+    { rootMargin: '100px' }
+  );
+
+  observer.observe(contentContainer);
+}
+
 export default async function init(el) {
   const miloLibs = getLibs('/libs');
   const { decorateButtons } = await import(`${miloLibs}/utils/decorate.js`);
@@ -91,6 +138,7 @@ export default async function init(el) {
   const showcaseContentElem = el.querySelector(':scope > div');
   // Add class to container for styling
   showcaseContentElem.classList.add('firefly-model-showcase-content');
+  showcaseContentElem.querySelector(':scope > div').classList.add('content-container');
   // Decorate buttons
   el.classList.add('l-button');
   await decorateButtons(el);
@@ -99,4 +147,5 @@ export default async function init(el) {
   populateGalleryCells(el);
 
   addParallaxProgress(el);
+  contentIntersectionDetection(el)
 }
