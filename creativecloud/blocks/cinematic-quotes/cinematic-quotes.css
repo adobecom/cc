@@ -86,6 +86,10 @@
     padding: 160px 240px;
   }
 
+  .cinematic-quotes .img-container {
+    height: 700px;
+  }
+
   .cinematic-quotes .text-container {
     padding: 0 64px 220px;
     gap: 24px;

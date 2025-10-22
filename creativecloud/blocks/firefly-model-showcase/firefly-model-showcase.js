@@ -173,6 +173,10 @@ function contentIntersectionDetection(el) {
   observer.observe(contentContainer);
 }
 
+function decorateParallax() {
+
+}
+
 export default async function init(el) {
   const miloLibs = getLibs('/libs');
   const { decorateButtons } = await import(`${miloLibs}/utils/decorate.js`);
@@ -193,6 +197,22 @@ export default async function init(el) {
   buildGalleryOutline(el);
   populateGalleryCells(el);
 
-  addParallaxProgress(el);
+  addParallaxProgress(el, 80);
+  const configs = Array.from(parallaxConfigRow.children).map((col) => col.textContent);
+  const galleryColumns = [...el.querySelectorAll('.gallery-column')];
+  const validKeys = ['base-offset', 'parallax-distance', 'tablet-base-offset', 'tablet-parallax-distance'];
+  configs.forEach((config, index) => {
+    if (index >= galleryColumns.length) return;
+    const pairs = config.split(/\s/).filter(Boolean).map(
+      (line) => line.toLowerCase().split('=').filter(Boolean).map(
+        (s) => s.trim(),
+      ),
+    );
+    pairs.forEach(([k, v]) => {
+      if (!validKeys.includes(k)) return;
+      galleryColumns[index].style.setProperty(`--${k}`, v);
+    });
+  });
+
   contentIntersectionDetection(el);
 }

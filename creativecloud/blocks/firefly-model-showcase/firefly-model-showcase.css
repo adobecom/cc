@@ -102,22 +102,6 @@
   flex: 1;
 }
 
-.gallery-column:nth-child(1) {
-  margin-top: 794px;
-}
-
-.gallery-column:nth-child(2) {
-  margin-top: 623px;
-}
-
-.gallery-column:nth-child(3) {
-  margin-top: 397px;
-}
-
-.gallery-column:nth-child(4) {
-  margin-top: 0;
-}
-
 .gallery-cell {
   position: relative;
   width: 100%;
@@ -197,38 +181,34 @@
   will-change: opacity, transform;
   opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 40);
   transform: translateY(
-    calc(400px * (clamp(0, var(--exit-progress), 40)) / 40)
+    calc(
+      var(--base-offset, 0px)
+        + var(--parallax-distance, 400px)
+            * (clamp(var(--exit-start-progress, 0), var(--exit-progress, 0), var(--exit-end-progress, 40)))
+            / (var(--exit-end-progress, 40) - var(--exit-start-progress, 0))
+    )
   );
 }
 
 .firefly-model-showcase-gallery .gallery-column {
   will-change: transform;
-}
-
-.firefly-model-showcase-gallery .gallery-column:nth-child(1) {
   transform: translateY(
-    calc(300px * (clamp(0, var(--exit-progress), 100)) / 100)
-  );
-
-  /* transform: translateY(calc(794px - 200px * (clamp(60, var(--enter-progress), 100) - 60) / 40 + 100px * (clamp(0, var(--exit-progress), 100)) / 100)); */
-}
-
-.firefly-model-showcase-gallery .gallery-column:nth-child(2) {
-  transform: translateY(
-    calc(-300px * (clamp(0, var(--exit-progress), 100)) / 100)
-  );
-
-  /* transform: translateY(calc(623px - 400px * (clamp(60, var(--enter-progress), 100) - 60) / 40 - 200px * (clamp(0, var(--exit-progress), 100)) / 100)); */
-}
-
-.firefly-model-showcase-gallery .gallery-column:nth-child(3) {
-  transform: translateY(
-    calc(200px * (clamp(0, var(--exit-progress), 100)) / 100)
+    calc(
+      var(--base-offset, 0)
+        + var(--parallax-distance, 0)
+          * (clamp(var(--exit-start-progress, 0), var(--exit-progress, 0), var(--exit-end-progress, 100)))
+          / (var(--exit-end-progress, 100) - var(--exit-start-progress, 0)))
   );
 }
 
-.firefly-model-showcase-gallery .gallery-column:nth-child(4) {
-  transform: translateY(
-    calc(800px * (clamp(0, var(--exit-progress), 100)) / 100)
-  );
+@media screen and (min-width: 600px) {
+  .firefly-model-showcase-gallery .gallery-column {
+    transform: translateY(
+      calc(
+        var(--tablet-base-offset, var(--base-offset, 0))
+          + var(--tablet-parallax-distance, var(--parallax-distance, 0))
+            * (clamp(var(--exit-start-progress, 0), var(--exit-progress, 0), var(--exit-end-progress, 100)))
+            / (var(--exit-end-progress, 100) - var(--exit-start-progress, 0)))
+    );
+  }
 }
