@@ -18,6 +18,18 @@
   height: 100%;
 }
 
+.showcase-marquee .background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 100%) 0%,
+    rgb(0 0 0 / 30%) 100%
+  );
+  z-index: 1;
+}
+
 .showcase-marquee .background .tablet-only,
 .showcase-marquee .background .desktop-only {
   display: none;
