@@ -177,6 +177,11 @@ export default async function init(el) {
   const miloLibs = getLibs('/libs');
   const { decorateButtons } = await import(`${miloLibs}/utils/decorate.js`);
 
+  // TODO: author images directly on doc?
+  // currently using last row for parallax configs
+  const parallaxConfigRow = el.querySelector(':scope > div:last-child');
+  if (parallaxConfigRow.children.length >= 3) parallaxConfigRow.remove();
+
   const showcaseContentElem = el.querySelector(':scope > div');
   // Add class to container for styling
   showcaseContentElem.classList.add('firefly-model-showcase-content');
