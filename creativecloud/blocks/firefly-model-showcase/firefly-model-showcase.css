@@ -111,3 +111,30 @@
     --content-subtitle-size: 16px;
   }
 }
+
+/* parallax effects */
+.firefly-model-showcase .firefly-model-showcase-content {
+  will-change: opacity, transform;
+  opacity: calc(1 - (clamp(60, var(--enter-progress), 80) - 60) / 20);
+  transform: translateY(calc(150px * (clamp(60, var(--enter-progress), 100) - 60) / 40));
+}
+
+.firefly-model-showcase-gallery .gallery-column {
+  will-change: transform;
+}
+
+.firefly-model-showcase-gallery .gallery-column:nth-child(1) {
+  transform: translateY(calc(-200px * (clamp(0, var(--enter-progress), 100)) / 100 + 100px * (clamp(0, var(--exit-progress), 100)) / 100));
+}
+
+.firefly-model-showcase-gallery .gallery-column:nth-child(2) {
+  transform: translateY(calc(-400px * (clamp(0, var(--enter-progress), 100)) / 100 - 200px * (clamp(0, var(--exit-progress), 100)) / 100));
+}
+
+.firefly-model-showcase-gallery .gallery-column:nth-child(3) {
+  transform: translateY(calc(200px * (clamp(0, var(--enter-progress), 100)) / 100 - 300px * (clamp(0, var(--exit-progress), 100)) / 100 ));
+}
+
+.firefly-model-showcase-gallery .gallery-column:nth-child(4) {
+  transform: translateY(calc(200px * (clamp(0, var(--enter-progress), 100)) / 100 - 200px * (clamp(0, var(--exit-progress), 100)) / 100 ));
+}

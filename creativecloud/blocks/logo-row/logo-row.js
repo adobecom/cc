@@ -10,7 +10,7 @@ export function createRollingLogos(logos) {
     return copy;
   });
 
-  const tabletMQ = window.matchMedia('(min-width: 768px)');
+  const tabletMQ = window.matchMedia('(min-width: 600px)');
 
   // Create a container to hold all duplicates and apply animation to it
   const logoContainer = createTag('div', { class: 'logo-container' }, copies);

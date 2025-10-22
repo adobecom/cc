@@ -1,4 +1,5 @@
 import { createTag, getLibs } from '../../scripts/utils.js';
+import addParallaxProgress from '../../features/parallax.js';
 
 // Constants
 const GALLERY_SRC_URL = 'https://main--cc--adobecom.aem.live/drafts/jingle/ff-gallery-assets.json';
@@ -63,4 +64,6 @@ export default async function init(el) {
   await decorateButtons(el);
 
   buildGalleryOutline(el);
+
+  addParallaxProgress(el);
 }
