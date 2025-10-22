@@ -70,7 +70,7 @@ export async function initLogoRow(el) {
 
   logoRowContent.classList.add('logo-row');
 
-  loadStyle('../logo-row/logo-row.css');
+  loadStyle('/creativecloud/blocks/logo-row/logo-row.css');
   const { default: initLogoRowFunc } = await import('../logo-row/logo-row.js');
   initLogoRowFunc(logoRowContent);
 }
