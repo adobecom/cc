@@ -49,7 +49,7 @@ async function populateGalleryCells(parentElem) {
   const galleryAssets = await fetchGalleryAssets();
   galleryCells.forEach((cell, index) => {
     const galleryImage = createTag('img', {
-      src: `${galleryAssets[index].img_url}?format=webply&width=500`,
+      src: `${galleryAssets[index].img_url}?format=webply&width=1000`,
       class: 'gallery-cell-img',
       alt: galleryAssets[index].alt_text,
     });
