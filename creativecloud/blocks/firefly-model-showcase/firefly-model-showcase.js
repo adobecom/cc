@@ -102,17 +102,18 @@ function contentIntersectionDetection(el) {
   }
 
   function checkIntersection() {
-    const isIntersecting = Array.from(galleryCells).some((cell) => areElementsIntersecting(contentContainer, cell));
+    const isIntersecting = Array.from(galleryCells)
+      .some((cell) => areElementsIntersecting(contentContainer, cell));
     showcaseContent.style.zIndex = isIntersecting ? '2' : '3';
   }
 
   let listenersAttached = false;
-  function handleListeners(isIntersecting) { 
+  function handleListeners(isIntersecting) {
     if (isIntersecting) {
       if (listenersAttached) return;
-        window.addEventListener('scroll', checkIntersection, { passive: true });
-        window.addEventListener('resize', checkIntersection, { passive: true });
-        listenersAttached = true;
+      window.addEventListener('scroll', checkIntersection, { passive: true });
+      window.addEventListener('resize', checkIntersection, { passive: true });
+      listenersAttached = true;
     } else {
       if (!listenersAttached) return;
       window.removeEventListener('scroll', checkIntersection);
@@ -125,7 +126,7 @@ function contentIntersectionDetection(el) {
     (entries) => {
       entries.forEach((entry) => handleListeners(entry.isIntersecting));
     },
-    { rootMargin: '100px' }
+    { rootMargin: '100px' },
   );
 
   observer.observe(contentContainer);
@@ -147,5 +148,5 @@ export default async function init(el) {
   populateGalleryCells(el);
 
   addParallaxProgress(el);
-  contentIntersectionDetection(el)
+  contentIntersectionDetection(el);
 }
