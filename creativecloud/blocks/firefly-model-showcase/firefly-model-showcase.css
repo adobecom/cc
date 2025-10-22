@@ -1,6 +1,6 @@
 /* Responsive styling with mobile-first approach */
 :root {
-  --content-left-margin: 24px;
+  --content-left-margin: calc((100% - 83.4%) / 2);
   --showcase-padding-top: 40px;
   --content-width: 90%;
   --content-title-size: 48px;
@@ -35,7 +35,7 @@
 }
 
 .firefly-model-showcase-content p {
-  color: #8283a5;
+  color: #fcfcfc;
   font-size: var(--content-subtitle-size);
   font-style: normal;
   font-weight: 400;
@@ -54,7 +54,14 @@
 }
 
 .firefly-model-showcase-content .action-area {
-  margin: 20px 0;
+  margin: 30px 0;
+}
+
+.firefly-model-showcase-content .action-area a{
+  font-size: 19px;
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 24px;
 }
 
 .firefly-model-showcase-gallery {
@@ -127,7 +134,6 @@
 /* Tablet */
 @media screen and (min-width: 600px) {
   :root {
-    --content-left-margin: 60px;
     --content-width: 75%;
     --content-title-size: 72px;
     --content-subtitle-size: 16px;
@@ -137,10 +143,16 @@
 /* Desktop */
 @media screen and (min-width: 900px) {
   :root {
-    --content-left-margin: 240px;
     --content-width: 50%;
     --content-title-size: 96px;
-    --content-subtitle-size: 16px;
+    --content-subtitle-size: 24px;
+    --showcase-padding-top: 130px;
+  }
+}
+
+@media screen and (min-width: 1480px) {
+  :root {
+    --content-left-margin: calc((100% - 1440px) / 2);
   }
 }
 
