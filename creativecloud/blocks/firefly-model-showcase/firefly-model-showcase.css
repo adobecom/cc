@@ -1,12 +1,22 @@
 /* Responsive styling with mobile-first approach */
 :root {
-  --content-left-margin: calc((100% - 83.4%) / 2);
   --showcase-padding-top: 40px;
-  --content-width: 90%;
-  --content-title-size: 48px;
-  --content-icon-size: 54px;
+  --content-width: 100%;
+  --content-padding: 0 calc((100% - 83.4%) / 2);
+  --content-title-size: 36px;
+  --content-icon-size: 36px;
   --content-subtitle-size: 18px;
+  --content-title-line-height: 96%;
+  --content-subtitle-line-height: 125%;
+  --cta-line-height: normal;
+  --content-title-letter-spacing: -1.08px;
+  --cta-letter-spacing: -0.36px;
+  --content-subtitle-weight: 700;
+  --content-subtitle-color: #fff;
   --gallery-column-dim: 163px;
+  --heading-margin: 24px 0 16px 0;
+  --cta-display: flex;
+
 }
 
 .firefly-model-showcase {
@@ -24,8 +34,9 @@
 }
 
 .firefly-model-showcase-content {
-  margin-left: var(--content-left-margin);
-  max-width: var(--content-width);
+  box-sizing: border-box;
+  padding: var(--content-padding);
+  width: var(--content-width);
   z-index: 3;
 }
 
@@ -35,11 +46,11 @@
 }
 
 .firefly-model-showcase-content p {
-  color: #fcfcfc;
+  color: var(--content-subtitle-color);
   font-size: var(--content-subtitle-size);
   font-style: normal;
-  font-weight: 400;
-  line-height: 150%;
+  font-weight: var(--content-subtitle-weight);
+  line-height: var(--content-subtitle-line-height);
   margin: 0;
 }
 
@@ -48,20 +59,24 @@
   font-size: var(--content-title-size);
   font-style: normal;
   font-weight: 900;
-  line-height: 100%;
-  letter-spacing: -1.92px;
-  margin: 20px 0;
+  line-height: var(--content-title-line-height);
+  letter-spacing: var(--content-title-letter-spacing);
+  margin: var(--heading-margin);
 }
 
 .firefly-model-showcase-content .action-area {
   margin: 30px 0;
+
 }
 
-.firefly-model-showcase-content .action-area a{
-  font-size: 19px;
+.firefly-model-showcase-content .action-area a { 
+  font-size: 18px;
   color: #ffffff;
   font-weight: 700;
-  line-height: 24px;
+  line-height: var(--cta-line-height);
+  display: var(--cta-display);
+  justify-content: center;
+  letter-spacing: var(--cta-letter-spacing);
 }
 
 .firefly-model-showcase-gallery {
@@ -134,25 +149,36 @@
 /* Tablet */
 @media screen and (min-width: 600px) {
   :root {
+    --content-icon-size: 54px;
     --content-width: 75%;
     --content-title-size: 72px;
+    --content-title-line-height: 100%;
     --content-subtitle-size: 16px;
+    --heading-margin: 20px 0;
+    --content-title-letter-spacing: -1.92px;
+    --content-subtitle-weight: 400;
+    --content-subtitle-line-height: 150%;
+    --content-subtitle-color: #fcfcfc;
   }
 }
 
 /* Desktop */
 @media screen and (min-width: 900px) {
   :root {
-    --content-width: 50%;
+    --content-width: 75%;
     --content-title-size: 96px;
     --content-subtitle-size: 24px;
     --showcase-padding-top: 130px;
+    --cta-display: unset;
+    --cta-line-height: 24px;
+    --cta-letter-spacing: unset;
   }
 }
 
 @media screen and (min-width: 1480px) {
   :root {
-    --content-left-margin: calc((100% - 1440px) / 2);
+    --content-width: 50%;
+    --content-padding: 0 0 0 calc((100% - 1440px) / 2);
   }
 }
 
