@@ -7,7 +7,7 @@ export function decorateText(el) {
   if (!el) return;
   const headings = el.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const heading = headings[headings.length - 1];
-  heading.classList.add('heading-xxl');
+  heading.classList.add('heading');
   heading.nextElementSibling?.classList.add('body-l');
 }
 
@@ -93,6 +93,7 @@ export default async function init(el) {
   const headline = foreground?.querySelector('h1, h2, h3, h4, h5, h6');
   const text = headline?.closest('div');
   text?.classList.add('text');
+  text?.classList.add('copy');
 
   // Decorate text and buttons
   decorateText(text);
