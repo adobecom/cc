@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 
 const miloLibs = getLibs('/libs');
-const { createTag } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
 
 export function decorateText(el) {
   if (!el) return;
@@ -70,6 +70,7 @@ export async function initLogoRow(el) {
 
   logoRowContent.classList.add('logo-row');
 
+  loadStyle('../logo-row/logo-row.css');
   const { default: initLogoRowFunc } = await import('../logo-row/logo-row.js');
   initLogoRowFunc(logoRowContent);
 }
