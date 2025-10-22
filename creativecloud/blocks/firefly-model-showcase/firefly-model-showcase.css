@@ -108,6 +108,21 @@
   left: 0;
 }
 
+.gallery-cell-icon {
+    position: absolute;
+    bottom: 36px;
+    left: 34px;
+    width: 26px;
+    height: 26px;
+    padding: 13px;
+    background: #FFF;
+    border-radius: 8px;
+}
+
+.gallery-cell-icon.bg-adobe {
+  background: #EB1000;
+}
+
 /* Tablet */
 @media screen and (min-width: 600px) {
   :root {
