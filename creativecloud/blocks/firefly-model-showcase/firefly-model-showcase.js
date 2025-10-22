@@ -89,7 +89,6 @@ async function populateGalleryCells(parentElem) {
   const galleryCells = parentElem.querySelectorAll('.gallery-cell');
   const galleryAssets = await fetchGalleryAssets();
   galleryCells.forEach((cell, index) => {
-    // Replace simple img with responsive picture
     const galleryImage = createResponsiveImage(
       galleryAssets[index].img_url,
       galleryAssets[index].alt_text,
