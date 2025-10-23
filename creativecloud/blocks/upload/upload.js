@@ -18,6 +18,7 @@ function decorateUploadEls(para) {
     {
       type: 'button',
       class: 'con-button blue action-button button-xl',
+      'daa-ll': 'Upload your photo UnityWidget',
     },
     para.innerHTML,
   );
@@ -33,7 +34,7 @@ function decorateUploadEls(para) {
   );
   para.classList.add('upload-action-container');
   para.textContent = '';
-  btn.setAttribute('daa-ll', 'Upload your photo|UnityWidget');
+  //btn.setAttribute('daa-ll', 'Upload your photo|UnityWidget');
   para.append(btn, input);
   return para;
 }
