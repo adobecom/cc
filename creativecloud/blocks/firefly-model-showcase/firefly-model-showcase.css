@@ -71,6 +71,7 @@
 
 .firefly-model-showcase-content .action-area {
   margin: var(--cta-margin);
+  display: flex;
 }
 
 .firefly-model-showcase-content .action-area a {
@@ -82,7 +83,7 @@
   justify-content: center;
   letter-spacing: var(--cta-letter-spacing);
   border-radius: 100px;
-  padding: 12px 44px;
+  padding: 12px 32px;
 }
 
 .firefly-model-showcase-gallery {
@@ -158,6 +159,10 @@
     --cta-margin: 24px 0;
     --cta-line-height: 24px;
     --gallery-height: 800px;
+  }
+
+  .firefly-model-showcase-content .action-area a {
+    padding: 12px 44px;
   }
 
   .gallery-column:nth-child(1) {
