@@ -30,6 +30,7 @@
 }
 
 .firefly-model-showcase {
+  z-index: 3;
   padding-top: var(--showcase-padding-top);
   position: relative;
   overflow-y: visible;
