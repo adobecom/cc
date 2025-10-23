@@ -102,6 +102,11 @@
   flex: 1;
 }
 
+/* only 3 cols on mobile */
+.gallery-column:nth-child(1) {
+  display: none;
+}
+
 .gallery-cell {
   position: relative;
   width: 100%;
@@ -148,6 +153,10 @@
     --content-subtitle-weight: 400;
     --content-subtitle-line-height: 150%;
     --content-subtitle-color: #fcfcfc;
+  }
+
+  .gallery-column:nth-child(1) {
+    display: flex;
   }
 }
 
