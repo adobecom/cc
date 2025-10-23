@@ -143,8 +143,8 @@
   padding: var(--gallery-cell-icon-padding);
   background: #fff;
   border-radius: var(--gallery-cell-icon-border);
-  box-shadow: 4.69px 4.69px 15px 2.16px #00000040;
-  backdrop-filter: blur(60px);
+  box-shadow: 2.15px 2.15px 6.87px .99px #00000040;
+  backdrop-filter: blur(27.4974px);
 }
 
 .gallery-cell-icon.bg-adobe {
@@ -178,6 +178,11 @@
 
   .gallery-column:nth-child(1) {
     display: flex;
+  }
+
+  .gallery-cell-icon {
+    box-shadow: 4.69px 4.69px 15px 2.16px #00000040;
+    backdrop-filter: blur(60px);
   }
 }
 
