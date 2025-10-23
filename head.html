@@ -1,27 +1,58 @@
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-  body { display: none; }
+  body {
+    display: none;
+  }
   .reading-width {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-}
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
 
- .reading-width-footer-tag {
-  max-width: 800px;
-  margin: -20px auto;
-  padding: 0 20px 20px;
-}
+  .reading-width-footer-tag {
+    max-width: 800px;
+    margin: -20px auto;
+    padding: 0 20px 20px;
+  }
 
- .reading-width-footer-tag > .content {
-  max-width: var(--grid-container-width);
-  margin: 0 auto;
-}
+  .reading-width-footer-tag > .content {
+    max-width: var(--grid-container-width);
+    margin: 0 auto;
+  }
+  /* TODO: Remove once style is handled in merch */
+  :root:has(meta[name='theme'][content='max25']) {
+    @media screen and (max-width: 767px) {
+      .two-merch-cards.mini-compare-chart,
+      .three-merch-cards.mini-compare-chart,
+      .four-merch-cards.mini-compare-chart {
+        grid-template-columns: 256px;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .three-merch-cards.mini-compare-chart,
+      .four-merch-cards.mini-compare-chart {
+        grid-template-columns: repeat(2, 310px);
+      }
+    }
+
+    @media screen and (min-width: 1200px) {
+      .three-merch-cards.mini-compare-chart,
+      .four-merch-cards.mini-compare-chart {
+        grid-template-columns: repeat(3, 310px);
+      }
+    }
+
+    @media screen and (min-width: 1600px) {
+      .four-merch-cards.mini-compare-chart {
+        grid-template-columns: repeat(4, 336px);
+      }
+    }
+  }
 </style>
 <script src="/creativecloud/scripts/fallback.js" nomodule></script>
 <script type="module">
   import { scriptInit } from '/creativecloud/scripts/utils.js';
   scriptInit();
 </script>
-<link rel="icon" href="data:,">
-
+<link rel="icon" href="data:," />
