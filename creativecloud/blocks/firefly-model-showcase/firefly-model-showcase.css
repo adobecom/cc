@@ -27,6 +27,7 @@
   --gallery-cell-icon-padding: 4px;
   --gallery-cell-icon-bottom: 11px;
   --gallery-cell-icon-left: 10px;
+  --gallery-height: 100%
 }
 
 .firefly-model-showcase {
@@ -90,6 +91,7 @@
   overflow: visible;
   gap: var(--gallery-column-gap);
   align-self: start;
+  height: var(--gallery-height);
 }
 
 .gallery-column {
@@ -154,6 +156,7 @@
     --cta-font-size: 19px;
     --cta-margin: 24px 0;
     --cta-line-height: 24px;
+    --gallery-height: 800px;
   }
 
   .gallery-column:nth-child(1) {
@@ -164,7 +167,7 @@
 /* Desktop */
 @media screen and (min-width: 900px) {
   :root {
-    --content-width: 100%;
+    --content-width: 90%;
     --content-title-size: 96px;
     --content-subtitle-size: 24px;
     --showcase-padding-top: 130px;
@@ -230,6 +233,24 @@
 }
 
 @media screen and (min-width: 600px) {
+  .firefly-model-showcase-gallery .gallery-column {
+    transform: translateY(
+      calc(
+         var(--base-offset, 0) - 50px +
+          var(--parallax-distance, 0) *
+          (
+            clamp(
+              var(--exit-start-progress, 0),
+              var(--exit-progress, 0),
+              var(--exit-end-progress, 100)
+            )
+          ) / (var(--exit-end-progress, 100) - var(--exit-start-progress, 0))
+      )
+    );
+  }
+}
+
+@media screen and (min-width: 900px) {
   .firefly-model-showcase-gallery .gallery-column {
     transform: translateY(
       calc(
