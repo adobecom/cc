@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 
 const miloLibs = getLibs('/libs');
-const { createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 export function createRollingLogos(logos) {
   const copies = Array.from({ length: 3 }, () => {
