@@ -28,24 +28,16 @@
 }
 
 .firefly-model-showcase {
-  display: grid;
-  grid-template-areas: 'stack';
   padding-top: var(--showcase-padding-top);
   position: relative;
   overflow-y: visible;
   overflow-x: clip;
-  z-index: 2;
-}
-
-.firefly-model-showcase > * {
-  grid-area: stack;
 }
 
 .firefly-model-showcase-content {
   box-sizing: border-box;
   padding: var(--content-padding);
   width: var(--content-width);
-  z-index: 3;
 }
 
 .firefly-model-showcase-content img {
@@ -88,14 +80,12 @@
 }
 
 .firefly-model-showcase-gallery {
-  z-index: 2;
   display: flex;
   width: var(--gallery-width);
   margin-left: var(--gallery-margin-left);
   overflow: visible;
   gap: var(--gallery-column-gap);
   align-self: start;
-  transform: translateY(200px); /* Start 200px below and later animate */
 }
 
 .gallery-column {
