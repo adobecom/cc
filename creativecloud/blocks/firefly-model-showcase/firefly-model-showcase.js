@@ -203,7 +203,7 @@ export default async function init(el) {
   buildGalleryOutline(el);
   populateGalleryCells(el);
 
-  addParallaxProgress(el, 80);
+  addParallaxProgress(el, 64);
   const configs = Array.from(parallaxConfigRow.children).map(
     (col) => col.textContent,
   );
