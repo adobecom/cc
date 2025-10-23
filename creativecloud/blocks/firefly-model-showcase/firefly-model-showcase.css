@@ -45,6 +45,11 @@
   width: var(--content-width);
 }
 
+.firefly-model-showcase-content picture {
+  display: block;
+  line-height: 0;
+}
+
 .firefly-model-showcase-content img {
   width: var(--content-icon-size);
   height: var(--content-icon-size);
@@ -190,7 +195,7 @@
     --gallery-cell-icon-padding: 13px;
     --gallery-cell-icon-bottom: 36px;
     --gallery-cell-icon-left: 34px;
-    --content-subtitle-line-height: 150%;
+    --content-subtitle-line-height: 130%;
     --content-icon-size: 54px;
     --heading-margin: 20px 0;
     --content-title-letter-spacing: -1.92px;
