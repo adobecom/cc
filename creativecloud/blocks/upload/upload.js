@@ -18,7 +18,7 @@ function decorateUploadEls(para) {
     {
       type: 'button',
       class: 'con-button blue action-button button-xl',
-      'daa-ll': 'Upload your photo|UnityWidget'
+      'daa-ll': 'Upload your photo UnityWidget',
     },
     para.innerHTML,
   );
