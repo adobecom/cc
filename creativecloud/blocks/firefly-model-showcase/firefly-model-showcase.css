@@ -14,10 +14,13 @@
   --content-subtitle-weight: 700;
   --content-subtitle-color: #fff;
   --gallery-column-dim: 163px;
+  --gallery-column-gap: 8px;
   --heading-margin: 24px 0 16px 0;
   --cta-display: flex;
-
-  --gallery-cell-icon-border: 12px;
+  --gallery-width: 150%;
+  --gallery-margin-left: -25%;
+  --gallery-cell-radius: 12px;
+  --gallery-cell-icon-border: 4px;
   --gallery-cell-icon-dim: 11px;
   --gallery-cell-icon-padding: 4px;
   --gallery-cell-icon-bottom: 11px;
@@ -76,7 +79,7 @@
 
 .firefly-model-showcase-content .action-area a { 
   font-size: 18px;
-  color: #ffffff;
+  color: #fff;
   font-weight: 700;
   line-height: var(--cta-line-height);
   display: var(--cta-display);
@@ -87,10 +90,10 @@
 .firefly-model-showcase-gallery {
   z-index: 2;
   display: flex;
-  width: 125%;
-  margin-left: -12.5%;
+  width: var(--gallery-width);
+  margin-left: var(--gallery-margin-left);
   overflow: visible;
-  gap: 24px;
+  gap: var(--gallery-column-gap);
   align-self: start;
   transform: translateY(200px); /* Start 200px below and later animate */
 }
@@ -98,14 +101,14 @@
 .gallery-column {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--gallery-column-gap);
   flex: 1;
 }
 
 .gallery-cell {
   position: relative;
   width: 100%;
-  border-radius: 40px;
+  border-radius: var(--gallery-cell-radius);
   aspect-ratio: 1/1; /* Default square shape */
   background-color: #595959;
 }
@@ -115,13 +118,14 @@
   height: 100%;
   object-fit: cover;
   position: absolute;
-  border-radius: 40px;
+  border-radius: var(--gallery-cell-radius);
   top: 0;
   left: 0;
 }
 
 .gallery-cell-icon {
   position: absolute;
+  display: flex;
   bottom: var(--gallery-cell-icon-bottom);
   left: var(--gallery-cell-icon-left);
   width: var(--gallery-cell-icon-dim);
@@ -161,6 +165,10 @@
     --cta-display: unset;
     --cta-line-height: 24px;
     --cta-letter-spacing: unset;
+    --gallery-width: 125%;
+    --gallery-margin-left: -12.5%;
+    --gallery-column-gap: 24px;
+    --gallery-cell-radius: 40px;
     --gallery-cell-icon-border: 8px;
     --gallery-cell-icon-dim: 26px;
     --gallery-cell-icon-padding: 13px;
