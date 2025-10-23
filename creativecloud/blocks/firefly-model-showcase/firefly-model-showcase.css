@@ -2,7 +2,8 @@
 :root {
   --showcase-padding-top: 40px;
   --content-width: 100%;
-  --content-padding: 0 calc((100% - 83.4%) / 2);
+  /* 16px = 8px (padding of the gnav logo) x 2 */
+  --content-padding: 0 calc((100% - 83.4% + 16px) / 2);
   --content-title-size: 36px;
   --content-icon-size: 36px;
   --content-subtitle-size: 18px;
@@ -194,7 +195,7 @@
 @media screen and (min-width: 1480px) {
   :root {
     --content-width: 50%;
-    --content-padding: 0 0 0 calc((100% - 1440px) / 2);
+    --content-padding: 0 0 0 calc((100% - 1440px + 16px) / 2);
   }
 }
 
