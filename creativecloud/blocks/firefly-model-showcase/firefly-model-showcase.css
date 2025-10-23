@@ -6,17 +6,19 @@
   --content-title-size: 36px;
   --content-icon-size: 36px;
   --content-subtitle-size: 18px;
-  --content-title-line-height: 96%;
-  --content-subtitle-line-height: 125%;
+  --content-title-line-height: 100%;
+  --content-subtitle-line-height: 135%;
   --cta-line-height: normal;
   --content-title-letter-spacing: -1.08px;
   --cta-letter-spacing: -0.36px;
-  --content-subtitle-weight: 700;
+  --content-subtitle-weight: 400;
   --content-subtitle-color: #fff;
   --gallery-column-dim: 163px;
   --gallery-column-gap: 8px;
   --heading-margin: 24px 0 16px 0;
   --cta-display: flex;
+  --cta-font-size: 18px;
+  --cta-margin: 24px 0;
   --gallery-width: 150%;
   --gallery-margin-left: -25%;
   --gallery-cell-radius: 12px;
@@ -28,6 +30,7 @@
 }
 
 .firefly-model-showcase {
+  z-index: 3;
   padding-top: var(--showcase-padding-top);
   position: relative;
   overflow-y: visible;
@@ -65,12 +68,12 @@
 }
 
 .firefly-model-showcase-content .action-area {
-  margin: 30px 0;
+  margin: var(--cta-margin);
 
 }
 
 .firefly-model-showcase-content .action-area a { 
-  font-size: 18px;
+  font-size: var(--cta-font-size);
   color: #fff;
   font-weight: 700;
   line-height: var(--cta-line-height);
@@ -139,16 +142,19 @@
 /* Tablet */
 @media screen and (min-width: 600px) {
   :root {
-    --content-icon-size: 54px;
-    --content-width: 75%;
-    --content-title-size: 72px;
+    --content-icon-size: 36px;
+    --content-width: 100%;
+    --content-title-size: 44px;
     --content-title-line-height: 100%;
-    --content-subtitle-size: 16px;
-    --heading-margin: 20px 0;
-    --content-title-letter-spacing: -1.92px;
+    --content-subtitle-size: 20px;
+    --content-title-letter-spacing: -1.32px;
     --content-subtitle-weight: 400;
-    --content-subtitle-line-height: 150%;
-    --content-subtitle-color: #fcfcfc;
+    --content-subtitle-line-height: 135%;
+    --content-subtitle-color: #fff;
+    --cta-display: inline-block;
+    --cta-font-size: 19px;
+    --cta-margin: 24px 0;
+    --cta-line-height: 24px;
   }
 
   .gallery-column:nth-child(1) {
@@ -159,13 +165,13 @@
 /* Desktop */
 @media screen and (min-width: 900px) {
   :root {
-    --content-width: 75%;
+    --content-width: 100%;
     --content-title-size: 96px;
     --content-subtitle-size: 24px;
     --showcase-padding-top: 130px;
-    --cta-display: unset;
     --cta-line-height: 24px;
     --cta-letter-spacing: unset;
+    --cta-margin: 30px 0;
     --gallery-width: 125%;
     --gallery-margin-left: -12.5%;
     --gallery-column-gap: 24px;
@@ -175,6 +181,11 @@
     --gallery-cell-icon-padding: 13px;
     --gallery-cell-icon-bottom: 36px;
     --gallery-cell-icon-left: 34px;
+    --content-subtitle-line-height: 150%;
+    --content-icon-size: 54px;
+    --heading-margin: 20px 0;
+    --content-title-letter-spacing: -1.92px;
+    --content-subtitle-color: #fcfcfc;
   }
 }
 
