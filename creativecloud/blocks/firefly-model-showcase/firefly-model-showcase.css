@@ -28,7 +28,7 @@
   --gallery-cell-icon-padding: 4px;
   --gallery-cell-icon-bottom: 11px;
   --gallery-cell-icon-left: 10px;
-  --gallery-height: 100%
+  --gallery-height: 100%;
 }
 
 .firefly-model-showcase {
@@ -196,6 +196,12 @@
   :root {
     --content-width: 50%;
     --content-padding: 0 0 0 calc((100% - 1440px + 16px) / 2);
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  :root {
+    --gallery-height: 100%;
   }
 }
 
