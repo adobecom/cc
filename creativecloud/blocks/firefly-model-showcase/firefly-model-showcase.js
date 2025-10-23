@@ -95,6 +95,7 @@ function createResponsiveVideo(videoUrl, imageUrl, altText) {
     poster: `${imageUrl}?width=1000&format=jpg&optimize=medium`,
     alt: altText,
     class: 'gallery-cell-asset',
+    autoplay: '',
     muted: '',
     loop: '',
     playsinline: '',
