@@ -25,7 +25,7 @@
   background: linear-gradient(
     180deg,
     rgb(0 0 0 / 100%) 0%,
-    rgb(0 0 0 / 30%) 100%
+    rgb(0 0 0 / 10%) 25%
   );
   z-index: 1;
 }
