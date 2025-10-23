@@ -33,7 +33,7 @@ function decorateUploadEls(para) {
   );
   para.classList.add('upload-action-container');
   para.textContent = '';
-  btn.setAttribute('da-ll', 'Upload your photo|UnityWidget');
+  btn.setAttribute('daa-ll', 'Upload your photo|UnityWidget');
   para.append(btn, input);
   return para;
 }
