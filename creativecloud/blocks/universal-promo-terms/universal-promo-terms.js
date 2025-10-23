@@ -1,3 +1,5 @@
+import { getLibs } from '../../scripts/utils.js';
+
 const OFFER_ID_API_BASE = 'https://aos.adobe.io/offers/';
 const SELECTOR_ID_API_BASE = 'https://aos.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
@@ -32,7 +34,7 @@ const replacePlaceholderText = (text, params) => {
 };
 
 /**
- * Returns promo term HTML from API
+ * Returns promo term HTML from API.
  * @param {*} params
  * @param {*} el
  * @param {*} env
@@ -76,6 +78,10 @@ export default async function init(el, search) {
   if (!termsHTML && env !== 'stage') {
     window.location = '404.html';
   } else {
-    el.innerHTML = termsHTML;
+    const miloLibs = getLibs('/libs');
+    const { sanitizeHtml } = await import(`${miloLibs}/utils/sanitizeHtml.js`);
+    const html = sanitizeHtml(termsHTML);
+    el.innerHTML = '';
+    el.append(html);
   }
 }
