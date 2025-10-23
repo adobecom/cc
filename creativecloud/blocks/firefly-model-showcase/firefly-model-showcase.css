@@ -110,7 +110,7 @@
   background-color: #595959;
 }
 
-.gallery-cell-img {
+.gallery-cell-asset {
   width: 100%;
   height: 100%;
   object-fit: cover;
