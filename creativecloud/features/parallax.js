@@ -23,10 +23,11 @@ function throttle(cb, delay, { trailing = false } = {}) {
 
 function addProgressIMPL(el, NAV_HEIGHT) {
   let screenHeight = window.innerHeight;
+  let elHeight = el.offsetHeight;
   window.addEventListener('resize', throttle(() => {
     screenHeight = window.innerHeight;
+    elHeight = el.offsetHeight;
   }, 50));
-  const elHeight = el.offsetHeight;
 
   let ticking = false;
 
