@@ -100,13 +100,14 @@
   gap: var(--gallery-column-gap);
   align-self: start;
   height: var(--gallery-height);
+  justify-content: center;
 }
 
 .gallery-column {
   display: flex;
   flex-direction: column;
   gap: var(--gallery-column-gap);
-  flex: 1;
+  width: 160px;
 }
 
 /* only 3 cols on mobile */
@@ -174,6 +175,11 @@
 
   .firefly-model-showcase-content .action-area a {
     padding: 12px 44px;
+  }
+
+  .gallery-column {
+    flex: 1;
+    width: initial;
   }
 
   .gallery-column:nth-child(1) {
