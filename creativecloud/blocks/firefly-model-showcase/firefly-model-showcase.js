@@ -117,11 +117,12 @@ function createResponsiveVideo(videoUrl, imageUrl, altText) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (video.paused) {
+            video.muted = true;
             video.play().catch((err) => {
               window.lana?.log(`Error autoplaying video in viewport: ${err}`, LANA_OPTIONS);
             });
           }
-        } else {
+        } else if (!video.paused) {
           video.pause();
         }
       });
