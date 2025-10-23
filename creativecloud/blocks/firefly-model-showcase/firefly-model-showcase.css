@@ -129,6 +129,7 @@
 .gallery-cell-icon {
   position: absolute;
   display: flex;
+  align-items: center;
   bottom: var(--gallery-cell-icon-bottom);
   left: var(--gallery-cell-icon-left);
   width: var(--gallery-cell-icon-dim);
