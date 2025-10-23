@@ -77,6 +77,8 @@
   display: var(--cta-display);
   justify-content: center;
   letter-spacing: var(--cta-letter-spacing);
+  border-radius: 100px;
+  padding: 12px 44px;
 }
 
 .firefly-model-showcase-gallery {
