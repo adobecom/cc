@@ -69,10 +69,9 @@
 
 .firefly-model-showcase-content .action-area {
   margin: var(--cta-margin);
-
 }
 
-.firefly-model-showcase-content .action-area a { 
+.firefly-model-showcase-content .action-area a {
   font-size: var(--cta-font-size);
   color: #fff;
   font-weight: 700;
@@ -202,10 +201,14 @@
   opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 40);
   transform: translateY(
     calc(
-      var(--base-offset, 0px)
-        + var(--parallax-distance, 400px)
-            * (clamp(var(--exit-start-progress, 0), var(--exit-progress, 0), var(--exit-end-progress, 40)))
-            / (var(--exit-end-progress, 40) - var(--exit-start-progress, 0))
+      var(--base-offset, 0px) + var(--parallax-distance, 400px) *
+        (
+          clamp(
+            var(--exit-start-progress, 0),
+            var(--exit-progress, 0),
+            var(--exit-end-progress, 40)
+          )
+        ) / (var(--exit-end-progress, 40) - var(--exit-start-progress, 0))
     )
   );
 }
@@ -214,10 +217,15 @@
   will-change: transform;
   transform: translateY(
     calc(
-      var(--base-offset, 0)
-        + var(--parallax-distance, 0)
-          * (clamp(var(--exit-start-progress, 0), var(--exit-progress, 0), var(--exit-end-progress, 100)))
-          / (var(--exit-end-progress, 100) - var(--exit-start-progress, 0)))
+      var(--base-offset, 0) + var(--parallax-distance, 0) *
+        (
+          clamp(
+            var(--exit-start-progress, 0),
+            var(--exit-progress, 0),
+            var(--exit-end-progress, 100)
+          )
+        ) / (var(--exit-end-progress, 100) - var(--exit-start-progress, 0))
+    )
   );
 }
 
@@ -225,10 +233,16 @@
   .firefly-model-showcase-gallery .gallery-column {
     transform: translateY(
       calc(
-        var(--tablet-base-offset, var(--base-offset, 0))
-          + var(--tablet-parallax-distance, var(--parallax-distance, 0))
-            * (clamp(var(--exit-start-progress, 0), var(--exit-progress, 0), var(--exit-end-progress, 100)))
-            / (var(--exit-end-progress, 100) - var(--exit-start-progress, 0)))
+        var(--tablet-base-offset, var(--base-offset, 0)) +
+          var(--tablet-parallax-distance, var(--parallax-distance, 0)) *
+          (
+            clamp(
+              var(--exit-start-progress, 0),
+              var(--exit-progress, 0),
+              var(--exit-end-progress, 100)
+            )
+          ) / (var(--exit-end-progress, 100) - var(--exit-start-progress, 0))
+      )
     );
   }
 }
