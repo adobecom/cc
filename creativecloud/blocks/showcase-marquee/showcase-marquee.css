@@ -107,6 +107,11 @@
     text-align: center;
     margin: 0;
     margin-bottom: 16px;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 96%; /* 30.72px */
+    letter-spacing: -0.96px;
 }
 
 .showcase-marquee .text .body {
@@ -114,6 +119,11 @@
   text-align: center;
   margin: 0;
   margin-bottom: 24px;
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 30px */
 }
 
   .showcase-marquee.unity-enabled .interactive-area {
@@ -166,13 +176,6 @@
     line-height: 98%; /* 43.12px */
     letter-spacing: -1.98px;
     margin-bottom: 8px;
-  }
-
-  .showcase-marquee .text .body {
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 30px */
   }
 
   .showcase-marquee.unity-enabled .interactive-area {
