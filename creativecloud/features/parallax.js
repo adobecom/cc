@@ -51,7 +51,11 @@ function addProgressIMPL(el, NAV_HEIGHT) {
 }
 
 // for max-2025-firefly
-export default function addParallaxProgress(el, NAV_HEIGHT = 64) {
+export default function addParallaxProgress(el, NAV_HEIGHT = 64, isIntersecting = false) {
+  if (isIntersecting) {
+    addProgressIMPL(el, NAV_HEIGHT);
+    return;
+  }
   new IntersectionObserver(async (entries, ob) => {
     if (entries[0].isIntersecting) {
       ob.disconnect();
