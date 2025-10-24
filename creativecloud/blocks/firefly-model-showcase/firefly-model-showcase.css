@@ -94,6 +94,7 @@
   letter-spacing: var(--cta-letter-spacing);
   border-radius: 100px;
   padding: 12px 32px;
+  scroll-margin-top: 400vh
 }
 
 .firefly-model-showcase-gallery {
