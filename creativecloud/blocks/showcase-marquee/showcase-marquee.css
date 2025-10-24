@@ -146,6 +146,11 @@
     padding: 0;
   }
 
+  :root:has(meta[name="theme"][content="max25"]) .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .inp-wrap .inp-field {
+  font-style: normal;
+  font-size: 20px;
+}
+
 @media screen and (min-width: 600px) and (max-width: 1199px) {
   .showcase-marquee {
     min-height: 1200px;
