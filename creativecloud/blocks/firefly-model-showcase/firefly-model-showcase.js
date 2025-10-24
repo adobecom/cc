@@ -3,7 +3,7 @@ import addParallaxProgress from '../../features/parallax.js';
 
 // Constants
 const LANA_OPTIONS = { tags: 'firefly-model-showcase', errorType: 'i' };
-const GALLERY_SRC_URL = 'https://main--cc--adobecom.aem.live/drafts/jingle/ff-gallery-assets.json';
+const GALLERY_FALLBACK_URL = '/cc-shared/ff-gallery-assets.json';
 const CHICKET_ICONS = [
   {
     name: 'adobe',
@@ -38,8 +38,8 @@ const CHICKET_ICONS = [
 ];
 
 // Services
-async function fetchGalleryAssets() {
-  const res = await fetch(GALLERY_SRC_URL);
+async function fetchGalleryAssets(url) {
+  const res = await fetch(url);
   const response = await res.json();
   return response.data;
 }
@@ -119,7 +119,10 @@ function createResponsiveVideo(videoUrl, imageUrl, altText) {
           if (video.paused) {
             video.muted = true;
             video.play().catch((err) => {
-              window.lana?.log(`Error autoplaying video in viewport: ${err}`, LANA_OPTIONS);
+              window.lana?.log(
+                `Error autoplaying video in viewport: ${err}`,
+                LANA_OPTIONS,
+              );
             });
           }
         } else if (!video.paused) {
@@ -135,9 +138,9 @@ function createResponsiveVideo(videoUrl, imageUrl, altText) {
   return video;
 }
 
-async function populateGalleryCells(parentElem) {
+async function populateGalleryCells(parentElem, jsonUrl) {
   const galleryCells = parentElem.querySelectorAll('.gallery-cell');
-  const galleryAssets = await fetchGalleryAssets();
+  const galleryAssets = await fetchGalleryAssets(jsonUrl);
   galleryCells.forEach((cell, index) => {
     const asset = galleryAssets[index];
     let galleryMedia;
@@ -185,7 +188,17 @@ export default async function init(el) {
   const miloLibs = getLibs('/libs');
   const { decorateButtons } = await import(`${miloLibs}/utils/decorate.js`);
 
-  // TODO: author images directly on doc?
+  const galleryConfigRow = el.querySelector(':scope > div:nth-child(2)');
+  let galleryJsonUrl = GALLERY_FALLBACK_URL;
+
+  if (galleryConfigRow) {
+    const urlCell = galleryConfigRow.querySelector(':scope > div');
+    if (urlCell && urlCell.textContent.trim()) {
+      galleryJsonUrl = urlCell.textContent.trim();
+    }
+    galleryConfigRow.remove();
+  }
+
   // currently using last row for parallax configs
   const parallaxConfigRow = el.querySelector(':scope > div:last-child');
   if (parallaxConfigRow.children.length >= 3) parallaxConfigRow.remove();
@@ -201,7 +214,7 @@ export default async function init(el) {
   await decorateButtons(el);
 
   buildGalleryOutline(el);
-  populateGalleryCells(el);
+  populateGalleryCells(el, galleryJsonUrl);
 
   addParallaxProgress(el, 64);
   const configs = Array.from(parallaxConfigRow.children).map(
