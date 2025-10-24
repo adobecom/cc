@@ -1,5 +1,4 @@
 import { createTag, getLibs } from '../../scripts/utils.js';
-import addParallaxProgress from '../../features/parallax.js';
 
 // Constants
 const LANA_OPTIONS = { tags: 'firefly-model-showcase', errorType: 'i' };
@@ -230,7 +229,13 @@ export default async function init(el) {
   buildGalleryOutline(el);
   populateGalleryCells(el, galleryJsonUrl);
 
-  addParallaxProgress(el, 64);
+  new IntersectionObserver(async (entries, ob) => {
+    if (entries[0].isIntersecting) {
+      ob.disconnect();
+      const { default: addParallaxProgress } = await import('../../features/parallax.js');
+      addParallaxProgress(el, 64, true);
+    }
+  }).observe(el);
   const configs = Array.from(parallaxConfigRow.children).map(
     (col) => col.textContent,
   );
