@@ -255,11 +255,6 @@
   .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .autocomplete {
     width: 600px;
   }
-
-    :root:has(meta[name="theme"][content="max25"]) .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .inp-wrap .inp-field {
-        font-style: normal;
-        font-size: 20px;
-    }
 }
 
 @keyframes scroll-left {
