@@ -193,8 +193,8 @@ export default async function init(el) {
 
   if (galleryConfigRow) {
     const urlCell = galleryConfigRow.querySelector(':scope > div');
-    if (urlCell && urlCell.textContent.trim()) {
-      galleryJsonUrl = urlCell.textContent.trim();
+    if (urlCell?.querySelector('a')?.href?.trim()) {
+      galleryJsonUrl = urlCell.querySelector('a').href.trim();
     }
     galleryConfigRow.remove();
   }
