@@ -448,3 +448,92 @@
     --row-gap: calc(var(--spacing-xs) - 8px);
   }
 }
+
+:root:has(meta[name="theme"][content="max25"]) {
+  .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="heading-"] {
+    color: #FFF;
+    font-weight: 900;
+  }
+
+  .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="body-"] {
+    color: #B9B9B9;
+    font-weight: 400;
+  }
+
+  .text-block:has(~ .firefly-gallery).ff-gallery-block [class*="detail-"] {
+    color: #B9B9B9;
+    line-height: 150%;
+  }
+
+  /* Desktop */
+  @media (min-width: 1200px) {
+    .section:has(.firefly-gallery) {
+      padding: 160px 0;
+    }
+
+    .text-block:has(~ .firefly-gallery).ff-gallery-block {
+      padding-top: 0;
+      padding-bottom: 60px;
+    }
+
+    .firefly-gallery + .text-block.ff-gallery-block-bottom {
+      padding-bottom: 0;
+    }
+
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class*="detail-"] {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="body-"] {
+      font-size: 24px;
+      line-height: 130%;
+    }
+
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="heading-"] {
+      font-size: 72px;
+      line-height: 98%;
+      letter-spacing: -3.24px;
+    }
+  }
+
+  /* Mobile and Tablet - shared styles */
+  @media (max-width: 1199px) {
+    .text-block:has(~ .firefly-gallery).ff-gallery-block {
+      padding-top: 56px;
+      padding-bottom: 24px;
+    }
+
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="body-"] {
+      font-size: 18px;
+      line-height: 135%;
+      letter-spacing: -0.18px;
+    }
+
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class*="detail-"] {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: -0.16px;
+    }
+
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="heading-"] {
+      line-height: 105%;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 599px) {
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="heading-"] {
+      font-size: 32px;
+      letter-spacing: -0.96px;
+    }
+  }
+
+  /* Tablet */
+  @media (min-width: 600px) and (max-width: 1199px) {
+    .text-block:has(~ .firefly-gallery).ff-gallery-block [class^="heading-"] {
+      font-size: 36px;
+      letter-spacing: -1.08px;
+    }
+  }
+}

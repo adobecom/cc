@@ -1,0 +1,289 @@
+.showcase-marquee {
+  position: relative;
+  color: var(--color-white);
+  min-height: 860px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  align-items: initial;
+  justify-content: initial;
+  padding-bottom: 0;
+  margin-top: -10px;
+}
+
+.showcase-marquee .background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.showcase-marquee .background img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.showcase-marquee .background video {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.showcase-marquee .background .tablet-only,
+.showcase-marquee .background .desktop-only {
+  display: none;
+}
+
+.showcase-marquee .background picture {
+  display: block;
+  position: absolute;
+  inset: 0;
+  line-height: 0;
+}
+
+.showcase-marquee .background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 100%) 0%,
+    rgb(0 0 0 / 10%) 25%
+  );
+  z-index: 1;
+}
+
+.showcase-marquee .foreground {
+  position: relative;
+  padding: var(--spacing-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  grid-row: 6 / 13;
+  grid-column: 1 / 13;
+}
+
+.showcase-marquee .foreground .text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    /* background-color: red; */
+}
+
+.showcase-marquee .logo-row {
+    opacity: .3;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+   padding: calc(var(--spacing-xl)) 0;
+}
+
+.showcase-marquee .logo-row .logo-container {
+  display: flex;
+  gap: var(--logos-gap);
+  animation: scroll-left 60s linear infinite;
+  width: max-content;
+}
+
+.showcase-marquee.unity-enabled .interactive-area {
+    background: none;
+}
+
+.showcase-marquee .text .heading {
+    color: #FFF;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 16px;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 96%; /* 30.72px */
+    letter-spacing: -0.96px;
+}
+
+.showcase-marquee .text .body {
+  color: #FCFCFC;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 30px */
+}
+
+  .showcase-marquee.unity-enabled .interactive-area {
+    width: 100%;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap {
+    width: 100%;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget {
+    width: 100%;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .autocomplete {
+    width: 100%;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap:not(.sticky) .ex-unity-widget {
+    padding: 0;
+  }
+
+@media screen and (min-width: 600px) and (max-width: 1199px) {
+  .showcase-marquee {
+    min-height: 1200px;
+  }
+
+  .showcase-marquee .background .mobile-only,
+  .showcase-marquee .background .desktop-only {
+    display: none;
+  }
+
+  .showcase-marquee .background .tablet-only {
+    display: block;
+  }
+
+  .showcase-marquee .foreground {
+    grid-column: 2 / 12;
+    grid-row: 6 / 12;
+    padding: var(--spacing-l);
+    max-width: 700px;
+    justify-self: center;
+    align-self: end;
+  }
+
+  .showcase-marquee .text .heading {
+    font-size: 44px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 98%; /* 43.12px */
+    letter-spacing: -1.98px;
+    margin-bottom: 8px;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area {
+    width: auto;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap {
+    width: auto;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget {
+    width: auto;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .autocomplete {
+    width: 560px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .showcase-marquee {
+     min-height: 1607.43px;
+  }
+
+  .showcase-marquee .background .mobile-only,
+  .showcase-marquee .background .tablet-only {
+    display: none;
+  }
+
+  .showcase-marquee .background .desktop-only {
+    display: block;
+  }
+
+  .showcase-marquee .foreground {
+    grid-column: 6 / 13;
+    grid-row: 6 / 11;
+    padding: var(--spacing-xl);
+    width: 770px;
+    justify-self: end;
+    align-self: end;
+  }
+
+  .showcase-marquee .container {
+    max-width: 770px;
+    box-sizing: border-box;
+  }
+
+  .showcase-marquee .text .heading {
+    font-size: 72px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 98%; /* 70.56px */
+    letter-spacing: -3.24px;
+    margin-bottom: 0;
+  }
+
+  .showcase-marquee .text .body {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 36px */
+    margin-bottom: 20px;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area {
+    width: auto;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap {
+    width: auto;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget {
+    width: auto;
+  }
+
+  .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .autocomplete {
+    width: 600px;
+  }
+
+    :root:has(meta[name="theme"][content="max25"]) .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .inp-wrap .inp-field {
+        font-style: normal;
+        font-size: 20px;
+    }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(calc(-1 * var(--scroll-offset, 0px)));
+  }
+
+  100% {
+    transform: translateX(calc(var(--scroll-distance) - var(--scroll-offset, 0px)));
+  }
+}
+
+.showcase-marquee .logo-row .logos-duplicate {
+  display: flex;
+  gap: var(--logos-gap);
+  flex: 0 0 auto;
+}
+
+.showcase-marquee .logo-row svg {
+  height: 22px;
+}
+
+@media screen and (min-width: 600px) {
+  .showcase-marquee .logo-row svg {
+    height: 50px;
+  }
+}
