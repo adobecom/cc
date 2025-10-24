@@ -106,11 +106,14 @@
       color: #FFF;
     text-align: center;
     margin: 0;
+    margin-bottom: 24px;
 }
 
 .showcase-marquee .text .body {
   color: #FCFCFC;
   text-align: center;
+  margin: 0;
+  margin-bottom: 24px;
 }
 
   .showcase-marquee.unity-enabled .interactive-area {
@@ -162,6 +165,7 @@
     font-weight: 900;
     line-height: 98%; /* 43.12px */
     letter-spacing: -1.98px;
+    margin-bottom: 8px;
   }
 
   .showcase-marquee .text .body {
@@ -184,7 +188,7 @@
   }
 
   .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .autocomplete {
-    width: 520px;
+    width: 560px;
   }
 }
 
@@ -222,6 +226,7 @@
     font-weight: 900;
     line-height: 98%; /* 70.56px */
     letter-spacing: -3.24px;
+    margin-bottom: 0;
   }
 
   .showcase-marquee .text .body {
@@ -229,6 +234,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: 150%; /* 36px */
+    margin-bottom: 20px;
   }
 
   .showcase-marquee.unity-enabled .interactive-area {
