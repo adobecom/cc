@@ -93,19 +93,46 @@ async function createDisplayImg(target, replaceEl, src, alt) {
   target.classList.remove('show-video');
 }
 
-async function createDisplayVideo(target, video, src, poster = '') {
+const getVideoLabels = (config) => {
+  if (!config) return new Map();
+
+  return new Map(
+    // For now checking for mp4 format videos only.
+    [...config.querySelectorAll('p > a[href*=".mp4"]')]
+      .map((a) => {
+        if (!a.textContent.includes('|')) return null;
+        const [urlPart, label] = a.textContent.split('|').map((s) => s.trim());
+        if (!label) return null;
+        try {
+          return [new URL(urlPart, window.location.origin).pathname, label];
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean),
+  );
+};
+
+async function createDisplayVideo(target, video, src, poster = '', stepInfo = {}) {
+  const config = stepInfo?.stepConfigs[stepInfo?.stepIndex];
+  const videoLabels = getVideoLabels(config);
   const { pathname, hash } = new URL(src);
-  const attrs = { src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4' };
+  const label = videoLabels?.get(pathname);
+  const attrs = {
+    src: pathname, playsinline: '', autoplay: '', muted: '', type: 'video/mp4', ...(label && { 'aria-label': label }),
+  };
   if (poster !== '') attrs.poster = poster;
   if (hash?.includes('autoplay1') || !video.hasAttribute('loop')) video?.removeAttribute('loop');
   else attrs.loop = '';
   Object.keys(attrs).forEach((attr) => video?.setAttribute(attr, attrs[attr]));
+  if (!attrs['aria-label']) video?.removeAttribute('aria-label');
   try {
     video?.load();
     video.oncanplaythrough = async () => {
       await video.play();
       target.classList.add('show-video');
       target.classList.remove('show-image');
+      await video.focus();
     };
   } catch (err) { /* pass */ }
 }
@@ -145,7 +172,13 @@ export async function handleImageTransition(stepInfo, transitionCfg = {}) {
     }
     if (displayVideos[vidIdx].nodeName === 'A') {
       const posterImg = displayVideos[vidIdx].getAttribute('data-video-poster') ? displayVideos[vidIdx].getAttribute('data-video-poster') : '';
-      await createDisplayVideo(stepInfo.target, trgtVideo, displayVideos[vidIdx].href, posterImg);
+      await createDisplayVideo(
+        stepInfo.target,
+        trgtVideo,
+        displayVideos[vidIdx].href,
+        posterImg,
+        stepInfo,
+      );
     } else if (displayVideos[vidIdx].nodeName === 'VIDEO') {
       const posterImg = displayVideos[vidIdx].getAttribute('poster') ? displayVideos[vidIdx].getAttribute('poster') : '';
       await createDisplayVideo(
@@ -244,7 +277,7 @@ async function createInteractiveArea(el, asset) {
     if (!avideoTag?.href.includes('_hide-controls')) {
       assetElem = createTag('div');
       const { addAccessibilityControl, applyAccessibilityEvents } = await loadDecorateFunctions();
-      const videoText = addAccessibilityControl('<video autoplay></video>', 'autoplay', 0);
+      const videoText = addAccessibilityControl('<video tabindex="0" autoplay></video>', 'autoplay', 0);
       assetElem.insertAdjacentHTML('beforeend', videoText);
       const video = assetElem.querySelector('video');
       applyAccessibilityEvents(video);
