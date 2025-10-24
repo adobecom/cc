@@ -3,7 +3,7 @@ import addParallaxProgress from '../../features/parallax.js';
 
 // Constants
 const LANA_OPTIONS = { tags: 'firefly-model-showcase', errorType: 'i' };
-const GALLERY_FALLBACK_URL = '/drafts/jingle/ff-gallery-assets.json';
+const GALLERY_FALLBACK_URL = '/cc-shared/ff-gallery-assets.json';
 const CHICKET_ICONS = [
   {
     name: 'adobe',
