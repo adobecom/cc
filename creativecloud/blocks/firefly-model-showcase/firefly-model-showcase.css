@@ -2,8 +2,10 @@
 :root {
   --showcase-padding-top: 40px;
   --content-width: 100%;
-  /* 16px = 8px (padding of the gnav logo) x 2 */
-  --content-padding: 0 calc((100% - 83.4% + 16px) / 2);
+  --content-bottom-padding: 500px;
+    /* 16px = 8px (padding of the gnav logo) x 2 */
+  --content-side-padding: calc((100% - 83.4% + 16px) / 2);
+  --content-padding: 0 var(--content-side-padding) var(--content-bottom-padding);
   --content-title-size: 36px;
   --content-icon-size: 36px;
   --content-subtitle-size: 18px;
@@ -30,6 +32,7 @@
   --gallery-cell-icon-bottom: 8.14px;
   --gallery-cell-icon-left: 8.18px;
   --gallery-height: 100%;
+  --gallery-position: -400px;
 }
 
 .firefly-model-showcase {
@@ -44,7 +47,6 @@
   box-sizing: border-box;
   padding: var(--content-padding);
   width: var(--content-width);
-  padding-bottom: 400px;
 }
 
 .firefly-model-showcase-content picture {
@@ -103,7 +105,7 @@
   height: var(--gallery-height);
   justify-content: center;
   position: absolute;
-  bottom: -400px;
+  bottom: var(--gallery-position);
 }
 
 .gallery-column {
@@ -174,14 +176,8 @@
     --gallery-height: 800px;
     --gallery-cell-icon-bottom: 19.25px;
     --gallery-cell-icon-left: 19.1px;
-  }
-
-  .firefly-model-showcase-gallery {
-    bottom: -250px;
-  }
-
-  .firefly-model-showcase-content {
-    padding-bottom: 500px;
+    --gallery-position: -20px;
+    --content-bottom-padding: 800px;
   }
 
   .firefly-model-showcase-content .action-area a {
@@ -228,17 +224,26 @@
     --heading-margin: 20px 0;
     --content-title-letter-spacing: -1.92px;
     --content-subtitle-color: #fcfcfc;
-  }
-
-  .firefly-model-showcase-gallery {
-    bottom: -400px;
+    --gallery-position: -100px;
   }
 }
 
 @media screen and (min-width: 1480px) {
   :root {
     --content-width: 50%;
-    --content-padding: 0 0 0 calc((100% - 1440px + 16px) / 2);
+    --content-bottom-padding: 800px;
+    --content-side-padding: calc((100% - 1440px + 16px) / 2);
+    --content-padding: 0 0 var(--content-bottom-padding) var(--content-side-padding);
+    --gallery-position: 0;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  :root {
+    --content-width: 50%;
+    --content-bottom-padding: 1200px;
+    --content-side-padding: calc((100% - 2000px + 16px) / 2);
+    --gallery-position: 400px;
   }
 }
 
