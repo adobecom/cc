@@ -22,6 +22,7 @@
   --cta-display: flex;
   --cta-font-size: 18px;
   --cta-margin: 24px 0;
+  --cta-margin-right: 16px;
   --gallery-width: 130%;
   --gallery-margin-left: -15%;
   --gallery-cell-radius: 12px;
@@ -93,6 +94,7 @@
   letter-spacing: var(--cta-letter-spacing);
   border-radius: 100px;
   padding: 12px 32px;
+  scroll-margin-top: 400vh
 }
 
 .firefly-model-showcase-gallery {
@@ -157,6 +159,21 @@
 .gallery-cell-icon.bg-adobe {
   background: #eb1000;
 }
+
+/* Second CTA support */
+.firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
+.firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
+    margin-right: var(--cta-margin-right);
+}
+
+/* Small mobile */
+@media screen and (max-width: 460px) {
+  .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
+  .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
+    padding: 12px 15px;
+  }
+}
+/* End of second CTA support */
 
 /* Tablet */
 @media screen and (min-width: 600px) {
@@ -226,6 +243,7 @@
     --content-title-letter-spacing: -1.92px;
     --content-subtitle-color: #fcfcfc;
     --gallery-position: -100px;
+    --cta-margin-right: 24px;
   }
 }
 
@@ -251,7 +269,6 @@
     --content-width: 50%;
     --content-bottom-padding: 1100px;
     --gallery-position: 300px;
-    --content-side-padding: calc((100% - 2000px + 16px) / 2);
   }
 }
 
