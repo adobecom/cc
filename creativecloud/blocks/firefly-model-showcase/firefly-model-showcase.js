@@ -100,9 +100,10 @@ function createResponsiveImage(imageUrl, altText) {
 }
 
 function createResponsiveVideo(videoUrl, imageUrl, altText) {
+  const isDesktop = window.matchMedia('(min-width: 900px)');
   const video = createTag('video', {
     src: videoUrl,
-    poster: `${imageUrl}?width=1000&format=jpg&optimize=medium`,
+    poster: `${imageUrl}?width=${isDesktop.matches ? 1000 : 500}&format=jpg&optimize=medium`,
     alt: altText,
     class: 'gallery-cell-asset',
     autoplay: '',
