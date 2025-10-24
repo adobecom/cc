@@ -48,10 +48,14 @@ function getGalleryIcon(name) {
   return CHICKET_ICONS.find((icon) => icon.name === name).svg;
 }
 
+function getTransformedPath(assetUrl) {
+  const { pathname } = new URL(assetUrl);
+  return `${window.origin}${pathname}`;
+}
+
 function createResponsiveImage(imageUrl, altText) {
   // Create picture element
   const picture = createTag('picture', {});
-
   // Add WebP sources for different screen sizes
   const sourceWebpLarge = createTag('source', {
     type: 'image/webp',
@@ -146,12 +150,12 @@ async function populateGalleryCells(parentElem, jsonUrl) {
     let galleryMedia;
     if (asset.asset_type === 'video') {
       galleryMedia = createResponsiveVideo(
-        asset.video_url,
-        asset.img_url,
+        getTransformedPath(asset.video_url),
+        getTransformedPath(asset.img_url),
         asset.alt_text,
       );
     } else {
-      galleryMedia = createResponsiveImage(asset.img_url, asset.alt_text);
+      galleryMedia = createResponsiveImage(getTransformedPath(asset.img_url), asset.alt_text);
     }
 
     const aiModelName = asset.ai_model;
