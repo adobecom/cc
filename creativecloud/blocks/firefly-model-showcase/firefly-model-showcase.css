@@ -44,6 +44,7 @@
   box-sizing: border-box;
   padding: var(--content-padding);
   width: var(--content-width);
+  padding-bottom: 400px;
 }
 
 .firefly-model-showcase-content picture {
@@ -101,6 +102,8 @@
   align-self: start;
   height: var(--gallery-height);
   justify-content: center;
+  position: absolute;
+  bottom: -400px;
 }
 
 .gallery-column {
@@ -173,6 +176,14 @@
     --gallery-cell-icon-left: 19.1px;
   }
 
+  .firefly-model-showcase-gallery {
+    bottom: -250px;
+  }
+
+  .firefly-model-showcase-content {
+    padding-bottom: 500px;
+  }
+
   .firefly-model-showcase-content .action-area a {
     padding: 12px 44px;
   }
@@ -218,18 +229,16 @@
     --content-title-letter-spacing: -1.92px;
     --content-subtitle-color: #fcfcfc;
   }
+
+  .firefly-model-showcase-gallery {
+    bottom: -400px;
+  }
 }
 
 @media screen and (min-width: 1480px) {
   :root {
     --content-width: 50%;
     --content-padding: 0 0 0 calc((100% - 1440px + 16px) / 2);
-  }
-}
-
-@media screen and (min-width: 1920px) {
-  :root {
-    /* --gallery-height: 100%; */
   }
 }
 
@@ -271,7 +280,7 @@
   .firefly-model-showcase-gallery .gallery-column {
     transform: translateY(
       calc(
-         var(--base-offset, 0) - 50px +
+         var(--base-offset, 0) +
           var(--parallax-distance, 0) *
           (
             clamp(
