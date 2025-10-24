@@ -2,7 +2,7 @@
 :root {
   --showcase-padding-top: 40px;
   --content-width: 100%;
-  --content-bottom-padding: 500px;
+  --content-bottom-padding: 125%;
     /* 16px = 8px (padding of the gnav logo) x 2 */
   --content-side-padding: calc((100% - 83.4% + 16px) / 2);
   --content-padding: 0 var(--content-side-padding) var(--content-bottom-padding);
@@ -22,8 +22,8 @@
   --cta-display: flex;
   --cta-font-size: 18px;
   --cta-margin: 24px 0;
-  --gallery-width: 150%;
-  --gallery-margin-left: -25%;
+  --gallery-width: 130%;
+  --gallery-margin-left: -15%;
   --gallery-cell-radius: 12px;
   --gallery-cell-icon-border: 4px;
   --gallery-cell-icon-width: 12.2px;
@@ -110,6 +110,7 @@
 
 .gallery-column {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--gallery-column-gap);
   width: 160px;
@@ -176,8 +177,9 @@
     --gallery-height: 800px;
     --gallery-cell-icon-bottom: 19.25px;
     --gallery-cell-icon-left: 19.1px;
-    --gallery-position: -20px;
-    --content-bottom-padding: 800px;
+    --gallery-position: -120px;
+    --content-bottom-padding: 700px;
+    --gallery-column-gap: 12px;
   }
 
   .firefly-model-showcase-content .action-area a {
@@ -185,7 +187,6 @@
   }
 
   .gallery-column {
-    flex: 1;
     width: initial;
   }
 
@@ -202,15 +203,15 @@
 /* Desktop */
 @media screen and (min-width: 900px) {
   :root {
-    --content-width: 90%;
+    --content-width: 85%;
     --content-title-size: 96px;
     --content-subtitle-size: 24px;
     --showcase-padding-top: 130px;
     --cta-line-height: 24px;
     --cta-letter-spacing: unset;
     --cta-margin: 30px 0;
-    --gallery-width: 125%;
-    --gallery-margin-left: -12.5%;
+    --gallery-width: 110%;
+    --gallery-margin-left: -5%;
     --gallery-column-gap: 24px;
     --gallery-cell-radius: 40px;
     --gallery-cell-icon-border: 8px;
@@ -228,22 +229,29 @@
   }
 }
 
+@media screen and (min-width: 1200px) {
+  :root {
+    --content-bottom-padding: 30%;
+    --gallery-position: -40%;
+  }
+}
+
 @media screen and (min-width: 1480px) {
   :root {
     --content-width: 50%;
     --content-bottom-padding: 800px;
+    --gallery-position: 0;
     --content-side-padding: calc((100% - 1440px + 16px) / 2);
     --content-padding: 0 0 var(--content-bottom-padding) var(--content-side-padding);
-    --gallery-position: 0;
   }
 }
 
 @media screen and (min-width: 2000px) {
   :root {
     --content-width: 50%;
-    --content-bottom-padding: 1200px;
+    --content-bottom-padding: 1100px;
+    --gallery-position: 300px;
     --content-side-padding: calc((100% - 2000px + 16px) / 2);
-    --gallery-position: 400px;
   }
 }
 
