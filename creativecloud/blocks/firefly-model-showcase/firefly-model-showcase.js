@@ -49,8 +49,14 @@ function getGalleryIcon(name) {
 }
 
 function getTransformedPath(assetUrl) {
-  const { pathname } = new URL(assetUrl);
-  return `${window.origin}${pathname}`;
+  try {
+    const { pathname } = new URL(assetUrl);
+    return `${window.origin}${pathname}`;
+  } catch (err) {
+    window.lana?.log(`Error transforming path: ${err}`, LANA_OPTIONS);
+    // return non-transformed path
+    return assetUrl;
+  }
 }
 
 function createResponsiveImage(imageUrl, altText) {
@@ -155,7 +161,10 @@ async function populateGalleryCells(parentElem, jsonUrl) {
         asset.alt_text,
       );
     } else {
-      galleryMedia = createResponsiveImage(getTransformedPath(asset.img_url), asset.alt_text);
+      galleryMedia = createResponsiveImage(
+        getTransformedPath(asset.img_url),
+        asset.alt_text,
+      );
     }
 
     const aiModelName = asset.ai_model;
