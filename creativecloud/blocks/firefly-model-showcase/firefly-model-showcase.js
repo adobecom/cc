@@ -48,10 +48,20 @@ function getGalleryIcon(name) {
   return CHICKET_ICONS.find((icon) => icon.name === name).svg;
 }
 
+function getTransformedPath(assetUrl) {
+  try {
+    const { pathname } = new URL(assetUrl);
+    return `${window.origin}${pathname}`;
+  } catch (err) {
+    window.lana?.log(`Error transforming path: ${err}`, LANA_OPTIONS);
+    // return non-transformed path
+    return assetUrl;
+  }
+}
+
 function createResponsiveImage(imageUrl, altText) {
   // Create picture element
   const picture = createTag('picture', {});
-
   // Add WebP sources for different screen sizes
   const sourceWebpLarge = createTag('source', {
     type: 'image/webp',
@@ -146,12 +156,15 @@ async function populateGalleryCells(parentElem, jsonUrl) {
     let galleryMedia;
     if (asset.asset_type === 'video') {
       galleryMedia = createResponsiveVideo(
-        asset.video_url,
-        asset.img_url,
+        getTransformedPath(asset.video_url),
+        getTransformedPath(asset.img_url),
         asset.alt_text,
       );
     } else {
-      galleryMedia = createResponsiveImage(asset.img_url, asset.alt_text);
+      galleryMedia = createResponsiveImage(
+        getTransformedPath(asset.img_url),
+        asset.alt_text,
+      );
     }
 
     const aiModelName = asset.ai_model;
@@ -193,8 +206,8 @@ export default async function init(el) {
 
   if (galleryConfigRow) {
     const urlCell = galleryConfigRow.querySelector(':scope > div');
-    if (urlCell && urlCell.textContent.trim()) {
-      galleryJsonUrl = urlCell.textContent.trim();
+    if (urlCell?.querySelector('a')?.href?.trim()) {
+      galleryJsonUrl = urlCell.querySelector('a').href.trim();
     }
     galleryConfigRow.remove();
   }
