@@ -160,6 +160,11 @@
   background: #eb1000;
 }
 
+.gallery-cell-icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
 /* Second CTA support */
 .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
 .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
