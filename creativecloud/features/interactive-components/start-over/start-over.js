@@ -12,6 +12,22 @@ function btnLoadDelay(layer, button, delay, once = true) {
   io.observe(layer);
 }
 
+async function waitForGenerateButton(data, timeout = 5000, interval = 100) {
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < timeout) {
+    const generateBtn = data.target.querySelector('.generate-button');
+    if (generateBtn && generateBtn.offsetParent !== null) {
+      generateBtn.focus();
+      return generateBtn;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, interval));
+  }
+
+  return null;
+}
+
 function getClosestHeadingText(element) {
   const section = element.closest('.section');
   const container = section.querySelector('.marquee, .aside');
@@ -44,6 +60,7 @@ export default async function stepInit(data) {
       layer.classList.add('disable-click');
       await data.openForExecution;
       data.el.dispatchEvent(new CustomEvent(data.nextStepEvent));
+      await waitForGenerateButton(data);
     });
   }
   if (delay) {
