@@ -536,7 +536,7 @@ function loadFireflyImages(skeletonItems, assets = []) {
         },
         once: true,
         options: {
-          rootMargin: '200px 0px',
+          rootMargin: '1500px 0px',
           threshold: 0.01,
         },
       });
