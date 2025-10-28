@@ -15,17 +15,28 @@ function btnLoadDelay(layer, button, delay, once = true) {
 async function waitForGenerateButton(data, timeout = 5000, interval = 100) {
   const startTime = Date.now();
 
-  while (Date.now() - startTime < timeout) {
-    const generateBtn = data.target.querySelector('.generate-button');
-    if (generateBtn && generateBtn.offsetParent !== null) {
-      generateBtn.focus();
-      return generateBtn;
-    }
+  return new Promise((resolve) => {
+    const checkButton = () => {
+      const generateBtn = data.target.querySelector('.generate-button');
 
-    await new Promise(resolve => setTimeout(resolve, interval));
-  }
+      if (generateBtn && generateBtn.offsetParent !== null) {
+        generateBtn.focus();
+        resolve(generateBtn);
+        return;
+      }
 
-  return null;
+      if (Date.now() - startTime >= timeout) {
+        resolve(null);
+        return;
+      }
+
+      setTimeout(() => {
+        checkButton();
+      }, interval);
+    };
+
+    checkButton();
+  });
 }
 
 function getClosestHeadingText(element) {
