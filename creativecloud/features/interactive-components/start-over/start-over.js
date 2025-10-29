@@ -19,7 +19,7 @@ async function waitForGenerateButton(data, timeout = 5000, interval = 100) {
     const checkButton = () => {
       const generateBtn = data.target.querySelector('.generate-button');
 
-      if (generateBtn && generateBtn.offsetParent !== null) {
+      if (generateBtn?.offsetParent) {
         generateBtn.focus();
         resolve(generateBtn);
         return;
