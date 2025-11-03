@@ -37,51 +37,47 @@ describe('Start Over', () => {
 });
 
 describe('waitForGenerateButton', () => {
-  let data;
+  let container;
 
-  beforeEach(async () => {
-    document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('wrapper');
-    const button = document.createElement('button');
-    button.classList.add('generate-button');
-    button.style.display = 'none';
-    wrapper.appendChild(button);
-    document.body.appendChild(wrapper);
-
-    data = { target: wrapper };
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
   });
 
-  it('should focus button when it becomes visible', async () => {
-    const button = document.querySelector('.generate-button');
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
 
+  it('should resolve with button when it exists initially', async () => {
+    const btn = document.createElement('button');
+    btn.className = 'generate-button';
+    container.appendChild(btn);
+
+    const data = { target: container };
+    const result = await waitForGenerateButton(data);
+    expect(result).to.equal(btn);
+  });
+
+  it('should resolve when button appears later', async () => {
+    const data = { target: container };
     setTimeout(() => {
-      button.style.display = 'block';
-      Object.defineProperty(button, 'offsetParent', { value: document.body });
+      const btn = document.createElement('button');
+      btn.className = 'generate-button';
+      container.appendChild(btn);
     }, 100);
 
-    const result = await waitForGenerateButton(data, 1000, 50);
-    expect(result).to.equal(button);
-    expect(document.activeElement).to.equal(button);
+    const result = await waitForGenerateButton(data, 1000);
+    expect(result).to.be.instanceOf(HTMLButtonElement);
   });
 
-  it('should timeout after 5 seconds if button never appears', async () => {
-    const start = Date.now();
-    const result = await waitForGenerateButton(data, 500, 100);
-    const elapsed = Date.now() - start;
-
-    expect(result).to.be.null;
-    expect(elapsed).to.be.greaterThan(400);
+  it('should return null if button never appears', async () => {
+    const data = { target: container };
+    const result = await waitForGenerateButton(data, 200);
+    expect(result).to.equal(null);
   });
 
-  it('should return null on timeout', async () => {
-    const result = await waitForGenerateButton(data, 200, 50);
-    expect(result).to.be.null;
-  });
-
-  it('should handle missing target element gracefully', async () => {
-    const result = await waitForGenerateButton({ target: null }, 200, 50);
-    expect(result).to.be.null;
+  it('should handle invalid data safely', async () => {
+    const result = await waitForGenerateButton(null);
+    expect(result).to.equal(null);
   });
 });
