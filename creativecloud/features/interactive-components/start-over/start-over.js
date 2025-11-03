@@ -12,30 +12,45 @@ function btnLoadDelay(layer, button, delay, once = true) {
   io.observe(layer);
 }
 
-async function waitForGenerateButton(data, timeout = 5000, interval = 100) {
-  const startTime = Date.now();
-
+export async function waitForGenerateButton(data, timeout = 5000) {
   return new Promise((resolve) => {
-    const checkButton = () => {
-      const generateBtn = data.target.querySelector('.generate-button');
+    if (!data || !data.target || typeof data.target.querySelector !== 'function') {
+      resolve(null);
+      return;
+    }
 
+    const { target } = data;
+
+    const existing = target.querySelector('.generate-button');
+    if (existing?.offsetParent) {
+      existing.focus();
+      resolve(existing);
+      return;
+    }
+
+    let timeoutId;
+
+    const observer = new MutationObserver(() => {
+      const generateBtn = target.querySelector('.generate-button');
       if (generateBtn?.offsetParent) {
+        observer.disconnect();
+        clearTimeout(timeoutId);
         generateBtn.focus();
         resolve(generateBtn);
-        return;
       }
+    });
 
-      if (Date.now() - startTime >= timeout) {
-        resolve(null);
-        return;
-      }
+    observer.observe(target, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style', 'class'],
+    });
 
-      setTimeout(() => {
-        checkButton();
-      }, interval);
-    };
-
-    checkButton();
+    timeoutId = setTimeout(() => {
+      observer.disconnect();
+      resolve(null);
+    }, timeout);
   });
 }
 
