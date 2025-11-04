@@ -67,7 +67,7 @@
   width: 100%;
   max-width: 600px;
   box-sizing: border-box;
-  grid-row: 6 / 13;
+  grid-row: 8 / 12;
   grid-column: 1 / 13;
 }
 
@@ -145,11 +145,6 @@
     padding: 0;
   }
 
-@media screen and (max-width: 599px) {
-  .showcase-marquee .foreground .text {
-    margin-top: 48px;
-  }
-}
 
 @media screen and (min-width: 600px) and (max-width: 1199px) {
   .showcase-marquee {
