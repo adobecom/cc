@@ -124,6 +124,7 @@
 }
 
 .gallery-cell {
+  color: transparent; /* Workaround for FF showing alt text when image is loading */
   position: relative;
   width: 100%;
   border-radius: var(--gallery-cell-radius);
