@@ -280,12 +280,14 @@ function buildOverlayElement(
   viewBtnLabel,
   userInfo = {},
 ) {
+  const ariaLabel = `${userInfo.name}: ${promptText}. ${viewBtnLabel}`;
+
   const overlay = createTag('a', {
     class: 'firefly-gallery-overlay',
     href: fireflyUrl,
     target: '_blank',
     rel: 'noopener nofollow',
-    'aria-label': 'Open in Firefly',
+    'aria-label': ariaLabel,
     tabindex: '0',
   });
 
@@ -536,7 +538,7 @@ function loadFireflyImages(skeletonItems, assets = []) {
         },
         once: true,
         options: {
-          rootMargin: '200px 0px',
+          rootMargin: '1500px 0px',
           threshold: 0.01,
         },
       });

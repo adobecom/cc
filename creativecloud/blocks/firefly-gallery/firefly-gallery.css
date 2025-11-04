@@ -1,5 +1,6 @@
 /* Responsive styling with mobile-first approach */
 :root {
+  --s-container-width: 83.3%;
   --prompt-font-size: var(--type-body-xs-size);
   --prompt-line-height: 1.5;
   --username-max-width: 80px;
@@ -53,6 +54,11 @@
   bottom: 0;
   width: 100%;
   height: 100%;
+}
+
+.firefly-gallery.s-container {
+  width: var(--s-container-width);
+  margin: 0 auto;
 }
 
 .firefly-gallery-block {
@@ -430,6 +436,7 @@
   left: 0;
 }
 
+/* Tablet */
 @media screen and (min-width: 600px) {
   :root {
     --column-count: 3;
@@ -442,10 +449,12 @@
   }
 }
 
+/* Desktop */
 @media screen and (min-width: 900px) {
   :root {
     --column-count: 5;
     --row-gap: calc(var(--spacing-xs) - 8px);
+    --s-container-width: 62.5%;
   }
 }
 
