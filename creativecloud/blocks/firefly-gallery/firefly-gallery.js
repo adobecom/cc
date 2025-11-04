@@ -280,12 +280,14 @@ function buildOverlayElement(
   viewBtnLabel,
   userInfo = {},
 ) {
+  const ariaLabel = `${userInfo.name}: ${promptText}. ${viewBtnLabel}`;
+
   const overlay = createTag('a', {
     class: 'firefly-gallery-overlay',
     href: fireflyUrl,
     target: '_blank',
     rel: 'noopener nofollow',
-    'aria-label': 'Open in Firefly',
+    'aria-label': ariaLabel,
     tabindex: '0',
   });
 
