@@ -17,7 +17,8 @@ function decorateUploadEls(para) {
     'button',
     {
       type: 'button',
-      class: 'con-button blue action-button button-xl',
+      class: 'con-button blue action-button button-xl no-track',
+      'daa-ll': `${para.textContent.trim()}|UnityWidget`,
     },
     para.innerHTML,
   );
