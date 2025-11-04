@@ -60,6 +60,10 @@ ENABLED=y
 
 Azure app: [CC preview index](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/94136756-61af-4f63-af05-6991a719b872/isMSAApp~/false)
 
+`EDS_ADMIN_KEY` can be gernearted by a member of the MILO Core Team. It needs to be added to the GitHub varibables and the correspondind ID needs to be added to the .helix config.
+<img width="2020" height="48" alt="image" src="https://github.com/user-attachments/assets/abb0a9b3-0545-4600-b2cd-ae34c1a182f9" />
+
+
 
 # CURLs
 
