@@ -78,7 +78,6 @@
     flex-direction: column;
     width: 100%;
     box-sizing: border-box;
-    /* background-color: red; */
 }
 
 .showcase-marquee .logo-row {
@@ -145,6 +144,12 @@
   .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap:not(.sticky) .ex-unity-widget {
     padding: 0;
   }
+
+@media screen and (max-width: 599px) {
+  .showcase-marquee .foreground .text {
+    margin-top: 48px;
+  }
+}
 
 @media screen and (min-width: 600px) and (max-width: 1199px) {
   .showcase-marquee {
