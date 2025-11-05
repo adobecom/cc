@@ -17,8 +17,7 @@ describe('universal-promo-terms', () => {
   });
 
   before(async () => {
-    // setLibs('https://milo.adobe.com/libs');
-    setLibs('https://mwpw172104sanitize2--milo--bozojovicic.aem.live/libs', true); // TODO remove this once Milo PR is merged to main
+    setLibs('https://milo.adobe.com/libs', true);
   });
 
   it('Get API from query parameters', async () => {
