@@ -1,0 +1,143 @@
+.cinematic-quotes {
+  position: relative;
+  font-family: 'Adobe Clean Display', var(--body-font-family);
+}
+
+.cinematic-quotes p {
+  margin: 0;
+}
+
+.cinematic-quotes .img-container {
+  height: 437px;
+}
+
+.cinematic-quotes picture {
+  display: block;
+  height: 100%;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.cinematic-quotes img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cinematic-quotes .text-container {
+  position: absolute;
+  bottom: 0;
+  color: #FCFCFC;
+  padding: 0 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.cinematic-quotes .text-container strong {
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.24px;
+  opacity: .9;
+  font-size: 20px;
+}
+
+@media (min-width: 333px) {
+  .cinematic-quotes .text-container strong {
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 600px) {
+  .cinematic-quotes .text-container {
+    width: 70%;
+    gap: 20px;
+    padding: 0 44px 40px;
+  }
+}
+
+@media (min-width: 900px) {
+  .cinematic-quotes .img-container {
+    height: 437px;
+  }
+
+  .cinematic-quotes .text-container {
+    width: 55%;
+    padding: 0 74px 50px;
+  }
+
+  .cinematic-quotes .text-container strong {
+    letter-spacing: -0.753px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cinematic-quotes {
+    padding: 60px;
+  }
+
+  .cinematic-quotes .img-container {
+    height: 600px;
+  }
+
+  .cinematic-quotes img {
+    border: 1.79px solid #FFFFFF4D;
+    width: 1240;
+    border-radius: 23.89px;
+    border-width: 1.79px;
+  }
+
+  .cinematic-quotes .text-container {
+    padding: 0 64px 120px;
+    gap: 18px;
+  }
+
+  .cinematic-quotes .text-container strong {
+    font-size: 30px;
+    letter-spacing: -0.9px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .cinematic-quotes {
+    padding: 100px;
+  }
+
+  .cinematic-quotes .img-container {
+    height: 700px;
+  }
+
+  .cinematic-quotes .text-container {
+    padding: 0 64px 160px;
+    gap: 24px;
+  }
+
+  .cinematic-quotes .text-container strong {
+    font-size: 42px;
+    letter-spacing: -1.26px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .cinematic-quotes {
+    padding: 160px 240px;
+  }
+
+  .cinematic-quotes img {
+    border-radius: calc(20px + var(--l-rounded-corners));
+  }
+
+  .cinematic-quotes .text-container {
+    width: 50%;
+    padding: 0 64px 220px;
+    gap: 32px;
+    font-size: 22px;
+  }
+
+  .cinematic-quotes .text-container strong {
+    letter-spacing: -1.26px;
+  }
+}

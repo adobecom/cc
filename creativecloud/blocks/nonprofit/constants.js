@@ -33,10 +33,6 @@ export const countries = [
     name: 'Anguilla',
   },
   {
-    code: 'ATA',
-    name: 'Antarctica',
-  },
-  {
     code: 'ARG',
     name: 'Argentina',
   },
@@ -133,6 +129,10 @@ export const countries = [
     name: 'Cook Islands',
   },
   {
+    code: 'CRI',
+    name: 'Costa Rica',
+  },
+  {
     code: 'HRV',
     name: 'Croatia',
   },
@@ -193,6 +193,14 @@ export const countries = [
     name: 'Ghana',
   },
   {
+    code: 'GRC',
+    name: 'Greece',
+  },
+  {
+    code: 'GTM',
+    name: 'Guatemala',
+  },
+  {
     code: 'GGY',
     name: 'Guernsey',
   },
@@ -217,12 +225,12 @@ export const countries = [
     name: 'India',
   },
   {
-    code: 'IRL',
-    name: 'Ireland',
+    code: 'IDN',
+    name: 'Indonesia',
   },
   {
-    code: 'IMN',
-    name: 'Isle of Man',
+    code: 'IRL',
+    name: 'Ireland',
   },
   {
     code: 'ISR',
@@ -245,6 +253,10 @@ export const countries = [
     name: 'Kosovo',
   },
   {
+    code: 'KWT',
+    name: 'Kuwait',
+  },
+  {
     code: 'KGZ',
     name: 'Kyrgyzstan',
   },
@@ -259,10 +271,6 @@ export const countries = [
   {
     code: 'LUX',
     name: 'Luxembourg',
-  },
-  {
-    code: 'MAC',
-    name: 'Macao',
   },
   {
     code: 'MKD',
@@ -317,6 +325,10 @@ export const countries = [
     name: 'New Zealand',
   },
   {
+    code: 'NGA',
+    name: 'Nigeria',
+  },
+  {
     code: 'NOR',
     name: 'Norway',
   },
@@ -329,6 +341,10 @@ export const countries = [
     name: 'Panama',
   },
   {
+    code: 'PER',
+    name: 'Peru',
+  },
+  {
     code: 'PHL',
     name: 'Philippines',
   },
@@ -337,12 +353,24 @@ export const countries = [
     name: 'Poland',
   },
   {
+    code: 'PRT',
+    name: 'Portugal',
+  },
+  {
+    code: 'QAT',
+    name: 'Qatar',
+  },
+  {
     code: 'ROU',
     name: 'Romania',
   },
   {
     code: 'RUS',
     name: 'Russian Federation',
+  },
+  {
+    code: 'SAU',
+    name: 'Saudi Arabia',
   },
   {
     code: 'SRB',
@@ -363,6 +391,10 @@ export const countries = [
   {
     code: 'ZAF',
     name: 'South Africa',
+  },
+  {
+    code: 'KOR',
+    name: 'South Korea',
   },
   {
     code: 'ESP',
@@ -389,12 +421,20 @@ export const countries = [
     name: 'Tanzania, United Republic of',
   },
   {
+    code: 'TUR',
+    name: 'Turkey',
+  },
+  {
     code: 'TUV',
     name: 'Tuvalu',
   },
   {
     code: 'UKR',
     name: 'Ukraine',
+  },
+  {
+    code: 'ARE',
+    name: 'United Arab Emirates',
   },
   {
     code: 'GBR',
