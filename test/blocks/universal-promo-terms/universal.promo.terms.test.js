@@ -3,6 +3,7 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
 const { default: init } = await import('../../../creativecloud/blocks/universal-promo-terms/universal-promo-terms.js');
 
 describe('universal-promo-terms', () => {
@@ -13,6 +14,10 @@ describe('universal-promo-terms', () => {
 
   afterEach(() => {
     console.log.restore();
+  });
+
+  before(async () => {
+    setLibs('https://milo.adobe.com/libs', true);
   });
 
   it('Get API from query parameters', async () => {
