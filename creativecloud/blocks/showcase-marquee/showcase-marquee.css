@@ -120,10 +120,13 @@
   margin: 0;
   margin-bottom: 24px;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 150%; /* 30px */
+  line-height: 135%;
+  font-family: 'Adobe Clean';
+  letter-spacing: -0.01em;
+  padding: 0 50px;
 }
 
   .showcase-marquee.unity-enabled .interactive-area {
@@ -176,6 +179,12 @@
     line-height: 98%; /* 43.12px */
     letter-spacing: -1.98px;
     margin-bottom: 8px;
+  }
+
+  .showcase-marquee .text .body {
+    font-size: 20px;
+    line-height: 150%;
+    padding: 0;
   }
 
   .showcase-marquee.unity-enabled .interactive-area {
