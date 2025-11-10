@@ -428,15 +428,15 @@ export const scriptInit = async () => {
   setConfig({ ...CONFIG, miloLibs });
   if (isSignedInHomepage) acomsisCookieHandler();
   decorateArea();
-  (function loadStyles() {
-    const paths = [`${miloLibs}/styles/styles.css`];
-    paths.forEach((path) => {
-      const link = document.createElement('link');
-      link.setAttribute('rel', 'stylesheet');
-      link.setAttribute('href', path);
-      document.head.appendChild(link);
-    });
-  }());
+  // (function loadStyles() {
+  //   const paths = [`${miloLibs}/styles/styles.css`];
+  //   paths.forEach((path) => {
+  //     const link = document.createElement('link');
+  //     link.setAttribute('rel', 'stylesheet');
+  //     link.setAttribute('href', path);
+  //     document.head.appendChild(link);
+  //   });
+  // }());
   (async function loadPage() {
     loadLana({ clientId: 'cc' });
     await loadArea();
