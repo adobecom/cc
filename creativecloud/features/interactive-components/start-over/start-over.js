@@ -71,7 +71,7 @@ export default async function stepInit(data) {
   const ariaLabel = getClosestHeadingText(data.target);
   data.target.classList.add('step-start-over');
   const layer = createTag('div', { class: `layer layer-${data.stepIndex}` });
-  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#', ...(ariaLabel && { 'aria-label': `${btnText}, ${ariaLabel}` }) });
+  const startOverCTA = createTag('a', { class: 'gray-button start-over-button body-m next-step', href: '#', role: 'button', ...(ariaLabel && { 'aria-label': `${btnText}generate image` }) });
   const svg = config.querySelector('picture img[src*=".svg"]:not(.accessibility-control)');
   if (svg) {
     svg.insertAdjacentElement('afterend', svg.cloneNode(true));
