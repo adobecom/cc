@@ -49,6 +49,8 @@
   box-sizing: border-box;
   padding: var(--content-padding);
   width: var(--content-width);
+  position: relative;
+  z-index: 3;
 }
 
 .firefly-model-showcase-content picture {
@@ -109,6 +111,7 @@
   justify-content: center;
   position: absolute;
   bottom: var(--gallery-position);
+  z-index: 2;
 }
 
 .gallery-column {
@@ -255,6 +258,7 @@
   }
 }
 
+/* TODO: Clean up > 900px viewport styles */
 @media screen and (min-width: 1200px) {
   :root {
     --content-bottom-padding: 30%;
@@ -262,6 +266,7 @@
   }
 }
 
+/* Large desktop */
 @media screen and (min-width: 1480px) {
   :root {
     --content-width: 50%;
@@ -272,9 +277,9 @@
   }
 }
 
+/* Extra large desktop */
 @media screen and (min-width: 2000px) {
   :root {
-    --content-width: 50%;
     --content-bottom-padding: 1100px;
     --gallery-position: 300px;
   }
@@ -283,7 +288,7 @@
 /* parallax effects */
 .firefly-model-showcase .firefly-model-showcase-content {
   will-change: opacity, transform;
-  opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 40);
+  opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 20);
   transform: translateY(
     calc(
       200px *
@@ -296,6 +301,10 @@
         ) / (var(--exit-end-progress, 40) - var(--exit-start-progress, 0))
     )
   );
+}
+
+.firefly-model-showcase.marker-disable-pointer .firefly-model-showcase-content {
+  pointer-events: none;
 }
 
 .firefly-model-showcase-gallery .gallery-column {
@@ -335,7 +344,6 @@
 @media screen and (min-width: 900px) {
   .firefly-model-showcase .firefly-model-showcase-content {
     will-change: opacity, transform;
-    opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 40);
     transform: translateY(
       calc(
         400px *
