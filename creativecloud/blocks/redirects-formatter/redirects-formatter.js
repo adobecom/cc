@@ -33,14 +33,26 @@ export function parseUrlString(input) {
   }, []);
 }
 
+function clearError(eSection) {
+  const errorElem = document.querySelector('.error');
+  errorElem.innerText = '';
+  eSection.classList.remove('error-border');
+}
+
 function handleError(e, eSection) {
   const errorElem = document.querySelector('.error');
-  setTimeout(() => {
-    errorElem.innerText = '';
-    eSection.classList.remove('error-border');
-  }, 2000);
   errorElem.innerText = e;
   eSection.classList.add('error-border');
+
+  // Remove previous listeners to avoid duplicates
+  const handler = () => clearError(eSection);
+
+  eSection.removeEventListener('input', handler);
+  eSection.removeEventListener('change', handler);
+
+  // Add listeners
+  eSection.addEventListener('input', handler);
+  eSection.addEventListener('change', handler);
 }
 
 export function generateRedirectList(urls, locales) {
@@ -119,10 +131,12 @@ export default async function init(el) {
 
   // Event listeners
   selectAllCB.addEventListener('click', () => {
+    clearError(selectAllCB);
     const allNotSelected = selectAllCB.innerText === SELECT_ALL_REGIONS;
 
     document.querySelectorAll('.locale-checkbox').forEach((cb) => {
       cb.checked = allNotSelected;
+      clearError(checkBoxesContainer);
     });
 
     selectAllCB.innerText = allNotSelected ? DESELECT_ALL_REGIONS : SELECT_ALL_REGIONS;
@@ -146,6 +160,7 @@ export default async function init(el) {
   copyButton.addEventListener('click', () => {
     if (!navigator?.clipboard) return;
     const redirects = textAreaOutput.value;
+    if (!redirects) return;
     navigator.clipboard.writeText(redirects).then(
       () => {
         copyButton.innerText = 'Copied';
