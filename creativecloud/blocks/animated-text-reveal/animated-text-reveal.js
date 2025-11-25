@@ -107,7 +107,7 @@ export default function init(el) {
   try {
     let ticking = false;
     let isVisible = false;
-    el.classList.add('con-block', 'xl-spacing');
+    el.classList.add('con-block');
 
     const paragraphs = Array.from(
       el.querySelectorAll(':scope > div > div > p')
