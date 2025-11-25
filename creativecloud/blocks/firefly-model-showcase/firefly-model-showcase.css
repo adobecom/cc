@@ -275,6 +275,10 @@
     --content-side-padding: calc((100% - 1440px + 16px) / 2);
     --content-padding: 0 0 var(--content-bottom-padding) var(--content-side-padding);
   }
+
+  [dir="rtl"] {
+    --content-padding: 0 var(--content-side-padding) var(--content-bottom-padding) 0;
+  }
 }
 
 /* Extra large desktop */
