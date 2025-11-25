@@ -29,33 +29,23 @@
   column-gap: 0.25em;
 }
 
-.animated-text-reveal .word {
-  background-image: linear-gradient(to right, var(--color-black) 50%, var(--color-gray-300) 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  transition: background-position 0.6s ease-out;
-  white-space: nowrap;
-  will-change: background-position;
+.animated-text-reveal .char {
+  color: var(--color-gray-300);
+  transition: color 0.1s linear;
+  will-change: color;
 }
 
-.animated-text-reveal .word.active {
-  background-position: 0 0;
+.animated-text-reveal .char.active {
+  color: var(--color-black);
 }
 
 @media (prefers-reduced-motion: reduce){
- .animated-text-reveal .word {
+ .animated-text-reveal .char {
     transition: none;
-    background: none;
-    -webkit-text-fill-color: initial;
-    color: var(--color-gray-300);
     opacity: 0.2;
   }
 
- .animated-text-reveal .word.active {
+ .animated-text-reveal .char.active {
     opacity: 1;
     color: var(--color-black);
   }
