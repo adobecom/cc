@@ -114,6 +114,12 @@
   z-index: 2;
 }
 
+/* RTL adjustment - mirror gallery positioning */
+[dir="rtl"] .firefly-model-showcase-gallery {
+  margin-left: 0;
+  margin-right: var(--gallery-margin-left);
+}
+
 .gallery-column {
   display: flex;
   flex: 1;
@@ -159,6 +165,12 @@
   border-radius: var(--gallery-cell-icon-border);
   box-shadow: 2.15px 2.15px 6.87px .99px #00000040;
   backdrop-filter: blur(27.4974px);
+}
+
+/* RTL adjustment - mirror icon positioning */
+[dir="rtl"] .gallery-cell-icon {
+  left: auto;
+  right: var(--gallery-cell-icon-left);
 }
 
 .gallery-cell-icon.bg-adobe {
