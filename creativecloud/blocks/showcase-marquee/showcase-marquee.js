@@ -30,11 +30,15 @@ export function createRollingLogos(logos) {
     let currentScrollOffset = 0;
     let rafId = null;
 
+    // Check if direction is RTL
+    const isRTL = document.dir === 'rtl';
+
     const updateScrollEffect = () => {
       const currentScrollY = window.scrollY;
       const scrollDelta = currentScrollY - lastScrollY;
 
-      const multiplier = 0.2;
+      // Reverse the scroll offset multiplier for RTL
+      const multiplier = isRTL ? -0.2 : 0.2;
       targetScrollOffset += scrollDelta * multiplier;
 
       const lerpFactor = 0.08;
