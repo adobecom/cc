@@ -1,4 +1,5 @@
 const HEADER_HEIGHT = 64;
+const LANA_OPTIONS = { tags: 'firefly-gallery', errorType: 'i' };
 
 const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
@@ -25,7 +26,8 @@ function measureLayout(el, paragraphs) {
 
 function calculateProgress(elementTop, layoutConfig, windowHeight) {
   const currentFirstLineTop = elementTop + layoutConfig.firstElementOffset;
-  let startTargetTop, endTargetTop;
+  let startTargetTop;
+  let endTargetTop;
 
   if (layoutConfig.isHeroMode) {
     startTargetTop = layoutConfig.heroStart;
@@ -41,7 +43,7 @@ function calculateProgress(elementTop, layoutConfig, windowHeight) {
     }
     const travelDistance = Math.max(
       windowHeight * 0.5,
-      layoutConfig.textHeight
+      layoutConfig.textHeight,
     );
     endTargetTop = startTargetTop - travelDistance;
 
@@ -90,16 +92,14 @@ function prepareRevealSection(paragraphs) {
 const render = (units, progress) => {
   const activeCount = Math.floor(units.length * progress);
 
-  for (let i = 0; i < units.length; i++) {
+  for (let i = 0; i < units.length; i += 1) {
     const unit = units[i];
     const shouldBeActive = i < activeCount;
 
     // PERFORMANCE: Only touch DOM classList if state actually changes
     if (shouldBeActive) {
       if (!unit.classList.contains('active')) unit.classList.add('active');
-    } else {
-      if (unit.classList.contains('active')) unit.classList.remove('active');
-    }
+    } else if (unit.classList.contains('active')) unit.classList.remove('active');
   }
 };
 
@@ -110,7 +110,7 @@ export default function init(el) {
     el.classList.add('con-block');
 
     const paragraphs = Array.from(
-      el.querySelectorAll(':scope > div > div > p')
+      el.querySelectorAll(':scope > div > div > p'),
     );
     if (!el || paragraphs.length === 0) return;
     const allChars = prepareRevealSection(paragraphs);
@@ -121,7 +121,7 @@ export default function init(el) {
       const progress = calculateProgress(
         elRect.top,
         layoutState,
-        window.innerHeight
+        window.innerHeight,
       );
       render(allChars, progress);
     };
@@ -143,7 +143,7 @@ export default function init(el) {
           if (isVisible) tick();
         });
       },
-      { threshold: 0 }
+      { threshold: 0 },
     );
 
     observer.observe(el);
@@ -156,6 +156,6 @@ export default function init(el) {
     resizeObserver.observe(el);
     tick();
   } catch (err) {
-    console.error('Animation Init Error:', err);
+    window.lana?.log(`Animation Init Error: ${err}`, LANA_OPTIONS);
   }
 }
