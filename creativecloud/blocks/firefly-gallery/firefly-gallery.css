@@ -1,7 +1,7 @@
 /* Responsive styling with mobile-first approach */
 :root {
   --s-container-width: 83.3%;
-  --prompt-font-size: var(--type-body-xs-size);
+  --prompt-font-size: 14px;
   --prompt-line-height: 1.5;
   --username-max-width: 80px;
   --avatar-size: 24px;
