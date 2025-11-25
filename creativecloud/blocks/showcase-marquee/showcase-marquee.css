@@ -98,7 +98,7 @@
   width: max-content;
 }
 
-html[dir="rtl"] .showcase-marquee .logo-row .logo-container {
+[dir="rtl"] .showcase-marquee .logo-row .logo-container {
   animation-name: scroll-right;
 }
 
