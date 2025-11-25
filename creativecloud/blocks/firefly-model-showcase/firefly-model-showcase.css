@@ -319,11 +319,6 @@
   );
 }
 
-/* RTL adjustment - slightly delay fade-out to match LTR timing */
-[dir="rtl"] .firefly-model-showcase .firefly-model-showcase-content {
-  opacity: calc(1 - (clamp(0, var(--exit-progress), 44)) / 22);
-}
-
 .firefly-model-showcase.marker-disable-pointer .firefly-model-showcase-content {
   pointer-events: none;
 }
