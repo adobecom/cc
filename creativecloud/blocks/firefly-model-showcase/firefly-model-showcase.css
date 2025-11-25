@@ -150,7 +150,6 @@
   border-radius: var(--gallery-cell-radius);
   top: 0;
   left: 0;
-  right: 0;
 }
 
 .gallery-cell-icon {
@@ -187,13 +186,6 @@
 .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
 .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
     margin-right: var(--cta-margin-right);
-}
-
-/* RTL adjustment - mirror CTA spacing */
-[dir="rtl"] .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
-[dir="rtl"] .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
-    margin-right: 0;
-    margin-left: var(--cta-margin-right);
 }
 
 /* Small mobile */
