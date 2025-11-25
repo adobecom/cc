@@ -7,7 +7,6 @@
   /* 16px = 8px (padding of the gnav logo) x 2 */
   --content-side-padding: calc((100% - 83.4% + 16px) / 2);
   --content-padding: 0 var(--content-side-padding) var(--content-bottom-padding);
-  --content-padding-rtl:  0 var(--content-side-padding) var(--content-bottom-padding);
   --content-title-size: 36px;
   --content-icon-size: 36px;
   --content-subtitle-size: 18px;
@@ -52,10 +51,6 @@
   width: var(--content-width);
   position: relative;
   z-index: 3;
-}
-
-[dir="rtl"] .firefly-model-showcase-content {
-  padding: var(--content-padding-rtl);
 }
 
 .firefly-model-showcase-content picture {
@@ -279,7 +274,10 @@
     --gallery-position: 0;
     --content-side-padding: calc((100% - 1440px + 16px) / 2);
     --content-padding: 0 0 var(--content-bottom-padding) var(--content-side-padding);
-    --content-padding-rtl:  0 var(--content-side-padding) var(--content-bottom-padding) 0;
+  }
+
+  [dir="rtl"] {
+    --content-padding: 0 var(--content-side-padding) var(--content-bottom-padding) 0;
   }
 }
 
