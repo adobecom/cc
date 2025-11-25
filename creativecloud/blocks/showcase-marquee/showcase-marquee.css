@@ -23,10 +23,6 @@
   width: 100%;
 }
 
-html[dir="rtl"] .showcase-marquee .background img {
-  transform: scaleX(-1);
-}
-
 .showcase-marquee .background video {
   display: block;
   height: 100%;
