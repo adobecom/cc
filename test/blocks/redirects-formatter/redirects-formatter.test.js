@@ -57,40 +57,50 @@ describe('Redirects Formatter', () => {
     const parsedInput = parseUrlString(htmlIncluded);
     const locales = ['ar', 'au', 'uk'];
 
-    const redir = generateRedirectList(parsedInput, locales);
-    expect(redir[0][0]).to.equal('/ar/products/photoshop');
-    expect(redir.length).to.equal(9);
+    const { results, errors } = generateRedirectList(parsedInput, locales);
+
+    expect(errors.length).to.equal(0);
+    expect(results[0][0]).to.equal('/ar/products/photoshop');
+    expect(results.length).to.equal(9);
   });
 
   it('provides a string formatted for pasting into excel', () => {
     const parsedInput = parseUrlString(htmlIncluded);
     const locales = ['ar', 'au', 'uk'];
-    const redir = generateRedirectList(parsedInput, locales);
-    const stringList = stringifyListForExcel(redir);
 
+    const { results, errors } = generateRedirectList(parsedInput, locales);
+    const stringList = stringifyListForExcel(results);
+
+    expect(errors.length).to.equal(0);
     expect(typeof stringList).to.equal('string');
     expect(stringList.substring(0, 4)).to.equal('/ar/');
-    expect(stringList.substring((stringList.length - 6), stringList.length)).to.equal('.html\n');
+    expect(stringList.substring(stringList.length - 6)).to.equal('.html\n');
   });
 
   it('adds .html to the end of the string in output', () => {
     expect(htmlExcluded.substring(htmlExcluded.lastIndexOf('/') + 1)).to.equal('illustrator');
     const parsedInput = parseUrlString(htmlExcluded);
     const locales = ['ar', 'au', 'uk'];
-    const redir = generateRedirectList(parsedInput, locales);
-    const stringList = stringifyListForExcel(redir);
 
+    const { results, errors } = generateRedirectList(parsedInput, locales);
+    const stringList = stringifyListForExcel(results);
+
+    expect(errors.length).to.equal(0);
     expect(typeof stringList).to.equal('string');
     expect(stringList.substring(0, 4)).to.equal('/ar/');
-    expect(stringList.substring((stringList.length - 6), stringList.length)).to.equal('.html\n');
+    expect(stringList.substring(stringList.length - 6)).to.equal('.html\n');
   });
 
   it('does not add .html to the end of the string in output for external urls', () => {
     expect(externalUrls.trim().substring(externalUrls.trim().lastIndexOf('/') + 1)).to.equal('premiere');
+
     const parsedInput = parseUrlString(externalUrls);
     const locales = ['ar', 'au', 'uk'];
-    const redir = generateRedirectList(parsedInput, locales);
-    const stringList = stringifyListForExcel(redir);
+
+    const { results, errors } = generateRedirectList(parsedInput, locales);
+    const stringList = stringifyListForExcel(results);
+
+    expect(errors.length).to.equal(1);
 
     expect(typeof stringList).to.equal('string');
     expect(stringList.substring(0, 4)).to.equal('/ar/');

@@ -3,7 +3,7 @@
     --notch-size: 12px;
     --color-accent-primary: #FF1593;
     --color-accent-primary-hover: #d07;
-    --color-gray-100: #efefef;
+    --color-bg-100: #efefef;
     --color-error: #FF0000;
   }
   
@@ -32,7 +32,6 @@
     font-size: 16px;
     font-weight: 700;
     padding: 0 18px;
-    clip-path: polygon(0% 0%, var(--notch-size) 0%, calc(100% - var(--notch-size)) 0%, 100% var(--notch-size), 100% calc(100% - var(--notch-size)), 100% 100%, 0% 100%, 0% 100%);
   }
   
   button:hover {
@@ -58,7 +57,7 @@
   .checkbox-container {
     display: flex;
     flex-wrap: wrap;
-    background: var(--color-gray-100);
+    background: var(--color-bg-100);
     grid-column: 1/3;
     border: 1px solid black;
   }
@@ -92,6 +91,5 @@
   }
   
   .error-border {
-    border: 1px solid var(--color-error);;
+    border: 1px solid var(--color-error);
   }
-  

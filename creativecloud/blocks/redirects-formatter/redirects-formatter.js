@@ -45,41 +45,76 @@ function handleError(e, eSection) {
   eSection.classList.add('error-border');
 }
 
-export function generateRedirectList(urls, locales) {
+export function generateRedirectList(urls = [], locales = []) {
+  const results = [];
+  const errors = [];
+
+  if (!Array.isArray(locales) || locales.length === 0) {
+    errors.push({ type: 'NO_LOCALE_ERROR' });
+    return { results, errors };
+  }
+
+  urls.forEach((urlPair, index) => {
+    if (!Array.isArray(urlPair) || urlPair.length < 2) {
+      errors.push({ type: 'INVALID_PAIR', index });
+      return;
+    }
+
+    const [fromStr, toStr] = urlPair;
+
+    let from;
+    let to;
+
+    try {
+      from = new URL(fromStr);
+      to = new URL(toStr);
+    } catch {
+      errors.push({ type: 'INVALID_URL', index });
+      return;
+    }
+
+    const fromPath = from.pathname.replace(/\.html$/, '');
+
+    const computeToPath = () => {
+      const excludeHTMLPaths = ['/blog', '.html'];
+      const path = to.pathname;
+
+      if (!to.origin.endsWith('.adobe.com') || excludeHTMLPaths.some((p) => path.includes(p)) || path === '/') {
+        return path;
+      }
+      return `${path}.html`;
+    };
+
+    const toPath = computeToPath();
+
+    locales.forEach((locale) => results.push([`/${locale}${fromPath}`, `${to.origin}/${locale}${toPath}`]));
+  });
+
+  return { results, errors };
+}
+
+function handleRedirectGeneration(urls, locales) {
   const inputSection = document.querySelector('.redirects-text-area');
   const checkboxSection = document.querySelector('.checkbox-container');
   const errorMessage = 'Invalid URL. URLs must start with "https://" e.g: "https://www.adobe.com"';
 
-  return urls.reduce((rdx, urlPair) => {
-    if (!locales.length) handleError(NO_LOCALE_ERROR, checkboxSection);
+  const { results, errors } = generateRedirectList(urls, locales);
 
-    locales.forEach((locale) => {
-      let from;
-      let to;
-      try {
-        from = new URL(urlPair[0]);
-      } catch (e) {
+  errors.forEach((err) => {
+    switch (err.type) {
+      case 'NO_LOCALE_ERROR':
+        handleError(NO_LOCALE_ERROR, checkboxSection);
+        break;
+      case 'INVALID_PAIR':
+      case 'INVALID_URL':
         handleError(errorMessage, inputSection);
-        return;
-      }
-      try {
-        to = new URL(urlPair[1]);
-      } catch (e) {
-        handleError(errorMessage, inputSection);
-        return;
-      }
-      const fromPath = from.pathname.split('.html')[0];
-      const toPath = () => {
-        const excludeHTMLPaths = ['/blog', '.html'];
-        if (!to.origin.endsWith('.adobe.com') || excludeHTMLPaths.some((p) => to.pathname.includes(p)) || to.pathname === '/') {
-          return to.pathname;
-        }
-        return `${to.pathname}.html`;
-      };
-      rdx.push([`/${locale}${fromPath}`, `${to.origin}/${locale}${toPath()}`]);
-    });
-    return rdx;
-  }, []);
+        break;
+      default:
+        break;
+    }
+  });
+
+  return results;
 }
 
 export function stringifyListForExcel(urls) {
@@ -143,7 +178,7 @@ export default async function init(el) {
     }, []);
 
     const parsedInput = parseUrlString(textAreaInput.value);
-    const redirList = generateRedirectList(parsedInput, locales);
+    const redirList = handleRedirectGeneration(parsedInput, locales);
     const outputString = stringifyListForExcel(redirList);
 
     textAreaOutput.value = outputString;
