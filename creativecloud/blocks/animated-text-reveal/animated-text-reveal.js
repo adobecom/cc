@@ -45,7 +45,7 @@ function calculateProgress(elementTop, layoutConfig, windowHeight) {
     }
     const travelDistance = Math.max(
       windowHeight * 0.5,
-      layoutConfig.textHeight
+      layoutConfig.textHeight,
     );
     endTargetTop = startTargetTop - travelDistance;
 
@@ -63,7 +63,7 @@ function calculateProgress(elementTop, layoutConfig, windowHeight) {
 function prepareRevealSection(originalParagraphs) {
   const allChars = [];
   const layoutData = originalParagraphs.map((p) => ({
-    p: p,
+    p,
     text: p.innerText,
   }));
   layoutData.forEach(({ p, text }) => {
@@ -111,19 +111,18 @@ function prepareRevealSection(originalParagraphs) {
 
 const render = (units, progress) => {
   const activeCount = Math.floor(units.length * progress);
-  if(activeCount === lastActiveCount) return;
+  if (activeCount === lastActiveCount) return;
 
-  if(activeCount > lastActiveCount){
-    for(let i = lastActiveCount; i<activeCount;i++){
-      if(units[i]) units[i].classList.add('active');
+  if (activeCount > lastActiveCount) {
+    for (let i = lastActiveCount; i < activeCount; i += 1) {
+      if (units[i]) units[i].classList.add('active');
     }
-  } else{
-    for(let i = lastActiveCount-1; i >= activeCount; i--){
-      if(units[i]) units[i].classList.remove('active');
+  } else {
+    for (let i = lastActiveCount - 1; i >= activeCount; i -= 1) {
+      if (units[i]) units[i].classList.remove('active');
     }
   }
   lastActiveCount = activeCount;
-
 };
 
 export default function init(el) {
@@ -133,7 +132,7 @@ export default function init(el) {
     el.classList.add('con-block');
 
     const paragraphs = Array.from(
-      el.querySelectorAll(':scope > div > div > p')
+      el.querySelectorAll(':scope > div > div > p'),
     );
     if (!el || paragraphs.length === 0) return;
     const allChars = prepareRevealSection(paragraphs);
@@ -144,7 +143,7 @@ export default function init(el) {
       const progress = calculateProgress(
         elRect.top,
         layoutState,
-        window.innerHeight
+        window.innerHeight,
       );
       render(allChars, progress);
     };
@@ -166,7 +165,7 @@ export default function init(el) {
           if (isVisible) tick();
         });
       },
-      { threshold: 0 }
+      { threshold: 0 },
     );
 
     observer.observe(el);
