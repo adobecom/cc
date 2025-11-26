@@ -1,11 +1,11 @@
 .animated-text-reveal { 
   display: block;
-  width: 100%;
   font-family: var(--body-font-family);
   transform: translate3d(0,0,0);
   backface-visibility: hidden;
   perspective: 1000px;
   padding: var(--spacing-xl);
+  contain: layout paint;
 }
 
 
