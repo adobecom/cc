@@ -142,4 +142,83 @@ describe('Redirects Formatter', () => {
     expect(errorMessage.innerHTML.length > 0).to.be.true;
     expect(input.classList.contains('error-border')).to.be.true;
   });
+
+  it('copies redirects to clipboard when button is clicked (success case)', async () => {
+    const textArea = document.querySelector('#redirects-output');
+    const copyButton = document.querySelector('.copy');
+
+    // Mock clipboard
+    const writeStub = sinon.stub().resolves();
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: writeStub },
+    });
+
+    textArea.value = 'sample redirect text';
+
+    copyButton.click();
+
+    expect(writeStub.calledOnceWith('sample redirect text')).to.be.true;
+    await new Promise((resolve) => { setTimeout(resolve, 1600); });
+
+    expect(copyButton.innerText).to.equal('Copy to clipboard');
+  });
+
+  it('shows error message if clipboard write fails', async () => {
+    const textArea = document.querySelector('#redirects-output');
+    const copyButton = document.querySelector('.copy');
+
+    // Mock clipboard failure
+    const writeStub = sinon.stub().rejects(new Error('fail'));
+
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: writeStub },
+    });
+
+    textArea.value = 'some text';
+
+    copyButton.click();
+
+    expect(writeStub.calledOnce).to.be.true;
+    await new Promise((resolve) => { setTimeout(resolve, 1600); });
+    expect(copyButton.innerText).to.equal('Copy to clipboard');
+  });
+
+  it('does nothing if clipboard API is missing', () => {
+    const textArea = document.querySelector('#redirects-output');
+    const copyButton = document.querySelector('.copy');
+
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: undefined,
+    });
+
+    const spy = sinon.spy();
+    textArea.value = 'irrelevant';
+    copyButton.addEventListener('click', spy);
+
+    copyButton.click();
+
+    expect(spy.called).to.be.true;
+    expect(copyButton.innerText).to.equal('Copy to clipboard');
+  });
+
+  it('does nothing if textarea is empty', () => {
+    const textArea = document.querySelector('#redirects-output');
+    const copyButton = document.querySelector('.copy');
+
+    const writeStub = sinon.stub().resolves();
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: writeStub },
+    });
+
+    textArea.value = '';
+
+    copyButton.click();
+
+    expect(writeStub.called).to.be.false;
+    expect(copyButton.innerText).to.equal('Copy to clipboard');
+  });
 });

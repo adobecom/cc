@@ -43,16 +43,6 @@ function handleError(e, eSection) {
   const errorElem = document.querySelector('.error');
   errorElem.innerText = e;
   eSection.classList.add('error-border');
-
-  // Remove previous listeners to avoid duplicates
-  const handler = () => clearError(eSection);
-
-  eSection.removeEventListener('input', handler);
-  eSection.removeEventListener('change', handler);
-
-  // Add listeners
-  eSection.addEventListener('input', handler);
-  eSection.addEventListener('change', handler);
 }
 
 export function generateRedirectList(urls, locales) {
@@ -114,6 +104,7 @@ export default async function init(el) {
   const checkBoxesContainer = createTag('div', { class: 'checkbox-container' }, checkBoxes);
   const selectAllCB = createTag('button', { class: 'select-all-cb' }, SELECT_ALL_REGIONS);
   const checkBoxesArea = createTag('section', { class: 'cb-area' }, [checkBoxesHeader, selectAllCB, checkBoxesContainer]);
+  checkBoxesContainer.addEventListener('change', () => clearError(checkBoxesContainer));
 
   // Text input area
   const inputAreaContainer = createTag('section', { class: 'input-container' });
@@ -121,6 +112,7 @@ export default async function init(el) {
   const taiLabel = createTag('label', { class: 'io-label', for: 'redirects-input' }, INPUT_LABEL_TEXT);
   const submitButton = createTag('button', { class: 'process-redirects' }, PROCESS_TEXT);
   inputAreaContainer.append(taiLabel, submitButton, textAreaInput);
+  inputAreaContainer.addEventListener('change', () => clearError(textAreaInput));
 
   // Text output Area
   const outputAreaContainer = createTag('section', { class: 'output-container' });
@@ -157,24 +149,20 @@ export default async function init(el) {
     textAreaOutput.value = outputString;
   });
 
-  copyButton.addEventListener('click', () => {
+  copyButton.addEventListener('click', async () => {
     if (!navigator?.clipboard) return;
     const redirects = textAreaOutput.value;
     if (!redirects) return;
-    navigator.clipboard.writeText(redirects).then(
-      () => {
-        copyButton.innerText = 'Copied';
-        setTimeout(() => {
-          copyButton.innerText = COPY_TO_CLIPBOARD;
-        }, 1500);
-      },
-      () => {
-        copyButton.innerText = 'Error!';
-        setTimeout(() => {
-          copyButton.innerText = COPY_TO_CLIPBOARD;
-        }, 1500);
-      },
-    );
+    try {
+      await navigator.clipboard.writeText(redirects);
+      copyButton.innerText = 'Copied';
+    } catch (error) {
+      copyButton.innerText = 'Error!';
+    } finally {
+      setTimeout(() => {
+        copyButton.innerText = COPY_TO_CLIPBOARD;
+      }, 1500);
+    }
   });
 
   redirectsContainer.append(checkBoxesArea, inputAreaContainer, outputAreaContainer);
