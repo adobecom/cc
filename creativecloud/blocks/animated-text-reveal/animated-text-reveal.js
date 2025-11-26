@@ -1,6 +1,8 @@
 const HEADER_HEIGHT = 64;
 const LANA_OPTIONS = { tags: 'firefly-gallery', errorType: 'i' };
 
+let lastActiveCount = 0;
+
 const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
 function measureLayout(el, paragraphs) {
@@ -43,7 +45,7 @@ function calculateProgress(elementTop, layoutConfig, windowHeight) {
     }
     const travelDistance = Math.max(
       windowHeight * 0.5,
-      layoutConfig.textHeight,
+      layoutConfig.textHeight
     );
     endTargetTop = startTargetTop - travelDistance;
 
@@ -58,49 +60,70 @@ function calculateProgress(elementTop, layoutConfig, windowHeight) {
   return clamp(currentMoved / totalTravel, 0, 1);
 }
 
-function prepareRevealSection(paragraphs) {
+function prepareRevealSection(originalParagraphs) {
   const allChars = [];
+  const layoutData = originalParagraphs.map((p) => ({
+    p: p,
+    text: p.innerText,
+  }));
+  layoutData.forEach(({ p, text }) => {
+    p.classList.add('semantic-text');
+    p.removeAttribute('aria-label');
+    p.removeAttribute('role');
 
-  paragraphs.forEach((p) => {
-    const text = p.innerText;
-    p.setAttribute('aria-label', text);
-    p.innerText = '';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'text-layer-wrapper';
+
+    const visualDiv = document.createElement('div');
+    visualDiv.className = 'visual-text';
+    visualDiv.setAttribute('aria-hidden', 'true');
+
     const fragment = document.createDocumentFragment();
 
     text.split(' ').forEach((wordText, index, arr) => {
       const wordSpan = document.createElement('span');
       wordSpan.className = 'word';
-      wordText.split('').forEach((char) => {
+
+      wordText.split(' ').forEach((char) => {
         const charSpan = document.createElement('span');
         charSpan.textContent = char;
         charSpan.className = 'char';
         wordSpan.appendChild(charSpan);
         allChars.push(charSpan);
       });
-
       fragment.appendChild(wordSpan);
+
       if (index < arr.length - 1) {
         fragment.appendChild(document.createTextNode(' '));
       }
     });
-    p.appendChild(fragment);
-  });
 
+    visualDiv.appendChild(fragment);
+
+    if (p.parentNode) {
+      p.parentNode.insertBefore(wrapper, p);
+      wrapper.appendChild(p);
+      wrapper.appendChild(visualDiv);
+    }
+  });
   return allChars;
 }
 
 const render = (units, progress) => {
   const activeCount = Math.floor(units.length * progress);
+  if(activeCount === lastActiveCount) return;
 
-  for (let i = 0; i < units.length; i += 1) {
-    const unit = units[i];
-    const shouldBeActive = i < activeCount;
-
-    // PERFORMANCE: Only touch DOM classList if state actually changes
-    if (shouldBeActive) {
-      if (!unit.classList.contains('active')) unit.classList.add('active');
-    } else if (unit.classList.contains('active')) unit.classList.remove('active');
+  if(activeCount > lastActiveCount){
+    for(let i = lastActiveCount; i<activeCount;i++){
+      if(units[i]) units[i].classList.add('active');
+    }
+  } else{
+    for(let i = lastActiveCount-1; i >= activeCount; i--){
+      if(units[i]) units[i].classList.remove('active');
+    }
   }
+  lastActiveCount = activeCount;
+
 };
 
 export default function init(el) {
@@ -110,7 +133,7 @@ export default function init(el) {
     el.classList.add('con-block');
 
     const paragraphs = Array.from(
-      el.querySelectorAll(':scope > div > div > p'),
+      el.querySelectorAll(':scope > div > div > p')
     );
     if (!el || paragraphs.length === 0) return;
     const allChars = prepareRevealSection(paragraphs);
@@ -121,7 +144,7 @@ export default function init(el) {
       const progress = calculateProgress(
         elRect.top,
         layoutState,
-        window.innerHeight,
+        window.innerHeight
       );
       render(allChars, progress);
     };
@@ -143,7 +166,7 @@ export default function init(el) {
           if (isVisible) tick();
         });
       },
-      { threshold: 0 },
+      { threshold: 0 }
     );
 
     observer.observe(el);
