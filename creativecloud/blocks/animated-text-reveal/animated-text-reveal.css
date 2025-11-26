@@ -36,7 +36,9 @@
 }
 
 .animated-text-reveal p.semantic-text::selection {
-  color: transparent;
+  background-color: #b3d4fc;
+  background-color: Highlight;
+  color: transparent; 
 }
 
 .animated-text-reveal .visual-text {
