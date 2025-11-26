@@ -242,7 +242,7 @@ function decorateContent(el) {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 1.0 }
     );
 
     observer.observe(el);

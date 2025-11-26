@@ -8,6 +8,7 @@
   font-size: var(--font-size);
   font-weight: 800;
   padding: var(--spacing-xxl);
+  padding-right: 0;
   background-color: var(--color-black);
 }
 
@@ -22,7 +23,7 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
-  margin-left: 20%;
+  margin-left: 10rem;
   justify-content: flex-start;
 }
 
