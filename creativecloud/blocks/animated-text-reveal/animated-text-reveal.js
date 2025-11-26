@@ -49,7 +49,7 @@ function calculateProgress(elementTop, layoutConfig, windowHeight) {
     );
     endTargetTop = startTargetTop - travelDistance;
 
-    const safetyZone = HEADER_HEIGHT + windowHeight * 0.2;
+    const safetyZone = HEADER_HEIGHT + (windowHeight * 0.2);
     if (endTargetTop < safetyZone && layoutConfig.textHeight < windowHeight) {
       endTargetTop = safetyZone;
     }
@@ -84,7 +84,7 @@ function prepareRevealSection(originalParagraphs) {
       const wordSpan = document.createElement('span');
       wordSpan.className = 'word';
 
-      wordText.split(' ').forEach((char) => {
+      wordText.split('').forEach((char) => {
         const charSpan = document.createElement('span');
         charSpan.textContent = char;
         charSpan.className = 'char';
