@@ -52,6 +52,16 @@ function setupAnimation(container, paramsMap) {
       const viewportParams = params[viewport] || params.mobile || {};
       const wave = viewportParams.wave || 1;
 
+      // Handle wave === -1 images immediately - no animation
+      if (wave === -1) {
+        const endPos = viewportParams['end-pos']
+          || viewportParams['start-pos'] || [50, 50];
+        // Set final position and scale immediately
+        applyTransform(image, endPos[0], endPos[1], viewportParams.scale);
+        image.style.opacity = '1'; // Make visible immediately
+        return; // Skip adding to wave groups
+      }
+
       if (wave > maxWave) maxWave = wave;
 
       if (!waveGroups[wave]) {
@@ -97,6 +107,11 @@ function setupAnimation(container, paramsMap) {
       images.forEach((image, index) => {
         const params = paramsMap[index];
         const viewportParams = params[viewport] || params.mobile || {};
+        const wave = viewportParams.wave || 1;
+
+        // Skip images with wave === -1 as they're already in their final position with scale
+        if (wave === -1) return;
+
         const endPos = viewportParams['end-pos']
           || viewportParams['start-pos'] || [50, 50];
         // const scale = viewportParams.scale || 1;
