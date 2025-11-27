@@ -112,6 +112,7 @@ function createResponsiveVideo(videoUrl, imageUrl, altText) {
     playsinline: '',
     preload: 'auto',
     loading: 'eager',
+    tabindex: '-1',
   });
 
   // Play video as soon as it's loaded
