@@ -6,7 +6,6 @@
   font-family: var(--body-font-family);
   font-size: var(--font-size);
   font-weight: 800;
-  padding: var(--spacing-xxl);
 }
 
 .animated-slot-text .foreground > div {
