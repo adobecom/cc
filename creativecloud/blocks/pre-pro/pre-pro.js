@@ -3,9 +3,9 @@ import {
 //   getIconElement,
 } from '../../scripts/utils.js';
 // import { addTempWrapper } from '../../scripts/decorate.js';
-import { Masonry } from '../shared/masonry.js';
 
-const API_URL = 'https://main--cc--adobecom.aem.page/drafts/suhjain/pre-pro/book.json';
+// const API_URL = 'https://main--cc--adobecom.aem.page/drafts/suhjain/pre-pro/book.json';
+const API_URL = 'https://main--cc--adobecom.aem.page/drafts/himani/pmr-yt.json';
 
 async function fetchPreProData() {
   try {
@@ -21,45 +21,47 @@ async function fetchPreProData() {
   }
 }
 
+function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
+  { media: '(min-width: 600px)', width: '2000' },
+  { width: '750' },
+]) {
+  const url = new URL(src, window.location.href);
+  const picture = document.createElement('picture');
+  const { pathname } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
-function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
-    const url = new URL(src, window.location.href);
-    const picture = document.createElement('picture');
-    const { pathname } = url;
-    const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
-  
-    // webp
-    breakpoints.forEach((br) => {
+  // webp
+  breakpoints.forEach((br) => {
+    const source = document.createElement('source');
+    if (br.media) source.setAttribute('media', br.media);
+    source.setAttribute('type', 'image/webp');
+    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
+    picture.appendChild(source);
+  });
+
+  // fallback
+  breakpoints.forEach((br, i) => {
+    if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
-      source.setAttribute('type', 'image/webp');
-      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
+      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
       picture.appendChild(source);
-    });
-  
-    // fallback
-    breakpoints.forEach((br, i) => {
-      if (i < breakpoints.length - 1) {
-        const source = document.createElement('source');
-        if (br.media) source.setAttribute('media', br.media);
-        source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-        picture.appendChild(source);
-      } else {
-        const img = document.createElement('img');
-        img.setAttribute('loading', eager ? 'eager' : 'lazy');
-        img.setAttribute('alt', alt);
-        picture.appendChild(img);
-        img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      }
-    });
-  
-    return picture;
-  }
+    } else {
+      const img = document.createElement('img');
+      img.setAttribute('loading', eager ? 'eager' : 'lazy');
+      img.setAttribute('alt', alt);
+      picture.appendChild(img);
+      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+    }
+  });
+
+  return picture;
+}
 
 function createTemplateCard(item) {
   const card = createTag('a', {
     class: 'template',
-    href: item.deep_link ? `#${item.deep_link}` : '#',
+    href: item.deep_link_url ? `#${item.deep_link_url}` : '#',
   });
 
   const stillWrapper = createTag('div', { class: 'still-wrapper' });
@@ -67,7 +69,7 @@ function createTemplateCard(item) {
 
   // Create picture element with optimized image
   const picture = createOptimizedPicture(
-    item.Image_urkl || '',
+    item.image || '',
     item.alt_text || '',
     true,
     [{ width: '400' }],
@@ -75,9 +77,9 @@ function createTemplateCard(item) {
   imageWrapper.append(picture);
 
   // Add video if available
-  if (item.video_url) {
+  if (item.video) {
     const video = createTag('video', {
-      src: item.video_url,
+      src: item.video,
       muted: true,
       loop: true,
       playsinline: true,
@@ -87,27 +89,45 @@ function createTemplateCard(item) {
   }
 
   // Add Free badge
-//   const freeBadge = createTag('span', { class: 'icon icon-free-badge' });
-//   freeBadge.textContent = 'Free';
-//   imageWrapper.append(freeBadge);
+  // const freeBadge = createTag('span', { class: 'icon icon-free-badge' });
+  // freeBadge.textContent = 'Free';
+  // imageWrapper.append(freeBadge);
 
   // Add Instagram-like icon at bottom center
-//   const iconContainer = createTag('div', { class: 'icon-container' });
-//   const instagramIcon = getIconElement('instagram') || createTag('span', { class: 'icon icon-instagram' });
-//   iconContainer.append(instagramIcon);
-//   imageWrapper.append(iconContainer);
+  // const iconContainer = createTag('div', { class: 'icon-container' });
+  // const instagramIcon = getIconElement('instagram')
+  //   || createTag('span', { class: 'icon icon-instagram' });
+  // iconContainer.append(instagramIcon);
+  // imageWrapper.append(iconContainer);
 
   stillWrapper.append(imageWrapper);
 
   // Button container for hover overlay
   const buttonContainer = createTag('div', { class: 'button-container' });
-  
+
   // Template link should be appended first (will appear at bottom with column-reverse)
-  const templateLink = createTag('span', { class: 'template-link' });
+  const templateLink = createTag('a', {
+    href: item.deep_link_url ? `#${item.deep_link_url}` : '#',
+    title: 'Edit this template',
+    class: 'button accent small singleton-hover',
+    'aria-label': `Edit this template ${item.alt_text || ''}`,
+    rel: 'nofollow',
+    target: '_self',
+  });
   templateLink.textContent = 'Edit this template';
   buttonContainer.append(templateLink);
-  
-  // Media wrapper should be appended second (will appear at top with column-reverse)
+
+  // CTA link wrapping media wrapper should be appended second
+  // (will appear at top with column-reverse)
+  const ctaLink = createTag('a', {
+    href: item.deep_link_url ? `#${item.deep_link_url}` : '#',
+    class: 'cta-link',
+    tabindex: '-1',
+    'aria-label': `Edit this template ${item.alt_text || ''}`,
+    rel: 'nofollow',
+    target: '_self',
+  });
+
   const mediaWrapper = createTag('div', { class: 'media-wrapper' });
   const clonedImageWrapper = imageWrapper.cloneNode(true);
   // In media-wrapper, hide the image and show the video (if exists)
@@ -116,7 +136,8 @@ function createTemplateCard(item) {
   if (clonedImg) clonedImg.classList.add('hidden');
   if (clonedVideo) clonedVideo.classList.remove('hidden');
   mediaWrapper.append(clonedImageWrapper);
-  buttonContainer.append(mediaWrapper);
+  ctaLink.append(mediaWrapper);
+  buttonContainer.append(ctaLink);
 
   card.append(stillWrapper);
   card.append(buttonContainer);
@@ -138,19 +159,9 @@ async function renderPreProTemplates(el, data) {
     innerWrapper.append(template);
   });
 
-  // Setup masonry layout if we have more than 6 items or if sixcols/fullwidth class is present
-  const rows = templates.length;
-  if (rows > 6 || el.classList.contains('sixcols') || el.classList.contains('fullwidth')) {
-    innerWrapper.classList.add('flex-masonry');
-    const cells = Array.from(innerWrapper.children);
-    const masonry = new Masonry(innerWrapper, cells);
-    masonry.draw();
-    window.addEventListener('resize', () => {
-      masonry.draw();
-    });
-  } else {
-    el.classList.add('pre-pro-complete');
-  }
+  // Use sequential grid layout (no masonry)
+  innerWrapper.classList.add('sequential-grid');
+  el.classList.add('pre-pro-complete');
 
   // Optimize images
   el.querySelectorAll(':scope picture > img').forEach((img) => {
@@ -201,21 +212,20 @@ async function renderPreProTemplates(el, data) {
   });
 
   // Dispatch links populated event
-  const templateLinks = el.querySelectorAll('.template');
+  const templateLinks = el.querySelectorAll('.template .button-container > a');
   templateLinks.isSearchOverride = true;
   const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
   document.dispatchEvent(linksPopulated);
 }
 
 // eslint-disable-next-line import/prefer-default-export
- function addTempWrapper($block, blockName) {
-    const wrapper = document.createElement('div');
-    const parent = $block.parentElement;
-    wrapper.classList.add(`${blockName}-wrapper`);
-    parent.insertBefore(wrapper, $block);
-    wrapper.append($block);
-  }
-  
+function addTempWrapper($block, blockName) {
+  const wrapper = document.createElement('div');
+  const parent = $block.parentElement;
+  wrapper.classList.add(`${blockName}-wrapper`);
+  parent.insertBefore(wrapper, $block);
+  wrapper.append($block);
+}
 
 export default async function init(el) {
   addTempWrapper(el, 'pre-pro');
