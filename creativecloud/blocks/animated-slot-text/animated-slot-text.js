@@ -117,7 +117,7 @@ function renderComponent(block, data) {
 const measureGeometry = (reelEl) => {
   const items = Array.from(reelEl.children);
   if (!items.length) return { height: 0 };
-  return { height: items[0].offsetHeight };
+  return { height: items[0].getBoundingClientRect().height };
 };
 
 const setRafTimeout = (callback, delay) => {
