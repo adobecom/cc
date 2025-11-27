@@ -310,6 +310,10 @@
   margin: var(--spacing-xxs) 0;
 }
 
+[dir="rtl"] .firefly-gallery-prompt {
+  text-align: right;
+}
+
 .firefly-gallery-info-container {
   width: 100%;
 }
