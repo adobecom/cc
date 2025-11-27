@@ -2,7 +2,7 @@
   --font-size: clamp(2rem, 5vw, 5rem); 
   --line-height: 1.1;
   --accent-color: #f33;
-  --anim-ease: cubic-bezier(0.2, 0.8, 0.2, 1); 
+  --anim-ease: linear; 
   
   font-family: var(--body-font-family);
   font-size: var(--font-size);
@@ -23,8 +23,8 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
-  margin-left: 10rem;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: baseline; 
 }
 
 
@@ -34,14 +34,6 @@
   margin-right: 0.2em;
 }
 
-.animated-slot-text .foreground .slot-suffix {
-  color: var(--color-white);
-  white-space: nowrap;
-  margin-left: 0.1em;
-}
-
-
-
 .animated-slot-text .foreground .slot-machine-window {
   position: relative;
   height: 1.2em; 
@@ -50,7 +42,6 @@
   vertical-align: bottom; 
   margin-bottom: -0.05em;
   max-width: 100%;
-  will-change: width;
 }
 
 .animated-slot-text .foreground .slot-reel{
@@ -58,6 +49,7 @@
   flex-direction: column;
   align-items: flex-start; 
   width: auto;
+  min-width: max-content;
   will-change: transform;
 }
 
