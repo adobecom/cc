@@ -8,8 +8,6 @@
   font-size: var(--font-size);
   font-weight: 800;
   padding: var(--spacing-xxl);
-  padding-right: 0;
-  background-color: var(--color-black);
 }
 
 .animated-slot-text .foreground > div {
