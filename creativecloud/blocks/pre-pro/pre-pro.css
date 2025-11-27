@@ -27,9 +27,7 @@
 
 .pre-pro-inner-wrapper {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
     margin: 20px auto 0 auto;
     font-size: var(--body-font-size-m);
     font-weight: var(--body-font-weight);
@@ -42,13 +40,15 @@
     justify-content: center;
 }
 
-.pre-pro-inner-wrapper.sequential-grid {
-    display: flex;
-    flex-wrap: wrap;
+.pre-pro-inner-wrapper.flex-masonry {
+    flex-direction: row;
     justify-content: center;
-    gap: 10px;
 }
 
+main .pre-pro.sixcols .masonry-col,
+main .pre-pro.fullwidth .masonry-col {
+    max-width: 175px;
+}
 
 .pre-pro .template {
     display: flex;
@@ -67,9 +67,9 @@
 .pre-pro.sixcols:not(.horizontal) .template,
 .pre-pro.fullwidth .template {
     position: relative;
-    display: flex;
+    display: inline-flex;
     width: 165px;
-    margin: 0;
+    margin: 5px;
 }
 
 .pre-pro .template:focus {

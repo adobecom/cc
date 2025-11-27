@@ -3,6 +3,7 @@ import {
 //   getIconElement,
 } from '../../scripts/utils.js';
 // import { addTempWrapper } from '../../scripts/decorate.js';
+import { Masonry } from '../shared/masonry.js';
 
 // const API_URL = 'https://main--cc--adobecom.aem.page/drafts/suhjain/pre-pro/book.json';
 const API_URL = 'https://main--cc--adobecom.aem.page/drafts/himani/pmr-yt.json';
@@ -145,6 +146,19 @@ function createTemplateCard(item) {
   return card;
 }
 
+function getLimitFromBlock(el) {
+  // Check for limit attribute/data attribute for future configurability
+  const limitAttr = el.dataset.limit || el.getAttribute('data-limit');
+  if (limitAttr) {
+    const parsed = parseInt(limitAttr, 10);
+    if (!Number.isNaN(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+  // Default limit is 24
+  return 24;
+}
+
 async function renderPreProTemplates(el, data) {
   if (!data || !data.data || !Array.isArray(data.data)) {
     window.lana?.log('Invalid pre-pro data structure', { tags: 'pre-pro-api' });
@@ -154,14 +168,28 @@ async function renderPreProTemplates(el, data) {
   const innerWrapper = createTag('div', { class: 'pre-pro-inner-wrapper' });
   el.append(innerWrapper);
 
-  const templates = data.data.map((item) => createTemplateCard(item));
+  // Apply limit (default 24, configurable via data-limit attribute)
+  const limit = getLimitFromBlock(el);
+  const limitedData = data.data.slice(0, limit);
+
+  const templates = limitedData.map((item) => createTemplateCard(item));
   templates.forEach((template) => {
     innerWrapper.append(template);
   });
 
-  // Use sequential grid layout (no masonry)
-  innerWrapper.classList.add('sequential-grid');
-  el.classList.add('pre-pro-complete');
+  // Setup masonry layout if we have more than 6 items or if sixcols/fullwidth class is present
+  const rows = templates.length;
+  if (rows > 6 || el.classList.contains('sixcols') || el.classList.contains('fullwidth')) {
+    innerWrapper.classList.add('flex-masonry');
+    const cells = Array.from(innerWrapper.children);
+    const masonry = new Masonry(innerWrapper, cells);
+    masonry.draw();
+    window.addEventListener('resize', () => {
+      masonry.draw();
+    });
+  } else {
+    el.classList.add('pre-pro-complete');
+  }
 
   // Optimize images
   el.querySelectorAll(':scope picture > img').forEach((img) => {
