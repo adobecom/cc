@@ -62,7 +62,7 @@ function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
 function createTemplateCard(item) {
   const card = createTag('a', {
     class: 'template',
-    href: item.deep_link_url ? `#${item.deep_link_url}` : '#',
+    href: item.deep_link_url || '#',
   });
 
   const stillWrapper = createTag('div', { class: 'still-wrapper' });
@@ -108,7 +108,7 @@ function createTemplateCard(item) {
 
   // Template link should be appended first (will appear at bottom with column-reverse)
   const templateLink = createTag('a', {
-    href: item.deep_link_url ? `#${item.deep_link_url}` : '#',
+    href: item.deep_link_url || '#',
     title: 'Edit this template',
     class: 'button accent small singleton-hover',
     'aria-label': `Edit this template ${item.alt_text || ''}`,
@@ -121,7 +121,7 @@ function createTemplateCard(item) {
   // CTA link wrapping media wrapper should be appended second
   // (will appear at top with column-reverse)
   const ctaLink = createTag('a', {
-    href: item.deep_link_url ? `#${item.deep_link_url}` : '#',
+    href: item.deep_link_url || '#',
     class: 'cta-link',
     tabindex: '-1',
     'aria-label': `Edit this template ${item.alt_text || ''}`,
