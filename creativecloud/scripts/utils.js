@@ -217,6 +217,21 @@ export function isSignedInInitialized(interval = 200) {
   });
 }
 
+export function getScreenSizeCategory() {
+  const MEDIA_QUERIES = {
+    mobile: window.matchMedia('(max-width: 599px)'),
+    tablet: window.matchMedia('(min-width: 600px) and (max-width: 899px)'),
+    desktop: window.matchMedia('(min-width: 900px)'),
+  };
+  if (MEDIA_QUERIES.mobile.matches) {
+    return 'mobile';
+  }
+  if (MEDIA_QUERIES.tablet.matches) {
+    return 'tablet';
+  }
+  return 'desktop';
+}
+
 function heroForegroundImage(firstBlock) {
   const rows = [...firstBlock.querySelectorAll(':scope > div')];
   if (rows.length > 1 && rows[0].textContent !== '') rows.shift();

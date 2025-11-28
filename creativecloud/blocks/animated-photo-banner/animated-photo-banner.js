@@ -1,5 +1,5 @@
 // creativecloud/blocks/animated-photo-banner/animated-photo-banner.js
-import { createTag } from '../../scripts/utils.js';
+import { createTag, getScreenSizeCategory } from '../../scripts/utils.js';
 
 const LANA_OPTIONS = { tags: 'animated-photo-banner', errorType: 'i' };
 const WAVE_DELAY = 700;
@@ -23,26 +23,16 @@ function extractParams(paramDiv) {
   }, {});
 }
 
-function getCurrentViewport() {
-  const width = window.innerWidth;
-  if (width < 600) return 'mobile';
-  if (width < 1000) return 'tablet';
-  return 'desktop';
-}
-
-// Use transform for positioning instead of left/top
 function applyTransform(element, x, y, scale = 1) {
-  // Position element using translate
-
-  // Apply transform for both positioning and scaling
   // Width is in vw; Height is in rem
+  // Focussing on centrod of image
   element.style.transform = `translate(calc(${x}vw - 50%), calc(${y}rem - 50%)) scale(calc(${scale}))`;
 }
 
 function setupAnimation(container, paramsMap) {
   try {
     const images = container.querySelectorAll('.animated-photo-banner-image');
-    const viewport = getCurrentViewport();
+    const viewport = getScreenSizeCategory();
 
     // Group images by their wave number
     const waveGroups = {};
@@ -147,7 +137,7 @@ function setupAnimation(container, paramsMap) {
     // Handle viewport changes
     let currentViewport = viewport;
     window.addEventListener('resize', () => {
-      const newViewport = getCurrentViewport();
+      const newViewport = getScreenSizeCategory();
       if (newViewport !== currentViewport) {
         currentViewport = newViewport;
 
