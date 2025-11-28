@@ -190,7 +190,7 @@ function setupAnimation(container, paramsList, headerParams) {
         if (header && Object.keys(headerParams).length > 0) {
           const viewportParams = headerParams[newViewport] || headerParams.mobile || {};
           const endPos = viewportParams['end-pos']
-        || viewportParams['start-pos'] || [50, 50];
+            || viewportParams['start-pos'] || [50, 50];
 
           if (endPos) {
             header.style.transition = 'none';
@@ -281,6 +281,55 @@ export default async function init(el) {
           headerParams[viewportParams.viewport] = viewportParams;
         }
       });
+    }
+
+    // Extract custom properties
+    const customPropsSection = Array.from(el.children).slice(-1)[0]; // the last div
+    const customProps = {};
+
+    if (
+      customPropsSection
+      && customPropsSection.children[0]?.textContent.trim() === 'custom-properties'
+    ) {
+      const viewportDivs = Array.from(customPropsSection.children).slice(1);
+
+      // Use the same pattern as for other parameters
+      viewportDivs.forEach((div) => {
+        const viewportParams = extractParams(div);
+        if (viewportParams.viewport) {
+          // Store all properties except 'viewport' for this viewport
+          const propsForViewport = {};
+          Object.entries(viewportParams).forEach(([key, value]) => {
+            if (key.toLowerCase() !== 'viewport') {
+              propsForViewport[key] = value;
+            }
+          });
+
+          if (Object.keys(propsForViewport).length > 0) {
+            customProps[viewportParams.viewport] = propsForViewport;
+          }
+        }
+      });
+
+      // Apply initial custom properties based on current viewport
+      const viewport = getScreenSizeCategory();
+      const currentProps = customProps[viewport] || customProps.mobile || {};
+
+      Object.entries(currentProps).forEach(([prop, value]) => {
+        container.style[prop] = value;
+      });
+
+      // Set up viewport change handling for custom properties
+      if (Object.keys(customProps).length > 0) {
+        window.addEventListener('resize', () => {
+          const newViewport = getScreenSizeCategory();
+          const newProps = customProps[newViewport] || customProps.mobile || {};
+
+          Object.entries(newProps).forEach(([prop, value]) => {
+            container.style[prop] = value;
+          });
+        });
+      }
     }
 
     el.textContent = '';
