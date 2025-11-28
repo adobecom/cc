@@ -66,6 +66,18 @@ function parseSlotData(block) {
   return config;
 }
 
+function getSlotTextItems(items){
+  if(items && items.length > 0)
+  {
+    return items.reduce((acc, curr)=>{
+      const wordText= curr.replace(/[^a-zA-Z0-9\s]/g, '');
+      acc.push(wordText);
+      return acc;
+    },[])
+  }
+  return []
+}
+
 function renderComponent(block, data) {
   block.innerHTML = '';
   block.setAttribute('role', 'group');
@@ -73,8 +85,8 @@ function renderComponent(block, data) {
   const { prefix, items, prefixColor, slotColor } = data;
   const finalPrefixColor = prefixColor || DEFAULTS.prefixColor;
   const finalSlotColor = slotColor || DEFAULTS.slotColor;
-  const finalWord = items && items.length > 0 ? items[items.length - 1] : '';
-  const fullText = [prefix, finalWord].filter(Boolean).join(' ');
+  const finalWord = getSlotTextItems(items);
+  const fullText = [prefix, finalWord?.join(', ')].filter(Boolean).join(' ');
   block.setAttribute('aria-label', fullText);
 
   const wrapper = document.createElement('div');
