@@ -29,12 +29,14 @@
 }
 
 .animated-photo-banner-title h1 {
-  font-family: 'Adobe Clean Display', var(--body-font-family);
+  font-family: 'Adobe Clean Black', var(--body-font-family);
+  font-weight: 900;
   font-size: 160px;
   margin: 0;
 }
 
 .animated-photo-banner-header p {
+  font-size: 24px;
   max-width: 50%;
   margin: 0 auto;
 }
@@ -71,11 +73,11 @@
   .animated-photo-banner-images {
     height: 500px;
   }
-  
+
   .animated-photo-banner-image {
     max-width: 45%;
   }
-  
+
   .animated-photo-banner-header h1 {
     font-size: 36px;
   }
@@ -85,15 +87,15 @@
   .animated-photo-banner-images {
     height: 400px;
   }
-  
+
   .animated-photo-banner-image {
     max-width: 50%;
   }
-  
+
   .animated-photo-banner-header h1 {
     font-size: 28px;
   }
-  
+
   .animated-photo-banner-header p {
     font-size: 16px;
   }
