@@ -2,15 +2,71 @@ import {
   createTag,
 //   getIconElement,
 } from '../../scripts/utils.js';
-// import { addTempWrapper } from '../../scripts/decorate.js';
 import { Masonry } from '../shared/masonry.js';
 
-// const API_URL = 'https://main--cc--adobecom.aem.page/drafts/suhjain/pre-pro/book.json';
-const API_URL = 'https://main--cc--adobecom.aem.page/drafts/himani/pmr-yt.json';
+function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
+  { media: '(min-width: 600px)', width: '2000' },
+  { width: '750' },
+]) {
+  if (!src) {
+    // Return empty picture if no src
+    return document.createElement('picture');
+  }
 
-async function fetchPreProData() {
+  let imageUrl;
+  let ext = 'jpg';
   try {
-    const response = await fetch(API_URL);
+    // Parse URL to get pathname for optimization
+    const url = new URL(src, window.location.href);
+    imageUrl = url.pathname;
+    ext = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) || 'jpg';
+  } catch (e) {
+    // If URL parsing fails, use src as-is
+    imageUrl = src.startsWith('/') ? src : `/${src}`;
+    ext = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) || 'jpg';
+  }
+
+  const picture = document.createElement('picture');
+
+  // webp sources
+  breakpoints.forEach((br) => {
+    const source = document.createElement('source');
+    if (br.media) source.setAttribute('media', br.media);
+    source.setAttribute('type', 'image/webp');
+    source.setAttribute('srcset', `${imageUrl}?width=${br.width}&format=webply&optimize=medium`);
+    picture.appendChild(source);
+  });
+
+  // fallback sources and img
+  breakpoints.forEach((br, i) => {
+    if (i < breakpoints.length - 1) {
+      const source = document.createElement('source');
+      if (br.media) source.setAttribute('media', br.media);
+      source.setAttribute('srcset', `${imageUrl}?width=${br.width}&format=${ext}&optimize=medium`);
+      picture.appendChild(source);
+    } else {
+      const img = document.createElement('img');
+      img.setAttribute('loading', eager ? 'eager' : 'lazy');
+      img.setAttribute('alt', alt);
+      img.setAttribute('src', `${imageUrl}?width=${br.width}&format=${ext}&optimize=medium`);
+      picture.appendChild(img);
+    }
+  });
+
+  return picture;
+}
+
+function addTempWrapper($block, blockName) {
+  const wrapper = document.createElement('div');
+  const parent = $block.parentElement;
+  wrapper.classList.add(`${blockName}-wrapper`);
+  parent.insertBefore(wrapper, $block);
+  wrapper.append($block);
+}
+
+async function fetchPreProData(url) {
+  try {
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -22,44 +78,127 @@ async function fetchPreProData() {
   }
 }
 
-function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
-  { media: '(min-width: 600px)', width: '2000' },
-  { width: '750' },
-]) {
-  const url = new URL(src, window.location.href);
-  const picture = document.createElement('picture');
-  const { pathname } = url;
-  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+function parseBlockProps(block) {
+  const props = {
+    jsonUrl: null,
+    blankTemplate: null,
+    limit: 24,
+    buttonText: 'Edit this template',
+  };
 
-  // webp
-  breakpoints.forEach((br) => {
-    const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
-    source.setAttribute('type', 'image/webp');
-    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
-    picture.appendChild(source);
-  });
+  const rows = Array.from(block.children);
 
-  // fallback
-  breakpoints.forEach((br, i) => {
-    if (i < breakpoints.length - 1) {
-      const source = document.createElement('source');
-      if (br.media) source.setAttribute('media', br.media);
-      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      picture.appendChild(source);
-    } else {
-      const img = document.createElement('img');
-      img.setAttribute('loading', eager ? 'eager' : 'lazy');
-      img.setAttribute('alt', alt);
-      picture.appendChild(img);
-      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+  // First row: JSON URL
+  if (rows.length > 0) {
+    const firstRow = rows[0];
+    const firstDiv = firstRow.querySelector('div');
+    if (firstDiv) {
+      props.jsonUrl = firstDiv.textContent.trim();
     }
-  });
+  }
 
-  return picture;
+  // Second row: Blank Template (4 columns)
+  if (rows.length > 1) {
+    const secondRow = rows[1];
+    const cols = secondRow.querySelectorAll('div');
+    if (cols.length === 4) {
+      const picture = cols[1].querySelector('picture');
+      const link = cols[2].querySelector('a');
+      const aspectRatio = cols[3].textContent.trim();
+
+      props.blankTemplate = {
+        picture: picture ? picture.cloneNode(true) : null,
+        link: link ? {
+          href: link.href,
+          text: link.textContent.trim(),
+        } : null,
+        aspectRatio,
+      };
+    }
+  }
+
+  // Third row: Limit
+  if (rows.length > 2) {
+    const thirdRow = rows[2];
+    const cols = thirdRow.querySelectorAll('div');
+    if (cols.length === 2) {
+      const limitValue = cols[1].textContent.trim();
+      const parsedLimit = parseInt(limitValue, 10);
+      if (!Number.isNaN(parsedLimit) && parsedLimit > 0) {
+        props.limit = parsedLimit;
+      }
+    }
+  }
+
+  // Fourth row: Button text
+  if (rows.length > 3) {
+    const fourthRow = rows[3];
+    const cols = fourthRow.querySelectorAll('div');
+    if (cols.length === 2) {
+      const buttonTextValue = cols[1].textContent.trim();
+      if (buttonTextValue) {
+        props.buttonText = buttonTextValue;
+      }
+    }
+  }
+
+  return props;
 }
 
-function createTemplateCard(item) {
+function createBlankTemplateCard(blankTemplate) {
+  if (!blankTemplate || !blankTemplate.link) {
+    return null;
+  }
+
+  // Create the template card similar to template-x.js placeholder structure
+  const card = createTag('a', {
+    class: 'template placeholder',
+    href: blankTemplate.link.href || '#',
+  });
+
+  // First div: Picture
+  const firstDiv = createTag('div');
+  if (blankTemplate.picture) {
+    firstDiv.append(blankTemplate.picture.cloneNode(true));
+  }
+  card.append(firstDiv);
+
+  // Second div: Link container (will be converted to span)
+  const linkContainer = createTag('div');
+  const templateLink = createTag('span', { class: 'template-link' });
+  templateLink.textContent = blankTemplate.link.text;
+  linkContainer.append(templateLink);
+  card.append(linkContainer);
+
+  // Third div: Aspect ratio (will be removed after processing)
+  const aspectRatioDiv = createTag('div');
+  aspectRatioDiv.textContent = blankTemplate.aspectRatio;
+  card.append(aspectRatioDiv);
+
+  // Apply aspect ratio similar to template-x.js
+  if (blankTemplate.aspectRatio) {
+    const sep = blankTemplate.aspectRatio.includes(':') ? ':' : 'x';
+    const ratios = blankTemplate.aspectRatio.split(sep).map((e) => +e);
+    if (ratios.length === 2 && ratios[1]) {
+      const width = 165; // Default width for sixcols
+      const height = (ratios[1] / ratios[0]) * width;
+      card.style.height = `${height}px`;
+
+      if (height < 80) {
+        card.classList.add('short');
+      }
+      if (width / height > 1.3) {
+        card.classList.add('wide');
+      }
+    }
+    // Remove the aspect ratio div after processing
+    aspectRatioDiv.remove();
+  }
+
+  return card;
+}
+
+function createTemplateCard(item, buttonText) {
   const card = createTag('a', {
     class: 'template',
     href: item.deep_link_url || '#',
@@ -109,13 +248,13 @@ function createTemplateCard(item) {
   // Template link should be appended first (will appear at bottom with column-reverse)
   const templateLink = createTag('a', {
     href: item.deep_link_url || '#',
-    title: 'Edit this template',
+    title: buttonText,
     class: 'button accent small singleton-hover',
-    'aria-label': `Edit this template ${item.alt_text || ''}`,
+    'aria-label': `${buttonText} ${item.alt_text || ''}`,
     rel: 'nofollow',
     target: '_self',
   });
-  templateLink.textContent = 'Edit this template';
+  templateLink.textContent = buttonText;
   buttonContainer.append(templateLink);
 
   // CTA link wrapping media wrapper should be appended second
@@ -124,7 +263,7 @@ function createTemplateCard(item) {
     href: item.deep_link_url || '#',
     class: 'cta-link',
     tabindex: '-1',
-    'aria-label': `Edit this template ${item.alt_text || ''}`,
+    'aria-label': `${buttonText} ${item.alt_text || ''}`,
     rel: 'nofollow',
     target: '_self',
   });
@@ -146,55 +285,26 @@ function createTemplateCard(item) {
   return card;
 }
 
-function getLimitFromBlock(el) {
-  // Check for limit attribute/data attribute for future configurability
-  const limitAttr = el.dataset.limit || el.getAttribute('data-limit');
-  if (limitAttr) {
-    const parsed = parseInt(limitAttr, 10);
-    if (!Number.isNaN(parsed) && parsed > 0) {
-      return parsed;
-    }
-  }
-  // Default limit is 24
-  return 24;
-}
-
-async function renderPreProTemplates(el, data) {
+async function renderPreProTemplates(el, data, props) {
   if (!data || !data.data || !Array.isArray(data.data)) {
     window.lana?.log('Invalid pre-pro data structure', { tags: 'pre-pro-api' });
     return;
   }
 
-  const innerWrapper = createTag('div', { class: 'pre-pro-inner-wrapper' });
-  el.append(innerWrapper);
-
-  // Apply limit (default 24, configurable via data-limit attribute)
-  const limit = getLimitFromBlock(el);
-  const limitedData = data.data.slice(0, limit);
-
-  const templates = limitedData.map((item) => createTemplateCard(item));
-  templates.forEach((template) => {
-    innerWrapper.append(template);
-  });
-
-  // Setup masonry layout if we have more than 6 items or if sixcols/fullwidth class is present
-  const rows = templates.length;
-  if (rows > 6 || el.classList.contains('sixcols') || el.classList.contains('fullwidth')) {
-    innerWrapper.classList.add('flex-masonry');
-    const cells = Array.from(innerWrapper.children);
-    const masonry = new Masonry(innerWrapper, cells);
-    masonry.draw();
-    window.addEventListener('resize', () => {
-      masonry.draw();
-    });
-  } else {
-    el.classList.add('pre-pro-complete');
+  const innerWrapper = el.querySelector('.pre-pro-inner-wrapper');
+  if (!innerWrapper) {
+    return;
   }
 
-  // Optimize images
-  el.querySelectorAll(':scope picture > img').forEach((img) => {
-    const { src, alt } = img;
-    img.parentNode.replaceWith(createOptimizedPicture(src, alt, true, [{ width: '400' }]));
+  // Apply limit to JSON data (limit applies to cards in addition to blank template)
+  const limitedData = data.data.slice(0, props.limit);
+
+  // Create template cards from JSON data
+  const templates = limitedData.map((item) => createTemplateCard(item, props.buttonText));
+
+  // Add regular templates (blank template is already in place)
+  templates.forEach((template) => {
+    innerWrapper.append(template);
   });
 
   // Setup video hover behavior
@@ -246,25 +356,55 @@ async function renderPreProTemplates(el, data) {
   document.dispatchEvent(linksPopulated);
 }
 
-// eslint-disable-next-line import/prefer-default-export
-function addTempWrapper($block, blockName) {
-  const wrapper = document.createElement('div');
-  const parent = $block.parentElement;
-  wrapper.classList.add(`${blockName}-wrapper`);
-  parent.insertBefore(wrapper, $block);
-  wrapper.append($block);
-}
-
 export default async function init(el) {
   addTempWrapper(el, 'pre-pro');
+
+  // Parse block props from DOM structure
+  const props = parseBlockProps(el);
+
+  // Clear the block content after parsing
+  el.innerHTML = '';
 
   // Add sixcols class to block for masonry column calculation
   el.classList.add('sixcols');
   el.parentElement.classList.add('sixcols');
 
-  const data = await fetchPreProData();
+  // Fetch data from JSON URL if available
+  if (!props.jsonUrl) {
+    el.textContent = 'Error: JSON URL not found.';
+    return;
+  }
+
+  // Create inner wrapper
+  const innerWrapper = createTag('div', { class: 'pre-pro-inner-wrapper' });
+  el.append(innerWrapper);
+
+  // Add blank template immediately if available
+  if (props.blankTemplate) {
+    const blankTemplateCard = createBlankTemplateCard(props.blankTemplate);
+    if (blankTemplateCard) {
+      innerWrapper.append(blankTemplateCard);
+    }
+  }
+
+  // Fetch data and render templates
+  const data = await fetchPreProData(props.jsonUrl);
   if (data) {
-    await renderPreProTemplates(el, data);
+    await renderPreProTemplates(el, data, props);
+
+    // Setup masonry with templates
+    const templateCount = el.querySelectorAll('.template').length;
+    if (templateCount > 6 || el.classList.contains('sixcols') || el.classList.contains('fullwidth')) {
+      innerWrapper.classList.add('flex-masonry');
+      const cells = Array.from(innerWrapper.children);
+      const masonry = new Masonry(innerWrapper, cells);
+      masonry.draw();
+      window.addEventListener('resize', () => {
+        masonry.draw();
+      });
+    } else {
+      el.classList.add('pre-pro-complete');
+    }
   } else {
     el.textContent = 'Error loading templates, please refresh the page or try again later.';
   }

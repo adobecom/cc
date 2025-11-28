@@ -91,10 +91,10 @@ main .pre-pro.fullwidth .masonry-col {
     display: block;
 }
 
-.pre-pro.sixcols:not(.horizontal) .template:not(.placeholder) img,
-.pre-pro.sixcols:not(.horizontal) .template:not(.placeholder) video,
-.pre-pro.fullwidth .template:not(.placeholder) img,
-.pre-pro.fullwidth .template:not(.placeholder) video {
+.pre-pro.sixcols:not(.horizontal) .template img,
+.pre-pro.sixcols:not(.horizontal) .template video,
+.pre-pro.fullwidth .template img,
+.pre-pro.fullwidth .template video {
     transition: transform .3s ease-in-out;
     will-change: transform;
 }
@@ -249,6 +249,96 @@ main .pre-pro.fullwidth .masonry-col {
     min-height: unset;
 }
 
+/* Blank template placeholder styles */
+.pre-pro .template.placeholder {
+    pointer-events: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 14px;
+    border: 2px dashed var(--color-gray-300);
+    padding: 0;
+    cursor: pointer;
+    height: 293px; /* Default height for 9:16 aspect ratio at 165px width */
+}
+
+.pre-pro.sixcols:not(.horizontal) .template.placeholder,
+.pre-pro.fullwidth .template.placeholder {
+    width: 165px;
+    margin: 5px;
+}
+
+.pre-pro .template.placeholder > div:first-of-type {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pre-pro .template.placeholder > div:first-of-type > img,
+.pre-pro .template.placeholder > div:first-of-type > svg,
+.pre-pro .template.placeholder > div:first-of-type > picture {
+    width: 44px;
+    height: 44px;
+}
+
+.pre-pro .template.placeholder > div:first-of-type > picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+}
+
+.pre-pro .template.placeholder div:nth-of-type(2) {
+    position: absolute;
+    padding-top: 10px;
+    max-width: 80%;
+    bottom: 10%;
+    min-height: 28px;
+    background: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(255 255 255) 24%);
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 1;
+}
+
+.pre-pro .template.placeholder .template-link {
+    font-size: 0.75rem;
+    color: var(--link-color);
+    text-align: center;
+    line-height: 1;
+    padding: 0;
+    width: fit-content;
+    font-weight: 500;
+}
+
+.pre-pro .template.placeholder.wide > div:first-of-type {
+    height: 65%;
+}
+
+.pre-pro .template.placeholder.wide > div:first-of-type > img,
+.pre-pro .template.placeholder.wide > div:first-of-type > svg,
+.pre-pro .template.placeholder.wide > div:first-of-type > picture {
+    width: 24px;
+    height: 24px;
+}
+
+.pre-pro .wide.template.placeholder.short > div:first-of-type {
+    display: none;
+}
+
+.pre-pro .wide.template.placeholder.short > div:nth-of-type(2) {
+    margin: auto;
+    text-align: center;
+    position: initial;
+    background: none;
+    bottom: 0;
+    padding: 0;
+}
 
 /* Responsive adjustments */
 @media (min-width: 600px) {
