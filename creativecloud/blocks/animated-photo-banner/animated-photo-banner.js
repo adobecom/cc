@@ -23,15 +23,16 @@ function extractParams(paramDiv) {
   }, {});
 }
 
-function applyTransform(element, x, y, scale = 1) {
+function applyTransform(element, xPosition, yPosition, scale = 1) {
   // Width is in vw; Height is in rem
   // Focussing on centrod of image
-  element.style.transform = `translate(calc(${x}vw - 50%), calc(${y}rem - 50%)) scale(calc(${scale}))`;
+  element.style.transform = `translate(calc(${xPosition}vw - 50%), calc(${yPosition}rem - 50%)) scale(calc(${scale}))`;
 }
 
-function setupAnimation(container, paramsMap) {
+function setupAnimation(container, paramsList, headerParams) {
   try {
     const images = container.querySelectorAll('.animated-photo-banner-image');
+    const header = container.querySelector('.animated-photo-banner-header');
     const viewport = getScreenSizeCategory();
 
     // Group images by their wave number
@@ -39,7 +40,7 @@ function setupAnimation(container, paramsMap) {
     let maxWave = 1;
 
     images.forEach((image, index) => {
-      const params = paramsMap[index];
+      const params = paramsList[index];
       const viewportParams = params[viewport] || params.mobile || {};
       const wave = viewportParams.wave || 1;
 
@@ -67,11 +68,25 @@ function setupAnimation(container, paramsMap) {
         params: viewportParams,
       });
     });
+
+    // Set up header - position it but keep it hidden
+    if (header && Object.keys(headerParams).length > 0) {
+      const viewportParams = headerParams[viewport] || headerParams.mobile || {};
+      const endPos = viewportParams['end-pos']
+        || viewportParams['start-pos'] || [50, 50];
+      if (endPos) {
+        // Initially hide the header
+        header.style.opacity = '0';
+        // Position at start position
+        applyTransform(header, endPos[0], endPos[1]);
+      }
+    }
     // Wait for all images to load before starting animation
     // eslint-disable-next-line no-inner-declarations
     function startAnimationSequence() {
       // Calculate the total time needed for all waves to appear
       const totalWavesAppearTime = maxWave * WAVE_DELAY;
+      const totalAnimationTime = totalWavesAppearTime + 2000;
 
       // PHASE 1: Make images appear in waves
       const waves = Object.keys(waveGroups).sort((a, b) => a - b);
@@ -96,7 +111,7 @@ function setupAnimation(container, paramsMap) {
       // PHASE 2: Animate all images from start to end position after all waves have appeared
       setTimeout(() => {
         images.forEach((image, index) => {
-          const params = paramsMap[index];
+          const params = paramsList[index];
           const viewportParams = params[viewport] || params.mobile || {};
           const wave = viewportParams.wave || 1;
 
@@ -105,7 +120,6 @@ function setupAnimation(container, paramsMap) {
 
           const endPos = viewportParams['end-pos']
             || viewportParams['start-pos'] || [50, 50];
-          // const scale = viewportParams.scale || 1;
 
           // Add transform transition for the movement
           image.style.transition = 'opacity 0.8s ease-out, transform 1.5s ease-in-out';
@@ -114,6 +128,16 @@ function setupAnimation(container, paramsMap) {
           applyTransform(image, endPos[0], endPos[1], 1);
         });
       }, totalWavesAppearTime + 500); // Add a small buffer after all waves have appeared
+
+      // Final phase: Reveal header after all images are done animating
+      if (header && Object.keys(headerParams).length > 0) {
+        setTimeout(() => {
+          // Add transition for smooth appearance
+          header.style.transition = 'opacity 1.2s ease-out';
+          // Make header visible
+          header.style.opacity = '1';
+        }, totalAnimationTime);
+      }
     }
 
     const imgElements = Array.from(container.querySelectorAll('img'));
@@ -122,14 +146,18 @@ function setupAnimation(container, paramsMap) {
       startAnimationSequence();
     } else {
       // Wait for all images to load
-      Promise.all(imgElements.map((img) => new Promise((resolve) => {
-        if (img.complete) {
-          resolve();
-        } else {
-          img.onload = () => resolve();
-          img.onerror = () => resolve(); // Resolve even on error
-        }
-      }))).then(() => {
+      Promise.all(
+        imgElements.map(
+          (img) => new Promise((resolve) => {
+            if (img.complete) {
+              resolve();
+            } else {
+              img.onload = () => resolve();
+              img.onerror = () => resolve(); // Resolve even on error
+            }
+          }),
+        ),
+      ).then(() => {
         startAnimationSequence();
       });
     }
@@ -143,7 +171,7 @@ function setupAnimation(container, paramsMap) {
 
         // Update positions for new viewport
         images.forEach((image, index) => {
-          const params = paramsMap[index];
+          const params = paramsList[index];
           const viewportParams = params[newViewport] || params.mobile || {};
           const endPos = viewportParams['end-pos']
             || viewportParams['start-pos'] || [50, 50];
@@ -159,6 +187,20 @@ function setupAnimation(container, paramsMap) {
             image.style.transition = 'opacity 0.8s ease-out, transform 1.5s ease-in-out';
           }, 50);
         });
+        if (header && Object.keys(headerParams).length > 0) {
+          const viewportParams = headerParams[newViewport] || headerParams.mobile || {};
+          const endPos = viewportParams['end-pos']
+        || viewportParams['start-pos'] || [50, 50];
+
+          if (endPos) {
+            header.style.transition = 'none';
+            applyTransform(header, endPos[0], endPos[1]);
+
+            setTimeout(() => {
+              header.style.transition = 'opacity 1.2s ease-out';
+            }, 50);
+          }
+        }
       }
     });
   } catch (err) {
@@ -176,8 +218,8 @@ export default async function init(el) {
     container.appendChild(imagesContainer);
 
     // Process image sections and extract parameters
-    const imageSections = Array.from(el.children).slice(1);
-    const paramsMap = [];
+    const imageSections = Array.from(el.children).slice(2);
+    const imageParams = [];
 
     imageSections.forEach((section) => {
       // Get the picture element
@@ -201,21 +243,50 @@ export default async function init(el) {
       imagesContainer.appendChild(imageWrapper);
 
       // Store parameters for animation later
-      paramsMap.push(params);
+      imageParams.push(params);
     });
 
     // Add header section
-    const headerContent = el.querySelector('div:first-child > div');
+    const iconContent = el.querySelector('div:first-child > div');
+    const contentDiv = el.querySelector('div:nth-child(2) > div:first-child');
+    const title = contentDiv.querySelector('h1');
+    const subtitle = contentDiv.querySelector('p');
     const headerSection = createTag('div', { class: 'animated-photo-banner-header' });
-    headerSection.appendChild(headerContent.cloneNode(true));
+    if (iconContent) {
+      const iconWrapper = createTag('div', { class: 'animated-photo-banner-icon' });
+      iconWrapper.appendChild(iconContent.cloneNode(true));
+      headerSection.appendChild(iconWrapper);
+    }
+    const textContent = createTag('div', { class: 'animated-photo-banner-text' });
+    if (title) {
+      const titleEl = createTag('div', { class: 'animated-photo-banner-title' });
+      titleEl.appendChild(title.cloneNode(true));
+      textContent.appendChild(titleEl);
+    }
+    if (subtitle) {
+      const subtitleEl = createTag('div', { class: 'animated-photo-banner-subtitle' });
+      subtitleEl.appendChild(subtitle.cloneNode(true));
+      textContent.appendChild(subtitleEl);
+    }
+    headerSection.appendChild(textContent);
     container.appendChild(headerSection);
 
-    // Replace original content
+    const headerDiv = el.querySelector('div:nth-child(2)');
+    const headerParams = {};
+    if (headerDiv) {
+      const viewportDivs = Array.from(headerDiv.children).slice(1);
+      viewportDivs.forEach((div) => {
+        const viewportParams = extractParams(div);
+        if (viewportParams.viewport) {
+          headerParams[viewportParams.viewport] = viewportParams;
+        }
+      });
+    }
+
     el.textContent = '';
     el.appendChild(container);
 
-    // Set up animation
-    setupAnimation(container, paramsMap);
+    setupAnimation(container, imageParams, headerParams);
   } catch (err) {
     window.lana?.log(
       `Error initializing animated photo banner: ${err}`,
