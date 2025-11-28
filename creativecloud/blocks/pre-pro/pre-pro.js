@@ -186,6 +186,24 @@ function createBlankTemplateCard(blankTemplate) {
   return card;
 }
 
+async function share(tooltip, timeoutId) {
+  const urlWithTracking = 'test';
+  await navigator.clipboard.writeText(urlWithTracking);
+  tooltip.classList.add('display-tooltip');
+
+  const rect = tooltip.getBoundingClientRect();
+  const tooltipRightEdgePos = rect.left + rect.width;
+  if (tooltipRightEdgePos > window.innerWidth) {
+    tooltip.classList.add('flipped');
+  }
+
+  clearTimeout(timeoutId);
+  return setTimeout(() => {
+    tooltip.classList.remove('display-tooltip');
+    tooltip.classList.remove('flipped');
+  }, 2500);
+}
+
 function createTemplateCard(item, buttonText, eager = false) {
   const card = createTag('a', {
     class: 'template',
@@ -215,11 +233,6 @@ function createTemplateCard(item, buttonText, eager = false) {
     });
     imageWrapper.append(video);
   }
-
-  // Add Free badge
-  // const freeBadge = createTag('span', { class: 'icon icon-free-badge' });
-  // freeBadge.textContent = 'Free';
-  // imageWrapper.append(freeBadge);
 
   // Add Instagram-like icon at bottom center
   // const iconContainer = createTag('div', { class: 'icon-container' });
@@ -258,6 +271,43 @@ function createTemplateCard(item, buttonText, eager = false) {
 
   const mediaWrapper = createTag('div', { class: 'media-wrapper' });
   const clonedImageWrapper = imageWrapper.cloneNode(true);
+
+  // tooltip
+  const tooltip = createTag('div', {
+    class: 'shared-tooltip',
+    role: 'tooltip',
+    tabindex: '-1',
+    'aria-label': 'Copied to clipboard',
+  });
+
+  const tooltipIcon = createTag('img', {
+    class: 'icon-checkmark-green',
+    src: './checkmark-green.svg',
+    alt: 'checkmark-green',
+  });
+
+  // share icon
+  const shareIconWrapper = createTag('div', { class: 'share-icon-wrapper' });
+  const shareIcon = createTag('img', { class: 'icon icon-share', src: './share-arrow.svg', tabindex: '0', alt: 'Share icon' });
+  let timeoutId = null;
+  shareIcon.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    timeoutId = share(tooltip, timeoutId);
+  });
+  shareIcon.addEventListener('keypress', (e) => {
+    if (e.key !== 'Enter') {
+      return;
+    }
+    timeoutId = share(tooltip, timeoutId);
+  });
+  shareIconWrapper.append(shareIcon);
+
+  // Append tooltip to wrapper
+  shareIconWrapper.append(tooltip);
+  tooltip.append(tooltipIcon, 'Copied to clipboard');
+  clonedImageWrapper.append(shareIconWrapper);
+
   // In media-wrapper, hide the image and show the video (if exists)
   const clonedImg = clonedImageWrapper.querySelector('img');
   const clonedVideo = clonedImageWrapper.querySelector('video');
@@ -266,6 +316,16 @@ function createTemplateCard(item, buttonText, eager = false) {
   mediaWrapper.append(clonedImageWrapper);
   ctaLink.append(mediaWrapper);
   buttonContainer.append(ctaLink);
+
+  // Add Free badge
+  const freeBadge = createTag('span', { class: 'icon icon-free-badge' });
+  freeBadge.textContent = 'Free';
+  // imageWrapper.append(freeBadge);
+
+  const ytShortsIcon = createTag('img', { class: 'icon icon-yt-shorts', src: './video-badge.svg' });
+  // imageWrapper.append(ytShortsIcon);
+
+  stillWrapper.querySelector('.image-wrapper').append(freeBadge, ytShortsIcon);
 
   card.append(stillWrapper);
   card.append(buttonContainer);
