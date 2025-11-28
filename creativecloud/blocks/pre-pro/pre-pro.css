@@ -35,11 +35,7 @@
 }
 
 .pre-pro.sixcols .pre-pro-inner-wrapper,
-.pre-pro.fullwidth .pre-pro-inner-wrapper {
-    flex-direction: row;
-    justify-content: center;
-}
-
+.pre-pro.fullwidth .pre-pro-inner-wrapper,
 .pre-pro-inner-wrapper.flex-masonry {
     flex-direction: row;
     justify-content: center;
@@ -112,16 +108,7 @@ main .pre-pro.fullwidth .masonry-col {
     border-radius: 12px;
 }
 
-.pre-pro .template .still-wrapper .image-wrapper video.hidden {
-    opacity: 0;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
+.pre-pro .template .still-wrapper .image-wrapper video.hidden,
 .pre-pro .template .still-wrapper .image-wrapper img.hidden {
     opacity: 0;
     position: absolute;
@@ -243,7 +230,6 @@ main .pre-pro.fullwidth .masonry-col {
     font-weight: var(--body-font-weight);
     text-decoration: none;
 }
-
 
 .pre-pro.pre-pro-complete .pre-pro-inner-wrapper {
     min-height: unset;

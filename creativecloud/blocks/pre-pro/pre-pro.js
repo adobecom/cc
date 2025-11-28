@@ -1,7 +1,4 @@
-import {
-  createTag,
-//   getIconElement,
-} from '../../scripts/utils.js';
+import { createTag } from '../../scripts/utils.js';
 import { Masonry } from '../shared/masonry.js';
 
 function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
@@ -9,26 +6,22 @@ function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
   { width: '750' },
 ]) {
   if (!src) {
-    // Return empty picture if no src
     return document.createElement('picture');
   }
 
   let imageUrl;
   let ext = 'jpg';
   try {
-    // Parse URL to get pathname for optimization
     const url = new URL(src, window.location.href);
     imageUrl = url.pathname;
     ext = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) || 'jpg';
   } catch (e) {
-    // If URL parsing fails, use src as-is
     imageUrl = src.startsWith('/') ? src : `/${src}`;
     ext = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) || 'jpg';
   }
 
   const picture = document.createElement('picture');
 
-  // webp sources
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
     if (br.media) source.setAttribute('media', br.media);
@@ -37,7 +30,6 @@ function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
     picture.appendChild(source);
   });
 
-  // fallback sources and img
   breakpoints.forEach((br, i) => {
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
@@ -163,36 +155,32 @@ function createBlankTemplateCard(blankTemplate) {
   }
   card.append(firstDiv);
 
-  // Second div: Link container (will be converted to span)
+  // Second div: Link container
   const linkContainer = createTag('div');
   const templateLink = createTag('span', { class: 'template-link' });
   templateLink.textContent = blankTemplate.link.text;
   linkContainer.append(templateLink);
   card.append(linkContainer);
 
-  // Third div: Aspect ratio (will be removed after processing)
-  const aspectRatioDiv = createTag('div');
-  aspectRatioDiv.textContent = blankTemplate.aspectRatio;
-  card.append(aspectRatioDiv);
+  // Apply aspect ratio
+  const width = 165; // Default width for sixcols
+  let height = 293; // Default height for 9:16 aspect ratio
 
-  // Apply aspect ratio similar to template-x.js
   if (blankTemplate.aspectRatio) {
     const sep = blankTemplate.aspectRatio.includes(':') ? ':' : 'x';
     const ratios = blankTemplate.aspectRatio.split(sep).map((e) => +e);
-    if (ratios.length === 2 && ratios[1]) {
-      const width = 165; // Default width for sixcols
-      const height = (ratios[1] / ratios[0]) * width;
-      card.style.height = `${height}px`;
-
-      if (height < 80) {
-        card.classList.add('short');
-      }
-      if (width / height > 1.3) {
-        card.classList.add('wide');
-      }
+    if (ratios.length === 2 && ratios[0] && ratios[1]) {
+      height = (ratios[1] / ratios[0]) * width;
     }
-    // Remove the aspect ratio div after processing
-    aspectRatioDiv.remove();
+  }
+
+  card.style.height = `${height}px`;
+
+  if (height < 80) {
+    card.classList.add('short');
+  }
+  if (width / height > 1.3) {
+    card.classList.add('wide');
   }
 
   return card;
@@ -307,8 +295,8 @@ async function renderPreProTemplates(el, data, props) {
     innerWrapper.append(template);
   });
 
-  // Setup video hover behavior
-  el.querySelectorAll('.template').forEach((template) => {
+  // Setup video hover behavior (exclude placeholders)
+  el.querySelectorAll('.template:not(.placeholder)').forEach((template) => {
     const stillVideo = template.querySelector('.still-wrapper video');
     const stillImg = template.querySelector('.still-wrapper img');
     const mediaVideo = template.querySelector('.button-container .media-wrapper video');
