@@ -144,7 +144,7 @@ const calculateStyles = (index, height, duration) => ({
 });
 
 const applyStyles = (reelEl, styles) => {
-  requestAnimationFrame(() => {
+  window.requestAnimationFrame(() => {
     Object.assign(reelEl.style, {
       transform: styles.transform,
       transition: styles.transition,
