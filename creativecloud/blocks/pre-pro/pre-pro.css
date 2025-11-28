@@ -32,6 +32,14 @@
     font-size: var(--body-font-size-m);
     font-weight: var(--body-font-weight);
     text-align: left;
+    width: 100%;
+}
+
+/* Loading state: use CSS flexbox to show shimmer placeholders immediately */
+.pre-pro-inner-wrapper.pre-pro-loading {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
 
 .pre-pro.sixcols .pre-pro-inner-wrapper,
@@ -39,6 +47,11 @@
 .pre-pro-inner-wrapper.flex-masonry {
     flex-direction: row;
     justify-content: center;
+}
+
+/* Remove min-height once masonry columns are created */
+.pre-pro-inner-wrapper.flex-masonry:has(.masonry-col) {
+    min-height: unset;
 }
 
 main .pre-pro.sixcols .masonry-col,
@@ -479,6 +492,36 @@ main .pre-pro.fullwidth .masonry-col {
     right: unset;
     left: 100%;
     transform: rotate(180deg);
+}
+
+
+/* Shimmer effect */
+@keyframes pre-pro-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.pre-pro .template.shimmer .still-wrapper .image-wrapper {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: pre-pro-shimmer 1.5s infinite;
+}
+
+.pre-pro .template.shimmer .still-wrapper .image-wrapper img {
+    opacity: 0;
+}
+
+.pre-pro .template .still-wrapper .image-wrapper img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Shimmer placeholder (loading state before data arrives) */
+.pre-pro .template.shimmer-placeholder {
+    pointer-events: none;
 }
 
 /* Responsive adjustments */

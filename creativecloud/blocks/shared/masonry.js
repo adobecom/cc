@@ -39,7 +39,8 @@ export class Masonry {
     const width = this.wrapper.offsetWidth;
     if (!width) {
       return 0;
-    } else if (window.innerWidth >= 900) {
+    }
+    if (window.innerWidth >= 900) {
       if (block.classList.contains('sm-view')) {
         colWidth = 176;
       }
@@ -148,8 +149,17 @@ export class Masonry {
     if (img) {
       mediaHeight = img.naturalHeight;
       mediaWidth = img.naturalWidth;
-      calculatedHeight = ((this.columnWidth) / mediaWidth) * mediaHeight;
+      if (mediaWidth > 0) {
+        calculatedHeight = ((this.columnWidth) / mediaWidth) * mediaHeight;
+      }
     }
+
+    // If image is not loaded yet (shimmering), use a default 9:16 aspect ratio height
+    if (!calculatedHeight && cell.classList.contains('shimmer')) {
+      // Default to 9:16 aspect ratio (width:height = 9:16)
+      calculatedHeight = (this.columnWidth * 16) / 9;
+    }
+
     const video = cell.querySelector('video');
     if (video) {
       mediaHeight = video.videoHeight;
@@ -226,7 +236,8 @@ export class Masonry {
       if (setup === 1) {
         // no redrawing needed
         return;
-      } else if (setup === 0) {
+      }
+      if (setup === 0) {
         // setup incomplete, try again
         window.setTimeout(() => {
           this.draw(cells);
@@ -244,7 +255,7 @@ export class Masonry {
       }
       const cell = workList[0];
       const image = cell.querySelector(':scope picture > img');
-      if (image && !image.complete) {
+      if (image && !image.complete && !cell.classList.contains('shimmer')) {
         // continue when image is loaded
         image.addEventListener('load', () => {
           this.draw(workList);

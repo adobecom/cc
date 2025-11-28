@@ -204,9 +204,24 @@ async function share(tooltip, timeoutId) {
   }, 2500);
 }
 
+function createShimmerPlaceholder() {
+  // Create a simple shimmer placeholder card (no image, just the shimmer effect)
+  const card = createTag('a', {
+    class: 'template shimmer shimmer-placeholder',
+    href: '#',
+  });
+
+  const stillWrapper = createTag('div', { class: 'still-wrapper' });
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
+  stillWrapper.append(imageWrapper);
+  card.append(stillWrapper);
+
+  return card;
+}
+
 function createTemplateCard(item, buttonText, eager = false) {
   const card = createTag('a', {
-    class: 'template',
+    class: 'template shimmer',
     href: item.deep_link_url || '#',
   });
 
@@ -220,17 +235,30 @@ function createTemplateCard(item, buttonText, eager = false) {
     eager,
     [{ width: '400' }],
   );
+  const img = picture.querySelector('img');
+  if (img) {
+    if (img.complete) {
+      card.classList.remove('shimmer');
+    } else {
+      img.addEventListener('load', () => {
+        card.classList.remove('shimmer');
+      });
+      img.addEventListener('error', () => {
+        card.classList.remove('shimmer');
+      });
+    }
+  }
   imageWrapper.append(picture);
 
   // Add video if available
   if (item.video) {
     const video = createTag('video', {
       src: item.video,
-      muted: true,
-      loop: true,
-      playsinline: true,
       class: 'hidden',
     });
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
     imageWrapper.append(video);
   }
 
@@ -312,7 +340,13 @@ function createTemplateCard(item, buttonText, eager = false) {
   const clonedImg = clonedImageWrapper.querySelector('img');
   const clonedVideo = clonedImageWrapper.querySelector('video');
   if (clonedImg) clonedImg.classList.add('hidden');
-  if (clonedVideo) clonedVideo.classList.remove('hidden');
+  if (clonedVideo) {
+    clonedVideo.classList.remove('hidden');
+    // Restore video properties that are lost during cloneNode
+    clonedVideo.muted = true;
+    clonedVideo.loop = true;
+    clonedVideo.playsInline = true;
+  }
   mediaWrapper.append(clonedImageWrapper);
   ctaLink.append(mediaWrapper);
   buttonContainer.append(ctaLink);
@@ -336,12 +370,7 @@ function createTemplateCard(item, buttonText, eager = false) {
 async function renderPreProTemplates(el, data, props) {
   if (!data || !data.data || !Array.isArray(data.data)) {
     window.lana?.log('Invalid pre-pro data structure', { tags: 'pre-pro-api' });
-    return;
-  }
-
-  const innerWrapper = el.querySelector('.pre-pro-inner-wrapper');
-  if (!innerWrapper) {
-    return;
+    return [];
   }
 
   // Apply limit to JSON data (limit applies to cards in addition to blank template)
@@ -353,11 +382,10 @@ async function renderPreProTemplates(el, data, props) {
     return createTemplateCard(item, props.buttonText, isEager);
   });
 
-  // Add regular templates (blank template is already in place)
-  templates.forEach((template) => {
-    innerWrapper.append(template);
-  });
+  return templates;
+}
 
+function setupVideoHoverBehavior(el) {
   // Setup video hover behavior (exclude placeholders)
   el.querySelectorAll('.template:not(.placeholder)').forEach((template) => {
     const stillVideo = template.querySelector('.still-wrapper video');
@@ -409,7 +437,7 @@ async function renderPreProTemplates(el, data, props) {
   document.dispatchEvent(linksPopulated);
 }
 
-export default async function init(el) {
+export default function init(el) {
   addTempWrapper(el, 'pre-pro');
 
   // Parse block props from DOM structure
@@ -428,37 +456,72 @@ export default async function init(el) {
     return;
   }
 
-  // Create inner wrapper
-  const innerWrapper = createTag('div', { class: 'pre-pro-inner-wrapper' });
+  // Create inner wrapper - start WITHOUT flex-masonry class for initial shimmer display
+  const innerWrapper = createTag('div', { class: 'pre-pro-inner-wrapper pre-pro-loading' });
   el.append(innerWrapper);
 
-  // Add blank template immediately if available
+  // Create initial shimmer placeholders to reserve space while data loads
+  let blankTemplateCard = null;
+
+  // Add blank template placeholder if available (this is the "Start from scratch" card)
   if (props.blankTemplate) {
-    const blankTemplateCard = createBlankTemplateCard(props.blankTemplate);
+    blankTemplateCard = createBlankTemplateCard(props.blankTemplate);
     if (blankTemplateCard) {
       innerWrapper.append(blankTemplateCard);
     }
   }
 
-  // Fetch data and render templates
-  const data = await fetchPreProData(props.jsonUrl);
-  if (data) {
-    await renderPreProTemplates(el, data, props);
-
-    // Setup masonry with templates
-    const templateCount = el.querySelectorAll('.template').length;
-    if (templateCount > 6 || el.classList.contains('sixcols') || el.classList.contains('fullwidth')) {
-      innerWrapper.classList.add('flex-masonry');
-      const cells = Array.from(innerWrapper.children);
-      const masonry = new Masonry(innerWrapper, cells);
-      masonry.draw();
-      window.addEventListener('resize', () => {
-        masonry.draw();
-      });
-    } else {
-      el.classList.add('pre-pro-complete');
-    }
-  } else {
-    el.textContent = 'Error loading templates, please refresh the page or try again later.';
+  // Add shimmer placeholders for the template cards that will come from JSON
+  // These represent the `limit` number of cards from the API
+  for (let i = 0; i < props.limit; i += 1) {
+    innerWrapper.append(createShimmerPlaceholder());
   }
+
+  // Fetch data in background - use .then() so function returns immediately
+  // This allows the browser to render shimmer placeholders before moving to next section
+  fetchPreProData(props.jsonUrl).then(async (data) => {
+    if (data) {
+      const templates = await renderPreProTemplates(el, data, props);
+
+      if (templates.length > 0) {
+        // Clear shimmer placeholders
+        innerWrapper.innerHTML = '';
+        innerWrapper.classList.remove('pre-pro-loading');
+        innerWrapper.classList.add('flex-masonry');
+
+        // Collect all real cells: blank template (if exists) + real templates from JSON
+        const realCells = [];
+
+        // Re-add the blank template first if it exists
+        if (blankTemplateCard) {
+          realCells.push(blankTemplateCard);
+        }
+
+        realCells.push(...templates);
+
+        // Initialize and draw masonry with real cells
+        const masonry = new Masonry(innerWrapper, realCells);
+        masonry.draw();
+
+        window.addEventListener('resize', () => {
+          masonry.draw();
+        });
+
+        // Setup video hover after masonry has placed cards in the DOM
+        const waitForTemplatesAndSetupHover = () => {
+          const templatesInDom = el.querySelectorAll('.template:not(.placeholder)');
+          if (templatesInDom.length > 0) {
+            setupVideoHoverBehavior(el);
+          } else {
+            requestAnimationFrame(waitForTemplatesAndSetupHover);
+          }
+        };
+        requestAnimationFrame(waitForTemplatesAndSetupHover);
+      }
+    } else {
+      // Clear shimmer placeholders on error
+      innerWrapper.innerHTML = '';
+      el.textContent = 'Error loading templates, please refresh the page or try again later.';
+    }
+  });
 }
