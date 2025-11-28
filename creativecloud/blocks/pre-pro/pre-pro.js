@@ -311,6 +311,7 @@ async function renderPreProTemplates(el, data, props) {
         if (stillImg) stillImg.classList.add('hidden');
         if (stillVideo) {
           stillVideo.classList.remove('hidden');
+          stillVideo.currentTime = 0;
           stillVideo.play().catch(() => {
             // Ignore autoplay errors
           });
@@ -318,6 +319,7 @@ async function renderPreProTemplates(el, data, props) {
         if (mediaImg) mediaImg.classList.add('hidden');
         if (mediaVideo) {
           mediaVideo.classList.remove('hidden');
+          mediaVideo.currentTime = 0;
           mediaVideo.play().catch(() => {
             // Ignore autoplay errors
           });
