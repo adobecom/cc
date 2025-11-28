@@ -35,7 +35,8 @@ function applyTransform(element, x, y, scale = 1) {
   // Position element using translate
 
   // Apply transform for both positioning and scaling
-  element.style.transform = `translate(calc(${x}vw - 50%), calc(${y}vh - 50%)) scale(${scale})`;
+  // Width is in vw; Height is in rem
+  element.style.transform = `translate(calc(${x}vw - 50%), calc(${y}rem - 50%)) scale(calc(${scale}))`;
 }
 
 function setupAnimation(container, paramsMap) {
@@ -76,53 +77,72 @@ function setupAnimation(container, paramsMap) {
         params: viewportParams,
       });
     });
+    // Wait for all images to load before starting animation
+    // eslint-disable-next-line no-inner-declarations
+    function startAnimationSequence() {
+      // Calculate the total time needed for all waves to appear
+      const totalWavesAppearTime = maxWave * WAVE_DELAY;
 
-    // Calculate the total time needed for all waves to appear
-    const totalWavesAppearTime = maxWave * WAVE_DELAY;
+      // PHASE 1: Make images appear in waves
+      const waves = Object.keys(waveGroups).sort((a, b) => a - b);
+      waves.forEach((wave, index) => {
+        setTimeout(() => {
+          const waveImages = waveGroups[wave];
 
-    // PHASE 1: Make images appear in waves
-    const waves = Object.keys(waveGroups).sort((a, b) => a - b);
+          waveImages.forEach(({ element, params }) => {
+            // Get position parameters
+            const startPos = params['start-pos'] || [50, 50];
+            const scale = params.scale || 1;
 
-    waves.forEach((wave, index) => {
-      setTimeout(() => {
-        const waveImages = waveGroups[wave];
+            // Set initial position (start position)
+            applyTransform(element, startPos[0], startPos[1], 1 / scale);
 
-        waveImages.forEach(({ element, params }) => {
-          // Get position parameters
-          const startPos = params['start-pos'] || [50, 50];
-          const scale = params.scale || 1;
-
-          // Set initial position (start position)
-          applyTransform(element, startPos[0], startPos[1], 1 / scale);
-
-          // Make image visible with fade-in
-          element.style.transition = 'opacity 0.8s ease-out';
-          element.style.opacity = '1';
-        });
-      }, index * WAVE_DELAY + 500);
-    });
-
-    // PHASE 2: Animate all images from start to end position after all waves have appeared
-    setTimeout(() => {
-      images.forEach((image, index) => {
-        const params = paramsMap[index];
-        const viewportParams = params[viewport] || params.mobile || {};
-        const wave = viewportParams.wave || 1;
-
-        // Skip images with wave === -1 as they're already in their final position with scale
-        if (wave === -1) return;
-
-        const endPos = viewportParams['end-pos']
-          || viewportParams['start-pos'] || [50, 50];
-        // const scale = viewportParams.scale || 1;
-
-        // Add transform transition for the movement
-        image.style.transition = 'opacity 0.8s ease-out, transform 1.5s ease-in-out';
-
-        // Animate to end position using transform
-        applyTransform(image, endPos[0], endPos[1], 1);
+            // Make image visible with fade-in
+            element.style.transition = 'opacity 0.8s ease-out';
+            element.style.opacity = '1';
+          });
+        }, index * WAVE_DELAY + 500);
       });
-    }, totalWavesAppearTime + 500); // Add a small buffer after all waves have appeared
+      // PHASE 2: Animate all images from start to end position after all waves have appeared
+      setTimeout(() => {
+        images.forEach((image, index) => {
+          const params = paramsMap[index];
+          const viewportParams = params[viewport] || params.mobile || {};
+          const wave = viewportParams.wave || 1;
+
+          // Skip images with wave === -1 as they're already in their final position with scale
+          if (wave === -1) return;
+
+          const endPos = viewportParams['end-pos']
+            || viewportParams['start-pos'] || [50, 50];
+          // const scale = viewportParams.scale || 1;
+
+          // Add transform transition for the movement
+          image.style.transition = 'opacity 0.8s ease-out, transform 1.5s ease-in-out';
+
+          // Animate to end position using transform
+          applyTransform(image, endPos[0], endPos[1], 1);
+        });
+      }, totalWavesAppearTime + 500); // Add a small buffer after all waves have appeared
+    }
+
+    const imgElements = Array.from(container.querySelectorAll('img'));
+    if (imgElements.length === 0) {
+      // If no images, start animation immediately
+      startAnimationSequence();
+    } else {
+      // Wait for all images to load
+      Promise.all(imgElements.map((img) => new Promise((resolve) => {
+        if (img.complete) {
+          resolve();
+        } else {
+          img.onload = () => resolve();
+          img.onerror = () => resolve(); // Resolve even on error
+        }
+      }))).then(() => {
+        startAnimationSequence();
+      });
+    }
 
     // Handle viewport changes
     let currentViewport = viewport;
@@ -158,15 +178,8 @@ function setupAnimation(container, paramsMap) {
 
 export default async function init(el) {
   try {
-    const headerContent = el.querySelector('div:first-child > div');
-
     // Create the main container
     const container = createTag('div', { class: 'animated-photo-banner-container' });
-
-    // Add header section
-    const headerSection = createTag('div', { class: 'animated-photo-banner-header' });
-    headerSection.appendChild(headerContent.cloneNode(true));
-    container.appendChild(headerSection);
 
     // Create images container
     const imagesContainer = createTag('div', { class: 'animated-photo-banner-images' });
@@ -200,6 +213,12 @@ export default async function init(el) {
       // Store parameters for animation later
       paramsMap.push(params);
     });
+
+    // Add header section
+    const headerContent = el.querySelector('div:first-child > div');
+    const headerSection = createTag('div', { class: 'animated-photo-banner-header' });
+    headerSection.appendChild(headerContent.cloneNode(true));
+    container.appendChild(headerSection);
 
     // Replace original content
     el.textContent = '';
