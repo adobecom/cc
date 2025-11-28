@@ -186,7 +186,7 @@ function createBlankTemplateCard(blankTemplate) {
   return card;
 }
 
-function createTemplateCard(item, buttonText) {
+function createTemplateCard(item, buttonText, eager = false) {
   const card = createTag('a', {
     class: 'template',
     href: item.deep_link_url || '#',
@@ -199,7 +199,7 @@ function createTemplateCard(item, buttonText) {
   const picture = createOptimizedPicture(
     item.image || '',
     item.alt_text || '',
-    true,
+    eager,
     [{ width: '400' }],
   );
   imageWrapper.append(picture);
@@ -288,7 +288,10 @@ async function renderPreProTemplates(el, data, props) {
   const limitedData = data.data.slice(0, props.limit);
 
   // Create template cards from JSON data
-  const templates = limitedData.map((item) => createTemplateCard(item, props.buttonText));
+  const templates = limitedData.map((item, index) => {
+    const isEager = index < 6; // Eager load first 6 images
+    return createTemplateCard(item, props.buttonText, isEager);
+  });
 
   // Add regular templates (blank template is already in place)
   templates.forEach((template) => {
