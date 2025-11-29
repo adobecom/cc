@@ -32,6 +32,7 @@
 .animated-slot-text .foreground .slot-machine-window {
   position: relative;
   height: 1.2em; 
+  margin-top: 0.5rem;
   overflow: hidden;
   display: flex;
   vertical-align: bottom; 
