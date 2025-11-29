@@ -444,11 +444,6 @@ main .pre-pro.fullwidth .masonry-col {
     font-size: 0.875rem;
 }
 
-.template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
-    left: unset;
-    right: calc(100% + 12px);
-}
-
 .pre-pro .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip .icon-checkmark-green {
     width: 10px;
     height: 10px;

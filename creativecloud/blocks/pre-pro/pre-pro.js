@@ -1,13 +1,8 @@
 import { createTag } from '../../scripts/utils.js';
 import { Masonry } from '../shared/masonry.js';
 
-function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
-  { media: '(min-width: 600px)', width: '2000' },
-  { width: '750' },
-]) {
-  if (!src) {
-    return document.createElement('picture');
-  }
+function parseImageUrl(src) {
+  if (!src) return { imageUrl: '', ext: 'jpg' };
 
   let imageUrl;
   let ext = 'jpg';
@@ -18,6 +13,24 @@ function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
   } catch (e) {
     imageUrl = src.startsWith('/') ? src : `/${src}`;
     ext = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) || 'jpg';
+  }
+
+  return { imageUrl, ext };
+}
+
+function getOptimizedImageUrl(src, width = '400') {
+  const { imageUrl, ext } = parseImageUrl(src);
+  if (!imageUrl) return '';
+  return `${imageUrl}?width=${width}&format=${ext}&optimize=medium`;
+}
+
+function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [
+  { media: '(min-width: 600px)', width: '2000' },
+  { width: '750' },
+]) {
+  const { imageUrl, ext } = parseImageUrl(src);
+  if (!imageUrl) {
+    return document.createElement('picture');
   }
 
   const picture = document.createElement('picture');
@@ -252,22 +265,19 @@ function createTemplateCard(item, buttonText, eager = false) {
 
   // Add video if available
   if (item.video) {
+    const optimizedPosterUrl = getOptimizedImageUrl(item.image, '400');
     const video = createTag('video', {
       src: item.video,
+      poster: optimizedPosterUrl,
       class: 'hidden',
     });
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
+    video.preload = 'metadata'; // Preload video metadata for faster playback
     imageWrapper.append(video);
   }
 
-  // Add Instagram-like icon at bottom center
-  // const iconContainer = createTag('div', { class: 'icon-container' });
-  // const instagramIcon = getIconElement('instagram')
-  //   || createTag('span', { class: 'icon icon-instagram' });
-  // iconContainer.append(instagramIcon);
-  // imageWrapper.append(iconContainer);
 
   stillWrapper.append(imageWrapper);
 
@@ -336,7 +346,7 @@ function createTemplateCard(item, buttonText, eager = false) {
   tooltip.append(tooltipIcon, 'Copied to clipboard');
   clonedImageWrapper.append(shareIconWrapper);
 
-  // In media-wrapper, hide the image and show the video (if exists)
+  // In media-wrapper, hide the image since video has poster for loading state
   const clonedImg = clonedImageWrapper.querySelector('img');
   const clonedVideo = clonedImageWrapper.querySelector('video');
   if (clonedImg) clonedImg.classList.add('hidden');
@@ -346,6 +356,7 @@ function createTemplateCard(item, buttonText, eager = false) {
     clonedVideo.muted = true;
     clonedVideo.loop = true;
     clonedVideo.playsInline = true;
+    clonedVideo.preload = 'auto'; // Preload video for faster playback on hover
   }
   mediaWrapper.append(clonedImageWrapper);
   ctaLink.append(mediaWrapper);
@@ -391,25 +402,26 @@ function setupVideoHoverBehavior(el) {
     const stillVideo = template.querySelector('.still-wrapper video');
     const stillImg = template.querySelector('.still-wrapper img');
     const mediaVideo = template.querySelector('.button-container .media-wrapper video');
-    const mediaImg = template.querySelector('.button-container .media-wrapper img');
 
     if (stillVideo && stillImg) {
       template.addEventListener('mouseenter', () => {
-        // Hide images and show videos in both still-wrapper and media-wrapper
+        // Hide images and show videos in still-wrapper
         if (stillImg) stillImg.classList.add('hidden');
         if (stillVideo) {
           stillVideo.classList.remove('hidden');
           stillVideo.currentTime = 0;
           stillVideo.play().catch(() => {
-            // Ignore autoplay errors
+            // On error, show image back
+            if (stillImg) stillImg.classList.remove('hidden');
           });
         }
-        if (mediaImg) mediaImg.classList.add('hidden');
+
+        // Show video in media-wrapper (poster image shows while video loads)
         if (mediaVideo) {
           mediaVideo.classList.remove('hidden');
           mediaVideo.currentTime = 0;
           mediaVideo.play().catch(() => {
-            // Ignore autoplay errors
+            // Ignore autoplay errors - poster will remain visible
           });
         }
       });
@@ -425,7 +437,6 @@ function setupVideoHoverBehavior(el) {
           mediaVideo.pause();
           mediaVideo.classList.add('hidden');
         }
-        if (mediaImg) mediaImg.classList.remove('hidden');
       });
     }
   });
