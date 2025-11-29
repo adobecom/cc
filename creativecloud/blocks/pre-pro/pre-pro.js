@@ -320,13 +320,13 @@ function createTemplateCard(item, buttonText, eager = false) {
 
   const tooltipIcon = createTag('img', {
     class: 'icon-checkmark-green',
-    src: './checkmark-green.svg',
+    src: 'https://main--cc--adobecom.aem.page/drafts/himani/pre-pro/checkmark-green.svg',
     alt: 'checkmark-green',
   });
 
   // share icon
   const shareIconWrapper = createTag('div', { class: 'share-icon-wrapper' });
-  const shareIcon = createTag('img', { class: 'icon icon-share', src: './share-arrow.svg', tabindex: '0', alt: 'Share icon' });
+  const shareIcon = createTag('img', { class: 'icon icon-share', src: 'https://main--cc--adobecom.aem.page/drafts/himani/pre-pro/share-arrow.svg', tabindex: '0', alt: 'Share icon' });
   let timeoutId = null;
   shareIcon.addEventListener('click', (ev) => {
     ev.preventDefault();
@@ -367,7 +367,7 @@ function createTemplateCard(item, buttonText, eager = false) {
   freeBadge.textContent = 'Free';
   // imageWrapper.append(freeBadge);
 
-  const ytShortsIcon = createTag('img', { class: 'icon icon-yt-shorts', src: './video-badge.svg' });
+  const ytShortsIcon = createTag('img', { class: 'icon icon-yt-shorts', src: 'https://main--cc--adobecom.aem.page/drafts/himani/pre-pro/video-badge.svg' });
   // imageWrapper.append(ytShortsIcon);
 
   stillWrapper.querySelector('.image-wrapper').append(freeBadge, ytShortsIcon);
