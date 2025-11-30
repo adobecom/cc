@@ -12,7 +12,6 @@
   --size-w-2xl: 736px; /* 48rem; */
 }
 
-
 .animated-photo-banner-container {
   position: relative;
   width: 100%;
@@ -99,7 +98,6 @@
   max-width: var(--size-w-2xs);
 }
 
-
 .animated-photo-banner-image picture {
   display: block;
   width: 100%;
@@ -117,11 +115,16 @@
 /* Tablet */
 @media screen and (min-width: 600px) {
   .animated-photo-banner-header p {
-  max-width: var(--size-w-xl);
-}
+    max-width: var(--size-w-xl);
+    font-size: 28px;
+  }
 
   .animated-photo-banner-icon {
     margin-bottom: 1rem;
+  }
+
+  .animated-photo-banner-icon img {
+    width: var(--size-w-sm);
   }
 
   .animated-photo-banner-title {
@@ -132,14 +135,14 @@
     font-size: 80px;
     letter-spacing: -0.3rem;
   }
-
 }
 
 /* Desktop */
 @media screen and (min-width: 1200px) {
   .animated-photo-banner-header p {
-  max-width: var(--size-w-2xl);
-}
+    max-width: var(--size-w-2xl);
+    font-size: 24px;
+  }
 
   .animated-photo-banner-icon {
     margin-bottom: 2rem;
@@ -151,6 +154,6 @@
 
   .animated-photo-banner-title h1 {
     font-size: 160px;
+    letter-spacing: -0.5rem;
   }
-  
 }
