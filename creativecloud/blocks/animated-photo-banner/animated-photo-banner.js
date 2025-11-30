@@ -6,17 +6,17 @@ import { createTag, getScreenSizeCategory } from '../../scripts/utils.js';
 
 // Configuration constants
 const CONFIG = {
-  WAVE_DELAY: 700,
+  WAVE_DELAY: 300,
   ANIMATION_BUFFER: 500,
   TRANSITION_DELAY: 50,
   FADE_DURATION: 800,
   TRANSFORM_DURATION: 1500,
-  HEADER_DELAY: 2000,
+  HEADER_DELAY: 1200,
   DEFAULT_SCALE: 1,
   DEFAULT_POSITION: [50, 50],
   DEFAULT_HEADER_POSITION: [50, 10],
   DEFAULT_WIDTH_CLASS: 'md',
-  WAVE_INITIAL_DELAY: 500,
+  WAVE_INITIAL_DELAY: 300,
 };
 
 const LANA_OPTIONS = { tags: 'animated-photo-banner', errorType: 'i' };
