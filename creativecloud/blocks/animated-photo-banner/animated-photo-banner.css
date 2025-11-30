@@ -1,5 +1,16 @@
 /* Responsive styling with mobile-first approach */
 
+:root {
+  /* TODO Check in Milo if width has predefined steps */
+  --size-w-2xs: 32px; /* 2rem */
+  --size-w-xs: 64px; /* 4rem; */
+  --size-w-sm: 128px; /* 8rem; */
+  --size-w-md: 256px; /* 16rem; */
+  --size-w-lg: 384px; /* 24rem; */
+  --size-w-xl: 512px; /* 32rem; */
+  --size-w-2xl: 736px; /* 48rem; */
+}
+
 
 .animated-photo-banner-container {
   position: relative;
@@ -10,6 +21,8 @@
 
 /* Header section styling */
 .animated-photo-banner-header {
+  position: absolute;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,7 +36,7 @@
 }
 
 .animated-photo-banner-icon img {
-  width: 108px;
+  width: var(--size-w-sm);
 }
 
 .animated-photo-banner-title {
@@ -40,7 +53,7 @@
 
 .animated-photo-banner-header p {
   font-size: 24px;
-  max-width: 52.5rem;
+  max-width: var(--size-w-2xl);
   margin: 0 auto;
 }
 
@@ -57,7 +70,35 @@
   will-change: transform, opacity, left, top, right, bottom;
 }
 
-/* Make the pictures responsive */
+.animated-photo-banner-image.w-2xl {
+  max-width: var(--size-w-2xl);
+}
+
+.animated-photo-banner-image.w-xl {
+  max-width: var(--size-w-xl);
+}
+
+.animated-photo-banner-image.w-lg {
+  max-width: var(--size-w-lg);
+}
+
+.animated-photo-banner-image.w-md {
+  max-width: var(--size-w-md);
+}
+
+.animated-photo-banner-image.w-sm {
+  max-width: var(--size-w-sm);
+}
+
+.animated-photo-banner-image.w-xs {
+  max-width: var(--size-w-xs);
+}
+
+.animated-photo-banner-image.w-2xs {
+  max-width: var(--size-w-2xs);
+}
+
+
 .animated-photo-banner-image picture {
   display: block;
   width: 100%;

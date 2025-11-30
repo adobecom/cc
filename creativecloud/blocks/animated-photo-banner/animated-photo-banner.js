@@ -1,8 +1,10 @@
-// creativecloud/blocks/animated-photo-banner/animated-photo-banner.js
+// TODO: Write an authoring document in repo
+
 import { createTag, getScreenSizeCategory } from '../../scripts/utils.js';
 
 const LANA_OPTIONS = { tags: 'animated-photo-banner', errorType: 'i' };
 const WAVE_DELAY = 700;
+const DETECTED_VIEWPORT = getScreenSizeCategory();
 
 function parseParamValue(key, value) {
   if (key === 'start-pos' || key === 'end-pos') {
@@ -29,11 +31,19 @@ function applyTransform(element, xPosition, yPosition, scale = 1) {
   element.style.transform = `translate(calc(${xPosition}vw - 50%), calc(${yPosition}rem - 50%)) scale(calc(${scale}))`;
 }
 
+function applyAbsolutePositioning(element, xPosition, yPosition) {
+  if (xPosition) {
+    element.style.left = `${xPosition}rem`;
+  }
+  if (yPosition) {
+    element.style.top = `${yPosition}rem`;
+  }
+}
+
 function setupAnimation(container, paramsList, headerParams) {
   try {
     const images = container.querySelectorAll('.animated-photo-banner-image');
     const header = container.querySelector('.animated-photo-banner-header');
-    const viewport = getScreenSizeCategory();
 
     // Group images by their wave number
     const waveGroups = {};
@@ -41,7 +51,7 @@ function setupAnimation(container, paramsList, headerParams) {
 
     images.forEach((image, index) => {
       const params = paramsList[index];
-      const viewportParams = params[viewport] || params.mobile || {};
+      const viewportParams = params[DETECTED_VIEWPORT] || {};
       const wave = viewportParams.wave ?? 1;
 
       // TODO: Wave === -1 images - no rendering
@@ -74,14 +84,13 @@ function setupAnimation(container, paramsList, headerParams) {
 
     // Set up header - position it but keep it hidden
     if (header && Object.keys(headerParams).length > 0) {
-      const viewportParams = headerParams[viewport] || headerParams.mobile || {};
+      const viewportParams = headerParams[DETECTED_VIEWPORT] || headerParams.mobile || {};
       const endPos = viewportParams['end-pos']
-        || viewportParams['start-pos'] || [50, 50];
+        || viewportParams['start-pos'] || [50, 10];
       if (endPos) {
         // Initially hide the header
         header.style.opacity = '0';
-        // Position at start position
-        applyTransform(header, endPos[0], endPos[1]);
+        applyAbsolutePositioning(header, endPos[0], endPos[1]);
       }
     }
     // Wait for all images to load before starting animation
@@ -115,7 +124,7 @@ function setupAnimation(container, paramsList, headerParams) {
       setTimeout(() => {
         images.forEach((image, index) => {
           const params = paramsList[index];
-          const viewportParams = params[viewport] || params.mobile || {};
+          const viewportParams = params[DETECTED_VIEWPORT] || params.mobile || {};
           const wave = viewportParams.wave || 1;
 
           // Skip images with wave === 0 as they're already in their final position with scale
@@ -166,7 +175,7 @@ function setupAnimation(container, paramsList, headerParams) {
     }
 
     // Handle viewport changes
-    let currentViewport = viewport;
+    let currentViewport = DETECTED_VIEWPORT;
     window.addEventListener('resize', () => {
       const newViewport = getScreenSizeCategory();
       if (newViewport !== currentViewport) {
@@ -242,6 +251,7 @@ export default async function init(el) {
 
       // Create image wrapper with the picture
       const imageWrapper = createTag('div', { class: 'animated-photo-banner-image' });
+      imageWrapper.classList.add(`w-${params[DETECTED_VIEWPORT].width || 'md'}`);
       imageWrapper.appendChild(pictureEl.cloneNode(true));
       imagesContainer.appendChild(imageWrapper);
 
@@ -303,7 +313,7 @@ export default async function init(el) {
           // Store all properties except 'viewport' for this viewport
           const propsForViewport = {};
           Object.entries(viewportParams).forEach(([key, value]) => {
-            if (key.toLowerCase() !== 'viewport') {
+            if (key !== 'viewport') {
               propsForViewport[key] = value;
             }
           });
@@ -315,8 +325,7 @@ export default async function init(el) {
       });
 
       // Apply initial custom properties based on current viewport
-      const viewport = getScreenSizeCategory();
-      const currentProps = customProps[viewport] || customProps.mobile || {};
+      const currentProps = customProps[DETECTED_VIEWPORT] || customProps.mobile || {};
 
       Object.entries(currentProps).forEach(([prop, value]) => {
         container.style[prop] = value;
