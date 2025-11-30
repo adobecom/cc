@@ -42,10 +42,13 @@ function setupAnimation(container, paramsList, headerParams) {
     images.forEach((image, index) => {
       const params = paramsList[index];
       const viewportParams = params[viewport] || params.mobile || {};
-      const wave = viewportParams.wave || 1;
+      const wave = viewportParams.wave ?? 1;
 
-      // Handle wave === -1 images immediately - no animation
-      if (wave === -1) {
+      // TODO: Wave === -1 images - no rendering
+      // More flexibility for different images on different viewports
+
+      // Wwave === 0 images - render immediately with no animation
+      if (wave === 0) {
         const endPos = viewportParams['end-pos']
           || viewportParams['start-pos'] || [50, 50];
         // Set final position and scale immediately
@@ -115,8 +118,8 @@ function setupAnimation(container, paramsList, headerParams) {
           const viewportParams = params[viewport] || params.mobile || {};
           const wave = viewportParams.wave || 1;
 
-          // Skip images with wave === -1 as they're already in their final position with scale
-          if (wave === -1) return;
+          // Skip images with wave === 0 as they're already in their final position with scale
+          if (wave === 0) return;
 
           const endPos = viewportParams['end-pos']
             || viewportParams['start-pos'] || [50, 50];

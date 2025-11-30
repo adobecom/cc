@@ -1,4 +1,6 @@
-/* Container styling */
+/* Responsive styling with mobile-first approach */
+
+
 .animated-photo-banner-container {
   position: relative;
   width: 100%;
@@ -38,7 +40,7 @@
 
 .animated-photo-banner-header p {
   font-size: 24px;
-  max-width: 60%;
+  max-width: 52.5rem;
   margin: 0 auto;
 }
 
@@ -62,6 +64,7 @@
   height: auto;
 }
 
+/* Default image styling with standard size fallback */
 .animated-photo-banner-image img {
   width: 100%;
   height: auto;
@@ -69,35 +72,12 @@
   object-fit: contain;
 }
 
-/* Responsive adjustments */
-@media (max-width: 999px) {
-  .animated-photo-banner-images {
-    height: 500px;
-  }
-
-  .animated-photo-banner-image {
-    max-width: 45%;
-  }
-
-  .animated-photo-banner-header h1 {
-    font-size: 36px;
-  }
+/* Tablet */
+@media screen and (min-width: 600px) {
+  
 }
 
-@media (max-width: 599px) {
-  .animated-photo-banner-images {
-    height: 400px;
-  }
-
-  .animated-photo-banner-image {
-    max-width: 50%;
-  }
-
-  .animated-photo-banner-header h1 {
-    font-size: 28px;
-  }
-
-  .animated-photo-banner-header p {
-    font-size: 16px;
-  }
+/* Desktop */
+@media screen and (min-width: 1200px) {
+  
 }
