@@ -207,13 +207,22 @@ function animateToFinalPositions(images, paramsList, timing) {
   }, timing.finalPhaseDelay);
 }
 
-function showHeaderAfterAnimation(header, headerParams, timing) {
+function showHeader(header, headerParams, timing) {
   if (!header || Object.keys(headerParams).length === 0) return;
 
-  setTimeout(() => {
-    header.style.transition = `opacity ${(CONFIG.FADE_DURATION * 1.5) / 1000}s ease-out`;
+  const viewportParams = getViewportParams(headerParams);
+  const wave = viewportParams.wave ?? 1;
+
+  if (wave === 0) {
+    // Show header immediately for wave 0
     setElementVisibility(header, true, 0);
-  }, timing.totalAnimationTime);
+  } else {
+    // Show header after animation delay
+    setTimeout(() => {
+      header.style.transition = `opacity ${(CONFIG.FADE_DURATION * 1.5) / 1000}s ease-out`;
+      setElementVisibility(header, true, 0);
+    }, timing.totalAnimationTime);
+  }
 }
 
 // ===== ANIMATION ORCHESTRATION =====
@@ -232,7 +241,7 @@ function createAnimationSequence(container, images, paramsList, headerParams) {
   // Run animation sequence
   animateWaveSequence(waveGroups);
   animateToFinalPositions(images, paramsList, timing);
-  showHeaderAfterAnimation(header, headerParams, timing);
+  showHeader(header, headerParams, timing);
 }
 
 function waitForImagesAndStartAnimation(container, images, paramsList, headerParams) {
