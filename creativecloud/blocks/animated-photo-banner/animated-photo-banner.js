@@ -216,65 +216,6 @@ function showHeaderAfterAnimation(header, headerParams, timing) {
   }, timing.totalAnimationTime);
 }
 
-function setupViewportHandling(images, paramsList, header, headerParams) {
-  let currentViewport = DETECTED_VIEWPORT;
-  const abortController = new AbortController();
-
-  try {
-    window.addEventListener('resize', () => {
-      try {
-        const newViewport = getScreenSizeCategory();
-        if (newViewport === currentViewport) return;
-
-        currentViewport = newViewport;
-
-        // Update image positions
-        images.forEach((image, index) => {
-          try {
-            const params = paramsList[index];
-            const viewportParams = getViewportParams(params, newViewport);
-            const endPos = getPositionWithFallback(viewportParams);
-
-            image.style.transition = 'none';
-            setElementTransform(image, endPos[0], endPos[1], CONFIG.DEFAULT_SCALE);
-            setTimeout(() => {
-              addTransitionStyles(image, true);
-            }, CONFIG.TRANSITION_DELAY);
-          } catch (err) {
-            logError('Viewport image update', `Failed to update image ${index} for viewport ${newViewport}: ${err}`);
-          }
-        });
-
-        // Update header position
-        if (header && Object.keys(headerParams).length > 0) {
-          try {
-            const viewportParams = getViewportParams(headerParams, newViewport);
-            const endPos = getPositionWithFallback(viewportParams, 'end-pos', CONFIG.DEFAULT_HEADER_POSITION);
-
-            header.style.transition = 'none';
-            setElementTransform(header, endPos[0], endPos[1]);
-
-            setTimeout(() => {
-              header.style.transition = `opacity ${(CONFIG.FADE_DURATION * 1.5) / 1000}s ease-out`;
-            }, CONFIG.TRANSITION_DELAY);
-          } catch (err) {
-            logError('Viewport header update', `Failed to update header for viewport ${newViewport}: ${err}`);
-          }
-        }
-      } catch (err) {
-        logError('Viewport change handling', `Failed to handle viewport change: ${err}`);
-      }
-    }, { signal: abortController.signal });
-  } catch (err) {
-    logError('Viewport handler setup', `Failed to setup viewport change handler: ${err}`);
-  }
-
-  // Return cleanup function to prevent memory leaks
-  return () => {
-    abortController.abort();
-  };
-}
-
 // ===== ANIMATION ORCHESTRATION =====
 
 function createAnimationSequence(container, images, paramsList, headerParams) {
@@ -292,9 +233,6 @@ function createAnimationSequence(container, images, paramsList, headerParams) {
   animateWaveSequence(waveGroups);
   animateToFinalPositions(images, paramsList, timing);
   showHeaderAfterAnimation(header, headerParams, timing);
-
-  // Setup responsive behavior
-  // setupViewportHandling(images, paramsList, header, headerParams);
 }
 
 function waitForImagesAndStartAnimation(container, images, paramsList, headerParams) {
@@ -448,25 +386,6 @@ function applyCustomPropsForViewport(container, customProps, viewport) {
   });
 }
 
-function setupCustomPropsViewportHandling(container, customProps) {
-  if (Object.keys(customProps).length === 0) {
-    // Return no-op cleanup function if no custom props
-    return () => {};
-  }
-
-  const abortController = new AbortController();
-
-  window.addEventListener('resize', () => {
-    const newViewport = getScreenSizeCategory();
-    applyCustomPropsForViewport(container, customProps, newViewport);
-  }, { signal: abortController.signal });
-
-  // Return cleanup function to prevent memory leaks
-  return () => {
-    abortController.abort();
-  };
-}
-
 function processCustomProperties(el, container) {
   const customPropsSection = Array.from(el.children).slice(-1)[0];
   const customProps = {};
@@ -495,9 +414,6 @@ function processCustomProperties(el, container) {
 
     // Apply initial custom properties
     applyCustomPropsForViewport(container, customProps, DETECTED_VIEWPORT);
-
-    // Set up viewport change handling for custom properties
-    // setupCustomPropsViewportHandling(container, customProps);
   }
 }
 
