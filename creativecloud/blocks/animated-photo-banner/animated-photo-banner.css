@@ -1,7 +1,8 @@
 /* Responsive styling with mobile-first approach */
 
 :root {
-  /* TODO Check in Milo if width has predefined steps */
+  /* TODO Check in Milo if width has predefined steps
+    - Maybe follow pattern at https://tailwindcss.com/docs/max-width */
   --size-w-2xs: 32px; /* 2rem */
   --size-w-xs: 64px; /* 4rem; */
   --size-w-sm: 128px; /* 8rem; */

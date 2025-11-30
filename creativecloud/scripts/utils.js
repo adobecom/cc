@@ -217,11 +217,13 @@ export function isSignedInInitialized(interval = 200) {
   });
 }
 
-export function getScreenSizeCategory() {
+export function getScreenSizeCategory(overridenBreakpoints) {
+  const DEFAULT_BREAKPOINTS = { mobile: 599, tablet: 899 };
+  const { mobile, tablet } = { ...DEFAULT_BREAKPOINTS, ...overridenBreakpoints };
   const MEDIA_QUERIES = {
-    mobile: window.matchMedia('(max-width: 599px)'),
-    tablet: window.matchMedia('(min-width: 600px) and (max-width: 899px)'),
-    desktop: window.matchMedia('(min-width: 900px)'),
+    mobile: window.matchMedia(`(max-width: ${mobile}px)`),
+    tablet: window.matchMedia(`(min-width: ${mobile + 1}px) and (max-width: ${tablet}px)`),
+    desktop: window.matchMedia(`(min-width: ${tablet + 1}px)`),
   };
   if (MEDIA_QUERIES.mobile.matches) {
     return 'mobile';

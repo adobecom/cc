@@ -4,13 +4,13 @@ import { createTag, getScreenSizeCategory } from '../../scripts/utils.js';
 
 const LANA_OPTIONS = { tags: 'animated-photo-banner', errorType: 'i' };
 const WAVE_DELAY = 700;
-const DETECTED_VIEWPORT = getScreenSizeCategory();
+const DETECTED_VIEWPORT = getScreenSizeCategory({ mobile: 599, tablet: 1199 });
 
 function parseParamValue(key, value) {
   if (key === 'start-pos' || key === 'end-pos') {
     return value.split(',').map((coord) => parseFloat(coord));
   }
-  return ['scale', 'wave'].includes(key) ? parseFloat(value) : value;
+  return ['scale', 'wave', 'height'].includes(key) ? parseFloat(value) : value;
 }
 
 function extractParams(paramDiv) {
@@ -328,7 +328,7 @@ export default async function init(el) {
       const currentProps = customProps[DETECTED_VIEWPORT] || customProps.mobile || {};
 
       Object.entries(currentProps).forEach(([prop, value]) => {
-        container.style[prop] = value;
+        container.style[prop] = prop === 'height' ? `${value}rem` : value;
       });
 
       // Set up viewport change handling for custom properties
