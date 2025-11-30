@@ -27,17 +27,18 @@
   color: var(--color-white);
   white-space: nowrap;
   line-height: 0.8;
+  padding-bottom: 0.5rem;
 }
 
 .animated-slot-text .foreground .slot-machine-window {
   position: relative;
   height: 1.2em; 
-  margin-top: 0.5rem;
   overflow: hidden;
   display: flex;
   vertical-align: bottom; 
   max-width: 100%;
   line-height: var(--line-height);
+  mask-image: linear-gradient(to top, black, transparent);
 }
 
 .animated-slot-text .foreground .slot-reel{
