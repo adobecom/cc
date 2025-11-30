@@ -116,7 +116,22 @@
 
 /* Tablet */
 @media screen and (min-width: 600px) {
-  
+  .animated-photo-banner-header p {
+  max-width: var(--size-w-xl);
+}
+
+  .animated-photo-banner-icon {
+    margin-bottom: 1rem;
+  }
+
+  .animated-photo-banner-title {
+    margin-bottom: 2rem;
+  }
+
+  .animated-photo-banner-title h1 {
+    font-size: 80px;
+  }
+
 }
 
 /* Desktop */
