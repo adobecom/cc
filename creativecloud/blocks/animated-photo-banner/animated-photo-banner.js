@@ -54,8 +54,14 @@ function setupAnimation(container, paramsList, headerParams) {
       const viewportParams = params[DETECTED_VIEWPORT] || {};
       const wave = viewportParams.wave ?? 1;
 
-      // TODO: Wave === -1 images - no rendering
+      // Wave === -1 images - no rendering
+      // TODO: For performance, remove element from DOM
       // More flexibility for different images on different viewports
+      if (wave === -1) {
+        // applyTransform(image, -100, -100);
+        image.style.opacity = '0';
+        return;
+      }
 
       // Wwave === 0 images - render immediately with no animation
       if (wave === 0) {
@@ -127,6 +133,7 @@ function setupAnimation(container, paramsList, headerParams) {
           const viewportParams = params[DETECTED_VIEWPORT] || params.mobile || {};
           const wave = viewportParams.wave || 1;
 
+          if (wave === -1) return;
           // Skip images with wave === 0 as they're already in their final position with scale
           if (wave === 0) return;
 
