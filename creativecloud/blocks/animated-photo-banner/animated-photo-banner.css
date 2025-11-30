@@ -33,28 +33,28 @@
 }
 
 .animated-photo-banner-icon {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .animated-photo-banner-icon img {
-  width: var(--size-w-sm);
+  width: var(--size-w-xs);
 }
 
 .animated-photo-banner-title {
-  margin-bottom: 5rem;
+  margin-bottom: 0.75rem;
 }
 
 .animated-photo-banner-title h1 {
   font-family: 'Adobe Clean Black', var(--body-font-family);
   font-weight: 900;
-  font-size: 160px;
-  letter-spacing: -0.3rem;
+  font-size: 44px;
+  letter-spacing: -0.2rem;
   margin: 0;
 }
 
 .animated-photo-banner-header p {
-  font-size: 24px;
-  max-width: var(--size-w-2xl);
+  font-size: 18px;
+  max-width: var(--size-w-md);
   margin: 0 auto;
 }
 
@@ -130,11 +130,27 @@
 
   .animated-photo-banner-title h1 {
     font-size: 80px;
+    letter-spacing: -0.3rem;
   }
 
 }
 
 /* Desktop */
 @media screen and (min-width: 1200px) {
+  .animated-photo-banner-header p {
+  max-width: var(--size-w-2xl);
+}
+
+  .animated-photo-banner-icon {
+    margin-bottom: 2rem;
+  }
+
+  .animated-photo-banner-title {
+    margin-bottom: 5rem;
+  }
+
+  .animated-photo-banner-title h1 {
+    font-size: 160px;
+  }
   
 }
