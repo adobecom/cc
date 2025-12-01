@@ -175,12 +175,6 @@ main .pre-pro.fullwidth .masonry-col {
     border-radius: 12px;
 }
 
-.pre-pro .template:hover .icon-free-badge,
-.pre-pro .template:hover .icon-yt-shorts {
-    opacity: 0;
-    transition: opacity .3s ease-in-out;
-}
-
 .pre-pro .template .button-container .media-wrapper img,
 .pre-pro .template .button-container .media-wrapper video {
     position: absolute;
@@ -230,8 +224,12 @@ main .pre-pro.fullwidth .masonry-col {
 
 .pre-pro.sixcols:not(.horizontal) .template:hover:not(.placeholder) .button-container,
 .pre-pro.sixcols:not(.horizontal) .template:hover:not(.placeholder) .button-container > a.button,
+.pre-pro.sixcols:not(.horizontal) .template:focus-within:not(.placeholder) .button-container,
+.pre-pro.sixcols:not(.horizontal) .template:focus-within:not(.placeholder) .button-container > a.button,
 .pre-pro.fullwidth .template:hover:not(.placeholder) .button-container,
-.pre-pro.fullwidth .template:hover:not(.placeholder) .button-container > a.button {
+.pre-pro.fullwidth .template:hover:not(.placeholder) .button-container > a.button
+.pre-pro.fullwidth .template:focus-within:not(.placeholder) .button-container,
+.pre-pro.fullwidth .template:focus-within:not(.placeholder) .button-container > a.button {
     opacity: 1;
     pointer-events: initial;
     z-index: 2;
@@ -422,11 +420,12 @@ main .pre-pro.fullwidth .masonry-col {
     border-radius: 12px;
 }
 
-.pre-pro .template:hover .button-container .media-wrapper .image-wrapper {
+.pre-pro .template:hover .button-container .media-wrapper .image-wrapper, 
+.pre-pro .template:focus-within .button-container .media-wrapper .image-wrapper {
    overflow: initial;
 }
 
-.pre-pro .share-icon-wrapper .shared-tooltip {
+.pre-pro .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
     visibility: hidden;
     position: absolute;
     display: flex;
