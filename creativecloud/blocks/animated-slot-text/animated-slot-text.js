@@ -63,6 +63,8 @@ function parseSlotData(block) {
       case 'slot-color':
         config.slotColor = value;
         break;
+      default:
+        break;
     }
   });
 
@@ -190,6 +192,9 @@ function decorateContent(el) {
 
   const runSequence = (index = 0) => {
     state.currentIndex = index;
+    if (index < data.items.length - 1) {
+      windowEl.classList.remove('finished');
+    }
     if (index >= data.items.length) return;
     const duration = calculateStepDuration(
       data.items.length,
@@ -197,16 +202,11 @@ function decorateContent(el) {
     );
     updateState(index, duration);
 
-    if (index === data.items.length - 1) {
-      const onTransitionStart = (e) => {
-        if (e.target !== reelEl) return;
-        setRafTimeout(() => {
-          windowEl.style.maskImage = 'none';
-          reelEl.removeEventListener('transitionstart', onTransitionStart);
-        }, (77 * duration) / 100);
-      };
-
-      reelEl.addEventListener('transitionstart', onTransitionStart);
+    if (index >= data.items.length - 1) {
+      setTimeout(() => {
+        windowEl.classList.add('finished');
+      }, duration);
+      return;
     }
 
     if (index >= data.items.length - 1) {
@@ -247,6 +247,7 @@ function decorateContent(el) {
       state.currentIndex = data.items.length - 1;
       state.dimensions = measureGeometry(reelEl);
       updateState(state.currentIndex, 0);
+      windowEl.classList.add('finished');
       return;
     }
 
