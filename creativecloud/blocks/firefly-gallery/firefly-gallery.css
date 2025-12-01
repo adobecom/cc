@@ -1,6 +1,6 @@
 /* Responsive styling with mobile-first approach */
 :root {
-  --s-container-width: 83.3%;
+  --s-container-width: 50%;
   --prompt-font-size: 14px;
   --prompt-line-height: 1.5;
   --username-max-width: 80px;
@@ -60,6 +60,7 @@
   width: var(--s-container-width);
   margin: 0 auto;
 }
+
 
 .firefly-gallery-block {
   position: relative;
@@ -456,9 +457,9 @@
 /* Desktop */
 @media screen and (min-width: 900px) {
   :root {
-    --column-count: 5;
+    --column-count: 3;
     --row-gap: calc(var(--spacing-xs) - 8px);
-    --s-container-width: 62.5%;
+    --s-container-width: 37%;
   }
 }
 

@@ -214,17 +214,13 @@ function createSkeletonLayout(container) {
   const numItems = 25;
 
   const placeholderTypes = [
-    // Column flow pattern optimized for 5 columns (5 items per column)
+    // Column flow pattern optimized for 3 columns (7 items per column)
     // column 1
-    'short', 'square', 'portrait', 'tall', 'short',
+    'short', 'square', 'portrait', 'tall', 'short', 'square', 'portrait',
     // column 2
-    'portrait', 'short', 'tall', 'square', 'portrait',
+    'portrait', 'short', 'tall', 'square', 'portrait', 'short', 'tall',
     // column 3
-    'square', 'tall', 'short', 'portrait', 'tall',
-    // column 4
-    'tall', 'portrait', 'square', 'short', 'square',
-    // column 5
-    'short', 'square', 'portrait', 'tall', 'portrait',
+    'square', 'tall', 'short', 'portrait', 'tall', 'short', 'portrait',
   ];
 
   const initialAspectRatios = {
