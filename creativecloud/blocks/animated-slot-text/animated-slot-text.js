@@ -15,7 +15,9 @@ const createEl = (tag, className, text = '', attrs = {}, styles = {}) => {
   const el = createTag(tag, attrs);
   if (className) el.className = className;
   if (text) el.textContent = text;
-  Object.entries(styles).forEach(([k, v]) => (el.style[k] = v));
+  Object.entries(styles).forEach(([k, v]) => {
+    el.style[k] = v;
+  });
   return el;
 };
 
@@ -49,14 +51,16 @@ function parseSlotData(block) {
           .map((s) => s.trim())
           .filter(Boolean);
         break;
-      case 'total-animation-duration':
+      case 'total-animation-duration': {
         const dur = parseInt(value, 10);
-        if (!isNaN(dur)) config.totalDuration = dur;
+        if (!Number.isNaN(dur)) config.totalDuration = dur;
         break;
-      case 'initial-wait':
+      }
+      case 'initial-wait': {
         const wait = parseInt(value, 10);
-        if (!isNaN(wait)) config.initialWait = wait;
+        if (!Number.isNaN(wait)) config.initialWait = wait;
         break;
+      }
       case 'prefix-color':
         config.prefixColor = value;
         break;
