@@ -107,8 +107,8 @@ function renderComponent(block, data) {
     );
   }
 
-  let windowEl; let
-    reelEl;
+  let windowEl;
+  let reelEl;
   if (items && items.length > 0) {
     windowEl = createEl('span', 'slot-machine-window', '', { 'aria-hidden': 'true' });
     reelEl = createEl('span', 'slot-reel');
@@ -203,13 +203,9 @@ function decorateContent(el) {
     updateState(index, duration);
 
     if (index >= data.items.length - 1) {
-      setTimeout(() => {
+      setRafTimeout(() => {
         windowEl.classList.add('finished');
       }, duration);
-      return;
-    }
-
-    if (index >= data.items.length - 1) {
       return;
     }
 
