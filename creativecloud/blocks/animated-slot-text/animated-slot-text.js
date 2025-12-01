@@ -174,7 +174,7 @@ function decorateContent(el) {
   foreground.classList.add('foreground');
   el.appendChild(foreground);
 
-  const { reelEl } = renderComponent(foreground, data);
+  const { reelEl, windowEl } = renderComponent(foreground, data);
 
   if (!data.items.length) return;
 
@@ -196,7 +196,21 @@ function decorateContent(el) {
     );
     updateState(index, duration);
 
-    if (index >= data.items.length - 1) return;
+    if (index === data.items.length - 1) {
+      const onTransitionStart = (e) => {
+        if (e.target !== reelEl) return;
+        setRafTimeout(() => {
+          windowEl.style.maskImage = 'none';
+          reelEl.removeEventListener('transitionstart', onTransitionStart);
+        }, (77 *duration)/100);
+      };
+
+      reelEl.addEventListener('transitionstart', onTransitionStart);
+    }
+
+    if (index >= data.items.length - 1) {
+      return;
+    }
 
     const onTransitionEnd = (e) => {
       if (e.target !== reelEl) return; // Only listen to reel
@@ -264,6 +278,6 @@ export default function init(el) {
     el.classList.add('con-block');
     decorateContent(el);
   } catch (err) {
-    console.error(err);
+    window.lana?.log(`Animation slot text Init Error: ${err}`, LANA_OPTIONS);
   }
 }
