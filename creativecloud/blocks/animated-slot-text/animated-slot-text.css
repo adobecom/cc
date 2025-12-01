@@ -24,7 +24,6 @@
 
 
 .animated-slot-text .foreground .slot-static-text {
-  color: var(--color-white);
   white-space: nowrap;
   line-height: 0.8;
   padding-bottom: 0.5rem;
@@ -51,7 +50,6 @@
 }
 
 .animated-slot-text .foreground .slot-item {
-  color: var(--accent-color);
   height: 1.2em; 
   display: flex;
   align-items: center;

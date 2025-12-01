@@ -1,3 +1,5 @@
+import { createTag } from '../../scripts/utils.js';
+
 const DEFAULTS = {
   // MATH: 7000ms total / 3 transitions (4 items) = ~2333ms per step.
   totalDuration: 7000,
@@ -8,11 +10,10 @@ const DEFAULTS = {
 };
 
 const createEl = (tag, className, text = '', attrs = {}, styles = {}) => {
-  const el = document.createElement(tag);
+  const el = createTag(tag, attrs);
   if (className) el.className = className;
   if (text) el.textContent = text;
-  Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-  Object.entries(styles).forEach(([k, v]) => el.style[k] = v);
+  Object.entries(styles).forEach(([k, v]) => (el.style[k] = v));
   return el;
 };
 
@@ -66,16 +67,15 @@ function parseSlotData(block) {
   return config;
 }
 
-function getSlotTextItems(items){
-  if(items && items.length > 0)
-  {
-    return items.reduce((acc, curr)=>{
-      const wordText= curr.replace(/[^a-zA-Z0-9\s]/g, '');
+function getSlotTextItems(items) {
+  if (items && items.length > 0) {
+    return items.reduce((acc, curr) => {
+      const wordText = curr.replace(/[^a-zA-Z0-9\s]/g, '');
       acc.push(wordText);
       return acc;
-    },[])
+    }, []);
   }
-  return []
+  return [];
 }
 
 function renderComponent(block, data) {
@@ -146,7 +146,7 @@ const setRafTimeout = (callback, delay) => {
 const calculateStepDuration = (totalItems, instanceTotalDuration) => {
   if (!totalItems || totalItems <= 1) return 0;
   const totalTime = instanceTotalDuration || DEFAULTS.totalDuration;
-  return totalTime / (totalItems -1);
+  return totalTime / (totalItems - 1);
 };
 
 const calculateStyles = (index, height, duration) => ({
@@ -190,7 +190,10 @@ function decorateContent(el) {
   const runSequence = (index = 0) => {
     state.currentIndex = index;
     if (index >= data.items.length) return;
-    const duration = calculateStepDuration(data.items.length, data.totalDuration);
+    const duration = calculateStepDuration(
+      data.items.length,
+      data.totalDuration
+    );
     updateState(index, duration);
 
     if (index >= data.items.length - 1) return;
@@ -238,7 +241,10 @@ function decorateContent(el) {
           if (entry.isIntersecting) {
             state.dimensions = measureGeometry(reelEl);
             updateState(0, 0);
-            const waitTime = data.initialWait !== null ? data.initialWait : DEFAULTS.initialWait;
+            const waitTime =
+              data.initialWait !== null
+                ? data.initialWait
+                : DEFAULTS.initialWait;
             setRafTimeout(() => runSequence(1), waitTime);
             observer.disconnect();
           }
