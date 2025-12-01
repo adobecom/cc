@@ -5,7 +5,7 @@ import { debounce } from '../../scripts/action.js';
 import { createTag } from '../../scripts/utils.js';
 
 // Configuration constants
-const LANA_OPTIONS = { tags: 'firefly-gallery', errorType: 'i' };
+const LANA_OPTIONS = { tags: 'animated-slot-text', errorType: 'i' };
 
 const DEFAULTS = {
   // MATH: 7000ms total / 3 transitions (4 items) = ~2333ms per step.
@@ -123,7 +123,8 @@ function parseSlotData(block) {
 
 function getSlotTextItems(items) {
   try {
-    return items?.length ? items.map((item) => item.replace(/[^a-zA-Z0-9\s]/g, '')) : [];
+    // Allow word characters, spaces, hyphens, and apostrophes
+    return items?.length ? items.map((item) => item.replace(/[^\w\s'-]/g, '')) : [];
   } catch (err) {
     logError('Failed to process slot text items', err);
     return [];
@@ -275,7 +276,10 @@ function createResizeHandler(state, reelEl) {
   };
 }
 
-function setupEventTriggers(el, state, animationController, resizeHandler, data, windowEl, reelEl) {
+function setupEventTriggers(config) {
+  const {
+    el, state, animationController, resizeHandler, data, windowEl, reelEl,
+  } = config;
   try {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       state.currentIndex = data.items.length - 1;
@@ -324,7 +328,9 @@ function decorateContent(el) {
     const animationController = createAnimationController(state, reelEl, windowEl, data);
     const resizeHandler = createResizeHandler(state, reelEl);
 
-    setupEventTriggers(el, state, animationController, resizeHandler, data, windowEl, reelEl);
+    setupEventTriggers({
+      el, state, animationController, resizeHandler, data, windowEl, reelEl,
+    });
   } catch (err) {
     logError('Failed to decorate content', err);
   }
