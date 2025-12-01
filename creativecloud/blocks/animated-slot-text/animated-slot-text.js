@@ -1,5 +1,7 @@
 import { createTag } from '../../scripts/utils.js';
 
+const LANA_OPTIONS = { tags: 'firefly-gallery', errorType: 'i' };
+
 const DEFAULTS = {
   // MATH: 7000ms total / 3 transitions (4 items) = ~2333ms per step.
   totalDuration: 7000,
@@ -98,22 +100,21 @@ function renderComponent(block, data) {
         'slot-static-text',
         prefix,
         { 'aria-hidden': 'true' },
-        { color: finalPrefixColor }
-      )
+        { color: finalPrefixColor },
+      ),
     );
   }
 
-  let windowEl, reelEl;
+  let windowEl; let
+    reelEl;
   if (items && items.length > 0) {
-    windowEl = createEl('span', 'slot-machine-window', '', {
-      'aria-hidden': 'true',
-    });
+    windowEl = createEl('span', 'slot-machine-window', '', { 'aria-hidden': 'true' });
     reelEl = createEl('span', 'slot-reel');
 
     const reelFragment = document.createDocumentFragment();
     items.forEach((text) => {
       reelFragment.appendChild(
-        createEl('div', 'slot-item', text, {}, { color: finalSlotColor })
+        createEl('div', 'slot-item', text, {}, { color: finalSlotColor }),
       );
     });
 
@@ -161,7 +162,7 @@ const applyStyles = (reelEl, styles) => {
       transform: styles.transform,
       transition: styles.transition,
     });
-    if (styles.transition === 'none') void reelEl.offsetWidth; // Force Reflow only if needed
+    if (styles.transition === 'none') reelEl.getBoundingClientRect();
   });
 };
 
@@ -178,7 +179,7 @@ function decorateContent(el) {
 
   if (!data.items.length) return;
 
-  let state = { currentIndex: 0, dimensions: { height: 0 } };
+  const state = { currentIndex: 0, dimensions: { height: 0 } };
 
   const updateState = (index, duration) => {
     if (!state.dimensions.height) return;
@@ -192,7 +193,7 @@ function decorateContent(el) {
     if (index >= data.items.length) return;
     const duration = calculateStepDuration(
       data.items.length,
-      data.totalDuration
+      data.totalDuration,
     );
     updateState(index, duration);
 
@@ -202,7 +203,7 @@ function decorateContent(el) {
         setRafTimeout(() => {
           windowEl.style.maskImage = 'none';
           reelEl.removeEventListener('transitionstart', onTransitionStart);
-        }, (77 *duration)/100);
+        }, (77 * duration) / 100);
       };
 
       reelEl.addEventListener('transitionstart', onTransitionStart);
@@ -229,7 +230,7 @@ function decorateContent(el) {
         cancelSafety();
         onTransitionEnd(e);
       },
-      { once: true }
+      { once: true },
     );
   };
 
@@ -255,16 +256,15 @@ function decorateContent(el) {
           if (entry.isIntersecting) {
             state.dimensions = measureGeometry(reelEl);
             updateState(0, 0);
-            const waitTime =
-              data.initialWait !== null
-                ? data.initialWait
-                : DEFAULTS.initialWait;
+            const waitTime = data.initialWait !== null
+              ? data.initialWait
+              : DEFAULTS.initialWait;
             setRafTimeout(() => runSequence(1), waitTime);
             observer.disconnect();
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     observer.observe(el);

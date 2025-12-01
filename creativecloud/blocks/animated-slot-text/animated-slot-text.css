@@ -38,6 +38,11 @@
   max-width: 100%;
   line-height: var(--line-height);
   mask-image: linear-gradient(to top, black, transparent);
+  transition: mask-image 0.5s ease-out;
+}
+
+.animated-slot-text .foreground .slot-machine-window.finished {
+  mask-image: linear-gradient(to top, black 100%, transparent 100%);
 }
 
 .animated-slot-text .foreground .slot-reel{
