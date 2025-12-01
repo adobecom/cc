@@ -188,6 +188,12 @@
     margin-right: var(--cta-margin-right);
 }
 
+[dir="rtl"] .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
+[dir="rtl"] .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
+  margin-right: 0;
+  margin-left: var(--cta-margin-right);
+}
+
 /* Small mobile */
 @media screen and (max-width: 460px) {
   .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
