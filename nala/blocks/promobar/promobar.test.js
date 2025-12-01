@@ -42,7 +42,6 @@ test.describe('verify promo action bar with CTAs, close, stickiness features in 
   // Test promo bar CTAs navigates valid urls
   test(`${features[2].name},${features[2].tags}`, async ({ page, baseURL }) => {
     console.info(`[Test Page]: ${baseURL}${features[2].path}`);
-    const expectedUrl = features[2].url;
     await test.step('sticky promo bar CTAs are working', async () => {
       await page.goto(`${baseURL}${features[2].path}`);
       await page.waitForLoadState('domcontentloaded');
