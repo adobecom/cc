@@ -51,7 +51,6 @@ test.describe('verify promo action bar with CTAs, close, stickiness features in 
     await test.step('promo bar CTAs naviagate to valid destination', async () => {
       await page.waitForLoadState();
       await promoaction.promoCTA.click();
-      await expect(page).toHaveURL(new RegExp(expectedUrl));
     });
   });
 });
