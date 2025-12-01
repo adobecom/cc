@@ -1,3 +1,4 @@
+import { debounce } from '../../scripts/action.js';
 import { createTag } from '../../scripts/utils.js';
 
 const LANA_OPTIONS = { tags: 'firefly-gallery', errorType: 'i' };
@@ -269,7 +270,7 @@ function decorateContent(el) {
     );
 
     observer.observe(el);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', debounce(handleResize, 100));
   };
 
   setupTriggers();
