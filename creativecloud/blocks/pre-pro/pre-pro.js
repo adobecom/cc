@@ -199,9 +199,8 @@ function createBlankTemplateCard(blankTemplate) {
   return card;
 }
 
-async function share(tooltip, timeoutId) {
-  const urlWithTracking = 'test';
-  await navigator.clipboard.writeText(urlWithTracking);
+async function share(tooltip, timeoutId, url) {
+  await navigator.clipboard.writeText(url);
   tooltip.classList.add('display-tooltip');
 
   const rect = tooltip.getBoundingClientRect();
@@ -278,7 +277,6 @@ function createTemplateCard(item, buttonText, eager = false) {
     imageWrapper.append(video);
   }
 
-
   stillWrapper.append(imageWrapper);
 
   // Button container for hover overlay
@@ -331,13 +329,13 @@ function createTemplateCard(item, buttonText, eager = false) {
   shareIcon.addEventListener('click', (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
-    timeoutId = share(tooltip, timeoutId);
+    timeoutId = share(tooltip, timeoutId, item.deep_link_url);
   });
   shareIcon.addEventListener('keypress', (e) => {
     if (e.key !== 'Enter') {
       return;
     }
-    timeoutId = share(tooltip, timeoutId);
+    timeoutId = share(tooltip, timeoutId, item.deep_link_url);
   });
   shareIconWrapper.append(shareIcon);
 
