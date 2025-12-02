@@ -134,6 +134,26 @@
   contain: layout size;
 }
 
+/* Keyframes for scroll up animation */
+@keyframes scrollUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-200px);
+  }
+}
+
+/* Animation for trends gallery items */
+.firefly-gallery-masonry-grid[data-category="trends"] .firefly-gallery-item {
+  transform: translateY(0);
+  transition: box-shadow var(--transition-speed-fast) ease;
+}
+
+.firefly-gallery-masonry-grid[data-category="trends"] .firefly-gallery-item.animate-in {
+  animation: scrollUp 10s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2s forwards;
+}
+
 /* Fixed minimum heights for skeleton items during loading */
 .skeleton-item {
   min-height: var(--skeleton-height-default);

@@ -226,7 +226,10 @@ export function buildAndGetGalleryElements() {
 }
 
 function createSkeletonLayout(container, categoryId) {
-  const masonryGrid = createTag('div', { class: 'firefly-gallery-masonry-grid loading' });
+  const masonryGrid = createTag('div', {
+    class: 'firefly-gallery-masonry-grid loading',
+    'data-category': categoryId
+  });
 
   const skeletonItems = [];
   
@@ -567,6 +570,10 @@ function loadFireflyImages(skeletonItems, assets = [], categoryId = '') {
           const index = parseInt(element.dataset.index, 10);
           if (index >= 0 && index < assets.length) {
             buildAndProcessAssetItem(element, assets[index], locale, categoryId);
+            // Add animation for trends category
+            if (categoryId === 'trends') {
+              element.classList.add('animate-in');
+            }
           }
         },
         once: true,
