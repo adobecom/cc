@@ -233,12 +233,11 @@ function createSkeletonLayout(container, categoryId) {
 
   const skeletonItems = [];
   
-  const numItems = categoryId === 'trends' ? 12 : 25;
+  const numItems = categoryId === 'trends' ? 20 : 25;
 
   const placeholderTypes = categoryId === 'trends' ? [
-    'short', 'square', 'portrait', 'tall',
-    'portrait', 'short', 'tall', 'square',
-    'square', 'tall', 'short', 'portrait',
+    'short', 'square', 'portrait', 'tall', 'portrait', 'short', 'tall', 'square','portrait', 'short',
+    'portrait', 'short', 'tall', 'square', 'square', 'tall', 'short', 'portrait', 'square', 'tall',
   ]: [
     // Column flow pattern optimized for 3 columns (7 items per column)
     // column 1

@@ -140,7 +140,7 @@
     transform: translateY(0);
   }
   to {
-    transform: translateY(-200px);
+    transform: translateY(-250px);
   }
 }
 
@@ -151,7 +151,7 @@
 }
 
 .firefly-gallery-masonry-grid[data-category="trends"] .firefly-gallery-item.animate-in {
-  animation: scrollUp 10s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2s forwards;
+  animation: scrollUp 16s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2s forwards;
 }
 
 /* Fixed minimum heights for skeleton items during loading */
