@@ -293,6 +293,12 @@ function createPlayIconElement() {
   return wrapper;
 }
 
+function createTrendIconElement() {
+  const wrapper = createTag('div', { class: 'firefly-gallery-trend-icon' });
+  wrapper.insertAdjacentHTML('afterbegin', ICON_TREND);
+  return wrapper;
+}
+
 function buildOverlayElement(
   promptText,
   fireflyUrl,
@@ -375,9 +381,16 @@ function buildAndLoadAssetIntoSkeleton(
   assetData = {},
   userInfo = {},
 ) {
-  const { id, assetType, viewBtnLabel, cgenId } = assetData;
+  const { id, assetType, viewBtnLabel, cgenId, categoryId } = assetData;
   return new Promise((resolve) => {
     const assetContainer = createTag('div', { class: 'firefly-gallery-image' });
+
+    // Add trend icon for trends category
+    if (categoryId === 'trends') {
+      const trendIcon = createTrendIconElement();
+      assetContainer.appendChild(trendIcon);
+    }
+
     if (assetType === 'video') {
       skeletonItem.classList.add('video-item');
       const playIcon = createPlayIconElement();
@@ -469,7 +482,7 @@ function buildAndLoadAssetIntoSkeleton(
   });
 }
 
-function buildAndProcessAssetItem(item, asset, locale) {
+function buildAndProcessAssetItem(item, asset, locale, categoryId = '') {
   const aspectRatio = extractAspectRatio(asset);
 
   const itemType = getItemTypeFromAspectRatio(aspectRatio);
@@ -522,6 +535,7 @@ function buildAndProcessAssetItem(item, asset, locale) {
     assetType: asset.assetType || 'image',
     viewBtnLabel: asset.viewBtnLabel,
     cgenId: asset.cgenId,
+    categoryId,
   };
   buildAndLoadAssetIntoSkeleton(
     item,
@@ -534,7 +548,7 @@ function buildAndProcessAssetItem(item, asset, locale) {
   );
 }
 
-function loadFireflyImages(skeletonItems, assets = []) {
+function loadFireflyImages(skeletonItems, assets = [], categoryId = '') {
   try {
     if (!assets || !assets.length) {
       return;
@@ -552,7 +566,7 @@ function loadFireflyImages(skeletonItems, assets = []) {
         callback: (element) => {
           const index = parseInt(element.dataset.index, 10);
           if (index >= 0 && index < assets.length) {
-            buildAndProcessAssetItem(element, assets[index], locale);
+            buildAndProcessAssetItem(element, assets[index], locale, categoryId);
           }
         },
         once: true,
@@ -617,7 +631,7 @@ export default async function init(el) {
     fetchFireflyAssets(categoryId, viewBtnLabel, cgenId)
       .then((assets) => {
         if (assets && assets.length) {
-          loadFireflyImages(skeletonItems, assets);
+          loadFireflyImages(skeletonItems, assets, categoryId);
           handleResizeForGallery(assets, skeletonItems);
           masonryGrid.classList.remove('loading');
         } else {
