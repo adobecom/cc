@@ -5,6 +5,9 @@ const FIREFLY_API_URL = 'https://community-hubs.adobe.io/api/v2/ff_community/ass
 const API_PARAMS = '?size=32&sort=updated_desc&include_pending_assets=false&cursor=';
 const API_KEY = 'milo-ff-gallery-unity';
 const ICON_PLAY = '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.59755 34.6503C10.6262 35.2535 11.7861 35.5552 12.9471 35.5552C14.0637 35.5552 15.1824 35.2753 16.1839 34.7132L32.1258 25.7798C34.2742 24.5775 35.5557 22.4155 35.5557 20.0002C35.5557 17.5843 34.2742 15.4228 32.1258 14.2206L16.1839 5.28719C14.1429 4.14137 11.6168 4.16523 9.59753 5.35012C7.76268 6.42434 6.66675 8.27981 6.66675 10.3094V29.6909C6.66675 31.72 7.76268 33.576 9.59755 34.6503Z" fill="black" fill-opacity="0.84" style="fill:black;fill-opacity:0.84;"/></svg>';
+const ICON_TREND = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.684 4.042A1.029 1.029 0 0 1 22 5.03l-.001 5.712a1.03 1.03 0 0 1-1.647.823L18.71 10.33l-4.18 5.568a1.647 1.647 0 0 1-2.155.428l-.15-.1-3.337-2.507-4.418 5.885c-.42.56-1.185.707-1.777.368l-.144-.095a1.372 1.372 0 0 1-.368-1.776l.095-.144 5.077-6.762a1.646 1.646 0 0 1 2.156-.428l.149.1 3.336 2.506 3.522-4.69-1.647-1.237a1.03 1.03 0 0 1 .194-1.76l.137-.05 5.485-1.595-.001.001z" fill="#000000"/></svg>`;
+
 const LANA_OPTIONS = { tags: 'firefly-gallery', errorType: 'i' };
 
 // Item type thresholds for categorization
@@ -222,13 +225,18 @@ export function buildAndGetGalleryElements() {
   };
 }
 
-function createSkeletonLayout(container) {
+function createSkeletonLayout(container, categoryId) {
   const masonryGrid = createTag('div', { class: 'firefly-gallery-masonry-grid loading' });
 
   const skeletonItems = [];
-  const numItems = 25;
+  
+  const numItems = categoryId === 'trends' ? 12 : 25;
 
-  const placeholderTypes = [
+  const placeholderTypes = categoryId === 'trends' ? [
+    'short', 'square', 'portrait', 'tall',
+    'portrait', 'short', 'tall', 'square',
+    'square', 'tall', 'short', 'portrait',
+  ]: [
     // Column flow pattern optimized for 3 columns (7 items per column)
     // column 1
     'short', 'square', 'portrait', 'tall', 'short', 'square', 'portrait',
@@ -600,7 +608,7 @@ export default async function init(el) {
     const { container, content } = buildAndGetGalleryElements();
 
     // Create and append skeleton layout
-    const { skeletonItems, masonryGrid } = createSkeletonLayout(content);
+    const { skeletonItems, masonryGrid } = createSkeletonLayout(content, categoryId);
 
     // Replace block content with our gallery structure
     el.appendChild(container);
