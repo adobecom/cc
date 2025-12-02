@@ -127,10 +127,25 @@ function updateItemTypeClass(item, itemType) {
   item.className = newClasses.join(' ');
 }
 
+function createFireflyEndpoint(categoryId) {
+  switch(categoryId) {
+    case 'text2Image':
+      return `${FIREFLY_API_URL}${API_PARAMS}&category_id=${categoryId}`
+    case 'VideoGeneration':
+      return `${FIREFLY_API_URL}${API_PARAMS}&category_id=${categoryId}`
+    case 'trends':
+      return "http://localhost:5001/filter-trends"
+    case 'localText2Image':
+      return "http://localhost:5001/local-image-to-text"
+    default:
+      return `${FIREFLY_API_URL}${API_PARAMS}&category_id=${categoryId}`
+  }
+}
+
 async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId) {
   try {
     const response = await fetch(
-      `${FIREFLY_API_URL}${API_PARAMS}&category_id=${categoryId}`,
+      createFireflyEndpoint(categoryId),
       { headers: { 'x-api-key': API_KEY } },
     );
 
