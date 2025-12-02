@@ -39,7 +39,7 @@ indices:
       - /about-adobe/**
       - /corporate-responsibility/**
       - /ventures/**
-      - /mobile-app/**
+      - /mobile-apps/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -118,7 +118,7 @@ indices:
       - /au/about-adobe/**
       - /au/corporate-responsibility/**
       - /au/ventures/**
-      - /au/mobile-app/**
+      - /au/mobile-apps/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -160,7 +160,7 @@ indices:
       - /de/about-adobe/**
       - /de/corporate-responsibility/**
       - /de/ventures/**
-      - /de/mobile-app/**
+      - /de/mobile-apps/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -202,7 +202,7 @@ indices:
       - /es/about-adobe/**
       - /es/corporate-responsibility/**
       - /es/ventures/**
-      - /es/mobile-app/**
+      - /es/mobile-apps/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -244,7 +244,7 @@ indices:
       - /fr/about-adobe/**
       - /fr/corporate-responsibility/**
       - /fr/ventures/**
-      - /fr/mobile-app/**
+      - /fr/mobile-apps/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -286,7 +286,7 @@ indices:
       - /it/about-adobe/**
       - /it/corporate-responsibility/**
       - /it/ventures/**
-      - /it/mobile-app/**
+      - /it/mobile-apps/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -328,7 +328,7 @@ indices:
       - /jp/about-adobe/**
       - /jp/corporate-responsibility/**
       - /jp/ventures/**
-      - /jp/mobile-app/**
+      - /jp/mobile-apps/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -370,7 +370,7 @@ indices:
       - /kr/about-adobe/**
       - /kr/corporate-responsibility/**
       - /kr/ventures/**
-      - /kr/mobile-app/**
+      - /kr/mobile-apps/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -412,7 +412,7 @@ indices:
       - /ru/about-adobe/**
       - /ru/corporate-responsibility/**
       - /ru/ventures/**
-      - /ru/mobile-app/**
+      - /ru/mobile-apps/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -454,7 +454,7 @@ indices:
       - /hk_zh/about-adobe/**
       - /hk_zh/corporate-responsibility/**
       - /hk_zh/ventures/**
-      - /hk_zh/mobile-app/**
+      - /hk_zh/mobile-apps/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -496,7 +496,7 @@ indices:
       - /tw/about-adobe/**
       - /tw/corporate-responsibility/**
       - /tw/ventures/**
-      - /tw/mobile-app/**
+      - /tw/mobile-apps/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -538,7 +538,7 @@ indices:
       - /nl/about-adobe/**
       - /nl/corporate-responsibility/**
       - /nl/ventures/**
-      - /nl/mobile-app/**
+      - /nl/mobile-apps/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -580,7 +580,7 @@ indices:
       - /pl/about-adobe/**
       - /pl/corporate-responsibility/**
       - /pl/ventures/**
-      - /pl/mobile-app/**
+      - /pl/mobile-apps/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -622,7 +622,7 @@ indices:
       - /tr/about-adobe/**
       - /tr/corporate-responsibility/**
       - /tr/ventures/**
-      - /tr/mobile-app/**
+      - /tr/mobile-apps/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -664,7 +664,7 @@ indices:
       - /uk/about-adobe/**
       - /uk/corporate-responsibility/**
       - /uk/ventures/**
-      - /uk/mobile-app/**
+      - /uk/mobile-apps/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -706,7 +706,7 @@ indices:
       - /ca/about-adobe/**
       - /ca/corporate-responsibility/**
       - /ca/ventures/**
-      - /ca/mobile-app/**
+      - /ca/mobile-apps/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -748,7 +748,7 @@ indices:
       - /cn/about-adobe/**
       - /cn/corporate-responsibility/**
       - /cn/ventures/**
-      - /cn/mobile-app/**
+      - /cn/mobile-apps/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -790,7 +790,7 @@ indices:
       - /ae_ar/about-adobe/**
       - /ae_ar/corporate-responsibility/**
       - /ae_ar/ventures/**
-      - /ae_ar/mobile-app/**
+      - /ae_ar/mobile-apps/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -832,7 +832,7 @@ indices:
       - /ae_en/about-adobe/**
       - /ae_en/corporate-responsibility/**
       - /ae_en/ventures/**
-      - /ae_en/mobile-app/**
+      - /ae_en/mobile-apps/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -874,7 +874,7 @@ indices:
       - /at/about-adobe/**
       - /at/corporate-responsibility/**
       - /at/ventures/**
-      - /at/mobile-app/**
+      - /at/mobile-apps/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -916,7 +916,7 @@ indices:
       - /be_en/about-adobe/**
       - /be_en/corporate-responsibility/**
       - /be_en/ventures/**
-      - /be_en/mobile-app/**
+      - /be_en/mobile-apps/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -958,7 +958,7 @@ indices:
       - /be_fr/about-adobe/**
       - /be_fr/corporate-responsibility/**
       - /be_fr/ventures/**
-      - /be_fr/mobile-app/**
+      - /be_fr/mobile-apps/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -1000,7 +1000,7 @@ indices:
       - /ca_fr/about-adobe/**
       - /ca_fr/corporate-responsibility/**
       - /ca_fr/ventures/**
-      - /ca_fr/mobile-app/**
+      - /ca_fr/mobile-apps/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -1042,7 +1042,7 @@ indices:
       - /ch_de/about-adobe/**
       - /ch_de/corporate-responsibility/**
       - /ch_de/ventures/**
-      - /ch_de/mobile-app/**
+      - /ch_de/mobile-apps/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -1084,7 +1084,7 @@ indices:
       - /ch_fr/about-adobe/**
       - /ch_fr/corporate-responsibility/**
       - /ch_fr/ventures/**
-      - /ch_fr/mobile-app/**
+      - /ch_fr/mobile-apps/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -1126,7 +1126,7 @@ indices:
       - /cl/about-adobe/**
       - /cl/corporate-responsibility/**
       - /cl/ventures/**
-      - /cl/mobile-app/**
+      - /cl/mobile-apps/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -1168,7 +1168,7 @@ indices:
       - /gr_en/about-adobe/**
       - /gr_en/corporate-responsibility/**
       - /gr_en/ventures/**
-      - /gr_en/mobile-app/**
+      - /gr_en/mobile-apps/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -1210,7 +1210,7 @@ indices:
       - /hk_en/about-adobe/**
       - /hk_en/corporate-responsibility/**
       - /hk_en/ventures/**
-      - /hk_en/mobile-app/**
+      - /hk_en/mobile-apps/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -1252,7 +1252,7 @@ indices:
       - /ie/about-adobe/**
       - /ie/corporate-responsibility/**
       - /ie/ventures/**
-      - /ie/mobile-app/**
+      - /ie/mobile-apps/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -1294,7 +1294,7 @@ indices:
       - /il_en/about-adobe/**
       - /il_en/corporate-responsibility/**
       - /il_en/ventures/**
-      - /il_en/mobile-app/**
+      - /il_en/mobile-apps/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -1336,7 +1336,7 @@ indices:
       - /in/about-adobe/**
       - /in/corporate-responsibility/**
       - /in/ventures/**
-      - /in/mobile-app/**
+      - /in/mobile-apps/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -1378,7 +1378,7 @@ indices:
       - /lt/about-adobe/**
       - /lt/corporate-responsibility/**
       - /lt/ventures/**
-      - /lt/mobile-app/**
+      - /lt/mobile-apps/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -1420,7 +1420,7 @@ indices:
       - /lu_de/about-adobe/**
       - /lu_de/corporate-responsibility/**
       - /lu_de/ventures/**
-      - /lu_de/mobile-app/**
+      - /lu_de/mobile-apps/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -1462,7 +1462,7 @@ indices:
       - /lu_en/about-adobe/**
       - /lu_en/corporate-responsibility/**
       - /lu_en/ventures/**
-      - /lu_en/mobile-app/**
+      - /lu_en/mobile-apps/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -1504,7 +1504,7 @@ indices:
       - /lu_fr/about-adobe/**
       - /lu_fr/corporate-responsibility/**
       - /lu_fr/ventures/**
-      - /lu_fr/mobile-app/**
+      - /lu_fr/mobile-apps/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -1546,7 +1546,7 @@ indices:
       - /mena_en/about-adobe/**
       - /mena_en/corporate-responsibility/**
       - /mena_en/ventures/**
-      - /mena_en/mobile-app/**
+      - /mena_en/mobile-apps/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -1588,7 +1588,7 @@ indices:
       - /nz/about-adobe/**
       - /nz/corporate-responsibility/**
       - /nz/ventures/**
-      - /nz/mobile-app/**
+      - /nz/mobile-apps/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -1630,7 +1630,7 @@ indices:
       - /sa_ar/about-adobe/**
       - /sa_ar/corporate-responsibility/**
       - /sa_ar/ventures/**
-      - /sa_ar/mobile-app/**
+      - /sa_ar/mobile-apps/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -1672,7 +1672,7 @@ indices:
       - /sa_en/about-adobe/**
       - /sa_en/corporate-responsibility/**
       - /sa_en/ventures/**
-      - /sa_en/mobile-app/**
+      - /sa_en/mobile-apps/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
   cards-sa_en:
@@ -1714,7 +1714,7 @@ indices:
       - /th_en/about-adobe/**
       - /th_en/corporate-responsibility/**
       - /th_en/ventures/**
-      - /th_en/mobile-app/**
+      - /th_en/mobile-apps/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -1756,7 +1756,7 @@ indices:
       - /th_th/about-adobe/**
       - /th_th/corporate-responsibility/**
       - /th_th/ventures/**
-      - /th_th/mobile-app/**
+      - /th_th/mobile-apps/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -1798,7 +1798,7 @@ indices:
       - /za/about-adobe/**
       - /za/corporate-responsibility/**
       - /za/ventures/**
-      - /za/mobile-app/**
+      - /za/mobile-apps/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -1840,7 +1840,7 @@ indices:
       - /africa/about-adobe/**
       - /africa/corporate-responsibility/**
       - /africa/ventures/**
-      - /africa/mobile-app/**
+      - /africa/mobile-apps/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -1882,7 +1882,7 @@ indices:
       - /ar/about-adobe/**
       - /ar/corporate-responsibility/**
       - /ar/ventures/**
-      - /ar/mobile-app/**
+      - /ar/mobile-apps/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -1924,7 +1924,7 @@ indices:
       - /co/about-adobe/**
       - /co/corporate-responsibility/**
       - /co/ventures/**
-      - /co/mobile-app/**
+      - /co/mobile-apps/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -1966,7 +1966,7 @@ indices:
       - /cr/about-adobe/**
       - /cr/corporate-responsibility/**
       - /cr/ventures/**
-      - /cr/mobile-app/**
+      - /cr/mobile-apps/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -2008,7 +2008,7 @@ indices:
       - /ec/about-adobe/**
       - /ec/corporate-responsibility/**
       - /ec/ventures/**
-      - /ec/mobile-app/**
+      - /ec/mobile-apps/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -2050,7 +2050,7 @@ indices:
       - /eg_ar/about-adobe/**
       - /eg_ar/corporate-responsibility/**
       - /eg_ar/ventures/**
-      - /eg_ar/mobile-app/**
+      - /eg_ar/mobile-apps/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -2092,7 +2092,7 @@ indices:
       - /eg_en/about-adobe/**
       - /eg_en/corporate-responsibility/**
       - /eg_en/ventures/**
-      - /eg_en/mobile-app/**
+      - /eg_en/mobile-apps/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -2134,7 +2134,7 @@ indices:
       - /gr_el/about-adobe/**
       - /gr_el/corporate-responsibility/**
       - /gr_el/ventures/**
-      - /gr_el/mobile-app/**
+      - /gr_el/mobile-apps/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -2176,7 +2176,7 @@ indices:
       - /gt/about-adobe/**
       - /gt/corporate-responsibility/**
       - /gt/ventures/**
-      - /gt/mobile-app/**
+      - /gt/mobile-apps/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -2218,7 +2218,7 @@ indices:
       - /id_en/about-adobe/**
       - /id_en/corporate-responsibility/**
       - /id_en/ventures/**
-      - /id_en/mobile-app/**
+      - /id_en/mobile-apps/**
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -2260,7 +2260,7 @@ indices:
       - /id_id/about-adobe/**
       - /id_id/corporate-responsibility/**
       - /id_id/ventures/**
-      - /id_id/mobile-app/**
+      - /id_id/mobile-apps/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -2302,7 +2302,7 @@ indices:
       - /in_hi/about-adobe/**
       - /in_hi/corporate-responsibility/**
       - /in_hi/ventures/**
-      - /in_hi/mobile-app/**
+      - /in_hi/mobile-apps/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -2344,7 +2344,7 @@ indices:
       - /kw_ar/about-adobe/**
       - /kw_ar/corporate-responsibility/**
       - /kw_ar/ventures/**
-      - /kw_ar/mobile-app/**
+      - /kw_ar/mobile-apps/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -2386,7 +2386,7 @@ indices:
       - /kw_en/about-adobe/**
       - /kw_en/corporate-responsibility/**
       - /kw_en/ventures/**
-      - /kw_en/mobile-app/**
+      - /kw_en/mobile-apps/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -2428,7 +2428,7 @@ indices:
       - /my_en/about-adobe/**
       - /my_en/corporate-responsibility/**
       - /my_en/ventures/**
-      - /my_en/mobile-app/**
+      - /my_en/mobile-apps/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -2470,7 +2470,7 @@ indices:
       - /my_ms/about-adobe/**
       - /my_ms/corporate-responsibility/**
       - /my_ms/ventures/**
-      - /my_ms/mobile-app/**
+      - /my_ms/mobile-apps/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -2512,7 +2512,7 @@ indices:
       - /ng/about-adobe/**
       - /ng/corporate-responsibility/**
       - /ng/ventures/**
-      - /ng/mobile-app/**
+      - /ng/mobile-apps/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -2554,7 +2554,7 @@ indices:
       - /pe/about-adobe/**
       - /pe/corporate-responsibility/**
       - /pe/ventures/**
-      - /pe/mobile-app/**
+      - /pe/mobile-apps/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -2596,7 +2596,7 @@ indices:
       - /ph_en/about-adobe/**
       - /ph_en/corporate-responsibility/**
       - /ph_en/ventures/**
-      - /ph_en/mobile-app/**
+      - /ph_en/mobile-apps/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -2638,7 +2638,7 @@ indices:
       - /ph_fil/about-adobe/**
       - /ph_fil/corporate-responsibility/**
       - /ph_fil/ventures/**
-      - /ph_fil/mobile-app/**
+      - /ph_fil/mobile-apps/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -2680,7 +2680,7 @@ indices:
       - /pr/about-adobe/**
       - /pr/corporate-responsibility/**
       - /pr/ventures/**
-      - /pr/mobile-app/**
+      - /pr/mobile-apps/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -2722,7 +2722,7 @@ indices:
       - /qa_ar/about-adobe/**
       - /qa_ar/corporate-responsibility/**
       - /qa_ar/ventures/**
-      - /qa_ar/mobile-app/**
+      - /qa_ar/mobile-apps/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -2764,7 +2764,7 @@ indices:
       - /qa_en/about-adobe/**
       - /qa_en/corporate-responsibility/**
       - /qa_en/ventures/**
-      - /qa_en/mobile-app/**
+      - /qa_en/mobile-apps/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -2806,7 +2806,7 @@ indices:
       - /vn_en/about-adobe/**
       - /vn_en/corporate-responsibility/**
       - /vn_en/ventures/**
-      - /vn_en/mobile-app/**
+      - /vn_en/mobile-apps/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -2848,7 +2848,7 @@ indices:
       - /vn_vi/about-adobe/**
       - /vn_vi/corporate-responsibility/**
       - /vn_vi/ventures/**
-      - /vn_vi/mobile-app/**
+      - /vn_vi/mobile-apps/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -2890,7 +2890,7 @@ indices:
       - /dk/about-adobe/**
       - /dk/corporate-responsibility/**
       - /dk/ventures/**
-      - /dk/mobile-app/**
+      - /dk/mobile-apps/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -2932,7 +2932,7 @@ indices:
       - /fi/about-adobe/**
       - /fi/corporate-responsibility/**
       - /fi/ventures/**
-      - /fi/mobile-app/**
+      - /fi/mobile-apps/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -2974,7 +2974,7 @@ indices:
       - /no/about-adobe/**
       - /no/corporate-responsibility/**
       - /no/ventures/**
-      - /no/mobile-app/**
+      - /no/mobile-apps/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -3016,7 +3016,7 @@ indices:
       - /se/about-adobe/**
       - /se/corporate-responsibility/**
       - /se/ventures/**
-      - /se/mobile-app/**
+      - /se/mobile-apps/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -3058,7 +3058,7 @@ indices:
       - /la/about-adobe/**
       - /la/corporate-responsibility/**
       - /la/ventures/**
-      - /la/mobile-app/**
+      - /la/mobile-apps/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -3100,7 +3100,7 @@ indices:
       - /mx/about-adobe/**
       - /mx/corporate-responsibility/**
       - /mx/ventures/**
-      - /mx/mobile-app/**
+      - /mx/mobile-apps/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -3142,7 +3142,7 @@ indices:
       - /be_nl/about-adobe/**
       - /be_nl/corporate-responsibility/**
       - /be_nl/ventures/**
-      - /be_nl/mobile-app/**
+      - /be_nl/mobile-apps/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -3184,7 +3184,7 @@ indices:
       - /bg/about-adobe/**
       - /bg/corporate-responsibility/**
       - /bg/ventures/**
-      - /bg/mobile-app/**
+      - /bg/mobile-apps/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -3226,7 +3226,7 @@ indices:
       - /ch_it/about-adobe/**
       - /ch_it/corporate-responsibility/**
       - /ch_it/ventures/**
-      - /ch_it/mobile-app/**
+      - /ch_it/mobile-apps/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -3268,7 +3268,7 @@ indices:
       - /cz/about-adobe/**
       - /cz/corporate-responsibility/**
       - /cz/ventures/**
-      - /cz/mobile-app/**
+      - /cz/mobile-apps/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -3310,7 +3310,7 @@ indices:
       - /ee/about-adobe/**
       - /ee/corporate-responsibility/**
       - /ee/ventures/**
-      - /ee/mobile-app/**
+      - /ee/mobile-apps/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -3352,7 +3352,7 @@ indices:
       - /hu/about-adobe/**
       - /hu/corporate-responsibility/**
       - /hu/ventures/**
-      - /hu/mobile-app/**
+      - /hu/mobile-apps/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -3394,7 +3394,7 @@ indices:
       - /il_he/about-adobe/**
       - /il_he/corporate-responsibility/**
       - /il_he/ventures/**
-      - /il_he/mobile-app/**
+      - /il_he/mobile-apps/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -3436,7 +3436,7 @@ indices:
       - /lv/about-adobe/**
       - /lv/corporate-responsibility/**
       - /lv/ventures/**
-      - /lv/mobile-app/**
+      - /lv/mobile-apps/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -3478,7 +3478,7 @@ indices:
       - /mena_ar/about-adobe/**
       - /mena_ar/corporate-responsibility/**
       - /mena_ar/ventures/**
-      - /mena_ar/mobile-app/**
+      - /mena_ar/mobile-apps/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -3520,7 +3520,7 @@ indices:
       - /pt/about-adobe/**
       - /pt/corporate-responsibility/**
       - /pt/ventures/**
-      - /pt/mobile-app/**
+      - /pt/mobile-apps/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -3562,7 +3562,7 @@ indices:
       - /ro/about-adobe/**
       - /ro/corporate-responsibility/**
       - /ro/ventures/**
-      - /ro/mobile-app/**
+      - /ro/mobile-apps/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -3604,7 +3604,7 @@ indices:
       - /si/about-adobe/**
       - /si/corporate-responsibility/**
       - /si/ventures/**
-      - /si/mobile-app/**
+      - /si/mobile-apps/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -3646,7 +3646,7 @@ indices:
       - /sk/about-adobe/**
       - /sk/corporate-responsibility/**
       - /sk/ventures/**
-      - /sk/mobile-app/**
+      - /sk/mobile-apps/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -3688,7 +3688,7 @@ indices:
       - /ua/about-adobe/**
       - /ua/corporate-responsibility/**
       - /ua/ventures/**
-      - /ua/mobile-app/**
+      - /ua/mobile-apps/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -3730,7 +3730,7 @@ indices:
       - /sg/about-adobe/**
       - /sg/corporate-responsibility/**
       - /sg/ventures/**
-      - /sg/mobile-app/**
+      - /sg/mobile-apps/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -3772,7 +3772,7 @@ indices:
       - /br/about-adobe/**
       - /br/corporate-responsibility/**
       - /br/ventures/**
-      - /br/mobile-app/**
+      - /br/mobile-apps/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -3814,7 +3814,7 @@ indices:
       - /cis_en/about-adobe/**
       - /cis_en/corporate-responsibility/**
       - /cis_en/ventures/**
-      - /cis_en/mobile-app/**
+      - /cis_en/mobile-apps/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -3856,7 +3856,7 @@ indices:
       - /cis_ru/about-adobe/**
       - /cis_ru/corporate-responsibility/**
       - /cis_ru/ventures/**
-      - /cis_ru/mobile-app/**
+      - /cis_ru/mobile-apps/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
