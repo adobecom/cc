@@ -1,5 +1,5 @@
 .photo-gallery {
-  --gap-size: 16px;
+  --gap-size: 8px;
 }
 
 .photo-gallery .photo-grid-component {
