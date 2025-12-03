@@ -71,10 +71,18 @@ const createViewElement = (type, config, allRowsContent) => {
   allRowsContent.forEach((originalRowContent, index) => {
     const rowNum = index + 1;
     const rowConfig = config[rowNum] || { left: 0 };
+
+    // Apply Start Index Rotation if configured
     let rowContent = originalRowContent;
     if (rowConfig.startIndex && rowConfig.startIndex > 0 && originalRowContent.length > 0) {
+      // Convert 1-based user input (e.g., 2) to 0-based index (e.g., 1)
       const zeroBasedIndex = rowConfig.startIndex - 1;
+
+      // Calculate safe rotation index
       const rotation = zeroBasedIndex % originalRowContent.length;
+
+      // Shift array based on user input
+      // Example: [A, B, C, D] with startIndex=2 becomes [B, C, D, A]
       rowContent = [
         ...originalRowContent.slice(rotation),
         ...originalRowContent.slice(0, rotation),
@@ -90,9 +98,8 @@ const createViewElement = (type, config, allRowsContent) => {
     }
 
     const itemsFragment = document.createDocumentFragment();
-
     for (let i = 0; i < multiplier; i += 1) {
-      const isClone = i > 0;
+      const loadMode = i === 0 ? 'eager' : 'lazy';
 
       rowContent.forEach((html) => {
         const temp = document.createElement('div');
@@ -102,11 +109,14 @@ const createViewElement = (type, config, allRowsContent) => {
         if (pic) {
           const item = document.createElement('div');
           item.className = 'grid-item';
+
           const finalPic = pic.cloneNode(true);
-          if (isClone) {
-            const img = finalPic.querySelector('img');
-            if (img) img.setAttribute('loading', 'lazy');
+          const img = finalPic.querySelector('img');
+          if (img) {
+            img.setAttribute('loading', loadMode);
+            img.loading = loadMode;
           }
+
           item.appendChild(finalPic);
           itemsFragment.appendChild(item);
         }
