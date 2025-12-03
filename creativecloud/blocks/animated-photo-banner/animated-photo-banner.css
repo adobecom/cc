@@ -52,7 +52,7 @@
 
 .animated-photo-banner-header p {
   font-size: 18px;
-  max-width: var(--size-w-md);
+  max-width: 300px;
   margin: 0 auto;
 }
 
@@ -114,7 +114,7 @@
 /* Tablet */
 @media screen and (min-width: 600px) {
   .animated-photo-banner-header p {
-    max-width: var(--size-w-xl);
+    max-width: 640px;
     font-size: 28px;
   }
 
@@ -139,8 +139,7 @@
 /* Desktop */
 @media screen and (min-width: 1200px) {
   .animated-photo-banner-header p {
-    max-width: var(--size-w-2xl);
-    font-size: 24px;
+    max-width: 840px;
   }
 
   .animated-photo-banner-icon {
