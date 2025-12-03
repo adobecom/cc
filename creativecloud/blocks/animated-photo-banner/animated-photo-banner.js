@@ -64,6 +64,11 @@ function addTransitionStyles(element, includeTransform = true) {
   element.style.transition = transitions.join(', ');
 }
 
+function removeTransformTransition(element) {
+  // Keep only the opacity transition
+  element.style.transition = `opacity ${CONFIG.FADE_DURATION / 1000}s ease-out`;
+}
+
 // ===== PARAMETER PROCESSING =====
 
 function parseParamValue(key, value) {
@@ -203,6 +208,11 @@ function animateToFinalPositions(images, paramsList, timing) {
       // Add transition and animate to final position
       addTransitionStyles(image, true);
       setElementTransform(image, endPos[0], endPos[1], CONFIG.DEFAULT_SCALE);
+
+      // Remove transform transition after animation completes
+      setTimeout(() => {
+        removeTransformTransition(image);
+      }, CONFIG.TRANSFORM_DURATION);
     });
   }, timing.finalPhaseDelay);
 }
