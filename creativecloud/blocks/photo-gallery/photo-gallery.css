@@ -73,10 +73,3 @@
     height: 300px;
   }
 }
-
-@media screen and (min-width: 1200px) {
-  .photo-gallery .photo-grid-component .grid-view.view-desktop .grid-item {
-    width: 378px;
-    height: 395px;
-  }
-}
