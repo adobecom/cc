@@ -3,6 +3,7 @@ import { createTag } from '../../scripts/utils.js';
 const LANA_OPTIONS = { tags: 'animated-slot-text', errorType: 'i' };
 
 const VIEW_TYPES = ['mobile', 'tablet', 'desktop'];
+const MIN_ITEMS_TARGET = 30;
 
 function logError(message, error) {
   window.lana?.log(`Photo gallery ${message}: ${error}`, LANA_OPTIONS);
@@ -69,6 +70,11 @@ function createViewElement(type, config, allRowsContent) {
   const rowsFragment = document.createDocumentFragment();
 
   allRowsContent.forEach((rowContent, index) => {
+    const multiplier = Math.ceil(MIN_ITEMS_TARGET / (rowContent.length || 1));
+    const filledContent = [];
+    for (let i = 0; i < multiplier; i += 1) {
+      filledContent.push(...rowContent);
+    }
     const rowNum = index + 1;
     const rowConfig = config[rowNum] || { left: 0 };
     const rowDiv = document.createElement('div');
@@ -79,7 +85,7 @@ function createViewElement(type, config, allRowsContent) {
 
     const itemsFragment = document.createDocumentFragment();
 
-    rowContent.forEach((html) => {
+    filledContent.forEach((html) => {
       const temp = document.createElement('div');
       temp.innerHTML = html;
       const pic = temp.querySelector('picture');
