@@ -52,7 +52,7 @@
 
 .animated-photo-banner-header p {
   font-size: 18px;
-  max-width: var(--size-w-md);
+  max-width: 300px;
   margin: 0 auto;
 }
 
@@ -109,12 +109,13 @@
   height: auto;
   display: block;
   object-fit: contain;
+  border-radius: 4px;
 }
 
 /* Tablet */
 @media screen and (min-width: 600px) {
   .animated-photo-banner-header p {
-    max-width: var(--size-w-xl);
+    max-width: 640px;
     font-size: 28px;
   }
 
@@ -134,13 +135,16 @@
     font-size: 80px;
     letter-spacing: -0.3rem;
   }
+
+  .animated-photo-banner-image img {
+    border-radius: 8px;
+  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1200px) {
   .animated-photo-banner-header p {
-    max-width: var(--size-w-2xl);
-    font-size: 24px;
+    max-width: 840px;
   }
 
   .animated-photo-banner-icon {
@@ -154,5 +158,9 @@
   .animated-photo-banner-title h1 {
     font-size: 160px;
     letter-spacing: -0.5rem;
+  }
+
+  .animated-photo-banner-image img {
+    border-radius: 16px;
   }
 }
