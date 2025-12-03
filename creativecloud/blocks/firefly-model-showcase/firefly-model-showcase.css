@@ -122,7 +122,6 @@
 
 .gallery-column {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: var(--gallery-column-gap);
   width: 160px;
@@ -203,6 +202,12 @@
 }
 
 /* End of second CTA support */
+
+@media screen and (min-width: 500px) {
+  .gallery-column {
+    flex: 1;
+  }
+}
 
 /* Tablet */
 @media screen and (min-width: 600px) {
