@@ -145,7 +145,7 @@ function createFireflyEndpoint(categoryId) {
   }
 }
 
-async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId) {
+async function fetchFireflyAssets(el, categoryId, viewBtnLabel, cgenId) {
   try {
     const response = await fetch(
       createFireflyEndpoint(categoryId),
@@ -160,9 +160,15 @@ async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId) {
     const data = await response.json();
     // Shuffle assets
     // eslint-disable-next-line no-underscore-dangle
-    const assets = [...(data._embedded.assets || [])].sort(
-      () => Math.random() - 0.5,
-    );
+    let assets = data._embedded.assets;
+    if (el.classList.contains('trend') && el.classList.contains('reverse')) {
+      assets = [...assets].reverse();
+    } else if (el.classList.contains('trend')) {
+    } else {
+      assets = [...(data._embedded.assets || [])].sort(
+        () => Math.random() - 0.5,
+      );
+    }
     assets.forEach((asset) => {
       asset.assetType = categoryId === 'VideoGeneration' ? 'video' : 'image';
       asset.viewBtnLabel = viewBtnLabel;
@@ -236,7 +242,7 @@ function createSkeletonLayout(container, categoryId) {
   const numItems = categoryId === 'trends' ? 20 : 25;
 
   const placeholderTypes = categoryId === 'trends' ? [
-    'short', 'square', 'portrait', 'tall', 'portrait', 'short', 'tall', 'square','portrait', 'short',
+    'short', 'square', 'portrait', 'short', 'portrait', 'short', 'short', 'square','portrait', 'short',
     'portrait', 'short', 'tall', 'square', 'square', 'tall', 'short', 'portrait', 'square', 'tall',
   ]: [
     // Column flow pattern optimized for 3 columns (7 items per column)
@@ -386,7 +392,6 @@ function buildAndLoadAssetIntoSkeleton(
   const { id, assetType, viewBtnLabel, cgenId, categoryId } = assetData;
   return new Promise((resolve) => {
     const assetContainer = createTag('div', { class: 'firefly-gallery-image' });
-
     // Add trend icon for trends category
     if (categoryId === 'trends') {
       const trendIcon = createTrendIconElement();
@@ -571,7 +576,7 @@ function loadFireflyImages(skeletonItems, assets = [], categoryId = '') {
             buildAndProcessAssetItem(element, assets[index], locale, categoryId);
             // Add animation for trends category
             if (categoryId === 'trends') {
-              element.classList.add('animate-in');
+              element.closest('.firefly-gallery-masonry-grid').classList.add('animate-in');
             }
           }
         },
@@ -634,7 +639,7 @@ export default async function init(el) {
     el.appendChild(container);
 
     // Allow UI to be scrollable before waiting for image data
-    fetchFireflyAssets(categoryId, viewBtnLabel, cgenId)
+    fetchFireflyAssets(el, categoryId, viewBtnLabel, cgenId)
       .then((assets) => {
         if (assets && assets.length) {
           loadFireflyImages(skeletonItems, assets, categoryId);
