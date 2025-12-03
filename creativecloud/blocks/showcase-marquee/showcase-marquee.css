@@ -203,7 +203,7 @@
   }
 
   .showcase-marquee.unity-enabled .interactive-area .ex-unity-wrap .ex-unity-widget .autocomplete {
-    width: 560px;
+    width: auto;
   }
 }
 
