@@ -63,45 +63,60 @@ function resolveViewData(targetType, availableDataMap) {
   return availableDataMap[foundKey] || {};
 }
 
-function createViewElement(type, config, allRowsContent) {
+const createViewElement = (type, config, allRowsContent) => {
   const wrapper = document.createElement('div');
   wrapper.className = `grid-view view-${type}`;
-
   const rowsFragment = document.createDocumentFragment();
 
   allRowsContent.forEach((rowContent, index) => {
     const multiplier = Math.ceil(MIN_ITEMS_TARGET / (rowContent.length || 1));
-    const filledContent = [];
-    for (let i = 0; i < multiplier; i += 1) {
-      filledContent.push(...rowContent);
-    }
     const rowNum = index + 1;
     const rowConfig = config[rowNum] || { left: 0 };
+
     const rowDiv = document.createElement('div');
-    rowDiv.classList.add('grid-row');
+    rowDiv.className = 'grid-row';
+
     if (rowConfig.left) {
       rowDiv.style.marginLeft = `${rowConfig.left}%`;
     }
 
     const itemsFragment = document.createDocumentFragment();
 
-    filledContent.forEach((html) => {
-      const temp = document.createElement('div');
-      temp.innerHTML = html;
-      const pic = temp.querySelector('picture');
-      if (pic) {
-        const item = document.createElement('div');
-        item.classList.add('grid-item');
-        item.appendChild(pic);
-        itemsFragment.appendChild(item);
-      }
-    });
+    for (let i = 0; i < multiplier; i += 1) {
+      const isClone = i > 0;
+
+      rowContent.forEach((html) => {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const pic = temp.querySelector('picture');
+
+        if (pic) {
+          const item = document.createElement('div');
+          item.className = 'grid-item';
+
+          // Clone the picture node
+          const finalPic = pic.cloneNode(true);
+
+          // PERFORMANCE OPTIMIZATION:
+          // If this is a cloned set (likely off-screen initially), set loading="lazy"
+          if (isClone) {
+            const img = finalPic.querySelector('img');
+            if (img) img.setAttribute('loading', 'lazy');
+          }
+
+          item.appendChild(finalPic);
+          itemsFragment.appendChild(item);
+        }
+      });
+    }
+
     rowDiv.appendChild(itemsFragment);
     rowsFragment.appendChild(rowDiv);
   });
+
   wrapper.appendChild(rowsFragment);
   return wrapper;
-}
+};
 
 function decorateContent(el) {
   try {
