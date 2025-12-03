@@ -68,11 +68,20 @@ const createViewElement = (type, config, allRowsContent) => {
   wrapper.className = `grid-view view-${type}`;
   const rowsFragment = document.createDocumentFragment();
 
-  allRowsContent.forEach((rowContent, index) => {
-    const multiplier = Math.ceil(MIN_ITEMS_TARGET / (rowContent.length || 1));
+  allRowsContent.forEach((originalRowContent, index) => {
     const rowNum = index + 1;
     const rowConfig = config[rowNum] || { left: 0 };
+    let rowContent = originalRowContent;
+    if (rowConfig.startIndex && rowConfig.startIndex > 0 && originalRowContent.length > 0) {
+      const zeroBasedIndex = rowConfig.startIndex - 1;
+      const rotation = zeroBasedIndex % originalRowContent.length;
+      rowContent = [
+        ...originalRowContent.slice(rotation),
+        ...originalRowContent.slice(0, rotation),
+      ];
+    }
 
+    const multiplier = Math.ceil(MIN_ITEMS_TARGET / (rowContent.length || 1));
     const rowDiv = document.createElement('div');
     rowDiv.className = 'grid-row';
 
@@ -93,17 +102,11 @@ const createViewElement = (type, config, allRowsContent) => {
         if (pic) {
           const item = document.createElement('div');
           item.className = 'grid-item';
-
-          // Clone the picture node
           const finalPic = pic.cloneNode(true);
-
-          // PERFORMANCE OPTIMIZATION:
-          // If this is a cloned set (likely off-screen initially), set loading="lazy"
           if (isClone) {
             const img = finalPic.querySelector('img');
             if (img) img.setAttribute('loading', 'lazy');
           }
-
           item.appendChild(finalPic);
           itemsFragment.appendChild(item);
         }
