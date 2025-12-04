@@ -53,6 +53,7 @@
 .animated-photo-banner-header p {
   font-size: 18px;
   max-width: 300px;
+  line-height: 1.3;
   margin: 0 auto;
 }
 
@@ -145,6 +146,7 @@
 @media screen and (min-width: 1200px) {
   .animated-photo-banner-header p {
     max-width: 840px;
+    font-size: 24px;
   }
 
   .animated-photo-banner-icon {
