@@ -167,6 +167,5 @@ export default function init(el) {
     decorateContent(el);
   } catch (err) {
     window.lana?.log(`Photo banner Init Error: ${err}`, LANA_OPTIONS);
-    console.error('saurabh', err);
   }
 }
