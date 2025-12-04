@@ -36,7 +36,7 @@
   object-fit: cover;
 } 
 
-.photo-gallery .photo-grid-component .grid-view.view-mobile{
+.photo-gallery .photo-grid-component .grid-view.view-mobile {
   display: flex;
 }
 
@@ -55,7 +55,7 @@
   }
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .photo-gallery .photo-grid-component .grid-view.view-tablet {
     display: none;
   }
