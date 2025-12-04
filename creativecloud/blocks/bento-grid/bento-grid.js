@@ -141,7 +141,7 @@ function decorateContent(el) {
 
     const allRowsContent = rowContainers.map((container) => extractPictures(container));
     el.innerHTML = '';
-    const foreground = createTag('div', { class: 'foreground photo-grid-component' });
+    const foreground = createTag('div', { class: 'foreground' });
     el.setAttribute('role', 'region');
     el.setAttribute('aria-label', 'Image Gallery');
 
