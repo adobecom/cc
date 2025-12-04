@@ -56,15 +56,15 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .photo-gallery .foreground .grid-view.view-tablet {
+  .bento-grid .foreground .grid-view.view-tablet {
     display: none;
   }
 
-  .photo-gallery .foreground .grid-view.view-desktop {
+  .bento-grid .foreground .grid-view.view-desktop {
     display: flex;
   }
 
-  .photo-gallery .foreground .grid-view.view-desktop .grid-item {
+  .bento-grid .foreground .grid-view.view-desktop .grid-item {
     width: 23.62rem;
     height: 24.69rem;
   }
