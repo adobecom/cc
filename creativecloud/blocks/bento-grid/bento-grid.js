@@ -19,7 +19,6 @@ function parseConfigBlock(configContainer) {
 
     let currentViewport = null;
     const currentProps = {};
-    // finds paragraphs
 
     paragraphs.forEach((p) => {
       const text = p.textContent.trim();
