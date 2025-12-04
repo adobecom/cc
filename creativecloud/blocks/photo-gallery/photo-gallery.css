@@ -1,5 +1,5 @@
 .photo-gallery {
-  --gap-size: 8px;
+  --gap-size: 0.5rem;
 }
 
 .photo-gallery .photo-grid-component {
@@ -11,13 +11,13 @@
 .photo-gallery .photo-grid-component .grid-view {
   display: none;
   flex-direction: column;
-  gap: var(--gap-size);
+  gap: 1rem;
   width: 100%;
 }
 
 .photo-gallery .photo-grid-component .grid-row {
   display: flex;
-  gap: var(--gap-size);
+  gap: 0.5rem;
   width: 100%;
   box-sizing: border-box;
   transition: margin 0.3s ease;
@@ -29,8 +29,8 @@
   overflow: hidden;
   background: #222;
   position: relative;
-  width: 156px;
-  height: 163px;
+  width: 9.75rem;
+  height: 10.19rem;
 }
 
 .photo-gallery .photo-grid-component .grid-item img {
@@ -54,8 +54,8 @@
   }
 
   .photo-gallery .photo-grid-component .grid-view.view-tablet .grid-item {
-    width: 185px;
-    height: 193px;
+    width: 11.56rem;
+    height: 12.06rem;
   }
 }
 
@@ -69,7 +69,7 @@
   }
 
   .photo-gallery .photo-grid-component .grid-view.view-desktop .grid-item {
-    width: 378px;
-    height: 395px;
+    width: 23.62rem;
+    height: 24.69rem;
   }
 }
