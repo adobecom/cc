@@ -3,7 +3,7 @@ import { createTag } from '../../scripts/utils.js';
 const LANA_OPTIONS = { tags: 'animated-slot-text', errorType: 'i' };
 
 const VIEW_TYPES = ['mobile', 'tablet', 'desktop'];
-const MIN_ITEMS_TARGET = 30;
+const MIN_ITEMS_TARGET = 15;
 
 function logError(message, error) {
   window.lana?.log(`Photo gallery ${message}: ${error}`, LANA_OPTIONS);
