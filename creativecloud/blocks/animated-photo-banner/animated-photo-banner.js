@@ -17,6 +17,14 @@ const CONFIG = {
   DEFAULT_HEADER_POSITION: [50, 10],
   DEFAULT_WIDTH_CLASS: 'md',
   WAVE_INITIAL_DELAY: 300,
+  DESKTOP_TABLET_WIDTH: {
+    ORIGINAL: 2000,
+    OPTIMIZED: 1000,
+  },
+  MOBILE_WIDTH: {
+    ORIGINAL: 750,
+    OPTIMIZED: 500,
+  },
 };
 
 const LANA_OPTIONS = { tags: 'animated-photo-banner', errorType: 'i' };
@@ -139,12 +147,6 @@ function initializeImageStates(waveGroups) {
     const waveNumber = parseInt(wave, 10);
 
     waveImages.forEach(({ element, params }) => {
-      if (waveNumber === -1) {
-        // Wave -1: Hide completely
-        setElementVisibility(element, false, 0);
-        return;
-      }
-
       if (waveNumber === 0) {
         // Wave 0: Show immediately in final position
         const endPos = getPositionWithFallback(params);
@@ -286,6 +288,12 @@ function setupAnimation(container, paramsList, headerParams) {
 
 // ===== DOM BUILDING FUNCTIONS =====
 
+function optimizeImageWidth(url) {
+  return url
+    .replace(new RegExp(`width=${CONFIG.DESKTOP_TABLET_WIDTH.ORIGINAL}`, 'g'), `width=${CONFIG.DESKTOP_TABLET_WIDTH.OPTIMIZED}`)
+    .replace(new RegExp(`width=${CONFIG.MOBILE_WIDTH.ORIGINAL}`, 'g'), `width=${CONFIG.MOBILE_WIDTH.OPTIMIZED}`);
+}
+
 function createMainContainer() {
   const container = createTag('div', { class: 'animated-photo-banner-container' });
   const imagesContainer = createTag('div', { class: 'animated-photo-banner-images' });
@@ -311,6 +319,10 @@ function processImageSections(el, imagesContainer) {
       // Extract animation parameters for each viewport
       const params = extractViewportParamsFromDivs(viewportDivs);
 
+      // Skip hidden images (wave=-1) to avoid unnecessary DOM creation and image loading
+      const viewportParams = getViewportParams(params);
+      if (viewportParams.wave === -1) return;
+
       // Create image wrapper with the picture
       const imageWrapper = createTag('div', { class: 'animated-photo-banner-image' });
       const widthClass = params[DETECTED_VIEWPORT]?.width || CONFIG.DEFAULT_WIDTH_CLASS;
@@ -320,7 +332,19 @@ function processImageSections(el, imagesContainer) {
       imageWrapper.style.opacity = '0';
 
       try {
-        imageWrapper.appendChild(pictureEl.cloneNode(true));
+        // Optimize image URLs before cloning
+        const optimizedPicture = pictureEl.cloneNode(true);
+        const sources = optimizedPicture.querySelectorAll('source');
+        const img = optimizedPicture.querySelector('img');
+
+        sources.forEach((source) => {
+          source.srcset = optimizeImageWidth(source.srcset);
+        });
+        if (img?.src) {
+          img.src = optimizeImageWidth(img.src);
+        }
+
+        imageWrapper.appendChild(optimizedPicture);
         imagesContainer.appendChild(imageWrapper);
       } catch (err) {
         logError('Image DOM manipulation', `Failed to append image ${index}: ${err}`);
