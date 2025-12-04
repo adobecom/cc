@@ -1,0 +1,87 @@
+.animated-text-reveal { 
+  display: block;
+  font-family: var(--body-font-family);
+  transform: translate3d(0,0,0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  padding: var(--spacing-xl);
+  contain: layout paint;
+}
+
+.animated-text-reveal h2 {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 0.8em;
+  color: var(--color-black);
+  letter-spacing: -0.02em;
+}
+
+.animated-text-reveal .text-layer-wrapper {
+  position: relative;
+  display: block;
+  margin: 0 0 0.5em;
+}
+
+.animated-text-reveal p.semantic-text{
+  position: relative;
+  z-index: 2; 
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+  color: transparent; 
+  caret-color: var(--color-black); 
+  display: block;
+}
+
+.animated-text-reveal p.semantic-text::selection {
+  background-color: #b3d4fc;
+  background-color: Highlight;
+  color: transparent; 
+}
+
+.animated-text-reveal .visual-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none; 
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+  display: block;
+  user-select: none; 
+}
+
+
+.animated-text-reveal .word{
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.animated-text-reveal .char {
+  color: var(--color-gray-300);
+  transition: color 0.1s linear;
+  will-change: color;
+}
+
+.animated-text-reveal .char.active {
+  color: var(--color-black);
+}
+
+@media (prefers-reduced-motion: reduce){
+ .animated-text-reveal .char {
+    transition: none;
+    opacity: 0.2;
+  }
+
+ .animated-text-reveal .char.active {
+    opacity: 1;
+    color: var(--color-black);
+  }
+}
+

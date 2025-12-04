@@ -1,0 +1,78 @@
+.animated-slot-text {
+  --line-height: 1.1;
+  --font-size-lg : 6rem;
+  --font-size-m : 3.375rem;
+  --font-size-s: 2.25rem;
+  --anim-ease: linear;
+
+  font-family: var(--body-font-family);
+}
+
+.animated-slot-text .foreground > div {
+  display: flex;
+  font-size: var(--font-size-s);
+  font-weight: 900;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  contain: content;
+  padding: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+.animated-slot-text .foreground .slot-static-text {
+  white-space: nowrap;
+  line-height: 0.8;
+  padding-bottom: 0.5rem;
+}
+
+.animated-slot-text .foreground .slot-machine-window {
+  position: relative;
+  height: 1.2em; 
+  overflow: hidden;
+  display: flex;
+  vertical-align: bottom; 
+  max-width: 100%;
+  line-height: var(--line-height);
+  mask-image: linear-gradient(to top, black 65%, transparent 100%);
+  transition: mask-image 2s ease;;
+}
+
+.animated-slot-text .foreground .slot-machine-window.finished {
+  mask-image: linear-gradient(to top, black 100%, transparent 100%);
+}
+
+.animated-slot-text .foreground .slot-reel{
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: auto;
+  min-width: max-content;
+  will-change: transform;
+}
+
+.animated-slot-text .foreground .slot-item {
+  height: 1.2em; 
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+
+@media screen and (min-width:600px){
+  .animated-slot-text .foreground > div {
+    font-size: var(--font-size-m);
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .animated-slot-text .foreground > div {
+    font-size: var(--font-size-lg);
+  }
+}
