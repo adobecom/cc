@@ -63,7 +63,9 @@ const applyStyles = (reelEl, styles) => {
       transform: styles.transform,
       transition: styles.transition,
     });
-    if (styles.transition === 'none') reelEl.getBoundingClientRect();
+    if (styles.transition === 'none') {
+      reelEl.getBoundingClientRect();
+    }
   });
 };
 
@@ -228,13 +230,13 @@ function createAnimationController(state, reelEl, windowEl, data, controlActions
     try {
       state.currentIndex = index;
 
+      if (index < data.items.length - 1) {
+        windowEl.classList.remove('finished');
+      }
+
       if (index >= data.items.length) {
         controlActions?.updateControlState(false);
         return;
-      }
-
-      if (index < data.items.length - 1) {
-        windowEl.classList.remove('finished');
       }
 
       const duration = (index === 0)
@@ -244,12 +246,18 @@ function createAnimationController(state, reelEl, windowEl, data, controlActions
       updateAnimationState(state, reelEl, index, duration);
 
       if (index >= data.items.length - 1) {
+        let iconTimer = null;
         const maskCancel = setRafTimeout(() => {
           windowEl.classList.add('finished');
-          controlActions?.updateControlState(false);
+          iconTimer = setTimeout(() => {
+            controlActions?.updateControlState(false);
+          }, 2000);
         }, duration);
 
-        animationRef.cancel = maskCancel;
+        animationRef.cancel = () => {
+          maskCancel();
+          if (iconTimer) clearTimeout(iconTimer);
+        };
         return;
       }
 
@@ -260,31 +268,27 @@ function createAnimationController(state, reelEl, windowEl, data, controlActions
         animationRef.cancel = snapCancel;
         return;
       }
+      let onTransitionEnd;
 
-      const onTransitionEnd = (e) => {
-        if (e.target !== reelEl) return;
+      const triggerNext = () => {
         reelEl.removeEventListener('transitionend', onTransitionEnd);
         runSequence(index + 1);
       };
 
-      const safetyCancel = setRafTimeout(() => {
-        reelEl.removeEventListener('transitionend', onTransitionEnd);
-        runSequence(index + 1);
-      }, duration + DEFAULTS.safetyTimeoutBuffer);
+      const safetyCancel = setRafTimeout(triggerNext, duration + DEFAULTS.safetyTimeoutBuffer);
+
+      onTransitionEnd = (e) => {
+        if (e.target !== reelEl) return;
+        safetyCancel();
+        triggerNext();
+      };
 
       animationRef.cancel = () => {
         reelEl.removeEventListener('transitionend', onTransitionEnd);
         safetyCancel();
       };
 
-      reelEl.addEventListener(
-        'transitionend',
-        (e) => {
-          safetyCancel();
-          onTransitionEnd(e);
-        },
-        { once: true },
-      );
+      reelEl.addEventListener('transitionend', onTransitionEnd);
     } catch (err) {
       logError('Animation sequence error', err);
     }
@@ -405,6 +409,7 @@ function setupEventTriggers(config) {
 
             const startCancel = setRafTimeout(() => animationController.runSequence(1), waitTime);
             animationRef.cancel = startCancel;
+
             observer.disconnect();
           }
         });
@@ -471,6 +476,7 @@ function decorateContent(el, getFederatedContentRoot) {
 
     if (!reducedMotion) {
       addAccessibilityControl(el, getFederatedContentRoot);
+
       const ctrlInterface = initControls({
         wrapper: el?.querySelector('.animation-controls .pause-play-wrapper'),
         filler: el?.querySelector('.animation-controls .pause-play-wrapper .offset-filler'),
