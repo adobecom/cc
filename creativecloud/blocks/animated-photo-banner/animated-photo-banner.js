@@ -202,8 +202,8 @@ function animateToFinalPositions(images, paramsList, timing) {
       const viewportParams = getViewportParams(params);
       const wave = viewportParams.wave || 1;
 
-      // Skip hidden and immediate images
-      if (wave === -1 || wave === 0) return;
+      // Skip immediate images
+      if (wave === 0) return;
 
       const endPos = getPositionWithFallback(viewportParams);
 
