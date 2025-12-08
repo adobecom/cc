@@ -166,3 +166,15 @@
     border-radius: 16px;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-photo-banner-image,
+  .animated-photo-banner-header {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .animated-photo-banner-image {
+    will-change: auto;
+  }
+}

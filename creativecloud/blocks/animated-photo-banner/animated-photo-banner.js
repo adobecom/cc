@@ -2,7 +2,7 @@
 // Provides animated image galleries with wave-based animations and responsive behavior
 // TODO: Write a more detailed authoring document in repo
 
-import { createTag, getScreenSizeCategory } from '../../scripts/utils.js';
+import { createTag, getScreenSizeCategory, prefersReducedMotion } from '../../scripts/utils.js';
 
 // Configuration constants
 const CONFIG = {
@@ -239,6 +239,32 @@ function showHeader(header, headerParams, timing) {
 
 // ===== ANIMATION ORCHESTRATION =====
 
+function overrideForReducedMotion(paramsList, headerParams) {
+  if (!prefersReducedMotion()) {
+    return;
+  }
+
+  // Override image params
+  paramsList.forEach((params) => {
+    Object.keys(params).forEach((viewport) => {
+      // All images appear immediately with no scaling
+      if (params[viewport]) {
+        params[viewport].wave = 0;
+        params[viewport].scale = 1;
+      }
+    });
+  });
+
+  if (headerParams) {
+    Object.keys(headerParams).forEach((viewport) => {
+      if (headerParams[viewport]) {
+        // Make header appear immediately
+        headerParams[viewport].wave = 0;
+      }
+    });
+  }
+}
+
 function createAnimationSequence(container, images, paramsList, headerParams) {
   const header = container.querySelector('.animated-photo-banner-header');
 
@@ -280,6 +306,7 @@ function waitForImagesAndStartAnimation(container, images, paramsList, headerPar
 function setupAnimation(container, paramsList, headerParams) {
   try {
     const images = container.querySelectorAll('.animated-photo-banner-image');
+    overrideForReducedMotion(paramsList, headerParams);
     waitForImagesAndStartAnimation(container, images, paramsList, headerParams);
   } catch (err) {
     logError('Error setting up animation', err);

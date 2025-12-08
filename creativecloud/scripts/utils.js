@@ -234,6 +234,10 @@ export function getScreenSizeCategory(overridenBreakpoints) {
   return 'desktop';
 }
 
+export function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function heroForegroundImage(firstBlock) {
   const rows = [...firstBlock.querySelectorAll(':scope > div')];
   if (rows.length > 1 && rows[0].textContent !== '') rows.shift();
