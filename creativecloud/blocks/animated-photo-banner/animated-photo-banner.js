@@ -88,7 +88,7 @@ function parseParamValue(key, value) {
 
 function extractParams(paramDiv) {
   return Array.from(paramDiv.querySelectorAll('p')).reduce((params, p) => {
-    const text = p.textContent.trim();
+    const text = p.textContent.trim().toLowerCase();
     const [key, value] = text.split('=');
 
     if (value !== undefined) {
