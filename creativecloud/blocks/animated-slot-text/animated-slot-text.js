@@ -1,8 +1,7 @@
 // Animated Slot Text Component
 // Provides animated text transitions with slot machine effect and responsive behavior
-
 import { debounce } from '../../scripts/action.js';
-import { createTag } from '../../scripts/utils.js';
+import { createTag, getLibs } from '../../scripts/utils.js';
 
 // Configuration constants
 const LANA_OPTIONS = { tags: 'animated-slot-text', errorType: 'i' };
@@ -11,11 +10,18 @@ const DEFAULTS = {
   // MATH: 7000ms total / 3 transitions (4 items) = ~2333ms per step.
   totalDuration: 7000,
   initialWait: 500,
-  prefixColor: '#000000', // UPDATED: Default to black
+  prefixColor: '#000000', // Default to black
   slotColor: '#f33',
   safetyTimeoutBuffer: 50, // Buffer for safety timeout in animation sequence
   resizeDebounceDelay: 100, // Debounce delay for resize events
   intersectionThreshold: 0.5, // Threshold for intersection observer
+};
+
+const BUTTON_LABELS = {
+  playMotion: 'Play',
+  pauseMotion: 'Pause',
+  pauseIcon: 'Pause icon',
+  playIcon: 'Play icon',
 };
 
 // ===== UTILITY FUNCTIONS =====
@@ -61,6 +67,12 @@ const applyStyles = (reelEl, styles) => {
   });
 };
 
+const calculateStepDuration = (totalItems, instanceTotalDuration) => {
+  if (!totalItems || totalItems <= 1) return 0;
+  const totalTime = instanceTotalDuration || DEFAULTS.totalDuration;
+  return totalTime / (totalItems - 1);
+};
+
 // ===== DATA PROCESSING =====
 
 function parseSlotData(block) {
@@ -77,6 +89,8 @@ function parseSlotData(block) {
     const rows = Array.from(block.children);
 
     rows.forEach((row) => {
+      if (!row.children || row.children.length < 2) return;
+
       const keyDiv = row.children[0];
       const valDiv = row.children[1];
       if (!keyDiv || !valDiv) return;
@@ -123,7 +137,6 @@ function parseSlotData(block) {
 
 function getSlotTextItems(items) {
   try {
-    // Allow word characters, spaces, hyphens, and apostrophes
     return items?.length ? items.map((item) => item.replace(/[^\w\s'-]/g, '')) : [];
   } catch (err) {
     logError('Failed to process slot text items', err);
@@ -203,7 +216,6 @@ function setupComponentDOM(el, data) {
 function updateAnimationState(state, reelEl, index, duration) {
   if (!state.dimensions.height) return;
 
-  // Inline styles calculation
   const styles = {
     transform: `translate3d(0, ${index * state.dimensions.height * -1}px, 0)`,
     transition: duration === 0 ? 'none' : `transform ${duration}ms var(--anim-ease)`,
@@ -211,25 +223,41 @@ function updateAnimationState(state, reelEl, index, duration) {
   applyStyles(reelEl, styles);
 }
 
-function createAnimationController(state, reelEl, windowEl, data) {
+function createAnimationController(state, reelEl, windowEl, data, controlActions, animationRef) {
   const runSequence = (index = 0) => {
     try {
       state.currentIndex = index;
+
+      if (index >= data.items.length) {
+        controlActions?.updateControlState(false);
+        return;
+      }
+
       if (index < data.items.length - 1) {
         windowEl.classList.remove('finished');
       }
-      if (index >= data.items.length) return;
 
-      // Inline calculation: total time / (number of transitions)
-      const duration = (!data.items.length || data.items.length <= 1)
+      const duration = (index === 0)
         ? 0
-        : (data.totalDuration || DEFAULTS.totalDuration) / (data.items.length - 1);
+        : calculateStepDuration(data.items.length, data.totalDuration);
+
       updateAnimationState(state, reelEl, index, duration);
 
       if (index >= data.items.length - 1) {
-        setRafTimeout(() => {
+        const maskCancel = setRafTimeout(() => {
           windowEl.classList.add('finished');
+          controlActions?.updateControlState(false);
         }, duration);
+
+        animationRef.cancel = maskCancel;
+        return;
+      }
+
+      if (duration === 0) {
+        const snapCancel = setRafTimeout(() => {
+          runSequence(index + 1);
+        }, 50);
+        animationRef.cancel = snapCancel;
         return;
       }
 
@@ -239,15 +267,20 @@ function createAnimationController(state, reelEl, windowEl, data) {
         runSequence(index + 1);
       };
 
-      const cancelSafety = setRafTimeout(() => {
+      const safetyCancel = setRafTimeout(() => {
         reelEl.removeEventListener('transitionend', onTransitionEnd);
         runSequence(index + 1);
       }, duration + DEFAULTS.safetyTimeoutBuffer);
 
+      animationRef.cancel = () => {
+        reelEl.removeEventListener('transitionend', onTransitionEnd);
+        safetyCancel();
+      };
+
       reelEl.addEventListener(
         'transitionend',
         (e) => {
-          cancelSafety();
+          safetyCancel();
           onTransitionEnd(e);
         },
         { once: true },
@@ -260,7 +293,78 @@ function createAnimationController(state, reelEl, windowEl, data) {
   return { runSequence };
 }
 
-// ===== EVENT HANDLING =====
+// ===== EVENT HANDLING & CONTROLS =====
+
+function initControls({
+  wrapper,
+  filler,
+  data,
+  windowEl,
+  updateVisuals,
+  updateStateIndex,
+  animationInterface,
+  animationRef,
+}) {
+  let isPlaying = true;
+
+  const updateControlState = (playing) => {
+    isPlaying = playing;
+    if (!wrapper || !filler) return;
+
+    if (playing) {
+      filler.classList.add('is-playing');
+      wrapper.setAttribute('aria-label', BUTTON_LABELS.pauseMotion);
+      wrapper.setAttribute('title', BUTTON_LABELS.pauseMotion);
+      wrapper.setAttribute('aria-pressed', 'true');
+    } else {
+      filler.classList.remove('is-playing');
+      wrapper.setAttribute('aria-label', BUTTON_LABELS.playMotion);
+      wrapper.setAttribute('title', BUTTON_LABELS.playMotion);
+      wrapper.setAttribute('aria-pressed', 'false');
+    }
+  };
+
+  const jumpToEnd = () => {
+    if (animationRef.cancel) animationRef.cancel();
+    const lastIndex = data.items.length - 1;
+    if (updateStateIndex) updateStateIndex(lastIndex);
+    updateVisuals(lastIndex, 0);
+    windowEl.classList.add('finished');
+  };
+
+  const restartAnimation = () => {
+    if (animationRef.cancel) animationRef.cancel();
+    windowEl.classList.remove('finished');
+    if (animationInterface && animationInterface.start) {
+      animationInterface.start(0);
+    }
+  };
+
+  const togglePlayPause = () => {
+    if (isPlaying) {
+      updateControlState(false);
+      jumpToEnd();
+    } else {
+      updateControlState(true);
+      restartAnimation();
+    }
+  };
+
+  if (wrapper) {
+    wrapper.addEventListener('click', (e) => {
+      e.preventDefault();
+      togglePlayPause();
+    });
+    wrapper.addEventListener('keydown', (e) => {
+      if (e.code === 'Enter' || e.code === 'Space') {
+        e.preventDefault();
+        togglePlayPause();
+      }
+    });
+  }
+
+  return { updateControlState };
+}
 
 function createResizeHandler(state, reelEl) {
   return () => {
@@ -278,7 +382,7 @@ function createResizeHandler(state, reelEl) {
 
 function setupEventTriggers(config) {
   const {
-    el, state, animationController, resizeHandler, data, windowEl, reelEl,
+    el, state, animationController, resizeHandler, data, windowEl, reelEl, animationRef,
   } = config;
   try {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -298,7 +402,9 @@ function setupEventTriggers(config) {
             const waitTime = data.initialWait !== null
               ? data.initialWait
               : DEFAULTS.initialWait;
-            setRafTimeout(() => animationController.runSequence(1), waitTime);
+
+            const startCancel = setRafTimeout(() => animationController.runSequence(1), waitTime);
+            animationRef.cancel = startCancel;
             observer.disconnect();
           }
         });
@@ -313,9 +419,41 @@ function setupEventTriggers(config) {
   }
 }
 
+function addAccessibilityControl(el, getFederatedContentRoot) {
+  if (!el) return;
+  const fedRoot = getFederatedContentRoot();
+
+  const controlContainer = createTag('div', { class: 'animation-controls' });
+
+  const a = createTag('a', {
+    class: 'pause-play-wrapper',
+    title: `${BUTTON_LABELS.pauseMotion}`,
+    'aria-label': `${BUTTON_LABELS.pauseMotion}`,
+    role: 'button',
+    tabIndex: 0,
+    'aria-pressed': true,
+  });
+  const offset = createTag('div', { class: 'offset-filler is-playing' });
+  const play = createTag('img', {
+    class: 'accessibility-control play-icon',
+    alt: `${BUTTON_LABELS.playIcon}`,
+    src: `${fedRoot}/federal/assets/svgs/accessibility-play.svg`,
+  });
+  const pause = createTag('img', {
+    class: 'accessibility-control pause-icon',
+    alt: `${BUTTON_LABELS.pauseIcon}`,
+    src: `${fedRoot}/federal/assets/svgs/accessibility-pause.svg`,
+  });
+  offset.appendChild(play);
+  offset.appendChild(pause);
+  a.appendChild(offset);
+  controlContainer.appendChild(a);
+  el?.appendChild(controlContainer);
+}
+
 // ===== COMPONENT INITIALIZATION =====
 
-function decorateContent(el) {
+function decorateContent(el, getFederatedContentRoot) {
   try {
     if (!el) return;
 
@@ -323,23 +461,57 @@ function decorateContent(el) {
     const { reelEl, windowEl } = setupComponentDOM(el, data);
 
     if (!data.items.length || !reelEl || !windowEl) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const animationRef = { cancel: null };
+    const animationInterface = { start: null };
+    const controlsActions = { updateControlState: () => {} };
 
     const state = { currentIndex: 0, dimensions: { height: 0 } };
-    const animationController = createAnimationController(state, reelEl, windowEl, data);
+
+    if (!reducedMotion) {
+      addAccessibilityControl(el, getFederatedContentRoot);
+      const ctrlInterface = initControls({
+        wrapper: el?.querySelector('.animation-controls .pause-play-wrapper'),
+        filler: el?.querySelector('.animation-controls .pause-play-wrapper .offset-filler'),
+        data,
+        windowEl,
+        updateVisuals: (idx, dur) => updateAnimationState(state, reelEl, idx, dur),
+        updateStateIndex: (idx) => { state.currentIndex = idx; },
+        animationInterface,
+        animationRef,
+      });
+
+      controlsActions.updateControlState = ctrlInterface.updateControlState;
+    }
+
+    const animationController = createAnimationController(
+      state,
+      reelEl,
+      windowEl,
+      data,
+      controlsActions,
+      animationRef,
+    );
+
+    animationInterface.start = animationController.runSequence;
+
     const resizeHandler = createResizeHandler(state, reelEl);
 
     setupEventTriggers({
-      el, state, animationController, resizeHandler, data, windowEl, reelEl,
+      el, state, animationController, resizeHandler, data, windowEl, reelEl, animationRef,
     });
   } catch (err) {
     logError('Failed to decorate content', err);
   }
 }
 
-export default function init(el) {
+export default async function init(el) {
   try {
+    const miloLibs = getLibs('/libs');
+    const { getFederatedContentRoot } = await import(`${miloLibs}/utils/utils.js`);
     el.classList.add('con-block');
-    decorateContent(el);
+    decorateContent(el, getFederatedContentRoot);
   } catch (err) {
     window.lana?.log(`Animation slot text Init Error: ${err}`, LANA_OPTIONS);
   }
