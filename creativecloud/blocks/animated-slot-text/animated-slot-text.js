@@ -246,18 +246,11 @@ function createAnimationController(state, reelEl, windowEl, data, controlActions
       updateAnimationState(state, reelEl, index, duration);
 
       if (index >= data.items.length - 1) {
-        let iconTimer = null;
         const maskCancel = setRafTimeout(() => {
           windowEl.classList.add('finished');
-          iconTimer = setTimeout(() => {
-            controlActions?.updateControlState(false);
-          }, 2000);
+          controlActions?.updateControlState(false);
         }, duration);
-
-        animationRef.cancel = () => {
-          maskCancel();
-          if (iconTimer) clearTimeout(iconTimer);
-        };
+        animationRef.cancel = maskCancel;
         return;
       }
 
