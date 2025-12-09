@@ -40,6 +40,7 @@ indices:
       - /corporate-responsibility/**
       - /ventures/**
       - /mobile-apps/**
+      - /made-to-create/**
     target: /cc-shared/assets/query-index.xlsx
     properties:
       title:
@@ -119,6 +120,7 @@ indices:
       - /au/corporate-responsibility/**
       - /au/ventures/**
       - /au/mobile-apps/**
+      - /au/made-to-create/**
     target: /au/cc-shared/assets/query-index.xlsx
   
   cards-au:
@@ -161,6 +163,7 @@ indices:
       - /de/corporate-responsibility/**
       - /de/ventures/**
       - /de/mobile-apps/**
+      - /de/made-to-create/**
     target: /de/cc-shared/assets/query-index.xlsx
   
   cards-de:
@@ -203,6 +206,7 @@ indices:
       - /es/corporate-responsibility/**
       - /es/ventures/**
       - /es/mobile-apps/**
+      - /es/made-to-create/**
     target: /es/cc-shared/assets/query-index.xlsx
 
   cards-es:
@@ -245,6 +249,7 @@ indices:
       - /fr/corporate-responsibility/**
       - /fr/ventures/**
       - /fr/mobile-apps/**
+      - /fr/made-to-create/**
     target: /fr/cc-shared/assets/query-index.xlsx
 
   cards-fr:
@@ -287,6 +292,7 @@ indices:
       - /it/corporate-responsibility/**
       - /it/ventures/**
       - /it/mobile-apps/**
+      - /it/made-to-create/**
     target: /it/cc-shared/assets/query-index.xlsx
   
   cards-it:
@@ -329,6 +335,7 @@ indices:
       - /jp/corporate-responsibility/**
       - /jp/ventures/**
       - /jp/mobile-apps/**
+      - /jp/made-to-create/**
     target: /jp/cc-shared/assets/query-index.xlsx
 
   cards-jp:
@@ -371,6 +378,7 @@ indices:
       - /kr/corporate-responsibility/**
       - /kr/ventures/**
       - /kr/mobile-apps/**
+      - /kr/made-to-create/**
     target: /kr/cc-shared/assets/query-index.xlsx
 
   cards-kr:
@@ -413,6 +421,7 @@ indices:
       - /ru/corporate-responsibility/**
       - /ru/ventures/**
       - /ru/mobile-apps/**
+      - /ru/made-to-create/**
     target: /ru/cc-shared/assets/query-index.xlsx
 
   cards-ru:
@@ -455,6 +464,7 @@ indices:
       - /hk_zh/corporate-responsibility/**
       - /hk_zh/ventures/**
       - /hk_zh/mobile-apps/**
+      - /hk_zh/made-to-create/**
     target: /hk_zh/cc-shared/assets/query-index.xlsx
 
   cards-hk_zh:
@@ -497,6 +507,7 @@ indices:
       - /tw/corporate-responsibility/**
       - /tw/ventures/**
       - /tw/mobile-apps/**
+      - /tw/made-to-create/**
     target: /tw/cc-shared/assets/query-index.xlsx  
 
   cards-tw:
@@ -539,6 +550,7 @@ indices:
       - /nl/corporate-responsibility/**
       - /nl/ventures/**
       - /nl/mobile-apps/**
+      - /nl/made-to-create/**
     target: /nl/cc-shared/assets/query-index.xlsx
 
   cards-nl:
@@ -581,6 +593,7 @@ indices:
       - /pl/corporate-responsibility/**
       - /pl/ventures/**
       - /pl/mobile-apps/**
+      - /pl/made-to-create/**
     target: /pl/cc-shared/assets/query-index.xlsx
 
   cards-pl:
@@ -623,6 +636,7 @@ indices:
       - /tr/corporate-responsibility/**
       - /tr/ventures/**
       - /tr/mobile-apps/**
+      - /tr/made-to-create/**
     target: /tr/cc-shared/assets/query-index.xlsx  
 
   cards-tr:
@@ -665,6 +679,7 @@ indices:
       - /uk/corporate-responsibility/**
       - /uk/ventures/**
       - /uk/mobile-apps/**
+      - /uk/made-to-create/**
     target: /uk/cc-shared/assets/query-index.xlsx
 
   cards-uk:
@@ -707,6 +722,7 @@ indices:
       - /ca/corporate-responsibility/**
       - /ca/ventures/**
       - /ca/mobile-apps/**
+      - /ca/made-to-create/**
     target: /ca/cc-shared/assets/query-index.xlsx
 
   cards-ca:
@@ -749,6 +765,7 @@ indices:
       - /cn/corporate-responsibility/**
       - /cn/ventures/**
       - /cn/mobile-apps/**
+      - /cn/made-to-create/**
     target: /cn/cc-shared/assets/query-index.xlsx
 
   cards-cn:
@@ -791,6 +808,7 @@ indices:
       - /ae_ar/corporate-responsibility/**
       - /ae_ar/ventures/**
       - /ae_ar/mobile-apps/**
+      - /ae_ar/made-to-create/**
     target: /ae_ar/cc-shared/assets/query-index.xlsx
 
   cards-ae_ar:
@@ -833,6 +851,7 @@ indices:
       - /ae_en/corporate-responsibility/**
       - /ae_en/ventures/**
       - /ae_en/mobile-apps/**
+      - /ae_en/made-to-create/**
     target: /ae_en/cc-shared/assets/query-index.xlsx
 
   cards-ae_en:
@@ -875,6 +894,7 @@ indices:
       - /at/corporate-responsibility/**
       - /at/ventures/**
       - /at/mobile-apps/**
+      - /at/made-to-create/**
     target: /at/cc-shared/assets/query-index.xlsx
 
   cards-at:
@@ -917,6 +937,7 @@ indices:
       - /be_en/corporate-responsibility/**
       - /be_en/ventures/**
       - /be_en/mobile-apps/**
+      - /be_en/made-to-create/**
     target: /be_en/cc-shared/assets/query-index.xlsx
 
   cards-be_en:
@@ -959,6 +980,7 @@ indices:
       - /be_fr/corporate-responsibility/**
       - /be_fr/ventures/**
       - /be_fr/mobile-apps/**
+      - /be_fr/made-to-create/**
     target: /be_fr/cc-shared/assets/query-index.xlsx
 
   cards-be_fr:
@@ -1001,6 +1023,7 @@ indices:
       - /ca_fr/corporate-responsibility/**
       - /ca_fr/ventures/**
       - /ca_fr/mobile-apps/**
+      - /ca_fr/made-to-create/**
     target: /ca_fr/cc-shared/assets/query-index.xlsx
 
   cards-ca_fr:
@@ -1043,6 +1066,7 @@ indices:
       - /ch_de/corporate-responsibility/**
       - /ch_de/ventures/**
       - /ch_de/mobile-apps/**
+      - /ch_de/made-to-create/**
     target: /ch_de/cc-shared/assets/query-index.xlsx
 
   cards-ch_de:
@@ -1085,6 +1109,7 @@ indices:
       - /ch_fr/corporate-responsibility/**
       - /ch_fr/ventures/**
       - /ch_fr/mobile-apps/**
+      - /ch_fr/made-to-create/**
     target: /ch_fr/cc-shared/assets/query-index.xlsx
 
   cards-ch_fr:
@@ -1127,6 +1152,7 @@ indices:
       - /cl/corporate-responsibility/**
       - /cl/ventures/**
       - /cl/mobile-apps/**
+      - /cl/made-to-create/**
     target: /cl/cc-shared/assets/query-index.xlsx
 
   cards-cl:
@@ -1169,6 +1195,7 @@ indices:
       - /gr_en/corporate-responsibility/**
       - /gr_en/ventures/**
       - /gr_en/mobile-apps/**
+      - /gr_en/made-to-create/**
     target: /gr_en/cc-shared/assets/query-index.xlsx  
 
   cards-gr_en:
@@ -1211,6 +1238,7 @@ indices:
       - /hk_en/corporate-responsibility/**
       - /hk_en/ventures/**
       - /hk_en/mobile-apps/**
+      - /hk_en/made-to-create/**
     target: /hk_en/cc-shared/assets/query-index.xlsx
 
   cards-hk_en:
@@ -1253,6 +1281,7 @@ indices:
       - /ie/corporate-responsibility/**
       - /ie/ventures/**
       - /ie/mobile-apps/**
+      - /ie/made-to-create/**
     target: /ie/cc-shared/assets/query-index.xlsx  
 
   cards-ie:
@@ -1295,6 +1324,7 @@ indices:
       - /il_en/corporate-responsibility/**
       - /il_en/ventures/**
       - /il_en/mobile-apps/**
+      - /il_en/made-to-create/**
     target: /il_en/cc-shared/assets/query-index.xlsx
 
   cards-il_en:
@@ -1337,6 +1367,7 @@ indices:
       - /in/corporate-responsibility/**
       - /in/ventures/**
       - /in/mobile-apps/**
+      - /in/made-to-create/**
     target: /in/cc-shared/assets/query-index.xlsx
 
   cards-in:
@@ -1379,6 +1410,7 @@ indices:
       - /lt/corporate-responsibility/**
       - /lt/ventures/**
       - /lt/mobile-apps/**
+      - /lt/made-to-create/**
     target: /lt/cc-shared/assets/query-index.xlsx
 
   cards-lt:
@@ -1421,6 +1453,7 @@ indices:
       - /lu_de/corporate-responsibility/**
       - /lu_de/ventures/**
       - /lu_de/mobile-apps/**
+      - /lu_de/made-to-create/**
     target: /lu_de/cc-shared/assets/query-index.xlsx
 
   cards-lu_de:
@@ -1463,6 +1496,7 @@ indices:
       - /lu_en/corporate-responsibility/**
       - /lu_en/ventures/**
       - /lu_en/mobile-apps/**
+      - /lu_en/made-to-create/**
     target: /lu_en/cc-shared/assets/query-index.xlsx
 
   cards-lu_en:
@@ -1505,6 +1539,7 @@ indices:
       - /lu_fr/corporate-responsibility/**
       - /lu_fr/ventures/**
       - /lu_fr/mobile-apps/**
+      - /lu_fr/made-to-create/**
     target: /lu_fr/cc-shared/assets/query-index.xlsx
 
   cards-lu_fr:
@@ -1547,6 +1582,7 @@ indices:
       - /mena_en/corporate-responsibility/**
       - /mena_en/ventures/**
       - /mena_en/mobile-apps/**
+      - /mena_en/made-to-create/**
     target: /mena_en/cc-shared/assets/query-index.xlsx
 
   cards-mena_en:
@@ -1589,6 +1625,7 @@ indices:
       - /nz/corporate-responsibility/**
       - /nz/ventures/**
       - /nz/mobile-apps/**
+      - /nz/made-to-create/**
     target: /nz/cc-shared/assets/query-index.xlsx
 
   cards-nz:
@@ -1631,6 +1668,7 @@ indices:
       - /sa_ar/corporate-responsibility/**
       - /sa_ar/ventures/**
       - /sa_ar/mobile-apps/**
+      - /sa_ar/made-to-create/**
     target: /sa_ar/cc-shared/assets/query-index.xlsx  
 
   cards-sa_ar:
@@ -1673,6 +1711,7 @@ indices:
       - /sa_en/corporate-responsibility/**
       - /sa_en/ventures/**
       - /sa_en/mobile-apps/**
+      - /sa_en/made-to-create/**
     target: /sa_en/cc-shared/assets/query-index.xlsx
 
   cards-sa_en:
@@ -1715,6 +1754,7 @@ indices:
       - /th_en/corporate-responsibility/**
       - /th_en/ventures/**
       - /th_en/mobile-apps/**
+      - /th_en/made-to-create/**
     target: /th_en/cc-shared/assets/query-index.xlsx
 
   cards-th_en:
@@ -1757,6 +1797,7 @@ indices:
       - /th_th/corporate-responsibility/**
       - /th_th/ventures/**
       - /th_th/mobile-apps/**
+      - /th_th/made-to-create/**
     target: /th_th/cc-shared/assets/query-index.xlsx
 
   cards-th_th:
@@ -1799,6 +1840,7 @@ indices:
       - /za/corporate-responsibility/**
       - /za/ventures/**
       - /za/mobile-apps/**
+      - /za/made-to-create/**
     target: /za/cc-shared/assets/query-index.xlsx
 
   cards-za:
@@ -1841,6 +1883,7 @@ indices:
       - /africa/corporate-responsibility/**
       - /africa/ventures/**
       - /africa/mobile-apps/**
+      - /africa/made-to-create/**
     target: /africa/cc-shared/assets/query-index.xlsx
 
   cards-africa:
@@ -1883,6 +1926,7 @@ indices:
       - /ar/corporate-responsibility/**
       - /ar/ventures/**
       - /ar/mobile-apps/**
+      - /ar/made-to-create/**
     target: /ar/cc-shared/assets/query-index.xlsx
 
   cards-ar:
@@ -1925,6 +1969,7 @@ indices:
       - /co/corporate-responsibility/**
       - /co/ventures/**
       - /co/mobile-apps/**
+      - /co/made-to-create/**
     target: /co/cc-shared/assets/query-index.xlsx
 
   cards-co:
@@ -1967,6 +2012,7 @@ indices:
       - /cr/corporate-responsibility/**
       - /cr/ventures/**
       - /cr/mobile-apps/**
+      - /cr/made-to-create/**
     target: /cr/cc-shared/assets/query-index.xlsx
 
   cards-cr:
@@ -2009,6 +2055,7 @@ indices:
       - /ec/corporate-responsibility/**
       - /ec/ventures/**
       - /ec/mobile-apps/**
+      - /ec/made-to-create/**
     target: /ec/cc-shared/assets/query-index.xlsx
 
   cards-ec:
@@ -2051,6 +2098,7 @@ indices:
       - /eg_ar/corporate-responsibility/**
       - /eg_ar/ventures/**
       - /eg_ar/mobile-apps/**
+      - /eg_ar/made-to-create/**
     target: /eg_ar/cc-shared/assets/query-index.xlsx
 
   cards-eg_ar:
@@ -2093,6 +2141,7 @@ indices:
       - /eg_en/corporate-responsibility/**
       - /eg_en/ventures/**
       - /eg_en/mobile-apps/**
+      - /eg_en/made-to-create/**
     target: /eg_en/cc-shared/assets/query-index.xlsx
 
   cards-eg_en:
@@ -2135,6 +2184,7 @@ indices:
       - /gr_el/corporate-responsibility/**
       - /gr_el/ventures/**
       - /gr_el/mobile-apps/**
+      - /gr_el/made-to-create/**
     target: /gr_el/cc-shared/assets/query-index.xlsx
 
   cards-gr_el:
@@ -2177,6 +2227,7 @@ indices:
       - /gt/corporate-responsibility/**
       - /gt/ventures/**
       - /gt/mobile-apps/**
+      - /gt/made-to-create/**
     target: /gt/cc-shared/assets/query-index.xlsx
 
   cards-gt:
@@ -2219,6 +2270,7 @@ indices:
       - /id_en/corporate-responsibility/**
       - /id_en/ventures/**
       - /id_en/mobile-apps/**
+      - /id_en/made-to-create/**
     target: /id_en/cc-shared/assets/query-index.xlsx
 
   cards-id_en:
@@ -2261,6 +2313,7 @@ indices:
       - /id_id/corporate-responsibility/**
       - /id_id/ventures/**
       - /id_id/mobile-apps/**
+      - /id_id/made-to-create/**
     target: /id_id/cc-shared/assets/query-index.xlsx
 
   cards-id_id:
@@ -2303,6 +2356,7 @@ indices:
       - /in_hi/corporate-responsibility/**
       - /in_hi/ventures/**
       - /in_hi/mobile-apps/**
+      - /in_hi/made-to-create/**
     target: /in_hi/cc-shared/assets/query-index.xlsx
 
   cards-in_hi:
@@ -2345,6 +2399,7 @@ indices:
       - /kw_ar/corporate-responsibility/**
       - /kw_ar/ventures/**
       - /kw_ar/mobile-apps/**
+      - /kw_ar/made-to-create/**
     target: /kw_ar/cc-shared/assets/query-index.xlsx
 
   cards-kw_ar:
@@ -2387,6 +2442,7 @@ indices:
       - /kw_en/corporate-responsibility/**
       - /kw_en/ventures/**
       - /kw_en/mobile-apps/**
+      - /kw_en/made-to-create/**
     target: /kw_en/cc-shared/assets/query-index.xlsx
 
   cards-kw_en:
@@ -2429,6 +2485,7 @@ indices:
       - /my_en/corporate-responsibility/**
       - /my_en/ventures/**
       - /my_en/mobile-apps/**
+      - /my_en/made-to-create/**
     target: /my_en/cc-shared/assets/query-index.xlsx
 
   cards-my_en:
@@ -2471,6 +2528,7 @@ indices:
       - /my_ms/corporate-responsibility/**
       - /my_ms/ventures/**
       - /my_ms/mobile-apps/**
+      - /my_ms/made-to-create/**
     target: /my_ms/cc-shared/assets/query-index.xlsx
 
   cards-my_ms:
@@ -2513,6 +2571,7 @@ indices:
       - /ng/corporate-responsibility/**
       - /ng/ventures/**
       - /ng/mobile-apps/**
+      - /ng/made-to-create/**
     target: /ng/cc-shared/assets/query-index.xlsx  
 
   cards-ng:
@@ -2555,6 +2614,7 @@ indices:
       - /pe/corporate-responsibility/**
       - /pe/ventures/**
       - /pe/mobile-apps/**
+      - /pe/made-to-create/**
     target: /pe/cc-shared/assets/query-index.xlsx  
 
   cards-pe:
@@ -2597,6 +2657,7 @@ indices:
       - /ph_en/corporate-responsibility/**
       - /ph_en/ventures/**
       - /ph_en/mobile-apps/**
+      - /ph_en/made-to-create/**
     target: /ph_en/cc-shared/assets/query-index.xlsx
 
   cards-ph_en:
@@ -2639,6 +2700,7 @@ indices:
       - /ph_fil/corporate-responsibility/**
       - /ph_fil/ventures/**
       - /ph_fil/mobile-apps/**
+      - /ph_fil/made-to-create/**
     target: /ph_fil/cc-shared/assets/query-index.xlsx
 
   cards-ph_fil:
@@ -2681,6 +2743,7 @@ indices:
       - /pr/corporate-responsibility/**
       - /pr/ventures/**
       - /pr/mobile-apps/**
+      - /pr/made-to-create/**
     target: /pr/cc-shared/assets/query-index.xlsx  
 
   cards-pr:
@@ -2723,6 +2786,7 @@ indices:
       - /qa_ar/corporate-responsibility/**
       - /qa_ar/ventures/**
       - /qa_ar/mobile-apps/**
+      - /qa_ar/made-to-create/**
     target: /qa_ar/cc-shared/assets/query-index.xlsx
 
   cards-qa_ar:
@@ -2765,6 +2829,7 @@ indices:
       - /qa_en/corporate-responsibility/**
       - /qa_en/ventures/**
       - /qa_en/mobile-apps/**
+      - /qa_en/made-to-create/**
     target: /qa_en/cc-shared/assets/query-index.xlsx
 
   cards-qa_en:
@@ -2807,6 +2872,7 @@ indices:
       - /vn_en/corporate-responsibility/**
       - /vn_en/ventures/**
       - /vn_en/mobile-apps/**
+      - /vn_en/made-to-create/**
     target: /vn_en/cc-shared/assets/query-index.xlsx
 
   cards-vn_en:
@@ -2849,6 +2915,7 @@ indices:
       - /vn_vi/corporate-responsibility/**
       - /vn_vi/ventures/**
       - /vn_vi/mobile-apps/**
+      - /vn_vi/made-to-create/**
     target: /vn_vi/cc-shared/assets/query-index.xlsx 
 
   cards-vn_vi:
@@ -2891,6 +2958,7 @@ indices:
       - /dk/corporate-responsibility/**
       - /dk/ventures/**
       - /dk/mobile-apps/**
+      - /dk/made-to-create/**
     target: /dk/cc-shared/assets/query-index.xlsx
 
   cards-dk:
@@ -2933,6 +3001,7 @@ indices:
       - /fi/corporate-responsibility/**
       - /fi/ventures/**
       - /fi/mobile-apps/**
+      - /fi/made-to-create/**
     target: /fi/cc-shared/assets/query-index.xlsx
 
   cards-fi:
@@ -2975,6 +3044,7 @@ indices:
       - /no/corporate-responsibility/**
       - /no/ventures/**
       - /no/mobile-apps/**
+      - /no/made-to-create/**
     target: /no/cc-shared/assets/query-index.xlsx
 
   cards-no:
@@ -3017,6 +3087,7 @@ indices:
       - /se/corporate-responsibility/**
       - /se/ventures/**
       - /se/mobile-apps/**
+      - /se/made-to-create/**
     target: /se/cc-shared/assets/query-index.xlsx
 
   cards-se:
@@ -3059,6 +3130,7 @@ indices:
       - /la/corporate-responsibility/**
       - /la/ventures/**
       - /la/mobile-apps/**
+      - /la/made-to-create/**
     target: /la/cc-shared/assets/query-index.xlsx
 
   cards-la:
@@ -3101,6 +3173,7 @@ indices:
       - /mx/corporate-responsibility/**
       - /mx/ventures/**
       - /mx/mobile-apps/**
+      - /mx/made-to-create/**
     target: /mx/cc-shared/assets/query-index.xlsx
 
   cards-mx:
@@ -3143,6 +3216,7 @@ indices:
       - /be_nl/corporate-responsibility/**
       - /be_nl/ventures/**
       - /be_nl/mobile-apps/**
+      - /be_nl/made-to-create/**
     target: /be_nl/cc-shared/assets/query-index.xlsx
 
   cards-be_nl:
@@ -3185,6 +3259,7 @@ indices:
       - /bg/corporate-responsibility/**
       - /bg/ventures/**
       - /bg/mobile-apps/**
+      - /bg/made-to-create/**
     target: /bg/cc-shared/assets/query-index.xlsx
 
   cards-bg:
@@ -3227,6 +3302,7 @@ indices:
       - /ch_it/corporate-responsibility/**
       - /ch_it/ventures/**
       - /ch_it/mobile-apps/**
+      - /ch_it/made-to-create/**
     target: /ch_it/cc-shared/assets/query-index.xlsx
 
   cards-ch_it:
@@ -3269,6 +3345,7 @@ indices:
       - /cz/corporate-responsibility/**
       - /cz/ventures/**
       - /cz/mobile-apps/**
+      - /cz/made-to-create/**
     target: /cz/cc-shared/assets/query-index.xlsx
 
   cards-cz:
@@ -3311,6 +3388,7 @@ indices:
       - /ee/corporate-responsibility/**
       - /ee/ventures/**
       - /ee/mobile-apps/**
+      - /ee/made-to-create/**
     target: /ee/cc-shared/assets/query-index.xlsx
 
   cards-ee:
@@ -3353,6 +3431,7 @@ indices:
       - /hu/corporate-responsibility/**
       - /hu/ventures/**
       - /hu/mobile-apps/**
+      - /hu/made-to-create/**
     target: /hu/cc-shared/assets/query-index.xlsx
 
   cards-hu:
@@ -3395,6 +3474,7 @@ indices:
       - /il_he/corporate-responsibility/**
       - /il_he/ventures/**
       - /il_he/mobile-apps/**
+      - /il_he/made-to-create/**
     target: /il_he/cc-shared/assets/query-index.xlsx
 
   cards-il_he:
@@ -3437,6 +3517,7 @@ indices:
       - /lv/corporate-responsibility/**
       - /lv/ventures/**
       - /lv/mobile-apps/**
+      - /lv/made-to-create/**
     target: /lv/cc-shared/assets/query-index.xlsx
 
   cards-lv:
@@ -3479,6 +3560,7 @@ indices:
       - /mena_ar/corporate-responsibility/**
       - /mena_ar/ventures/**
       - /mena_ar/mobile-apps/**
+      - /mena_ar/made-to-create/**
     target: /mena_ar/cc-shared/assets/query-index.xlsx
 
   cards-mena_ar:
@@ -3521,6 +3603,7 @@ indices:
       - /pt/corporate-responsibility/**
       - /pt/ventures/**
       - /pt/mobile-apps/**
+      - /pt/made-to-create/**
     target: /pt/cc-shared/assets/query-index.xlsx
 
   cards-pt:
@@ -3563,6 +3646,7 @@ indices:
       - /ro/corporate-responsibility/**
       - /ro/ventures/**
       - /ro/mobile-apps/**
+      - /ro/made-to-create/**
     target: /ro/cc-shared/assets/query-index.xlsx
 
   cards-ro:
@@ -3605,6 +3689,7 @@ indices:
       - /si/corporate-responsibility/**
       - /si/ventures/**
       - /si/mobile-apps/**
+      - /si/made-to-create/**
     target: /si/cc-shared/assets/query-index.xlsx
 
   cards-si:
@@ -3647,6 +3732,7 @@ indices:
       - /sk/corporate-responsibility/**
       - /sk/ventures/**
       - /sk/mobile-apps/**
+      - /sk/made-to-create/**
     target: /sk/cc-shared/assets/query-index.xlsx
 
   cards-sk:
@@ -3689,6 +3775,7 @@ indices:
       - /ua/corporate-responsibility/**
       - /ua/ventures/**
       - /ua/mobile-apps/**
+      - /ua/made-to-create/**
     target: /ua/cc-shared/assets/query-index.xlsx
 
   cards-ua:
@@ -3731,6 +3818,7 @@ indices:
       - /sg/corporate-responsibility/**
       - /sg/ventures/**
       - /sg/mobile-apps/**
+      - /sg/made-to-create/**
     target: /sg/cc-shared/assets/query-index.xlsx
 
   cards-sg:
@@ -3773,6 +3861,7 @@ indices:
       - /br/corporate-responsibility/**
       - /br/ventures/**
       - /br/mobile-apps/**
+      - /br/made-to-create/**
     target: /br/cc-shared/assets/query-index.xlsx    
 
   cards-br:
@@ -3815,6 +3904,7 @@ indices:
       - /cis_en/corporate-responsibility/**
       - /cis_en/ventures/**
       - /cis_en/mobile-apps/**
+      - /cis_en/made-to-create/**
     target: /cis_en/cc-shared/assets/query-index.xlsx    
 
   cards-cis_en:
@@ -3857,6 +3947,7 @@ indices:
       - /cis_ru/corporate-responsibility/**
       - /cis_ru/ventures/**
       - /cis_ru/mobile-apps/**
+      - /cis_ru/made-to-create/**
     target: /cis_ru/cc-shared/assets/query-index.xlsx    
 
   cards-cis_ru:
