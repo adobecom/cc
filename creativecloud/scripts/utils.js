@@ -217,6 +217,27 @@ export function isSignedInInitialized(interval = 200) {
   });
 }
 
+export function getScreenSizeCategory(overridenBreakpoints) {
+  const DEFAULT_BREAKPOINTS = { mobile: 599, tablet: 899 };
+  const { mobile, tablet } = { ...DEFAULT_BREAKPOINTS, ...overridenBreakpoints };
+  const MEDIA_QUERIES = {
+    mobile: window.matchMedia(`(max-width: ${mobile}px)`),
+    tablet: window.matchMedia(`(min-width: ${mobile + 1}px) and (max-width: ${tablet}px)`),
+    desktop: window.matchMedia(`(min-width: ${tablet + 1}px)`),
+  };
+  if (MEDIA_QUERIES.mobile.matches) {
+    return 'mobile';
+  }
+  if (MEDIA_QUERIES.tablet.matches) {
+    return 'tablet';
+  }
+  return 'desktop';
+}
+
+export function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function heroForegroundImage(firstBlock) {
   const rows = [...firstBlock.querySelectorAll(':scope > div')];
   if (rows.length > 1 && rows[0].textContent !== '') rows.shift();
