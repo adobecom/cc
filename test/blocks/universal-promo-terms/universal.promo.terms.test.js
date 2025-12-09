@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
+const { setLibs, getLibs, locales } = await import('../../../creativecloud/scripts/utils.js');
 const { default: init, getLocaleInfo } = await import('../../../creativecloud/blocks/universal-promo-terms/universal-promo-terms.js');
 
 describe('universal-promo-terms', () => {
@@ -17,7 +17,8 @@ describe('universal-promo-terms', () => {
   });
 
   before(async () => {
-    setLibs('https://milo.adobe.com/libs', true);
+    const { setConfig } = await import(`${getLibs()}/utils/utils.js`);
+    setConfig({ locales });
   });
 
   it('Get API from query parameters', async () => {
@@ -28,7 +29,8 @@ describe('universal-promo-terms', () => {
 
 describe('getLocaleInfo', () => {
   before(async () => {
-    setLibs('https://milo.adobe.com/libs', true);
+    const { setConfig } = await import(`${getLibs()}/utils/utils.js`);
+    setConfig({ locales });
   });
 
   // All locale inputs in lang_COUNTRY format mapped to config.locales IETF values

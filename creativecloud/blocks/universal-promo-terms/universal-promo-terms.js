@@ -33,9 +33,16 @@ export function getLocaleInfo(params) {
   }
 
   // Search through locales to find matching IETF value
-  const match = Object.entries(locales).find(
+  // Search through locales to find matching IETF value
+  let match = Object.entries(locales).find(
     ([, value]) => value.ietf?.toLowerCase() === ietfInput.toLowerCase(),
   );
+
+  if (!match) {
+    match = Object.entries(locales).find(
+      ([, value]) => value.ietf?.toLowerCase() === ietfInput.split('-')[0].toLowerCase(),
+    );
+  }
 
   if (match) {
     const [key, value] = match;
