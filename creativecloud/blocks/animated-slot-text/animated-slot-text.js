@@ -465,11 +465,7 @@ function addAccessibilityControl(el, getFederatedContentRoot) {
 }
 
 // ===== COMPONENT INITIALIZATION =====
-
-function decorateContent(
-  el,
-  getFederatedContentRoot,
-) {
+function decorateContent(el, getFederatedContentRoot) {
   try {
     if (!el) return;
 
