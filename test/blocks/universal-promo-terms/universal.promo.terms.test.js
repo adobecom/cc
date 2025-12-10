@@ -10,19 +10,47 @@ const { default: init, getLocaleInfo } = await import('../../../creativecloud/bl
 describe('universal-promo-terms', () => {
   const block = document.body.querySelector('.universal-promo-terms');
   let fetchStub;
+  let locationHrefDescriptor;
 
   beforeEach(() => {
     sinon.spy(console, 'log');
+    // Stub fetch to return mock data
     fetchStub = sinon.stub(window, 'fetch').resolves({
       ok: true,
       json: () => Promise.resolve(mockData),
     });
+    // Prevent navigation by overriding window.location.href setter
+    try {
+      // Save original descriptor if it exists and is configurable
+      locationHrefDescriptor = Object.getOwnPropertyDescriptor(window.location, 'href');
+      if (locationHrefDescriptor && locationHrefDescriptor.configurable) {
+        // Override href setter to prevent navigation
+        Object.defineProperty(window.location, 'href', {
+          set: () => {
+            // No-op: prevent navigation in tests
+          },
+          get: locationHrefDescriptor.get || (() => 'http://localhost:2000/'),
+          configurable: true,
+        });
+      }
+    } catch (e) {
+      // If we can't override location.href, that's okay - the fetch stub should prevent navigation
+      locationHrefDescriptor = null;
+    }
   });
 
   afterEach(() => {
     console.log.restore();
     if (fetchStub) {
       fetchStub.restore();
+    }
+    // Restore original location.href descriptor if we saved it
+    if (locationHrefDescriptor && locationHrefDescriptor.configurable) {
+      try {
+        Object.defineProperty(window.location, 'href', locationHrefDescriptor);
+      } catch (e) {
+        // Ignore errors when restoring
+      }
     }
   });
 
