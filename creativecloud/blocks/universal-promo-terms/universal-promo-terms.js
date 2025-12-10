@@ -133,7 +133,7 @@ async function getTermsHTML(params, el, env, search) {
     return [false, alternateURL];
   }
   const termsHtml = replacePlaceholderText(promoTerms.text, params);
-  return [`<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${termsHtml}</p></div>`,  undefined];
+  return [`<div class="container">${el.innerHTML}<h1>${promoTerms.header}</h1><p>${termsHtml}</p></div>`, undefined];
 }
 
 export default async function init(el, search) {
