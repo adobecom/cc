@@ -3,17 +3,27 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+const mockData = JSON.parse(await readFile({ path: './mocks/de_DE.json' }));
 const { getLibs, locales } = await import('../../../creativecloud/scripts/utils.js');
 const { default: init, getLocaleInfo } = await import('../../../creativecloud/blocks/universal-promo-terms/universal-promo-terms.js');
 
 describe('universal-promo-terms', () => {
   const block = document.body.querySelector('.universal-promo-terms');
+  let fetchStub;
+
   beforeEach(() => {
     sinon.spy(console, 'log');
+    fetchStub = sinon.stub(window, 'fetch').resolves({
+      ok: true,
+      json: () => Promise.resolve(mockData),
+    });
   });
 
   afterEach(() => {
     console.log.restore();
+    if (fetchStub) {
+      fetchStub.restore();
+    }
   });
 
   before(async () => {
