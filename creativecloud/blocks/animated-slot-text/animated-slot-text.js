@@ -17,7 +17,9 @@ const DEFAULTS = {
   intersectionThreshold: 0.5, // Threshold for intersection observer
 };
 
-const BUTTON_LABELS = {
+const PLACEHOLDER_LABELS = ['pause-motion', 'play-motion', 'pause-icon', 'play-icon'];
+
+let animationLabels = {
   playMotion: 'Play',
   pauseMotion: 'Pause',
   pauseIcon: 'Pause icon',
@@ -139,7 +141,7 @@ function parseSlotData(block) {
 
 function getSlotTextItems(items) {
   try {
-    return items?.length ? items.map((item) => item.replace(/[^\w\s'-]/g, '')) : [];
+    return items?.length ? items.map((item) => item.replace(/[.。]/g, '')) : [];
   } catch (err) {
     logError('Failed to process slot text items', err);
     return [];
@@ -310,13 +312,13 @@ function initControls({
 
     if (playing) {
       filler.classList.add('is-playing');
-      wrapper.setAttribute('aria-label', BUTTON_LABELS.pauseMotion);
-      wrapper.setAttribute('title', BUTTON_LABELS.pauseMotion);
+      wrapper.setAttribute('aria-label', animationLabels.pauseMotion);
+      wrapper.setAttribute('title', animationLabels.pauseMotion);
       wrapper.setAttribute('aria-pressed', 'true');
     } else {
       filler.classList.remove('is-playing');
-      wrapper.setAttribute('aria-label', BUTTON_LABELS.playMotion);
-      wrapper.setAttribute('title', BUTTON_LABELS.playMotion);
+      wrapper.setAttribute('aria-label', animationLabels.playMotion);
+      wrapper.setAttribute('title', animationLabels.playMotion);
       wrapper.setAttribute('aria-pressed', 'false');
     }
   };
@@ -425,8 +427,8 @@ function addAccessibilityControl(el, getFederatedContentRoot) {
 
   const a = createTag('a', {
     class: 'pause-play-wrapper',
-    title: `${BUTTON_LABELS.pauseMotion}`,
-    'aria-label': `${BUTTON_LABELS.pauseMotion}`,
+    title: `${animationLabels.pauseMotion}`,
+    'aria-label': `${animationLabels.pauseMotion}`,
     role: 'button',
     tabIndex: 0,
     'aria-pressed': true,
@@ -434,12 +436,12 @@ function addAccessibilityControl(el, getFederatedContentRoot) {
   const offset = createTag('div', { class: 'offset-filler is-playing' });
   const play = createTag('img', {
     class: 'accessibility-control play-icon',
-    alt: `${BUTTON_LABELS.playIcon}`,
+    alt: `${animationLabels.playIcon}`,
     src: `${fedRoot}/federal/assets/svgs/accessibility-play.svg`,
   });
   const pause = createTag('img', {
     class: 'accessibility-control pause-icon',
-    alt: `${BUTTON_LABELS.pauseIcon}`,
+    alt: `${animationLabels.pauseIcon}`,
     src: `${fedRoot}/federal/assets/svgs/accessibility-pause.svg`,
   });
   offset.appendChild(play);
@@ -449,9 +451,30 @@ function addAccessibilityControl(el, getFederatedContentRoot) {
   el?.appendChild(controlContainer);
 }
 
+function updateAriaLabels(el) {
+  if (!el?.querySelector('.pause-play-wrapper')) return;
+  const pausePlayWrapper = el?.querySelector('.pause-play-wrapper');
+  const pauseIcon = pausePlayWrapper.querySelector('.pause-icon');
+  const playIcon = pausePlayWrapper.querySelector('.play-icon');
+  const ariaLabel = `${el.querySelector('.pause-play-wrapper .offset-filler,.is-playing') ? animationLabels.pauseMotion : animationLabels.playMotion}`;
+  pausePlayWrapper.setAttribute('aria-label', ariaLabel);
+  pauseIcon.setAttribute('alt', animationLabels.pauseMotion);
+  playIcon.setAttribute('alt', animationLabels.playMotion);
+}
+
+async function updateVideoLabel(el, replaceKeyArray, getFedsPlaceholderConfig) {
+  if (!animationLabels.hasFetched) {
+    const [pauseMotion, playMotion, pauseIcon, playIcon] = await replaceKeyArray(['pause-motion', 'play-motion', 'pause-icon', 'play-icon'], getFedsPlaceholderConfig());
+    animationLabels = { playMotion, pauseMotion, pauseIcon, playIcon };
+    animationLabels.hasFetched = true;
+    updateAriaLabels(el);
+  } else {
+    updateAriaLabels(el);
+  }
+}
 // ===== COMPONENT INITIALIZATION =====
 
-function decorateContent(el, getFederatedContentRoot) {
+function decorateContent(el, getFederatedContentRoot, replaceKeyArray, getFedsPlaceholderConfig) {
   try {
     if (!el) return;
 
@@ -469,6 +492,7 @@ function decorateContent(el, getFederatedContentRoot) {
 
     if (!reducedMotion) {
       addAccessibilityControl(el, getFederatedContentRoot);
+      updateVideoLabel(el, replaceKeyArray, getFedsPlaceholderConfig);
 
       const ctrlInterface = initControls({
         wrapper: el?.querySelector('.animation-controls .pause-play-wrapper'),
@@ -508,9 +532,16 @@ function decorateContent(el, getFederatedContentRoot) {
 export default async function init(el) {
   try {
     const miloLibs = getLibs('/libs');
-    const { getFederatedContentRoot } = await import(`${miloLibs}/utils/utils.js`);
+    const { getFederatedContentRoot, getFedsPlaceholderConfig } = await import(`${miloLibs}/utils/utils.js`);
+    const { replaceKeyArray } = await import(`${miloLibs}/features/placeholders.js`);
+    const [pauseMotion, playMotion, pauseIcon, playIcon] = await replaceKeyArray(
+      PLACEHOLDER_LABELS,
+      getFedsPlaceholderConfig(),
+    );
+    animationLabels = { playMotion, pauseMotion, pauseIcon, playIcon };
+    animationLabels.hasFetched = true;
     el.classList.add('con-block');
-    decorateContent(el, getFederatedContentRoot);
+    decorateContent(el, getFederatedContentRoot, replaceKeyArray, getFedsPlaceholderConfig);
   } catch (err) {
     window.lana?.log(`Animation slot text Init Error: ${err}`, LANA_OPTIONS);
   }
