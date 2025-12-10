@@ -34,7 +34,6 @@ describe('universal-promo-terms', () => {
         });
       }
     } catch (e) {
-      // If we can't override location.href, that's okay - the fetch stub should prevent navigation
       locationHrefDescriptor = null;
     }
   });

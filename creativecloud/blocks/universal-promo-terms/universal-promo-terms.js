@@ -38,7 +38,6 @@ export function getLocaleInfo(params) {
   }
 
   // Search through locales to find matching IETF value
-  // Search through locales to find matching IETF value
   let match = Object.entries(locales).find(
     ([, value]) => value.ietf?.toLowerCase() === ietfInput.toLowerCase(),
   );
