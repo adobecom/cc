@@ -14,17 +14,17 @@ describe('universal-promo-terms', () => {
 
   beforeEach(() => {
     sinon.spy(console, 'log');
-    // Stub fetch to return mock data
-    fetchStub = sinon.stub(window, 'fetch').resolves({
+    // Stub fetch to return mock data - ensure it matches any URL
+    fetchStub = sinon.stub(window, 'fetch').callsFake(() => Promise.resolve({
       ok: true,
       json: () => Promise.resolve(mockData),
-    });
+    }));
+
     // Prevent navigation by overriding window.location.href setter
     try {
-      // Save original descriptor if it exists and is configurable
       locationHrefDescriptor = Object.getOwnPropertyDescriptor(window.location, 'href');
       if (locationHrefDescriptor && locationHrefDescriptor.configurable) {
-        // Override href setter to prevent navigation
+        // Override href setter to prevent navigation in tests
         Object.defineProperty(window.location, 'href', {
           set: () => {
             // No-op: prevent navigation in tests
@@ -44,7 +44,7 @@ describe('universal-promo-terms', () => {
     if (fetchStub) {
       fetchStub.restore();
     }
-    // Restore original location.href descriptor if we saved it
+    // Restore original location.href descriptor if we modified it
     if (locationHrefDescriptor && locationHrefDescriptor.configurable) {
       try {
         Object.defineProperty(window.location, 'href', locationHrefDescriptor);

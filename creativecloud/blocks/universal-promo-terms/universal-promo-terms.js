@@ -143,9 +143,9 @@ export default async function init(el, search) {
   const env = getEnv(params.get('env'));
   const [termsHTML, alternateURL] = await getTermsHTML(params, el, env, search);
   if (alternateURL) {
-    window.location = alternateURL;
+    window.location.href = alternateURL;
   } else if (!termsHTML && env !== 'stage') {
-    window.location = '404.html';
+    window.location.href = '404.html';
   } else {
     const miloLibs = getLibs('/libs');
     const { sanitizeHtml } = await import(`${miloLibs}/utils/sanitizeHtml.js`);
