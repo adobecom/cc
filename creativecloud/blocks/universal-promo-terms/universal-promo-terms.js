@@ -119,7 +119,7 @@ async function getTermsHTML(params, el, env, search) {
       product_code: productCode,
       market_segments: [marketSegment],
     } = offer;
-    const { prefix } = getLocaleInfo(params);
+    const { prefix } = getLocaleInfo(params) || { prefix: '' };
     alternateURL = FALLBACK_URLS[productCode]?.[customerSegment]?.[marketSegment];
     if (!alternateURL?.includes('{{prefix}}')) {
       // us only page (e.g: stock)
