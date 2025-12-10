@@ -428,6 +428,7 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?go(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?learn(\/.*)?/,
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?benefits(\/.*)?/,
+    /www\.adobe\.com\/(\w\w(_\w\w)?\/)?download(\/.*)?/,
   ],
   brandConciergeAA: 'cc:app-reco',
 };
