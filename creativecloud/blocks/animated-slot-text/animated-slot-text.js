@@ -154,7 +154,7 @@ function parseSlotData(block) {
 
 function getSlotTextItems(items) {
   try {
-    return items?.length ? items.map((item) => item.replace(/[.。]/g, '')) : [];
+    return items?.length ? items.map((item) => item.replace(/\./g, '')) : [];
   } catch (err) {
     logError('Failed to process slot text items', err);
     return [];
