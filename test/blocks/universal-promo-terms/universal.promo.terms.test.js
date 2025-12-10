@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-const { setLibs, getLibs, locales } = await import('../../../creativecloud/scripts/utils.js');
+const { getLibs, locales } = await import('../../../creativecloud/scripts/utils.js');
 const { default: init, getLocaleInfo } = await import('../../../creativecloud/blocks/universal-promo-terms/universal-promo-terms.js');
 
 describe('universal-promo-terms', () => {
