@@ -11,6 +11,11 @@ const PLACEHOLDERS = {
   campaignEnd: ['{{campaignEnd}}', '{{endDate}}', '{{ campaignEnd }}', '{{ endDate }}'],
 };
 
+const FALLBACK_URLS = {
+  CCSN: { INDIVIDUAL: { EDU: 'https://www.adobe.com/{{prefix}}offer-terms/ccm-ste-introductory.html' } },
+  STKS: { INDIVIDUAL: { COM: 'https://www.adobe.com/products/special-offers/stock-cci-terms.html' } },
+};
+
 /**
  * Resolves the locale info from a locale parameter using config.locales.
  * Input format is always lang_COUNTRY (e.g., de_DE, fr_FR, en_US).
@@ -116,19 +121,12 @@ async function getTermsHTML(params, el, env, search) {
       market_segments: [marketSegment],
     } = offer;
     const { prefix } = getLocaleInfo(params);
-    switch (productCode) {
-      case 'CCSN':
-        if (customerSegment === 'INDIVIDUAL' && marketSegment === 'EDU') {
-          alternateURL = `https://www.adobe.com/${prefix}offer-terms/ccm-ste-introductory.html`;
-        }
-        break;
-      case 'STKS':
-        if (customerSegment === 'INDIVIDUAL' && marketSegment === 'COM') {
-          alternateURL = `https://www.adobe.com/${prefix}offer-terms/ccm-ste-introductory.html`;
-        }
-        break;
-      default:
-        break;
+    alternateURL = FALLBACK_URLS[productCode]?.[customerSegment]?.[marketSegment];
+    if (!alternateURL?.includes('{{prefix}}')) {
+      // us only page (e.g: stock)
+      alternateURL = undefined;
+    } else {
+      alternateURL = alternateURL?.replace('{{prefix}}', prefix);
     }
   }
   if (!promoTerms || !promoTerms.header || !promoTerms.text) {
@@ -145,7 +143,7 @@ export default async function init(el, search) {
   if (alternateURL) {
     window.location.href = alternateURL;
   } else if (!termsHTML && env !== 'stage') {
-    window.location.href = '404.html';
+    window.location.href = '/404.html';
   } else {
     const miloLibs = getLibs('/libs');
     const { sanitizeHtml } = await import(`${miloLibs}/utils/sanitizeHtml.js`);
