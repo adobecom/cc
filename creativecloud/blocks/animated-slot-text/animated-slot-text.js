@@ -17,7 +17,9 @@ const DEFAULTS = {
   intersectionThreshold: 0.5, // Threshold for intersection observer
 };
 
-const BUTTON_LABELS = {
+const PLACEHOLDER_LABELS = ['pause-motion', 'play-motion', 'pause-icon', 'play-icon'];
+
+let animationLabels = {
   playMotion: 'Play',
   pauseMotion: 'Pause',
   pauseIcon: 'Pause icon',
@@ -28,6 +30,19 @@ const BUTTON_LABELS = {
 
 function logError(message, error) {
   window.lana?.log(`Animation slot text ${message}: ${error}`, LANA_OPTIONS);
+}
+
+async function fetchAnimationLabels(getFedsPlaceholderConfig, replaceKeyArray) {
+  try {
+    const [pauseMotion, playMotion, pauseIcon, playIcon] = await replaceKeyArray(
+      PLACEHOLDER_LABELS,
+      getFedsPlaceholderConfig(),
+    );
+    return { playMotion, pauseMotion, pauseIcon, playIcon, hasFetched: true };
+  } catch (err) {
+    logError('Failed to fetch animation labels', err);
+    return animationLabels;
+  }
 }
 
 const createEl = (tag, className, text = '', attrs = {}, styles = {}) => {
@@ -139,7 +154,7 @@ function parseSlotData(block) {
 
 function getSlotTextItems(items) {
   try {
-    return items?.length ? items.map((item) => item.replace(/[^\w\s'-]/g, '')) : [];
+    return items?.length ? items.map((item) => item.replace(/\./g, '')) : [];
   } catch (err) {
     logError('Failed to process slot text items', err);
     return [];
@@ -310,13 +325,13 @@ function initControls({
 
     if (playing) {
       filler.classList.add('is-playing');
-      wrapper.setAttribute('aria-label', BUTTON_LABELS.pauseMotion);
-      wrapper.setAttribute('title', BUTTON_LABELS.pauseMotion);
+      wrapper.setAttribute('aria-label', animationLabels.pauseMotion);
+      wrapper.setAttribute('title', animationLabels.pauseMotion);
       wrapper.setAttribute('aria-pressed', 'true');
     } else {
       filler.classList.remove('is-playing');
-      wrapper.setAttribute('aria-label', BUTTON_LABELS.playMotion);
-      wrapper.setAttribute('title', BUTTON_LABELS.playMotion);
+      wrapper.setAttribute('aria-label', animationLabels.playMotion);
+      wrapper.setAttribute('title', animationLabels.playMotion);
       wrapper.setAttribute('aria-pressed', 'false');
     }
   };
@@ -425,8 +440,8 @@ function addAccessibilityControl(el, getFederatedContentRoot) {
 
   const a = createTag('a', {
     class: 'pause-play-wrapper',
-    title: `${BUTTON_LABELS.pauseMotion}`,
-    'aria-label': `${BUTTON_LABELS.pauseMotion}`,
+    title: `${animationLabels.pauseMotion}`,
+    'aria-label': `${animationLabels.pauseMotion}`,
     role: 'button',
     tabIndex: 0,
     'aria-pressed': true,
@@ -434,12 +449,12 @@ function addAccessibilityControl(el, getFederatedContentRoot) {
   const offset = createTag('div', { class: 'offset-filler is-playing' });
   const play = createTag('img', {
     class: 'accessibility-control play-icon',
-    alt: `${BUTTON_LABELS.playIcon}`,
+    alt: `${animationLabels.playIcon}`,
     src: `${fedRoot}/federal/assets/svgs/accessibility-play.svg`,
   });
   const pause = createTag('img', {
     class: 'accessibility-control pause-icon',
-    alt: `${BUTTON_LABELS.pauseIcon}`,
+    alt: `${animationLabels.pauseIcon}`,
     src: `${fedRoot}/federal/assets/svgs/accessibility-pause.svg`,
   });
   offset.appendChild(play);
@@ -451,7 +466,10 @@ function addAccessibilityControl(el, getFederatedContentRoot) {
 
 // ===== COMPONENT INITIALIZATION =====
 
-function decorateContent(el, getFederatedContentRoot) {
+function decorateContent(
+  el,
+  getFederatedContentRoot,
+) {
   try {
     if (!el) return;
 
@@ -508,9 +526,17 @@ function decorateContent(el, getFederatedContentRoot) {
 export default async function init(el) {
   try {
     const miloLibs = getLibs('/libs');
-    const { getFederatedContentRoot } = await import(`${miloLibs}/utils/utils.js`);
+    const { getFederatedContentRoot, getFedsPlaceholderConfig } = await import(`${miloLibs}/utils/utils.js`);
+    const { replaceKeyArray } = await import(`${miloLibs}/features/placeholders.js`);
+    animationLabels = await fetchAnimationLabels(
+      getFedsPlaceholderConfig,
+      replaceKeyArray,
+    );
     el.classList.add('con-block');
-    decorateContent(el, getFederatedContentRoot);
+    decorateContent(
+      el,
+      getFederatedContentRoot,
+    );
   } catch (err) {
     window.lana?.log(`Animation slot text Init Error: ${err}`, LANA_OPTIONS);
   }
