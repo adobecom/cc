@@ -154,7 +154,11 @@ function parseSlotData(block) {
 
 function getSlotTextItems(items) {
   try {
-    return items?.length ? items.map((item) => item.replace(/\./g, '')) : [];
+    if (items?.length < 1) return [];
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return [items[items.length - 1]];
+    }
+    return items.map((item) => item.replace(/\./g, ''));
   } catch (err) {
     logError('Failed to process slot text items', err);
     return [];
@@ -397,11 +401,17 @@ function setupEventTriggers(config) {
     el, state, animationController, resizeHandler, data, windowEl, reelEl, animationRef,
   } = config;
   try {
+    window.addEventListener('resize', debounce(resizeHandler, DEFAULTS.resizeDebounceDelay));
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       state.currentIndex = data.items.length - 1;
-      state.dimensions = measureGeometry(reelEl);
-      updateAnimationState(state, reelEl, state.currentIndex, 0);
-      windowEl.classList.add('finished');
+      // Ensure DOM is ready for measurement
+      window.requestAnimationFrame(() => {
+        state.dimensions = measureGeometry(reelEl);
+        if (state.dimensions.height > 0) {
+          updateAnimationState(state, reelEl, state.currentIndex, 0);
+        }
+        windowEl.classList.add('finished');
+      });
       return;
     }
 
@@ -426,7 +436,6 @@ function setupEventTriggers(config) {
     );
 
     observer.observe(el);
-    window.addEventListener('resize', debounce(resizeHandler, DEFAULTS.resizeDebounceDelay));
   } catch (err) {
     logError('Failed to setup event triggers', err);
   }
