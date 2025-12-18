@@ -139,9 +139,8 @@ const fetchAdobeStockData = async ({ collectionId, offset = 0, limit }) => {
  * Maps property labels to their corresponding keys.
  */
 const PROPERTY_MAP = {
-  collectionid: 'collectionId',
+  'collection-id': 'collectionId',
   button: 'buttonText',
-  'button-text': 'buttonText',
   'free-tag-text': 'freeTagText',
 };
 
