@@ -5,7 +5,7 @@ const CONFIG = {
   CARD_LIMIT: { desktop: 15, tablet: 9, mobile: 10 },
   API: {
     PRODUCT: 'creativecloud',
-    BASE_URL: 'https://www.adobe.com/stock-api/Rest/Media/1/Search/Collections',
+    BASE_URL: 'https://www.stage.adobe.com/stock-api/Rest/Media/1/Search/Collections',
   },
   VIEWPORT: { mobile: 599, tablet: 1199 },
   EAGER_LOAD_COUNT: 6,
