@@ -4,9 +4,8 @@ import { createTag, getScreenSizeCategory } from '../../scripts/utils.js';
 const CONFIG = {
   CARD_LIMIT: { desktop: 15, tablet: 9, mobile: 10 },
   API: {
-    KEY: 'milo-prm-yt-gallery',
     PRODUCT: 'creativecloud',
-    BASE_URL: 'https://stock.adobe.io/Rest/Media/1/Search/Collections',
+    BASE_URL: 'https://www.adobe.com/stock-api/Rest/Media/1/Search/Collections',
   },
   VIEWPORT: { mobile: 599, tablet: 1199 },
   EAGER_LOAD_COUNT: 6,
@@ -121,8 +120,7 @@ const fetchAdobeStockData = async ({ collectionId, offset = 0, limit }) => {
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-        'x-product': CONFIG.API.PRODUCT,
-        'x-api-key': CONFIG.API.KEY,
+        'x-product': CONFIG.API.PRODUCT
       },
     });
 
