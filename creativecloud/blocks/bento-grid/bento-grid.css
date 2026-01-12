@@ -1,0 +1,81 @@
+.bento-grid .foreground {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.bento-grid .foreground .grid-view {
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.bento-grid .foreground .grid-row {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: margin 0.3s ease;
+}
+
+.bento-grid .foreground .grid-view .grid-item {
+  flex: 0 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #222;
+  position: relative;
+  width: 9.75rem;
+  height: 10.19rem;
+}
+
+.bento-grid .foreground .grid-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} 
+
+.bento-grid .foreground .grid-view.view-mobile {
+  display: flex;
+}
+
+@media screen and (min-width: 600px) {
+  .bento-grid .foreground .grid-view.view-mobile {
+    display: none;
+  }
+
+  .bento-grid .foreground .grid-view.view-tablet {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .bento-grid .foreground .grid-view.view-tablet .grid-row {
+    gap: 0.5rem;
+  }
+
+  .bento-grid .foreground .grid-view.view-tablet .grid-item {
+    width: 11.56rem;
+    height: 12.06rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .bento-grid .foreground .grid-view.view-tablet {
+    display: none;
+  }
+
+  .bento-grid .foreground .grid-view.view-desktop {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .bento-grid .foreground .grid-view.view-desktop .grid-row {
+    gap: 1rem;
+  }
+
+  .bento-grid .foreground .grid-view.view-desktop .grid-item {
+    width: 23.62rem;
+    height: 24.69rem;
+  }
+}

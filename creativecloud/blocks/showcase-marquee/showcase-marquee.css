@@ -98,6 +98,10 @@
   width: max-content;
 }
 
+[dir="rtl"] .showcase-marquee .logo-row .logo-container {
+  animation-name: scroll-right;
+}
+
 .showcase-marquee.unity-enabled .interactive-area {
     background: none;
 }
@@ -272,6 +276,16 @@
 
   100% {
     transform: translateX(calc(var(--scroll-distance) - var(--scroll-offset, 0px)));
+  }
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(2 * calc(var(--scroll-offset, 0px)));
+  }
+
+  100% {
+    transform: translateX(calc(-2 * var(--scroll-distance) + var(--scroll-offset, 0px)));
   }
 }
 

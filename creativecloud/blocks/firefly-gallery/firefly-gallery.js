@@ -1,4 +1,4 @@
-import { createTag, getConfig, createIntersectionObserver } from '../../scripts/utils.js';
+import { createTag, getConfig, createIntersectionObserver, getScreenSizeCategory } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/action.js';
 
 const FIREFLY_API_URL = 'https://community-hubs.adobe.io/api/v2/ff_community/assets';
@@ -56,21 +56,6 @@ export function getLocalizedValue(localizations, currentLocale, defaultValue = '
   }
 
   return defaultValue;
-}
-
-export function getScreenSizeCategory() {
-  const MEDIA_QUERIES = {
-    mobile: window.matchMedia('(max-width: 599px)'),
-    tablet: window.matchMedia('(min-width: 600px) and (max-width: 899px)'),
-    desktop: window.matchMedia('(min-width: 900px)'),
-  };
-  if (MEDIA_QUERIES.mobile.matches) {
-    return 'mobile';
-  }
-  if (MEDIA_QUERIES.tablet.matches) {
-    return 'tablet';
-  }
-  return 'desktop';
 }
 
 export function extractAspectRatio(asset) {

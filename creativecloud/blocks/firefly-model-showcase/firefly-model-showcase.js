@@ -1,6 +1,7 @@
 import { createTag, getLibs } from '../../scripts/utils.js';
 
 // Constants
+const GNAV_HEIGHT = 64;
 const LANA_OPTIONS = { tags: 'firefly-model-showcase', errorType: 'i' };
 const GALLERY_FALLBACK_URL = '/cc-shared/ff-gallery-assets.json';
 const CHICKET_ICONS = [
@@ -111,6 +112,7 @@ function createResponsiveVideo(videoUrl, imageUrl, altText) {
     playsinline: '',
     preload: 'auto',
     loading: 'eager',
+    tabindex: '-1',
   });
 
   // Play video as soon as it's loaded
@@ -233,7 +235,8 @@ export default async function init(el) {
     if (entries[0].isIntersecting) {
       ob.disconnect();
       const { default: addParallaxProgress } = await import('../../features/parallax.js');
-      addParallaxProgress(el, 64, true);
+      // TODO: Handle optional feds-promo-aside
+      addParallaxProgress(el, GNAV_HEIGHT, true, [{ name: 'disable-pointer', threshold: 20, type: 'exit' }]);
     }
   }).observe(el);
   const configs = Array.from(parallaxConfigRow.children).map(

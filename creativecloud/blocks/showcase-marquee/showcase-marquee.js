@@ -34,7 +34,8 @@ export function createRollingLogos(logos) {
       const currentScrollY = window.scrollY;
       const scrollDelta = currentScrollY - lastScrollY;
 
-      const multiplier = 0.2;
+      // Reverse the scroll offset multiplier for RTL
+      const multiplier = document.dir ? -0.2 : 0.2;
       targetScrollOffset += scrollDelta * multiplier;
 
       const lerpFactor = 0.08;

@@ -49,6 +49,8 @@
   box-sizing: border-box;
   padding: var(--content-padding);
   width: var(--content-width);
+  position: relative;
+  z-index: 3;
 }
 
 .firefly-model-showcase-content picture {
@@ -109,6 +111,13 @@
   justify-content: center;
   position: absolute;
   bottom: var(--gallery-position);
+  z-index: 2;
+}
+
+/* RTL adjustment - mirror gallery positioning */
+[dir="rtl"] .firefly-model-showcase-gallery {
+  margin-left: 0;
+  margin-right: var(--gallery-margin-left);
 }
 
 .gallery-column {
@@ -157,6 +166,12 @@
   backdrop-filter: blur(27.4974px);
 }
 
+/* RTL adjustment - mirror icon positioning */
+[dir="rtl"] .gallery-cell-icon {
+  left: auto;
+  right: var(--gallery-cell-icon-left);
+}
+
 .gallery-cell-icon.bg-adobe {
   background: #eb1000;
 }
@@ -170,6 +185,12 @@
 .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
 .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
     margin-right: var(--cta-margin-right);
+}
+
+[dir="rtl"] .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
+[dir="rtl"] .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
+  margin-right: 0;
+  margin-left: var(--cta-margin-right);
 }
 
 /* Small mobile */
@@ -260,6 +281,7 @@
   }
 }
 
+/* TODO: Clean up > 900px viewport styles */
 @media screen and (min-width: 1200px) {
   :root {
     --content-bottom-padding: 30%;
@@ -267,6 +289,7 @@
   }
 }
 
+/* Large desktop */
 @media screen and (min-width: 1480px) {
   :root {
     --content-width: 50%;
@@ -275,11 +298,15 @@
     --content-side-padding: calc((100% - 1440px + 16px) / 2);
     --content-padding: 0 0 var(--content-bottom-padding) var(--content-side-padding);
   }
+
+  [dir="rtl"] {
+    --content-padding: 0 var(--content-side-padding) var(--content-bottom-padding) 0;
+  }
 }
 
+/* Extra large desktop */
 @media screen and (min-width: 2000px) {
   :root {
-    --content-width: 50%;
     --content-bottom-padding: 1100px;
     --gallery-position: 300px;
   }
@@ -288,7 +315,7 @@
 /* parallax effects */
 .firefly-model-showcase .firefly-model-showcase-content {
   will-change: opacity, transform;
-  opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 40);
+  opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 20);
   transform: translateY(
     calc(
       200px *
@@ -301,6 +328,10 @@
         ) / (var(--exit-end-progress, 40) - var(--exit-start-progress, 0))
     )
   );
+}
+
+.firefly-model-showcase.marker-disable-pointer .firefly-model-showcase-content {
+  pointer-events: none;
 }
 
 .firefly-model-showcase-gallery .gallery-column {
@@ -340,7 +371,6 @@
 @media screen and (min-width: 900px) {
   .firefly-model-showcase .firefly-model-showcase-content {
     will-change: opacity, transform;
-    opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 40);
     transform: translateY(
       calc(
         400px *
