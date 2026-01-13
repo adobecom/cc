@@ -80,12 +80,24 @@ const logError = (message) => {
   window.lana?.log(message, { tags: 'prm-yt-gallery' });
 };
 
+const setAriaHidden = (elementOrSelector, hidden, parent = document) => {
+  let element = elementOrSelector;
+
+  if (typeof elementOrSelector === 'string') {
+    element = parent.querySelector(elementOrSelector);
+  }
+
+  if (element) {
+    element.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+  }
+};
+
 /**
  * Normalizes API item to consistent internal structure.
  */
 const normalizeItem = (apiItem) => ({
   image: cleanUrl(apiItem.thumbnail_url),
-  altText: apiItem.title || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries',
+  altText: apiItem.title || 'premiere youtube card',
   deepLinkUrl: createTemplateDeepLink(apiItem.id),
   video: cleanUrl(apiItem.video_preview_url),
   isFree: apiItem.is_free || false,
@@ -181,6 +193,9 @@ const playVideo = (video) => {
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
 
+  setAriaHidden(`.${CLASSES.CLOSE_CARD_BUTTON}`, false, card);
+  setAriaHidden(`.${CLASSES.INFO_BUTTON}`, false, card);
+
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
     playVideo(video);
   }
@@ -192,26 +207,30 @@ const expandCard = (card, video) => {
 const collapseCard = (card, video) => {
   card.classList.remove(CLASSES.EXPANDED, CLASSES.INFO_VISIBLE);
   card.querySelector(`.${CLASSES.OVERLAY_TEXT}`).scrollTop = 0;
+
+  setAriaHidden(`.${CLASSES.CLOSE_CARD_BUTTON}`, true, card);
+  setAriaHidden(`.${CLASSES.INFO_BUTTON}`, true, card);
+
   if (video) video.pause();
 };
 
 /**
  * Creates a reusable close button.
  */
-const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0, ariaDescribedby = '') => {
+const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0, ariaHidden = true) => {
   const button = createTag('button', {
     class: className,
     'aria-label': ariaLabel,
     type: 'button',
-    'aria-describedby': ariaDescribedby,
     tabIndex,
+    'aria-hidden': ariaHidden ? 'true' : 'false',
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
   button.addEventListener('click', (e) => {
     e.stopPropagation();
     onClick();
   });
-  if (window.screen.width > 500) {
+  if (window.innerWidth > CONFIG.VIEWPORT.mobile) {
     button.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e?.preventDefault();
@@ -232,6 +251,7 @@ const createInfoButton = () => {
     'aria-label': 'Show info',
     type: 'button',
     tabindex: '0',
+    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -259,9 +279,8 @@ const createInfoOverlay = () => {
 /**
  * Creates an image element with lazy/eager loading.
  */
-const createImageElement = (src, alt = '', eager = false) => createTag('img', {
+const createImageElement = (src, eager = false) => createTag('img', {
   src,
-  alt,
   loading: eager ? 'eager' : 'lazy',
 });
 
@@ -270,6 +289,7 @@ const createImageElement = (src, alt = '', eager = false) => createTag('img', {
  */
 const createVideoElement = (src, posterUrl) => {
   const video = createTag('video', { src, poster: posterUrl, tabindex: '-1' });
+  video.controls = false;
   video.muted = true;
   video.loop = true;
   video.playsInline = true;
@@ -287,7 +307,7 @@ const createCloseCardButton = (card) => {
     'Close card',
     () => {
       collapseCard(card, video);
-      if (window.screen.width > 500) { card?.querySelector('.pre-yt-info-button')?.focus(); }
+      if (window.innerWidth > CONFIG.VIEWPORT.mobile) { card?.querySelector('.pre-yt-info-button')?.focus(); }
     },
   );
 };
@@ -298,8 +318,6 @@ const createCloseCardButton = (card) => {
 const createShimmerCard = (buttonText) => {
   const card = createTag('div', {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
-    role: 'group',
-    'aria-label': 'Youtube Premiere card',
     tabindex: '0',
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
@@ -347,19 +365,22 @@ const updateCardWithData = (card, item, eager = false) => {
   const overlayText = card.querySelector(`.${CLASSES.OVERLAY_TEXT}`);
 
   // Add and handle image loading
-  const img = createImageElement(item.image, item.altText, eager);
+  const img = createImageElement(item.image, eager);
   handleImageLoad(card, img);
   imageWrapper.append(img);
-
-  // Update button deep link
-  if (button && item.deepLinkUrl) {
-    button.href = item.deepLinkUrl;
-  }
+  const overlayTextId = `overlay-text-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
   // Update overlay text
   if (overlayText) {
     overlayText.textContent = item.altText;
     overlayText.ariaLive = 'polite';
+    overlayText.id = overlayTextId;
+  }
+
+  // Update button deep link and aria-describedby
+  if (button && item.deepLinkUrl) {
+    button.href = item.deepLinkUrl;
+    button.setAttribute('aria-describedby', overlayTextId);
   }
 
   // Add video if available
@@ -374,8 +395,12 @@ const updateCardWithData = (card, item, eager = false) => {
 const showInfoOverlay = (card, video, closeOverlayButton) => {
   card.classList.add(CLASSES.INFO_VISIBLE);
   if (video) video.pause();
+
+  setAriaHidden(`.${CLASSES.INFO_BUTTON}`, true, card);
+
   if (closeOverlayButton) {
     closeOverlayButton.tabindex = 0;
+    setAriaHidden(closeOverlayButton, false);
     closeOverlayButton.focus();
   }
 };
@@ -385,6 +410,10 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
  */
 const hideInfoOverlay = (card, video) => {
   card.classList.remove(CLASSES.INFO_VISIBLE);
+
+  setAriaHidden(`.${CLASSES.OVERLAY_CLOSE}`, true, card);
+  setAriaHidden(`.${CLASSES.INFO_BUTTON}`, false, card);
+
   if (video) {
     video.play().catch((error) => {
       logError(`Failed to resume video after closing info overlay: ${error.message}`);
@@ -447,30 +476,25 @@ const handleEditButtonTabNavigation = (e, infoButton, card) => {
 const setupInfoOverlay = (card) => {
   const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
   const overlay = card.querySelector(`.${CLASSES.INFO_OVERLAY}`);
-  const overlayText = overlay.querySelector(`.${CLASSES.OVERLAY_TEXT}`);
   const closeCardButton = card.querySelector(`.${CLASSES.CLOSE_CARD_BUTTON}`);
   const video = card.querySelector(`.${CLASSES.VIDEO_WRAPPER} video`);
   const editButton = card.querySelector(`.${CLASSES.BUTTON}`);
 
   if (!infoButton || !overlay) return;
-  const overlayTextId = `overlayText-${crypto.randomUUID()}`;
-  overlayText.id = overlayTextId;
-
   // Create and append overlay close button
   // chnage here
   const closeOverlayButton = createCloseButton(
     CLASSES.OVERLAY_CLOSE,
-    'Close info',
+    'Close text description',
     () => {
       hideInfoOverlay(card, video);
-      if (window.screen.width > 500) {
+      if (window.innerWidth > CONFIG.VIEWPORT.mobile) {
         card?.querySelector('.pre-yt-info-button')?.focus();
       } else {
         card.querySelector(`.${CLASSES.CLOSE_CARD_BUTTON}`).focus();
       }
     },
     -1,
-    overlayTextId,
   );
   overlay.appendChild(closeOverlayButton);
 

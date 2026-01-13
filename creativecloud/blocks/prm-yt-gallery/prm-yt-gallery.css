@@ -1,15 +1,36 @@
-/* CSS Variables - only for values reused more than twice */
-.prm-yt-gallery {
+/* Responsive styling with mobile-first approach */
+:root {
   --color-white: #fff;
   --transition-default: 0.2s ease-out;
   --control-width: 31.35px;
   --control-height: 22px;
   --card-offset: -55px;
+  --grid-columns: 2;
+  --grid-card-width: 143px;
+  --grid-column-gap: 16px;
+  --grid-row-gap: 15px;
+  --grid-padding-block: 90px 80px;
+  --grid-padding-inline: 20px;
+  --card-border-radius: 18px;
+  --card-scale: 1.161;
+  --button-bottom: 40px;
+  --button-bottom-info-visible: 19px;
+  --button-padding: 8px 14px;
+  --button-border-radius: 16px;
+  --button-font-size: 12px;
+  --button-line-height: 15px;
+  --button-max-width-offset: 50px;
+  --button-display: block;
+  --free-tag-height: 13px;
+  --free-tag-font-size: 7px;
+  --free-tag-padding: 1px 5px 2px;
+  --free-tag-border-radius: 2px;
+  --info-button-left: 14px;
+  --info-button-right: unset;
+  --close-card-button-display: flex;
+  --info-overlay-padding: 45px 26px;
+  --overlay-text-font-size: 18px;
 }
-
-/* ====================
-   Base Layout
-   ==================== */
 
 .prm-yt-gallery {
   display: flex;
@@ -19,17 +40,13 @@
 
 .pre-yt-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(min-content, 143px));
-  column-gap: 16px;
-  row-gap: 15px;
+  grid-template-columns: repeat(var(--grid-columns), minmax(min-content, var(--grid-card-width)));
+  column-gap: var(--grid-column-gap);
+  row-gap: var(--grid-row-gap);
   padding: 90px 20px 80px;
-  max-width: calc((143px * 2) + 16px + 40px);
+  max-width: calc((var(--grid-card-width) * var(--grid-columns)) + (var(--grid-column-gap) * (var(--grid-columns) - 1)) + (var(--grid-padding-inline) * 2));
   margin: 0 auto;
 }
-
-/* ====================
-   Card Structure
-   ==================== */
 
 .pre-yt-card {
   width: 100%;
@@ -41,7 +58,7 @@
 .pre-yt-card-inner {
   width: 100%;
   height: 100%;
-  border-radius: 18px;
+  border-radius: var(--card-border-radius);
   overflow: hidden;
   position: absolute;
   top: 0;
@@ -55,10 +72,6 @@
 .pre-yt-card:nth-child(2n) {
   transform: translateY(var(--card-offset));
 }
-
-/* ====================
-   Card Content Wrappers
-   ==================== */
 
 .pre-yt-card-inner .image-wrapper {
   width: 100%;
@@ -90,11 +103,8 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
 }
-
-/* ====================
-   Free Tag Badge
-   ==================== */
 
 .pre-yt-card .pre-yt-free-tag {
   display: flex;
@@ -106,49 +116,50 @@
   box-sizing: border-box;
   font-weight: 400;
   line-height: 1.5em;
-  height: 13.58px;
-  font-size: 7.23px;
-  padding: 1.03px 5.17px 1.55px;
-  border-start-start-radius: 2.07px;
-  border-end-start-radius: 2.07px;
+  height: var(--free-tag-height);
+  font-size: var(--free-tag-font-size);
+  padding: var(--free-tag-padding);
+  border-start-start-radius: var(--free-tag-border-radius);
+  border-end-start-radius: var(--free-tag-border-radius);
   z-index: 4;
 }
 
-/* ====================
-   Interactive Elements - Buttons
-   ==================== */
-
 .pre-yt-card-inner .pre-yt-button {
   position: absolute;
-  bottom: 40px;
+  bottom: var(--button-bottom);
   left: 50%;
   transform: translateX(-50%);
-  padding: 8px 14px;
-  border-radius: 16px;
+  padding: var(--button-padding);
+  border-radius: var(--button-border-radius);
   border: 2px solid var(--color-white);
   background: var(--color-white);
   color: #2C2C2C;
-  font-size: 12px;
+  font-size: var(--button-font-size);
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
-  line-height: 15px;
+  line-height: var(--button-line-height);
   z-index: 2;
-  max-width: calc(100% - 50px);
+  max-width: calc(100% - var(--button-max-width-offset));
   overflow: hidden;
   text-overflow: ellipsis;
   opacity: 0;
-  transition: opacity var(--transition-default);
+  display: var(--button-display);
+}
+
+.pre-yt-card-inner .pre-yt-button wbr {
+  display: none;
 }
 
 .pre-yt-card.expanded.info-visible .pre-yt-card-inner .pre-yt-button {
-  bottom: 19px;
+  bottom: var(--button-bottom-info-visible);
 }
 
 .pre-yt-card-inner .pre-yt-info-button {
   position: absolute;
-  inset-inline-start: 13.9px;
-  top: 11.227px;
+  inset-inline-start: var(--info-button-left);
+  inset-inline-end: var(--info-button-right);
+  top: 11px;
   width: var(--control-width);
   height: var(--control-height);
   padding: 0;
@@ -161,7 +172,6 @@
   justify-content: center;
   z-index: 2;
   opacity: 0;
-  transition: opacity var(--transition-default);
 }
 
 .pre-yt-card-inner .pre-yt-close-card-button {
@@ -175,15 +185,11 @@
   background: #f3f3f3;
   border-radius: 11px;
   cursor: pointer;
-  display: flex;
+  display: var(--close-card-button-display);
   align-items: center;
   justify-content: center;
   z-index: 4;
 }
-
-/* ====================
-   Info Overlay
-   ==================== */
 
 .pre-yt-card-inner .pre-yt-info-overlay {
   position: absolute;
@@ -194,10 +200,9 @@
   background: rgba(0, 0, 0, 0.85);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-default);
   display: flex;
   flex-direction: column;
-  padding: 45px 26px;
+  padding: var(--info-overlay-padding);
   box-sizing: border-box;
   z-index: 3;
 }
@@ -221,7 +226,7 @@
 .pre-yt-card-inner .pre-yt-overlay-text {
   flex: 1;
   color: var(--color-white);
-  font-size: 18px;
+  font-size: var(--overlay-text-font-size);
   line-height: 1.5;
   margin: 0;
   overflow-y: auto;
@@ -250,16 +255,12 @@
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* ====================
-   Card States - Expanded
-   ==================== */
-
 .pre-yt-card.expanded {
   z-index: 1;
 }
 
 .pre-yt-card.expanded .pre-yt-card-inner {
-  transform: scale(1.161);
+  transform: scale(var(--card-scale));
   border: 2px solid var(--color-white);
 }
 
@@ -280,10 +281,6 @@
   display: none;
 }
 
-/* ====================
-   Card States - Info Visible
-   ==================== */
-
 .pre-yt-card.info-visible .pre-yt-info-overlay {
   opacity: 1;
   pointer-events: auto;
@@ -298,10 +295,6 @@
 .pre-yt-card.info-visible .pre-yt-button {
   z-index: 4;
 }
-
-/* ====================
-   Loading State - Shimmer Effect
-   ==================== */
 
 .pre-yt-card.shimmer .pre-yt-card-inner .image-wrapper {
   background-color: #e0e0e0;
@@ -331,15 +324,24 @@
   }
 }
 
-/* ====================
-   Responsive - Tablet (600px - 1199px)
-   ==================== */
-
+/* Tablet */
 @media (min-width: 600px) {
-  .pre-yt-grid {
-    grid-template-columns: repeat(3, minmax(min-content, 203px));
-    max-width: calc((203px * 3) + (16px * 2) + 40px);
-    padding: 90px 20px 80px;
+  :root {
+    --grid-columns: 3;
+    --grid-card-width: 203px;
+    --card-scale: 1.158;
+    --button-font-size: 17px;
+    --button-padding: 6px 21px;
+    --button-border-radius: 23px;
+    --button-line-height: 22px;
+    --button-max-width-offset: 60px;
+    --free-tag-height: 20px;
+    --free-tag-font-size: 11px;
+    --free-tag-padding: 1.48px 7.38px 2.22px;
+    --free-tag-border-radius: 3px;
+    --info-button-left: unset;
+    --info-button-right: 14px;
+    --close-card-button-display: none;
   }
 
   /* Reset mobile offset */
@@ -352,49 +354,25 @@
     transform: translateY(var(--card-offset));
   }
 
-  /* Card state adjustments */
-  .pre-yt-card.expanded .pre-yt-card-inner {
-    transform: scale(1.158);
-  }
-
-  /* Button adjustments */
-  .pre-yt-card-inner .pre-yt-button {
-    font-size: 17px;
-    padding: 6px 21px;
-    border-radius: 23px;
-    line-height: 22.164px;
-    max-width: calc(100% - 60px);
-  }
-
-  /* Free tag adjustments */
-  .pre-yt-card .pre-yt-free-tag {
-    height: 19.69px;
-    font-size: 10.34px;
-    padding: 1.48px 7.38px 2.22px;
-    border-start-start-radius: 2.95px;
-    border-end-start-radius: 2.95px;
-  }
-
-  /* Control button positioning */
-  .pre-yt-card-inner .pre-yt-info-button {
-    inset-inline-end: 13.9px;
-    inset-inline-start: unset;
-  }
-
   .pre-yt-card-inner .pre-yt-close-card-button {
     display: none;
   }
+
 }
 
-/* ====================
-   Responsive - Desktop (1200px and above)
-   ==================== */
-
+/* Desktop */
 @media (min-width: 1200px) {
-  .pre-yt-grid {
-    grid-template-columns: repeat(5, minmax(min-content, 275px));
-    max-width: calc((275px * 5) + (16px * 4) + 40px);
-    padding: 90px 80px 80px;
+  :root {
+    --grid-columns: 5;
+    --grid-card-width: 275px;
+    --grid-padding-inline: 80px;
+    --card-scale: 1.116;
+    --button-display: none;
+    --free-tag-height: 26px;
+    --free-tag-font-size: 14px;
+    --free-tag-padding: 2px 10px 3px;
+    --free-tag-border-radius: 4px;
+    --close-card-button-display: none;
   }
 
   /* Reset tablet offset */
@@ -408,24 +386,9 @@
     transform: translateY(var(--card-offset));
   }
 
-  /* Card state adjustments */
-  .pre-yt-card.expanded .pre-yt-card-inner {
-    transform: scale(1.116);
-  }
-
-  /* Hide mobile/tablet buttons - including expanded state */
   .pre-yt-card-inner .pre-yt-button,
   .pre-yt-card.expanded .pre-yt-button,
   .pre-yt-card-inner .pre-yt-close-card-button {
     display: none;
-  }
-
-  /* Free tag adjustments */
-  .pre-yt-card .pre-yt-free-tag {
-    height: 26px;
-    font-size: 14px;
-    padding: 2px 10px 3px;
-    border-start-start-radius: 4px;
-    border-end-start-radius: 4px;
   }
 }
