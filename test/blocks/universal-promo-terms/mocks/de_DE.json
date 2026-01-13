@@ -1,0 +1,80 @@
+[
+  {
+      "offer_id": "1B365A793986BBEEE26F3E372BDAAB09",
+      "spec_id": "55555555-cdc2-4a2e-a130-2e0349867860",
+      "offer_type": "BASE",
+      "price_point": "REGULAR",
+      "commitment": "YEAR",
+      "term": "ANNUAL",
+      "product_code": "CCEX",
+      "product_arrangement_code": "S-PA-1616",
+      "customer_segment": "INDIVIDUAL",
+      "sales_channel": "DIRECT",
+      "language": "EN",
+      "platform": "Mac/Win",
+      "merchant": "ADOBE",
+      "market_segments": [
+          "COM"
+      ],
+      "buying_program": "RETAIL",
+      "customer_ui": [
+          "adobe.com",
+          "www_adobe_com_products",
+          "adobe_com_plans",
+          "hdx_offers"
+      ],
+      "countries": [
+          "DE",
+          "DK",
+          "RO",
+          "EE",
+          "ES",
+          "SE",
+          "SI",
+          "SK",
+          "LT",
+          "LU",
+          "LV",
+          "FI",
+          "FR",
+          "MT",
+          "GB",
+          "GR",
+          "NL",
+          "NO",
+          "AT",
+          "HR",
+          "HU",
+          "BE",
+          "BG",
+          "IE",
+          "IS",
+          "IT",
+          "PL",
+          "PT",
+          "CH",
+          "CY",
+          "CZ"
+      ],
+      "compliance": {
+          "terms_href": "https://adobeid-na1-stg1.services.adobe.com/ims/person/fetch_tc/v2?client_id={imsClientIdOfCaller}&service_name=tc_ccm_single_app_anu_pp&locale={RengaLocale}"
+      },
+      "ordering": {
+          "max_quantity": 1
+      },
+      "payment_structure": "PAID_IN_ADVANCE",
+      "qualifiers": [
+          {
+              "target": "STANDARD",
+              "validation_point": "AT_PURCHASE"
+          }
+      ],
+      "product_arrangement_version_id": "XQ-DDAoLCQ7ivqWfrdO-mJbKMybTCdO2D2hhDZ_Kn_E",
+      "promo_terms": {
+          "header": "Bedingungen",
+          "text": "Offer expires on October 28, 2025. Offer available in Creative Cloud Express and limited to customers who purchase directly from Adobe or by contacting Customer Support. Purchase the Creative Cloud Express plan and get 20,00 € off the standard price for 361,76 €/Jahr (einschließlich VAT) for the first 3-months. At the end of the promotion period, your payment method will be charged at the then-current rate, currently 385,56 €/Jahr (einschließlich VAT) until the end of the 12-month subscription term.  At the end of your subscription term, your subscription will automatically renew, and your payment method will be charged the then-current rate, currently 385,56 €/Jahr (einschließlich VAT) (price subject to change) unless you elect to change or cancel your subscription. This pricing is limited to one purchase of one subscription per customer. A 12-month commitment is required. Cancellations can be made via your Adobe Account or Customer Support.  Offer not available to Education, OEM, or volume licensing customers. Deutschland",
+          "unresolved_pricing_text": "Offer expires on October 28, 2025. Offer available in Creative Cloud Express and limited to customers who purchase directly from Adobe or by contacting Customer Support. Purchase the Creative Cloud Express plan and get 20,00 € off the standard price for {{discountedPrice}} for the first 3-months. At the end of the promotion period, your payment method will be charged at the then-current rate, currently {{listPrice}} until the end of the 12-month subscription term.  At the end of your subscription term, your subscription will automatically renew, and your payment method will be charged the then-current rate, currently {{renewalPrice}} (price subject to change) unless you elect to change or cancel your subscription. This pricing is limited to one purchase of one subscription per customer. A 12-month commitment is required. Cancellations can be made via your Adobe Account or Customer Support.  Offer not available to Education, OEM, or volume licensing customers. Deutschland"
+      }
+  }
+]
+

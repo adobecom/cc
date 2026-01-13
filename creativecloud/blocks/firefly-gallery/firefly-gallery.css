@@ -321,8 +321,6 @@
 .firefly-gallery-user-info {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  max-width: calc(100% - var(--spacing-m));
   align-self: flex-start;
 }
 
@@ -334,6 +332,7 @@
   border-radius: var(--border-radius-round);
   object-fit: cover;
   border: 1px solid rgb(255 255 255 / 50%);
+  margin-inline-end: 4px;
   flex-shrink: 0;
 }
 
