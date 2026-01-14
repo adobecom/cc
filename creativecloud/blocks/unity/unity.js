@@ -37,7 +37,26 @@ async function priorityLoad(parr) {
   } catch (e) { /* do not error out if call fails */ }
 }
 
+function preloadPromptBarDependencies() {
+  const dependencies = [
+    'https://clio-assets.adobe.com/clio-playground/script-cache/117.0.43/prompt-bar-app/dist/main.bundle.js',
+    'https://clio-assets.adobe.com/clio-playground/script-cache/116.1.4/spectrum-theme/dist/main.bundle.js',
+  ];
+  dependencies.forEach((url) => {
+    const existing = document.querySelector(`link[rel="modulepreload"][href="${url}"]`);
+    if (existing) return;
+    const link = document.createElement('link');
+    link.rel = 'modulepreload';
+    link.href = url;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  });
+}
+
 export default async function init(el) {
+  if (el.classList.contains('workflow-firefly')) {
+    preloadPromptBarDependencies();
+  }
   const unitylibs = getUnityLibs();
   const promiseArr = [
     `${unitylibs}/core/styles/styles.css`,
