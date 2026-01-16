@@ -177,7 +177,7 @@ export const [setLibs, getLibs] = (() => {
         libs = prodLibs;
         return libs;
       }
-      const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
+      const branch = "MWPW-180318";
       if (branch === 'local') { libs = 'http://localhost:6456/libs'; return libs; }
       const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
       if (branch.indexOf('--') > -1) { libs = `https://${branch}.${env}.live/libs`; return libs; }
@@ -384,6 +384,68 @@ export async function acomsisCookieHandler() {
 
 export const decorateArea = getDecorateAreaFn();
 
+// Checkout Modal Performance Tracking for Plans page
+const CHECKOUT_PERF_CONFIG = {
+  clientId: 'checkout-modal-perf',
+  sampleRate: 25, // 25% sampling for high traffic
+  endpoint: 'https://www.adobe.com/lana/ll',
+};
+
+function initPlansCheckoutPerformanceTracking() {
+  // Only initialize on pages with merch-card-collection (plans page)
+  const merchCardCollection = document.querySelector('merch-card-collection');
+  if (!merchCardCollection) return;
+
+  let clickStartTime = null;
+  let productName = null;
+
+  // Capture click timestamp on Select/Buy Now buttons
+  document.addEventListener('click', (e) => {
+    const buyNowLink = e.target.closest('a[href*="commerce.adobe.com"]');
+    if (buyNowLink) {
+      clickStartTime = performance.now();
+      const card = buyNowLink.closest('merch-card');
+      productName = card?.getAttribute('name') || 'unknown';
+    }
+  });
+
+  // Listen for iframe content ready signal (contentHeight postMessage)
+  window.addEventListener('message', (event) => {
+    if (event.data?.contentHeight && clickStartTime !== null) {
+      const duration = Math.round(performance.now() - clickStartTime);
+
+      // Apply client-side sampling
+      if (Math.random() * 100 > CHECKOUT_PERF_CONFIG.sampleRate) {
+        clickStartTime = null;
+        return;
+      }
+
+      // Build LANA-compatible message
+      const message = `checkout-modal|product=${productName}|duration=${duration}ms|page=plans`;
+      const params = new URLSearchParams({
+        m: message,
+        c: CHECKOUT_PERF_CONFIG.clientId,
+        s: CHECKOUT_PERF_CONFIG.sampleRate,
+        t: 'i', // informational
+        tags: 'performance,checkout-modal',
+      });
+
+      // Use sendBeacon for non-blocking, reliable delivery
+      navigator.sendBeacon?.(`${CHECKOUT_PERF_CONFIG.endpoint}?${params}`);
+
+      // Debug logging when lanadebug param is present
+      if (new URLSearchParams(window.location.search).has('lanadebug')) {
+        // eslint-disable-next-line no-console
+        console.log('[Checkout Perf]', { product: productName, duration: `${duration}ms`, message });
+      }
+
+      // Reset for next measurement
+      clickStartTime = null;
+      productName = null;
+    }
+  });
+}
+
 const CONFIG = {
   contentRoot: '/cc-shared',
   codeRoot: '/creativecloud',
@@ -461,5 +523,7 @@ export const scriptInit = async () => {
   (async function loadPage() {
     loadLana({ clientId: 'cc' });
     await loadArea();
+    // Initialize checkout modal performance tracking on plans pages
+    initPlansCheckoutPerformanceTracking();
   }());
 };
