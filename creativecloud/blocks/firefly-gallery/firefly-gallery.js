@@ -436,7 +436,6 @@ function buildAndLoadAssetIntoSkeleton(
 }
 
 function buildAndProcessAssetItem(item, asset, locale) {
-  console.log('Processing item:', asset);
   const aspectRatio = extractAspectRatio(asset);
 
   const itemType = getItemTypeFromAspectRatio(aspectRatio);
