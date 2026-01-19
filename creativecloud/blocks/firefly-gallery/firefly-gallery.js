@@ -265,7 +265,7 @@ function buildOverlayElement(
   viewBtnLabel,
   userInfo = {},
 ) {
-  const ariaLabel = `${userInfo.name}: ${promptText}. ${viewBtnLabel}`;
+  const ariaLabel = `${userInfo.name}: AI created graphic ${promptText}. ${viewBtnLabel}`;
 
   const overlay = createTag('a', {
     class: 'firefly-gallery-overlay',
@@ -436,6 +436,7 @@ function buildAndLoadAssetIntoSkeleton(
 }
 
 function buildAndProcessAssetItem(item, asset, locale) {
+  console.log('Processing item:', asset);
   const aspectRatio = extractAspectRatio(asset);
 
   const itemType = getItemTypeFromAspectRatio(aspectRatio);
@@ -445,7 +446,7 @@ function buildAndProcessAssetItem(item, asset, locale) {
   item.style.setProperty('--aspect-ratio', aspectRatio);
 
   const imageUrl = getImageRendition(asset, itemType);
-  const altText = asset.title || 'Firefly generated image';
+  const altText = '';
 
   let promptText = '';
   if (asset?.custom?.input?.['firefly#prompts']) {
