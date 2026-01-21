@@ -126,7 +126,7 @@ function updateItemTypeClass(item, itemType) {
   item.className = newClasses.join(' ');
 }
 
-async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId) {
+async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId, aiCreatedLabel) {
   try {
     const response = await fetch(
       `${FIREFLY_API_URL}${API_PARAMS}&category_id=${categoryId}`,
@@ -147,6 +147,7 @@ async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId) {
     assets.forEach((asset) => {
       asset.assetType = categoryId === 'VideoGeneration' ? 'video' : 'image';
       asset.viewBtnLabel = viewBtnLabel;
+      asset.aiCreatedLabel = aiCreatedLabel;
       asset.cgenId = cgenId;
     });
     return assets;
@@ -356,7 +357,7 @@ function buildAndLoadAssetIntoSkeleton(
   assetData = {},
   userInfo = {},
 ) {
-  const { id, assetType, viewBtnLabel, cgenId } = assetData;
+  const { id, assetType, viewBtnLabel, cgenId, aiCreatedLabel } = assetData;
   return new Promise((resolve) => {
     const assetContainer = createTag('div', { class: 'firefly-gallery-image' });
     if (assetType === 'video') {
@@ -376,6 +377,7 @@ function buildAndLoadAssetIntoSkeleton(
         fireflyUrl,
         viewBtnLabel,
         userInfo,
+        aiCreatedLabel,
       );
       if (assetType === 'video') {
         overlay.classList.add('firefly-gallery-video-overlay');
@@ -467,11 +469,11 @@ function buildAndProcessAssetItem(item, asset, locale) {
     promptText = getLocalizedValue(
       asset.custom.input['firefly#prompts'],
       locale,
-      asset.title || 'Firefly generated image',
+      asset.title || asset.aiCreatedLabel,
     );
   } else {
     // Use title as fallback
-    promptText = asset.title || 'Firefly generated image';
+    promptText = asset.title || asset.aiCreatedLabel;
   }
 
   const userInfo = {};
@@ -503,6 +505,7 @@ function buildAndProcessAssetItem(item, asset, locale) {
     assetType: asset.assetType || 'image',
     viewBtnLabel: asset.viewBtnLabel,
     cgenId: asset.cgenId,
+    aiCreatedLabel: asset.aiCreatedLabel,
   };
   buildAndLoadAssetIntoSkeleton(
     item,
@@ -596,7 +599,7 @@ export default async function init(el) {
     el.appendChild(container);
 
     // Allow UI to be scrollable before waiting for image data
-    fetchFireflyAssets(categoryId, viewBtnLabel, cgenId)
+    fetchFireflyAssets(categoryId, viewBtnLabel, cgenId, aiCreatedLabel)
       .then((assets) => {
         if (assets && assets.length) {
           loadFireflyImages(skeletonItems, assets);
