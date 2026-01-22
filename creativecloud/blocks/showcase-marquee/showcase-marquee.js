@@ -4,8 +4,8 @@ const miloLibs = getLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
 const ANIMATION_LABELS = {
-  playMotion: 'Play',
-  pauseMotion: 'Pause',
+  playMotion: 'Play motion',
+  pauseMotion: 'Pause motion',
   pauseIcon: 'Pause icon',
   playIcon: 'Play icon',
 };
@@ -74,30 +74,31 @@ export function createRollingLogos(logos) {
   return { addScrolling, logoContainer };
 }
 
-function initAnimationControls({ button, iconWrapper, animationLabels, logoContainer }) {
+function initAnimationControls({ button, iconWrapper, logoContainer }) {
   let isPlaying = true;
 
   const updateControlState = (playing) => {
     isPlaying = playing;
+    if (!iconWrapper || !button) return;
     iconWrapper.classList.toggle('is-playing', playing);
-    button.setAttribute('aria-label', playing ? animationLabels.pause : animationLabels.play);
-    button.setAttribute('title', playing ? animationLabels.pause : animationLabels.play);
+    button.setAttribute('aria-label', playing ? ANIMATION_LABELS.pauseMotion : ANIMATION_LABELS.playMotion);
+    button.setAttribute('title', playing ? ANIMATION_LABELS.pauseMotion : ANIMATION_LABELS.playMotion);
     button.setAttribute('aria-pressed', String(playing));
   };
 
   const pauseAnimation = () => {
+    updateControlState(false);
     const { transform } = getComputedStyle(logoContainer);
     logoContainer.style.animation = 'none';
     logoContainer.style.transform = transform;
     logoContainer.classList.add('paused');
-    updateControlState(false);
   };
 
   const playAnimation = () => {
+    updateControlState(true);
     logoContainer.style.animation = '';
     logoContainer.style.transform = '';
     logoContainer.classList.remove('paused');
-    updateControlState(true);
   };
 
   const toggleAnimation = () => (isPlaying ? pauseAnimation() : playAnimation());
@@ -118,6 +119,7 @@ function initAnimationControls({ button, iconWrapper, animationLabels, logoConta
 }
 
 function createAnimationControls({ container, fedRoot, logoContainer }) {
+  if (!container) return;
   const controlsWrapper = createTag('div', { class: 'animation-controls' });
 
   const button = createTag('a', {
@@ -126,7 +128,7 @@ function createAnimationControls({ container, fedRoot, logoContainer }) {
     tabIndex: 0,
     title: ANIMATION_LABELS.pauseMotion,
     'aria-label': ANIMATION_LABELS.pauseMotion,
-    'aria-pressed': 'true',
+    'aria-pressed': true,
   });
 
   const iconWrapper = createTag('div', { class: 'offset-filler is-playing' });
@@ -152,7 +154,6 @@ function createAnimationControls({ container, fedRoot, logoContainer }) {
   initAnimationControls({
     button,
     iconWrapper,
-    animationLabels: ANIMATION_LABELS,
     logoContainer,
   });
 }
