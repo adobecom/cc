@@ -15,6 +15,7 @@ const DEFAULT_PROPS = {
   collectionId: null,
   buttonText: 'Edit this template',
   freeTagText: null,
+  branchLinkTestId: 'gRUEA7oVAYb',
 };
 
 // CSS Class Names
