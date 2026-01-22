@@ -76,10 +76,10 @@ export function createRollingLogos(logos) {
 
 function initAnimationControls({ button, iconWrapper, logoContainer }) {
   let isPlaying = true;
+  if (!button || !iconWrapper || !logoContainer) return;
 
   const updateControlState = (playing) => {
     isPlaying = playing;
-    if (!iconWrapper || !button) return;
     iconWrapper.classList.toggle('is-playing', playing);
     button.setAttribute('aria-label', playing ? ANIMATION_LABELS.pauseMotion : ANIMATION_LABELS.playMotion);
     button.setAttribute('title', playing ? ANIMATION_LABELS.pauseMotion : ANIMATION_LABELS.playMotion);
@@ -122,7 +122,7 @@ function createAnimationControls({ container, fedRoot, logoContainer }) {
   if (!container) return;
   const controlsWrapper = createTag('div', { class: 'animation-controls' });
 
-  const button = createTag('a', {
+  const button = createTag('button', {
     class: 'pause-play-wrapper',
     role: 'button',
     tabIndex: 0,

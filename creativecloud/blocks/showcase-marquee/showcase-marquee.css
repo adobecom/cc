@@ -1,3 +1,7 @@
+:root {
+  --offset-filler-size: 1.5rem;
+}
+
 .showcase-marquee {
   position: relative;
   color: var(--color-white);
@@ -109,8 +113,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: var(--offset-filler-size);
+  height: var(--offset-filler-size);
   border-radius: inherit;
   background: var(--color-gray-800);
 }
@@ -238,8 +242,7 @@
   }
 
   .showcase-marquee .animation-controls .pause-play-wrapper .offset-filler{
-    width: 2rem;
-    height: 2rem;
+    --offset-filler-size: 2rem;
   }
 
   .showcase-marquee.unity-enabled .interactive-area {
@@ -305,8 +308,7 @@
   }
 
   .showcase-marquee .animation-controls .pause-play-wrapper .offset-filler {
-    width: 2.5rem;
-    height: 2.5rem;
+    --offset-filler-size: 2.5rem;
   }
 
   .showcase-marquee.unity-enabled .interactive-area {
