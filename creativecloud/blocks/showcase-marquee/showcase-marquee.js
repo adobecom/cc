@@ -3,12 +3,20 @@ import { getLibs } from '../../scripts/utils.js';
 const miloLibs = getLibs('/libs');
 const { createTag } = await import(`${miloLibs}/utils/utils.js`);
 
-const ANIMATION_LABELS = {
-  playMotion: 'Play motion',
-  pauseMotion: 'Pause motion',
+const LANA_OPTIONS = { tags: 'animated-slot-text', errorType: 'i' };
+
+const PLACEHOLDER_LABELS = ['pause-motion', 'play-motion', 'pause-icon', 'play-icon'];
+
+let animationLabels = {
+  playMotion: 'Play',
+  pauseMotion: 'Pause',
   pauseIcon: 'Pause icon',
   playIcon: 'Play icon',
 };
+
+function logError(message, error) {
+  window.lana?.log(`Animation slot text ${message}: ${error}`, LANA_OPTIONS);
+}
 
 export function createRollingLogos(logos) {
   const copies = Array.from({ length: 3 }, () => {
@@ -74,6 +82,19 @@ export function createRollingLogos(logos) {
   return { addScrolling, logoContainer };
 }
 
+async function fetchAnimationLabels(getFedsPlaceholderConfig, replaceKeyArray) {
+  try {
+    const [pauseMotion, playMotion, pauseIcon, playIcon] = await replaceKeyArray(
+      PLACEHOLDER_LABELS,
+      getFedsPlaceholderConfig(),
+    );
+    return { playMotion, pauseMotion, pauseIcon, playIcon, hasFetched: true };
+  } catch (err) {
+    logError('Failed to fetch animation labels', err);
+    return animationLabels;
+  }
+}
+
 function initAnimationControls({ button, iconWrapper, logoContainer }) {
   let isPlaying = true;
   if (!button || !iconWrapper || !logoContainer) return;
@@ -81,8 +102,8 @@ function initAnimationControls({ button, iconWrapper, logoContainer }) {
   const updateControlState = (playing) => {
     isPlaying = playing;
     iconWrapper.classList.toggle('is-playing', playing);
-    button.setAttribute('aria-label', playing ? ANIMATION_LABELS.pauseMotion : ANIMATION_LABELS.playMotion);
-    button.setAttribute('title', playing ? ANIMATION_LABELS.pauseMotion : ANIMATION_LABELS.playMotion);
+    button.setAttribute('aria-label', playing ? animationLabels.pauseMotion : animationLabels.playMotion);
+    button.setAttribute('title', playing ? animationLabels.pauseMotion : animationLabels.playMotion);
     button.setAttribute('aria-pressed', String(playing));
   };
 
@@ -118,16 +139,17 @@ function initAnimationControls({ button, iconWrapper, logoContainer }) {
   button.addEventListener('keydown', handleKeydown);
 }
 
-function createAnimationControls({ container, fedRoot, logoContainer }) {
+function createAnimationControls({ container, getFederatedContentRoot, logoContainer }) {
   if (!container) return;
+  const fedRoot = getFederatedContentRoot();
   const controlsWrapper = createTag('div', { class: 'animation-controls' });
 
   const button = createTag('button', {
     class: 'pause-play-wrapper',
     role: 'button',
     tabIndex: 0,
-    title: ANIMATION_LABELS.pauseMotion,
-    'aria-label': ANIMATION_LABELS.pauseMotion,
+    title: animationLabels.pauseMotion,
+    'aria-label': animationLabels.pauseMotion,
     'aria-pressed': true,
   });
 
@@ -135,13 +157,13 @@ function createAnimationControls({ container, fedRoot, logoContainer }) {
 
   const playIcon = createTag('img', {
     class: 'accessibility-control play-icon',
-    alt: ANIMATION_LABELS.playIcon,
+    alt: animationLabels.playIcon,
     src: `${fedRoot}/federal/assets/svgs/accessibility-play.svg`,
   });
 
   const pauseIcon = createTag('img', {
     class: 'accessibility-control pause-icon',
-    alt: ANIMATION_LABELS.pauseIcon,
+    alt: animationLabels.pauseIcon,
     src: `${fedRoot}/federal/assets/svgs/accessibility-pause.svg`,
   });
 
@@ -160,8 +182,12 @@ function createAnimationControls({ container, fedRoot, logoContainer }) {
 
 export default async function init(el) {
   const { decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-  const { getFederatedContentRoot } = await import(`${miloLibs}/utils/utils.js`);
-  const fedRoot = getFederatedContentRoot();
+  const { getFederatedContentRoot, getFedsPlaceholderConfig } = await import(`${miloLibs}/utils/utils.js`);
+  const { replaceKeyArray } = await import(`${miloLibs}/features/placeholders.js`);
+  animationLabels = await fetchAnimationLabels(
+    getFedsPlaceholderConfig,
+    replaceKeyArray,
+  );
   const children = el.querySelectorAll(':scope > div');
   const foreground = children[children.length - 2];
 
@@ -187,7 +213,7 @@ export default async function init(el) {
   logoRowContent.innerHTML = '';
   // TODO: cut down 1 level of DOM nesting
   const { logoContainer, addScrolling } = createRollingLogos(logos);
-  createAnimationControls({ container: logoRowContent, fedRoot, logoContainer });
+  createAnimationControls({ container: logoRowContent, getFederatedContentRoot, logoContainer });
   logoRowContent.append(logoContainer);
   new IntersectionObserver(([{ isIntersecting }], ob) => {
     if (!isIntersecting) return;
