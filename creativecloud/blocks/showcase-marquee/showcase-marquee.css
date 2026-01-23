@@ -372,3 +372,13 @@
     border-radius: 50%;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-marquee .logo-row .logo-container {
+    animation: none !important;
+  }
+
+  .showcase-marquee .animation-controls {
+    display: none;
+  }
+}

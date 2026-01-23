@@ -218,6 +218,8 @@ export default async function init(el) {
   new IntersectionObserver(([{ isIntersecting }], ob) => {
     if (!isIntersecting) return;
     ob.disconnect();
-    addScrolling();
+    if (!logoContainer.classList.contains('paused')) {
+      addScrolling();
+    }
   }).observe(el);
 }
