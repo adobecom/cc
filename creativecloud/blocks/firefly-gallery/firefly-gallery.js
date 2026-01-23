@@ -301,6 +301,11 @@ function buildOverlayElement(
   }, { passive: true });
 
   const contentWrapper = createTag('div', { class: 'firefly-gallery-content-wrapper' });
+
+  // Visually hidden text for screen readers in browse mode (arrow key navigation)
+  const srOnlyLabel = createTag('span', { class: 'visually-hidden' }, aiCreatedLabel);
+  contentWrapper.appendChild(srOnlyLabel);
+
   const infoContainer = createTag('div', { class: 'firefly-gallery-info-container' });
 
   if (userInfo.name || userInfo.avatarUrl) {
