@@ -146,7 +146,6 @@ function createAnimationControls({ container, getFederatedContentRoot, logoConta
 
   const button = createTag('button', {
     class: 'pause-play-wrapper',
-    role: 'button',
     tabIndex: 0,
     title: animationLabels.pauseMotion,
     'aria-label': animationLabels.pauseMotion,
