@@ -140,8 +140,8 @@ function initAnimationControls({ button, iconWrapper, logoContainer }) {
 }
 
 function createAnimationControls({ container, getFederatedContentRoot, logoContainer }) {
-  if (!container) return;
   const fedRoot = getFederatedContentRoot();
+  if (!container || !fedRoot) return;
   const controlsWrapper = createTag('div', { class: 'animation-controls' });
 
   const button = createTag('button', {
