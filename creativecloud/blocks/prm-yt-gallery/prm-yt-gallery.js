@@ -336,10 +336,7 @@ const updateCardWithData = (card, item, eager = false) => {
   const videoWrapper = card.querySelector(`.${CLASSES.VIDEO_WRAPPER}`);
   const button = card.querySelector(`.${CLASSES.BUTTON}`);
   const overlayText = card.querySelector(`.${CLASSES.OVERLAY_TEXT}`);
-  // Make card accessible once content is loaded
-  if (item.altText) {
-    card.setAttribute('aria-label', item.altText);
-  }
+  card.setAttribute('aria-label', '');
   if (item.ID) {
     card.setAttribute('data-template-id', item.ID);
   }
