@@ -295,7 +295,6 @@ const createShimmerCard = (buttonText) => {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
     tabindex: '0',
     role: 'presentation',
-    'aria-label': '',
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
   const imageWrapper = createTag('div', { class: CLASSES.IMAGE_WRAPPER });
@@ -336,7 +335,10 @@ const updateCardWithData = (card, item, eager = false) => {
   const videoWrapper = card.querySelector(`.${CLASSES.VIDEO_WRAPPER}`);
   const button = card.querySelector(`.${CLASSES.BUTTON}`);
   const overlayText = card.querySelector(`.${CLASSES.OVERLAY_TEXT}`);
-  card.setAttribute('aria-label', '');
+  // Make card accessible once content is loaded
+  if (item.altText) {
+    card.setAttribute('aria-label', item.altText);
+  }
   if (item.ID) {
     card.setAttribute('data-template-id', item.ID);
   }
