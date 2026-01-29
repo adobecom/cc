@@ -198,7 +198,7 @@
 @media screen and (max-width: 460px) {
   .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
   .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
-    padding: 12px 15px;
+    padding: 12px;
   }
 }
 
