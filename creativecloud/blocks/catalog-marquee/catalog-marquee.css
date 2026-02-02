@@ -157,3 +157,8 @@
 .catalog-marquee a[is="checkout-link"].upgrade:not(:last-of-type) {
   display: none;
 }
+
+.catalog-marquee .text .supplemental-text.body-xl {
+  font-size: inherit;
+  line-height: inherit;
+}

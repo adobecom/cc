@@ -1,7 +1,9 @@
-import { createTag, getConfig, createIntersectionObserver, getScreenSizeCategory } from '../../scripts/utils.js';
+import { createTag, getConfig, getLibs, createIntersectionObserver, getScreenSizeCategory } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/action.js';
 
 const FIREFLY_API_URL = 'https://community-hubs.adobe.io/api/v2/ff_community/assets';
+const PLACEHOLDER_KEYS = ['ai-created-graphic'];
+const DEFAULT_AI_LABEL = 'AI created graphic';
 const API_PARAMS = '?size=32&sort=updated_desc&include_pending_assets=false&cursor=';
 const API_KEY = 'milo-ff-gallery-unity';
 const ICON_PLAY = '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.59755 34.6503C10.6262 35.2535 11.7861 35.5552 12.9471 35.5552C14.0637 35.5552 15.1824 35.2753 16.1839 34.7132L32.1258 25.7798C34.2742 24.5775 35.5557 22.4155 35.5557 20.0002C35.5557 17.5843 34.2742 15.4228 32.1258 14.2206L16.1839 5.28719C14.1429 4.14137 11.6168 4.16523 9.59753 5.35012C7.76268 6.42434 6.66675 8.27981 6.66675 10.3094V29.6909C6.66675 31.72 7.76268 33.576 9.59755 34.6503Z" fill="black" fill-opacity="0.84" style="fill:black;fill-opacity:0.84;"/></svg>';
@@ -21,6 +23,18 @@ const RENDITION_SIZES = {
   portrait: { default: 450, desktop: 450, tablet: 400, mobile: 300 },
   tall: { default: 500, desktop: 500, tablet: 450, mobile: 350 },
 };
+
+async function fetchAICreatedLabel() {
+  try {
+    const miloLibs = getLibs('/libs');
+    const { replaceKeyArray } = await import(`${miloLibs}/features/placeholders.js`);
+    const [localizedLabel] = await replaceKeyArray(PLACEHOLDER_KEYS, getConfig());
+    return localizedLabel || DEFAULT_AI_LABEL;
+  } catch (err) {
+    window.lana?.log(`Failed to fetch placeholder for ai-created-graphic: ${err}`, LANA_OPTIONS);
+    return DEFAULT_AI_LABEL;
+  }
+}
 
 export function safeJsonParse(jsonString, defaultValue = {}) {
   try {
@@ -112,7 +126,7 @@ function updateItemTypeClass(item, itemType) {
   item.className = newClasses.join(' ');
 }
 
-async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId) {
+async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId, aiCreatedLabel) {
   try {
     const response = await fetch(
       `${FIREFLY_API_URL}${API_PARAMS}&category_id=${categoryId}`,
@@ -133,6 +147,7 @@ async function fetchFireflyAssets(categoryId, viewBtnLabel, cgenId) {
     assets.forEach((asset) => {
       asset.assetType = categoryId === 'VideoGeneration' ? 'video' : 'image';
       asset.viewBtnLabel = viewBtnLabel;
+      asset.aiCreatedLabel = aiCreatedLabel;
       asset.cgenId = cgenId;
     });
     return assets;
@@ -264,8 +279,9 @@ function buildOverlayElement(
   fireflyUrl,
   viewBtnLabel,
   userInfo = {},
+  aiCreatedLabel = DEFAULT_AI_LABEL,
 ) {
-  const ariaLabel = `${userInfo.name}: ${promptText}. ${viewBtnLabel}`;
+  const ariaLabel = `${userInfo.name}: ${aiCreatedLabel} ${promptText}. ${viewBtnLabel}`;
 
   const overlay = createTag('a', {
     class: 'firefly-gallery-overlay',
@@ -284,7 +300,12 @@ function buildOverlayElement(
     }
   }, { passive: true });
 
-  const contentWrapper = createTag('div', { class: 'firefly-gallery-content-wrapper' });
+  // Hide inner content from screen readers - rely on aria-label for full description
+  const contentWrapper = createTag('div', {
+    class: 'firefly-gallery-content-wrapper',
+    'aria-hidden': 'true',
+  });
+
   const infoContainer = createTag('div', { class: 'firefly-gallery-info-container' });
 
   if (userInfo.name || userInfo.avatarUrl) {
@@ -341,7 +362,7 @@ function buildAndLoadAssetIntoSkeleton(
   assetData = {},
   userInfo = {},
 ) {
-  const { id, assetType, viewBtnLabel, cgenId } = assetData;
+  const { id, assetType, viewBtnLabel, cgenId, aiCreatedLabel } = assetData;
   return new Promise((resolve) => {
     const assetContainer = createTag('div', { class: 'firefly-gallery-image' });
     if (assetType === 'video') {
@@ -361,6 +382,7 @@ function buildAndLoadAssetIntoSkeleton(
         fireflyUrl,
         viewBtnLabel,
         userInfo,
+        aiCreatedLabel,
       );
       if (assetType === 'video') {
         overlay.classList.add('firefly-gallery-video-overlay');
@@ -445,18 +467,18 @@ function buildAndProcessAssetItem(item, asset, locale) {
   item.style.setProperty('--aspect-ratio', aspectRatio);
 
   const imageUrl = getImageRendition(asset, itemType);
-  const altText = asset.title || 'Firefly generated image';
+  const altText = '';
 
   let promptText = '';
   if (asset?.custom?.input?.['firefly#prompts']) {
     promptText = getLocalizedValue(
       asset.custom.input['firefly#prompts'],
       locale,
-      asset.title || 'Firefly generated image',
+      asset.title || asset.aiCreatedLabel,
     );
   } else {
     // Use title as fallback
-    promptText = asset.title || 'Firefly generated image';
+    promptText = asset.title || asset.aiCreatedLabel;
   }
 
   const userInfo = {};
@@ -488,6 +510,7 @@ function buildAndProcessAssetItem(item, asset, locale) {
     assetType: asset.assetType || 'image',
     viewBtnLabel: asset.viewBtnLabel,
     cgenId: asset.cgenId,
+    aiCreatedLabel: asset.aiCreatedLabel,
   };
   buildAndLoadAssetIntoSkeleton(
     item,
@@ -566,6 +589,7 @@ export default async function init(el) {
     // Extract category_id - should be text2Image / VideoGeneration
     const [categoryId, cgenId] = el.querySelector('div:first-child > div').innerText.split('|').map((i) => i.trim());
     const viewBtnLabel = el.querySelector('div:last-child > div').innerText || 'View';
+    const aiCreatedLabel = await fetchAICreatedLabel();
 
     // Clear existing content
     el.textContent = '';
@@ -580,7 +604,7 @@ export default async function init(el) {
     el.appendChild(container);
 
     // Allow UI to be scrollable before waiting for image data
-    fetchFireflyAssets(categoryId, viewBtnLabel, cgenId)
+    fetchFireflyAssets(categoryId, viewBtnLabel, cgenId, aiCreatedLabel)
       .then((assets) => {
         if (assets && assets.length) {
           loadFireflyImages(skeletonItems, assets);
