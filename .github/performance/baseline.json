@@ -36,7 +36,7 @@
       "type": "cloud"
     }
   ],
-  "baseBranch": "stage",
+  "baseBranch": "perf-workflow",
   "runs": 3,
   "formFactor": "desktop",
   "jsInclude": [
