@@ -26,7 +26,7 @@
   },
   "testUrls": [
     {
-      "name": "CC English",
+      "name": "CC En",
       "url": "https://main--cc--adobecom.aem.live/creativecloud",
       "type": "cloud"
     },
