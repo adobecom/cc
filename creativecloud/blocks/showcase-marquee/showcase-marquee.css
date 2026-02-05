@@ -1,3 +1,7 @@
+:root {
+  --offset-filler-size: 1.5rem;
+}
+
 .showcase-marquee {
   position: relative;
   color: var(--color-white);
@@ -81,6 +85,49 @@
     /* background-color: red; */
 }
 
+.showcase-marquee .animation-controls {
+  display: flex;
+  padding: 0 0.5rem 0.5rem;
+  width: auto;
+  align-items: center;
+  justify-content: end;
+  position: absolute;
+  inset-block-end: 5%;
+  inset-inline-end: 1rem;
+}
+
+.showcase-marquee .animation-controls .pause-play-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  border-radius: 50%;
+  z-index: 3;
+  padding: 2px;
+  cursor: pointer;
+  background-color: var(--color-white);
+  margin: 0;
+}
+
+.showcase-marquee .animation-controls .pause-play-wrapper .offset-filler {  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--offset-filler-size);
+  height: var(--offset-filler-size);
+  border-radius: inherit;
+  background: var(--color-gray-800);
+}
+
+.showcase-marquee .animation-controls .pause-play-wrapper:focus-visible {
+  outline: var(--color-accent-focus-ring) solid 2px;
+}
+
+.showcase-marquee .pause-play-wrapper .offset-filler.is-playing .play-icon,
+.showcase-marquee .pause-play-wrapper .offset-filler:not(.is-playing) .pause-icon {
+  display: none;
+}
+
 .showcase-marquee .logo-row {
     opacity: .3;
     position: absolute;
@@ -100,6 +147,10 @@
 
 [dir="rtl"] .showcase-marquee .logo-row .logo-container {
   animation-name: scroll-right;
+}
+
+.showcase-marquee .logo-row .logo-container.paused {
+  animation-play-state: paused;
 }
 
 .showcase-marquee.unity-enabled .interactive-area {
@@ -190,6 +241,10 @@
     padding: 0;
   }
 
+  .showcase-marquee .animation-controls .pause-play-wrapper .offset-filler{
+    --offset-filler-size: 2rem;
+  }
+
   .showcase-marquee.unity-enabled .interactive-area {
     width: auto;
   }
@@ -252,6 +307,10 @@
     margin-bottom: 20px;
   }
 
+  .showcase-marquee .animation-controls .pause-play-wrapper .offset-filler {
+    --offset-filler-size: 2.5rem;
+  }
+
   .showcase-marquee.unity-enabled .interactive-area {
     width: auto;
   }
@@ -302,5 +361,24 @@
 @media screen and (min-width: 600px) {
   .showcase-marquee .logo-row svg {
     height: 50px;
+  }
+
+  .showcase-marquee .animation-controls {
+    padding: 0;
+    width: fit-content;
+    inset-block-end: 8%;
+    inset-inline-end: 2.5rem;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-marquee .logo-row .logo-container {
+    animation: none !important;
+  }
+
+  .showcase-marquee .animation-controls {
+    display: none;
   }
 }
