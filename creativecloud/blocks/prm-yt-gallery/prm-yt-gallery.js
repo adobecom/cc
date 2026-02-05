@@ -15,6 +15,7 @@ const DEFAULT_PROPS = {
   collectionId: 'GClrnGPOMA39cFtEAAeNWoykuhUmaUw0',
   buttonText: 'Edit this template',
   freeTagText: 'Free',
+  branchLinkTestId: 'gRUEA7oVAYb',
 };
 
 // CSS Class Names
@@ -57,7 +58,7 @@ const ICONS = {
 const cleanUrl = (url) => (url ? url.replace(/\\\//g, '/') : '');
 
 // Generates template deep link URL.
-const createTemplateDeepLink = (templateId) => `https://premierepro.app.link/gRUEA7oVAYb?template_id=${templateId}`;
+const createTemplateDeepLink = (templateId, branchLinkTestId) => `https://premierepro.app.link/${branchLinkTestId}?template_id=${templateId}`;
 
 // Detects if the user is on an iOS device.
 const isIOSDevice = () => {
@@ -95,10 +96,10 @@ const setAriaHidden = (elementOrSelector, hidden, parent = document) => {
 };
 
 // Normalizes API item to consistent internal structure.
-const normalizeItem = (apiItem) => ({
+const normalizeItem = (apiItem, branchLinkTestId) => ({
   image: cleanUrl(apiItem.thumbnail_url),
   altText: apiItem.title || 'premiere youtube card',
-  deepLinkUrl: createTemplateDeepLink(apiItem.id),
+  deepLinkUrl: createTemplateDeepLink(apiItem.id, branchLinkTestId),
   video: cleanUrl(apiItem.video_preview_url),
   isFree: apiItem.is_free || false,
   ID: apiItem.id,
@@ -151,6 +152,7 @@ const PROPERTY_MAP = {
   'collection-id': 'collectionId',
   button: 'buttonText',
   'free-tag-text': 'freeTagText',
+  'branch-link-test-id': 'branchLinkTestId',
 };
 
 // Parses block properties from the authoring table.
@@ -538,14 +540,14 @@ const addFreeTagToCard = (card, freeTagText) => {
 };
 
 // Updates cards with fetched data from API.
-const updateCardsWithData = (container, data, cardLimit, freeTagText) => {
+const updateCardsWithData = (container, data, cardLimit, freeTagText, branchLinkTestId) => {
   const cards = container.querySelectorAll(`.${CLASSES.CARD}`);
   const items = data?.files?.slice(0, cardLimit) || [];
   items.forEach((rawItem, index) => {
     const card = cards[index];
     if (!card) return;
 
-    const item = normalizeItem(rawItem);
+    const item = normalizeItem(rawItem, branchLinkTestId);
     const eager = index < CONFIG.EAGER_LOAD_COUNT;
 
     updateCardWithData(card, item, eager);
@@ -592,6 +594,6 @@ export default async function init(el) {
     limit: 96,
   });
   if (data) {
-    updateCardsWithData(grid, data, cardLimit, blockProps.freeTagText);
+    updateCardsWithData(grid, data, cardLimit, blockProps.freeTagText, blockProps.branchLinkTestId);
   }
 }
