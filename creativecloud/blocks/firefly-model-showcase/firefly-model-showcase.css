@@ -308,7 +308,7 @@
 }
 
 /* parallax effects */
-.firefly-model-showcase .firefly-model-showcase-content {
+/* .firefly-model-showcase .firefly-model-showcase-content {
   will-change: opacity, transform;
   opacity: calc(1 - (clamp(0, var(--exit-progress), 40)) / 20);
   transform: translateY(
@@ -395,4 +395,4 @@
       )
     );
   }
-}
+} */
