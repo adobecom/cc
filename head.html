@@ -55,19 +55,44 @@
   import { scriptInit } from '/creativecloud/scripts/utils.js';
   scriptInit();
 </script>
-<script src="/creativecloud/animation/animate.js" ></script>
+<script src="/creativecloud/animation/rebound.runtime.js" ></script>
 <script>
+  function loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.type = 'text/javascript';
+    
+    // Optional: Handle load success
+    script.onload = function() {
+      console.log('Script loaded successfully');
+      if (callback) callback(null);
+    };
+    
+    // Optional: Handle load error
+    script.onerror = function() {
+      console.error('Failed to load script');
+      if (callback) callback(new Error('Script load error'));
+    };
+    
+    document.head.appendChild(script);
+  }
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('mode') === 'rebound') {
-    const editor = new Rebound.Editor({
-      openButton: null,
-      // optional: customize storage key
-      // storageKey: 'rebound:my-page:v1',
-      onSave: (jsonText, configObj) => {
-        console.log('Saved config:', jsonText);
+    loadScript('/creativecloud/animation/rebound.editor.js', function(err) {
+      if (err) {
+        console.error('Error loading script:', err);
+      } else {
+        const editor = new window.Rebound.Editor({
+          openButton: null,
+          // optional: customize storage key
+          // storageKey: 'rebound:my-page:v1',
+          onSave: (jsonText, configObj) => {
+            console.log('Saved config:', jsonText);
+          }
+        });
+        editor.open();
       }
     });
-    editor.open();
   }
 </script>
 <link rel="icon" href="data:," />
