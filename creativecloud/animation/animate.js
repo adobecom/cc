@@ -1,9 +1,11 @@
-/* motionforge.runtime.js - CSS-progress driven runtime (vanilla JS, no UI) */
+/* rebound.runtime.js - CSS-progress driven runtime (vanilla JS, no UI) */
 (() => {
   'use strict';
 
-  const MF = (window.MotionForge = window.MotionForge || {});
-  const VERSION = '0.2.0';
+  const RB = (window.Rebound = window.Rebound || {});
+  const VERSION = '0.3.0';
+
+  const DEFAULT_STORAGE_KEY = 'rebound:config:v1';
 
   // ---- Utils ----
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
@@ -34,24 +36,28 @@
     return String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
   }
 
-  // Convert ":scope > ..." to "[data-mf-scope="X"] > ..."
+  function safeParseJson(text) {
+    try { return JSON.parse(text); } catch { return null; }
+  }
+
+  // Convert ":scope > ..." to "[data-rb-scope="X"] > ..."
   function scopeSelectorToCss(scopeAttrSel, targetSelector, withinScope) {
     const sel = (targetSelector || '').trim();
     if (!sel) return null;
 
     if (sel === ':scope') return scopeAttrSel;
 
-    // If author uses ":scope" prefix, replace it
+    // Replace :scope prefix
     if (sel.startsWith(':scope')) {
       return sel.replace(/^:scope\b/, scopeAttrSel);
     }
 
-    // Otherwise, prefix when within scope
+    // Prefix if within scope
     if (withinScope !== false) return `${scopeAttrSel} ${sel}`;
-    return sel; // global selector
+    return sel;
   }
 
-  // ---- Progress update (ALWAYS automatic, as requested) ----
+  // ---- Progress update (ALWAYS automatic) ----
   function computeAndSetProgress(scopeEl, navHeight) {
     const screenHeight = window.innerHeight || 1;
     const elHeight = scopeEl.offsetHeight || 1;
@@ -61,7 +67,6 @@
     const enterProgress = clamp((screenHeight - rect.top) / elHeight, 0, 1);
     const exitProgress = clamp((-rect.top + navHeight) / elHeight, 0, 1);
 
-    // store as 0..100 numbers (no units)
     scopeEl.style.setProperty('--enter-progress', fmt(enterProgress * 100));
     scopeEl.style.setProperty('--exit-progress', fmt(exitProgress * 100));
   }
@@ -71,8 +76,6 @@
     const s = toNum(start, 0);
     const e = toNum(end, 100);
     if (e === s) return '1';
-
-    // normalized ratio:
     // (clamp(s, progress, e) - s) / (e - s)
     return `((clamp(${s}, ${progressVar}, ${e}) - ${s}) / (${e} - ${s}))`;
   }
@@ -81,7 +84,6 @@
     const progressVar = trigger.progress === 'enter' ? 'var(--enter-progress)' : 'var(--exit-progress)';
     const ratio = ratioExpr(progressVar, trigger.start, trigger.end);
 
-    // Collect transform funcs into one transform
     const tf = [];
     let opacityDecl = '';
     const otherDecls = [];
@@ -127,16 +129,14 @@
         continue;
       }
 
-      // Firefly-like parallax vars:
-      // translateY(calc(var(--base-offset) + var(--parallax-distance) * ratio))
+      // Firefly-like: base+distance over progress (vars are set from config)
       if (p.type === 'parallaxY') {
         tf.push(`translateY(calc(var(--base-offset, 0px) + var(--parallax-distance, 0px) * ${ratio}))`);
         continue;
       }
 
-      // Animated CSS variable
       if (p.type === 'cssVar') {
-        const name = String(p.name || '--mf-var');
+        const name = String(p.name || '--rb-var');
         const unit = p.unit || '';
         const from = fmtVal(p.from ?? 0, unit);
         const to = fmtVal(p.to ?? 0, unit);
@@ -146,7 +146,6 @@
     }
 
     const decls = [];
-
     if (tf.length || opacityDecl) {
       const wc = [];
       if (tf.length) wc.push('transform');
@@ -180,35 +179,27 @@
       if (p.type === 'translateY') {
         hasTf = true;
         const unit = p.unit || 'px';
-        const from = toNum(p.from, 0);
-        const to = toNum(p.to, 0);
-        tf.translateY = `${lerp(from, to, t)}${unit}`;
+        tf.translateY = `${lerp(toNum(p.from, 0), toNum(p.to, 0), t)}${unit}`;
         continue;
       }
 
       if (p.type === 'translateX') {
         hasTf = true;
         const unit = p.unit || 'px';
-        const from = toNum(p.from, 0);
-        const to = toNum(p.to, 0);
-        tf.translateX = `${lerp(from, to, t)}${unit}`;
+        tf.translateX = `${lerp(toNum(p.from, 0), toNum(p.to, 0), t)}${unit}`;
         continue;
       }
 
       if (p.type === 'rotate') {
         hasTf = true;
         const unit = p.unit || 'deg';
-        const from = toNum(p.from, 0);
-        const to = toNum(p.to, 0);
-        tf.rotate = `${lerp(from, to, t)}${unit}`;
+        tf.rotate = `${lerp(toNum(p.from, 0), toNum(p.to, 0), t)}${unit}`;
         continue;
       }
 
       if (p.type === 'scale') {
         hasTf = true;
-        const from = toNum(p.from, 1);
-        const to = toNum(p.to, 1);
-        tf.scale = String(lerp(from, to, t));
+        tf.scale = String(lerp(toNum(p.from, 1), toNum(p.to, 1), t));
         continue;
       }
     }
@@ -232,17 +223,13 @@
     function frame(now) {
       if (cancelled) return;
       const p = clamp((now - start) / Math.max(1, duration), 0, 1);
-      const e = ease(p);
-      const v = lerp(from, to, e);
-      onUpdate(v);
+      onUpdate(lerp(from, to, ease(p)));
       if (p < 1) requestAnimationFrame(frame);
     }
-
     requestAnimationFrame(frame);
     return () => { cancelled = true; };
   }
 
-  // ---- Target resolving ----
   function resolveTargets(scopeEl, track) {
     const sel = (track.targetSelector || '').trim();
     if (!sel) return [];
@@ -252,7 +239,7 @@
       if (track.withinScope !== false) return Array.from(scopeEl.querySelectorAll(sel));
       return Array.from(document.querySelectorAll(sel));
     } catch (e) {
-      console.warn('[MotionForge] Bad selector:', sel, e);
+      console.warn('[Rebound] Bad selector:', sel, e);
       return [];
     }
   }
@@ -262,28 +249,21 @@
 
   function mount(config) {
     if (!config || typeof config !== 'object') {
-      throw new Error('[MotionForge] Runtime.mount(config) requires a config object.');
+      throw new Error('[Rebound] Runtime.mount(config) requires a config object.');
     }
 
     const mountId = ++MOUNT_SEQ;
-
-    // Only “offset” config (hidden from UI)
     const navHeight = toNum(config?.settings?.navHeight, 64);
-
     const animations = Array.isArray(config.animations) ? config.animations : [];
 
-    // Style element for generated CSS (scroll engine)
     const styleEl = document.createElement('style');
-    styleEl.setAttribute('data-mf-runtime-style', String(mountId));
+    styleEl.setAttribute('data-rb-runtime-style', String(mountId));
     document.head.appendChild(styleEl);
 
     const destroyFns = [];
-    const scopeItems = []; // { scopeEl, navHeight }
-
-    // For view triggers
+    const scopeItems = [];
     const observers = [];
 
-    // Build + generate CSS
     let cssOut = '';
 
     for (let ai = 0; ai < animations.length; ai++) {
@@ -292,36 +272,30 @@
       if (!scopeSelector) continue;
 
       let scopeEls = [];
-      try {
-        scopeEls = Array.from(document.querySelectorAll(scopeSelector));
-      } catch (e) {
-        console.warn('[MotionForge] Bad scopeSelector:', scopeSelector, e);
-        continue;
-      }
+      try { scopeEls = Array.from(document.querySelectorAll(scopeSelector)); }
+      catch (e) { console.warn('[Rebound] Bad scopeSelector:', scopeSelector, e); continue; }
 
       const tracks = Array.isArray(anim.tracks) ? anim.tracks : [];
 
       for (let si = 0; si < scopeEls.length; si++) {
         const scopeEl = scopeEls[si];
-        const scopeId = `mf-${mountId}-${ai}-${si}`;
+        const scopeId = `rb-${mountId}-${ai}-${si}`;
+        scopeEl.setAttribute('data-rb-scope', scopeId);
 
-        scopeEl.setAttribute('data-mf-scope', scopeId);
         scopeItems.push({ scopeEl, navHeight });
 
-        const scopeAttrSel = `[data-mf-scope="${scopeId}"]`;
+        const scopeAttrSel = `[data-rb-scope="${cssEscape(scopeId)}"]`;
 
         for (const track of tracks) {
           if (!track || !track.trigger) continue;
-
           const trig = track.trigger || {};
           const type = trig.type || 'scroll';
 
-          // ---- Scroll/parallax: CSS injection using progress vars ----
           if (type === 'scroll') {
             const engine = track.engine || 'css';
             if (engine !== 'css') continue;
 
-            // Ensure config-driven vars are applied (no HTML dependency)
+            // Apply vars driven by config (no HTML dependency)
             const targets = resolveTargets(scopeEl, track);
             for (const el of targets) {
               for (const p of track.properties || []) {
@@ -332,35 +306,25 @@
                   el.style.setProperty('--base-offset', fmtVal(p.base ?? 0, unit));
                   el.style.setProperty('--parallax-distance', fmtVal(p.distance ?? 0, unit));
                 }
-
-                // Optional static var support (if you want it later)
-                if (p.type === 'staticVar') {
-                  const name = String(p.name || '--mf-var');
-                  const value = String(p.value ?? '');
-                  el.style.setProperty(name, value);
-                }
               }
             }
 
             const cssSel = scopeSelectorToCss(scopeAttrSel, track.targetSelector, track.withinScope);
             if (!cssSel) continue;
 
-            const trigger = {
-              progress: trig.progress === 'enter' ? 'enter' : 'exit',
-              start: toNum(trig.start, 0),
-              end: toNum(trig.end, 100),
-            };
-
             cssOut += buildScrollCssRule({
               selector: cssSel,
-              trigger,
+              trigger: {
+                progress: trig.progress === 'enter' ? 'enter' : 'exit',
+                start: toNum(trig.start, 0),
+                end: toNum(trig.end, 100),
+              },
               properties: track.properties || [],
             });
-
             continue;
           }
 
-          // ---- Events: JS tweening (hover/click/view) ----
+          // ---- Event triggers ----
           const targets = resolveTargets(scopeEl, track);
           if (!targets.length) continue;
 
@@ -379,14 +343,8 @@
             setT(toNum(trig.initialT, 0));
 
             if (type === 'hover') {
-              const onEnter = () => {
-                if (cancel) cancel();
-                cancel = tween({ from: stateT, to: 1, duration, easing, onUpdate: setT });
-              };
-              const onLeave = () => {
-                if (cancel) cancel();
-                cancel = tween({ from: stateT, to: 0, duration, easing, onUpdate: setT });
-              };
+              const onEnter = () => { if (cancel) cancel(); cancel = tween({ from: stateT, to: 1, duration, easing, onUpdate: setT }); };
+              const onLeave = () => { if (cancel) cancel(); cancel = tween({ from: stateT, to: 0, duration, easing, onUpdate: setT }); };
               el.addEventListener('mouseenter', onEnter);
               el.addEventListener('mouseleave', onLeave);
               destroyFns.push(() => {
@@ -407,14 +365,10 @@
             }
 
             if (type === 'view') {
-              if (!('IntersectionObserver' in window)) {
-                setT(1);
-                continue;
-              }
+              if (!('IntersectionObserver' in window)) { setT(1); continue; }
               const once = !!trig.once;
               const reverseOnExit = trig.reverseOnExit !== false;
               const threshold = trig.threshold ?? 0.01;
-
               let played = false;
 
               const ob = new IntersectionObserver((entries) => {
@@ -439,18 +393,14 @@
       }
     }
 
-    // Commit generated CSS
     styleEl.textContent = cssOut;
 
-    // Progress updater (single scroll listener)
     let ticking = false;
     let rafId = 0;
 
     function updateAllProgress() {
       ticking = false;
-      for (const it of scopeItems) {
-        computeAndSetProgress(it.scopeEl, it.navHeight);
-      }
+      for (const it of scopeItems) computeAndSetProgress(it.scopeEl, it.navHeight);
     }
 
     function onScrollOrResize() {
@@ -467,42 +417,65 @@
       if (rafId) cancelAnimationFrame(rafId);
     });
 
-    // Initial set
     updateAllProgress();
 
     return {
       version: VERSION,
       destroy: () => {
         try { styleEl.remove(); } catch {}
-        for (const ob of observers) {
-          try { ob.disconnect(); } catch {}
-        }
-        for (const fn of destroyFns.splice(0)) {
-          try { fn(); } catch {}
-        }
-        for (const it of scopeItems) {
-          try { it.scopeEl.removeAttribute('data-mf-scope'); } catch {}
-        }
+        for (const ob of observers) { try { ob.disconnect(); } catch {} }
+        for (const fn of destroyFns.splice(0)) { try { fn(); } catch {} }
+        for (const it of scopeItems) { try { it.scopeEl.removeAttribute('data-rb-scope'); } catch {} }
       },
     };
   }
 
-  MF.Runtime = { version: VERSION, mount };
+  // ---- Storage helpers (optional) ----
+  function loadFromStorage(key = DEFAULT_STORAGE_KEY) {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const parsed = safeParseJson(raw);
+    return parsed && typeof parsed === 'object' ? parsed : null;
+  }
+
+  function saveToStorage(config, key = DEFAULT_STORAGE_KEY) {
+    localStorage.setItem(key, JSON.stringify(config));
+  }
+
+  function mountFromStorage(key = DEFAULT_STORAGE_KEY) {
+    const cfg = loadFromStorage(key);
+    if (!cfg) return null;
+    return mount(cfg);
+  }
+
+  RB.Runtime = {
+    version: VERSION,
+    mount,
+    loadFromStorage,
+    saveToStorage,
+    mountFromStorage,
+    DEFAULT_STORAGE_KEY,
+  };
 })();
 
 
-/* motionforge.editor.js - Vanilla JS editor UI (popup + picker), navHeight hidden */
+/* rebound.editor.js - Rebound authoring UI (vanilla JS, no HTML) */
 (() => {
   'use strict';
 
-  const MF = (window.MotionForge = window.MotionForge || {});
-  if (!MF.Runtime) console.warn('[MotionForgeEditor] Load motionforge.runtime.js first');
+  const RB = (window.Rebound = window.Rebound || {});
+  if (!RB.Runtime) console.warn('[ReboundEditor] Load rebound.runtime.js first');
 
+  const DEFAULT_STORAGE_KEY = RB.Runtime?.DEFAULT_STORAGE_KEY || 'rebound:config:v1';
+  const UI_STORAGE_KEY = 'rebound:ui:v1';
+
+  // ---------------- Utilities ----------------
   function h(tag, attrs = {}, children = []) {
     const el = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs || {})) {
       if (k === 'class') el.className = v;
       else if (k === 'text') el.textContent = v;
+      else if (k === 'html') el.innerHTML = v;
       else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2).toLowerCase(), v);
       else if (v != null) el.setAttribute(k, String(v));
     }
@@ -519,6 +492,22 @@
     return String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
   }
 
+  function safeParseJson(text) {
+    try { return JSON.parse(text); } catch { return null; }
+  }
+
+  function downloadTextFile(filename, text) {
+    const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
   function elLabel(el) {
     if (!el || el.nodeType !== 1) return '';
     const tag = el.tagName.toLowerCase();
@@ -531,13 +520,11 @@
     if (!root || !el) return '';
     if (el === root) return ':scope';
 
-    // Prefer unique ID
     if (el.id) {
       const sel = `#${cssEscape(el.id)}`;
       try { if (document.querySelectorAll(sel).length === 1) return sel; } catch {}
     }
 
-    // :scope > tag.class:nth-child
     const parts = [];
     let cur = el;
     while (cur && cur.nodeType === 1 && cur !== root) {
@@ -555,14 +542,84 @@
     return parts.join(' > ');
   }
 
-  // ---- Picker (DevTools-like) ----
+  function defaultConfig() {
+    return {
+      version: 1,
+      settings: { navHeight: 64 },
+      animations: [{ name: 'animation-1', scopeSelector: '', tracks: [] }],
+    };
+  }
+
+  function newAnimation(name = 'animation') {
+    return { name, scopeSelector: '', tracks: [] };
+  }
+
+  function newTrack() {
+    return {
+      targetSelector: '',
+      withinScope: true,
+      trigger: { type: 'scroll', progress: 'exit', start: 0, end: 100 },
+      engine: 'css',
+      properties: [{ type: 'translateY', from: 0, to: 100, unit: 'px' }],
+    };
+  }
+
+  // ---------------- Icon SVG ----------------
+  function iconSvg(name) {
+    // simple inline icons
+    const common = 'width="18" height="18" viewBox="0 0 24 24" fill="none"';
+    if (name === 'min') return `<svg ${common}><path d="M6 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'close') return `<svg ${common}><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'max') return `<svg ${common}><path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`;
+    if (name === 'download') return `<svg ${common}><path d="M12 3v10m0 0l4-4m-4 4l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'upload') return `<svg ${common}><path d="M12 21V11m0 0l4 4m-4-4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 3h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'wand') return `<svg ${common}><path d="M4 20l8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 4l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13 5l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    return '';
+  }
+
+  // ---------------- Picker ----------------
   const Picker = (() => {
     let overlay, label, active = false;
 
+    function ensureCss() {
+      if (document.getElementById('rb-picker-css')) return;
+      const s = document.createElement('style');
+      s.id = 'rb-picker-css';
+      s.textContent = `
+        .rb-pick-overlay {
+          position: fixed;
+          z-index: 2147483646;
+          pointer-events: none;
+          border: 2px solid rgba(34, 193, 195, 0.95);
+          background: rgba(34, 193, 195, 0.18);
+          border-radius: 10px;
+          box-shadow: 0 0 0 6px rgba(124,92,255,0.12);
+        }
+        .rb-pick-label {
+          position: fixed;
+          z-index: 2147483646;
+          pointer-events: none;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(10,12,18,0.85);
+          border: 1px solid rgba(255,255,255,0.12);
+          backdrop-filter: blur(10px);
+          color: #fff;
+          font-size: 12px;
+          max-width: 70vw;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      `;
+      document.head.appendChild(s);
+    }
+
     function ensure() {
+      ensureCss();
       if (overlay) return;
-      overlay = h('div', { class: 'mf-pick-overlay' });
-      label = h('div', { class: 'mf-pick-label' });
+      overlay = h('div', { class: 'rb-pick-overlay' });
+      label = h('div', { class: 'rb-pick-label' });
       document.body.appendChild(overlay);
       document.body.appendChild(label);
       overlay.style.display = 'none';
@@ -577,21 +634,22 @@
       overlay.style.height = `${r.height}px`;
       label.textContent = elLabel(el);
       label.style.left = `${Math.max(8, r.left)}px`;
-      label.style.top = `${Math.max(8, r.top - 24)}px`;
+      label.style.top = `${Math.max(8, r.top - 34)}px`;
     }
 
-    function pick({ onPick, onCancel }) {
+    function pick({ ignoreSelector, onPick, onCancel }) {
       ensure();
       if (active) return;
       active = true;
+
       overlay.style.display = 'block';
       label.style.display = 'block';
 
       function move(e) {
         const el = document.elementFromPoint(e.clientX, e.clientY);
         if (!el) return;
-        if (el.closest && el.closest('.mf-panel')) return;
-        if (el.classList && (el.classList.contains('mf-pick-overlay') || el.classList.contains('mf-pick-label'))) return;
+        if (ignoreSelector && el.closest && el.closest(ignoreSelector)) return;
+        if (el.classList && (el.classList.contains('rb-pick-overlay') || el.classList.contains('rb-pick-label'))) return;
         setBox(el);
       }
 
@@ -601,7 +659,9 @@
         e.stopImmediatePropagation?.();
 
         const el = document.elementFromPoint(e.clientX, e.clientY);
-        if (!el || (el.closest && el.closest('.mf-panel'))) return;
+        if (!el) return;
+        if (ignoreSelector && el.closest && el.closest(ignoreSelector)) return;
+
         cleanup();
         onPick?.(el);
       }
@@ -630,180 +690,505 @@
     return { pick };
   })();
 
+  // ---------------- UI CSS ----------------
   function injectCssOnce() {
-    if (document.getElementById('mf-editor-css')) return;
+    if (document.getElementById('rb-editor-css')) return;
     const style = document.createElement('style');
-    style.id = 'mf-editor-css';
+    style.id = 'rb-editor-css';
     style.textContent = `
-      .mf-panel {
+      :root{
+        --rb-bg: rgba(12,14,22,0.78);
+        --rb-bg2: rgba(16,18,28,0.88);
+        --rb-border: rgba(255,255,255,0.12);
+        --rb-text: rgba(245,247,255,0.92);
+        --rb-muted: rgba(245,247,255,0.68);
+        --rb-accent: #7c5cff;
+        --rb-accent2: #22c1c3;
+        --rb-danger: #ff5a7a;
+        --rb-shadow: 0 18px 55px rgba(0,0,0,0.55);
+      }
+
+      .rb-panel{
         position: fixed;
-        right: 16px;
-        bottom: 16px;
-        width: 440px;
-        max-height: 80vh;
-        overflow: auto;
         z-index: 2147483647;
+        width: 480px;
+        max-height: 80vh;
+        overflow: hidden;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(124,92,255,0.14), rgba(34,193,195,0.08)) , var(--rb-bg);
+        border: 1px solid var(--rb-border);
+        box-shadow: var(--rb-shadow);
+        backdrop-filter: blur(14px);
+        color: var(--rb-text);
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        font-size: 12px;
-        background: rgba(20,20,24,0.98);
-        color: #eee;
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 12px;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+        transform: translateZ(0);
       }
-      .mf-panel * { box-sizing: border-box; }
-      .mf-header {
-        position: sticky; top: 0;
+      .rb-panel *{ box-sizing: border-box; }
+      .rb-header{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
         padding: 10px 12px;
-        background: rgba(20,20,24,0.98);
-        border-bottom: 1px solid rgba(255,255,255,0.12);
-        display:flex; justify-content:space-between; align-items:center;
+        background: radial-gradient(1200px 120px at 0% 0%, rgba(124,92,255,0.55), transparent),
+                    radial-gradient(1200px 120px at 100% 0%, rgba(34,193,195,0.45), transparent),
+                    rgba(10,12,18,0.55);
+        border-bottom: 1px solid rgba(255,255,255,0.10);
+        cursor: grab;
+        user-select: none;
       }
-      .mf-title { font-weight: 700; letter-spacing: 0.3px; }
-      .mf-section { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      .mf-row { display:flex; gap:8px; align-items:center; }
-      .mf-col { display:flex; flex-direction:column; gap:6px; }
-      .mf-btn {
-        border: 1px solid rgba(255,255,255,0.18);
+      .rb-header:active{ cursor: grabbing; }
+      .rb-brand{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        font-weight: 800;
+        letter-spacing: 0.35px;
+      }
+      .rb-badge{
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.14);
         background: rgba(255,255,255,0.06);
-        color: #eee;
-        padding: 6px 8px;
-        border-radius: 8px;
+        color: var(--rb-muted);
+      }
+      .rb-actions{ display:flex; gap:8px; align-items:center; }
+      .rb-iconbtn{
+        width: 34px; height: 34px;
+        display:flex; align-items:center; justify-content:center;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(255,255,255,0.06);
+        color: rgba(255,255,255,0.9);
         cursor: pointer;
+        transition: transform 120ms ease, background 120ms ease;
+      }
+      .rb-iconbtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }
+      .rb-iconbtn.danger{ border-color: rgba(255,90,122,0.35); color: #ffd3db; }
+      .rb-body{
+        overflow:auto;
+        max-height: calc(80vh - 58px);
+        padding: 12px;
+      }
+
+      .rb-section{
+        border: 1px solid rgba(255,255,255,0.10);
+        background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+        border-radius: 16px;
+        padding: 12px;
+        margin-bottom: 10px;
+      }
+      .rb-section-title{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom: 10px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .rb-row{ display:flex; gap:10px; align-items:center; }
+      .rb-col{ display:flex; flex-direction:column; gap:8px; }
+      .rb-muted{ color: var(--rb-muted); font-size: 12px; }
+      .rb-label{ font-size: 12px; color: var(--rb-muted); }
+
+      .rb-input, .rb-select, .rb-textarea{
+        width: 100%;
+        padding: 9px 10px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(10,12,18,0.35);
+        color: var(--rb-text);
+        outline: none;
+      }
+      .rb-input:focus, .rb-select:focus, .rb-textarea:focus{
+        border-color: rgba(124,92,255,0.55);
+        box-shadow: 0 0 0 6px rgba(124,92,255,0.14);
+      }
+      .rb-textarea{
+        min-height: 170px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+      }
+
+      .rb-btn{
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(255,255,255,0.06);
+        color: var(--rb-text);
+        padding: 9px 10px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
         user-select: none;
         white-space: nowrap;
       }
-      .mf-btn:hover { background: rgba(255,255,255,0.10); }
-      .mf-btn.danger { border-color: rgba(255,90,90,0.35); }
-      .mf-input, .mf-select, .mf-textarea {
-        width: 100%;
-        padding: 6px 8px;
-        border-radius: 8px;
+      .rb-btn:hover{
+        transform: translateY(-1px);
+        background: rgba(255,255,255,0.10);
+        border-color: rgba(255,255,255,0.20);
+      }
+      .rb-btn.primary{
+        border: 1px solid rgba(124,92,255,0.45);
+        background: linear-gradient(180deg, rgba(124,92,255,0.35), rgba(124,92,255,0.12));
+      }
+      .rb-btn.danger{
+        border: 1px solid rgba(255,90,122,0.45);
+        background: linear-gradient(180deg, rgba(255,90,122,0.25), rgba(255,90,122,0.08));
+      }
+
+      .rb-card{
+        border: 1px solid rgba(255,255,255,0.10);
+        background: rgba(10,12,18,0.28);
+        border-radius: 14px;
+        padding: 10px;
+      }
+      .rb-list{ display:flex; flex-direction:column; gap:10px; }
+      .rb-pill{
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 999px;
         border: 1px solid rgba(255,255,255,0.14);
         background: rgba(255,255,255,0.06);
-        color: #eee;
-        outline: none;
+        color: var(--rb-muted);
       }
-      .mf-textarea { min-height: 160px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-      .mf-card {
-        border: 1px solid rgba(255,255,255,0.12);
-        background: rgba(255,255,255,0.04);
-        border-radius: 10px;
-        padding: 8px;
-      }
-      .mf-list { display:flex; flex-direction:column; gap:8px; }
-      .mf-pill { padding: 2px 6px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; font-size: 11px; opacity: 0.9; }
-      .mf-muted { opacity: 0.75; }
 
-      .mf-pick-overlay {
+      /* Dock (minimized) */
+      .rb-dock{
         position: fixed;
-        z-index: 2147483646;
-        pointer-events: none;
-        border: 2px solid rgba(0, 200, 255, 0.9);
-        background: rgba(0, 200, 255, 0.15);
-        border-radius: 6px;
+        right: 16px;
+        bottom: 16px;
+        z-index: 2147483647;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, rgba(124,92,255,0.25), rgba(34,193,195,0.12)), rgba(10,12,18,0.75);
+        border: 1px solid rgba(255,255,255,0.14);
+        box-shadow: 0 16px 50px rgba(0,0,0,0.55);
+        backdrop-filter: blur(14px);
+        color: var(--rb-text);
       }
-      .mf-pick-label {
-        position: fixed;
-        z-index: 2147483646;
-        pointer-events: none;
-        padding: 4px 6px;
-        border-radius: 6px;
-        background: rgba(0,0,0,0.75);
-        color: #fff;
-        font-size: 12px;
-        max-width: 60vw;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      .rb-dock-title{
+        display:flex; align-items:center; gap:8px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
       }
     `;
     document.head.appendChild(style);
   }
 
-  function defaultConfig() {
-    return { version: 1, settings: { navHeight: 64 }, animations: [] };
-  }
-
-  function newAnimation(name = 'animation-1') {
-    return { name, scopeSelector: '', tracks: [] };
-  }
-
-  function newTrack() {
-    return {
-      targetSelector: '',
-      withinScope: true,
-      trigger: { type: 'scroll', progress: 'exit', start: 0, end: 100 },
-      engine: 'css',
-      properties: [{ type: 'translateY', from: 0, to: 100, unit: 'px' }],
-    };
-  }
-
-  class MotionForgeEditor {
-    constructor({ openButton, initialConfig, onSave } = {}) {
+  // ---------------- Editor ----------------
+  class ReboundEditor {
+    constructor({
+      openButton,
+      storageKey = DEFAULT_STORAGE_KEY,
+      autoMount = true,
+      onSave,
+    } = {}) {
       injectCssOnce();
 
+      this.storageKey = storageKey;
+      this.autoMount = autoMount !== false;
       this.onSave = typeof onSave === 'function' ? onSave : null;
-      this.config = initialConfig && typeof initialConfig === 'object' ? initialConfig : defaultConfig();
 
+      // load config from storage
+      this.config = this._loadConfigFromStorage() || defaultConfig();
       this.selectedAnimIndex = 0;
       this.editingTrackIndex = -1;
 
-      this.previewController = null;
       this.panel = null;
+      this.bodyEl = null;
+      this.dock = null;
+
+      this._runtimeController = null;
+
+      // Debounced persistence/remount
+      this._saveTimer = 0;
+      this._remountTimer = 0;
+      this._savedBadgeText = 'Auto-saved';
+
+      if (this.autoMount && RB.Runtime?.mount) this._remountRuntimeNow();
 
       if (openButton) openButton.addEventListener('click', () => this.open());
     }
 
+    // ---------- Storage ----------
+    _loadConfigFromStorage() {
+      const raw = localStorage.getItem(this.storageKey);
+      if (!raw) return null;
+      const parsed = safeParseJson(raw);
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    }
+
+    _saveConfigToStorageNow() {
+      try {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.config));
+        this._setBadge('Saved');
+      } catch (e) {
+        console.warn('[Rebound] Failed saving to storage:', e);
+        this._setBadge('Save error');
+      }
+    }
+
+    _scheduleSave() {
+      this._setBadge('Saving…');
+      clearTimeout(this._saveTimer);
+      this._saveTimer = window.setTimeout(() => this._saveConfigToStorageNow(), 220);
+    }
+
+    _loadUiState() {
+      const raw = localStorage.getItem(UI_STORAGE_KEY);
+      const parsed = raw ? safeParseJson(raw) : null;
+      if (!parsed || typeof parsed !== 'object') return null;
+      return parsed;
+    }
+
+    _saveUiState(state) {
+      try { localStorage.setItem(UI_STORAGE_KEY, JSON.stringify(state)); } catch {}
+    }
+
+    // ---------- Runtime mount ----------
+    _remountRuntimeNow() {
+      if (!RB.Runtime?.mount) return;
+      try {
+        if (this._runtimeController) this._runtimeController.destroy();
+      } catch {}
+      try {
+        this._runtimeController = RB.Runtime.mount(this.config);
+      } catch (e) {
+        console.warn('[Rebound] Runtime mount failed:', e);
+      }
+    }
+
+    _scheduleRemountRuntime() {
+      if (!this.autoMount) return;
+      clearTimeout(this._remountTimer);
+      this._remountTimer = window.setTimeout(() => this._remountRuntimeNow(), 120);
+    }
+
+    _touchChange() {
+      this._scheduleSave();
+      this._scheduleRemountRuntime();
+    }
+
+    // ---------- UI ----------
+    _setBadge(text) {
+      this._savedBadgeText = text;
+      if (this._badgeEl) this._badgeEl.textContent = text;
+    }
+
     open() {
-      if (this.panel) { this.panel.style.display = 'block'; return; }
-      this.panel = this.buildUI();
-      document.body.appendChild(this.panel);
-      this.render();
-      this.refreshPreview();
+      if (!this.panel) {
+        this.panel = this._buildPanel();
+        document.body.appendChild(this.panel);
+        this._restorePanelPosition();
+        this.render();
+      }
+      this._showPanel();
     }
 
-    close() { if (this.panel) this.panel.style.display = 'none'; }
-
-    get selectedAnim() { return this.config.animations[this.selectedAnimIndex] || null; }
-
-    refreshPreview() {
-      if (!MF.Runtime) return;
-      if (this.previewController) { this.previewController.destroy(); this.previewController = null; }
-      try { this.previewController = MF.Runtime.mount(this.config); }
-      catch (e) { console.warn('[MotionForgeEditor] Preview failed:', e); }
+    close() {
+      // “close” hides panel; user can reopen via host button
+      this._hidePanel();
     }
 
-    buildUI() {
-      const panel = h('div', { class: 'mf-panel' });
-      const header = h('div', { class: 'mf-header' }, [
-        h('div', { class: 'mf-title', text: 'MotionForge Editor' }),
-        h('button', { class: 'mf-btn', text: 'Close', onClick: () => this.close() }),
+    minimize() {
+      this._hidePanel();
+      this._showDock();
+      this._saveUiState({ minimized: true, panelPos: this._getPanelPos() });
+    }
+
+    maximizeFromDock() {
+      this._hideDock();
+      this._showPanel();
+      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
+    }
+
+    _showPanel() {
+      if (!this.panel) return;
+      this.panel.style.display = 'block';
+      this._hideDock();
+      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
+    }
+
+    _hidePanel() {
+      if (!this.panel) return;
+      this.panel.style.display = 'none';
+      this._saveUiState({ minimized: true, panelPos: this._getPanelPos() });
+    }
+
+    _showDock() {
+      if (!this.dock) {
+        this.dock = this._buildDock();
+        document.body.appendChild(this.dock);
+      }
+      this.dock.style.display = 'flex';
+    }
+
+    _hideDock() {
+      if (!this.dock) return;
+      this.dock.style.display = 'none';
+    }
+
+    _buildDock() {
+      const dock = h('div', { class: 'rb-dock' }, [
+        h('div', { class: 'rb-dock-title', html: `${iconSvg('wand')} Rebound` }),
+        h('button', { class: 'rb-iconbtn', title: 'Maximize', html: iconSvg('max'), onClick: () => this.maximizeFromDock() }),
+        h('button', {
+          class: 'rb-iconbtn danger',
+          title: 'Close',
+          html: iconSvg('close'),
+          onClick: () => {
+            // Hide dock entirely (host button can reopen panel)
+            this._hideDock();
+            this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
+          },
+        }),
       ]);
-      this.bodyEl = h('div');
+      return dock;
+    }
+
+    _buildPanel() {
+      const panel = h('div', { class: 'rb-panel', style: 'display:none; left: 16px; top: 16px;' });
+
+      const header = h('div', { class: 'rb-header' }, [
+        h('div', { class: 'rb-brand' }, [
+          h('div', { html: iconSvg('wand') }),
+          h('div', { text: 'Rebound' }),
+          (this._badgeEl = h('div', { class: 'rb-badge', text: this._savedBadgeText })),
+        ]),
+        h('div', { class: 'rb-actions' }, [
+          h('button', { class: 'rb-iconbtn', title: 'Minimize', html: iconSvg('min'), onClick: () => this.minimize() }),
+          h('button', { class: 'rb-iconbtn danger', title: 'Close', html: iconSvg('close'), onClick: () => this.close() }),
+        ]),
+      ]);
+
+      this.bodyEl = h('div', { class: 'rb-body' });
+
       panel.appendChild(header);
       panel.appendChild(this.bodyEl);
+
+      // drag support
+      this._enableDrag(panel, header);
+
       return panel;
     }
 
-    render() {
-      const body = this.bodyEl;
-      body.innerHTML = '';
+    _getPanelPos() {
+      if (!this.panel) return null;
+      const left = parseFloat(this.panel.style.left || '0');
+      const top = parseFloat(this.panel.style.top || '0');
+      return { left, top };
+    }
 
+    _restorePanelPosition() {
+      const state = this._loadUiState();
+      if (state?.panelPos && this.panel) {
+        this.panel.style.left = `${Math.max(8, state.panelPos.left || 8)}px`;
+        this.panel.style.top = `${Math.max(8, state.panelPos.top || 8)}px`;
+      } else if (this.panel) {
+        // default bottom-right-ish
+        const w = 480;
+        const left = Math.max(16, (window.innerWidth || 1200) - w - 24);
+        const top = 16;
+        this.panel.style.left = `${left}px`;
+        this.panel.style.top = `${top}px`;
+      }
+
+      // restore minimized state
+      if (state?.minimized) {
+        this._hidePanel();
+        this._showDock();
+      }
+    }
+
+    _enableDrag(panel, handle) {
+      let dragging = false;
+      let startX = 0, startY = 0;
+      let startLeft = 0, startTop = 0;
+
+      const onPointerDown = (e) => {
+        // avoid starting drag when clicking buttons
+        const target = e.target;
+        if (target && target.closest && target.closest('.rb-iconbtn')) return;
+
+        dragging = true;
+        handle.setPointerCapture?.(e.pointerId);
+        startX = e.clientX;
+        startY = e.clientY;
+        startLeft = parseFloat(panel.style.left || '0');
+        startTop = parseFloat(panel.style.top || '0');
+      };
+
+      const onPointerMove = (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        const newLeft = startLeft + dx;
+        const newTop = startTop + dy;
+
+        // keep within viewport
+        const maxLeft = Math.max(8, (window.innerWidth || 1200) - panel.offsetWidth - 8);
+        const maxTop = Math.max(8, (window.innerHeight || 800) - 60);
+        panel.style.left = `${Math.max(8, Math.min(maxLeft, newLeft))}px`;
+        panel.style.top = `${Math.max(8, Math.min(maxTop, newTop))}px`;
+      };
+
+      const onPointerUp = () => {
+        if (!dragging) return;
+        dragging = false;
+        this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
+      };
+
+      handle.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+
+      // cleanup not implemented in MVP (ok for tool usage)
+    }
+
+    // ---------- Data helpers ----------
+    get selectedAnim() {
+      return this.config.animations[this.selectedAnimIndex] || null;
+    }
+
+    ensureConfigShape() {
+      if (!this.config || typeof this.config !== 'object') this.config = defaultConfig();
+      if (!this.config.settings) this.config.settings = { navHeight: 64 };
       if (!Array.isArray(this.config.animations)) this.config.animations = [];
       if (this.config.animations.length === 0) this.config.animations.push(newAnimation('animation-1'));
       if (this.selectedAnimIndex >= this.config.animations.length) this.selectedAnimIndex = 0;
+    }
+
+    // Hide panel while picking element (no distraction)
+    _pickWithHide(fnStartPick) {
+      const wasVisible = !!this.panel && this.panel.style.display !== 'none';
+      if (wasVisible) this._hidePanel();
+      this._hideDock(); // keep fully clean while picking
+
+      const restore = () => {
+        if (wasVisible) this._showPanel();
+      };
+
+      fnStartPick(restore);
+    }
+
+    // ---------- Rendering ----------
+    render() {
+      this.ensureConfigShape();
+      const body = this.bodyEl;
+      body.innerHTML = '';
 
       const anim = this.selectedAnim;
 
-      // ---- Animation picker ----
+      // -------- Animation section --------
       const animSelect = h('select', {
-        class: 'mf-select',
+        class: 'rb-select',
         onChange: (e) => {
           this.selectedAnimIndex = Number(e.target.value) || 0;
           this.editingTrackIndex = -1;
           this.render();
-          this.refreshPreview();
         },
       });
 
@@ -815,336 +1200,407 @@
         }));
       });
 
-      body.appendChild(h('div', { class: 'mf-section' }, [
-        h('div', { class: 'mf-row' }, [
-          animSelect,
-          h('button', {
-            class: 'mf-btn',
-            text: 'New',
-            onClick: () => {
-              const n = this.config.animations.length + 1;
-              this.config.animations.push(newAnimation(`animation-${n}`));
-              this.selectedAnimIndex = this.config.animations.length - 1;
-              this.editingTrackIndex = -1;
-              this.render();
-              this.refreshPreview();
-            },
-          }),
-          h('button', {
-            class: 'mf-btn danger',
-            text: 'Delete',
-            onClick: () => {
-              if (this.config.animations.length <= 1) return;
-              this.config.animations.splice(this.selectedAnimIndex, 1);
-              this.selectedAnimIndex = Math.max(0, this.selectedAnimIndex - 1);
-              this.editingTrackIndex = -1;
-              this.render();
-              this.refreshPreview();
-            },
-          }),
+      const btnNewAnim = h('button', {
+        class: 'rb-btn primary',
+        text: 'New Animation',
+        onClick: () => {
+          const n = this.config.animations.length + 1;
+          this.config.animations.push(newAnimation(`animation-${n}`));
+          this.selectedAnimIndex = this.config.animations.length - 1;
+          this.editingTrackIndex = -1;
+          this._touchChange();
+          this.render();
+        },
+      });
+
+      const btnDeleteAnim = h('button', {
+        class: 'rb-btn danger',
+        text: 'Delete Animation',
+        onClick: () => {
+          // if only one, reset instead of deleting
+          if (this.config.animations.length <= 1) {
+            this.config.animations = [newAnimation('animation-1')];
+            this.selectedAnimIndex = 0;
+          } else {
+            this.config.animations.splice(this.selectedAnimIndex, 1);
+            this.selectedAnimIndex = Math.max(0, this.selectedAnimIndex - 1);
+          }
+          this.editingTrackIndex = -1;
+          this._touchChange();
+          this.render();
+        },
+      });
+
+      const animNameInput = h('input', {
+        class: 'rb-input',
+        value: anim.name || '',
+        placeholder: 'Animation name',
+        onInput: (e) => {
+          anim.name = e.target.value;
+          this._touchChange();
+          // update select display
+          this.render();
+        },
+      });
+
+      body.appendChild(h('div', { class: 'rb-section' }, [
+        h('div', { class: 'rb-section-title' }, [
+          h('div', { text: 'Animation' }),
+          h('div', { class: 'rb-row' }, [btnNewAnim, btnDeleteAnim]),
         ]),
-        h('div', { class: 'mf-col', style: 'margin-top:8px;' }, [
-          h('label', { class: 'mf-muted', text: 'Animation Name' }),
-          h('input', {
-            class: 'mf-input',
-            value: anim.name || '',
-            onInput: (e) => {
-              anim.name = e.target.value;
-              this.render();
-              this.refreshPreview();
-            },
-          }),
+        h('div', { class: 'rb-row' }, [animSelect]),
+        h('div', { class: 'rb-col', style: 'margin-top:10px;' }, [
+          h('div', { class: 'rb-label', text: 'Animation Name' }),
+          animNameInput,
         ]),
       ]));
 
-      // ---- Scope selection ----
+      // -------- Scope section --------
       const scopeInput = h('input', {
-        class: 'mf-input',
+        class: 'rb-input',
         value: anim.scopeSelector || '',
         placeholder: 'e.g. .firefly-model-showcase',
-        onInput: (e) => { anim.scopeSelector = e.target.value; this.refreshPreview(); },
+        onInput: (e) => {
+          anim.scopeSelector = e.target.value;
+          this._touchChange();
+        },
       });
 
       const pickScopeBtn = h('button', {
-        class: 'mf-btn',
+        class: 'rb-btn',
         text: 'Pick Scope',
         onClick: () => {
-          Picker.pick({
-            onPick: (el) => {
-              let sel = '';
-              if (el.id) sel = `#${cssEscape(el.id)}`;
-              else if (el.classList && el.classList.length) sel = '.' + Array.from(el.classList).slice(0, 1).map(cssEscape).join('.');
-              else sel = makeSelectorWithinRoot(document.body, el).replace(':scope', 'body');
+          this._pickWithHide((restore) => {
+            Picker.pick({
+              ignoreSelector: '.rb-panel, .rb-dock',
+              onPick: (el) => {
+                // Prefer ID, else first class, else body-based selector
+                let sel = '';
+                if (el.id) sel = `#${cssEscape(el.id)}`;
+                else if (el.classList && el.classList.length) sel = '.' + Array.from(el.classList).slice(0, 1).map(cssEscape).join('.');
+                else sel = makeSelectorWithinRoot(document.body, el).replace(':scope', 'body');
 
-              anim.scopeSelector = sel;
-              this.render();
-              this.refreshPreview();
-            },
+                anim.scopeSelector = sel;
+                this._touchChange();
+                this.render();
+                restore();
+              },
+              onCancel: () => restore(),
+            });
           });
         },
       });
 
-      body.appendChild(h('div', { class: 'mf-section' }, [
-        h('div', { class: 'mf-col' }, [
-          h('label', { class: 'mf-muted', text: 'Scope selector (progress vars auto-applied here)' }),
-          h('div', { class: 'mf-row' }, [scopeInput, pickScopeBtn]),
-          h('div', { class: 'mf-muted', text: 'Runtime auto-updates --enter-progress and --exit-progress on the scope element.' }),
+      body.appendChild(h('div', { class: 'rb-section' }, [
+        h('div', { class: 'rb-section-title' }, [
+          h('div', { text: 'Scope' }),
+          h('div', { class: 'rb-pill', text: '--enter-progress / --exit-progress auto' }),
+        ]),
+        h('div', { class: 'rb-row' }, [scopeInput, pickScopeBtn]),
+        h('div', { class: 'rb-muted' }, [
+          'Progress is computed automatically and set as CSS vars on the scope element. ',
+          'To adjust exit offset, edit settings.navHeight in JSON.',
         ]),
       ]));
 
-      // ---- Tracks list ----
+      // -------- Tracks section --------
       const tracks = Array.isArray(anim.tracks) ? anim.tracks : (anim.tracks = []);
-      const list = h('div', { class: 'mf-list' });
+      const list = h('div', { class: 'rb-list' });
 
       tracks.forEach((t, idx) => {
-        list.appendChild(h('div', { class: 'mf-card' }, [
-          h('div', { class: 'mf-row', style: 'justify-content:space-between;' }, [
-            h('div', { class: 'mf-col', style: 'gap:4px;' }, [
+        const card = h('div', { class: 'rb-card' }, [
+          h('div', { class: 'rb-row', style: 'justify-content:space-between;' }, [
+            h('div', { class: 'rb-col', style: 'gap:6px; flex:1;' }, [
               h('div', { text: t.targetSelector || '(no selector)' }),
-              h('div', { class: 'mf-row' }, [
-                h('span', { class: 'mf-pill', text: `trigger: ${t.trigger?.type || 'scroll'}` }),
+              h('div', { class: 'rb-row' }, [
+                h('div', { class: 'rb-pill', text: `trigger: ${t.trigger?.type || 'scroll'}` }),
                 (t.trigger?.type === 'scroll')
-                  ? h('span', { class: 'mf-pill', text: `${t.trigger.progress || 'exit'} ${t.trigger.start ?? 0}-${t.trigger.end ?? 100}` })
+                  ? h('div', { class: 'rb-pill', text: `${t.trigger.progress || 'exit'} ${t.trigger.start ?? 0}-${t.trigger.end ?? 100}` })
                   : null,
               ].filter(Boolean)),
             ]),
-            h('div', { class: 'mf-row' }, [
-              h('button', { class: 'mf-btn', text: 'Edit', onClick: () => { this.editingTrackIndex = idx; this.render(); } }),
+            h('div', { class: 'rb-row' }, [
               h('button', {
-                class: 'mf-btn danger',
+                class: 'rb-btn',
+                text: 'Edit',
+                onClick: () => {
+                  this.editingTrackIndex = idx;
+                  this.render();
+                },
+              }),
+              h('button', {
+                class: 'rb-btn danger',
                 text: 'Delete',
                 onClick: () => {
                   tracks.splice(idx, 1);
                   if (this.editingTrackIndex === idx) this.editingTrackIndex = -1;
+                  this._touchChange();
                   this.render();
-                  this.refreshPreview();
                 },
               }),
             ]),
           ]),
-        ]));
+        ]);
+        list.appendChild(card);
       });
 
-      body.appendChild(h('div', { class: 'mf-section' }, [
-        h('div', { class: 'mf-row', style: 'justify-content:space-between;' }, [
-          h('div', { text: 'Tracks (multiple elements/effects per animation)' }),
-          h('button', {
-            class: 'mf-btn',
-            text: 'Add Track',
-            onClick: () => {
-              tracks.push(newTrack());
-              this.editingTrackIndex = tracks.length - 1;
-              this.render();
-              this.refreshPreview();
-            },
-          }),
+      const addTrackBtn = h('button', {
+        class: 'rb-btn primary',
+        text: 'Add Track',
+        onClick: () => {
+          tracks.push(newTrack());
+          this.editingTrackIndex = tracks.length - 1;
+          this._touchChange();
+          this.render();
+        },
+      });
+
+      body.appendChild(h('div', { class: 'rb-section' }, [
+        h('div', { class: 'rb-section-title' }, [
+          h('div', { text: 'Tracks' }),
+          addTrackBtn,
         ]),
         list,
       ]));
 
       if (this.editingTrackIndex >= 0 && tracks[this.editingTrackIndex]) {
-        body.appendChild(this.renderTrackEditor(anim, tracks[this.editingTrackIndex]));
+        body.appendChild(this._renderTrackEditor(anim, tracks[this.editingTrackIndex]));
       }
 
-      // ---- JSON export/import ----
-      const jsonText = h('textarea', { class: 'mf-textarea' });
+      // -------- JSON section (download/upload + textarea) --------
+      const jsonText = h('textarea', { class: 'rb-textarea' });
       jsonText.value = JSON.stringify(this.config, null, 2);
 
-      body.appendChild(h('div', { class: 'mf-section' }, [
-        h('div', { class: 'mf-row' }, [
-          h('button', { class: 'mf-btn', text: 'Update JSON', onClick: () => { jsonText.value = JSON.stringify(this.config, null, 2); } }),
-          h('button', {
-            class: 'mf-btn',
-            text: 'Load JSON',
-            onClick: () => {
-              try {
-                this.config = JSON.parse(jsonText.value);
-                this.selectedAnimIndex = 0;
-                this.editingTrackIndex = -1;
-                this.render();
-                this.refreshPreview();
-              } catch {
-                alert('Invalid JSON');
-              }
-            },
-          }),
-          h('button', {
-            class: 'mf-btn',
-            text: 'onSave()',
-            onClick: () => {
-              const text = JSON.stringify(this.config, null, 2);
-              this.onSave?.(text, this.config);
-            },
-          }),
+      const btnUpdateJson = h('button', {
+        class: 'rb-btn',
+        text: 'Update JSON View',
+        onClick: () => { jsonText.value = JSON.stringify(this.config, null, 2); },
+      });
+
+      const btnDownload = h('button', {
+        class: 'rb-btn',
+        html: `<span style="display:flex;gap:8px;align-items:center;">${iconSvg('download')} Download</span>`,
+        onClick: () => {
+          const file = `rebound-animations-${new Date().toISOString().slice(0,10)}.json`;
+          downloadTextFile(file, JSON.stringify(this.config, null, 2));
+        },
+      });
+
+      const fileInput = h('input', { type: 'file', accept: 'application/json', style: 'display:none;' });
+      fileInput.addEventListener('change', async () => {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) return;
+        const text = await file.text();
+        const parsed = safeParseJson(text);
+        if (!parsed || typeof parsed !== 'object') {
+          alert('Invalid JSON file.');
+          return;
+        }
+        this.config = parsed;
+        this.selectedAnimIndex = 0;
+        this.editingTrackIndex = -1;
+        this._touchChange();
+        this.render();
+      });
+
+      const btnUpload = h('button', {
+        class: 'rb-btn',
+        html: `<span style="display:flex;gap:8px;align-items:center;">${iconSvg('upload')} Upload</span>`,
+        onClick: () => fileInput.click(),
+      });
+
+      const btnLoadFromTextarea = h('button', {
+        class: 'rb-btn',
+        text: 'Apply JSON from Box',
+        onClick: () => {
+          const parsed = safeParseJson(jsonText.value);
+          if (!parsed || typeof parsed !== 'object') return alert('Invalid JSON in text box.');
+          this.config = parsed;
+          this.selectedAnimIndex = 0;
+          this.editingTrackIndex = -1;
+          this._touchChange();
+          this.render();
+        },
+      });
+
+      const btnOnSave = h('button', {
+        class: 'rb-btn primary',
+        text: 'onSave()',
+        onClick: () => {
+          const text = JSON.stringify(this.config, null, 2);
+          this.onSave?.(text, this.config);
+          this._setBadge('Saved');
+        },
+      });
+
+      body.appendChild(h('div', { class: 'rb-section' }, [
+        h('div', { class: 'rb-section-title' }, [
+          h('div', { text: 'Export / Import' }),
+          h('div', { class: 'rb-pill', text: 'LocalStorage enabled' }),
         ]),
+        h('div', { class: 'rb-row' }, [btnUpdateJson, btnDownload, btnUpload, btnLoadFromTextarea, btnOnSave]),
+        fileInput,
         jsonText,
-        h('div', {
-          class: 'mf-muted',
-          text: 'To change the exit offset, edit settings.navHeight in JSON (UI intentionally hides it).',
-        }),
+        h('div', { class: 'rb-muted' }, `Stored in localStorage key: ${this.storageKey}`),
       ]));
     }
 
-    renderTrackEditor(anim, track) {
-      const wrap = h('div', { class: 'mf-section' }, [
-        h('div', { text: `Edit Track #${this.editingTrackIndex + 1}` }),
+    _renderTrackEditor(anim, track) {
+      const wrap = h('div', { class: 'rb-section' }, [
+        h('div', { class: 'rb-section-title' }, [
+          h('div', { text: `Edit Track #${this.editingTrackIndex + 1}` }),
+          h('button', {
+            class: 'rb-btn',
+            text: 'Done',
+            onClick: () => { this.editingTrackIndex = -1; this.render(); },
+          }),
+        ]),
       ]);
 
       // Target selector + pick
       const targetInput = h('input', {
-        class: 'mf-input',
+        class: 'rb-input',
         value: track.targetSelector || '',
         placeholder: 'e.g. .gallery-column or :scope',
-        onInput: (e) => { track.targetSelector = e.target.value; this.refreshPreview(); },
+        onInput: (e) => { track.targetSelector = e.target.value; this._touchChange(); },
       });
 
-      const pickTargetBtn = h('button', {
-        class: 'mf-btn',
+      const withinCb = h('input', {
+        type: 'checkbox',
+        ...(track.withinScope !== false ? { checked: 'checked' } : {}),
+        onChange: (e) => { track.withinScope = !!e.target.checked; this._touchChange(); },
+      });
+
+      const pickElBtn = h('button', {
+        class: 'rb-btn',
         text: 'Pick Element',
         onClick: () => {
           if (!anim.scopeSelector) return alert('Set scope selector first.');
           const scopeEl = document.querySelector(anim.scopeSelector);
           if (!scopeEl) return alert('Scope selector matched nothing.');
 
-          Picker.pick({
-            onPick: (el) => {
-              track.targetSelector = makeSelectorWithinRoot(scopeEl, el);
-              track.withinScope = true;
-              this.render();
-              this.refreshPreview();
-            },
+          this._pickWithHide((restore) => {
+            Picker.pick({
+              ignoreSelector: '.rb-panel, .rb-dock',
+              onPick: (el) => {
+                track.targetSelector = makeSelectorWithinRoot(scopeEl, el);
+                track.withinScope = true;
+                this._touchChange();
+                this.render();
+                restore();
+              },
+              onCancel: () => restore(),
+            });
           });
         },
       });
 
-      const withinCb = h('input', {
-        type: 'checkbox',
-        ...(track.withinScope !== false ? { checked: 'checked' } : {}),
-        onChange: (e) => { track.withinScope = !!e.target.checked; this.refreshPreview(); },
-      });
-
-      wrap.appendChild(h('div', { class: 'mf-col', style: 'margin-top:8px;' }, [
-        h('label', { class: 'mf-muted', text: 'Target Selector' }),
-        h('div', { class: 'mf-row' }, [targetInput, pickTargetBtn]),
-        h('div', { class: 'mf-row' }, [withinCb, h('span', { text: 'within scope' })]),
+      wrap.appendChild(h('div', { class: 'rb-col' }, [
+        h('div', { class: 'rb-label', text: 'Target Selector' }),
+        h('div', { class: 'rb-row' }, [targetInput, pickElBtn]),
+        h('div', { class: 'rb-row' }, [
+          withinCb,
+          h('div', { class: 'rb-muted', text: 'Within scope' }),
+        ]),
       ]));
 
-      // Trigger
+      // Trigger select
       const triggerTypeSelect = h('select', {
-        class: 'mf-select',
+        class: 'rb-select',
         onChange: (e) => {
           const type = e.target.value;
 
-          if (type === 'scroll') {
-            track.trigger = { type: 'scroll', progress: 'exit', start: 0, end: 100 };
-            track.engine = 'css';
-          }
-          if (type === 'hover') {
-            track.trigger = { type: 'hover', duration: 350, easing: 'easeInOutCubic' };
-            track.engine = 'js';
-          }
-          if (type === 'click') {
-            track.trigger = { type: 'click', duration: 350, easing: 'easeInOutCubic' };
-            track.engine = 'js';
-          }
-          if (type === 'view') {
-            track.trigger = { type: 'view', duration: 450, easing: 'easeInOutCubic', once: false, reverseOnExit: true };
-            track.engine = 'js';
-          }
+          if (type === 'scroll') { track.trigger = { type: 'scroll', progress: 'exit', start: 0, end: 100 }; track.engine = 'css'; }
+          if (type === 'hover') { track.trigger = { type: 'hover', duration: 350, easing: 'easeInOutCubic' }; track.engine = 'js'; }
+          if (type === 'click') { track.trigger = { type: 'click', duration: 350, easing: 'easeInOutCubic' }; track.engine = 'js'; }
+          if (type === 'view')  { track.trigger = { type: 'view', duration: 450, easing: 'easeInOutCubic', once: false, reverseOnExit: true }; track.engine = 'js'; }
 
+          this._touchChange();
           this.render();
-          this.refreshPreview();
         },
       }, [
         h('option', { value: 'scroll', text: 'scroll / parallax (CSS progress)', ...(track.trigger?.type === 'scroll' ? { selected: 'selected' } : {}) }),
         h('option', { value: 'hover', text: 'on hover', ...(track.trigger?.type === 'hover' ? { selected: 'selected' } : {}) }),
         h('option', { value: 'click', text: 'on click', ...(track.trigger?.type === 'click' ? { selected: 'selected' } : {}) }),
-        h('option', { value: 'view', text: 'on view enter', ...(track.trigger?.type === 'view' ? { selected: 'selected' } : {}) }),
+        h('option', { value: 'view',  text: 'on view enter', ...(track.trigger?.type === 'view' ? { selected: 'selected' } : {}) }),
       ]);
 
-      wrap.appendChild(h('div', { class: 'mf-col', style: 'margin-top:10px;' }, [
-        h('label', { class: 'mf-muted', text: 'Trigger' }),
+      wrap.appendChild(h('div', { class: 'rb-col', style: 'margin-top:12px;' }, [
+        h('div', { class: 'rb-label', text: 'Trigger' }),
         triggerTypeSelect,
       ]));
 
-      // Trigger details
-      wrap.appendChild(this.renderTriggerDetails(track));
-
-      // Properties
-      wrap.appendChild(this.renderPropertiesEditor(track));
-
-      wrap.appendChild(h('div', { style: 'margin-top:10px;' }, [
-        h('button', { class: 'mf-btn', text: 'Done', onClick: () => { this.editingTrackIndex = -1; this.render(); this.refreshPreview(); } }),
-      ]));
+      wrap.appendChild(this._renderTriggerDetails(track));
+      wrap.appendChild(this._renderPropertiesEditor(track));
 
       return wrap;
     }
 
-    renderTriggerDetails(track) {
+    _renderTriggerDetails(track) {
       const trig = track.trigger || {};
-      const box = h('div', { class: 'mf-card', style: 'margin-top:10px;' });
+      const box = h('div', { class: 'rb-card', style: 'margin-top:12px;' });
 
       if (trig.type === 'scroll') {
         const progressSel = h('select', {
-          class: 'mf-select',
-          onChange: (e) => { trig.progress = e.target.value; this.refreshPreview(); },
+          class: 'rb-select',
+          onChange: (e) => { trig.progress = e.target.value; this._touchChange(); },
         }, [
           h('option', { value: 'exit', text: 'exit progress', ...(trig.progress !== 'enter' ? { selected: 'selected' } : {}) }),
           h('option', { value: 'enter', text: 'enter progress', ...(trig.progress === 'enter' ? { selected: 'selected' } : {}) }),
         ]);
 
         const startIn = h('input', {
-          class: 'mf-input', type: 'number', value: String(trig.start ?? 0),
-          onInput: (e) => { trig.start = Number(e.target.value) || 0; this.refreshPreview(); },
+          class: 'rb-input', type: 'number', value: String(trig.start ?? 0),
+          onInput: (e) => { trig.start = Number(e.target.value) || 0; this._touchChange(); },
         });
 
         const endIn = h('input', {
-          class: 'mf-input', type: 'number', value: String(trig.end ?? 100),
-          onInput: (e) => { trig.end = Number(e.target.value) || 100; this.refreshPreview(); },
+          class: 'rb-input', type: 'number', value: String(trig.end ?? 100),
+          onInput: (e) => { trig.end = Number(e.target.value) || 100; this._touchChange(); },
         });
 
-        box.appendChild(h('div', { class: 'mf-row' }, [
-          h('div', { class: 'mf-col', style: 'flex:1;' }, [h('label', { class: 'mf-muted', text: 'progress source' }), progressSel]),
-          h('div', { class: 'mf-col', style: 'flex:1;' }, [h('label', { class: 'mf-muted', text: 'start (pct)' }), startIn]),
-          h('div', { class: 'mf-col', style: 'flex:1;' }, [h('label', { class: 'mf-muted', text: 'end (pct)' }), endIn]),
+        box.appendChild(h('div', { class: 'rb-row' }, [
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'progress' }), progressSel]),
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'start %' }), startIn]),
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'end %' }), endIn]),
         ]));
 
-        box.appendChild(h('div', { class: 'mf-muted', style: 'margin-top:6px;' }, [
-          'Runtime auto-updates --enter-progress / --exit-progress on the scope element.',
+        box.appendChild(h('div', { class: 'rb-muted', style: 'margin-top:8px;' }, [
+          'CSS uses clamp(start, var(--enter/exit-progress), end). Progress vars are automatic on the scope element.',
         ]));
       }
 
       if (trig.type === 'hover' || trig.type === 'click' || trig.type === 'view') {
         const dur = h('input', {
-          class: 'mf-input', type: 'number', value: String(trig.duration ?? 350),
-          onInput: (e) => { trig.duration = Number(e.target.value) || 0; this.refreshPreview(); },
+          class: 'rb-input', type: 'number', value: String(trig.duration ?? 350),
+          onInput: (e) => { trig.duration = Number(e.target.value) || 0; this._touchChange(); },
         });
 
         const easing = h('select', {
-          class: 'mf-select',
-          onChange: (e) => { trig.easing = e.target.value; this.refreshPreview(); },
+          class: 'rb-select',
+          onChange: (e) => { trig.easing = e.target.value; this._touchChange(); },
         }, [
           h('option', { value: 'easeInOutCubic', text: 'easeInOutCubic', ...(trig.easing !== 'linear' ? { selected: 'selected' } : {}) }),
           h('option', { value: 'linear', text: 'linear', ...(trig.easing === 'linear' ? { selected: 'selected' } : {}) }),
         ]);
 
-        box.appendChild(h('div', { class: 'mf-row' }, [
-          h('div', { class: 'mf-col', style: 'flex:1;' }, [h('label', { class: 'mf-muted', text: 'duration (ms)' }), dur]),
-          h('div', { class: 'mf-col', style: 'flex:1;' }, [h('label', { class: 'mf-muted', text: 'easing' }), easing]),
+        box.appendChild(h('div', { class: 'rb-row' }, [
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'duration (ms)' }), dur]),
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'easing' }), easing]),
         ]));
 
         if (trig.type === 'view') {
           const once = h('input', {
             type: 'checkbox', ...(trig.once ? { checked: 'checked' } : {}),
-            onChange: (e) => { trig.once = !!e.target.checked; this.refreshPreview(); },
+            onChange: (e) => { trig.once = !!e.target.checked; this._touchChange(); },
           });
           const reverse = h('input', {
             type: 'checkbox', ...(trig.reverseOnExit !== false ? { checked: 'checked' } : {}),
-            onChange: (e) => { trig.reverseOnExit = !!e.target.checked; this.refreshPreview(); },
+            onChange: (e) => { trig.reverseOnExit = !!e.target.checked; this._touchChange(); },
           });
-          box.appendChild(h('div', { class: 'mf-row', style: 'margin-top:8px;' }, [
-            once, h('span', { text: 'play once' }),
-            reverse, h('span', { text: 'reverse on exit' }),
+          box.appendChild(h('div', { class: 'rb-row', style: 'margin-top:10px;' }, [
+            once, h('div', { class: 'rb-muted', text: 'play once' }),
+            reverse, h('div', { class: 'rb-muted', text: 'reverse on exit' }),
           ]));
         }
       }
@@ -1152,24 +1608,30 @@
       return box;
     }
 
-    renderPropertiesEditor(track) {
+    _renderPropertiesEditor(track) {
       const props = Array.isArray(track.properties) ? track.properties : (track.properties = []);
-      const box = h('div', { class: 'mf-card', style: 'margin-top:10px;' });
+      const box = h('div', { class: 'rb-card', style: 'margin-top:12px;' });
 
-      box.appendChild(h('div', { class: 'mf-row', style: 'justify-content:space-between; margin-bottom:6px;' }, [
-        h('div', { text: 'Properties' }),
-        h('button', {
-          class: 'mf-btn',
-          text: 'Add Property',
-          onClick: () => { props.push({ type: 'opacity', from: 1, to: 0 }); this.render(); this.refreshPreview(); },
-        }),
+      const addBtn = h('button', {
+        class: 'rb-btn primary',
+        text: 'Add Property',
+        onClick: () => {
+          props.push({ type: 'opacity', from: 1, to: 0 });
+          this._touchChange();
+          this.render();
+        },
+      });
+
+      box.appendChild(h('div', { class: 'rb-row', style: 'justify-content:space-between; align-items:center; margin-bottom:10px;' }, [
+        h('div', { text: 'Properties', style: 'font-weight:700;' }),
+        addBtn,
       ]));
 
-      const list = h('div', { class: 'mf-list' });
+      const list = h('div', { class: 'rb-list' });
 
       const unitPick = (p) => h('select', {
-        class: 'mf-select',
-        onChange: (e) => { p.unit = e.target.value; this.refreshPreview(); },
+        class: 'rb-select',
+        onChange: (e) => { p.unit = e.target.value; this._touchChange(); },
       }, [
         h('option', { value: 'px', text: 'px', ...(p.unit === 'px' ? { selected: 'selected' } : {}) }),
         h('option', { value: '%', text: '%', ...(p.unit === '%' ? { selected: 'selected' } : {}) }),
@@ -1177,9 +1639,18 @@
         h('option', { value: '', text: '(none)', ...(!p.unit ? { selected: 'selected' } : {}) }),
       ]);
 
+      const num = (p, label, key) => h('div', { class: 'rb-col', style: 'flex:1;' }, [
+        h('div', { class: 'rb-label', text: label }),
+        h('input', {
+          class: 'rb-input', type: 'number',
+          value: String(p[key] ?? 0),
+          onInput: (e) => { p[key] = Number(e.target.value) || 0; this._touchChange(); },
+        }),
+      ]);
+
       props.forEach((p, idx) => {
         const typeSel = h('select', {
-          class: 'mf-select',
+          class: 'rb-select',
           onChange: (e) => {
             const t = e.target.value;
             if (t === 'opacity') props[idx] = { type: 'opacity', from: 1, to: 0 };
@@ -1188,8 +1659,8 @@
             if (t === 'rotate') props[idx] = { type: 'rotate', from: 0, to: 30, unit: 'deg' };
             if (t === 'scale') props[idx] = { type: 'scale', from: 1, to: 1.1 };
             if (t === 'parallaxY') props[idx] = { type: 'parallaxY', base: 0, distance: 100, unit: 'px' };
+            this._touchChange();
             this.render();
-            this.refreshPreview();
           },
         }, [
           h('option', { value: 'opacity', text: 'opacity', ...(p.type === 'opacity' ? { selected: 'selected' } : {}) }),
@@ -1197,49 +1668,55 @@
           h('option', { value: 'translateX', text: 'translateX', ...(p.type === 'translateX' ? { selected: 'selected' } : {}) }),
           h('option', { value: 'rotate', text: 'rotate', ...(p.type === 'rotate' ? { selected: 'selected' } : {}) }),
           h('option', { value: 'scale', text: 'scale', ...(p.type === 'scale' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'parallaxY', text: 'parallaxY (base + distance*t)', ...(p.type === 'parallaxY' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'parallaxY', text: 'parallaxY (base+distance)', ...(p.type === 'parallaxY' ? { selected: 'selected' } : {}) }),
         ]);
 
         const rm = h('button', {
-          class: 'mf-btn danger',
+          class: 'rb-btn danger',
           text: 'Remove',
-          onClick: () => { props.splice(idx, 1); this.render(); this.refreshPreview(); },
+          onClick: () => {
+            props.splice(idx, 1);
+            this._touchChange();
+            this.render();
+          },
         });
 
-        const row = h('div', { class: 'mf-card' }, [
-          h('div', { class: 'mf-row' }, [typeSel, rm]),
+        const card = h('div', { class: 'rb-card' }, [
+          h('div', { class: 'rb-row' }, [typeSel, rm]),
         ]);
 
-        const num = (label, key) => h('div', { class: 'mf-col', style: 'flex:1;' }, [
-          h('label', { class: 'mf-muted', text: label }),
-          h('input', {
-            class: 'mf-input', type: 'number',
-            value: String(p[key] ?? 0),
-            onInput: (e) => { p[key] = Number(e.target.value) || 0; this.refreshPreview(); },
-          }),
-        ]);
-
-        const controls = h('div', { class: 'mf-col', style: 'margin-top:6px;' });
+        const controls = h('div', { class: 'rb-col', style: 'margin-top:10px;' });
 
         if (p.type === 'opacity' || p.type === 'scale') {
-          controls.appendChild(h('div', { class: 'mf-row' }, [num('from', 'from'), num('to', 'to')]));
+          controls.appendChild(h('div', { class: 'rb-row' }, [
+            num(p, 'from', 'from'),
+            num(p, 'to', 'to'),
+          ]));
         } else if (p.type === 'translateX' || p.type === 'translateY' || p.type === 'rotate') {
-          controls.appendChild(h('div', { class: 'mf-row' }, [
-            num('from', 'from'),
-            num('to', 'to'),
-            h('div', { class: 'mf-col', style: 'flex:1;' }, [h('label', { class: 'mf-muted', text: 'unit' }), unitPick(p)]),
+          controls.appendChild(h('div', { class: 'rb-row' }, [
+            num(p, 'from', 'from'),
+            num(p, 'to', 'to'),
+            h('div', { class: 'rb-col', style: 'flex:1;' }, [
+              h('div', { class: 'rb-label', text: 'unit' }),
+              unitPick(p),
+            ]),
           ]));
         } else if (p.type === 'parallaxY') {
-          controls.appendChild(h('div', { class: 'mf-row' }, [
-            num('base', 'base'),
-            num('distance', 'distance'),
-            h('div', { class: 'mf-col', style: 'flex:1;' }, [h('label', { class: 'mf-muted', text: 'unit' }), unitPick(p)]),
+          controls.appendChild(h('div', { class: 'rb-row' }, [
+            num(p, 'base', 'base'),
+            num(p, 'distance', 'distance'),
+            h('div', { class: 'rb-col', style: 'flex:1;' }, [
+              h('div', { class: 'rb-label', text: 'unit' }),
+              unitPick(p),
+            ]),
           ]));
-          controls.appendChild(h('div', { class: 'mf-muted', text: 'This sets --base-offset and --parallax-distance from config (no HTML needed).' }));
+          controls.appendChild(h('div', { class: 'rb-muted' }, [
+            'This sets --base-offset and --parallax-distance on the target element (no HTML inline vars needed).',
+          ]));
         }
 
-        row.appendChild(controls);
-        list.appendChild(row);
+        card.appendChild(controls);
+        list.appendChild(card);
       });
 
       box.appendChild(list);
@@ -1247,6 +1724,5 @@
     }
   }
 
-  MF.Editor = MotionForgeEditor;
+  RB.Editor = ReboundEditor;
 })();
-

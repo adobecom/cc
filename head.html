@@ -56,4 +56,18 @@
   scriptInit();
 </script>
 <script src="/creativecloud/animation/animate.js" ></script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'rebound') {
+    const editor = new Rebound.Editor({
+      openButton: null,
+      // optional: customize storage key
+      // storageKey: 'rebound:my-page:v1',
+      onSave: (jsonText, configObj) => {
+        console.log('Saved config:', jsonText);
+      }
+    });
+    editor.open();
+  }
+</script>
 <link rel="icon" href="data:," />
