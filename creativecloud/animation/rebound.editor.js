@@ -1,4 +1,6 @@
-/* rebound.editor.js - Rebound authoring UI (vanilla JS, no HTML) */
+/* rebound.editor.js - Rebound Editor (opaque UI, JSON hidden by default, no apply-from-box)
+   Requires rebound.runtime.js loaded first.
+*/
 (() => {
   'use strict';
 
@@ -27,7 +29,7 @@
   }
 
   function cssEscape(s) {
-    if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(s);
+    if (window.CSS?.escape) return CSS.escape(s);
     return String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
   }
 
@@ -103,19 +105,6 @@
     };
   }
 
-  // ---------------- Icon SVG ----------------
-  function iconSvg(name) {
-    // simple inline icons
-    const common = 'width="18" height="18" viewBox="0 0 24 24" fill="none"';
-    if (name === 'min') return `<svg ${common}><path d="M6 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    if (name === 'close') return `<svg ${common}><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    if (name === 'max') return `<svg ${common}><path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`;
-    if (name === 'download') return `<svg ${common}><path d="M12 3v10m0 0l4-4m-4 4l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    if (name === 'upload') return `<svg ${common}><path d="M12 21V11m0 0l4 4m-4-4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 3h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    if (name === 'wand') return `<svg ${common}><path d="M4 20l8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 4l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13 5l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    return '';
-  }
-
   // ---------------- Picker ----------------
   const Picker = (() => {
     let overlay, label, active = false;
@@ -129,10 +118,9 @@
           position: fixed;
           z-index: 2147483646;
           pointer-events: none;
-          border: 2px solid rgba(34, 193, 195, 0.95);
-          background: rgba(34, 193, 195, 0.18);
+          border: 2px solid #5b7cff;
+          background: rgba(91,124,255,0.14);
           border-radius: 10px;
-          box-shadow: 0 0 0 6px rgba(124,92,255,0.12);
         }
         .rb-pick-label {
           position: fixed;
@@ -140,9 +128,8 @@
           pointer-events: none;
           padding: 6px 10px;
           border-radius: 999px;
-          background: rgba(10,12,18,0.85);
-          border: 1px solid rgba(255,255,255,0.12);
-          backdrop-filter: blur(10px);
+          background: #0f111a;
+          border: 1px solid #2a2f45;
           color: #fff;
           font-size: 12px;
           max-width: 70vw;
@@ -229,91 +216,86 @@
     return { pick };
   })();
 
-  // ---------------- UI CSS ----------------
+  // ---------------- UI CSS (OPAQUE) ----------------
   function injectCssOnce() {
     if (document.getElementById('rb-editor-css')) return;
     const style = document.createElement('style');
     style.id = 'rb-editor-css';
     style.textContent = `
       :root{
-        --rb-bg: rgba(12,14,22,0.78);
-        --rb-bg2: rgba(16,18,28,0.88);
-        --rb-border: rgba(255,255,255,0.12);
-        --rb-text: rgba(245,247,255,0.92);
-        --rb-muted: rgba(245,247,255,0.68);
+        --rb-bg: #0f111a;
+        --rb-bg2: #151a2e;
+        --rb-bg3: #0c0f1b;
+        --rb-border: #2a2f45;
+        --rb-text: #f5f7ff;
+        --rb-muted: rgba(245,247,255,0.70);
         --rb-accent: #7c5cff;
-        --rb-accent2: #22c1c3;
+        --rb-accent2: #5b7cff;
         --rb-danger: #ff5a7a;
-        --rb-shadow: 0 18px 55px rgba(0,0,0,0.55);
+        --rb-shadow: 0 18px 55px rgba(0,0,0,0.65);
       }
 
       .rb-panel{
         position: fixed;
         z-index: 2147483647;
-        width: 480px;
+        width: 500px;
         max-height: 80vh;
         overflow: hidden;
-        border-radius: 18px;
-        background: linear-gradient(180deg, rgba(124,92,255,0.14), rgba(34,193,195,0.08)) , var(--rb-bg);
+        border-radius: 16px;
+        background: linear-gradient(180deg, var(--rb-bg2), var(--rb-bg));
         border: 1px solid var(--rb-border);
         box-shadow: var(--rb-shadow);
-        backdrop-filter: blur(14px);
         color: var(--rb-text);
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        transform: translateZ(0);
       }
       .rb-panel *{ box-sizing: border-box; }
+
       .rb-header{
         display:flex;
         align-items:center;
         justify-content:space-between;
         padding: 10px 12px;
-        background: radial-gradient(1200px 120px at 0% 0%, rgba(124,92,255,0.55), transparent),
-                    radial-gradient(1200px 120px at 100% 0%, rgba(34,193,195,0.45), transparent),
-                    rgba(10,12,18,0.55);
-        border-bottom: 1px solid rgba(255,255,255,0.10);
+        background: #11152a;
+        border-bottom: 1px solid var(--rb-border);
         cursor: grab;
         user-select: none;
       }
       .rb-header:active{ cursor: grabbing; }
-      .rb-brand{
-        display:flex;
-        align-items:center;
-        gap:10px;
-        font-weight: 800;
-        letter-spacing: 0.35px;
-      }
+
+      .rb-brand{ display:flex; align-items:center; gap:10px; font-weight: 800; letter-spacing: 0.3px; }
       .rb-badge{
         font-size: 11px;
         padding: 3px 8px;
         border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--rb-border);
+        background: #0c0f1b;
         color: var(--rb-muted);
       }
       .rb-actions{ display:flex; gap:8px; align-items:center; }
+
       .rb-iconbtn{
         width: 34px; height: 34px;
         display:flex; align-items:center; justify-content:center;
         border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(255,255,255,0.06);
-        color: rgba(255,255,255,0.9);
+        border: 1px solid var(--rb-border);
+        background: #0c0f1b;
+        color: var(--rb-text);
         cursor: pointer;
-        transition: transform 120ms ease, background 120ms ease;
       }
-      .rb-iconbtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }
-      .rb-iconbtn.danger{ border-color: rgba(255,90,122,0.35); color: #ffd3db; }
+      .rb-iconbtn:hover{ filter: brightness(1.08); }
+      .rb-iconbtn.danger{ border-color: rgba(255,90,122,0.55); color: #ffd3db; }
+
       .rb-body{
         overflow:auto;
         max-height: calc(80vh - 58px);
         padding: 12px;
+        background: var(--rb-bg);
       }
 
       .rb-section{
-        border: 1px solid rgba(255,255,255,0.10);
-        background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
-        border-radius: 16px;
+        border: 1px solid var(--rb-border);
+        background: #10152a;
+        border-radius: 14px;
         padding: 12px;
         margin-bottom: 10px;
       }
@@ -322,9 +304,10 @@
         align-items:center;
         justify-content:space-between;
         margin-bottom: 10px;
-        font-weight: 700;
+        font-weight: 750;
         letter-spacing: 0.2px;
       }
+
       .rb-row{ display:flex; gap:10px; align-items:center; }
       .rb-col{ display:flex; flex-direction:column; gap:8px; }
       .rb-muted{ color: var(--rb-muted); font-size: 12px; }
@@ -334,14 +317,14 @@
         width: 100%;
         padding: 9px 10px;
         border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(10,12,18,0.35);
+        border: 1px solid var(--rb-border);
+        background: #0c0f1b;
         color: var(--rb-text);
         outline: none;
       }
       .rb-input:focus, .rb-select:focus, .rb-textarea:focus{
-        border-color: rgba(124,92,255,0.55);
-        box-shadow: 0 0 0 6px rgba(124,92,255,0.14);
+        border-color: rgba(124,92,255,0.7);
+        box-shadow: 0 0 0 6px rgba(124,92,255,0.16);
       }
       .rb-textarea{
         min-height: 170px;
@@ -350,34 +333,29 @@
       }
 
       .rb-btn{
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--rb-border);
+        background: #0c0f1b;
         color: var(--rb-text);
         padding: 9px 10px;
         border-radius: 12px;
         cursor: pointer;
-        transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
         user-select: none;
         white-space: nowrap;
       }
-      .rb-btn:hover{
-        transform: translateY(-1px);
-        background: rgba(255,255,255,0.10);
-        border-color: rgba(255,255,255,0.20);
-      }
+      .rb-btn:hover{ filter: brightness(1.08); }
       .rb-btn.primary{
-        border: 1px solid rgba(124,92,255,0.45);
-        background: linear-gradient(180deg, rgba(124,92,255,0.35), rgba(124,92,255,0.12));
+        border-color: rgba(124,92,255,0.65);
+        background: linear-gradient(180deg, rgba(124,92,255,0.35), rgba(124,92,255,0.16));
       }
       .rb-btn.danger{
-        border: 1px solid rgba(255,90,122,0.45);
-        background: linear-gradient(180deg, rgba(255,90,122,0.25), rgba(255,90,122,0.08));
+        border-color: rgba(255,90,122,0.65);
+        background: linear-gradient(180deg, rgba(255,90,122,0.25), rgba(255,90,122,0.10));
       }
 
       .rb-card{
-        border: 1px solid rgba(255,255,255,0.10);
-        background: rgba(10,12,18,0.28);
-        border-radius: 14px;
+        border: 1px solid var(--rb-border);
+        background: #0c0f1b;
+        border-radius: 12px;
         padding: 10px;
       }
       .rb-list{ display:flex; flex-direction:column; gap:10px; }
@@ -385,9 +363,20 @@
         font-size: 11px;
         padding: 3px 8px;
         border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--rb-border);
+        background: #0c0f1b;
         color: var(--rb-muted);
+      }
+
+      /* toolbar for import/export so buttons don't break layout */
+      .rb-toolbar{
+        display:flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .rb-toolbar .rb-btn{
+        flex: 1 1 150px;
       }
 
       /* Dock (minimized) */
@@ -401,10 +390,9 @@
         gap:10px;
         padding: 10px 12px;
         border-radius: 999px;
-        background: linear-gradient(180deg, rgba(124,92,255,0.25), rgba(34,193,195,0.12)), rgba(10,12,18,0.75);
-        border: 1px solid rgba(255,255,255,0.14);
-        box-shadow: 0 16px 50px rgba(0,0,0,0.55);
-        backdrop-filter: blur(14px);
+        background: #11152a;
+        border: 1px solid var(--rb-border);
+        box-shadow: var(--rb-shadow);
         color: var(--rb-text);
       }
       .rb-dock-title{
@@ -416,42 +404,55 @@
     document.head.appendChild(style);
   }
 
+  // ---------------- Icons ----------------
+  function iconSvg(name) {
+    const common = 'width="18" height="18" viewBox="0 0 24 24" fill="none"';
+    if (name === 'min') return `<svg ${common}><path d="M6 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'close') return `<svg ${common}><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'max') return `<svg ${common}><path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`;
+    if (name === 'wand') return `<svg ${common}><path d="M4 20l8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 4l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13 5l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    return '';
+  }
+
   // ---------------- Editor ----------------
   class ReboundEditor {
     constructor({
       openButton,
       storageKey = DEFAULT_STORAGE_KEY,
-      autoMount = true,
       onSave,
     } = {}) {
       injectCssOnce();
 
       this.storageKey = storageKey;
-      this.autoMount = autoMount !== false;
       this.onSave = typeof onSave === 'function' ? onSave : null;
 
-      // load config from storage
       this.config = this._loadConfigFromStorage() || defaultConfig();
       this.selectedAnimIndex = 0;
       this.editingTrackIndex = -1;
+      this.jsonVisible = false;
 
       this.panel = null;
       this.bodyEl = null;
       this.dock = null;
 
-      this._runtimeController = null;
-
-      // Debounced persistence/remount
       this._saveTimer = 0;
       this._remountTimer = 0;
-      this._savedBadgeText = 'Auto-saved';
+      this._badgeEl = null;
+      this._badgeText = 'Auto-saved';
 
-      if (this.autoMount && RB.Runtime?.mount) this._remountRuntimeNow();
+      // Ensure runtime reflects stored config when editor loads (preview)
+      try { RB.Runtime?.mountSingleton?.(this.config); } catch {}
 
       if (openButton) openButton.addEventListener('click', () => this.open());
+
+      // Restore minimized state
+      const ui = this._loadUiState();
+      if (ui?.minimized) {
+        this._showDock();
+      }
     }
 
-    // ---------- Storage ----------
+    // ---------- storage ----------
     _loadConfigFromStorage() {
       const raw = localStorage.getItem(this.storageKey);
       if (!raw) return null;
@@ -464,7 +465,7 @@
         localStorage.setItem(this.storageKey, JSON.stringify(this.config));
         this._setBadge('Saved');
       } catch (e) {
-        console.warn('[Rebound] Failed saving to storage:', e);
+        console.warn('[Rebound] Failed saving config:', e);
         this._setBadge('Save error');
       }
     }
@@ -472,50 +473,36 @@
     _scheduleSave() {
       this._setBadge('Saving…');
       clearTimeout(this._saveTimer);
-      this._saveTimer = window.setTimeout(() => this._saveConfigToStorageNow(), 220);
+      this._saveTimer = window.setTimeout(() => this._saveConfigToStorageNow(), 180);
+    }
+
+    _scheduleRemount() {
+      clearTimeout(this._remountTimer);
+      this._remountTimer = window.setTimeout(() => {
+        try { RB.Runtime?.mountSingleton?.(this.config); } catch {}
+      }, 80);
+    }
+
+    _touchChange() {
+      this._scheduleSave();
+      this._scheduleRemount();
     }
 
     _loadUiState() {
       const raw = localStorage.getItem(UI_STORAGE_KEY);
-      const parsed = raw ? safeParseJson(raw) : null;
-      if (!parsed || typeof parsed !== 'object') return null;
-      return parsed;
+      return raw ? safeParseJson(raw) : null;
     }
 
     _saveUiState(state) {
       try { localStorage.setItem(UI_STORAGE_KEY, JSON.stringify(state)); } catch {}
     }
 
-    // ---------- Runtime mount ----------
-    _remountRuntimeNow() {
-      if (!RB.Runtime?.mount) return;
-      try {
-        if (this._runtimeController) this._runtimeController.destroy();
-      } catch {}
-      try {
-        this._runtimeController = RB.Runtime.mount(this.config);
-      } catch (e) {
-        console.warn('[Rebound] Runtime mount failed:', e);
-      }
-    }
-
-    _scheduleRemountRuntime() {
-      if (!this.autoMount) return;
-      clearTimeout(this._remountTimer);
-      this._remountTimer = window.setTimeout(() => this._remountRuntimeNow(), 120);
-    }
-
-    _touchChange() {
-      this._scheduleSave();
-      this._scheduleRemountRuntime();
-    }
-
-    // ---------- UI ----------
     _setBadge(text) {
-      this._savedBadgeText = text;
+      this._badgeText = text;
       if (this._badgeEl) this._badgeEl.textContent = text;
     }
 
+    // ---------- UI open/close/minimize ----------
     open() {
       if (!this.panel) {
         this.panel = this._buildPanel();
@@ -523,37 +510,34 @@
         this._restorePanelPosition();
         this.render();
       }
-      this._showPanel();
+      this.panel.style.display = 'block';
+      this._hideDock();
+      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
     }
 
     close() {
-      // “close” hides panel; user can reopen via host button
-      this._hidePanel();
+      if (!this.panel) return;
+      this.panel.style.display = 'none';
+      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
     }
 
     minimize() {
-      this._hidePanel();
+      if (this.panel) this.panel.style.display = 'none';
       this._showDock();
       this._saveUiState({ minimized: true, panelPos: this._getPanelPos() });
     }
 
     maximizeFromDock() {
       this._hideDock();
-      this._showPanel();
-      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
+      this.open();
     }
 
-    _showPanel() {
-      if (!this.panel) return;
-      this.panel.style.display = 'block';
-      this._hideDock();
-      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
-    }
-
-    _hidePanel() {
-      if (!this.panel) return;
-      this.panel.style.display = 'none';
-      this._saveUiState({ minimized: true, panelPos: this._getPanelPos() });
+    _buildDock() {
+      return h('div', { class: 'rb-dock' }, [
+        h('div', { class: 'rb-dock-title', html: `${iconSvg('wand')} Rebound` }),
+        h('button', { class: 'rb-iconbtn', title: 'Maximize', html: iconSvg('max'), onClick: () => this.maximizeFromDock() }),
+        h('button', { class: 'rb-iconbtn danger', title: 'Close', html: iconSvg('close'), onClick: () => this._hideDock() }),
+      ]);
     }
 
     _showDock() {
@@ -569,24 +553,6 @@
       this.dock.style.display = 'none';
     }
 
-    _buildDock() {
-      const dock = h('div', { class: 'rb-dock' }, [
-        h('div', { class: 'rb-dock-title', html: `${iconSvg('wand')} Rebound` }),
-        h('button', { class: 'rb-iconbtn', title: 'Maximize', html: iconSvg('max'), onClick: () => this.maximizeFromDock() }),
-        h('button', {
-          class: 'rb-iconbtn danger',
-          title: 'Close',
-          html: iconSvg('close'),
-          onClick: () => {
-            // Hide dock entirely (host button can reopen panel)
-            this._hideDock();
-            this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
-          },
-        }),
-      ]);
-      return dock;
-    }
-
     _buildPanel() {
       const panel = h('div', { class: 'rb-panel', style: 'display:none; left: 16px; top: 16px;' });
 
@@ -594,7 +560,7 @@
         h('div', { class: 'rb-brand' }, [
           h('div', { html: iconSvg('wand') }),
           h('div', { text: 'Rebound' }),
-          (this._badgeEl = h('div', { class: 'rb-badge', text: this._savedBadgeText })),
+          (this._badgeEl = h('div', { class: 'rb-badge', text: this._badgeText })),
         ]),
         h('div', { class: 'rb-actions' }, [
           h('button', { class: 'rb-iconbtn', title: 'Minimize', html: iconSvg('min'), onClick: () => this.minimize() }),
@@ -603,41 +569,31 @@
       ]);
 
       this.bodyEl = h('div', { class: 'rb-body' });
-
       panel.appendChild(header);
       panel.appendChild(this.bodyEl);
 
-      // drag support
       this._enableDrag(panel, header);
-
       return panel;
     }
 
     _getPanelPos() {
       if (!this.panel) return null;
-      const left = parseFloat(this.panel.style.left || '0');
-      const top = parseFloat(this.panel.style.top || '0');
-      return { left, top };
+      return {
+        left: parseFloat(this.panel.style.left || '0'),
+        top: parseFloat(this.panel.style.top || '0'),
+      };
     }
 
     _restorePanelPosition() {
-      const state = this._loadUiState();
-      if (state?.panelPos && this.panel) {
-        this.panel.style.left = `${Math.max(8, state.panelPos.left || 8)}px`;
-        this.panel.style.top = `${Math.max(8, state.panelPos.top || 8)}px`;
+      const ui = this._loadUiState();
+      if (ui?.panelPos && this.panel) {
+        this.panel.style.left = `${Math.max(8, ui.panelPos.left || 8)}px`;
+        this.panel.style.top = `${Math.max(8, ui.panelPos.top || 8)}px`;
       } else if (this.panel) {
-        // default bottom-right-ish
-        const w = 480;
+        const w = 500;
         const left = Math.max(16, (window.innerWidth || 1200) - w - 24);
-        const top = 16;
         this.panel.style.left = `${left}px`;
-        this.panel.style.top = `${top}px`;
-      }
-
-      // restore minimized state
-      if (state?.minimized) {
-        this._hidePanel();
-        this._showDock();
+        this.panel.style.top = `16px`;
       }
     }
 
@@ -647,7 +603,6 @@
       let startLeft = 0, startTop = 0;
 
       const onPointerDown = (e) => {
-        // avoid starting drag when clicking buttons
         const target = e.target;
         if (target && target.closest && target.closest('.rb-iconbtn')) return;
 
@@ -661,15 +616,16 @@
 
       const onPointerMove = (e) => {
         if (!dragging) return;
+
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
 
         const newLeft = startLeft + dx;
         const newTop = startTop + dy;
 
-        // keep within viewport
         const maxLeft = Math.max(8, (window.innerWidth || 1200) - panel.offsetWidth - 8);
         const maxTop = Math.max(8, (window.innerHeight || 800) - 60);
+
         panel.style.left = `${Math.max(8, Math.min(maxLeft, newLeft))}px`;
         panel.style.top = `${Math.max(8, Math.min(maxTop, newTop))}px`;
       };
@@ -683,15 +639,9 @@
       handle.addEventListener('pointerdown', onPointerDown);
       window.addEventListener('pointermove', onPointerMove);
       window.addEventListener('pointerup', onPointerUp);
-
-      // cleanup not implemented in MVP (ok for tool usage)
     }
 
-    // ---------- Data helpers ----------
-    get selectedAnim() {
-      return this.config.animations[this.selectedAnimIndex] || null;
-    }
-
+    // ---------- helpers ----------
     ensureConfigShape() {
       if (!this.config || typeof this.config !== 'object') this.config = defaultConfig();
       if (!this.config.settings) this.config.settings = { navHeight: 64 };
@@ -700,20 +650,23 @@
       if (this.selectedAnimIndex >= this.config.animations.length) this.selectedAnimIndex = 0;
     }
 
-    // Hide panel while picking element (no distraction)
+    get selectedAnim() {
+      return this.config.animations[this.selectedAnimIndex] || null;
+    }
+
     _pickWithHide(fnStartPick) {
       const wasVisible = !!this.panel && this.panel.style.display !== 'none';
-      if (wasVisible) this._hidePanel();
-      this._hideDock(); // keep fully clean while picking
+      if (wasVisible) this.panel.style.display = 'none';
+      this._hideDock();
 
       const restore = () => {
-        if (wasVisible) this._showPanel();
+        if (wasVisible) this.panel.style.display = 'block';
       };
 
       fnStartPick(restore);
     }
 
-    // ---------- Rendering ----------
+    // ---------- render ----------
     render() {
       this.ensureConfigShape();
       const body = this.bodyEl;
@@ -721,7 +674,7 @@
 
       const anim = this.selectedAnim;
 
-      // -------- Animation section --------
+      // Animation section
       const animSelect = h('select', {
         class: 'rb-select',
         onChange: (e) => {
@@ -756,7 +709,6 @@
         class: 'rb-btn danger',
         text: 'Delete Animation',
         onClick: () => {
-          // if only one, reset instead of deleting
           if (this.config.animations.length <= 1) {
             this.config.animations = [newAnimation('animation-1')];
             this.selectedAnimIndex = 0;
@@ -777,7 +729,6 @@
         onInput: (e) => {
           anim.name = e.target.value;
           this._touchChange();
-          // update select display
           this.render();
         },
       });
@@ -794,7 +745,7 @@
         ]),
       ]));
 
-      // -------- Scope section --------
+      // Scope section
       const scopeInput = h('input', {
         class: 'rb-input',
         value: anim.scopeSelector || '',
@@ -813,7 +764,6 @@
             Picker.pick({
               ignoreSelector: '.rb-panel, .rb-dock',
               onPick: (el) => {
-                // Prefer ID, else first class, else body-based selector
                 let sel = '';
                 if (el.id) sel = `#${cssEscape(el.id)}`;
                 else if (el.classList && el.classList.length) sel = '.' + Array.from(el.classList).slice(0, 1).map(cssEscape).join('.');
@@ -833,21 +783,21 @@
       body.appendChild(h('div', { class: 'rb-section' }, [
         h('div', { class: 'rb-section-title' }, [
           h('div', { text: 'Scope' }),
-          h('div', { class: 'rb-pill', text: '--enter-progress / --exit-progress auto' }),
+          h('div', { class: 'rb-pill', text: '--enter/exit-progress auto' }),
         ]),
         h('div', { class: 'rb-row' }, [scopeInput, pickScopeBtn]),
         h('div', { class: 'rb-muted' }, [
-          'Progress is computed automatically and set as CSS vars on the scope element. ',
-          'To adjust exit offset, edit settings.navHeight in JSON.',
+          'Progress vars are computed automatically at runtime. ',
+          'They start updating after first scroll; CSS falls back to 0 before that.',
         ]),
       ]));
 
-      // -------- Tracks section --------
+      // Tracks section
       const tracks = Array.isArray(anim.tracks) ? anim.tracks : (anim.tracks = []);
       const list = h('div', { class: 'rb-list' });
 
       tracks.forEach((t, idx) => {
-        const card = h('div', { class: 'rb-card' }, [
+        list.appendChild(h('div', { class: 'rb-card' }, [
           h('div', { class: 'rb-row', style: 'justify-content:space-between;' }, [
             h('div', { class: 'rb-col', style: 'gap:6px; flex:1;' }, [
               h('div', { text: t.targetSelector || '(no selector)' }),
@@ -859,14 +809,7 @@
               ].filter(Boolean)),
             ]),
             h('div', { class: 'rb-row' }, [
-              h('button', {
-                class: 'rb-btn',
-                text: 'Edit',
-                onClick: () => {
-                  this.editingTrackIndex = idx;
-                  this.render();
-                },
-              }),
+              h('button', { class: 'rb-btn', text: 'Edit', onClick: () => { this.editingTrackIndex = idx; this.render(); } }),
               h('button', {
                 class: 'rb-btn danger',
                 text: 'Delete',
@@ -879,8 +822,7 @@
               }),
             ]),
           ]),
-        ]);
-        list.appendChild(card);
+        ]));
       });
 
       const addTrackBtn = h('button', {
@@ -906,35 +848,19 @@
         body.appendChild(this._renderTrackEditor(anim, tracks[this.editingTrackIndex]));
       }
 
-      // -------- JSON section (download/upload + textarea) --------
-      const jsonText = h('textarea', { class: 'rb-textarea' });
-      jsonText.value = JSON.stringify(this.config, null, 2);
-
-      const btnUpdateJson = h('button', {
-        class: 'rb-btn',
-        text: 'Update JSON View',
-        onClick: () => { jsonText.value = JSON.stringify(this.config, null, 2); },
-      });
-
-      const btnDownload = h('button', {
-        class: 'rb-btn',
-        html: `<span style="display:flex;gap:8px;align-items:center;">${iconSvg('download')} Download</span>`,
-        onClick: () => {
-          const file = `rebound-animations-${new Date().toISOString().slice(0,10)}.json`;
-          downloadTextFile(file, JSON.stringify(this.config, null, 2));
-        },
-      });
-
-      const fileInput = h('input', { type: 'file', accept: 'application/json', style: 'display:none;' });
+      // Import / Export (JSON hidden by default)
+      const fileInput = h('input', { type: 'file', accept: 'application/json', style: 'display:none' });
       fileInput.addEventListener('change', async () => {
         const file = fileInput.files && fileInput.files[0];
         if (!file) return;
+
         const text = await file.text();
         const parsed = safeParseJson(text);
         if (!parsed || typeof parsed !== 'object') {
           alert('Invalid JSON file.');
           return;
         }
+
         this.config = parsed;
         this.selectedAnimIndex = 0;
         this.editingTrackIndex = -1;
@@ -942,22 +868,26 @@
         this.render();
       });
 
+      const btnDownload = h('button', {
+        class: 'rb-btn',
+        text: 'Download JSON',
+        onClick: () => {
+          const file = `rebound-config-${new Date().toISOString().slice(0, 10)}.json`;
+          downloadTextFile(file, JSON.stringify(this.config, null, 2));
+        },
+      });
+
       const btnUpload = h('button', {
         class: 'rb-btn',
-        html: `<span style="display:flex;gap:8px;align-items:center;">${iconSvg('upload')} Upload</span>`,
+        text: 'Upload JSON',
         onClick: () => fileInput.click(),
       });
 
-      const btnLoadFromTextarea = h('button', {
+      const btnToggleJson = h('button', {
         class: 'rb-btn',
-        text: 'Apply JSON from Box',
+        text: this.jsonVisible ? 'Hide JSON' : 'Show JSON',
         onClick: () => {
-          const parsed = safeParseJson(jsonText.value);
-          if (!parsed || typeof parsed !== 'object') return alert('Invalid JSON in text box.');
-          this.config = parsed;
-          this.selectedAnimIndex = 0;
-          this.editingTrackIndex = -1;
-          this._touchChange();
+          this.jsonVisible = !this.jsonVisible;
           this.render();
         },
       });
@@ -972,15 +902,23 @@
         },
       });
 
+      const jsonBox = h('textarea', { class: 'rb-textarea', readonly: 'readonly' });
+      jsonBox.value = JSON.stringify(this.config, null, 2);
+
       body.appendChild(h('div', { class: 'rb-section' }, [
         h('div', { class: 'rb-section-title' }, [
-          h('div', { text: 'Export / Import' }),
-          h('div', { class: 'rb-pill', text: 'LocalStorage enabled' }),
+          h('div', { text: 'Import / Export' }),
+          h('div', { class: 'rb-pill', text: 'Saved to localStorage' }),
         ]),
-        h('div', { class: 'rb-row' }, [btnUpdateJson, btnDownload, btnUpload, btnLoadFromTextarea, btnOnSave]),
+        h('div', { class: 'rb-toolbar' }, [
+          btnDownload,
+          btnUpload,
+          btnToggleJson,
+          btnOnSave,
+        ]),
         fileInput,
-        jsonText,
-        h('div', { class: 'rb-muted' }, `Stored in localStorage key: ${this.storageKey}`),
+        this.jsonVisible ? jsonBox : null,
+        h('div', { class: 'rb-muted' }, `Storage key: ${this.storageKey}`),
       ]));
     }
 
@@ -988,11 +926,7 @@
       const wrap = h('div', { class: 'rb-section' }, [
         h('div', { class: 'rb-section-title' }, [
           h('div', { text: `Edit Track #${this.editingTrackIndex + 1}` }),
-          h('button', {
-            class: 'rb-btn',
-            text: 'Done',
-            onClick: () => { this.editingTrackIndex = -1; this.render(); },
-          }),
+          h('button', { class: 'rb-btn', text: 'Done', onClick: () => { this.editingTrackIndex = -1; this.render(); } }),
         ]),
       ]);
 
@@ -1037,10 +971,7 @@
       wrap.appendChild(h('div', { class: 'rb-col' }, [
         h('div', { class: 'rb-label', text: 'Target Selector' }),
         h('div', { class: 'rb-row' }, [targetInput, pickElBtn]),
-        h('div', { class: 'rb-row' }, [
-          withinCb,
-          h('div', { class: 'rb-muted', text: 'Within scope' }),
-        ]),
+        h('div', { class: 'rb-row' }, [withinCb, h('div', { class: 'rb-muted', text: 'Within scope' })]),
       ]));
 
       // Trigger select
@@ -1105,7 +1036,7 @@
         ]));
 
         box.appendChild(h('div', { class: 'rb-muted', style: 'margin-top:8px;' }, [
-          'CSS uses clamp(start, var(--enter/exit-progress), end). Progress vars are automatic on the scope element.',
+          'Progress vars are automatic. They are not written during page load; CSS falls back to 0 until first scroll.',
         ]));
       }
 
@@ -1162,7 +1093,7 @@
       });
 
       box.appendChild(h('div', { class: 'rb-row', style: 'justify-content:space-between; align-items:center; margin-bottom:10px;' }, [
-        h('div', { text: 'Properties', style: 'font-weight:700;' }),
+        h('div', { text: 'Properties', style: 'font-weight:750;' }),
         addBtn,
       ]));
 
@@ -1227,30 +1158,21 @@
         const controls = h('div', { class: 'rb-col', style: 'margin-top:10px;' });
 
         if (p.type === 'opacity' || p.type === 'scale') {
-          controls.appendChild(h('div', { class: 'rb-row' }, [
-            num(p, 'from', 'from'),
-            num(p, 'to', 'to'),
-          ]));
+          controls.appendChild(h('div', { class: 'rb-row' }, [num(p, 'from', 'from'), num(p, 'to', 'to')]));
         } else if (p.type === 'translateX' || p.type === 'translateY' || p.type === 'rotate') {
           controls.appendChild(h('div', { class: 'rb-row' }, [
             num(p, 'from', 'from'),
             num(p, 'to', 'to'),
-            h('div', { class: 'rb-col', style: 'flex:1;' }, [
-              h('div', { class: 'rb-label', text: 'unit' }),
-              unitPick(p),
-            ]),
+            h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'unit' }), unitPick(p)]),
           ]));
         } else if (p.type === 'parallaxY') {
           controls.appendChild(h('div', { class: 'rb-row' }, [
             num(p, 'base', 'base'),
             num(p, 'distance', 'distance'),
-            h('div', { class: 'rb-col', style: 'flex:1;' }, [
-              h('div', { class: 'rb-label', text: 'unit' }),
-              unitPick(p),
-            ]),
+            h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'unit' }), unitPick(p)]),
           ]));
           controls.appendChild(h('div', { class: 'rb-muted' }, [
-            'This sets --base-offset and --parallax-distance on the target element (no HTML inline vars needed).',
+            'Sets --base-offset and --parallax-distance on the target element (no HTML inline vars required).',
           ]));
         }
 

@@ -1,13 +1,16 @@
-/* rebound.runtime.js - CSS-progress driven runtime (vanilla JS, no UI) */
+/* rebound.runtime.js - Rebound Runtime (auto-mount + scroll progress + events)
+   - Auto mounts from localStorage on page load (so animations work without editor)
+   - Does NOT write --enter-progress/--exit-progress on page load (starts after first scroll)
+   - CSS uses var(--enter-progress, 0) fallback so initial state is stable without inline vars
+*/
 (() => {
   'use strict';
 
   const RB = (window.Rebound = window.Rebound || {});
-  const VERSION = '0.3.0';
-
+  const VERSION = '0.4.0';
   const DEFAULT_STORAGE_KEY = 'rebound:config:v1';
 
-  // ---- Utils ----
+  // ---------- Utils ----------
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
   const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -47,21 +50,24 @@
 
     if (sel === ':scope') return scopeAttrSel;
 
-    // Replace :scope prefix
     if (sel.startsWith(':scope')) {
       return sel.replace(/^:scope\b/, scopeAttrSel);
     }
 
-    // Prefix if within scope
     if (withinScope !== false) return `${scopeAttrSel} ${sel}`;
     return sel;
   }
 
-  // ---- Progress update (ALWAYS automatic) ----
+  // ---------- Progress (AUTO) ----------
   function computeAndSetProgress(scopeEl, navHeight) {
-    const screenHeight = window.innerHeight || 1;
-    const elHeight = scopeEl.offsetHeight || 1;
+    if (!scopeEl || !scopeEl.isConnected) return;
+
+    const elHeight = scopeEl.offsetHeight;
+    // If element is not laid out yet, do nothing (prevents bogus 100/100)
+    if (!elHeight || elHeight < 2) return;
+
     const rect = scopeEl.getBoundingClientRect();
+    const screenHeight = window.innerHeight || 1;
 
     // EXACT logic you provided:
     const enterProgress = clamp((screenHeight - rect.top) / elHeight, 0, 1);
@@ -71,17 +77,20 @@
     scopeEl.style.setProperty('--exit-progress', fmt(exitProgress * 100));
   }
 
-  // ---- CSS rule generation for scroll tracks ----
+  // ---------- CSS generation for scroll tracks ----------
   function ratioExpr(progressVar, start, end) {
     const s = toNum(start, 0);
     const e = toNum(end, 100);
     if (e === s) return '1';
-    // (clamp(s, progress, e) - s) / (e - s)
     return `((clamp(${s}, ${progressVar}, ${e}) - ${s}) / (${e} - ${s}))`;
   }
 
   function buildScrollCssRule({ selector, trigger, properties }) {
-    const progressVar = trigger.progress === 'enter' ? 'var(--enter-progress)' : 'var(--exit-progress)';
+    const progressVar =
+      trigger.progress === 'enter'
+        ? 'var(--enter-progress, 0)'
+        : 'var(--exit-progress, 0)';
+
     const ratio = ratioExpr(progressVar, trigger.start, trigger.end);
 
     const tf = [];
@@ -129,7 +138,8 @@
         continue;
       }
 
-      // Firefly-like: base+distance over progress (vars are set from config)
+      // Firefly-style parallax vars:
+      // translateY(calc(var(--base-offset) + var(--parallax-distance) * ratio))
       if (p.type === 'parallaxY') {
         tf.push(`translateY(calc(var(--base-offset, 0px) + var(--parallax-distance, 0px) * ${ratio}))`);
         continue;
@@ -161,7 +171,7 @@
     return `${selector} {\n  ${decls.join('\n  ')}\n}\n`;
   }
 
-  // ---- JS animation for non-scroll triggers ----
+  // ---------- JS animation for non-scroll triggers ----------
   function applyEventProperties(el, properties, t) {
     const tf = { translateX: null, translateY: null, rotate: null, scale: null };
     let hasTf = false;
@@ -223,13 +233,16 @@
     function frame(now) {
       if (cancelled) return;
       const p = clamp((now - start) / Math.max(1, duration), 0, 1);
-      onUpdate(lerp(from, to, ease(p)));
+      const e = ease(p);
+      onUpdate(lerp(from, to, e));
       if (p < 1) requestAnimationFrame(frame);
     }
+
     requestAnimationFrame(frame);
     return () => { cancelled = true; };
   }
 
+  // ---------- Target resolving ----------
   function resolveTargets(scopeEl, track) {
     const sel = (track.targetSelector || '').trim();
     if (!sel) return [];
@@ -244,8 +257,9 @@
     }
   }
 
-  // ---- Main mount ----
+  // ---------- Mount / Singleton ----------
   let MOUNT_SEQ = 0;
+  let ACTIVE = null;
 
   function mount(config) {
     if (!config || typeof config !== 'object') {
@@ -261,8 +275,8 @@
     document.head.appendChild(styleEl);
 
     const destroyFns = [];
-    const scopeItems = [];
     const observers = [];
+    const scopeItems = []; // { scopeEl, navHeight, scopeId }
 
     let cssOut = '';
 
@@ -280,22 +294,24 @@
       for (let si = 0; si < scopeEls.length; si++) {
         const scopeEl = scopeEls[si];
         const scopeId = `rb-${mountId}-${ai}-${si}`;
-        scopeEl.setAttribute('data-rb-scope', scopeId);
 
-        scopeItems.push({ scopeEl, navHeight });
+        scopeEl.setAttribute('data-rb-scope', scopeId);
+        scopeItems.push({ scopeEl, navHeight, scopeId });
 
         const scopeAttrSel = `[data-rb-scope="${cssEscape(scopeId)}"]`;
 
         for (const track of tracks) {
           if (!track || !track.trigger) continue;
+
           const trig = track.trigger || {};
           const type = trig.type || 'scroll';
 
+          // ---- Scroll/parallax: CSS injection ----
           if (type === 'scroll') {
             const engine = track.engine || 'css';
             if (engine !== 'css') continue;
 
-            // Apply vars driven by config (no HTML dependency)
+            // Apply config vars (no HTML inline vars needed)
             const targets = resolveTargets(scopeEl, track);
             for (const el of targets) {
               for (const p of track.properties || []) {
@@ -305,6 +321,12 @@
                   const unit = p.unit || 'px';
                   el.style.setProperty('--base-offset', fmtVal(p.base ?? 0, unit));
                   el.style.setProperty('--parallax-distance', fmtVal(p.distance ?? 0, unit));
+                }
+
+                if (p.type === 'staticVar') {
+                  const name = String(p.name || '--rb-var');
+                  const value = String(p.value ?? '');
+                  el.style.setProperty(name, value);
                 }
               }
             }
@@ -321,10 +343,11 @@
               },
               properties: track.properties || [],
             });
+
             continue;
           }
 
-          // ---- Event triggers ----
+          // ---- Events: hover / click / view ----
           const targets = resolveTargets(scopeEl, track);
           if (!targets.length) continue;
 
@@ -343,8 +366,14 @@
             setT(toNum(trig.initialT, 0));
 
             if (type === 'hover') {
-              const onEnter = () => { if (cancel) cancel(); cancel = tween({ from: stateT, to: 1, duration, easing, onUpdate: setT }); };
-              const onLeave = () => { if (cancel) cancel(); cancel = tween({ from: stateT, to: 0, duration, easing, onUpdate: setT }); };
+              const onEnter = () => {
+                if (cancel) cancel();
+                cancel = tween({ from: stateT, to: 1, duration, easing, onUpdate: setT });
+              };
+              const onLeave = () => {
+                if (cancel) cancel();
+                cancel = tween({ from: stateT, to: 0, duration, easing, onUpdate: setT });
+              };
               el.addEventListener('mouseenter', onEnter);
               el.addEventListener('mouseleave', onLeave);
               destroyFns.push(() => {
@@ -365,7 +394,10 @@
             }
 
             if (type === 'view') {
-              if (!('IntersectionObserver' in window)) { setT(1); continue; }
+              if (!('IntersectionObserver' in window)) {
+                setT(1);
+                continue;
+              }
               const once = !!trig.once;
               const reverseOnExit = trig.reverseOnExit !== false;
               const threshold = trig.threshold ?? 0.01;
@@ -395,29 +427,45 @@
 
     styleEl.textContent = cssOut;
 
+    // ---------- Progress update listeners ----------
+    // IMPORTANT: DO NOT set progress vars on page load.
+    // Start only after first scroll event.
+    let hasStarted = false;
     let ticking = false;
     let rafId = 0;
 
     function updateAllProgress() {
-      ticking = false;
       for (const it of scopeItems) computeAndSetProgress(it.scopeEl, it.navHeight);
     }
 
-    function onScrollOrResize() {
+    function scheduleUpdate() {
+      if (!hasStarted) return;
       if (ticking) return;
       ticking = true;
-      rafId = requestAnimationFrame(updateAllProgress);
+      rafId = requestAnimationFrame(() => {
+        ticking = false;
+        updateAllProgress();
+      });
     }
 
-    window.addEventListener('scroll', onScrollOrResize, { passive: true });
-    window.addEventListener('resize', onScrollOrResize);
+    function onScroll() {
+      hasStarted = true;
+      scheduleUpdate();
+    }
+
+    function onResize() {
+      // Only update after user has started scroll (so no progress vars during load)
+      scheduleUpdate();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+
     destroyFns.push(() => {
-      window.removeEventListener('scroll', onScrollOrResize);
-      window.removeEventListener('resize', onScrollOrResize);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
       if (rafId) cancelAnimationFrame(rafId);
     });
-
-    updateAllProgress();
 
     return {
       version: VERSION,
@@ -425,12 +473,23 @@
         try { styleEl.remove(); } catch {}
         for (const ob of observers) { try { ob.disconnect(); } catch {} }
         for (const fn of destroyFns.splice(0)) { try { fn(); } catch {} }
-        for (const it of scopeItems) { try { it.scopeEl.removeAttribute('data-rb-scope'); } catch {} }
+        for (const it of scopeItems) {
+          try { it.scopeEl.removeAttribute('data-rb-scope'); } catch {}
+        }
       },
     };
   }
 
-  // ---- Storage helpers (optional) ----
+  function mountSingleton(config) {
+    if (ACTIVE) {
+      try { ACTIVE.destroy(); } catch {}
+      ACTIVE = null;
+    }
+    ACTIVE = mount(config);
+    return ACTIVE;
+  }
+
+  // ---------- Storage helpers ----------
   function loadFromStorage(key = DEFAULT_STORAGE_KEY) {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
@@ -444,16 +503,35 @@
 
   function mountFromStorage(key = DEFAULT_STORAGE_KEY) {
     const cfg = loadFromStorage(key);
-    if (!cfg) return null;
-    return mount(cfg);
+    if (!cfg || !Array.isArray(cfg.animations) || cfg.animations.length === 0) return null;
+    return mountSingleton(cfg);
+  }
+
+  // Auto-mount (so animations work without editor)
+  function autoMountFromStorage(key = DEFAULT_STORAGE_KEY) {
+    if (ACTIVE) return ACTIVE;
+    const cfg = loadFromStorage(key);
+    if (!cfg || !Array.isArray(cfg.animations) || cfg.animations.length === 0) return null;
+    return mountSingleton(cfg);
   }
 
   RB.Runtime = {
     version: VERSION,
+    DEFAULT_STORAGE_KEY,
     mount,
+    mountSingleton,
     loadFromStorage,
     saveToStorage,
     mountFromStorage,
-    DEFAULT_STORAGE_KEY,
+    autoMountFromStorage,
   };
+
+  // Auto-mount on page load unless explicitly disabled
+  if (window.__REBOUND_DISABLE_AUTOMOUNT__ !== true) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => autoMountFromStorage(), { once: true });
+    } else {
+      autoMountFromStorage();
+    }
+  }
 })();
