@@ -1,17 +1,9 @@
-/* rebound.editor.js - Rebound Editor (v0.6.4)
-   FIX: Track picking selecting only scope
-   - When picking within a scope, we DRILL DOWN by geometry (getClientRects)
-     to find the deepest/smallest descendant under the cursor. This works even when:
-       - inner elements have pointer-events:none
-       - nesting is deep
-       - elements are hard to click
-   - Adds Child (↓) button + ArrowDown to drill down
-   Picker:
-   - selection on pointerdown (capture) + click blocked to prevent navigation
-   - single: pointerdown selects (Shift+pointerdown locks/explore)
-   - multi: pointerdown toggles (Shift+pointerdown locks/explore), Enter = Done
-   Restore:
-   - popup restore is deferred (setTimeout + rAF) and clamped into viewport
+/* rebound.editor.js - Rebound Editor (v0.4.2)
+   - JSON hidden by default
+   - No “apply json from box”
+   - Opaque UI
+   - Import/export toolbar wraps
+   - Flush-save on beforeunload so removing mode=rebound doesn’t lose recent edits
 */
 (() => {
   'use strict';
@@ -30,7 +22,6 @@
       else if (k === 'text') el.textContent = v;
       else if (k === 'html') el.innerHTML = v;
       else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2).toLowerCase(), v);
-      else if (k === 'value') el.value = v;
       else if (v != null) el.setAttribute(k, String(v));
     }
     (Array.isArray(children) ? children : [children]).forEach((c) => {
@@ -62,13 +53,11 @@
     URL.revokeObjectURL(url);
   }
 
-  function shortElLabel(el) {
-    if (!el || el.nodeType !== 1) return '(none)';
+  function elLabel(el) {
+    if (!el || el.nodeType !== 1) return '';
     const tag = el.tagName.toLowerCase();
     const id = el.id ? `#${el.id}` : '';
-    const cls = el.classList && el.classList.length
-      ? '.' + Array.from(el.classList).slice(0, 2).join('.')
-      : '';
+    const cls = el.classList && el.classList.length ? '.' + Array.from(el.classList).slice(0, 3).join('.') : '';
     return `${tag}${id}${cls}`;
   }
 
@@ -87,7 +76,6 @@
       const tag = cur.tagName.toLowerCase();
       const parent = cur.parentElement;
       if (!parent) break;
-
       const idx = Array.from(parent.children).indexOf(cur) + 1;
       const cls = cur.classList && cur.classList.length
         ? '.' + Array.from(cur.classList).slice(0, 2).map(cssEscape).join('.')
@@ -97,18 +85,6 @@
     }
     parts.unshift(':scope');
     return parts.join(' > ');
-  }
-
-  function uniq(arr) {
-    const out = [];
-    const seen = new Set();
-    for (const v of arr) {
-      const s = String(v || '').trim();
-      if (!s || seen.has(s)) continue;
-      seen.add(s);
-      out.push(s);
-    }
-    return out;
   }
 
   function defaultConfig() {
@@ -133,885 +109,155 @@
     };
   }
 
-  // ---------------- Icons ----------------
-  function iconSvg(name) {
-    const common = 'width="18" height="18" viewBox="0 0 24 24" fill="none"';
-    if (name === 'min') return `<svg ${common}><path d="M6 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    if (name === 'close') return `<svg ${common}><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    if (name === 'max') return `<svg ${common}><path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`;
-    if (name === 'wand') return `<svg ${common}><path d="M4 20l8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 4l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13 5l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    return '';
-  }
-
-  // ---------------- DOM Explorer Picker ----------------
+  // ---------------- Picker ----------------
   const Picker = (() => {
-    let overlay, label, scopeFrame, toolbar, crumbs, status;
-    let btnParent, btnChild, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel;
-    let active = false;
-
-    let mode = 'single';
-    let locked = false;
-    let current = null;
-    let stack = [];
-    let stackIndex = 0;
-    let selected = new Set();
-    let predicate = null;
-    let ignoreSelector = '';
-    let scopeElement = null;
-    let boundaryElement = null;
-    let allowPickScope = true;
-
-    // track last pointer position for rect-based drill down
-    let lastX = 0;
-    let lastY = 0;
-
-    const INTERNAL_UI_SEL =
-      '.rb-panel, .rb-dock, .rb-pick-overlay, .rb-pick-label, .rb-scope-frame, .rb-pick-toolbar';
+    let overlay, label, active = false;
 
     function ensureCss() {
       if (document.getElementById('rb-picker-css')) return;
       const s = document.createElement('style');
       s.id = 'rb-picker-css';
       s.textContent = `
-        .rb-scope-frame{
-          position: fixed;
-          z-index: 2147483645;
-          pointer-events: none;
-          border: 4px dashed rgba(124,92,255,0.88);
-          background: rgba(124,92,255,0.06);
-          border-radius: 14px;
-          box-shadow: 0 0 0 2px rgba(124,92,255,0.18), 0 18px 55px rgba(0,0,0,0.30);
-        }
-        .rb-pick-overlay{
-          position: fixed;
-          z-index: 2147483646;
-          pointer-events: none;
-          border: 6px solid #5b7cff;
-          background: rgba(91,124,255,0.10);
-          border-radius: 14px;
-          box-shadow:
-            0 0 0 3px rgba(91,124,255,0.25),
-            0 18px 55px rgba(91,124,255,0.18);
-        }
-        .rb-pick-label{
-          position: fixed;
-          z-index: 2147483646;
-          pointer-events: none;
-          padding: 8px 12px;
-          border-radius: 999px;
-          background: #0f111a;
-          border: 1px solid #2a2f45;
-          color: #fff;
-          font-size: 12px;
-          font-weight: 800;
-          max-width: 78vw;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          box-shadow: 0 12px 35px rgba(0,0,0,0.45);
-        }
-        [data-rb-picked="1"]{
-          outline: 6px solid #22c1c3 !important;
-          outline-offset: 4px !important;
-          box-shadow: 0 0 0 10px rgba(34,193,195,0.20) !important;
-        }
-
-        .rb-pick-toolbar{
-          position: fixed;
-          left: 50%;
-          bottom: 16px;
-          transform: translateX(-50%);
-          z-index: 2147483647;
-          width: min(980px, calc(100vw - 24px));
-          border-radius: 16px;
-          background: #0f111a;
-          border: 1px solid #2a2f45;
-          box-shadow: 0 18px 55px rgba(0,0,0,0.65);
-          color: #f5f7ff;
-          font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-          pointer-events: auto;
-          overflow: hidden;
-        }
-        .rb-pick-toolbar-top{
-          display:flex;
-          gap: 10px;
-          align-items: center;
-          justify-content: space-between;
-          padding: 10px 12px;
-          background: #11152a;
-          border-bottom: 1px solid #2a2f45;
-        }
-        .rb-pick-status{
-          font-size: 12px;
-          color: rgba(245,247,255,0.82);
-          font-weight: 650;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          max-width: 60%;
-        }
-        .rb-pick-actions{
-          display:flex;
-          gap: 8px;
-          align-items: center;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-        }
-        .rb-pick-btn{
-          border: 1px solid #2a2f45;
-          background: #0c0f1b;
-          color: #f5f7ff;
-          padding: 8px 10px;
-          border-radius: 12px;
-          cursor: pointer;
-          font-size: 12px;
-          font-weight: 750;
-          white-space: nowrap;
-        }
-        .rb-pick-btn:hover{ filter: brightness(1.08); }
-        .rb-pick-btn.primary{
-          border-color: rgba(124,92,255,0.65);
-          background: linear-gradient(180deg, rgba(124,92,255,0.30), rgba(124,92,255,0.14));
-        }
-        .rb-pick-btn.danger{
-          border-color: rgba(255,90,122,0.65);
-          background: linear-gradient(180deg, rgba(255,90,122,0.25), rgba(255,90,122,0.10));
-        }
-
-        .rb-pick-crumbs{
-          display:flex;
-          gap: 6px;
-          align-items:center;
-          padding: 10px 12px;
-          overflow-x: auto;
-          background: #0f111a;
-        }
-        .rb-crumb{
-          border: 1px solid #2a2f45;
-          background: #0c0f1b;
-          color: rgba(245,247,255,0.92);
-          padding: 6px 10px;
-          border-radius: 999px;
-          font-size: 12px;
-          font-weight: 750;
-          cursor: pointer;
-          white-space: nowrap;
-        }
-        .rb-crumb:hover{ filter: brightness(1.08); }
-        .rb-crumb.active{
-          border-color: rgba(91,124,255,0.85);
-          box-shadow: 0 0 0 5px rgba(91,124,255,0.18);
-        }
-        .rb-crumb-sep{
-          color: rgba(245,247,255,0.35);
-          font-weight: 800;
-          user-select: none;
-        }
+        .rb-pick-overlay { position: fixed; z-index: 2147483646; pointer-events:none; border:2px solid #5b7cff; background: rgba(91,124,255,0.14); border-radius: 10px; }
+        .rb-pick-label { position: fixed; z-index: 2147483646; pointer-events:none; padding: 6px 10px; border-radius: 999px; background:#0f111a; border:1px solid #2a2f45; color:#fff; font-size:12px; max-width:70vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
       `;
       document.head.appendChild(s);
     }
 
-    function ensureDom() {
+    function ensure() {
       ensureCss();
-      if (!overlay) {
-        overlay = h('div', { class: 'rb-pick-overlay' });
-        label = h('div', { class: 'rb-pick-label' });
-        scopeFrame = h('div', { class: 'rb-scope-frame' });
-
-        toolbar = h('div', { class: 'rb-pick-toolbar' });
-        const top = h('div', { class: 'rb-pick-toolbar-top' });
-        status = h('div', { class: 'rb-pick-status', text: '' });
-        const actions = h('div', { class: 'rb-pick-actions' });
-
-        btnParent = h('button', { class: 'rb-pick-btn', text: 'Parent (↑)' });
-        btnChild = h('button', { class: 'rb-pick-btn', text: 'Child (↓)' });
-        btnPrev = h('button', { class: 'rb-pick-btn', text: 'Prev (◀)' });
-        btnNext = h('button', { class: 'rb-pick-btn', text: 'Next (▶)' });
-        btnToggle = h('button', { class: 'rb-pick-btn primary', text: 'Select (Enter)' });
-        btnContinue = h('button', { class: 'rb-pick-btn', text: 'Continue' });
-        btnDone = h('button', { class: 'rb-pick-btn primary', text: 'Done (Enter)' });
-        btnCancel = h('button', { class: 'rb-pick-btn danger', text: 'Cancel (Esc)' });
-
-        actions.append(btnParent, btnChild, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel);
-        top.append(status, actions);
-
-        crumbs = h('div', { class: 'rb-pick-crumbs' });
-
-        toolbar.append(top, crumbs);
-
-        document.body.appendChild(scopeFrame);
-        document.body.appendChild(overlay);
-        document.body.appendChild(label);
-        document.body.appendChild(toolbar);
-
-        scopeFrame.style.display = 'none';
-        overlay.style.display = 'none';
-        label.style.display = 'none';
-        toolbar.style.display = 'none';
-      }
-    }
-
-    function isInternalUi(el) {
-      if (!el || el.nodeType !== 1) return true;
-      if (el.closest(INTERNAL_UI_SEL)) return true;
-      if (ignoreSelector && el.closest(ignoreSelector)) return true;
-      return false;
-    }
-
-    function setScopeFrame() {
-      if (!scopeElement || !scopeElement.isConnected) {
-        scopeFrame.style.display = 'none';
-        return;
-      }
-      const r = scopeElement.getBoundingClientRect();
-      scopeFrame.style.display = 'block';
-      scopeFrame.style.left = `${r.left}px`;
-      scopeFrame.style.top = `${r.top}px`;
-      scopeFrame.style.width = `${Math.max(0, r.width)}px`;
-      scopeFrame.style.height = `${Math.max(0, r.height)}px`;
+      if (overlay) return;
+      overlay = h('div', { class: 'rb-pick-overlay' });
+      label = h('div', { class: 'rb-pick-label' });
+      document.body.appendChild(overlay);
+      document.body.appendChild(label);
+      overlay.style.display = 'none';
+      label.style.display = 'none';
     }
 
     function setBox(el) {
-      if (!el || !el.getBoundingClientRect) return;
       const r = el.getBoundingClientRect();
       overlay.style.left = `${r.left}px`;
       overlay.style.top = `${r.top}px`;
-      overlay.style.width = `${Math.max(0, r.width)}px`;
-      overlay.style.height = `${Math.max(0, r.height)}px`;
-      label.textContent = shortElLabel(el);
-      label.style.left = `${Math.max(8, Math.min(window.innerWidth - 8, r.left))}px`;
-      label.style.top = `${Math.max(8, r.top - 42)}px`;
+      overlay.style.width = `${r.width}px`;
+      overlay.style.height = `${r.height}px`;
+      label.textContent = elLabel(el);
+      label.style.left = `${Math.max(8, r.left)}px`;
+      label.style.top = `${Math.max(8, r.top - 34)}px`;
     }
 
-    function clearMarks() {
-      for (const el of selected) {
-        try { el.removeAttribute('data-rb-picked'); } catch {}
-      }
-      selected = new Set();
-    }
-
-    function toggleMark(el) {
-      if (!el) return;
-      if (selected.has(el)) {
-        selected.delete(el);
-        try { el.removeAttribute('data-rb-picked'); } catch {}
-      } else {
-        selected.add(el);
-        try { el.setAttribute('data-rb-picked', '1'); } catch {}
-      }
-    }
-
-    function elementAllowed(el) {
-      if (!el || el.nodeType !== 1) return false;
-      if (isInternalUi(el)) return false;
-      if (predicate && !predicate(el)) return false;
-      if (scopeElement && !scopeElement.contains(el)) return false;
-      if (!allowPickScope && scopeElement && el === scopeElement) return false;
-      return true;
-    }
-
-    // --------- Rect-based drill-down (works even when hit-testing fails) ---------
-    function rectAreaAtPoint(el, x, y) {
-      if (!el || el.nodeType !== 1 || typeof el.getClientRects !== 'function') return null;
-      const rects = el.getClientRects();
-      if (!rects || rects.length === 0) return null;
-
-      let best = Infinity;
-      for (let i = 0; i < rects.length; i++) {
-        const r = rects[i];
-        const w = r.width;
-        const h = r.height;
-        if (w <= 0 || h <= 0) continue;
-        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
-          const area = w * h;
-          if (area < best) best = area;
-        }
-      }
-      return best !== Infinity ? best : null;
-    }
-
-    function bestChildContaining(parent, x, y) {
-      if (!parent || parent.nodeType !== 1) return null;
-      const kids = parent.children;
-      if (!kids || kids.length === 0) return null;
-
-      let bestEl = null;
-      let bestArea = Infinity;
-
-      for (let i = 0; i < kids.length; i++) {
-        const ch = kids[i];
-        if (!elementAllowed(ch)) continue;
-        const area = rectAreaAtPoint(ch, x, y);
-        if (area == null) continue;
-        if (area < bestArea) {
-          bestArea = area;
-          bestEl = ch;
-        }
-      }
-      return bestEl;
-    }
-
-    function findBestDescendantAtPoint(root, x, y, { allowSelf = true } = {}) {
-      if (!root || root.nodeType !== 1) return null;
-
-      let best = null;
-      let cur = root;
-
-      if (allowSelf && elementAllowed(cur) && rectAreaAtPoint(cur, x, y) != null) best = cur;
-
-      // Drill down by repeatedly choosing the smallest child rect containing point
-      while (true) {
-        const child = bestChildContaining(cur, x, y);
-        if (!child) break;
-        best = child;
-        cur = child;
-      }
-      return best;
-    }
-
-    function drillDownFromCurrent() {
-      if (!current) return;
-      if (!Number.isFinite(lastX) || !Number.isFinite(lastY)) return;
-      const best = findBestDescendantAtPoint(current, lastX, lastY, { allowSelf: false });
-      if (best) setCurrent(best);
-    }
-
-    // --------- Hit stack (with scope drill-down) ----------
-    function buildCandidateStack(e) {
-      const out = [];
-      const seen = new Set();
-      function add(x) {
-        if (!x || x.nodeType !== 1) return;
-        if (seen.has(x)) return;
-        seen.add(x);
-        if (elementAllowed(x)) out.push(x);
-      }
-
-      if (e && typeof e.composedPath === 'function') {
-        for (const n of e.composedPath()) add(n);
-      } else if (e && e.target && e.target.nodeType === 1) {
-        add(e.target);
-      }
-
-      const x = e?.clientX ?? lastX;
-      const y = e?.clientY ?? lastY;
-
-      if (document.elementsFromPoint && Number.isFinite(x) && Number.isFinite(y)) {
-        for (const n of document.elementsFromPoint(x, y)) add(n);
-      } else if (document.elementFromPoint && Number.isFinite(x) && Number.isFinite(y)) {
-        add(document.elementFromPoint(x, y));
-      }
-
-      if (scopeElement && out.length) {
-        let p = out[0].parentElement;
-        while (p && p.nodeType === 1 && scopeElement.contains(p)) {
-          add(p);
-          p = p.parentElement;
-        }
-        add(scopeElement);
-      }
-
-      return out;
-    }
-
-    function getBestStack(e) {
-      const x = e?.clientX;
-      const y = e?.clientY;
-      if (Number.isFinite(x)) lastX = x;
-      if (Number.isFinite(y)) lastY = y;
-
-      let st = buildCandidateStack(e);
-
-      // KEY FIX:
-      // If we are scope-constrained (track picking), drill down by geometry so we can pick inner elements
-      // even when hit-testing returns only the scope/parent.
-      if (scopeElement && Number.isFinite(lastX) && Number.isFinite(lastY)) {
-        const seed = st.length ? st[0] : scopeElement;
-        const drilled = findBestDescendantAtPoint(seed, lastX, lastY, { allowSelf: true });
-        if (drilled) {
-          st = [drilled, ...st.filter((n) => n !== drilled)];
-        }
-      }
-
-      return st;
-    }
-
-    function buildBreadcrumb(el) {
-      const bc = [];
-      let cur = el;
-      const stopAt = boundaryElement && boundaryElement.nodeType === 1 ? boundaryElement : null;
-      while (cur && cur.nodeType === 1) {
-        bc.push(cur);
-        if (stopAt && cur === stopAt) break;
-        if (!stopAt && cur === document.body) break;
-        cur = cur.parentElement;
-      }
-      return bc.reverse();
-    }
-
-    function renderBreadcrumb() {
-      crumbs.innerHTML = '';
-      const bc = current ? buildBreadcrumb(current) : [];
-      for (let i = 0; i < bc.length; i++) {
-        const el = bc[i];
-        const b = h('button', {
-          class: 'rb-crumb' + (el === current ? ' active' : ''),
-          text: shortElLabel(el),
-          onClick: (ev) => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            locked = true;
-            if (elementAllowed(el)) setCurrent(el);
-            updateToolbar();
-          },
-        });
-        crumbs.appendChild(b);
-        if (i < bc.length - 1) crumbs.appendChild(h('div', { class: 'rb-crumb-sep', text: '›' }));
-      }
-    }
-
-    function updateToolbar() {
-      const count = selected.size;
-      const curLabel = current ? shortElLabel(current) : '(none)';
-      const lockHint = locked ? 'LOCKED' : 'HOVER';
-      const stackHint = stack.length ? `stack ${stackIndex + 1}/${stack.length}` : 'stack 0/0';
-
-      if (mode === 'single') {
-        btnToggle.style.display = 'inline-block';
-        btnToggle.textContent = 'Select (Enter)';
-        btnContinue.style.display = 'none';
-        btnDone.style.display = 'none';
-        status.textContent =
-          `[${lockHint}] ${curLabel} • ${stackHint} • PointerDown selects • Child↓ • Shift locks • Parent↑ • Prev/Next • Enter • Esc`;
-      } else {
-        btnToggle.style.display = 'inline-block';
-        btnToggle.textContent = selected.has(current) ? `Remove (${count})` : `Add (${count})`;
-        btnContinue.style.display = 'inline-block';
-        btnDone.style.display = 'inline-block';
-        status.textContent =
-          `[${lockHint}] ${curLabel} • Selected ${count} • ${stackHint} • PointerDown toggles • Child↓ • Shift locks • Parent↑ • Enter done • Esc`;
-      }
-
-      renderBreadcrumb();
-    }
-
-    function setCurrent(el) {
-      if (!el || !elementAllowed(el)) return;
-      current = el;
-      setBox(el);
-      updateToolbar();
-    }
-
-    function chooseParent() {
-      if (!current) return;
-      let p = current.parentElement;
-      while (p && p.nodeType === 1) {
-        if (elementAllowed(p)) {
-          setCurrent(p);
-          return;
-        }
-        p = p.parentElement;
-      }
-    }
-
-    function cycle(delta) {
-      if (!stack || stack.length < 2) return;
-      stackIndex = (stackIndex + delta + stack.length) % stack.length;
-      const el = stack[stackIndex];
-      if (elementAllowed(el)) setCurrent(el);
-    }
-
-    function unlock() {
-      locked = false;
-      stack = [];
-      stackIndex = 0;
-      updateToolbar();
-    }
-
-    function confirmSingle(onPick, cleanup) {
-      if (!current) return;
-      const el = current;
-      cleanup();
-      onPick?.(el);
-    }
-
-    function doneMulti(onPick, cleanup) {
-      const els = Array.from(selected);
-      cleanup();
-      onPick?.(els);
-    }
-
-    function pick({
-      ignoreSelector: ign = '',
-      mode: m = 'single',
-      predicate: pred = null,
-      scopeElement: scope = null,
-      boundaryElement: boundary = null,
-      allowPickScope: allowScope = true,
-      onPick,
-      onCancel,
-    }) {
-      ensureDom();
+    function pick({ ignoreSelector, onPick, onCancel }) {
+      ensure();
       if (active) return;
       active = true;
 
-      ignoreSelector = ign;
-      mode = m;
-      predicate = typeof pred === 'function' ? pred : null;
-      scopeElement = scope && scope.nodeType === 1 ? scope : null;
-      boundaryElement = boundary && boundary.nodeType === 1 ? boundary : (scopeElement || null);
-      allowPickScope = allowScope !== false;
-
-      locked = false;
-      current = null;
-      stack = [];
-      stackIndex = 0;
-      clearMarks();
-
       overlay.style.display = 'block';
       label.style.display = 'block';
-      toolbar.style.display = 'block';
 
-      if (scopeElement) {
-        setScopeFrame();
-        scopeFrame.style.display = 'block';
-      } else {
-        scopeFrame.style.display = 'none';
-      }
-
-      updateToolbar();
-
-      btnParent.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; chooseParent(); };
-      btnChild.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; drillDownFromCurrent(); };
-      btnPrev.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; cycle(-1); };
-      btnNext.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; cycle(+1); };
-
-      btnToggle.onclick = (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        if (!current) return;
-        if (mode === 'single') {
-          confirmSingle(onPick, cleanup);
-          return;
-        }
-        toggleMark(current);
-        updateToolbar();
-      };
-
-      btnContinue.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); unlock(); };
-      btnDone.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); doneMulti(onPick, cleanup); };
-      btnCancel.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); cleanup(); onCancel?.(); };
-
-      function onMove(e) {
-        if (scopeElement) setScopeFrame();
-        if (!e) return;
-        if (Number.isFinite(e.clientX)) lastX = e.clientX;
-        if (Number.isFinite(e.clientY)) lastY = e.clientY;
-
-        if (locked) return;
-
-        stack = getBestStack(e);
-        stackIndex = 0;
-        if (stack.length) setCurrent(stack[0]);
-      }
-
-      // Block click while picking so page cannot navigate
-      function blockClick(e) {
-        if (e.target && e.target.closest && e.target.closest('.rb-pick-toolbar')) return;
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation?.();
-      }
-
-      // Use POINTERDOWN for selecting (reliable)
-      function onPointerDownCapture(e) {
-        if (e.target && e.target.closest && e.target.closest('.rb-pick-toolbar')) return;
-        if (e.target && e.target.closest && e.target.closest(INTERNAL_UI_SEL)) return;
-
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation?.();
-
-        if (Number.isFinite(e.clientX)) lastX = e.clientX;
-        if (Number.isFinite(e.clientY)) lastY = e.clientY;
-
-        stack = getBestStack(e);
-        stackIndex = 0;
-        const el = stack.length ? stack[0] : null;
+      function move(e) {
+        const el = document.elementFromPoint(e.clientX, e.clientY);
         if (!el) return;
-
-        setCurrent(el);
-
-        if (mode === 'single') {
-          if (!e.shiftKey) {
-            confirmSingle(onPick, cleanup);
-            return;
-          }
-          locked = true;
-          updateToolbar();
-          return;
-        }
-
-        if (!e.shiftKey) {
-          toggleMark(current);
-          updateToolbar();
-          return;
-        }
-
-        locked = true;
-        updateToolbar();
+        if (ignoreSelector && el.closest && el.closest(ignoreSelector)) return;
+        if (el.classList && (el.classList.contains('rb-pick-overlay') || el.classList.contains('rb-pick-label'))) return;
+        setBox(el);
       }
 
-      function onKey(e) {
+      function click(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation?.();
+
+        const el = document.elementFromPoint(e.clientX, e.clientY);
+        if (!el) return;
+        if (ignoreSelector && el.closest && el.closest(ignoreSelector)) return;
+
+        cleanup();
+        onPick?.(el);
+      }
+
+      function key(e) {
         if (e.key === 'Escape') {
           cleanup();
           onCancel?.();
-          return;
-        }
-        if (e.key === 'ArrowUp') { locked = true; chooseParent(); return; }
-        if (e.key === 'ArrowDown') { locked = true; drillDownFromCurrent(); return; }
-        if (e.key === '[') { locked = true; cycle(-1); return; }
-        if (e.key === ']') { locked = true; cycle(+1); return; }
-
-        if (mode === 'multi' && e.key === ' ') {
-          e.preventDefault();
-          if (!current) return;
-          toggleMark(current);
-          updateToolbar();
-          return;
-        }
-
-        if (e.key === 'Enter') {
-          if (mode === 'single') {
-            if (!current) return;
-            confirmSingle(onPick, cleanup);
-          } else {
-            doneMulti(onPick, cleanup);
-          }
         }
       }
 
       function cleanup() {
         active = false;
-
         overlay.style.display = 'none';
         label.style.display = 'none';
-        toolbar.style.display = 'none';
-        scopeFrame.style.display = 'none';
-
-        window.removeEventListener('pointermove', onMove, true);
-        window.removeEventListener('pointerdown', onPointerDownCapture, true);
-        window.removeEventListener('click', blockClick, true);
-        window.removeEventListener('keydown', onKey, true);
-        window.removeEventListener('scroll', setScopeFrame, true);
-        window.removeEventListener('resize', setScopeFrame, true);
-
-        clearMarks();
-
-        ignoreSelector = '';
-        predicate = null;
-        scopeElement = null;
-        boundaryElement = null;
-        locked = false;
-        current = null;
-        stack = [];
-        stackIndex = 0;
+        window.removeEventListener('mousemove', move, true);
+        window.removeEventListener('click', click, true);
+        window.removeEventListener('keydown', key, true);
       }
 
-      window.addEventListener('pointermove', onMove, true);
-      window.addEventListener('pointerdown', onPointerDownCapture, { capture: true, passive: false });
-      window.addEventListener('click', blockClick, { capture: true, passive: false });
-      window.addEventListener('keydown', onKey, true);
-      window.addEventListener('scroll', setScopeFrame, true);
-      window.addEventListener('resize', setScopeFrame, true);
+      window.addEventListener('mousemove', move, true);
+      window.addEventListener('click', click, true);
+      window.addEventListener('keydown', key, true);
     }
 
     return { pick };
   })();
 
-  // ---------------- Editor UI CSS ----------------
+  // ---------------- UI CSS (Opaque) ----------------
   function injectCssOnce() {
     if (document.getElementById('rb-editor-css')) return;
     const style = document.createElement('style');
     style.id = 'rb-editor-css';
     style.textContent = `
-      :root{
-        --rb-bg: #0f111a;
-        --rb-bg2: #151a2e;
-        --rb-bg3: #0c0f1b;
-        --rb-border: #2a2f45;
-        --rb-text: #f5f7ff;
-        --rb-muted: rgba(245,247,255,0.70);
-        --rb-danger: #ff5a7a;
-        --rb-shadow: 0 18px 55px rgba(0,0,0,0.65);
-      }
+      :root{ --rb-bg:#0f111a; --rb-bg2:#151a2e; --rb-border:#2a2f45; --rb-text:#f5f7ff; --rb-muted: rgba(245,247,255,0.70); --rb-danger:#ff5a7a; --rb-shadow:0 18px 55px rgba(0,0,0,0.65); }
 
-      .rb-panel{
-        position: fixed;
-        z-index: 2147483647;
-        width: 520px;
-        max-height: 80vh;
-        overflow: hidden;
-        border-radius: 16px;
-        background: linear-gradient(180deg, var(--rb-bg2), var(--rb-bg));
-        border: 1px solid var(--rb-border);
-        box-shadow: var(--rb-shadow);
-        color: var(--rb-text);
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      .rb-panel{ position:fixed; z-index:2147483647; width:500px; max-height:80vh; overflow:hidden; border-radius:16px;
+        background: linear-gradient(180deg, var(--rb-bg2), var(--rb-bg)); border:1px solid var(--rb-border); box-shadow: var(--rb-shadow);
+        color: var(--rb-text); font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       }
-      .rb-panel *{ box-sizing: border-box; }
-
-      .rb-header{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding: 10px 12px;
-        background: #11152a;
-        border-bottom: 1px solid var(--rb-border);
-        cursor: grab;
-        user-select: none;
-      }
-      .rb-header:active{ cursor: grabbing; }
-
-      .rb-brand{ display:flex; align-items:center; gap:10px; font-weight: 800; letter-spacing: 0.3px; }
-      .rb-badge{
-        font-size: 11px;
-        padding: 3px 8px;
-        border-radius: 999px;
-        border: 1px solid var(--rb-border);
-        background: var(--rb-bg3);
-        color: var(--rb-muted);
-      }
+      .rb-panel *{ box-sizing:border-box; }
+      .rb-header{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#11152a; border-bottom:1px solid var(--rb-border); cursor:grab; user-select:none; }
+      .rb-header:active{ cursor:grabbing; }
+      .rb-brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px; }
+      .rb-badge{ font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid var(--rb-border); background:#0c0f1b; color:var(--rb-muted); }
       .rb-actions{ display:flex; gap:8px; align-items:center; }
+      .rb-iconbtn{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:12px; border:1px solid var(--rb-border); background:#0c0f1b; color:var(--rb-text); cursor:pointer; }
+      .rb-iconbtn:hover{ filter:brightness(1.08); }
+      .rb-iconbtn.danger{ border-color: rgba(255,90,122,0.65); color:#ffd3db; }
 
-      .rb-iconbtn{
-        width: 34px; height: 34px;
-        display:flex; align-items:center; justify-content:center;
-        border-radius: 12px;
-        border: 1px solid var(--rb-border);
-        background: var(--rb-bg3);
-        color: var(--rb-text);
-        cursor: pointer;
-      }
-      .rb-iconbtn:hover{ filter: brightness(1.08); }
-      .rb-iconbtn.danger{ border-color: rgba(255,90,122,0.65); color: #ffd3db; }
+      .rb-body{ overflow:auto; max-height: calc(80vh - 58px); padding:12px; background: var(--rb-bg); }
 
-      .rb-body{
-        overflow:auto;
-        max-height: calc(80vh - 58px);
-        padding: 12px;
-        background: var(--rb-bg);
-      }
+      .rb-section{ border:1px solid var(--rb-border); background:#10152a; border-radius:14px; padding:12px; margin-bottom:10px; }
+      .rb-section-title{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-weight:750; letter-spacing:.2px; }
 
-      .rb-section{
-        border: 1px solid var(--rb-border);
-        background: #10152a;
-        border-radius: 14px;
-        padding: 12px;
-        margin-bottom: 10px;
-      }
-      .rb-section-title{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        margin-bottom: 10px;
-        font-weight: 750;
-        letter-spacing: 0.2px;
-      }
-
-      .rb-row{ display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
+      .rb-row{ display:flex; gap:10px; align-items:center; }
       .rb-col{ display:flex; flex-direction:column; gap:8px; }
-      .rb-muted{ color: var(--rb-muted); font-size: 12px; }
-      .rb-label{ font-size: 12px; color: var(--rb-muted); }
+      .rb-muted{ color: var(--rb-muted); font-size:12px; }
+      .rb-label{ font-size:12px; color: var(--rb-muted); }
 
-      .rb-input, .rb-select, .rb-textarea{
-        width: 100%;
-        padding: 9px 10px;
-        border-radius: 12px;
-        border: 1px solid var(--rb-border);
-        background: var(--rb-bg3);
-        color: var(--rb-text);
-        outline: none;
-      }
-      .rb-input:focus, .rb-select:focus, .rb-textarea:focus{
-        border-color: rgba(124,92,255,0.70);
-        box-shadow: 0 0 0 6px rgba(124,92,255,0.16);
-      }
-      .rb-textarea{
-        min-height: 170px;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 12px;
-      }
+      .rb-input, .rb-select, .rb-textarea{ width:100%; padding:9px 10px; border-radius:12px; border:1px solid var(--rb-border); background:#0c0f1b; color:var(--rb-text); outline:none; }
+      .rb-input:focus, .rb-select:focus, .rb-textarea:focus{ border-color: rgba(124,92,255,0.7); box-shadow: 0 0 0 6px rgba(124,92,255,0.16); }
+      .rb-textarea{ min-height:170px; font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size:12px; }
 
-      .rb-btn{
-        border: 1px solid var(--rb-border);
-        background: var(--rb-bg3);
-        color: var(--rb-text);
-        padding: 9px 10px;
-        border-radius: 12px;
-        cursor: pointer;
-        user-select: none;
-        white-space: nowrap;
-      }
-      .rb-btn:hover{ filter: brightness(1.08); }
-      .rb-btn.primary{
-        border-color: rgba(124,92,255,0.65);
-        background: linear-gradient(180deg, rgba(124,92,255,0.35), rgba(124,92,255,0.16));
-      }
-      .rb-btn.danger{
-        border-color: rgba(255,90,122,0.65);
-        background: linear-gradient(180deg, rgba(255,90,122,0.25), rgba(255,90,122,0.10));
-      }
+      .rb-btn{ border:1px solid var(--rb-border); background:#0c0f1b; color:var(--rb-text); padding:9px 10px; border-radius:12px; cursor:pointer; user-select:none; white-space:nowrap; }
+      .rb-btn:hover{ filter:brightness(1.08); }
+      .rb-btn.primary{ border-color: rgba(124,92,255,0.65); background: linear-gradient(180deg, rgba(124,92,255,0.35), rgba(124,92,255,0.16)); }
+      .rb-btn.danger{ border-color: rgba(255,90,122,0.65); background: linear-gradient(180deg, rgba(255,90,122,0.25), rgba(255,90,122,0.10)); }
 
-      .rb-card{
-        border: 1px solid var(--rb-border);
-        background: var(--rb-bg3);
-        border-radius: 12px;
-        padding: 10px;
-      }
+      .rb-card{ border:1px solid var(--rb-border); background:#0c0f1b; border-radius:12px; padding:10px; }
       .rb-list{ display:flex; flex-direction:column; gap:10px; }
-      .rb-pill{
-        font-size: 11px;
-        padding: 3px 8px;
-        border-radius: 999px;
-        border: 1px solid var(--rb-border);
-        background: var(--rb-bg3);
-        color: var(--rb-muted);
-      }
+      .rb-pill{ font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid var(--rb-border); background:#0c0f1b; color:var(--rb-muted); }
 
-      .rb-toolbar{
-        display:flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-      }
+      .rb-toolbar{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
       .rb-toolbar .rb-btn{ flex: 1 1 160px; }
-
-      .rb-dock{
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 2147483647;
-        display:flex;
-        align-items:center;
-        gap:10px;
-        padding: 10px 12px;
-        border-radius: 999px;
-        background: #11152a;
-        border: 1px solid var(--rb-border);
-        box-shadow: var(--rb-shadow);
-        color: var(--rb-text);
-      }
-      .rb-dock-title{
-        display:flex; align-items:center; gap:8px;
-        font-weight: 800;
-        letter-spacing: 0.3px;
-      }
     `;
     document.head.appendChild(style);
   }
 
-  // ---------------- Editor ----------------
+  function iconSvg(name) {
+    const common = 'width="18" height="18" viewBox="0 0 24 24" fill="none"';
+    if (name === 'min') return `<svg ${common}><path d="M6 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'close') return `<svg ${common}><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    if (name === 'wand') return `<svg ${common}><path d="M4 20l8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 4l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13 5l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    return '';
+  }
+
   class ReboundEditor {
     constructor({ openButton, storageKey = DEFAULT_STORAGE_KEY, onSave } = {}) {
       injectCssOnce();
@@ -1026,28 +272,23 @@
 
       this.panel = null;
       this.bodyEl = null;
-      this.dock = null;
 
       this._saveTimer = 0;
       this._remountTimer = 0;
       this._badgeEl = null;
       this._badgeText = 'Auto-saved';
 
-      this._scrollToTrackEditor = false;
-
+      // Ensure preview reflects config
       try { RB.Runtime?.mountSingleton?.(this.config); } catch {}
 
+      // ✅ IMPORTANT: flush-save when the user reloads/removes query param
       window.addEventListener('beforeunload', () => {
         try { this._saveConfigToStorageNow(); } catch {}
       });
 
-      const ui = this._loadUiState();
-      if (ui?.minimized) this._showDock();
-
       if (openButton) openButton.addEventListener('click', () => this.open());
     }
 
-    // ---------- Storage ----------
     _loadConfigFromStorage() {
       const raw = localStorage.getItem(this.storageKey);
       if (!raw) return null;
@@ -1078,75 +319,28 @@
       this._scheduleRemount();
     }
 
-    _loadUiState() {
-      const raw = localStorage.getItem(UI_STORAGE_KEY);
-      return raw ? safeParseJson(raw) : null;
-    }
-
-    _saveUiState(state) {
-      try { localStorage.setItem(UI_STORAGE_KEY, JSON.stringify(state)); } catch {}
-    }
-
     _setBadge(text) {
       this._badgeText = text;
       if (this._badgeEl) this._badgeEl.textContent = text;
     }
 
-    // ---------- UI open/close/minimize ----------
     open() {
       if (!this.panel) {
         this.panel = this._buildPanel();
         document.body.appendChild(this.panel);
-        this._restorePanelPosition();
+        this.panel.style.left = `${Math.max(16, (window.innerWidth || 1200) - 500 - 24)}px`;
+        this.panel.style.top = `16px`;
         this.render();
       }
       this.panel.style.display = 'block';
-      this.panel.style.visibility = 'visible';
-      this.panel.style.pointerEvents = 'auto';
-      this._hideDock();
-      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
     }
 
     close() {
-      if (!this.panel) return;
-      this.panel.style.display = 'none';
-      this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
-    }
-
-    minimize() {
       if (this.panel) this.panel.style.display = 'none';
-      this._showDock();
-      this._saveUiState({ minimized: true, panelPos: this._getPanelPos() });
-    }
-
-    maximizeFromDock() {
-      this._hideDock();
-      this.open();
-    }
-
-    _buildDock() {
-      return h('div', { class: 'rb-dock' }, [
-        h('div', { class: 'rb-dock-title', html: `${iconSvg('wand')} Rebound` }),
-        h('button', { class: 'rb-iconbtn', title: 'Maximize', html: iconSvg('max'), onClick: () => this.maximizeFromDock() }),
-        h('button', { class: 'rb-iconbtn danger', title: 'Close', html: iconSvg('close'), onClick: () => this._hideDock() }),
-      ]);
-    }
-
-    _showDock() {
-      if (!this.dock) {
-        this.dock = this._buildDock();
-        document.body.appendChild(this.dock);
-      }
-      this.dock.style.display = 'flex';
-    }
-
-    _hideDock() {
-      if (!this.dock) return;
-      this.dock.style.display = 'none';
     }
 
     _buildPanel() {
-      const panel = h('div', { class: 'rb-panel', style: 'display:none; left: 16px; top: 16px;' });
+      const panel = h('div', { class: 'rb-panel', style: 'display:none; position:fixed;' });
 
       const header = h('div', { class: 'rb-header' }, [
         h('div', { class: 'rb-brand' }, [
@@ -1155,8 +349,7 @@
           (this._badgeEl = h('div', { class: 'rb-badge', text: this._badgeText })),
         ]),
         h('div', { class: 'rb-actions' }, [
-          h('button', { class: 'rb-iconbtn', title: 'Minimize', html: iconSvg('min'), onClick: () => this.minimize() }),
-          h('button', { class: 'rb-iconbtn danger', title: 'Close', html: iconSvg('close'), onClick: () => this.close() }),
+          h('button', { class: 'rb-iconbtn', title: 'Close', html: iconSvg('close'), onClick: () => this.close() }),
         ]),
       ]);
 
@@ -1164,73 +357,25 @@
       panel.appendChild(header);
       panel.appendChild(this.bodyEl);
 
-      this._enableDrag(panel, header);
-      return panel;
-    }
-
-    _getPanelPos() {
-      if (!this.panel) return null;
-      return {
-        left: parseFloat(this.panel.style.left || '0'),
-        top: parseFloat(this.panel.style.top || '0'),
-      };
-    }
-
-    _restorePanelPosition() {
-      const ui = this._loadUiState();
-      if (ui?.panelPos && this.panel) {
-        this.panel.style.left = `${Math.max(8, ui.panelPos.left || 8)}px`;
-        this.panel.style.top = `${Math.max(8, ui.panelPos.top || 8)}px`;
-      } else if (this.panel) {
-        const w = 520;
-        const left = Math.max(16, (window.innerWidth || 1200) - w - 24);
-        this.panel.style.left = `${left}px`;
-        this.panel.style.top = `16px`;
-      }
-    }
-
-    _enableDrag(panel, handle) {
+      // simple drag
       let dragging = false;
-      let startX = 0, startY = 0;
-      let startLeft = 0, startTop = 0;
-
-      const onPointerDown = (e) => {
-        const target = e.target;
-        if (target && target.closest && target.closest('.rb-iconbtn')) return;
-
+      let sx = 0, sy = 0, sl = 0, st = 0;
+      header.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('.rb-iconbtn')) return;
         dragging = true;
-        handle.setPointerCapture?.(e.pointerId);
-        startX = e.clientX;
-        startY = e.clientY;
-        startLeft = parseFloat(panel.style.left || '0');
-        startTop = parseFloat(panel.style.top || '0');
-      };
-
-      const onPointerMove = (e) => {
+        sx = e.clientX; sy = e.clientY;
+        sl = parseFloat(panel.style.left || '0');
+        st = parseFloat(panel.style.top || '0');
+        header.setPointerCapture?.(e.pointerId);
+      });
+      window.addEventListener('pointermove', (e) => {
         if (!dragging) return;
+        panel.style.left = `${sl + (e.clientX - sx)}px`;
+        panel.style.top = `${st + (e.clientY - sy)}px`;
+      });
+      window.addEventListener('pointerup', () => { dragging = false; });
 
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-
-        const newLeft = startLeft + dx;
-        const newTop = startTop + dy;
-
-        const maxLeft = Math.max(8, (window.innerWidth || 1200) - panel.offsetWidth - 8);
-        const maxTop = Math.max(8, (window.innerHeight || 800) - 60);
-
-        panel.style.left = `${Math.max(8, Math.min(maxLeft, newLeft))}px`;
-        panel.style.top = `${Math.max(8, Math.min(maxTop, newTop))}px`;
-      };
-
-      const onPointerUp = () => {
-        if (!dragging) return;
-        dragging = false;
-        this._saveUiState({ minimized: false, panelPos: this._getPanelPos() });
-      };
-
-      handle.addEventListener('pointerdown', onPointerDown);
-      window.addEventListener('pointermove', onPointerMove);
-      window.addEventListener('pointerup', onPointerUp);
+      return panel;
     }
 
     ensureConfigShape() {
@@ -1245,41 +390,13 @@
       return this.config.animations[this.selectedAnimIndex] || null;
     }
 
-    // ✅ Bulletproof restore: deferred + clamped into viewport
     _pickWithHide(fnStartPick) {
-      if (this.panel) this.panel.style.display = 'none';
-      this._hideDock();
-
-      let restored = false;
-      const restore = () => {
-        if (restored) return;
-        restored = true;
-
-        setTimeout(() => {
-          requestAnimationFrame(() => {
-            if (!this.panel) {
-              this.open();
-              return;
-            }
-            this.panel.style.display = 'block';
-            this.panel.style.visibility = 'visible';
-            this.panel.style.pointerEvents = 'auto';
-            this._hideDock();
-
-            const left = parseFloat(this.panel.style.left || '16');
-            const top = parseFloat(this.panel.style.top || '16');
-            const maxLeft = Math.max(8, (window.innerWidth || 1200) - this.panel.offsetWidth - 8);
-            const maxTop = Math.max(8, (window.innerHeight || 800) - 60);
-            this.panel.style.left = `${Math.max(8, Math.min(maxLeft, left))}px`;
-            this.panel.style.top = `${Math.max(8, Math.min(maxTop, top))}px`;
-          });
-        }, 0);
-      };
-
+      const wasVisible = this.panel && this.panel.style.display !== 'none';
+      if (wasVisible) this.panel.style.display = 'none';
+      const restore = () => { if (wasVisible) this.panel.style.display = 'block'; };
       fnStartPick(restore);
     }
 
-    // ---------------- RENDER ----------------
     render() {
       this.ensureConfigShape();
       const body = this.bodyEl;
@@ -1351,14 +468,14 @@
           h('div', { text: 'Animation' }),
           h('div', { class: 'rb-row' }, [btnNewAnim, btnDeleteAnim]),
         ]),
-        h('div', { class: 'rb-row' }, [animSelect]),
+        animSelect,
         h('div', { class: 'rb-col', style: 'margin-top:10px;' }, [
           h('div', { class: 'rb-label', text: 'Animation Name' }),
           animNameInput,
         ]),
       ]));
 
-      // Scope
+      // Scope section
       const scopeInput = h('input', {
         class: 'rb-input',
         value: anim.scopeSelector || '',
@@ -1375,27 +492,16 @@
         onClick: () => {
           this._pickWithHide((restore) => {
             Picker.pick({
-              ignoreSelector: '.rb-panel, .rb-dock',
-              mode: 'single',
-              predicate: (el) => !!el && el.nodeType === 1,
-              scopeElement: null,
-              boundaryElement: null,
-              allowPickScope: true,
+              ignoreSelector: '.rb-panel',
               onPick: (el) => {
-                try {
-                  let sel = '';
-                  if (el === document.documentElement) sel = 'html';
-                  else if (el === document.body) sel = 'body';
-                  else if (el.id) sel = `#${cssEscape(el.id)}`;
-                  else if (el.classList && el.classList.length) sel = '.' + Array.from(el.classList).slice(0, 1).map(cssEscape).join('.');
-                  else sel = makeSelectorWithinRoot(document.body, el).replace(':scope', 'body');
-
-                  anim.scopeSelector = sel;
-                  this._touchChange();
-                  this.render();
-                } finally {
-                  restore();
-                }
+                let sel = '';
+                if (el.id) sel = `#${cssEscape(el.id)}`;
+                else if (el.classList && el.classList.length) sel = '.' + Array.from(el.classList).slice(0, 1).map(cssEscape).join('.');
+                else sel = makeSelectorWithinRoot(document.body, el).replace(':scope', 'body');
+                anim.scopeSelector = sel;
+                this._touchChange();
+                this.render();
+                restore();
               },
               onCancel: () => restore(),
             });
@@ -1409,7 +515,7 @@
           h('div', { class: 'rb-pill', text: '--enter/exit auto' }),
         ]),
         h('div', { class: 'rb-row' }, [scopeInput, pickScopeBtn]),
-        h('div', { class: 'rb-muted', text: 'Track picker is now rect-based within scope: it drills down to the smallest inner element under your cursor.' }),
+        h('div', { class: 'rb-muted', text: 'Runtime mounts from localStorage even when editor is not loaded.' }),
       ]));
 
       // Tracks list
@@ -1429,15 +535,7 @@
               ].filter(Boolean)),
             ]),
             h('div', { class: 'rb-row' }, [
-              h('button', {
-                class: 'rb-btn',
-                text: 'Edit',
-                onClick: () => {
-                  this.editingTrackIndex = idx;
-                  this._scrollToTrackEditor = true;
-                  this.render();
-                },
-              }),
+              h('button', { class: 'rb-btn', text: 'Edit', onClick: () => { this.editingTrackIndex = idx; this.render(); } }),
               h('button', {
                 class: 'rb-btn danger',
                 text: 'Delete',
@@ -1459,7 +557,6 @@
         onClick: () => {
           tracks.push(newTrack());
           this.editingTrackIndex = tracks.length - 1;
-          this._scrollToTrackEditor = true;
           this._touchChange();
           this.render();
         },
@@ -1473,21 +570,7 @@
         list,
       ]));
 
-      // Track editor form
-      let trackEditorEl = null;
-      if (this.editingTrackIndex >= 0 && tracks[this.editingTrackIndex]) {
-        trackEditorEl = this._renderTrackEditor(anim, tracks[this.editingTrackIndex]);
-        body.appendChild(trackEditorEl);
-
-        if (this._scrollToTrackEditor) {
-          this._scrollToTrackEditor = false;
-          setTimeout(() => {
-            try { trackEditorEl.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch {}
-          }, 0);
-        }
-      }
-
-      // Import / Export
+      // Import / Export (JSON hidden by default)
       const fileInput = h('input', { type: 'file', accept: 'application/json', style: 'display:none' });
       fileInput.addEventListener('change', async () => {
         const file = fileInput.files && fileInput.files[0];
@@ -1551,311 +634,6 @@
         this.jsonVisible ? jsonBox : null,
         h('div', { class: 'rb-muted', text: `Storage key: ${this.storageKey}` }),
       ]));
-    }
-
-    // ---------- Track editor ----------
-    _renderTrackEditor(anim, track) {
-      const wrap = h('div', { class: 'rb-section' });
-
-      wrap.appendChild(h('div', { class: 'rb-section-title' }, [
-        h('div', { text: `Edit Track #${this.editingTrackIndex + 1}` }),
-        h('button', {
-          class: 'rb-btn',
-          text: 'Done',
-          onClick: () => { this.editingTrackIndex = -1; this.render(); },
-        }),
-      ]));
-
-      const targetInput = h('input', {
-        class: 'rb-input',
-        value: track.targetSelector || '',
-        placeholder: 'e.g. .gallery-column or :scope (comma-separated supported)',
-        onInput: (e) => { track.targetSelector = e.target.value; this._touchChange(); },
-      });
-
-      const withinCb = h('input', {
-        type: 'checkbox',
-        ...(track.withinScope !== false ? { checked: 'checked' } : {}),
-        onChange: (e) => { track.withinScope = !!e.target.checked; this._touchChange(); },
-      });
-
-      const pickSingleBtn = h('button', {
-        class: 'rb-btn',
-        text: 'Pick Element',
-        onClick: () => this._pickTrackTarget(anim, track, { multi: false }),
-      });
-
-      const pickMultiBtn = h('button', {
-        class: 'rb-btn',
-        text: 'Pick Multiple',
-        onClick: () => this._pickTrackTarget(anim, track, { multi: true }),
-      });
-
-      const clearTargetsBtn = h('button', {
-        class: 'rb-btn danger',
-        text: 'Clear',
-        onClick: () => { track.targetSelector = ''; this._touchChange(); this.render(); },
-      });
-
-      wrap.appendChild(h('div', { class: 'rb-col' }, [
-        h('div', { class: 'rb-label', text: 'Target Selector (comma-separated supported)' }),
-        targetInput,
-        h('div', { class: 'rb-row' }, [pickSingleBtn, pickMultiBtn, clearTargetsBtn]),
-        h('div', { class: 'rb-row' }, [withinCb, h('div', { class: 'rb-muted', text: 'Within scope' })]),
-        h('div', { class: 'rb-muted', text: 'Track picker now drills down by geometry inside the scope. Use Child (↓) / ArrowDown to go deeper.' }),
-      ]));
-
-      const triggerTypeSelect = h('select', {
-        class: 'rb-select',
-        onChange: (e) => {
-          const type = e.target.value;
-
-          if (type === 'scroll') { track.trigger = { type: 'scroll', progress: 'exit', start: 0, end: 100 }; track.engine = 'css'; }
-          if (type === 'hover') { track.trigger = { type: 'hover', duration: 350, easing: 'easeInOutCubic' }; track.engine = 'js'; }
-          if (type === 'click') { track.trigger = { type: 'click', duration: 350, easing: 'easeInOutCubic' }; track.engine = 'js'; }
-          if (type === 'view')  { track.trigger = { type: 'view', duration: 450, easing: 'easeInOutCubic', once: false, reverseOnExit: true }; track.engine = 'js'; }
-
-          this._touchChange();
-          this.render();
-        },
-      }, [
-        h('option', { value: 'scroll', text: 'scroll / parallax (CSS progress)', ...(track.trigger?.type === 'scroll' ? { selected: 'selected' } : {}) }),
-        h('option', { value: 'hover', text: 'on hover', ...(track.trigger?.type === 'hover' ? { selected: 'selected' } : {}) }),
-        h('option', { value: 'click', text: 'on click', ...(track.trigger?.type === 'click' ? { selected: 'selected' } : {}) }),
-        h('option', { value: 'view',  text: 'on view enter', ...(track.trigger?.type === 'view' ? { selected: 'selected' } : {}) }),
-      ]);
-
-      wrap.appendChild(h('div', { class: 'rb-col', style: 'margin-top:12px;' }, [
-        h('div', { class: 'rb-label', text: 'Trigger' }),
-        triggerTypeSelect,
-      ]));
-
-      wrap.appendChild(this._renderTriggerDetails(track));
-      wrap.appendChild(this._renderPropertiesEditor(track));
-
-      return wrap;
-    }
-
-    _pickTrackTarget(anim, track, { multi }) {
-      if (!anim.scopeSelector) return alert('Set scope selector first.');
-      const scopeEl = document.querySelector(anim.scopeSelector);
-      if (!scopeEl) return alert('Scope selector matched nothing.');
-
-      const pred = (el) => scopeEl.contains(el);
-
-      this._pickWithHide((restore) => {
-        Picker.pick({
-          ignoreSelector: '.rb-panel, .rb-dock',
-          mode: multi ? 'multi' : 'single',
-          predicate: pred,
-          scopeElement: scopeEl,
-          boundaryElement: scopeEl,
-          allowPickScope: true, // you can still pick :scope if you want
-          onPick: (picked) => {
-            try {
-              const toSel = (el) => (el === scopeEl ? ':scope' : makeSelectorWithinRoot(scopeEl, el));
-
-              if (!multi) {
-                const el = picked;
-                track.targetSelector = toSel(el);
-                track.withinScope = true;
-                this._touchChange();
-                this.render();
-                return;
-              }
-
-              const els = Array.isArray(picked) ? picked : [];
-              if (!els.length) return;
-
-              const sels = uniq(els.map(toSel));
-              track.targetSelector = sels.join(', ');
-              track.withinScope = true;
-
-              this._touchChange();
-              this.render();
-            } finally {
-              restore();
-            }
-          },
-          onCancel: () => restore(),
-        });
-      });
-    }
-
-    _renderTriggerDetails(track) {
-      const trig = track.trigger || {};
-      const box = h('div', { class: 'rb-card', style: 'margin-top:12px;' });
-
-      if (trig.type === 'scroll') {
-        const progressSel = h('select', {
-          class: 'rb-select',
-          onChange: (e) => { trig.progress = e.target.value; this._touchChange(); },
-        }, [
-          h('option', { value: 'exit', text: 'exit progress', ...(trig.progress !== 'enter' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'enter', text: 'enter progress', ...(trig.progress === 'enter' ? { selected: 'selected' } : {}) }),
-        ]);
-
-        const startIn = h('input', {
-          class: 'rb-input', type: 'number', value: String(trig.start ?? 0),
-          onInput: (e) => { trig.start = Number(e.target.value) || 0; this._touchChange(); },
-        });
-
-        const endIn = h('input', {
-          class: 'rb-input', type: 'number', value: String(trig.end ?? 100),
-          onInput: (e) => { trig.end = Number(e.target.value) || 100; this._touchChange(); },
-        });
-
-        box.appendChild(h('div', { class: 'rb-row' }, [
-          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'progress' }), progressSel]),
-          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'start %' }), startIn]),
-          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'end %' }), endIn]),
-        ]));
-
-        box.appendChild(h('div', { class: 'rb-muted', style: 'margin-top:8px;' }, [
-          'Progress vars are automatic at runtime. CSS uses var(--enter/exit-progress, 0) until first scroll.',
-        ]));
-      }
-
-      if (trig.type === 'hover' || trig.type === 'click' || trig.type === 'view') {
-        const dur = h('input', {
-          class: 'rb-input', type: 'number', value: String(trig.duration ?? 350),
-          onInput: (e) => { trig.duration = Number(e.target.value) || 0; this._touchChange(); },
-        });
-
-        const easing = h('select', {
-          class: 'rb-select',
-          onChange: (e) => { trig.easing = e.target.value; this._touchChange(); },
-        }, [
-          h('option', { value: 'easeInOutCubic', text: 'easeInOutCubic', ...(trig.easing !== 'linear' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'linear', text: 'linear', ...(trig.easing === 'linear' ? { selected: 'selected' } : {}) }),
-        ]);
-
-        box.appendChild(h('div', { class: 'rb-row' }, [
-          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'duration (ms)' }), dur]),
-          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'easing' }), easing]),
-        ]));
-
-        if (trig.type === 'view') {
-          const once = h('input', {
-            type: 'checkbox', ...(trig.once ? { checked: 'checked' } : {}),
-            onChange: (e) => { trig.once = !!e.target.checked; this._touchChange(); },
-          });
-          const reverse = h('input', {
-            type: 'checkbox', ...(trig.reverseOnExit !== false ? { checked: 'checked' } : {}),
-            onChange: (e) => { trig.reverseOnExit = !!e.target.checked; this._touchChange(); },
-          });
-          box.appendChild(h('div', { class: 'rb-row', style: 'margin-top:10px;' }, [
-            once, h('div', { class: 'rb-muted', text: 'play once' }),
-            reverse, h('div', { class: 'rb-muted', text: 'reverse on exit' }),
-          ]));
-        }
-      }
-
-      return box;
-    }
-
-    _renderPropertiesEditor(track) {
-      const props = Array.isArray(track.properties) ? track.properties : (track.properties = []);
-      const box = h('div', { class: 'rb-card', style: 'margin-top:12px;' });
-
-      const addBtn = h('button', {
-        class: 'rb-btn primary',
-        text: 'Add Property',
-        onClick: () => {
-          props.push({ type: 'opacity', from: 1, to: 0 });
-          this._touchChange();
-          this.render();
-        },
-      });
-
-      box.appendChild(h('div', { class: 'rb-row', style: 'justify-content:space-between; align-items:center; margin-bottom:10px;' }, [
-        h('div', { text: 'Properties', style: 'font-weight:750;' }),
-        addBtn,
-      ]));
-
-      const list = h('div', { class: 'rb-list' });
-
-      const unitPick = (p) => h('select', {
-        class: 'rb-select',
-        onChange: (e) => { p.unit = e.target.value; this._touchChange(); },
-      }, [
-        h('option', { value: 'px', text: 'px', ...(p.unit === 'px' ? { selected: 'selected' } : {}) }),
-        h('option', { value: '%', text: '%', ...(p.unit === '%' ? { selected: 'selected' } : {}) }),
-        h('option', { value: 'deg', text: 'deg', ...(p.unit === 'deg' ? { selected: 'selected' } : {}) }),
-        h('option', { value: '', text: '(none)', ...(!p.unit ? { selected: 'selected' } : {}) }),
-      ]);
-
-      const num = (p, labelText, key) => h('div', { class: 'rb-col', style: 'flex:1;' }, [
-        h('div', { class: 'rb-label', text: labelText }),
-        h('input', {
-          class: 'rb-input', type: 'number',
-          value: String(p[key] ?? 0),
-          onInput: (e) => { p[key] = Number(e.target.value) || 0; this._touchChange(); },
-        }),
-      ]);
-
-      props.forEach((p, idx) => {
-        const typeSel = h('select', {
-          class: 'rb-select',
-          onChange: (e) => {
-            const t = e.target.value;
-            if (t === 'opacity') props[idx] = { type: 'opacity', from: 1, to: 0 };
-            if (t === 'translateY') props[idx] = { type: 'translateY', from: 0, to: 100, unit: 'px' };
-            if (t === 'translateX') props[idx] = { type: 'translateX', from: 0, to: 100, unit: 'px' };
-            if (t === 'rotate') props[idx] = { type: 'rotate', from: 0, to: 30, unit: 'deg' };
-            if (t === 'scale') props[idx] = { type: 'scale', from: 1, to: 1.1 };
-            if (t === 'parallaxY') props[idx] = { type: 'parallaxY', base: 0, distance: 100, unit: 'px' };
-            this._touchChange();
-            this.render();
-          },
-        }, [
-          h('option', { value: 'opacity', text: 'opacity', ...(p.type === 'opacity' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'translateY', text: 'translateY', ...(p.type === 'translateY' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'translateX', text: 'translateX', ...(p.type === 'translateX' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'rotate', text: 'rotate', ...(p.type === 'rotate' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'scale', text: 'scale', ...(p.type === 'scale' ? { selected: 'selected' } : {}) }),
-          h('option', { value: 'parallaxY', text: 'parallaxY (base+distance)', ...(p.type === 'parallaxY' ? { selected: 'selected' } : {}) }),
-        ]);
-
-        const rm = h('button', {
-          class: 'rb-btn danger',
-          text: 'Remove',
-          onClick: () => {
-            props.splice(idx, 1);
-            this._touchChange();
-            this.render();
-          },
-        });
-
-        const card = h('div', { class: 'rb-card' }, [
-          h('div', { class: 'rb-row' }, [typeSel, rm]),
-        ]);
-
-        const controls = h('div', { class: 'rb-col', style: 'margin-top:10px;' });
-
-        if (p.type === 'opacity' || p.type === 'scale') {
-          controls.appendChild(h('div', { class: 'rb-row' }, [num(p, 'from', 'from'), num(p, 'to', 'to')]));
-        } else if (p.type === 'translateX' || p.type === 'translateY' || p.type === 'rotate') {
-          controls.appendChild(h('div', { class: 'rb-row' }, [
-            num(p, 'from', 'from'),
-            num(p, 'to', 'to'),
-            h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'unit' }), unitPick(p)]),
-          ]));
-        } else if (p.type === 'parallaxY') {
-          controls.appendChild(h('div', { class: 'rb-row' }, [
-            num(p, 'base', 'base'),
-            num(p, 'distance', 'distance'),
-            h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'unit' }), unitPick(p)]),
-          ]));
-          controls.appendChild(h('div', { class: 'rb-muted', text: 'Sets --base-offset and --parallax-distance on each matched target element.' }));
-        }
-
-        card.appendChild(controls);
-        list.appendChild(card);
-      });
-
-      box.appendChild(list);
-      return box;
     }
   }
 

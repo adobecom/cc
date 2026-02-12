@@ -1,18 +1,17 @@
-/* rebound.runtime.js - Rebound Runtime (v0.5.0)
-   - Auto-mounts from localStorage so animations work without editor
-   - Stable data-rb-scope per element (multiple animations can share same scope)
-   - Correct scoping for selector lists (comma-separated) + multiple :scope occurrences
-   - Progress vars not written on initial page load (CSS falls back to 0); updates after first scroll,
-     and also initializes if page is restored scrolled.
+/* rebound.runtime.js - Rebound Runtime (v0.4.2)
+   Fixes:
+   - Multiple animations sharing the same scope no longer break (stable scopeId per element)
+   - Optional late DOM binding: watches for missing scope selectors and remounts when they appear
+   - Progress vars are NOT written on initial load; CSS falls back to 0 until first scroll
 */
 (() => {
   'use strict';
 
   const RB = (window.Rebound = window.Rebound || {});
-  const VERSION = '0.5.0';
+  const VERSION = '0.4.2';
   const DEFAULT_STORAGE_KEY = 'rebound:config:v1';
 
-  // ---------- Utils ----------
+  // ---------------- Utils ----------------
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
   const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -49,91 +48,27 @@
     return !!cfg && typeof cfg === 'object' && Array.isArray(cfg.animations);
   }
 
-  // Split selector list on top-level commas (handles :is(), :not(), [] etc.)
-  function splitSelectorList(selector) {
-    const s = String(selector || '');
-    const parts = [];
-    let buf = '';
-    let paren = 0;
-    let bracket = 0;
-    let quote = null;
-    let esc = false;
+  // Convert ":scope > ..." to "[data-rb-scope="X"] > ..."
+  function scopeSelectorToCss(scopeAttrSel, targetSelector, withinScope) {
+    const sel = (targetSelector || '').trim();
+    if (!sel) return null;
 
-    for (let i = 0; i < s.length; i++) {
-      const ch = s[i];
+    if (sel === ':scope') return scopeAttrSel;
 
-      if (esc) {
-        buf += ch;
-        esc = false;
-        continue;
-      }
-      if (ch === '\\') {
-        buf += ch;
-        esc = true;
-        continue;
-      }
-
-      if (quote) {
-        buf += ch;
-        if (ch === quote) quote = null;
-        continue;
-      }
-      if (ch === '"' || ch === "'") {
-        buf += ch;
-        quote = ch;
-        continue;
-      }
-
-      if (ch === '(') { paren++; buf += ch; continue; }
-      if (ch === ')') { paren = Math.max(0, paren - 1); buf += ch; continue; }
-      if (ch === '[') { bracket++; buf += ch; continue; }
-      if (ch === ']') { bracket = Math.max(0, bracket - 1); buf += ch; continue; }
-
-      if (ch === ',' && paren === 0 && bracket === 0) {
-        const p = buf.trim();
-        if (p) parts.push(p);
-        buf = '';
-        continue;
-      }
-
-      buf += ch;
+    if (sel.startsWith(':scope')) {
+      return sel.replace(/^:scope\b/, scopeAttrSel);
     }
 
-    const tail = buf.trim();
-    if (tail) parts.push(tail);
-    return parts;
+    if (withinScope !== false) return `${scopeAttrSel} ${sel}`;
+    return sel;
   }
 
-  // Convert target selector into CSS selector anchored to a specific scope id.
-  // IMPORTANT: handles selector lists like ":scope > a, :scope > b"
-  function scopeSelectorToCss(scopeAttrSel, targetSelector, withinScope) {
-    const raw = (targetSelector || '').trim();
-    if (!raw) return null;
-
-    const list = splitSelectorList(raw);
-    const scoped = list.map((part) => {
-      let p = part.trim();
-      if (!p) return null;
-
-      // Replace ALL occurrences of :scope
-      if (p.includes(':scope')) {
-        p = p.replace(/:scope\b/g, scopeAttrSel);
-        return p;
-      }
-
-      if (withinScope !== false) return `${scopeAttrSel} ${p}`;
-      return p;
-    }).filter(Boolean);
-
-    return scoped.length ? scoped.join(', ') : null;
-  }
-
-  // ---------- Progress (AUTO) ----------
+  // ---------------- Progress (AUTO) ----------------
   function computeAndSetProgress(scopeEl, navHeight) {
     if (!scopeEl || !scopeEl.isConnected) return;
 
     const elHeight = scopeEl.offsetHeight;
-    if (!elHeight || elHeight < 2) return;
+    if (!elHeight || elHeight < 2) return; // prevents bogus values during layout shifts
 
     const rect = scopeEl.getBoundingClientRect();
     const screenHeight = window.innerHeight || 1;
@@ -146,7 +81,7 @@
     scopeEl.style.setProperty('--exit-progress', fmt(exitProgress * 100));
   }
 
-  // ---------- CSS generation for scroll tracks ----------
+  // ---------------- CSS generation for scroll tracks ----------------
   function ratioExpr(progressVar, start, end) {
     const s = toNum(start, 0);
     const e = toNum(end, 100);
@@ -230,7 +165,6 @@
       if (opacityDecl) wc.push('opacity');
       decls.push(`will-change: ${wc.join(', ')};`);
     }
-
     if (tf.length) decls.push(`transform: ${tf.join(' ')};`);
     if (opacityDecl) decls.push(opacityDecl);
     if (otherDecls.length) decls.push(...otherDecls);
@@ -239,7 +173,7 @@
     return `${selector} {\n  ${decls.join('\n  ')}\n}\n`;
   }
 
-  // ---------- JS animation for non-scroll triggers ----------
+  // ---------------- JS animations for non-scroll triggers ----------------
   function applyEventProperties(el, properties, t) {
     const tf = { translateX: null, translateY: null, rotate: null, scale: null };
     let hasTf = false;
@@ -304,12 +238,11 @@
       onUpdate(lerp(from, to, ease(p)));
       if (p < 1) requestAnimationFrame(frame);
     }
-
     requestAnimationFrame(frame);
     return () => { cancelled = true; };
   }
 
-  // ---------- Target resolving ----------
+  // ---------------- Target resolving ----------------
   function resolveTargets(scopeEl, track) {
     const sel = (track.targetSelector || '').trim();
     if (!sel) return [];
@@ -324,89 +257,12 @@
     }
   }
 
-  // ---------- DOM watch (late render / SPA) ----------
-  let DOM_WATCHER = null;
-  let DOM_WATCH_TIMER = 0;
-  let DOM_WATCH_STOP_TIMER = 0;
-  let LAST_MISSING = null;
-
-  function stopDomWatch() {
-    if (DOM_WATCHER) {
-      try { DOM_WATCHER.disconnect(); } catch {}
-      DOM_WATCHER = null;
-    }
-    if (DOM_WATCH_TIMER) clearTimeout(DOM_WATCH_TIMER);
-    if (DOM_WATCH_STOP_TIMER) clearTimeout(DOM_WATCH_STOP_TIMER);
-    DOM_WATCH_TIMER = 0;
-    DOM_WATCH_STOP_TIMER = 0;
-    LAST_MISSING = null;
-  }
-
-  function uniqueScopeSelectors(cfg) {
-    const out = [];
-    const seen = new Set();
-    for (const a of cfg.animations || []) {
-      const s = (a?.scopeSelector || '').trim();
-      if (!s || seen.has(s)) continue;
-      seen.add(s);
-      out.push(s);
-    }
-    return out;
-  }
-
-  function selectorExists(sel) {
-    try { return !!document.querySelector(sel); } catch { return false; }
-  }
-
-  function missingScopeCount(cfg) {
-    const sels = uniqueScopeSelectors(cfg);
-    if (!sels.length) return 0;
-    let missing = 0;
-    for (const s of sels) if (!selectorExists(s)) missing++;
-    return missing;
-  }
-
-  function startDomWatch(storageKey, timeoutMs = 15000) {
-    stopDomWatch();
-
-    const cfg = loadFromStorage(storageKey);
-    if (!cfg) return;
-
-    const initialMissing = missingScopeCount(cfg);
-    if (initialMissing === 0) return;
-
-    LAST_MISSING = initialMissing;
-
-    DOM_WATCHER = new MutationObserver(() => {
-      if (DOM_WATCH_TIMER) return;
-      DOM_WATCH_TIMER = setTimeout(() => {
-        DOM_WATCH_TIMER = 0;
-
-        const latest = loadFromStorage(storageKey);
-        if (!latest) { stopDomWatch(); return; }
-
-        const missing = missingScopeCount(latest);
-        if (LAST_MISSING == null || missing < LAST_MISSING) {
-          LAST_MISSING = missing;
-          mountFromStorage(storageKey);
-        }
-
-        if (missing === 0) stopDomWatch();
-      }, 250);
-    });
-
-    DOM_WATCHER.observe(document.documentElement, { childList: true, subtree: true });
-    DOM_WATCH_STOP_TIMER = setTimeout(() => stopDomWatch(), Math.max(1000, timeoutMs));
-  }
-
-  // ---------- Mount / Singleton ----------
+  // ---------------- Mount / Singleton ----------------
   let MOUNT_SEQ = 0;
   let ACTIVE = null;
 
   function mount(config) {
-    if (!isValidConfig(config)) {
-      throw new Error('[Rebound] Runtime.mount(config) invalid config.');
-    }
+    if (!isValidConfig(config)) throw new Error('[Rebound] Runtime.mount(config) invalid config.');
 
     const mountId = ++MOUNT_SEQ;
     const navHeight = toNum(config?.settings?.navHeight, 64);
@@ -418,9 +274,10 @@
 
     const destroyFns = [];
     const observers = [];
-    const scopeItems = [];
+    const scopeItems = []; // unique scopes only
 
-    const scopeInfo = new WeakMap();
+    // ✅ FIX: stable scopeId per element within this mount
+    const scopeInfo = new WeakMap(); // scopeEl -> { scopeId }
     let scopeCounter = 0;
 
     let cssOut = '';
@@ -437,6 +294,7 @@
       const tracks = Array.isArray(anim.tracks) ? anim.tracks : [];
 
       for (const scopeEl of scopeEls) {
+        // reuse existing scopeId if already assigned (prevents overwrite)
         let info = scopeInfo.get(scopeEl);
         if (!info) {
           const scopeId = `rb-${mountId}-${++scopeCounter}`;
@@ -454,10 +312,12 @@
           const trig = track.trigger || {};
           const type = trig.type || 'scroll';
 
+          // ----- Scroll (CSS) -----
           if (type === 'scroll') {
             const engine = track.engine || 'css';
             if (engine !== 'css') continue;
 
+            // Apply config vars to targets (no HTML dependency)
             const targets = resolveTargets(scopeEl, track);
             for (const el of targets) {
               for (const p of track.properties || []) {
@@ -467,6 +327,12 @@
                   const unit = p.unit || 'px';
                   el.style.setProperty('--base-offset', fmtVal(p.base ?? 0, unit));
                   el.style.setProperty('--parallax-distance', fmtVal(p.distance ?? 0, unit));
+                }
+
+                if (p.type === 'staticVar') {
+                  const name = String(p.name || '--rb-var');
+                  const value = String(p.value ?? '');
+                  el.style.setProperty(name, value);
                 }
               }
             }
@@ -486,6 +352,7 @@
             continue;
           }
 
+          // ----- Events (JS) -----
           const targets = resolveTargets(scopeEl, track);
           if (!targets.length) continue;
 
@@ -565,6 +432,8 @@
 
     styleEl.textContent = cssOut;
 
+    // ---- Progress update listeners ----
+    // IMPORTANT: do not set vars on initial load; only after first scroll.
     let hasStarted = false;
     let ticking = false;
     let rafId = 0;
@@ -594,19 +463,20 @@
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
+    destroyFns.push(() => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      if (rafId) cancelAnimationFrame(rafId);
+    });
 
+    // If page loads already scrolled (restored scroll), start once after paint.
+    // Still respects “no vars during load” for top-of-page loads.
     requestAnimationFrame(() => {
       const y = window.scrollY || document.documentElement.scrollTop || 0;
       if (y > 0) {
         hasStarted = true;
         updateAllProgress();
       }
-    });
-
-    destroyFns.push(() => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
-      if (rafId) cancelAnimationFrame(rafId);
     });
 
     return {
@@ -623,7 +493,6 @@
   }
 
   function mountSingleton(config) {
-    stopDomWatch();
     if (ACTIVE) {
       try { ACTIVE.destroy(); } catch {}
       ACTIVE = null;
@@ -632,6 +501,7 @@
     return ACTIVE;
   }
 
+  // ---------------- Storage ----------------
   function loadFromStorage(key = DEFAULT_STORAGE_KEY) {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
@@ -645,13 +515,97 @@
 
   function mountFromStorage(key = DEFAULT_STORAGE_KEY) {
     const cfg = loadFromStorage(key);
-    if (!cfg || !cfg.animations?.length) return null;
+    if (!cfg || !cfg.animations.length) return null;
     return mountSingleton(cfg);
   }
 
-  function autoMountFromStorage({ key = DEFAULT_STORAGE_KEY, watchDom = true, watchTimeoutMs = 15000 } = {}) {
+  // ---------------- Late DOM watch (fixes missing scopes on async/SPAs) ----------------
+  let DOM_WATCHER = null;
+  let DOM_WATCH_TIMER = 0;
+  let DOM_WATCH_STOP_TIMER = 0;
+  let LAST_MISSING_COUNT = null;
+
+  function uniqueScopeSelectors(cfg) {
+    const out = [];
+    const seen = new Set();
+    for (const a of cfg.animations || []) {
+      const s = (a?.scopeSelector || '').trim();
+      if (!s) continue;
+      if (seen.has(s)) continue;
+      seen.add(s);
+      out.push(s);
+    }
+    return out;
+  }
+
+  function selectorExists(sel) {
+    try { return !!document.querySelector(sel); }
+    catch { return false; }
+  }
+
+  function getMissingScopeCount(cfg) {
+    const sels = uniqueScopeSelectors(cfg);
+    if (!sels.length) return 0;
+    let missing = 0;
+    for (const s of sels) if (!selectorExists(s)) missing++;
+    return missing;
+  }
+
+  function stopDomWatch() {
+    if (DOM_WATCHER) {
+      try { DOM_WATCHER.disconnect(); } catch {}
+      DOM_WATCHER = null;
+    }
+    if (DOM_WATCH_TIMER) clearTimeout(DOM_WATCH_TIMER);
+    if (DOM_WATCH_STOP_TIMER) clearTimeout(DOM_WATCH_STOP_TIMER);
+    DOM_WATCH_TIMER = 0;
+    DOM_WATCH_STOP_TIMER = 0;
+    LAST_MISSING_COUNT = null;
+  }
+
+  function startDomWatch(key, timeoutMs = 15000) {
+    stopDomWatch();
+
+    const cfg = loadFromStorage(key);
+    if (!cfg) return;
+
+    const initialMissing = getMissingScopeCount(cfg);
+    if (initialMissing === 0) return; // everything present
+
+    LAST_MISSING_COUNT = initialMissing;
+
+    DOM_WATCHER = new MutationObserver(() => {
+      if (DOM_WATCH_TIMER) return;
+      DOM_WATCH_TIMER = setTimeout(() => {
+        DOM_WATCH_TIMER = 0;
+
+        const latest = loadFromStorage(key);
+        if (!latest) { stopDomWatch(); return; }
+
+        const missing = getMissingScopeCount(latest);
+
+        // remount only when missing decreases (new scopes appeared) or resolved
+        if (LAST_MISSING_COUNT == null || missing < LAST_MISSING_COUNT) {
+          LAST_MISSING_COUNT = missing;
+          mountFromStorage(key);
+        }
+
+        if (missing === 0) stopDomWatch();
+      }, 250);
+    });
+
+    DOM_WATCHER.observe(document.documentElement, { childList: true, subtree: true });
+
+    DOM_WATCH_STOP_TIMER = setTimeout(() => stopDomWatch(), Math.max(1000, timeoutMs));
+  }
+
+  function autoMountFromStorage(options = {}) {
+    const key = options.key || DEFAULT_STORAGE_KEY;
+    const watchDom = options.watchDom !== false; // default true
+    const watchTimeoutMs = toNum(options.watchTimeoutMs, 15000);
+
     const ctrl = mountFromStorage(key);
-    if (watchDom) startDomWatch(key, toNum(watchTimeoutMs, 15000));
+    if (watchDom) startDomWatch(key, watchTimeoutMs);
     return ctrl;
   }
 
@@ -667,6 +621,7 @@
     stopDomWatch,
   };
 
+  // Auto-mount on page load unless disabled
   if (window.__REBOUND_DISABLE_AUTOMOUNT__ !== true) {
     const run = () => autoMountFromStorage({ watchDom: true, watchTimeoutMs: 15000 });
     if (document.readyState === 'loading') {
