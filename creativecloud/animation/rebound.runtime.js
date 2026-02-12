@@ -418,10 +418,9 @@
 
     const destroyFns = [];
     const observers = [];
-    const scopeItems = []; // unique scopes only
+    const scopeItems = [];
 
-    // stable id per element
-    const scopeInfo = new WeakMap(); // scopeEl -> { scopeId }
+    const scopeInfo = new WeakMap();
     let scopeCounter = 0;
 
     let cssOut = '';
@@ -459,7 +458,6 @@
             const engine = track.engine || 'css';
             if (engine !== 'css') continue;
 
-            // Apply config vars to targets (no HTML dependency)
             const targets = resolveTargets(scopeEl, track);
             for (const el of targets) {
               for (const p of track.properties || []) {
@@ -488,7 +486,6 @@
             continue;
           }
 
-          // ---- Event triggers ----
           const targets = resolveTargets(scopeEl, track);
           if (!targets.length) continue;
 
@@ -568,8 +565,6 @@
 
     styleEl.textContent = cssOut;
 
-    // ---- Progress listeners ----
-    // Do NOT set vars during initial load at top; start after first scroll.
     let hasStarted = false;
     let ticking = false;
     let rafId = 0;
@@ -600,7 +595,6 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
 
-    // If page restored scrolled, initialize after paint (still avoids writing at top load)
     requestAnimationFrame(() => {
       const y = window.scrollY || document.documentElement.scrollTop || 0;
       if (y > 0) {
@@ -638,7 +632,6 @@
     return ACTIVE;
   }
 
-  // ---------- Storage helpers ----------
   function loadFromStorage(key = DEFAULT_STORAGE_KEY) {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
@@ -674,7 +667,6 @@
     stopDomWatch,
   };
 
-  // Auto-mount on load unless explicitly disabled
   if (window.__REBOUND_DISABLE_AUTOMOUNT__ !== true) {
     const run = () => autoMountFromStorage({ watchDom: true, watchTimeoutMs: 15000 });
     if (document.readyState === 'loading') {
