@@ -1,11 +1,11 @@
-/* rebound.editor.js - Rebound Editor (v0.5.1)
-   Fixes:
-   - Multi-pick no longer gets "stuck" on scope: it prefers deepest element via composedPath + elementsFromPoint
-   - Track picking excludes scope element by default (so you can pick within it)
-   - Adds a scope frame overlay (shows allowed area)
-   - Much thicker hover outline + stronger selected outline/glow
+/* rebound.editor.js - Rebound Editor (v0.6.0)
+   DOM Explorer Picker:
+   - Click to LOCK element, then use Parent + breadcrumbs (DevTools-style)
+   - Solves deep nesting / zero padding / hard-to-hit parents
+   - Thicker hover outline + glow, thicker selected outline
+   - Multi-select flow: lock → adjust → Add → Continue → repeat → Done
    Keeps:
-   - drag + minimize dock
+   - drag popup + minimize dock
    - hide popup while picking
    - delete animation, upload/download JSON
    - autosave to localStorage + reload
@@ -61,11 +61,13 @@
     URL.revokeObjectURL(url);
   }
 
-  function elLabel(el) {
-    if (!el || el.nodeType !== 1) return '';
+  function shortElLabel(el) {
+    if (!el || el.nodeType !== 1) return '(none)';
     const tag = el.tagName.toLowerCase();
     const id = el.id ? `#${el.id}` : '';
-    const cls = el.classList && el.classList.length ? '.' + Array.from(el.classList).slice(0, 3).join('.') : '';
+    const cls = el.classList && el.classList.length
+      ? '.' + Array.from(el.classList).slice(0, 2).join('.')
+      : '';
     return `${tag}${id}${cls}`;
   }
 
@@ -140,16 +142,26 @@
     return '';
   }
 
-  // ---------------- Picker (single + multi) ----------------
+  // ---------------- DOM Explorer Picker ----------------
   const Picker = (() => {
-    let overlay, label, help, scopeFrame;
+    let overlay, label, scopeFrame, toolbar, crumbs, status, btnParent, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel;
     let active = false;
-    let marked = new Set();
-    let scopeFrameEl = null;
-    let scopeFrameUpdateFn = null;
 
-    const INTERNAL_UI_SELECTOR =
-      '.rb-panel, .rb-dock, .rb-pick-overlay, .rb-pick-label, .rb-pick-help, .rb-scope-frame';
+    // state
+    let mode = 'single';              // 'single' | 'multi'
+    let locked = false;
+    let current = null;
+    let stack = [];
+    let stackIndex = 0;
+    let selected = new Set();         // multi selection (elements)
+    let predicate = null;
+    let ignoreSelector = '';
+    let scopeElement = null;
+    let boundaryElement = null;       // breadcrumb boundary (usually scopeElement)
+    let allowPickScope = true;
+
+    const INTERNAL_UI_SEL =
+      '.rb-panel, .rb-dock, .rb-pick-overlay, .rb-pick-label, .rb-scope-frame, .rb-pick-toolbar';
 
     function ensureCss() {
       if (document.getElementById('rb-picker-css')) return;
@@ -160,19 +172,21 @@
           position: fixed;
           z-index: 2147483645;
           pointer-events: none;
-          border: 4px dashed rgba(124,92,255,0.85);
+          border: 4px dashed rgba(124,92,255,0.88);
           background: rgba(124,92,255,0.06);
           border-radius: 14px;
-          box-shadow: 0 0 0 2px rgba(124,92,255,0.20), 0 18px 55px rgba(0,0,0,0.35);
+          box-shadow: 0 0 0 2px rgba(124,92,255,0.18), 0 18px 55px rgba(0,0,0,0.30);
         }
         .rb-pick-overlay{
           position: fixed;
           z-index: 2147483646;
           pointer-events: none;
-          border: 4px solid #5b7cff;
+          border: 6px solid #5b7cff;
           background: rgba(91,124,255,0.10);
-          border-radius: 12px;
-          box-shadow: 0 0 0 2px rgba(91,124,255,0.22), 0 14px 35px rgba(91,124,255,0.18);
+          border-radius: 14px;
+          box-shadow:
+            0 0 0 3px rgba(91,124,255,0.25),
+            0 18px 55px rgba(91,124,255,0.18);
         }
         .rb-pick-label{
           position: fixed;
@@ -184,91 +198,217 @@
           border: 1px solid #2a2f45;
           color: #fff;
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 800;
           max-width: 78vw;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           box-shadow: 0 12px 35px rgba(0,0,0,0.45);
         }
-        .rb-pick-help{
+        [data-rb-picked="1"]{
+          outline: 6px solid #22c1c3 !important;
+          outline-offset: 4px !important;
+          box-shadow: 0 0 0 10px rgba(34,193,195,0.20) !important;
+        }
+
+        .rb-pick-toolbar{
           position: fixed;
-          z-index: 2147483646;
           left: 50%;
-          bottom: 18px;
+          bottom: 16px;
           transform: translateX(-50%);
-          pointer-events: none;
-          padding: 9px 12px;
-          border-radius: 12px;
+          z-index: 2147483647;
+          width: min(980px, calc(100vw - 24px));
+          border-radius: 16px;
           background: #0f111a;
           border: 1px solid #2a2f45;
-          color: rgba(245,247,255,0.90);
-          font-size: 12px;
-          font-weight: 600;
-          box-shadow: 0 18px 55px rgba(0,0,0,0.55);
+          box-shadow: 0 18px 55px rgba(0,0,0,0.65);
+          color: #f5f7ff;
+          font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+          pointer-events: auto;
+          overflow: hidden;
         }
-        [data-rb-picked="1"]{
-          outline: 5px solid #22c1c3 !important;
-          outline-offset: 3px !important;
-          box-shadow: 0 0 0 8px rgba(34,193,195,0.20) !important;
+        .rb-pick-toolbar-top{
+          display:flex;
+          gap: 10px;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 12px;
+          background: #11152a;
+          border-bottom: 1px solid #2a2f45;
+        }
+        .rb-pick-status{
+          font-size: 12px;
+          color: rgba(245,247,255,0.82);
+          font-weight: 650;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          max-width: 60%;
+        }
+        .rb-pick-actions{
+          display:flex;
+          gap: 8px;
+          align-items: center;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+        .rb-pick-btn{
+          border: 1px solid #2a2f45;
+          background: #0c0f1b;
+          color: #f5f7ff;
+          padding: 8px 10px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 750;
+          white-space: nowrap;
+        }
+        .rb-pick-btn:hover{ filter: brightness(1.08); }
+        .rb-pick-btn.primary{
+          border-color: rgba(124,92,255,0.65);
+          background: linear-gradient(180deg, rgba(124,92,255,0.30), rgba(124,92,255,0.14));
+        }
+        .rb-pick-btn.danger{
+          border-color: rgba(255,90,122,0.65);
+          background: linear-gradient(180deg, rgba(255,90,122,0.25), rgba(255,90,122,0.10));
+        }
+
+        .rb-pick-crumbs{
+          display:flex;
+          gap: 6px;
+          align-items:center;
+          padding: 10px 12px;
+          overflow-x: auto;
+          background: #0f111a;
+        }
+        .rb-crumb{
+          border: 1px solid #2a2f45;
+          background: #0c0f1b;
+          color: rgba(245,247,255,0.92);
+          padding: 6px 10px;
+          border-radius: 999px;
+          font-size: 12px;
+          font-weight: 750;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+        .rb-crumb:hover{ filter: brightness(1.08); }
+        .rb-crumb.active{
+          border-color: rgba(91,124,255,0.85);
+          box-shadow: 0 0 0 5px rgba(91,124,255,0.18);
+        }
+        .rb-crumb-sep{
+          color: rgba(245,247,255,0.35);
+          font-weight: 800;
+          user-select: none;
         }
       `;
       document.head.appendChild(s);
     }
 
-    function ensure() {
+    function ensureDom() {
       ensureCss();
       if (!overlay) {
         overlay = h('div', { class: 'rb-pick-overlay' });
         label = h('div', { class: 'rb-pick-label' });
-        help = h('div', { class: 'rb-pick-help' });
+        scopeFrame = h('div', { class: 'rb-scope-frame' });
+
+        toolbar = h('div', { class: 'rb-pick-toolbar' });
+        const top = h('div', { class: 'rb-pick-toolbar-top' });
+        status = h('div', { class: 'rb-pick-status', text: '' });
+        const actions = h('div', { class: 'rb-pick-actions' });
+
+        btnParent = h('button', { class: 'rb-pick-btn', text: 'Parent (↑)' });
+        btnPrev = h('button', { class: 'rb-pick-btn', text: 'Prev (◀)' });
+        btnNext = h('button', { class: 'rb-pick-btn', text: 'Next (▶)' });
+        btnToggle = h('button', { class: 'rb-pick-btn primary', text: 'Select (Enter)' });
+        btnContinue = h('button', { class: 'rb-pick-btn', text: 'Continue' });
+        btnDone = h('button', { class: 'rb-pick-btn primary', text: 'Done (Enter)' });
+        btnCancel = h('button', { class: 'rb-pick-btn danger', text: 'Cancel (Esc)' });
+
+        actions.append(btnParent, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel);
+        top.append(status, actions);
+
+        crumbs = h('div', { class: 'rb-pick-crumbs' });
+
+        toolbar.append(top, crumbs);
+
+        document.body.appendChild(scopeFrame);
         document.body.appendChild(overlay);
         document.body.appendChild(label);
-        document.body.appendChild(help);
+        document.body.appendChild(toolbar);
 
+        scopeFrame.style.display = 'none';
         overlay.style.display = 'none';
         label.style.display = 'none';
-        help.style.display = 'none';
+        toolbar.style.display = 'none';
       }
     }
 
+    function isInternalUi(el) {
+      if (!el || el.nodeType !== 1) return true;
+      if (el.closest(INTERNAL_UI_SEL)) return true;
+      if (ignoreSelector && el.closest(ignoreSelector)) return true;
+      return false;
+    }
+
+    function setScopeFrame() {
+      if (!scopeElement || !scopeElement.isConnected) {
+        scopeFrame.style.display = 'none';
+        return;
+      }
+      const r = scopeElement.getBoundingClientRect();
+      scopeFrame.style.display = 'block';
+      scopeFrame.style.left = `${r.left}px`;
+      scopeFrame.style.top = `${r.top}px`;
+      scopeFrame.style.width = `${Math.max(0, r.width)}px`;
+      scopeFrame.style.height = `${Math.max(0, r.height)}px`;
+    }
+
     function setBox(el) {
+      if (!el || !el.getBoundingClientRect) return;
       const r = el.getBoundingClientRect();
+
       overlay.style.left = `${r.left}px`;
       overlay.style.top = `${r.top}px`;
       overlay.style.width = `${Math.max(0, r.width)}px`;
       overlay.style.height = `${Math.max(0, r.height)}px`;
 
-      label.textContent = elLabel(el);
+      label.textContent = shortElLabel(el);
       label.style.left = `${Math.max(8, Math.min(window.innerWidth - 8, r.left))}px`;
-      label.style.top = `${Math.max(8, r.top - 38)}px`;
+      label.style.top = `${Math.max(8, r.top - 42)}px`;
     }
 
     function clearMarks() {
-      for (const el of marked) {
+      for (const el of selected) {
         try { el.removeAttribute('data-rb-picked'); } catch {}
       }
-      marked = new Set();
+      selected = new Set();
     }
 
     function toggleMark(el) {
-      if (marked.has(el)) {
-        marked.delete(el);
+      if (!el) return;
+      if (selected.has(el)) {
+        selected.delete(el);
         try { el.removeAttribute('data-rb-picked'); } catch {}
       } else {
-        marked.add(el);
+        selected.add(el);
         try { el.setAttribute('data-rb-picked', '1'); } catch {}
       }
     }
 
-    function isInternalUi(el, extraIgnoreSelector) {
-      if (!el || el.nodeType !== 1) return true;
-      if (el.closest(INTERNAL_UI_SELECTOR)) return true;
-      if (extraIgnoreSelector && el.closest(extraIgnoreSelector)) return true;
-      return false;
+    function elementAllowed(el) {
+      if (!el || el.nodeType !== 1) return false;
+      if (isInternalUi(el)) return false;
+      if (predicate && !predicate(el)) return false;
+      if (scopeElement && !scopeElement.contains(el)) return false;
+
+      if (!allowPickScope && scopeElement && el === scopeElement) return false;
+
+      return true;
     }
 
-    function collectCandidates(e) {
+    function buildCandidateStack(e) {
       const out = [];
       const seen = new Set();
 
@@ -276,194 +416,360 @@
         if (!x || x.nodeType !== 1) return;
         if (seen.has(x)) return;
         seen.add(x);
-        out.push(x);
+        if (elementAllowed(x)) out.push(x);
       }
 
-      // Prefer the real event target (deepest) via composedPath.
+      // Deepest first via composedPath
       if (e && typeof e.composedPath === 'function') {
         for (const n of e.composedPath()) add(n);
       } else if (e && e.target && e.target.nodeType === 1) {
         add(e.target);
       }
 
-      // Add hit test stack as a fallback / reinforcement.
       const x = e?.clientX ?? 0;
       const y = e?.clientY ?? 0;
+
+      // add hit stack
       if (document.elementsFromPoint) {
-        for (const el of document.elementsFromPoint(x, y)) add(el);
+        for (const n of document.elementsFromPoint(x, y)) add(n);
       } else {
         add(document.elementFromPoint(x, y));
+      }
+
+      // If scope constrained, allow walking up from first hit until boundary
+      if (scopeElement && out.length) {
+        let p = out[0].parentElement;
+        while (p && p.nodeType === 1 && scopeElement.contains(p)) {
+          add(p);
+          p = p.parentElement;
+        }
+        // optionally include scope itself (for :scope selection)
+        add(scopeElement);
       }
 
       return out;
     }
 
-    function findDeepestDescendantByRect(scopeEl, x, y) {
-      // Fallback only (rare): choose smallest descendant whose rect contains point.
-      // This is heavier, so we do it only when hit testing fails.
-      try {
-        const nodes = scopeEl.querySelectorAll('*');
-        let best = null;
-        let bestArea = Infinity;
+    function buildBreadcrumb(el) {
+      const bc = [];
+      let cur = el;
 
-        for (const n of nodes) {
-          const r = n.getBoundingClientRect();
-          if (r.width <= 0 || r.height <= 0) continue;
-          if (x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
+      const stopAt = boundaryElement || null;
+      const stopNode = stopAt && stopAt.nodeType === 1 ? stopAt : null;
 
-          const area = r.width * r.height;
-          if (area < bestArea) {
-            best = n;
-            bestArea = area;
-          }
+      while (cur && cur.nodeType === 1) {
+        bc.push(cur);
+        if (stopNode && cur === stopNode) break;
+        if (!stopNode && cur === document.body) break;
+        cur = cur.parentElement;
+      }
+
+      return bc.reverse();
+    }
+
+    function renderBreadcrumb() {
+      crumbs.innerHTML = '';
+      const bc = current ? buildBreadcrumb(current) : [];
+
+      for (let i = 0; i < bc.length; i++) {
+        const el = bc[i];
+        const b = h('button', {
+          class: 'rb-crumb' + (el === current ? ' active' : ''),
+          text: shortElLabel(el),
+          onClick: (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            // clicking breadcrumb implies lock
+            locked = true;
+            if (elementAllowed(el)) setCurrent(el);
+            updateToolbar();
+          },
+        });
+        crumbs.appendChild(b);
+        if (i < bc.length - 1) crumbs.appendChild(h('div', { class: 'rb-crumb-sep', text: '›' }));
+      }
+    }
+
+    function updateToolbar() {
+      const count = selected.size;
+      const curLabel = current ? shortElLabel(current) : '(none)';
+
+      if (mode === 'single') {
+        btnToggle.style.display = 'inline-block';
+        btnToggle.textContent = locked ? 'Select (Enter)' : 'Lock then Select';
+        btnContinue.style.display = 'none';
+        btnDone.style.display = 'none';
+      } else {
+        btnToggle.style.display = 'inline-block';
+        btnToggle.textContent = selected.has(current) ? `Remove (${count})` : `Add (${count})`;
+        btnContinue.style.display = 'inline-block';
+        btnDone.style.display = 'inline-block';
+      }
+
+      const lockHint = locked ? 'LOCKED' : 'HOVER';
+      const stackHint = stack.length ? `stack ${stackIndex + 1}/${stack.length}` : 'stack 0/0';
+
+      status.textContent =
+        mode === 'single'
+          ? `[${lockHint}] ${curLabel} • ${stackHint} • Click to lock • Parent/crumbs • Enter to select • Esc cancel`
+          : `[${lockHint}] ${curLabel} • Selected ${count} • ${stackHint} • Click to lock • Parent/crumbs • Add • Continue • Enter done • Esc cancel`;
+
+      renderBreadcrumb();
+    }
+
+    function setCurrent(el) {
+      if (!el || !elementAllowed(el)) return;
+      current = el;
+      setBox(el);
+      updateToolbar();
+    }
+
+    function chooseParent() {
+      if (!current) return;
+      let p = current.parentElement;
+      while (p && p.nodeType === 1) {
+        // stop if boundary exists and we’re trying to go above it
+        if (boundaryElement && p.parentElement && p.parentElement.nodeType === 1) {
+          if (boundaryElement === current) break;
         }
-        return best;
-      } catch {
-        return null;
+        if (elementAllowed(p)) {
+          setCurrent(p);
+          return;
+        }
+        p = p.parentElement;
       }
     }
 
-    function getTargetFromEvent(e, { ignoreSelector, predicate, scopeElement }) {
-      const candidates = collectCandidates(e);
-
-      for (const el of candidates) {
-        if (!el) continue;
-        if (isInternalUi(el, ignoreSelector)) continue;
-        if (predicate && !predicate(el)) continue;
-        return el;
-      }
-
-      // If still nothing and we are locked to a scope, try a rect-based fallback.
-      if (scopeElement && scopeElement.nodeType === 1) {
-        const x = e?.clientX ?? 0;
-        const y = e?.clientY ?? 0;
-        const deep = findDeepestDescendantByRect(scopeElement, x, y);
-        if (deep && !isInternalUi(deep, ignoreSelector) && (!predicate || predicate(deep))) return deep;
-      }
-
-      return null;
+    function cycle(delta) {
+      if (!stack || stack.length < 2) return;
+      stackIndex = (stackIndex + delta + stack.length) % stack.length;
+      const el = stack[stackIndex];
+      if (elementAllowed(el)) setCurrent(el);
     }
 
-    function attachScopeFrame(scopeElement) {
-      if (!scopeElement || scopeElement.nodeType !== 1) return;
-
-      scopeFrameEl = h('div', { class: 'rb-scope-frame' });
-      document.body.appendChild(scopeFrameEl);
-
-      scopeFrameUpdateFn = () => {
-        if (!scopeFrameEl || !scopeElement.isConnected) return;
-        const r = scopeElement.getBoundingClientRect();
-        scopeFrameEl.style.left = `${r.left}px`;
-        scopeFrameEl.style.top = `${r.top}px`;
-        scopeFrameEl.style.width = `${Math.max(0, r.width)}px`;
-        scopeFrameEl.style.height = `${Math.max(0, r.height)}px`;
-      };
-
-      scopeFrameUpdateFn();
-
-      window.addEventListener('scroll', scopeFrameUpdateFn, true);
-      window.addEventListener('resize', scopeFrameUpdateFn, true);
+    function lockFromEvent(e) {
+      stack = buildCandidateStack(e);
+      stackIndex = 0;
+      if (stack.length) {
+        // choose best candidate (first is deepest via composedPath)
+        setCurrent(stack[0]);
+      }
+      locked = true;
+      updateToolbar();
     }
 
-    function detachScopeFrame() {
-      if (scopeFrameUpdateFn) {
-        window.removeEventListener('scroll', scopeFrameUpdateFn, true);
-        window.removeEventListener('resize', scopeFrameUpdateFn, true);
-      }
-      scopeFrameUpdateFn = null;
+    function unlock() {
+      locked = false;
+      stack = [];
+      stackIndex = 0;
+      updateToolbar();
+    }
 
-      if (scopeFrameEl) {
-        try { scopeFrameEl.remove(); } catch {}
-      }
-      scopeFrameEl = null;
+    function confirmSingle(onPick, cleanup) {
+      if (!current) return;
+      cleanup();
+      onPick?.(current);
+    }
+
+    function doneMulti(onPick, cleanup) {
+      const els = Array.from(selected);
+      cleanup();
+      onPick?.(els);
     }
 
     function pick({
-      ignoreSelector,
-      multi = false,
-      predicate,
-      scopeElement = null,
+      ignoreSelector: ign = '',
+      mode: m = 'single',            // 'single' | 'multi'
+      predicate: pred = null,
+      scopeElement: scope = null,
+      boundaryElement: boundary = null,
+      allowPickScope: allowScope = true,
       onPick,
       onCancel,
     }) {
-      ensure();
+      ensureDom();
       if (active) return;
       active = true;
+
+      // init state
+      ignoreSelector = ign;
+      mode = m;
+      predicate = typeof pred === 'function' ? pred : null;
+      scopeElement = scope && scope.nodeType === 1 ? scope : null;
+      boundaryElement = boundary && boundary.nodeType === 1 ? boundary : (scopeElement || null);
+      allowPickScope = allowScope !== false;
+
+      locked = false;
+      current = null;
+      stack = [];
+      stackIndex = 0;
       clearMarks();
 
       overlay.style.display = 'block';
       label.style.display = 'block';
-      help.style.display = 'block';
+      toolbar.style.display = 'block';
 
-      if (scopeElement) attachScopeFrame(scopeElement);
-
-      const helpText = () => multi
-        ? `Multi-pick: Click to toggle • Enter to finish • Esc to cancel • Selected: ${marked.size}`
-        : 'Pick: Click to select • Esc to cancel';
-
-      help.textContent = helpText();
-
-      function move(e) {
-        const el = getTargetFromEvent(e, { ignoreSelector, predicate, scopeElement });
-        if (!el) return;
-        setBox(el);
-        help.textContent = helpText();
+      if (scopeElement) {
+        setScopeFrame();
+        scopeFrame.style.display = 'block';
+      } else {
+        scopeFrame.style.display = 'none';
       }
 
-      function click(e) {
-        const el = getTargetFromEvent(e, { ignoreSelector, predicate, scopeElement });
-        if (!el) return;
+      updateToolbar();
 
+      // Toolbar button wiring
+      btnParent.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; chooseParent(); };
+      btnPrev.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; cycle(-1); };
+      btnNext.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; cycle(+1); };
+
+      btnToggle.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        if (!current) return;
+
+        locked = true;
+
+        if (mode === 'single') {
+          // in single mode, selecting is only meaningful when locked (but allow anyway)
+          confirmSingle(onPick, cleanup);
+          return;
+        }
+
+        // multi mode: toggle mark
+        toggleMark(current);
+        updateToolbar();
+      };
+
+      btnContinue.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        unlock();
+      };
+
+      btnDone.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        doneMulti(onPick, cleanup);
+      };
+
+      btnCancel.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        cleanup();
+        onCancel?.();
+      };
+
+      function onMove(e) {
+        if (scopeElement) setScopeFrame();
+        if (locked) return;
+
+        stack = buildCandidateStack(e);
+        stackIndex = 0;
+
+        if (stack.length) setCurrent(stack[0]);
+      }
+
+      function onClickCapture(e) {
+        // allow clicking toolbar controls
+        if (e.target && e.target.closest && e.target.closest('.rb-pick-toolbar')) return;
+
+        // ignore internal UI areas
+        if (e.target && e.target.closest && e.target.closest(INTERNAL_UI_SEL)) return;
+
+        // if click hits something not allowed, do nothing
+        // (still prevent the page from triggering clicks while picking)
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation?.();
 
-        if (!multi) {
-          cleanup();
-          onPick?.(el);
-          return;
-        }
-
-        toggleMark(el);
-        help.textContent = helpText();
+        // Lock to wherever user clicked (so they can parent/breadcrumb up)
+        lockFromEvent(e);
       }
 
-      function key(e) {
+      function onKey(e) {
         if (e.key === 'Escape') {
           cleanup();
           onCancel?.();
           return;
         }
-        if (multi && e.key === 'Enter') {
-          const out = Array.from(marked);
-          cleanup();
-          onPick?.(out);
+
+        if (e.key === 'ArrowUp') {
+          locked = true;
+          chooseParent();
+          return;
+        }
+
+        if (e.key === '[') {
+          locked = true;
+          cycle(-1);
+          return;
+        }
+        if (e.key === ']') {
+          locked = true;
+          cycle(+1);
+          return;
+        }
+
+        if (e.key === 'Enter') {
+          if (mode === 'single') {
+            if (!locked) return; // require lock before selecting
+            confirmSingle(onPick, cleanup);
+          } else {
+            doneMulti(onPick, cleanup);
+          }
+          return;
+        }
+
+        if (mode === 'multi' && e.key === ' ') {
+          // space toggles add/remove current while locked
+          e.preventDefault();
+          if (!current) return;
+          locked = true;
+          toggleMark(current);
+          updateToolbar();
         }
       }
 
       function cleanup() {
         active = false;
+
         overlay.style.display = 'none';
         label.style.display = 'none';
-        help.style.display = 'none';
+        toolbar.style.display = 'none';
+        scopeFrame.style.display = 'none';
 
-        window.removeEventListener('mousemove', move, true);
-        window.removeEventListener('click', click, true);
-        window.removeEventListener('keydown', key, true);
+        window.removeEventListener('mousemove', onMove, true);
+        window.removeEventListener('click', onClickCapture, true);
+        window.removeEventListener('keydown', onKey, true);
+        window.removeEventListener('scroll', setScopeFrame, true);
+        window.removeEventListener('resize', setScopeFrame, true);
 
-        detachScopeFrame();
+        // remove selection outlines
         clearMarks();
+
+        // reset
+        ignoreSelector = '';
+        predicate = null;
+        scopeElement = null;
+        boundaryElement = null;
+        locked = false;
+        current = null;
+        stack = [];
+        stackIndex = 0;
       }
 
-      window.addEventListener('mousemove', move, true);
-      window.addEventListener('click', click, true);
-      window.addEventListener('keydown', key, true);
+      window.addEventListener('mousemove', onMove, true);
+      window.addEventListener('click', onClickCapture, true);
+      window.addEventListener('keydown', onKey, true);
+      window.addEventListener('scroll', setScopeFrame, true);
+      window.addEventListener('resize', setScopeFrame, true);
     }
 
     return { pick };
   })();
 
-  // ---------------- UI CSS (opaque + pro) ----------------
+  // ---------------- Editor UI CSS (opaque + pro) ----------------
   function injectCssOnce() {
     if (document.getElementById('rb-editor-css')) return;
     const style = document.createElement('style');
@@ -647,7 +953,11 @@
 
   // ---------------- Editor ----------------
   class ReboundEditor {
-    constructor({ openButton, storageKey = DEFAULT_STORAGE_KEY, onSave } = {}) {
+    constructor({
+      openButton,
+      storageKey = DEFAULT_STORAGE_KEY,
+      onSave,
+    } = {}) {
       injectCssOnce();
 
       this.storageKey = storageKey;
@@ -670,6 +980,7 @@
       // Preview current config
       try { RB.Runtime?.mountSingleton?.(this.config); } catch {}
 
+      // Flush save on reload (removing mode=rebound causes reload)
       window.addEventListener('beforeunload', () => {
         try { this._saveConfigToStorageNow(); } catch {}
       });
@@ -680,6 +991,7 @@
       if (openButton) openButton.addEventListener('click', () => this.open());
     }
 
+    // ---------- Storage ----------
     _loadConfigFromStorage() {
       const raw = localStorage.getItem(this.storageKey);
       if (!raw) return null;
@@ -724,6 +1036,7 @@
       if (this._badgeEl) this._badgeEl.textContent = text;
     }
 
+    // ---------- UI open/close/minimize ----------
     open() {
       if (!this.panel) {
         this.panel = this._buildPanel();
@@ -790,7 +1103,6 @@
       ]);
 
       this.bodyEl = h('div', { class: 'rb-body' });
-
       panel.appendChild(header);
       panel.appendChild(this.bodyEl);
 
@@ -863,6 +1175,7 @@
       window.addEventListener('pointerup', onPointerUp);
     }
 
+    // ---------- helpers ----------
     ensureConfigShape() {
       if (!this.config || typeof this.config !== 'object') this.config = defaultConfig();
       if (!this.config.settings) this.config.settings = { navHeight: 64 };
@@ -887,6 +1200,7 @@
       fnStartPick(restore);
     }
 
+    // ---------- render ----------
     render() {
       this.ensureConfigShape();
       const body = this.bodyEl;
@@ -958,14 +1272,14 @@
           h('div', { text: 'Animation' }),
           h('div', { class: 'rb-row' }, [btnNewAnim, btnDeleteAnim]),
         ]),
-        animSelect,
+        h('div', { class: 'rb-row' }, [animSelect]),
         h('div', { class: 'rb-col', style: 'margin-top:10px;' }, [
           h('div', { class: 'rb-label', text: 'Animation Name' }),
           animNameInput,
         ]),
       ]));
 
-      // Scope section
+      // Scope section (DOM Explorer picker)
       const scopeInput = h('input', {
         class: 'rb-input',
         value: anim.scopeSelector || '',
@@ -978,12 +1292,15 @@
 
       const pickScopeBtn = h('button', {
         class: 'rb-btn',
-        text: 'Pick Scope',
+        text: 'Pick Scope (DOM Explorer)',
         onClick: () => {
           this._pickWithHide((restore) => {
             Picker.pick({
               ignoreSelector: '.rb-panel, .rb-dock',
-              multi: false,
+              mode: 'single',
+              predicate: (el) => !!el && el.nodeType === 1,
+              scopeElement: null,
+              boundaryElement: null,
               onPick: (el) => {
                 let sel = '';
                 if (el.id) sel = `#${cssEscape(el.id)}`;
@@ -1007,7 +1324,7 @@
           h('div', { class: 'rb-pill', text: '--enter/exit auto' }),
         ]),
         h('div', { class: 'rb-row' }, [scopeInput, pickScopeBtn]),
-        h('div', { class: 'rb-muted', text: 'Tip: Track picking is locked to scope and excludes selecting the scope itself.' }),
+        h('div', { class: 'rb-muted', text: 'Tip: Click a child, then Parent/breadcrumb up to the container (like DevTools).' }),
       ]));
 
       // Tracks section
@@ -1017,7 +1334,7 @@
       tracks.forEach((t, idx) => {
         list.appendChild(h('div', { class: 'rb-card' }, [
           h('div', { class: 'rb-row', style: 'justify-content:space-between;' }, [
-            h('div', { class: 'rb-col', style: 'gap:6px; flex:1; min-width: 260px;' }, [
+            h('div', { class: 'rb-col', style: 'gap:6px; flex:1;' }, [
               h('div', { text: t.targetSelector || '(no selector)' }),
               h('div', { class: 'rb-row' }, [
                 h('div', { class: 'rb-pill', text: `trigger: ${t.trigger?.type || 'scroll'}` }),
@@ -1066,7 +1383,7 @@
         body.appendChild(this._renderTrackEditor(anim, tracks[this.editingTrackIndex]));
       }
 
-      // Import/Export
+      // Import / Export (JSON hidden by default)
       const fileInput = h('input', { type: 'file', accept: 'application/json', style: 'display:none' });
       fileInput.addEventListener('change', async () => {
         const file = fileInput.files && fileInput.files[0];
@@ -1143,6 +1460,7 @@
         ]),
       ]);
 
+      // Target selector + pick
       const targetInput = h('input', {
         class: 'rb-input',
         value: track.targetSelector || '',
@@ -1158,13 +1476,13 @@
 
       const pickSingleBtn = h('button', {
         class: 'rb-btn',
-        text: 'Pick Element',
+        text: 'Pick Element (DOM Explorer)',
         onClick: () => this._pickTrackTarget(anim, track, { multi: false }),
       });
 
       const pickMultiBtn = h('button', {
         class: 'rb-btn',
-        text: 'Pick Multiple',
+        text: 'Pick Multiple (DOM Explorer)',
         onClick: () => this._pickTrackTarget(anim, track, { multi: true }),
       });
 
@@ -1182,12 +1500,38 @@
         h('div', { class: 'rb-label', text: 'Target Selector (comma-separated supported)' }),
         targetInput,
         h('div', { class: 'rb-row' }, [pickSingleBtn, pickMultiBtn, clearTargetsBtn]),
-        h('div', { class: 'rb-row' }, [
-          withinCb,
-          h('div', { class: 'rb-muted', text: 'Within scope' }),
-        ]),
-        h('div', { class: 'rb-muted', text: 'Multi-pick: click to toggle, press Enter to finish.' }),
+        h('div', { class: 'rb-row' }, [withinCb, h('div', { class: 'rb-muted', text: 'Within scope' })]),
+        h('div', { class: 'rb-muted', text: 'Tip: click a child, then Parent/breadcrumb up to the exact container you need.' }),
       ]));
+
+      // Trigger select
+      const triggerTypeSelect = h('select', {
+        class: 'rb-select',
+        onChange: (e) => {
+          const type = e.target.value;
+
+          if (type === 'scroll') { track.trigger = { type: 'scroll', progress: 'exit', start: 0, end: 100 }; track.engine = 'css'; }
+          if (type === 'hover') { track.trigger = { type: 'hover', duration: 350, easing: 'easeInOutCubic' }; track.engine = 'js'; }
+          if (type === 'click') { track.trigger = { type: 'click', duration: 350, easing: 'easeInOutCubic' }; track.engine = 'js'; }
+          if (type === 'view')  { track.trigger = { type: 'view', duration: 450, easing: 'easeInOutCubic', once: false, reverseOnExit: true }; track.engine = 'js'; }
+
+          this._touchChange();
+          this.render();
+        },
+      }, [
+        h('option', { value: 'scroll', text: 'scroll / parallax (CSS progress)', ...(track.trigger?.type === 'scroll' ? { selected: 'selected' } : {}) }),
+        h('option', { value: 'hover', text: 'on hover', ...(track.trigger?.type === 'hover' ? { selected: 'selected' } : {}) }),
+        h('option', { value: 'click', text: 'on click', ...(track.trigger?.type === 'click' ? { selected: 'selected' } : {}) }),
+        h('option', { value: 'view',  text: 'on view enter', ...(track.trigger?.type === 'view' ? { selected: 'selected' } : {}) }),
+      ]);
+
+      wrap.appendChild(h('div', { class: 'rb-col', style: 'margin-top:12px;' }, [
+        h('div', { class: 'rb-label', text: 'Trigger' }),
+        triggerTypeSelect,
+      ]));
+
+      wrap.appendChild(this._renderTriggerDetails(track));
+      wrap.appendChild(this._renderPropertiesEditor(track));
 
       return wrap;
     }
@@ -1197,20 +1541,23 @@
       const scopeEl = document.querySelector(anim.scopeSelector);
       if (!scopeEl) return alert('Scope selector matched nothing.');
 
-      // ✅ IMPORTANT FIX:
-      // Predicate = inside scope AND not the scope itself (so you can pick within).
-      const predicate = (el) => el !== scopeEl && scopeEl.contains(el);
+      // Allow selecting anything inside scope; include scope itself so user can choose :scope
+      const pred = (el) => scopeEl.contains(el);
 
       this._pickWithHide((restore) => {
         Picker.pick({
           ignoreSelector: '.rb-panel, .rb-dock',
-          multi,
-          scopeElement: scopeEl,     // show scope frame overlay
-          predicate,
+          mode: multi ? 'multi' : 'single',
+          predicate: pred,
+          scopeElement: scopeEl,
+          boundaryElement: scopeEl,
+          allowPickScope: true,
           onPick: (picked) => {
+            const toSel = (el) => (el === scopeEl ? ':scope' : makeSelectorWithinRoot(scopeEl, el));
+
             if (!multi) {
               const el = picked;
-              track.targetSelector = makeSelectorWithinRoot(scopeEl, el);
+              track.targetSelector = toSel(el);
               track.withinScope = true;
               this._touchChange();
               this.render();
@@ -1221,7 +1568,7 @@
             const els = Array.isArray(picked) ? picked : [];
             if (!els.length) { restore(); return; }
 
-            const sels = uniq(els.map((el) => makeSelectorWithinRoot(scopeEl, el)));
+            const sels = uniq(els.map(toSel));
             track.targetSelector = sels.join(', ');
             track.withinScope = true;
 
@@ -1232,6 +1579,182 @@
           onCancel: () => restore(),
         });
       });
+    }
+
+    _renderTriggerDetails(track) {
+      const trig = track.trigger || {};
+      const box = h('div', { class: 'rb-card', style: 'margin-top:12px;' });
+
+      if (trig.type === 'scroll') {
+        const progressSel = h('select', {
+          class: 'rb-select',
+          onChange: (e) => { trig.progress = e.target.value; this._touchChange(); },
+        }, [
+          h('option', { value: 'exit', text: 'exit progress', ...(trig.progress !== 'enter' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'enter', text: 'enter progress', ...(trig.progress === 'enter' ? { selected: 'selected' } : {}) }),
+        ]);
+
+        const startIn = h('input', {
+          class: 'rb-input', type: 'number', value: String(trig.start ?? 0),
+          onInput: (e) => { trig.start = Number(e.target.value) || 0; this._touchChange(); },
+        });
+
+        const endIn = h('input', {
+          class: 'rb-input', type: 'number', value: String(trig.end ?? 100),
+          onInput: (e) => { trig.end = Number(e.target.value) || 100; this._touchChange(); },
+        });
+
+        box.appendChild(h('div', { class: 'rb-row' }, [
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'progress' }), progressSel]),
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'start %' }), startIn]),
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'end %' }), endIn]),
+        ]));
+
+        box.appendChild(h('div', { class: 'rb-muted', style: 'margin-top:8px;' }, [
+          'Progress vars are automatic at runtime. CSS uses var(--enter/exit-progress, 0) until first scroll.',
+        ]));
+      }
+
+      if (trig.type === 'hover' || trig.type === 'click' || trig.type === 'view') {
+        const dur = h('input', {
+          class: 'rb-input', type: 'number', value: String(trig.duration ?? 350),
+          onInput: (e) => { trig.duration = Number(e.target.value) || 0; this._touchChange(); },
+        });
+
+        const easing = h('select', {
+          class: 'rb-select',
+          onChange: (e) => { trig.easing = e.target.value; this._touchChange(); },
+        }, [
+          h('option', { value: 'easeInOutCubic', text: 'easeInOutCubic', ...(trig.easing !== 'linear' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'linear', text: 'linear', ...(trig.easing === 'linear' ? { selected: 'selected' } : {}) }),
+        ]);
+
+        box.appendChild(h('div', { class: 'rb-row' }, [
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'duration (ms)' }), dur]),
+          h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'easing' }), easing]),
+        ]));
+
+        if (trig.type === 'view') {
+          const once = h('input', {
+            type: 'checkbox', ...(trig.once ? { checked: 'checked' } : {}),
+            onChange: (e) => { trig.once = !!e.target.checked; this._touchChange(); },
+          });
+          const reverse = h('input', {
+            type: 'checkbox', ...(trig.reverseOnExit !== false ? { checked: 'checked' } : {}),
+            onChange: (e) => { trig.reverseOnExit = !!e.target.checked; this._touchChange(); },
+          });
+          box.appendChild(h('div', { class: 'rb-row', style: 'margin-top:10px;' }, [
+            once, h('div', { class: 'rb-muted', text: 'play once' }),
+            reverse, h('div', { class: 'rb-muted', text: 'reverse on exit' }),
+          ]));
+        }
+      }
+
+      return box;
+    }
+
+    _renderPropertiesEditor(track) {
+      const props = Array.isArray(track.properties) ? track.properties : (track.properties = []);
+      const box = h('div', { class: 'rb-card', style: 'margin-top:12px;' });
+
+      const addBtn = h('button', {
+        class: 'rb-btn primary',
+        text: 'Add Property',
+        onClick: () => {
+          props.push({ type: 'opacity', from: 1, to: 0 });
+          this._touchChange();
+          this.render();
+        },
+      });
+
+      box.appendChild(h('div', { class: 'rb-row', style: 'justify-content:space-between; align-items:center; margin-bottom:10px;' }, [
+        h('div', { text: 'Properties', style: 'font-weight:750;' }),
+        addBtn,
+      ]));
+
+      const list = h('div', { class: 'rb-list' });
+
+      const unitPick = (p) => h('select', {
+        class: 'rb-select',
+        onChange: (e) => { p.unit = e.target.value; this._touchChange(); },
+      }, [
+        h('option', { value: 'px', text: 'px', ...(p.unit === 'px' ? { selected: 'selected' } : {}) }),
+        h('option', { value: '%', text: '%', ...(p.unit === '%' ? { selected: 'selected' } : {}) }),
+        h('option', { value: 'deg', text: 'deg', ...(p.unit === 'deg' ? { selected: 'selected' } : {}) }),
+        h('option', { value: '', text: '(none)', ...(!p.unit ? { selected: 'selected' } : {}) }),
+      ]);
+
+      const num = (p, label, key) => h('div', { class: 'rb-col', style: 'flex:1;' }, [
+        h('div', { class: 'rb-label', text: label }),
+        h('input', {
+          class: 'rb-input', type: 'number',
+          value: String(p[key] ?? 0),
+          onInput: (e) => { p[key] = Number(e.target.value) || 0; this._touchChange(); },
+        }),
+      ]);
+
+      props.forEach((p, idx) => {
+        const typeSel = h('select', {
+          class: 'rb-select',
+          onChange: (e) => {
+            const t = e.target.value;
+            if (t === 'opacity') props[idx] = { type: 'opacity', from: 1, to: 0 };
+            if (t === 'translateY') props[idx] = { type: 'translateY', from: 0, to: 100, unit: 'px' };
+            if (t === 'translateX') props[idx] = { type: 'translateX', from: 0, to: 100, unit: 'px' };
+            if (t === 'rotate') props[idx] = { type: 'rotate', from: 0, to: 30, unit: 'deg' };
+            if (t === 'scale') props[idx] = { type: 'scale', from: 1, to: 1.1 };
+            if (t === 'parallaxY') props[idx] = { type: 'parallaxY', base: 0, distance: 100, unit: 'px' };
+            this._touchChange();
+            this.render();
+          },
+        }, [
+          h('option', { value: 'opacity', text: 'opacity', ...(p.type === 'opacity' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'translateY', text: 'translateY', ...(p.type === 'translateY' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'translateX', text: 'translateX', ...(p.type === 'translateX' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'rotate', text: 'rotate', ...(p.type === 'rotate' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'scale', text: 'scale', ...(p.type === 'scale' ? { selected: 'selected' } : {}) }),
+          h('option', { value: 'parallaxY', text: 'parallaxY (base+distance)', ...(p.type === 'parallaxY' ? { selected: 'selected' } : {}) }),
+        ]);
+
+        const rm = h('button', {
+          class: 'rb-btn danger',
+          text: 'Remove',
+          onClick: () => {
+            props.splice(idx, 1);
+            this._touchChange();
+            this.render();
+          },
+        });
+
+        const card = h('div', { class: 'rb-card' }, [
+          h('div', { class: 'rb-row' }, [typeSel, rm]),
+        ]);
+
+        const controls = h('div', { class: 'rb-col', style: 'margin-top:10px;' });
+
+        if (p.type === 'opacity' || p.type === 'scale') {
+          controls.appendChild(h('div', { class: 'rb-row' }, [num(p, 'from', 'from'), num(p, 'to', 'to')]));
+        } else if (p.type === 'translateX' || p.type === 'translateY' || p.type === 'rotate') {
+          controls.appendChild(h('div', { class: 'rb-row' }, [
+            num(p, 'from', 'from'),
+            num(p, 'to', 'to'),
+            h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'unit' }), unitPick(p)]),
+          ]));
+        } else if (p.type === 'parallaxY') {
+          controls.appendChild(h('div', { class: 'rb-row' }, [
+            num(p, 'base', 'base'),
+            num(p, 'distance', 'distance'),
+            h('div', { class: 'rb-col', style: 'flex:1;' }, [h('div', { class: 'rb-label', text: 'unit' }), unitPick(p)]),
+          ]));
+          controls.appendChild(h('div', { class: 'rb-muted', text: 'Sets --base-offset and --parallax-distance on each matched target element.' }));
+        }
+
+        card.appendChild(controls);
+        list.appendChild(card);
+      });
+
+      box.appendChild(list);
+      return box;
     }
   }
 
