@@ -115,18 +115,13 @@
       let p = part.trim();
       if (!p) return null;
 
-      // if the selector uses :scope anywhere, replace ALL occurrences
+      // Replace ALL occurrences of :scope
       if (p.includes(':scope')) {
-        // replace :scope occurrences with the specific scope attribute selector
         p = p.replace(/:scope\b/g, scopeAttrSel);
         return p;
       }
 
-      // No :scope usage:
-      // If withinScope true, we must prefix EACH part (not the whole list)
       if (withinScope !== false) return `${scopeAttrSel} ${p}`;
-
-      // withinScope false: leave it global
       return p;
     }).filter(Boolean);
 
@@ -138,7 +133,6 @@
     if (!scopeEl || !scopeEl.isConnected) return;
 
     const elHeight = scopeEl.offsetHeight;
-    // prevent bogus values if element not laid out yet
     if (!elHeight || elHeight < 2) return;
 
     const rect = scopeEl.getBoundingClientRect();

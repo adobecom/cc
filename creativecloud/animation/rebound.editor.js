@@ -1,16 +1,11 @@
-/* rebound.editor.js - Rebound Editor (v0.6.0)
+/* rebound.editor.js - Rebound Editor (v0.6.1)
    DOM Explorer Picker:
-   - Click to LOCK element, then use Parent + breadcrumbs (DevTools-style)
-   - Solves deep nesting / zero padding / hard-to-hit parents
-   - Thicker hover outline + glow, thicker selected outline
-   - Multi-select flow: lock → adjust → Add → Continue → repeat → Done
-   Keeps:
-   - drag popup + minimize dock
-   - hide popup while picking
-   - delete animation, upload/download JSON
-   - autosave to localStorage + reload
-   - JSON hidden by default
-   - opaque UI + toolbar wrap
+   - Single pick: Click selects immediately and returns editor popup
+   - Shift+Click = Lock/Explore (Parent + breadcrumbs), Enter/Select confirms
+   - Multi pick: Click toggles add/remove quickly (no lock), Shift+Click locks for exploring,
+     Enter = Done
+   Also:
+   - Popup always restores after pick (try/finally + safe restore)
 */
 (() => {
   'use strict';
@@ -144,7 +139,8 @@
 
   // ---------------- DOM Explorer Picker ----------------
   const Picker = (() => {
-    let overlay, label, scopeFrame, toolbar, crumbs, status, btnParent, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel;
+    let overlay, label, scopeFrame, toolbar, crumbs, status;
+    let btnParent, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel;
     let active = false;
 
     // state
@@ -153,11 +149,11 @@
     let current = null;
     let stack = [];
     let stackIndex = 0;
-    let selected = new Set();         // multi selection (elements)
+    let selected = new Set();
     let predicate = null;
     let ignoreSelector = '';
     let scopeElement = null;
-    let boundaryElement = null;       // breadcrumb boundary (usually scopeElement)
+    let boundaryElement = null;
     let allowPickScope = true;
 
     const INTERNAL_UI_SEL =
@@ -436,14 +432,13 @@
         add(document.elementFromPoint(x, y));
       }
 
-      // If scope constrained, allow walking up from first hit until boundary
+      // If scope constrained, allow walking up within scope
       if (scopeElement && out.length) {
         let p = out[0].parentElement;
         while (p && p.nodeType === 1 && scopeElement.contains(p)) {
           add(p);
           p = p.parentElement;
         }
-        // optionally include scope itself (for :scope selection)
         add(scopeElement);
       }
 
@@ -479,7 +474,6 @@
           onClick: (ev) => {
             ev.preventDefault();
             ev.stopPropagation();
-            // clicking breadcrumb implies lock
             locked = true;
             if (elementAllowed(el)) setCurrent(el);
             updateToolbar();
@@ -493,26 +487,26 @@
     function updateToolbar() {
       const count = selected.size;
       const curLabel = current ? shortElLabel(current) : '(none)';
+      const lockHint = locked ? 'LOCKED' : 'HOVER';
+      const stackHint = stack.length ? `stack ${stackIndex + 1}/${stack.length}` : 'stack 0/0';
 
       if (mode === 'single') {
         btnToggle.style.display = 'inline-block';
-        btnToggle.textContent = locked ? 'Select (Enter)' : 'Lock then Select';
+        btnToggle.textContent = 'Select (Enter)';
         btnContinue.style.display = 'none';
         btnDone.style.display = 'none';
+
+        status.textContent =
+          `[${lockHint}] ${curLabel} • ${stackHint} • Click selects • Shift+Click locks • Parent/crumbs • Enter selects • Esc cancels`;
       } else {
         btnToggle.style.display = 'inline-block';
         btnToggle.textContent = selected.has(current) ? `Remove (${count})` : `Add (${count})`;
         btnContinue.style.display = 'inline-block';
         btnDone.style.display = 'inline-block';
+
+        status.textContent =
+          `[${lockHint}] ${curLabel} • Selected ${count} • ${stackHint} • Click toggles • Shift+Click locks • Parent/crumbs • Enter done • Esc cancels`;
       }
-
-      const lockHint = locked ? 'LOCKED' : 'HOVER';
-      const stackHint = stack.length ? `stack ${stackIndex + 1}/${stack.length}` : 'stack 0/0';
-
-      status.textContent =
-        mode === 'single'
-          ? `[${lockHint}] ${curLabel} • ${stackHint} • Click to lock • Parent/crumbs • Enter to select • Esc cancel`
-          : `[${lockHint}] ${curLabel} • Selected ${count} • ${stackHint} • Click to lock • Parent/crumbs • Add • Continue • Enter done • Esc cancel`;
 
       renderBreadcrumb();
     }
@@ -528,10 +522,6 @@
       if (!current) return;
       let p = current.parentElement;
       while (p && p.nodeType === 1) {
-        // stop if boundary exists and we’re trying to go above it
-        if (boundaryElement && p.parentElement && p.parentElement.nodeType === 1) {
-          if (boundaryElement === current) break;
-        }
         if (elementAllowed(p)) {
           setCurrent(p);
           return;
@@ -547,17 +537,6 @@
       if (elementAllowed(el)) setCurrent(el);
     }
 
-    function lockFromEvent(e) {
-      stack = buildCandidateStack(e);
-      stackIndex = 0;
-      if (stack.length) {
-        // choose best candidate (first is deepest via composedPath)
-        setCurrent(stack[0]);
-      }
-      locked = true;
-      updateToolbar();
-    }
-
     function unlock() {
       locked = false;
       stack = [];
@@ -567,8 +546,9 @@
 
     function confirmSingle(onPick, cleanup) {
       if (!current) return;
+      const el = current;
       cleanup();
-      onPick?.(current);
+      onPick?.(el);
     }
 
     function doneMulti(onPick, cleanup) {
@@ -628,15 +608,11 @@
         ev.stopPropagation();
         if (!current) return;
 
-        locked = true;
-
         if (mode === 'single') {
-          // in single mode, selecting is only meaningful when locked (but allow anyway)
           confirmSingle(onPick, cleanup);
           return;
         }
 
-        // multi mode: toggle mark
         toggleMark(current);
         updateToolbar();
       };
@@ -666,25 +642,49 @@
 
         stack = buildCandidateStack(e);
         stackIndex = 0;
-
         if (stack.length) setCurrent(stack[0]);
       }
 
+      // ✅ KEY FIX: click selects immediately in single mode
+      // Shift+Click = lock/explore
       function onClickCapture(e) {
         // allow clicking toolbar controls
         if (e.target && e.target.closest && e.target.closest('.rb-pick-toolbar')) return;
-
-        // ignore internal UI areas
         if (e.target && e.target.closest && e.target.closest(INTERNAL_UI_SEL)) return;
 
-        // if click hits something not allowed, do nothing
-        // (still prevent the page from triggering clicks while picking)
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation?.();
 
-        // Lock to wherever user clicked (so they can parent/breadcrumb up)
-        lockFromEvent(e);
+        stack = buildCandidateStack(e);
+        stackIndex = 0;
+        const el = stack.length ? stack[0] : null;
+        if (!el) return;
+
+        setCurrent(el);
+
+        if (mode === 'single') {
+          if (!e.shiftKey) {
+            confirmSingle(onPick, cleanup);
+            return;
+          }
+          // Shift+Click: lock/explore
+          locked = true;
+          updateToolbar();
+          return;
+        }
+
+        // multi mode:
+        if (!e.shiftKey) {
+          // fast toggle without locking
+          toggleMark(current);
+          updateToolbar();
+          return;
+        }
+
+        // Shift+Click: lock/explore without toggling
+        locked = true;
+        updateToolbar();
       }
 
       function onKey(e) {
@@ -700,34 +700,26 @@
           return;
         }
 
-        if (e.key === '[') {
-          locked = true;
-          cycle(-1);
-          return;
-        }
-        if (e.key === ']') {
-          locked = true;
-          cycle(+1);
+        if (e.key === '[') { locked = true; cycle(-1); return; }
+        if (e.key === ']') { locked = true; cycle(+1); return; }
+
+        if (mode === 'multi' && e.key === ' ') {
+          e.preventDefault();
+          if (!current) return;
+          toggleMark(current);
+          updateToolbar();
           return;
         }
 
+        // ✅ KEY FIX: Enter confirms even if not locked
         if (e.key === 'Enter') {
           if (mode === 'single') {
-            if (!locked) return; // require lock before selecting
+            if (!current) return;
             confirmSingle(onPick, cleanup);
           } else {
             doneMulti(onPick, cleanup);
           }
           return;
-        }
-
-        if (mode === 'multi' && e.key === ' ') {
-          // space toggles add/remove current while locked
-          e.preventDefault();
-          if (!current) return;
-          locked = true;
-          toggleMark(current);
-          updateToolbar();
         }
       }
 
@@ -745,7 +737,6 @@
         window.removeEventListener('scroll', setScopeFrame, true);
         window.removeEventListener('resize', setScopeFrame, true);
 
-        // remove selection outlines
         clearMarks();
 
         // reset
@@ -953,11 +944,7 @@
 
   // ---------------- Editor ----------------
   class ReboundEditor {
-    constructor({
-      openButton,
-      storageKey = DEFAULT_STORAGE_KEY,
-      onSave,
-    } = {}) {
+    constructor({ openButton, storageKey = DEFAULT_STORAGE_KEY, onSave } = {}) {
       injectCssOnce();
 
       this.storageKey = storageKey;
@@ -977,10 +964,8 @@
       this._badgeEl = null;
       this._badgeText = 'Auto-saved';
 
-      // Preview current config
       try { RB.Runtime?.mountSingleton?.(this.config); } catch {}
 
-      // Flush save on reload (removing mode=rebound causes reload)
       window.addEventListener('beforeunload', () => {
         try { this._saveConfigToStorageNow(); } catch {}
       });
@@ -991,7 +976,6 @@
       if (openButton) openButton.addEventListener('click', () => this.open());
     }
 
-    // ---------- Storage ----------
     _loadConfigFromStorage() {
       const raw = localStorage.getItem(this.storageKey);
       if (!raw) return null;
@@ -1036,7 +1020,6 @@
       if (this._badgeEl) this._badgeEl.textContent = text;
     }
 
-    // ---------- UI open/close/minimize ----------
     open() {
       if (!this.panel) {
         this.panel = this._buildPanel();
@@ -1175,7 +1158,6 @@
       window.addEventListener('pointerup', onPointerUp);
     }
 
-    // ---------- helpers ----------
     ensureConfigShape() {
       if (!this.config || typeof this.config !== 'object') this.config = defaultConfig();
       if (!this.config.settings) this.config.settings = { navHeight: 64 };
@@ -1188,19 +1170,22 @@
       return this.config.animations[this.selectedAnimIndex] || null;
     }
 
+    // ✅ FIX: always restore popup after pick
     _pickWithHide(fnStartPick) {
-      const wasVisible = !!this.panel && this.panel.style.display !== 'none';
-      if (wasVisible) this.panel.style.display = 'none';
+      if (this.panel) this.panel.style.display = 'none';
       this._hideDock();
 
+      let restored = false;
       const restore = () => {
-        if (wasVisible) this.panel.style.display = 'block';
+        if (restored) return;
+        restored = true;
+        if (this.panel) this.panel.style.display = 'block';
+        else this.open();
       };
 
       fnStartPick(restore);
     }
 
-    // ---------- render ----------
     render() {
       this.ensureConfigShape();
       const body = this.bodyEl;
@@ -1279,7 +1264,7 @@
         ]),
       ]));
 
-      // Scope section (DOM Explorer picker)
+      // Scope section
       const scopeInput = h('input', {
         class: 'rb-input',
         value: anim.scopeSelector || '',
@@ -1301,16 +1286,22 @@
               predicate: (el) => !!el && el.nodeType === 1,
               scopeElement: null,
               boundaryElement: null,
+              allowPickScope: true,
               onPick: (el) => {
-                let sel = '';
-                if (el.id) sel = `#${cssEscape(el.id)}`;
-                else if (el.classList && el.classList.length) sel = '.' + Array.from(el.classList).slice(0, 1).map(cssEscape).join('.');
-                else sel = makeSelectorWithinRoot(document.body, el).replace(':scope', 'body');
+                try {
+                  let sel = '';
+                  if (el === document.documentElement) sel = 'html';
+                  else if (el === document.body) sel = 'body';
+                  else if (el.id) sel = `#${cssEscape(el.id)}`;
+                  else if (el.classList && el.classList.length) sel = '.' + Array.from(el.classList).slice(0, 1).map(cssEscape).join('.');
+                  else sel = makeSelectorWithinRoot(document.body, el).replace(':scope', 'body');
 
-                anim.scopeSelector = sel;
-                this._touchChange();
-                this.render();
-                restore();
+                  anim.scopeSelector = sel;
+                  this._touchChange();
+                  this.render();
+                } finally {
+                  restore();
+                }
               },
               onCancel: () => restore(),
             });
@@ -1324,10 +1315,10 @@
           h('div', { class: 'rb-pill', text: '--enter/exit auto' }),
         ]),
         h('div', { class: 'rb-row' }, [scopeInput, pickScopeBtn]),
-        h('div', { class: 'rb-muted', text: 'Tip: Click a child, then Parent/breadcrumb up to the container (like DevTools).' }),
+        h('div', { class: 'rb-muted', text: 'Click selects immediately. Use Shift+Click to lock and then Parent/breadcrumb up.' }),
       ]));
 
-      // Tracks section
+      // Tracks list
       const tracks = Array.isArray(anim.tracks) ? anim.tracks : (anim.tracks = []);
       const list = h('div', { class: 'rb-list' });
 
@@ -1383,7 +1374,7 @@
         body.appendChild(this._renderTrackEditor(anim, tracks[this.editingTrackIndex]));
       }
 
-      // Import / Export (JSON hidden by default)
+      // Import / Export
       const fileInput = h('input', { type: 'file', accept: 'application/json', style: 'display:none' });
       fileInput.addEventListener('change', async () => {
         const file = fileInput.files && fileInput.files[0];
@@ -1421,10 +1412,7 @@
       const btnToggleJson = h('button', {
         class: 'rb-btn',
         text: this.jsonVisible ? 'Hide JSON' : 'Show JSON',
-        onClick: () => {
-          this.jsonVisible = !this.jsonVisible;
-          this.render();
-        },
+        onClick: () => { this.jsonVisible = !this.jsonVisible; this.render(); },
       });
 
       const btnOnSave = h('button', {
@@ -1460,7 +1448,6 @@
         ]),
       ]);
 
-      // Target selector + pick
       const targetInput = h('input', {
         class: 'rb-input',
         value: track.targetSelector || '',
@@ -1489,11 +1476,7 @@
       const clearTargetsBtn = h('button', {
         class: 'rb-btn danger',
         text: 'Clear',
-        onClick: () => {
-          track.targetSelector = '';
-          this._touchChange();
-          this.render();
-        },
+        onClick: () => { track.targetSelector = ''; this._touchChange(); this.render(); },
       });
 
       wrap.appendChild(h('div', { class: 'rb-col' }, [
@@ -1501,7 +1484,7 @@
         targetInput,
         h('div', { class: 'rb-row' }, [pickSingleBtn, pickMultiBtn, clearTargetsBtn]),
         h('div', { class: 'rb-row' }, [withinCb, h('div', { class: 'rb-muted', text: 'Within scope' })]),
-        h('div', { class: 'rb-muted', text: 'Tip: click a child, then Parent/breadcrumb up to the exact container you need.' }),
+        h('div', { class: 'rb-muted', text: 'Click selects/toggles. Shift+Click locks for Parent/breadcrumb traversal.' }),
       ]));
 
       // Trigger select
@@ -1541,7 +1524,6 @@
       const scopeEl = document.querySelector(anim.scopeSelector);
       if (!scopeEl) return alert('Scope selector matched nothing.');
 
-      // Allow selecting anything inside scope; include scope itself so user can choose :scope
       const pred = (el) => scopeEl.contains(el);
 
       this._pickWithHide((restore) => {
@@ -1553,28 +1535,30 @@
           boundaryElement: scopeEl,
           allowPickScope: true,
           onPick: (picked) => {
-            const toSel = (el) => (el === scopeEl ? ':scope' : makeSelectorWithinRoot(scopeEl, el));
+            try {
+              const toSel = (el) => (el === scopeEl ? ':scope' : makeSelectorWithinRoot(scopeEl, el));
 
-            if (!multi) {
-              const el = picked;
-              track.targetSelector = toSel(el);
+              if (!multi) {
+                const el = picked;
+                track.targetSelector = toSel(el);
+                track.withinScope = true;
+                this._touchChange();
+                this.render();
+                return;
+              }
+
+              const els = Array.isArray(picked) ? picked : [];
+              if (!els.length) return;
+
+              const sels = uniq(els.map(toSel));
+              track.targetSelector = sels.join(', ');
               track.withinScope = true;
+
               this._touchChange();
               this.render();
+            } finally {
               restore();
-              return;
             }
-
-            const els = Array.isArray(picked) ? picked : [];
-            if (!els.length) { restore(); return; }
-
-            const sels = uniq(els.map(toSel));
-            track.targetSelector = sels.join(', ');
-            track.withinScope = true;
-
-            this._touchChange();
-            this.render();
-            restore();
           },
           onCancel: () => restore(),
         });
@@ -1684,8 +1668,8 @@
         h('option', { value: '', text: '(none)', ...(!p.unit ? { selected: 'selected' } : {}) }),
       ]);
 
-      const num = (p, label, key) => h('div', { class: 'rb-col', style: 'flex:1;' }, [
-        h('div', { class: 'rb-label', text: label }),
+      const num = (p, labelText, key) => h('div', { class: 'rb-col', style: 'flex:1;' }, [
+        h('div', { class: 'rb-label', text: labelText }),
         h('input', {
           class: 'rb-input', type: 'number',
           value: String(p[key] ?? 0),
