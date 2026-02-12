@@ -1,5 +1,11 @@
-/* rebound.editor.js - Rebound Editor (v0.6.3)
-   FIX: Track editor form restored (Add Track now shows the form)
+/* rebound.editor.js - Rebound Editor (v0.6.4)
+   FIX: Track picking selecting only scope
+   - When picking within a scope, we DRILL DOWN by geometry (getClientRects)
+     to find the deepest/smallest descendant under the cursor. This works even when:
+       - inner elements have pointer-events:none
+       - nesting is deep
+       - elements are hard to click
+   - Adds Child (↓) button + ArrowDown to drill down
    Picker:
    - selection on pointerdown (capture) + click blocked to prevent navigation
    - single: pointerdown selects (Shift+pointerdown locks/explore)
@@ -140,7 +146,7 @@
   // ---------------- DOM Explorer Picker ----------------
   const Picker = (() => {
     let overlay, label, scopeFrame, toolbar, crumbs, status;
-    let btnParent, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel;
+    let btnParent, btnChild, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel;
     let active = false;
 
     let mode = 'single';
@@ -154,6 +160,10 @@
     let scopeElement = null;
     let boundaryElement = null;
     let allowPickScope = true;
+
+    // track last pointer position for rect-based drill down
+    let lastX = 0;
+    let lastY = 0;
 
     const INTERNAL_UI_SEL =
       '.rb-panel, .rb-dock, .rb-pick-overlay, .rb-pick-label, .rb-scope-frame, .rb-pick-toolbar';
@@ -314,6 +324,7 @@
         const actions = h('div', { class: 'rb-pick-actions' });
 
         btnParent = h('button', { class: 'rb-pick-btn', text: 'Parent (↑)' });
+        btnChild = h('button', { class: 'rb-pick-btn', text: 'Child (↓)' });
         btnPrev = h('button', { class: 'rb-pick-btn', text: 'Prev (◀)' });
         btnNext = h('button', { class: 'rb-pick-btn', text: 'Next (▶)' });
         btnToggle = h('button', { class: 'rb-pick-btn primary', text: 'Select (Enter)' });
@@ -321,7 +332,7 @@
         btnDone = h('button', { class: 'rb-pick-btn primary', text: 'Done (Enter)' });
         btnCancel = h('button', { class: 'rb-pick-btn danger', text: 'Cancel (Esc)' });
 
-        actions.append(btnParent, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel);
+        actions.append(btnParent, btnChild, btnPrev, btnNext, btnToggle, btnContinue, btnDone, btnCancel);
         top.append(status, actions);
 
         crumbs = h('div', { class: 'rb-pick-crumbs' });
@@ -399,6 +410,73 @@
       return true;
     }
 
+    // --------- Rect-based drill-down (works even when hit-testing fails) ---------
+    function rectAreaAtPoint(el, x, y) {
+      if (!el || el.nodeType !== 1 || typeof el.getClientRects !== 'function') return null;
+      const rects = el.getClientRects();
+      if (!rects || rects.length === 0) return null;
+
+      let best = Infinity;
+      for (let i = 0; i < rects.length; i++) {
+        const r = rects[i];
+        const w = r.width;
+        const h = r.height;
+        if (w <= 0 || h <= 0) continue;
+        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+          const area = w * h;
+          if (area < best) best = area;
+        }
+      }
+      return best !== Infinity ? best : null;
+    }
+
+    function bestChildContaining(parent, x, y) {
+      if (!parent || parent.nodeType !== 1) return null;
+      const kids = parent.children;
+      if (!kids || kids.length === 0) return null;
+
+      let bestEl = null;
+      let bestArea = Infinity;
+
+      for (let i = 0; i < kids.length; i++) {
+        const ch = kids[i];
+        if (!elementAllowed(ch)) continue;
+        const area = rectAreaAtPoint(ch, x, y);
+        if (area == null) continue;
+        if (area < bestArea) {
+          bestArea = area;
+          bestEl = ch;
+        }
+      }
+      return bestEl;
+    }
+
+    function findBestDescendantAtPoint(root, x, y, { allowSelf = true } = {}) {
+      if (!root || root.nodeType !== 1) return null;
+
+      let best = null;
+      let cur = root;
+
+      if (allowSelf && elementAllowed(cur) && rectAreaAtPoint(cur, x, y) != null) best = cur;
+
+      // Drill down by repeatedly choosing the smallest child rect containing point
+      while (true) {
+        const child = bestChildContaining(cur, x, y);
+        if (!child) break;
+        best = child;
+        cur = child;
+      }
+      return best;
+    }
+
+    function drillDownFromCurrent() {
+      if (!current) return;
+      if (!Number.isFinite(lastX) || !Number.isFinite(lastY)) return;
+      const best = findBestDescendantAtPoint(current, lastX, lastY, { allowSelf: false });
+      if (best) setCurrent(best);
+    }
+
+    // --------- Hit stack (with scope drill-down) ----------
     function buildCandidateStack(e) {
       const out = [];
       const seen = new Set();
@@ -415,12 +493,12 @@
         add(e.target);
       }
 
-      const x = e?.clientX ?? 0;
-      const y = e?.clientY ?? 0;
+      const x = e?.clientX ?? lastX;
+      const y = e?.clientY ?? lastY;
 
-      if (document.elementsFromPoint) {
+      if (document.elementsFromPoint && Number.isFinite(x) && Number.isFinite(y)) {
         for (const n of document.elementsFromPoint(x, y)) add(n);
-      } else {
+      } else if (document.elementFromPoint && Number.isFinite(x) && Number.isFinite(y)) {
         add(document.elementFromPoint(x, y));
       }
 
@@ -434,6 +512,28 @@
       }
 
       return out;
+    }
+
+    function getBestStack(e) {
+      const x = e?.clientX;
+      const y = e?.clientY;
+      if (Number.isFinite(x)) lastX = x;
+      if (Number.isFinite(y)) lastY = y;
+
+      let st = buildCandidateStack(e);
+
+      // KEY FIX:
+      // If we are scope-constrained (track picking), drill down by geometry so we can pick inner elements
+      // even when hit-testing returns only the scope/parent.
+      if (scopeElement && Number.isFinite(lastX) && Number.isFinite(lastY)) {
+        const seed = st.length ? st[0] : scopeElement;
+        const drilled = findBestDescendantAtPoint(seed, lastX, lastY, { allowSelf: true });
+        if (drilled) {
+          st = [drilled, ...st.filter((n) => n !== drilled)];
+        }
+      }
+
+      return st;
     }
 
     function buildBreadcrumb(el) {
@@ -482,14 +582,14 @@
         btnContinue.style.display = 'none';
         btnDone.style.display = 'none';
         status.textContent =
-          `[${lockHint}] ${curLabel} • ${stackHint} • PointerDown selects • Shift+PointerDown locks • Parent/crumbs • Enter selects • Esc cancels`;
+          `[${lockHint}] ${curLabel} • ${stackHint} • PointerDown selects • Child↓ • Shift locks • Parent↑ • Prev/Next • Enter • Esc`;
       } else {
         btnToggle.style.display = 'inline-block';
         btnToggle.textContent = selected.has(current) ? `Remove (${count})` : `Add (${count})`;
         btnContinue.style.display = 'inline-block';
         btnDone.style.display = 'inline-block';
         status.textContent =
-          `[${lockHint}] ${curLabel} • Selected ${count} • ${stackHint} • PointerDown toggles • Shift+PointerDown locks • Parent/crumbs • Enter done • Esc cancels`;
+          `[${lockHint}] ${curLabel} • Selected ${count} • ${stackHint} • PointerDown toggles • Child↓ • Shift locks • Parent↑ • Enter done • Esc`;
       }
 
       renderBreadcrumb();
@@ -582,6 +682,7 @@
       updateToolbar();
 
       btnParent.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; chooseParent(); };
+      btnChild.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; drillDownFromCurrent(); };
       btnPrev.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; cycle(-1); };
       btnNext.onclick = (ev) => { ev.preventDefault(); ev.stopPropagation(); locked = true; cycle(+1); };
 
@@ -603,8 +704,13 @@
 
       function onMove(e) {
         if (scopeElement) setScopeFrame();
+        if (!e) return;
+        if (Number.isFinite(e.clientX)) lastX = e.clientX;
+        if (Number.isFinite(e.clientY)) lastY = e.clientY;
+
         if (locked) return;
-        stack = buildCandidateStack(e);
+
+        stack = getBestStack(e);
         stackIndex = 0;
         if (stack.length) setCurrent(stack[0]);
       }
@@ -626,7 +732,10 @@
         e.stopPropagation();
         e.stopImmediatePropagation?.();
 
-        stack = buildCandidateStack(e);
+        if (Number.isFinite(e.clientX)) lastX = e.clientX;
+        if (Number.isFinite(e.clientY)) lastY = e.clientY;
+
+        stack = getBestStack(e);
         stackIndex = 0;
         const el = stack.length ? stack[0] : null;
         if (!el) return;
@@ -660,6 +769,7 @@
           return;
         }
         if (e.key === 'ArrowUp') { locked = true; chooseParent(); return; }
+        if (e.key === 'ArrowDown') { locked = true; drillDownFromCurrent(); return; }
         if (e.key === '[') { locked = true; cycle(-1); return; }
         if (e.key === ']') { locked = true; cycle(+1); return; }
 
@@ -1299,7 +1409,7 @@
           h('div', { class: 'rb-pill', text: '--enter/exit auto' }),
         ]),
         h('div', { class: 'rb-row' }, [scopeInput, pickScopeBtn]),
-        h('div', { class: 'rb-muted', text: 'Selection is on PointerDown. Shift+PointerDown locks for Parent/breadcrumb traversal.' }),
+        h('div', { class: 'rb-muted', text: 'Track picker is now rect-based within scope: it drills down to the smallest inner element under your cursor.' }),
       ]));
 
       // Tracks list
@@ -1363,7 +1473,7 @@
         list,
       ]));
 
-      // ✅ Track editor form (THIS IS THE PART THAT WAS MISSING BEFORE)
+      // Track editor form
       let trackEditorEl = null;
       if (this.editingTrackIndex >= 0 && tracks[this.editingTrackIndex]) {
         trackEditorEl = this._renderTrackEditor(anim, tracks[this.editingTrackIndex]);
@@ -1492,7 +1602,7 @@
         targetInput,
         h('div', { class: 'rb-row' }, [pickSingleBtn, pickMultiBtn, clearTargetsBtn]),
         h('div', { class: 'rb-row' }, [withinCb, h('div', { class: 'rb-muted', text: 'Within scope' })]),
-        h('div', { class: 'rb-muted', text: 'Tip: PointerDown selects. Shift+PointerDown locks so you can Parent/breadcrumb up.' }),
+        h('div', { class: 'rb-muted', text: 'Track picker now drills down by geometry inside the scope. Use Child (↓) / ArrowDown to go deeper.' }),
       ]));
 
       const triggerTypeSelect = h('select', {
@@ -1540,7 +1650,7 @@
           predicate: pred,
           scopeElement: scopeEl,
           boundaryElement: scopeEl,
-          allowPickScope: true,
+          allowPickScope: true, // you can still pick :scope if you want
           onPick: (picked) => {
             try {
               const toSel = (el) => (el === scopeEl ? ':scope' : makeSelectorWithinRoot(scopeEl, el));
