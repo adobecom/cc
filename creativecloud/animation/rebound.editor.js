@@ -1,12 +1,16 @@
-/* rebound.editor.js - Rebound Editor (Improved Picker, Multi-Select, DOM Walker) */
+/* rebound.editor.js - Complete Rebound Editor v0.5.1
+   - Includes Advanced Picker (Multi-select, DOM Walker)
+   - Restores JSON upload/download
+   - Fixes "Editor doesn't reappear" bug
+*/
 (() => {
   'use strict';
 
   const RB = (window.Rebound = window.Rebound || {});
-  if (!RB.Runtime) console.warn('[ReboundEditor] Load rebound.runtime.js first');
+  if (!RB.Runtime) console.warn('[Rebound] Load runtime first.');
 
-  const DEFAULT_STORAGE_KEY = 'rebound:config:v1';
-  const UI_STORAGE_KEY = 'rebound:ui:v1';
+  const STORAGE_KEY = 'rebound:config:v1';
+  const UI_KEY = 'rebound:ui:v1';
 
   // ---------------- Utilities ----------------
   function h(tag, attrs = {}, children = []) {
@@ -26,545 +30,479 @@
     return el;
   }
 
-  function cssEscape(s) {
-    if (window.CSS?.escape) return CSS.escape(s);
-    return String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+  function safeJson(t) { try { return JSON.parse(t); } catch { return null; } }
+  function cssEsc(s) { return window.CSS?.escape ? CSS.escape(s) : String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&'); }
+  
+  function downloadFile(name, text) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], {type:'application/json'}));
+    a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
   }
 
-  function safeParseJson(text) {
-    try { return JSON.parse(text); } catch { return null; }
-  }
-
-  function elLabel(el) {
-    if (!el || el.nodeType !== 1) return '';
-    const tag = el.tagName.toLowerCase();
-    const id = el.id ? `#${el.id}` : '';
-    const cls = el.classList && el.classList.length ? '.' + Array.from(el.classList).slice(0, 3).join('.') : '';
-    return `${tag}${id}${cls}`;
-  }
-
-  // Generates a selector for a specific element relative to root
-  function getSingleSelector(root, el) {
+  // Generates selector. If unique ID, use it. Else path.
+  function getSelector(root, el) {
     if (!root || !el) return '';
     if (el === root) return ':scope';
-
-    if (el.id) {
-      const sel = `#${cssEscape(el.id)}`;
-      // Ensure ID is unique in document or fall back
-      if (document.querySelectorAll(sel).length === 1) return sel;
-    }
-
+    if (el.id && document.querySelectorAll(`#${cssEsc(el.id)}`).length === 1) return `#${cssEsc(el.id)}`;
+    
     const parts = [];
     let cur = el;
     while (cur && cur.nodeType === 1 && cur !== root) {
-      const tag = cur.tagName.toLowerCase();
       const parent = cur.parentElement;
       if (!parent) break;
+      const sibs = Array.from(parent.children);
+      const tag = cur.tagName.toLowerCase();
       
-      const siblings = Array.from(parent.children);
-      const sameTag = siblings.filter(s => s.tagName.toLowerCase() === tag);
-      
-      if (cur.classList.length > 0) {
-        // Try class
-        const cls = '.' + cssEscape(cur.classList[0]);
+      if (cur.className) {
+        const cls = '.' + cur.classList[0]; // try first class
         if (parent.querySelectorAll(cls).length === 1) {
-          parts.unshift(cls);
-        } else {
-          // Class + nth-child fallback
-          const idx = siblings.indexOf(cur) + 1;
-          parts.unshift(`${tag}:nth-child(${idx})`);
+            parts.unshift(cls);
+            cur = parent;
+            continue;
         }
-      } else {
-         const idx = siblings.indexOf(cur) + 1;
-         parts.unshift(`${tag}:nth-child(${idx})`);
       }
+      const idx = sibs.indexOf(cur) + 1;
+      parts.unshift(`${tag}:nth-child(${idx})`);
       cur = parent;
     }
     parts.unshift(':scope');
     return parts.join(' > ');
   }
 
-  // Generates a combined selector for multiple elements
+  // Generates comma-separated selector for multi-select
   function generateMultiSelector(root, elements) {
-    if (!elements || elements.length === 0) return '';
-    
-    // De-dupe
     const unique = Array.from(new Set(elements));
-    
-    // If just one
-    if (unique.length === 1) return getSingleSelector(root, unique[0]);
-
-    // Simple strategy: Comma separated specific paths
-    // A smarter strategy would check for common classes, but that's risky if the class exists elsewhere.
-    return unique.map(el => getSingleSelector(root, el).replace(':scope > ', '')).join(', ');
+    if (!unique.length) return '';
+    return unique.map(el => getSelector(root, el).replace(/^:scope > /, '')).join(', ');
   }
 
   function defaultConfig() {
-    return { version: 1, settings: { navHeight: 64 }, animations: [{ name: 'animation-1', scopeSelector: '', tracks: [] }] };
+    return { version: 1, settings: { navHeight: 64 }, animations: [{ name: 'anim-1', scopeSelector: 'body', tracks: [] }] };
   }
-
   function newTrack() {
-    return {
-      targetSelector: '', withinScope: true,
-      trigger: { type: 'scroll', progress: 'exit', start: 0, end: 100 },
-      engine: 'css', properties: [{ type: 'translateY', from: 0, to: 100, unit: 'px' }],
-    };
+    return { targetSelector: '', withinScope: true, trigger: { type: 'scroll', progress: 'exit', start:0, end:100 }, engine: 'css', properties: [] };
   }
 
   // ---------------- Advanced Picker ----------------
   const Picker = (() => {
-    let overlayContainer, hud, active = false;
-    let currentHover = null;
-    let selectedSet = new Set();
-    let options = {};
-    let onRenderHUD = null; // callback to refresh hud
+    let overlay, hud, active = false, options = {};
+    let selectedSet = new Set(), currentHover = null;
 
     function ensureCss() {
       if (document.getElementById('rb-picker-css')) return;
       const s = document.createElement('style');
       s.id = 'rb-picker-css';
       s.textContent = `
-        .rb-pick-overlay-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2147483645; }
-        .rb-pick-box { position: absolute; border: 2px solid #5b7cff; background: rgba(91,124,255,0.1); border-radius: 4px; pointer-events: none; transition: all 0.05s ease; }
-        .rb-pick-box.hover { border-color: #5b7cff; border-style: dashed; z-index: 2; }
-        .rb-pick-box.selected { border-color: #2ecc71; background: rgba(46,204,113,0.15); border-style: solid; z-index: 1; }
-        
-        .rb-pick-hud {
-          position: fixed; z-index: 2147483646;
-          background: #11152a; border: 1px solid #2a2f45; border-radius: 12px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-          padding: 8px; font-family: sans-serif; display: flex; flex-direction: column; gap: 8px;
-          color: #fff; width: 260px; pointer-events: auto;
-          bottom: 20px; left: 50%; transform: translateX(-50%);
-        }
-        .rb-hud-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-        .rb-hud-title { font-size: 11px; font-weight: bold; color: #7c5cff; text-transform: uppercase; letter-spacing: 0.5px; }
-        .rb-hud-label { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
-        .rb-hud-btn {
-          background: #1d2236; border: 1px solid #2a2f45; color: #ccc; border-radius: 6px;
-          padding: 4px 8px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-        .rb-hud-btn:hover { background: #2a2f45; color: #fff; }
-        .rb-hud-btn.primary { background: #5b7cff; border-color: #5b7cff; color: #fff; }
-        .rb-hud-crumbs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 4px; }
-        .rb-crumb { font-size: 10px; color: #888; cursor: pointer; padding: 2px 4px; border-radius: 4px; background: #0c0f1b; white-space: nowrap; }
-        .rb-crumb:hover { background: #2a2f45; color: #fff; }
+        .rb-p-ov { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2147483645; }
+        .rb-p-box { position:absolute; border:2px solid #5b7cff; background:rgba(91,124,255,0.1); border-radius:4px; pointer-events:none; transition:all 0.1s; }
+        .rb-p-box.sel { border-color:#2ecc71; background:rgba(46,204,113,0.15); z-index:2; }
+        .rb-p-hud { position:fixed; z-index:2147483646; bottom:30px; left:50%; transform:translateX(-50%); background:#11152a; border:1px solid #2a2f45; border-radius:12px; padding:10px; width:280px; font-family:sans-serif; color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.5); pointer-events:auto; display:flex; flex-direction:column; gap:8px; }
+        .rb-p-row { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+        .rb-p-btn { background:#1d2236; border:1px solid #2a2f45; color:#ccc; border-radius:6px; padding:6px 10px; font-size:12px; cursor:pointer; flex:1; text-align:center; }
+        .rb-p-btn:hover { background:#2a2f45; color:#fff; }
+        .rb-p-btn.pri { background:#5b7cff; border-color:#5b7cff; color:#fff; }
+        .rb-p-crumbs { display:flex; gap:4px; overflow-x:auto; padding-bottom:4px; }
+        .rb-p-crumb { font-size:10px; padding:2px 5px; background:#0c0f1b; border-radius:4px; white-space:nowrap; cursor:pointer; }
+        .rb-p-crumb:hover { background:#5b7cff; }
       `;
       document.head.appendChild(s);
     }
 
-    function createBox(el, type) {
-      const r = el.getBoundingClientRect();
-      const div = document.createElement('div');
-      div.className = `rb-pick-box ${type}`;
-      div.style.left = `${r.left}px`;
-      div.style.top = `${r.top}px`;
-      div.style.width = `${r.width}px`;
-      div.style.height = `${r.height}px`;
-      return div;
-    }
-
-    function renderOverlay() {
-      if (!overlayContainer) return;
-      overlayContainer.innerHTML = '';
-      
-      // Render selected
-      selectedSet.forEach(el => {
-        if(el.isConnected) overlayContainer.appendChild(createBox(el, 'selected'));
-      });
-
-      // Render hover
-      if (currentHover && currentHover.isConnected && !selectedSet.has(currentHover)) {
-        overlayContainer.appendChild(createBox(currentHover, 'hover'));
-      }
-    }
-
-    function renderHUD() {
-      if (!hud) return;
+    function render() {
+      if (!overlay || !hud) return;
+      overlay.innerHTML = '';
       hud.innerHTML = '';
+
+      // Overlay Boxes
+      const draw = (el, cls) => {
+        if (!el.isConnected) return;
+        const r = el.getBoundingClientRect();
+        overlay.appendChild(h('div', { class:`rb-p-box ${cls}`, style:`left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px` }));
+      };
+      selectedSet.forEach(el => draw(el, 'sel'));
+      if (currentHover && !selectedSet.has(currentHover)) draw(currentHover, '');
+
+      // HUD
+      const target = currentHover || Array.from(selectedSet).pop();
+      const name = target ? (target.tagName.toLowerCase() + (target.id?`#${target.id}` : (target.classList.length?`.${target.classList[0]}`:''))) : 'Hover to select';
       
-      const target = currentHover || (selectedSet.size > 0 ? Array.from(selectedSet)[selectedSet.size-1] : null);
-      
-      // 1. Breadcrumbs
+      // Breadcrumbs
       if (target) {
-        const crumbs = h('div', { class: 'rb-hud-crumbs' });
-        let p = target;
-        const list = [];
-        while(p && p !== document.body && list.length < 5) {
-          list.unshift(p);
-          p = p.parentElement;
+        const crumbs = h('div', { class:'rb-p-crumbs' });
+        let p = target, c = 0;
+        while(p && p!==document.body && c++ < 5) {
+            const el = p; 
+            crumbs.prepend(h('div', { class:'rb-p-crumb', text: el.tagName.toLowerCase(), onClick:(e)=>{e.stopPropagation(); setHover(el);} }));
+            p = p.parentElement;
         }
-        list.forEach(el => {
-          crumbs.appendChild(h('div', { 
-            class: 'rb-crumb', 
-            text: el.tagName.toLowerCase() + (el.id?`#${el.id}`:''),
-            onClick: (e) => { e.stopPropagation(); setHover(el); }
-          }));
-        });
         hud.appendChild(crumbs);
       }
 
-      // 2. Target Info
-      hud.appendChild(h('div', { class: 'rb-hud-row' }, [
-        h('div', { class: 'rb-hud-label', text: target ? elLabel(target) : 'Hover an element...' }),
-        h('div', { class: 'rb-hud-title', text: target ? `${Math.round(target.getBoundingClientRect().width)}x${Math.round(target.getBoundingClientRect().height)}` : '' })
+      hud.appendChild(h('div', { class:'rb-p-row' }, [
+        h('div', { style:'font-weight:bold;font-size:13px', text: name }),
+        h('div', { style:'font-size:11px;color:#888', text: target ? `${Math.round(target.offsetWidth)}x${Math.round(target.offsetHeight)}` : '' })
       ]));
 
-      // 3. Walker Controls
+      // Walker
       if (target) {
-        const walk = (dir) => {
-          let n = null;
-          if (dir === 'up') n = target.parentElement;
-          if (dir === 'down') n = target.firstElementChild;
-          if (dir === 'prev') n = target.previousElementSibling;
-          if (dir === 'next') n = target.nextElementSibling;
-          if (n && n.nodeType === 1) setHover(n);
-        };
-        
-        hud.appendChild(h('div', { class: 'rb-hud-row', style: 'justify-content: center; margin-top:4px;' }, [
-          h('button', { class: 'rb-hud-btn', html: '&uarr; Parent', onClick: () => walk('up') }),
-          h('button', { class: 'rb-hud-btn', html: '&darr; Child', onClick: () => walk('down') }),
-          h('button', { class: 'rb-hud-btn', html: '&larr;', onClick: () => walk('prev') }),
-          h('button', { class: 'rb-hud-btn', html: '&rarr;', onClick: () => walk('next') }),
-        ]));
+         const walk = (d) => {
+             let n;
+             if(d=='u') n=target.parentElement;
+             if(d=='d') n=target.firstElementChild;
+             if(d=='p') n=target.previousElementSibling;
+             if(d=='n') n=target.nextElementSibling;
+             if(n && n.nodeType===1) setHover(n);
+         };
+         hud.appendChild(h('div', { class:'rb-p-row' }, [
+             h('button', { class:'rb-p-btn', html:'&uarr;', onClick:()=>walk('u') }),
+             h('button', { class:'rb-p-btn', html:'&darr;', onClick:()=>walk('d') }),
+             h('button', { class:'rb-p-btn', html:'&larr;', onClick:()=>walk('p') }),
+             h('button', { class:'rb-p-btn', html:'&rarr;', onClick:()=>walk('n') }),
+         ]));
       }
 
-      // 4. Action
+      // Actions
       const isSel = target && selectedSet.has(target);
-      const selCount = selectedSet.size;
-      
-      const toggleBtn = h('button', {
-        class: `rb-hud-btn ${isSel ? '' : 'primary'}`,
-        style: 'flex:1',
-        text: isSel ? 'Deselect' : 'Select',
-        onClick: (e) => {
-          e.stopPropagation();
-          if (!target) return;
-          if (selectedSet.has(target)) selectedSet.delete(target);
-          else selectedSet.add(target);
-          renderOverlay();
-          renderHUD();
-        }
+      const btnSel = h('button', { 
+          class:`rb-p-btn ${isSel?'':'pri'}`, 
+          text: isSel ? 'Deselect' : 'Select',
+          onClick: (e) => { e.stopPropagation(); if(target) { if(isSel) selectedSet.delete(target); else selectedSet.add(target); render(); } }
       });
+      const btnDone = h('button', { class:'rb-p-btn pri', text:`Done (${selectedSet.size})`, onClick: finish });
 
-      const doneBtn = h('button', {
-        class: 'rb-hud-btn primary',
-        style: 'flex:1',
-        text: `Done (${selCount})`,
-        onClick: () => finalize()
-      });
-
-      hud.appendChild(h('div', { class: 'rb-hud-row', style: 'margin-top:8px; border-top:1px solid #2a2f45; padding-top:8px;' }, [
-        toggleBtn, doneBtn
-      ]));
+      hud.appendChild(h('div', { class:'rb-p-row', style:'margin-top:5px;border-top:1px solid #2a2f45;padding-top:8px' }, [ btnSel, btnDone ]));
     }
 
-    function setHover(el) {
-      if (currentHover !== el) {
-        currentHover = el;
-        renderOverlay();
-        renderHUD();
-      }
+    function setHover(el) { if(currentHover !== el) { currentHover = el; render(); } }
+    function finish() { cleanup(); options.onPick?.(Array.from(selectedSet)); }
+    function cleanup() {
+      active = false;
+      overlay?.remove(); hud?.remove();
+      window.removeEventListener('mousemove', onMove, true);
+      window.removeEventListener('click', onClick, true);
+      window.removeEventListener('keydown', onKey, true);
+      window.removeEventListener('scroll', render, true);
     }
 
-    function finalize() {
-      cleanup();
-      options.onPick?.(Array.from(selectedSet));
-    }
-
-    function start({ ignoreSelector, onPick, onCancel }) {
-      if (active) return;
-      active = true;
-      options = { ignoreSelector, onPick, onCancel };
-      ensureCss();
-
-      selectedSet = new Set();
-      overlayContainer = h('div', { class: 'rb-pick-overlay-container' });
-      hud = h('div', { class: 'rb-pick-hud' });
-      
-      document.body.appendChild(overlayContainer);
-      document.body.appendChild(hud);
-
-      renderHUD();
-
-      const move = (e) => {
+    const onMove = (e) => {
         const el = document.elementFromPoint(e.clientX, e.clientY);
-        if (!el) return;
-        // Ignore internal UI
-        if (el.closest('.rb-pick-hud') || (ignoreSelector && el.closest(ignoreSelector))) return;
+        if(!el || el.closest('.rb-p-hud') || (options.ignore && el.closest(options.ignore))) return;
         setHover(el);
-      };
-
-      const click = (e) => {
-        if (e.target.closest('.rb-pick-hud')) return; // Allow HUD clicks
+    };
+    const onClick = (e) => {
+        if(e.target.closest('.rb-p-hud')) return;
         e.preventDefault(); e.stopPropagation();
-        
         const el = document.elementFromPoint(e.clientX, e.clientY);
-        if (!el || (ignoreSelector && el.closest(ignoreSelector))) return;
-        
-        // Shift key to remove, otherwise add/toggle
-        if (e.shiftKey) {
-          if (selectedSet.has(el)) selectedSet.delete(el);
-        } else {
-          // If simply clicking, toggle
-          if (selectedSet.has(el)) selectedSet.delete(el);
-          else selectedSet.add(el);
-        }
-        renderOverlay();
-        renderHUD();
-      };
+        if(!el || (options.ignore && el.closest(options.ignore))) return;
+        if(selectedSet.has(el)) selectedSet.delete(el); else selectedSet.add(el);
+        render();
+    };
+    const onKey = (e) => {
+        if(e.key === 'Escape') { cleanup(); options.onCancel?.(); }
+        if(e.key === 'Enter') finish();
+    };
 
-      const key = (e) => {
-        if (e.key === 'Escape') {
-          cleanup();
-          onCancel?.();
-        }
-        if (e.key === 'Enter') finalize();
-      };
-
-      window.addEventListener('mousemove', move, true);
-      window.addEventListener('click', click, true);
-      window.addEventListener('keydown', key, true);
-
-      // Scroll listener to update boxes
-      window.addEventListener('scroll', renderOverlay, { passive: true, capture: true });
-
-      function cleanup() {
-        active = false;
-        overlayContainer.remove();
-        hud.remove();
-        window.removeEventListener('mousemove', move, true);
-        window.removeEventListener('click', click, true);
-        window.removeEventListener('keydown', key, true);
-        window.removeEventListener('scroll', renderOverlay, true);
+    return {
+      pick: (opts) => {
+        if(active) return;
+        active = true; options = opts; selectedSet = new Set();
+        ensureCss();
+        overlay = h('div', { class:'rb-p-ov' });
+        hud = h('div', { class:'rb-p-hud' });
+        document.body.appendChild(overlay);
+        document.body.appendChild(hud);
+        render();
+        window.addEventListener('mousemove', onMove, true);
+        window.addEventListener('click', onClick, true);
+        window.addEventListener('keydown', onKey, true);
+        window.addEventListener('scroll', render, {passive:true, capture:true});
       }
-    }
-
-    return { pick: start };
+    };
   })();
 
   // ---------------- Editor UI ----------------
   class ReboundEditor {
-    constructor({ openButton, storageKey = DEFAULT_STORAGE_KEY, onSave } = {}) {
+    constructor({ openButton, storageKey = STORAGE_KEY, onSave } = {}) {
       this.storageKey = storageKey;
       this.onSave = onSave;
-      this.config = this._loadConfig() || defaultConfig();
-      this.selectedAnimIndex = 0;
-      this.editingTrackIndex = -1;
+      this.config = safeJson(localStorage.getItem(this.storageKey)) || defaultConfig();
+      this.selAnimIdx = 0;
+      this.editTrackIdx = -1;
+      this.jsonVisible = false;
+
+      if(openButton) openButton.addEventListener('click', () => this.open());
       
-      if (openButton) openButton.addEventListener('click', () => this.open());
+      const ui = safeJson(localStorage.getItem(UI_KEY));
+      if(ui?.minimized) this.showDock();
       
-      const ui = this._loadUi();
-      if (ui?.minimized) this._showDock();
-      
-      // Auto-inject CSS
+      this.injectStyles();
+      // Auto-update runtime
+      try{ RB.Runtime?.mountSingleton?.(this.config); }catch{}
+    }
+
+    injectStyles() {
+      if(document.getElementById('rb-css')) return;
       const s = document.createElement('style');
-      s.id = 'rb-editor-css';
+      s.id = 'rb-css';
       s.textContent = `
-        :root{ --rb-bg:#0f111a; --rb-border:#2a2f45; --rb-text:#f5f7ff; --rb-accent:#5b7cff; }
-        .rb-panel{ position:fixed; z-index:2147483647; width:480px; max-height:85vh; background:#11152a; border:1px solid var(--rb-border); border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.7); color:var(--rb-text); font-family:system-ui,sans-serif; display:flex; flex-direction:column; }
-        .rb-panel *{ box-sizing:border-box; }
-        .rb-header{ padding:12px; background:#0c0f1b; border-bottom:1px solid var(--rb-border); display:flex; justify-content:space-between; align-items:center; cursor:grab; border-radius:12px 12px 0 0; }
-        .rb-body{ padding:16px; overflow-y:auto; flex:1; }
-        .rb-section{ background:#151a2e; border:1px solid var(--rb-border); border-radius:8px; padding:12px; margin-bottom:12px; }
-        .rb-row{ display:flex; gap:10px; align-items:center; }
-        .rb-col{ display:flex; flex-direction:column; gap:6px; flex:1; }
-        .rb-btn{ background:#1d2236; border:1px solid var(--rb-border); color:var(--rb-text); padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; }
-        .rb-btn:hover{ background:#2a2f45; }
-        .rb-btn.primary{ background:var(--rb-accent); border-color:var(--rb-accent); color:#fff; }
-        .rb-input, .rb-select{ background:#0c0f1b; border:1px solid var(--rb-border); color:var(--rb-text); padding:8px; border-radius:6px; width:100%; font-size:13px; outline:none; }
-        .rb-input:focus{ border-color:var(--rb-accent); }
-        .rb-label{ font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.5px; }
-        .rb-dock{ position:fixed; bottom:20px; right:20px; z-index:2147483647; background:#11152a; padding:10px 16px; border-radius:30px; border:1px solid var(--rb-border); display:flex; gap:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); color:#fff; align-items:center; cursor:pointer; }
+        .rb-panel { position:fixed; z-index:2147483647; background:#11152a; border:1px solid #2a2f45; border-radius:12px; color:#f5f7ff; width:500px; max-height:85vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.6); font-family:system-ui,sans-serif; }
+        .rb-head { padding:12px; border-bottom:1px solid #2a2f45; background:#0c0f1b; display:flex; justify-content:space-between; align-items:center; cursor:grab; border-radius:12px 12px 0 0; }
+        .rb-body { padding:12px; overflow-y:auto; flex:1; }
+        .rb-sec { background:#151a2e; border:1px solid #2a2f45; border-radius:8px; padding:12px; margin-bottom:10px; }
+        .rb-row { display:flex; gap:10px; align-items:center; }
+        .rb-col { display:flex; flex-direction:column; gap:6px; flex:1; }
+        .rb-btn { background:#1d2236; border:1px solid #2a2f45; color:#ccc; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; white-space:nowrap; }
+        .rb-btn:hover { background:#2a2f45; color:#fff; }
+        .rb-btn.pri { background:#5b7cff; border-color:#5b7cff; color:#fff; }
+        .rb-btn.dan { border-color:#ff5a7a; color:#ff5a7a; background:rgba(255,90,122,0.1); }
+        .rb-inp, .rb-sel { background:#0c0f1b; border:1px solid #2a2f45; color:#fff; padding:8px; border-radius:6px; width:100%; outline:none; font-size:13px; }
+        .rb-lbl { font-size:11px; color:#888; text-transform:uppercase; font-weight:bold; }
+        .rb-dock { position:fixed; bottom:20px; right:20px; z-index:2147483647; background:#11152a; padding:10px; border-radius:30px; border:1px solid #2a2f45; cursor:pointer; display:flex; align-items:center; gap:10px; color:#fff; box-shadow:0 5px 20px rgba(0,0,0,0.5); }
       `;
       document.head.appendChild(s);
     }
 
-    _loadConfig() { return safeParseJson(localStorage.getItem(this.storageKey)); }
-    _saveConfig() { 
+    save() {
       localStorage.setItem(this.storageKey, JSON.stringify(this.config));
       try{ RB.Runtime?.mountSingleton?.(this.config); }catch{}
     }
-    _loadUi() { return safeParseJson(localStorage.getItem(UI_STORAGE_KEY)); }
-    _saveUi(s) { localStorage.setItem(UI_STORAGE_KEY, JSON.stringify(s)); }
 
     open() {
-      if (!this.panel) {
-        this.panel = h('div', { class: 'rb-panel' }, [
-          h('div', { class: 'rb-header', onPointerDown:(e)=>this._drag(e) }, [
-            h('div', { style:'font-weight:bold', text: 'Rebound Editor' }),
-            h('div', { class: 'rb-row' }, [
-              h('button', { class:'rb-btn', text:'Min', onClick:()=>this.minimize() }),
-              h('button', { class:'rb-btn', text:'Close', onClick:()=>this.close() })
-            ])
+      if(!this.panel) {
+        this.panel = h('div', { class:'rb-panel' }, [
+          h('div', { class:'rb-head', onPointerDown:e=>this.drag(e) }, [
+             h('div', { style:'font-weight:bold', text:'Rebound Editor' }),
+             h('div', { class:'rb-row' }, [
+               h('button', { class:'rb-btn', text:'Min', onClick:()=>this.minimize() }),
+               h('button', { class:'rb-btn', text:'Close', onClick:()=>this.close() })
+             ])
           ]),
           (this.body = h('div', { class:'rb-body' }))
         ]);
         document.body.appendChild(this.panel);
-        this._restorePos();
+        this.restorePos();
         this.render();
       }
       this.panel.style.display = 'flex';
-      this._hideDock();
+      if(this.dock) this.dock.style.display = 'none';
+      localStorage.setItem(UI_KEY, JSON.stringify({minimized:false}));
     }
-    
+
     close() { if(this.panel) this.panel.style.display='none'; }
-    minimize() { if(this.panel) this.panel.style.display='none'; this._showDock(); this._saveUi({minimized:true}); }
-    
-    _showDock() {
+    minimize() { if(this.panel) this.panel.style.display='none'; this.showDock(); }
+    showDock() {
       if(!this.dock) {
-        this.dock = h('div', { class:'rb-dock', onClick:()=>{this.open(); this._hideDock();} }, [
-          h('div', { text:'Rebound' }), h('div', { style:'font-size:10px;opacity:0.6', text:'(Click to open)' })
+        this.dock = h('div', { class:'rb-dock', onClick:()=>this.open() }, [
+          h('div', { text:'⚡ Rebound' })
         ]);
         document.body.appendChild(this.dock);
       }
       this.dock.style.display = 'flex';
+      localStorage.setItem(UI_KEY, JSON.stringify({minimized:true}));
     }
-    _hideDock() { if(this.dock) this.dock.style.display='none'; }
 
-    _drag(e) {
+    drag(e) {
       if(e.target.tagName==='BUTTON') return;
       e.target.setPointerCapture(e.pointerId);
-      const startX = e.clientX - this.panel.offsetLeft;
-      const startY = e.clientY - this.panel.offsetTop;
-      const move = (ev) => {
-        this.panel.style.left = Math.max(0, ev.clientX - startX) + 'px';
-        this.panel.style.top = Math.max(0, ev.clientY - startY) + 'px';
+      const dx = e.clientX - this.panel.offsetLeft;
+      const dy = e.clientY - this.panel.offsetTop;
+      const move = ev => {
+        this.panel.style.left = Math.max(0,ev.clientX-dx)+'px';
+        this.panel.style.top = Math.max(0,ev.clientY-dy)+'px';
       };
       const up = () => {
         window.removeEventListener('pointermove', move);
         window.removeEventListener('pointerup', up);
-        this._saveUi({ minimized:false, pos:{left:this.panel.style.left, top:this.panel.style.top} });
+        localStorage.setItem(UI_KEY, JSON.stringify({minimized:false, pos:{left:this.panel.style.left, top:this.panel.style.top}}));
       };
       window.addEventListener('pointermove', move);
       window.addEventListener('pointerup', up);
     }
-    _restorePos() {
-      const ui = this._loadUi();
-      if(ui?.pos) { this.panel.style.left=ui.pos.left; this.panel.style.top=ui.pos.top; }
-      else { this.panel.style.left='20px'; this.panel.style.top='20px'; }
+    restorePos() {
+      const u = safeJson(localStorage.getItem(UI_KEY));
+      this.panel.style.left = u?.pos?.left || '20px';
+      this.panel.style.top = u?.pos?.top || '20px';
+    }
+
+    // Helper to hide editor while picking
+    pick(opts) {
+      this.panel.style.display = 'none';
+      Picker.pick({
+        ignore: '.rb-panel, .rb-dock',
+        onPick: (els) => { this.panel.style.display = 'flex'; opts.onPick(els); },
+        onCancel: () => { this.panel.style.display = 'flex'; }
+      });
     }
 
     render() {
       if(!this.body) return;
       this.body.innerHTML = '';
-      const anim = this.config.animations[this.selectedAnimIndex] || this.config.animations[0];
+      const anim = this.config.animations[this.selAnimIdx] || this.config.animations[0];
 
-      // Scope Picker
-      const scopeRow = h('div', { class: 'rb-section' }, [
-        h('div', { class:'rb-label', text:'Animation Scope' }),
+      // 1. Settings
+      this.body.appendChild(h('div', { class:'rb-sec' }, [
         h('div', { class:'rb-row' }, [
-          h('input', { class:'rb-input', value:anim.scopeSelector||'', placeholder:'e.g. body', onInput:(e)=>{anim.scopeSelector=e.target.value; this._saveConfig();} }),
-          h('button', { class:'rb-btn', text:'Pick', onClick:()=> {
-            this.panel.style.display='none';
-            Picker.pick({ ignoreSelector:'.rb-panel, .rb-dock', onCancel:()=>this.panel.style.display='flex', onPick:(els)=>{
-              this.panel.style.display='flex';
-              if(els.length) {
-                anim.scopeSelector = getSingleSelector(document, els[0]);
-                this._saveConfig(); this.render();
-              }
-            }});
-          }})
+          h('div', { class:'rb-col' }, [ h('div', { class:'rb-lbl', text:'Animation Name' }), h('input', { class:'rb-inp', value:anim.name, onInput:e=>{anim.name=e.target.value; this.save();} }) ]),
+          h('div', { class:'rb-col' }, [ h('div', { class:'rb-lbl', text:'Nav Height' }), h('input', { class:'rb-inp', type:'number', value:this.config.settings?.navHeight||0, onInput:e=>{this.config.settings.navHeight=Number(e.target.value); this.save();} }) ]),
         ])
-      ]);
-      this.body.appendChild(scopeRow);
+      ]));
 
-      // Track List
-      const trackList = h('div', { class:'rb-col' });
+      // 2. Scope
+      this.body.appendChild(h('div', { class:'rb-sec' }, [
+        h('div', { class:'rb-lbl', text:'Scope Selector' }),
+        h('div', { class:'rb-row' }, [
+          h('input', { class:'rb-inp', value:anim.scopeSelector, onInput:e=>{anim.scopeSelector=e.target.value; this.save();} }),
+          h('button', { class:'rb-btn', text:'Pick', onClick:() => this.pick({ onPick: els => {
+            if(els.length) { anim.scopeSelector = getSelector(document, els[0]); this.save(); this.render(); }
+          }}) })
+        ])
+      ]));
+
+      // 3. Tracks
+      const list = h('div', { class:'rb-col' });
       (anim.tracks||[]).forEach((t, i) => {
-        trackList.appendChild(h('div', { class:'rb-section', style:'cursor:pointer', onClick:()=>{this.editingTrackIndex=i; this.render();} }, [
-          h('div', { style:'font-weight:bold', text: t.targetSelector || '(No target)' }),
-          h('div', { style:'font-size:11px; opacity:0.7', text: `${t.trigger.type} - ${t.properties.length} props` })
+        list.appendChild(h('div', { class:'rb-sec', style:'cursor:pointer;margin-bottom:5px', onClick:()=>{this.editTrackIdx=i; this.render();} }, [
+          h('div', { style:'font-weight:bold', text: t.targetSelector || '(No Target)' }),
+          h('div', { style:'font-size:11px;opacity:0.7', text: `${t.trigger.type} · ${t.properties.length} props` })
         ]));
       });
-      
-      this.body.appendChild(h('div', { class:'rb-row', style:'margin-bottom:10px' }, [
-        h('div', { style:'font-weight:bold', text:'Tracks' }),
-        h('button', { class:'rb-btn primary', text:'+ Add', onClick:()=>{
-           if(!anim.tracks) anim.tracks=[];
-           anim.tracks.push(newTrack());
-           this.editingTrackIndex = anim.tracks.length-1;
-           this._saveConfig(); this.render();
-        }})
-      ]));
-      this.body.appendChild(trackList);
 
-      // Track Editor
-      if(this.editingTrackIndex > -1 && anim.tracks[this.editingTrackIndex]) {
-        this._renderTrackEditor(anim, anim.tracks[this.editingTrackIndex]);
+      this.body.appendChild(h('div', { class:'rb-row', style:'justify-content:space-between;margin-bottom:10px' }, [
+        h('div', { class:'rb-lbl', text:'Tracks' }),
+        h('button', { class:'rb-btn pri', text:'+ Add Track', onClick:()=>{ (anim.tracks=anim.tracks||[]).push(newTrack()); this.editTrackIdx=anim.tracks.length-1; this.save(); this.render(); } })
+      ]));
+      this.body.appendChild(list);
+
+      // 4. JSON / Import / Export
+      const jsonArea = this.jsonVisible ? h('textarea', { class:'rb-inp', style:'height:200px;font-family:monospace', value:JSON.stringify(this.config,null,2), onInput:e=>{ const p=safeJson(e.target.value); if(p){this.config=p; this.save();} } }) : null;
+      
+      const fileIn = h('input', { type:'file', style:'display:none', accept:'.json', onChange: async e => {
+         if(e.target.files[0]) {
+           const t = await e.target.files[0].text();
+           const c = safeJson(t);
+           if(c) { this.config = c; this.selAnimIdx=0; this.save(); this.render(); }
+         }
+      }});
+
+      this.body.appendChild(h('div', { class:'rb-sec' }, [
+        h('div', { class:'rb-row', style:'flex-wrap:wrap' }, [
+          h('button', { class:'rb-btn', text:'Download JSON', onClick:()=>downloadFile('rebound-config.json', JSON.stringify(this.config,null,2)) }),
+          h('button', { class:'rb-btn', text:'Upload JSON', onClick:()=>fileIn.click() }),
+          h('button', { class:'rb-btn', text: this.jsonVisible?'Hide JSON':'Show JSON', onClick:()=>{this.jsonVisible=!this.jsonVisible; this.render();} }),
+          h('button', { class:'rb-btn pri', text:'Run onSave()', onClick:()=>this.onSave?.(JSON.stringify(this.config)) }),
+        ]),
+        jsonArea
+      ]));
+
+      // 5. Track Editor Overlay
+      if(this.editTrackIdx > -1 && anim.tracks[this.editTrackIdx]) {
+        this.renderTrackEdit(anim, anim.tracks[this.editTrackIdx]);
       }
     }
 
-    _renderTrackEditor(anim, track) {
-      const editor = h('div', { class:'rb-panel', style:'left:520px; top:'+this.panel.style.top });
-      // ... (Simplifying for brevity: Re-implementing the track details editor with the new picker)
+    renderTrackEdit(anim, track) {
+      const editor = h('div', { class:'rb-panel', style:`left:${parseInt(this.panel.style.left)+520}px;top:${this.panel.style.top};height:${this.panel.offsetHeight}px` });
       
-      const update = () => { this._saveConfig(); this._renderTrackEditor(anim, track); }; // Re-render self
-
-      const header = h('div', { class:'rb-header' }, [
-        h('div', { text:`Edit Track #${this.editingTrackIndex+1}` }),
-        h('button', { class:'rb-btn', text:'Done', onClick:()=>{ editor.remove(); this.editingTrackIndex=-1; this.render(); } })
+      const refresh = () => { this.save(); this.renderTrackEdit(anim, track); }; // re-render self
+      
+      const head = h('div', { class:'rb-head', onPointerDown:e=>{e.target.setPointerCapture(e.pointerId); const dx=e.clientX-editor.offsetLeft; const dy=e.clientY-editor.offsetTop; const m=ev=>{editor.style.left=(ev.clientX-dx)+'px'; editor.style.top=(ev.clientY-dy)+'px';}; const u=()=>{window.removeEventListener('pointermove',m);window.removeEventListener('pointerup',u);}; window.addEventListener('pointermove',m); window.addEventListener('pointerup',u);} }, [
+        h('div', { text:`Track #${this.editTrackIdx+1}` }),
+        h('button', { class:'rb-btn', text:'Done', onClick:()=>{ editor.remove(); this.editTrackIdx=-1; this.render(); } })
       ]);
       
       const body = h('div', { class:'rb-body' });
-      
-      // Target Selector
-      body.appendChild(h('div', { class:'rb-section' }, [
-        h('div', { class:'rb-label', text:'Targets' }),
+
+      // Target
+      body.appendChild(h('div', { class:'rb-sec' }, [
+        h('div', { class:'rb-lbl', text:'Target Elements' }),
         h('div', { class:'rb-row' }, [
-          h('input', { class:'rb-input', value:track.targetSelector, onInput:(e)=>{ track.targetSelector=e.target.value; this._saveConfig(); } }),
-          h('button', { class:'rb-btn primary', text:'Select', onClick:()=> {
-            editor.style.display='none'; this.panel.style.display='none';
-            const scopeEl = document.querySelector(anim.scopeSelector);
-            Picker.pick({ ignoreSelector:'.rb-panel, .rb-dock', onCancel:()=>{editor.style.display='flex'; this.panel.style.display='flex';}, onPick:(els)=>{
-              editor.style.display='flex'; this.panel.style.display='flex';
-              if(els.length) {
-                // Generate multi-selector relative to scope
-                const root = scopeEl || document.body;
-                track.targetSelector = generateMultiSelector(root, els);
-                this._saveConfig();
-                // Force input update
-                editor.querySelector('input').value = track.targetSelector;
-              }
-            }});
+          h('input', { class:'rb-inp', value:track.targetSelector, onInput:e=>{track.targetSelector=e.target.value; this.save();} }),
+          h('button', { class:'rb-btn pri', text:'Select', onClick:() => {
+             editor.style.display='none'; 
+             this.pick({ onPick: els => {
+                editor.style.display='flex';
+                if(els.length) {
+                  const scope = document.querySelector(anim.scopeSelector);
+                  track.targetSelector = generateMultiSelector(scope || document.body, els);
+                  this.save();
+                  // Manually update input to avoid full re-render flickering
+                  editor.querySelector('input').value = track.targetSelector;
+                }
+             }});
           }})
-        ]),
-        h('div', { style:'font-size:10px; color:#666; margin-top:4px', text:'Click multiple elements to group them.' })
+        ])
       ]));
 
-      // Properties (Simplified for this snippet)
-      const propsList = h('div', { class:'rb-col' });
+      // Trigger
+      const trig = track.trigger;
+      body.appendChild(h('div', { class:'rb-sec' }, [
+        h('div', { class:'rb-lbl', text:'Trigger Type' }),
+        h('select', { class:'rb-sel', onChange:e=>{trig.type=e.target.value; refresh();} }, [
+          h('option',{value:'scroll',text:'Scroll',selected:trig.type=='scroll'}),
+          h('option',{value:'hover',text:'Hover',selected:trig.type=='hover'}),
+          h('option',{value:'click',text:'Click',selected:trig.type=='click'}),
+          h('option',{value:'view',text:'View (In Viewport)',selected:trig.type=='view'}),
+        ]),
+        h('div', { style:'margin-top:10px' }, trig.type==='scroll' ? [
+          h('div', { class:'rb-row' }, [
+             h('div',{class:'rb-col'},[ h('div',{class:'rb-lbl',text:'Start %'}), h('input',{class:'rb-inp',type:'number',value:trig.start,onInput:e=>{trig.start=Number(e.target.value);this.save();}}) ]),
+             h('div',{class:'rb-col'},[ h('div',{class:'rb-lbl',text:'End %'}), h('input',{class:'rb-inp',type:'number',value:trig.end,onInput:e=>{trig.end=Number(e.target.value);this.save();}}) ])
+          ]),
+          h('div',{class:'rb-row',style:'margin-top:5px'}, [
+             h('div',{class:'rb-lbl',text:'Progress:'}),
+             h('select',{class:'rb-sel',onChange:e=>{trig.progress=e.target.value;this.save();}},[
+               h('option',{value:'exit',text:'Exit (Parallax)',selected:trig.progress!='enter'},{}),
+               h('option',{value:'enter',text:'Enter (Reveal)',selected:trig.progress=='enter'},{})
+             ])
+          ])
+        ] : [
+          h('div', { class:'rb-row' }, [
+             h('div',{class:'rb-col'},[ h('div',{class:'rb-lbl',text:'Duration (ms)'}), h('input',{class:'rb-inp',type:'number',value:trig.duration||300,onInput:e=>{trig.duration=Number(e.target.value);this.save();}}) ])
+          ])
+        ])
+      ]));
+
+      // Properties
+      const props = h('div', { class:'rb-col' });
       track.properties.forEach((p, i) => {
-        const row = h('div', { class:'rb-row', style:'background:#0c0f1b; padding:8px; border-radius:6px;' }, [
-            h('div', { text: p.type, style:'width:80px; font-size:12px' }),
-            h('input', { class:'rb-input', type:'number', value:p.from||0, onInput:(e)=>{p.from=Number(e.target.value); this._saveConfig();} }),
-            h('div', { text:'to' }),
-            h('input', { class:'rb-input', type:'number', value:p.to||0, onInput:(e)=>{p.to=Number(e.target.value); this._saveConfig();} }),
-            h('button', { class:'rb-btn', text:'x', onClick:()=>{ track.properties.splice(i,1); update(); } })
+        const row = h('div', { class:'rb-row', style:'background:#0c0f1b;padding:5px;border-radius:4px' }, [
+          h('div', { text:p.type, style:'font-size:11px;width:60px' }),
+          h('input', { class:'rb-inp', type:'number', style:'padding:4px', value:p.from, placeholder:'From', onInput:e=>{p.from=Number(e.target.value);this.save();} }),
+          h('input', { class:'rb-inp', type:'number', style:'padding:4px', value:p.to, placeholder:'To', onInput:e=>{p.to=Number(e.target.value);this.save();} }),
+          h('button', { class:'rb-btn dan', text:'x', style:'padding:4px 8px', onClick:()=>{track.properties.splice(i,1); refresh();} })
         ]);
-        propsList.appendChild(row);
+        props.appendChild(row);
       });
 
-      body.appendChild(h('div', { class:'rb-section' }, [
-        h('div', { class:'rb-row', style:'justify-content:space-between' }, [
-            h('div', { class:'rb-label', text:'Properties' }),
-            h('button', { class:'rb-btn', text:'+ Prop', onClick:()=>{ track.properties.push({type:'translateY', from:0, to:50}); update(); } })
-        ]),
-        propsList
+      body.appendChild(h('div', { class:'rb-sec' }, [
+         h('div', { class:'rb-row', style:'justify-content:space-between;margin-bottom:5px' }, [
+           h('div', { class:'rb-lbl', text:'Properties' }),
+           h('select', { class:'rb-sel', style:'width:100px;padding:4px', onChange:e=>{
+              if(e.target.value==='0')return;
+              const t = e.target.value;
+              const def = {type:t, from:0, to:(t=='scale'||t=='opacity'?1:100), unit:(t=='rotate'?'deg':'px')};
+              track.properties.push(def); refresh();
+           }}, [
+             h('option',{value:'0',text:'+ Add'}),
+             h('option',{value:'translateY',text:'Translate Y'}),
+             h('option',{value:'translateX',text:'Translate X'}),
+             h('option',{value:'opacity',text:'Opacity'}),
+             h('option',{value:'scale',text:'Scale'}),
+             h('option',{value:'rotate',text:'Rotate'}),
+             h('option',{value:'parallaxY',text:'Parallax Var'}),
+           ])
+         ]),
+         props
       ]));
-      
-      editor.appendChild(header);
-      editor.appendChild(body);
-      
-      // Remove old editor overlay if exists
+
+      // Clean up old overlay if exists
       const old = document.querySelectorAll('.rb-panel');
       if(old.length > 1) old[1].remove();
-      
+
+      editor.appendChild(head);
+      editor.appendChild(body);
       document.body.appendChild(editor);
-      
-      // Sync drag with main panel (optional, but nice)
-      editor.style.top = this.panel.style.top;
-      editor.style.left = (parseInt(this.panel.style.left) + 500) + 'px';
     }
   }
 

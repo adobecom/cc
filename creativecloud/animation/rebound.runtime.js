@@ -1,12 +1,12 @@
-/* rebound.runtime.js - Rebound Runtime (auto-mount + scroll progress + events)
-   - Auto mounts from localStorage on page load
-   - Handles comma-separated selectors correctly within scopes
+/* rebound.runtime.js - Rebound Runtime v0.5.1
+   - Auto-mounts animations.
+   - Supports comma-separated selectors for multi-element tracks.
 */
 (() => {
   'use strict';
 
   const RB = (window.Rebound = window.Rebound || {});
-  const VERSION = '0.5.0';
+  const VERSION = '0.5.1';
   const DEFAULT_STORAGE_KEY = 'rebound:config:v1';
 
   // ---------- Utils ----------
@@ -41,50 +41,25 @@
     try { return JSON.parse(text); } catch { return null; }
   }
 
-  // Convert ":scope > ..." to "[data-rb-scope="X"] > ..."
-  // Handles comma-separated lists: ".a, .b" -> "[scope] .a, [scope] .b"
+  // Convert ":scope > .a, .b" -> "[data-rb-scope] .a, [data-rb-scope] .b"
   function scopeSelectorToCss(scopeAttrSel, targetSelector, withinScope) {
     const raw = (targetSelector || '').trim();
     if (!raw) return null;
-
     if (raw === ':scope') return scopeAttrSel;
 
-    // Split by comma, respecting parentheses (simple split for now, robust enough for basic selectors)
+    // Split selector by comma to prefix each part
     const parts = raw.split(',');
-
+    
     return parts.map(part => {
       const sel = part.trim();
       if (!sel) return '';
-      
-      if (sel.startsWith(':scope')) {
-        return sel.replace(/^:scope\b/, scopeAttrSel);
-      }
-      
-      if (withinScope !== false) {
-        return `${scopeAttrSel} ${sel}`;
-      }
+      if (sel.startsWith(':scope')) return sel.replace(/^:scope\b/, scopeAttrSel);
+      if (withinScope !== false) return `${scopeAttrSel} ${sel}`;
       return sel;
     }).filter(Boolean).join(', ');
   }
 
-  // ---------- Progress (AUTO) ----------
-  function computeAndSetProgress(scopeEl, navHeight) {
-    if (!scopeEl || !scopeEl.isConnected) return;
-
-    const elHeight = scopeEl.offsetHeight;
-    if (!elHeight || elHeight < 2) return;
-
-    const rect = scopeEl.getBoundingClientRect();
-    const screenHeight = window.innerHeight || 1;
-
-    const enterProgress = clamp((screenHeight - rect.top) / elHeight, 0, 1);
-    const exitProgress = clamp((-rect.top + navHeight) / elHeight, 0, 1);
-
-    scopeEl.style.setProperty('--enter-progress', fmt(enterProgress * 100));
-    scopeEl.style.setProperty('--exit-progress', fmt(exitProgress * 100));
-  }
-
-  // ---------- CSS generation ----------
+  // ---------- CSS Generation ----------
   function ratioExpr(progressVar, start, end) {
     const s = toNum(start, 0);
     const e = toNum(end, 100);
@@ -95,22 +70,23 @@
   function buildScrollCssRule({ selector, trigger, properties }) {
     const progressVar = trigger.progress === 'enter' ? 'var(--enter-progress, 0)' : 'var(--exit-progress, 0)';
     const ratio = ratioExpr(progressVar, trigger.start, trigger.end);
+    
     const tf = [];
     let opacityDecl = '';
-    const otherDecls = [];
-
+    
     for (const p of properties || []) {
       if (!p || !p.type) continue;
+      
+      const unit = p.unit || (p.type === 'rotate' ? 'deg' : (p.type === 'scale' ? '' : 'px'));
+      const from = p.from ?? (p.type === 'scale' ? 1 : 0);
+      const to = p.to ?? (p.type === 'scale' ? 1 : 0);
+      const fromS = fmtVal(from, unit);
+      const toS = fmtVal(to, unit);
 
       if (p.type === 'opacity') {
-        const from = toNum(p.from, 1);
-        const to = toNum(p.to, 1);
         opacityDecl = `opacity: calc(${from} + (${to} - ${from}) * ${ratio});`;
       } else if (['translateY', 'translateX', 'rotate', 'scale'].includes(p.type)) {
-        const unit = p.unit || (p.type === 'rotate' ? 'deg' : (p.type === 'scale' ? '' : 'px'));
-        const from = p.from ?? (p.type === 'scale' ? 1 : 0);
-        const to = p.to ?? (p.type === 'scale' ? 1 : 0);
-        tf.push(`${p.type}(calc(${fmtVal(from, unit)} + (${fmtVal(to, unit)} - ${fmtVal(from, unit)}) * ${ratio}))`);
+        tf.push(`${p.type}(calc(${fromS} + (${toS} - ${fromS}) * ${ratio}))`);
       } else if (p.type === 'parallaxY') {
         tf.push(`translateY(calc(var(--base-offset, 0px) + var(--parallax-distance, 0px) * ${ratio}))`);
       }
@@ -126,7 +102,6 @@
 
     if (tf.length) decls.push(`transform: ${tf.join(' ')};`);
     if (opacityDecl) decls.push(opacityDecl);
-    if (otherDecls.length) decls.push(...otherDecls);
 
     if (!decls.length) return '';
     return `${selector} {\n  ${decls.join('\n  ')}\n}\n`;
@@ -144,7 +119,7 @@
       } else if (['translateY', 'translateX', 'rotate', 'scale'].includes(p.type)) {
         hasTf = true;
         const unit = p.unit || (p.type === 'rotate' ? 'deg' : (p.type === 'scale' ? '' : 'px'));
-        tf[p.type] = `${lerp(toNum(p.from, p.type === 'scale' ? 1 : 0), toNum(p.to, p.type === 'scale' ? 1 : 0), t)}${unit}`;
+        tf[p.type] = `${lerp(toNum(p.from, p.type === 'scale'?1:0), toNum(p.to, p.type === 'scale'?1:0), t)}${unit}`;
       }
     }
 
@@ -155,7 +130,6 @@
       if (tf.rotate != null) out.push(`rotate(${tf.rotate})`);
       if (tf.scale != null) out.push(`scale(${tf.scale})`);
       el.style.transform = out.join(' ');
-      if (!el.style.willChange) el.style.willChange = 'transform, opacity';
     }
   }
 
@@ -163,7 +137,6 @@
     const ease = Easings[easing] || Easings.easeInOutCubic;
     const start = performance.now();
     let cancelled = false;
-
     function frame(now) {
       if (cancelled) return;
       const p = clamp((now - start) / Math.max(1, duration), 0, 1);
@@ -175,158 +148,161 @@
     return () => { cancelled = true; };
   }
 
-  // ---------- Target resolving ----------
   function resolveTargets(scopeEl, track) {
     const sel = (track.targetSelector || '').trim();
     if (!sel) return [];
     if (sel === ':scope') return [scopeEl];
-
     try {
       if (track.withinScope !== false) return Array.from(scopeEl.querySelectorAll(sel));
       return Array.from(document.querySelectorAll(sel));
-    } catch (e) {
-      console.warn('[Rebound] Bad selector:', sel, e);
-      return [];
-    }
+    } catch { return []; }
   }
 
-  // ---------- Mount / Singleton ----------
-  let MOUNT_SEQ = 0;
+  // ---------- Main Mount Logic ----------
   let ACTIVE = null;
+  let MOUNT_SEQ = 0;
 
   function mount(config) {
-    if (!config || typeof config !== 'object') throw new Error('[Rebound] Runtime.mount requires config.');
-
+    if (!config || typeof config !== 'object') throw new Error('[Rebound] Invalid config');
+    
     const mountId = ++MOUNT_SEQ;
-    const navHeight = toNum(config?.settings?.navHeight, 64);
-    const animations = Array.isArray(config.animations) ? config.animations : [];
-
+    const navHeight = toNum(config.settings?.navHeight, 64);
+    
+    // Create Style Tag
     const styleEl = document.createElement('style');
-    styleEl.setAttribute('data-rb-runtime-style', String(mountId));
+    styleEl.setAttribute('data-rb-runtime', mountId);
     document.head.appendChild(styleEl);
 
     const destroyFns = [];
-    const observers = [];
-    const scopeItems = []; 
+    const scopeItems = [];
     let cssOut = '';
+    const observers = [];
 
-    for (let ai = 0; ai < animations.length; ai++) {
-      const anim = animations[ai];
-      const scopeSelector = anim && anim.scopeSelector ? String(anim.scopeSelector) : '';
-      if (!scopeSelector) continue;
+    (config.animations || []).forEach((anim, ai) => {
+      if (!anim.scopeSelector) return;
+      let scopeEls;
+      try { scopeEls = document.querySelectorAll(anim.scopeSelector); } catch { return; }
 
-      let scopeEls = [];
-      try { scopeEls = Array.from(document.querySelectorAll(scopeSelector)); }
-      catch (e) { console.warn('[Rebound] Bad scopeSelector:', scopeSelector, e); continue; }
-
-      const tracks = Array.isArray(anim.tracks) ? anim.tracks : [];
-
-      for (let si = 0; si < scopeEls.length; si++) {
-        const scopeEl = scopeEls[si];
+      scopeEls.forEach((scopeEl, si) => {
         const scopeId = `rb-${mountId}-${ai}-${si}`;
         scopeEl.setAttribute('data-rb-scope', scopeId);
-        scopeItems.push({ scopeEl, navHeight, scopeId });
+        scopeItems.push({ scopeEl, navHeight });
         const scopeAttrSel = `[data-rb-scope="${cssEscape(scopeId)}"]`;
 
-        for (const track of tracks) {
-          if (!track || !track.trigger) continue;
-          const trig = track.trigger;
+        (anim.tracks || []).forEach(track => {
+          if (!track.trigger) return;
 
-          if (trig.type === 'scroll') {
-            if (track.engine !== 'css') continue;
-            
-            // Set static vars
-            const targets = resolveTargets(scopeEl, track);
-            for (const el of targets) {
-              for (const p of track.properties || []) {
+          // 1. Scroll (CSS)
+          if (track.trigger.type === 'scroll' && track.engine === 'css') {
+            // Static Vars
+            resolveTargets(scopeEl, track).forEach(el => {
+              track.properties?.forEach(p => {
                 if (p.type === 'parallaxY') {
-                   const unit = p.unit || 'px';
-                   el.style.setProperty('--base-offset', fmtVal(p.base ?? 0, unit));
-                   el.style.setProperty('--parallax-distance', fmtVal(p.distance ?? 0, unit));
+                   const u = p.unit || 'px';
+                   el.style.setProperty('--base-offset', fmtVal(p.base, u));
+                   el.style.setProperty('--parallax-distance', fmtVal(p.distance, u));
                 }
-              }
-            }
+              });
+            });
 
             const cssSel = scopeSelectorToCss(scopeAttrSel, track.targetSelector, track.withinScope);
-            if (!cssSel) continue;
-
-            cssOut += buildScrollCssRule({
-              selector: cssSel,
-              trigger: { progress: trig.progress === 'enter' ? 'enter' : 'exit', start: toNum(trig.start, 0), end: toNum(trig.end, 100) },
-              properties: track.properties || [],
-            });
-            continue;
-          }
-
-          // Event based
-          const targets = resolveTargets(scopeEl, track);
-          for (const el of targets) {
-            let cancel = null;
-            let stateT = 0;
-            const setT = (t) => { stateT = t; applyEventProperties(el, track.properties || [], t); };
-            setT(toNum(trig.initialT, 0));
-
-            if (trig.type === 'hover') {
-              const onEnter = () => { if (cancel) cancel(); cancel = tween({ from: stateT, to: 1, duration: trig.duration, easing: trig.easing, onUpdate: setT }); };
-              const onLeave = () => { if (cancel) cancel(); cancel = tween({ from: stateT, to: 0, duration: trig.duration, easing: trig.easing, onUpdate: setT }); };
-              el.addEventListener('mouseenter', onEnter); el.addEventListener('mouseleave', onLeave);
-              destroyFns.push(() => { el.removeEventListener('mouseenter', onEnter); el.removeEventListener('mouseleave', onLeave); });
-            } else if (trig.type === 'click') {
-              let toggled = false;
-              const onClick = () => { toggled = !toggled; if (cancel) cancel(); cancel = tween({ from: stateT, to: toggled?1:0, duration: trig.duration, easing: trig.easing, onUpdate: setT }); };
-              el.addEventListener('click', onClick);
-              destroyFns.push(() => el.removeEventListener('click', onClick));
-            } else if (trig.type === 'view') {
-               if (!('IntersectionObserver' in window)) { setT(1); continue; }
-               let played = false;
-               const ob = new IntersectionObserver((entries) => {
-                 for (const e of entries) {
-                   if (e.isIntersecting) {
-                     if (trig.once && played) return;
-                     played = true;
-                     if (cancel) cancel(); cancel = tween({ from: stateT, to: 1, duration: trig.duration, easing: trig.easing, onUpdate: setT });
-                   } else if (trig.reverseOnExit !== false && (!trig.once || !played)) {
-                     if (cancel) cancel(); cancel = tween({ from: stateT, to: 0, duration: trig.duration, easing: trig.easing, onUpdate: setT });
-                   }
-                 }
-               }, { threshold: trig.threshold ?? 0.01 });
-               ob.observe(el); observers.push(ob);
+            if (cssSel) {
+              cssOut += buildScrollCssRule({
+                selector: cssSel,
+                trigger: track.trigger,
+                properties: track.properties
+              });
             }
           }
-        }
-      }
-    }
+          // 2. Events (JS)
+          else {
+            resolveTargets(scopeEl, track).forEach(el => {
+              let cancel = null;
+              let t = 0;
+              const setT = (v) => { t = v; applyEventProperties(el, track.properties, v); };
+              setT(0); // init
+
+              const { type, duration, easing, once, reverseOnExit } = track.trigger;
+              
+              if (type === 'hover') {
+                const onOver = () => { if(cancel) cancel(); cancel = tween({from:t, to:1, duration, easing, onUpdate:setT}); };
+                const onOut = () => { if(cancel) cancel(); cancel = tween({from:t, to:0, duration, easing, onUpdate:setT}); };
+                el.addEventListener('mouseenter', onOver);
+                el.addEventListener('mouseleave', onOut);
+                destroyFns.push(() => { el.removeEventListener('mouseenter', onOver); el.removeEventListener('mouseleave', onOut); });
+              } 
+              else if (type === 'click') {
+                let active = false;
+                const onCk = () => { active=!active; if(cancel) cancel(); cancel = tween({from:t, to:active?1:0, duration, easing, onUpdate:setT}); };
+                el.addEventListener('click', onCk);
+                destroyFns.push(() => el.removeEventListener('click', onCk));
+              }
+              else if (type === 'view') {
+                 if (!window.IntersectionObserver) { setT(1); return; }
+                 let played = false;
+                 const ob = new IntersectionObserver(entries => {
+                   entries.forEach(e => {
+                     if (e.isIntersecting) {
+                       if (once && played) return;
+                       played = true;
+                       if(cancel) cancel(); cancel = tween({from:t, to:1, duration, easing, onUpdate:setT});
+                     } else if (reverseOnExit !== false && (!once || !played)) {
+                       if(cancel) cancel(); cancel = tween({from:t, to:0, duration, easing, onUpdate:setT});
+                     }
+                   });
+                 }, { threshold: track.trigger.threshold || 0.1 });
+                 ob.observe(el);
+                 observers.push(ob);
+              }
+            });
+          }
+        });
+      });
+    });
 
     styleEl.textContent = cssOut;
-    
+
+    // Scroll Loop
     let ticking = false;
-    const update = () => { for (const it of scopeItems) computeAndSetProgress(it.scopeEl, it.navHeight); };
-    const onScroll = () => { if(!ticking) { ticking=true; requestAnimationFrame(()=>{ticking=false; update();}); } };
+    const compute = (el, nh) => {
+      const h = el.offsetHeight;
+      if (!h) return;
+      const r = el.getBoundingClientRect();
+      const wh = window.innerHeight;
+      el.style.setProperty('--enter-progress', fmt(clamp((wh - r.top)/h, 0, 1) * 100));
+      el.style.setProperty('--exit-progress', fmt(clamp((-r.top + nh)/h, 0, 1) * 100));
+    };
+
+    const updateAll = () => scopeItems.forEach(i => compute(i.scopeEl, i.navHeight));
+    const onScroll = () => { if(!ticking){ ticking=true; requestAnimationFrame(()=>{ticking=false; updateAll();}); } };
+    
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     destroyFns.push(() => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); });
 
     return {
       destroy: () => {
-        try { styleEl.remove(); } catch {}
-        for (const ob of observers) ob.disconnect();
-        for (const fn of destroyFns) fn();
-        for (const it of scopeItems) it.scopeEl.removeAttribute('data-rb-scope');
+        styleEl.remove();
+        observers.forEach(o => o.disconnect());
+        destroyFns.forEach(f => f());
+        scopeItems.forEach(i => i.scopeEl.removeAttribute('data-rb-scope'));
       }
     };
   }
 
-  function mountSingleton(config) {
+  function mountSingleton(cfg) {
     if (ACTIVE) try { ACTIVE.destroy(); } catch {}
-    ACTIVE = mount(config);
+    ACTIVE = mount(cfg);
     return ACTIVE;
   }
 
-  const loadFromStorage = (key = DEFAULT_STORAGE_KEY) => safeParseJson(localStorage.getItem(key));
-  const autoMount = (key) => mountSingleton(loadFromStorage(key));
+  const load = (k) => safeParseJson(localStorage.getItem(k));
+  const auto = (k = DEFAULT_STORAGE_KEY) => mountSingleton(load(k));
 
-  RB.Runtime = { version: VERSION, mountSingleton, autoMountFromStorage: autoMount };
+  RB.Runtime = { version: VERSION, mountSingleton, autoMountFromStorage: auto };
+  
   if (window.__REBOUND_DISABLE_AUTOMOUNT__ !== true) {
-    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', () => autoMount()) : autoMount();
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => auto());
+    else auto();
   }
 })();
