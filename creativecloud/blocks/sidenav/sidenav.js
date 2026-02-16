@@ -22,6 +22,83 @@ const computeDaaLLText = (text) => {
 
 const generateDaaLL = (text, headline) => `${text}--${headline}`;
 
+const getMasLibsBaseUrl = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const masLibs = urlParams.get('maslibs');
+
+  if (!masLibs || masLibs.trim() === '') return null;
+
+  const sanitized = masLibs.trim().toLowerCase();
+
+  if (sanitized === 'local') {
+    return 'http://localhost:3000';
+  }
+
+  if (sanitized === 'main') {
+    return 'https://main--mas--adobecom.aem.live';
+  }
+
+  const { hostname } = window.location;
+  const extension = hostname.endsWith('.page') ? 'page' : 'live';
+
+  let branch = sanitized;
+  if (!sanitized.includes('--')) {
+    branch = `${sanitized}--mas--adobecom`;
+  }
+
+  return `https://${branch}.aem.${extension}`;
+};
+
+const getMasLibs = () => {
+  const baseUrl = getMasLibsBaseUrl();
+  if (!baseUrl) return null;
+  return `${baseUrl}/web-components/dist`;
+};
+
+const getMasComponentUrl = (componentName, masLibsBase, hostname) => {
+  if (masLibsBase) {
+    return `${masLibsBase}/${componentName}.js`;
+  }
+  const isAdobeProd = hostname === 'www.adobe.com';
+  return isAdobeProd
+    ? `https://www.adobe.com/mas/libs/${componentName}.js`
+    : `https://main--mas--adobecom.aem.live/web-components/dist/${componentName}.js`;
+};
+
+const failedExternalLoads = new Set();
+const loadingPromises = new Map();
+
+const loadMasComponent = async (componentName) => {
+  if (loadingPromises.has(componentName)) {
+    return loadingPromises.get(componentName);
+  }
+
+  if (customElements.get(componentName)) {
+    return Promise.resolve();
+  }
+
+  const loadPromise = (async () => {
+    const masLibsBase = getMasLibs();
+    const targetUrl = getMasComponentUrl(componentName, masLibsBase, window.location.hostname);
+
+    if (failedExternalLoads.has(targetUrl)) {
+      throw new Error(`Previously failed to load component from ${targetUrl}`);
+    }
+
+    try {
+      return await import(targetUrl);
+    } catch (error) {
+      failedExternalLoads.add(targetUrl);
+      throw error;
+    }
+  })();
+
+  loadingPromises.set(componentName, loadPromise);
+  loadPromise.finally(() => loadingPromises.delete(componentName));
+
+  return loadPromise;
+};
+
 const getCategories = (items, isMultilevel, mapCategories) => {
   const configuration = { manageTabIndex: true };
   if (isMultilevel) {
@@ -169,7 +246,7 @@ export default async function init(el) {
   decorateLinks(el);
   const [mainRow, categoryRow] = Array.from(el.children);
   const deps = Promise.all([
-    import(`${libs}/deps/mas/merch-sidenav.js`),
+    loadMasComponent('merch-sidenav'),
     // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
     import(`${libs}/deps/lit-all.min.js`),
     import(`${libs}/features/spectrum-web-components/dist/theme.js`),
