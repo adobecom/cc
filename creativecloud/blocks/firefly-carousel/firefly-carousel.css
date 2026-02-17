@@ -1,0 +1,232 @@
+.firefly-carousel {
+  --ff-gap: 8px;
+  --ff-card-width: 80vw;
+  --ff-card-height: calc(var(--ff-card-width) / 1.4);
+  --ff-nav-size: 40px;
+  --ff-control-gap: 8px;
+  --ff-card-border-radius: 16px;
+  padding: 0;
+}
+
+.firefly-carousel {
+  width: 100%;
+}
+
+.firefly-carousel .firefly-carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 160px;
+}
+
+.firefly-carousel .firefly-carousel-track {
+  --ff-clone-count: 0;
+  display: flex;
+  gap: var(--ff-gap);
+  will-change: transform;
+  transition: transform 320ms ease;
+  margin-left: calc(
+    (100% - var(--ff-card-width)) / 2
+    - var(--ff-clone-count) * (var(--ff-card-width) + var(--ff-gap))
+  );
+}
+
+.firefly-carousel .firefly-carousel-card {
+  position: relative;
+  flex: 0 0 var(--ff-card-width);
+  width: var(--ff-card-width);
+  height: var(--ff-card-height);
+  overflow: hidden;
+  border-radius: var(--ff-card-border-radius);
+}
+
+.firefly-carousel .firefly-carousel-card.active {
+  box-shadow: 0 100px 80px 0 rgba(0, 0, 0, 0.19), 0 64.815px 46.852px 0 rgba(0, 0, 0, 0.14), 0 38.519px 25.481px 0 rgba(0, 0, 0, 0.12), 0 20px 13px 0 rgba(0, 0, 0, 0.09), 0 8.148px 6.519px 0 rgba(0, 0, 0, 0.07), 0 1.852px 3.148px 0 rgba(0, 0, 0, 0.05);
+}
+
+.firefly-carousel .firefly-carousel-card.is-clone {
+  pointer-events: none;
+}
+
+.firefly-carousel .firefly-carousel-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.firefly-carousel .firefly-carousel-prompt {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 9px 8px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--Color-Middle-Grey, #707070);
+  background: var(--container-fill, #FFF);
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.25);
+  width: calc(var(--ff-card-width) - 80px);
+  color: inherit;
+  text-decoration: none;
+}
+
+/* .firefly-carousel .firefly-carousel-prompt:link,
+.firefly-carousel .firefly-carousel-prompt:visited,
+.firefly-carousel .firefly-carousel-prompt:hover,
+.firefly-carousel .firefly-carousel-prompt:active {
+  color: inherit;
+  text-decoration: none;
+} */
+
+[dir="rtl"] .firefly-carousel .firefly-carousel-prompt {
+  left: 56px;
+  right: 16px;
+}
+
+.firefly-carousel .firefly-carousel-prompt-text {
+  flex: 0 1 80%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.14px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.firefly-carousel .firefly-carousel-prompt-icon {
+  flex: 0 0 20%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 16px;
+  height: 16px;
+}
+
+.firefly-carousel .firefly-carousel-playback {
+  position: absolute;
+  right: 15px;
+  top: 17px;
+  width: 22px;
+  height: 22px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.firefly-carousel .firefly-carousel-card.active .firefly-carousel-playback {
+  display: inline-flex;
+}
+
+[dir="rtl"] .firefly-carousel .firefly-carousel-playback {
+  right: auto;
+  left: 14px;
+}
+
+.firefly-carousel .firefly-carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--ff-control-gap);
+  position: absolute;
+  top: calc(var(--ff-card-height) + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.firefly-carousel .firefly-carousel-nav-btn {
+  width: var(--ff-nav-size);
+  height: var(--ff-nav-size);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+  display: flex;
+  border-radius: 90.909px;
+  background: #010101;
+  backdrop-filter: blur(13.63636302947998px);
+
+}
+
+.firefly-carousel .firefly-carousel-nav-btn:disabled {
+  opacity: 0.5;
+  background: rgba(80, 80, 80, 0.40);
+  backdrop-filter: blur(13.63636302947998px);
+}
+
+.firefly-carousel .firefly-carousel-nav-btn svg {
+  width: 10.909px;
+  height: 10.909px;
+  flex-shrink: 0;
+  color: #FFFFFF;
+}
+
+@media screen and (min-width: 600px) {
+  .firefly-carousel {
+    --ff-card-width: 70vw;
+    --ff-card-height: calc(var(--ff-card-width) / 1.6);
+    --ff-card-border-radius: 12px;
+  }
+
+    .firefly-carousel .firefly-carousel-playback {
+    right: 12px;
+    bottom: 14px;
+  }
+
+  [dir="rtl"] .firefly-carousel .firefly-carousel-playback {
+    right: auto;
+    left: 12px;
+  }
+
+  .firefly-carousel .firefly-carousel-prompt {
+    left: 30px;
+    bottom: 20px;
+    transform: none;
+    width: calc(var(--ff-card-width) / 2.2);
+  }
+  }
+
+@media screen and (min-width: 1200px) {
+  .firefly-carousel {
+    --ff-card-width: 60vw;
+    --ff-card-height: calc(var(--ff-card-width) / 1.6);
+    --ff-card-border-radius: 24px;
+  }
+
+  .firefly-carousel .firefly-carousel-prompt {
+    padding: 16px 18px 16px 16px;
+    border-radius: 11px;
+    left: 55px;
+    bottom: 55px;
+    width: calc(var(--ff-card-width) / 2.5);
+  }
+
+  .firefly-carousel .firefly-carousel-prompt-text {
+    font-size: 22px;
+    letter-spacing: -0.22px;
+  }
+
+  .firefly-carousel .firefly-carousel-playback {
+    width: 40px;
+    height: 40px;
+    right: 21px;
+    top: auto;
+    bottom: 27px;
+  }
+
+  [dir="rtl"] .firefly-carousel .firefly-carousel-playback {
+    right: auto;
+    left: 21px;
+  }
+}
