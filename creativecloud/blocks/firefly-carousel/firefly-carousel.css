@@ -156,7 +156,7 @@
   border-radius: 90.909px;
   background: #010101;
   backdrop-filter: blur(13.63636302947998px);
-
+  border: none;
 }
 
 .firefly-carousel .firefly-carousel-nav-btn:disabled {
@@ -182,6 +182,7 @@
     .firefly-carousel .firefly-carousel-playback {
     right: 12px;
     bottom: 14px;
+    top: auto;
   }
 
   [dir="rtl"] .firefly-carousel .firefly-carousel-playback {
