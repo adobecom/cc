@@ -2,8 +2,8 @@ name: Use perf-metrics PR comment
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize, reopened]
 
 jobs:
   pr-comment:
-    uses: OWNER/perf-metrics/.github/workflows/pr-comment-from-perf-metrics.yaml@main
+    uses: adobecom/perf-metrics/.github/workflows/pr-comment-from-perf-metrics.yaml@main
