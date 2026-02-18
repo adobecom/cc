@@ -4,7 +4,7 @@
 
 import { createTag, getScreenSizeCategory, prefersReducedMotion } from '../../scripts/utils.js';
 
-// Configuration constants
+// Configuration constant
 const CONFIG = {
   WAVE_DELAY: 300,
   ANIMATION_BUFFER: 500,
