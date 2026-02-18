@@ -102,9 +102,9 @@
 .step-card .foreground .progress-track {
   display: none;
   width: 100%;
-  height: 0.25rem;
+  height: 0.62rem;
   background-color: #E0E0E0;
-  border-radius: 0.125rem;
+  border-radius: 1rem;
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -115,7 +115,7 @@
   left: 0;
   top:0;
   height: 100%;
-  background-color: var(--accent-color);
+  background-color: #CCCCE0;
   width: 0;
   border-radius: 0.125rem;
 }
@@ -194,7 +194,7 @@
 
   .step-card .foreground .progress-track{
     display: block;
-    width: 25rem;
+    width: 60%;
     max-width: 80%;
   }
   
