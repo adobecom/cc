@@ -1,0 +1,15 @@
+name: perf-metrics
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # Run the full performance check (LCP, CLS, TBT, etc.) and comment results
+  performance-check:
+    uses: adobecom/perf-metrics/.github/workflows/performance-check.yaml@main
+    # Optional: pass inputs to override defaults
+    # with:
+    #   test_url: ''           # leave empty to use PR preview URL
+    #   throttle: ''           # e.g. 'Slow 4G' or leave empty
+    #   baseline_path: 'caller/.github/performance/baseline.json'
