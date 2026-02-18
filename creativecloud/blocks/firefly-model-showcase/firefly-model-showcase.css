@@ -201,6 +201,12 @@
     padding: 12px;
   }
 }
+@media screen and (max-width: 360px) {
+  .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2),
+  .firefly-model-showcase-content .action-area a:first-child:nth-last-child(2) ~ a {
+    white-space: nowrap;
+  }
+}
 
 /* End of second CTA support */
 
