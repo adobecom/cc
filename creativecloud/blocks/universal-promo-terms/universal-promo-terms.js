@@ -3,7 +3,7 @@ const SELECTOR_ID_API_BASE = 'https://aos.adobe.io/offers:search.selector';
 const STAGE_OFFER_ID_API_BASE = 'https://aos-stage.adobe.io/offers/';
 const STAGE_SELECTOR_ID_API_BASE = 'https://aos-stage.adobe.io/offers:search.selector';
 const API_KEY = 'universalPromoTerm';
-const SERVICE_PROVIDERS = 'PROMO_TERMS';
+const SERVICE_PROVIDERS = 'PROMO_TERM';
 
 function getEnv(env) {
   if (env) return env;
