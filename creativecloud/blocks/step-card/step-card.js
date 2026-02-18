@@ -10,9 +10,28 @@ function transformCard(card) {
 
   const title = cardEl.querySelector('h1');
   const stepTitle = cardEl.querySelector('h2');
+  const picture = cardEl.querySelector('picture');
 
   if (title && stepTitle) {
     const headerGroup = createTag('div', { class: 'step-header-group' });
+    if (picture) {
+      const img = picture.querySelector('img');
+      const parentP = picture.closest('p');
+      if (parentP) {
+        const text = parentP.textContent || '';
+        const pipeIndex = text.indexOf('|');
+
+        if (pipeIndex !== -1 && img) {
+          const altText = text.substring(pipeIndex + 1).trim();
+          img.alt = altText;
+        }
+        parentP.remove();
+      }
+      if (img) {
+        picture.classList.add('step-icon');
+      }
+      headerGroup.appendChild(picture);
+    }
     title.parentNode.insertBefore(headerGroup, title);
     headerGroup.appendChild(title);
   }

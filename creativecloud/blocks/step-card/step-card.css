@@ -1,14 +1,13 @@
 .step-card {
   --bg-color: #F5F7FA;
   --card-bg: #FFFFFF;
-  --text-primary: #2C2C2C;
-  --text-secondary: #505050;
+  --text-primary: #000000;
+  --text-secondary: #5D5D5D;
   --accent-color: #0265DC;
   --border-radius: 0.75rem;      /* 12px */
   --spacing-unit: 1.5rem;        /* 24px */
   --transition-speed: 0.3s;
-  --card-min-width: 17.5rem;     /* 280px */
-  --card-max-width: 20rem;       /* 320px */
+  --card-max-width: 28.75rem;       /* 460px */
 
   font-family: var(--body-font-family);
   position: relative;
@@ -45,7 +44,7 @@
   border-radius: var(--border-radius);
   padding: 2rem;
   scroll-snap-align: start;
-  box-shadow: 0 0.125rem 0.5rem rgba(0,0,0,5%);
+  box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -56,12 +55,12 @@
 }
 
 .step-card .foreground h2 {
-  font-size: 0.85rem;
+  font-size: 1.875rem;
   text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  font-weight: 800;
+  font-weight: 900;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  line-height: 125%;
 }
 
 .step-card .step-header-group {
@@ -71,23 +70,36 @@
   margin-bottom: 1rem;
 }
 
+
 .step-card .step-icon {
-  width: 2rem;
-  height: 2rem;
+  background-color: #E0E0E0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding:5px;
+}
+
+.step-card .step-icon img {
+  width: 2.5rem;
+  height: 2.5rem;
   flex-shrink: 0;
-  color: var(--text-primary);
+  color: var(--text-primary); 
+  object-fit: contain;
 }
 
 .step-card .foreground h1{
-  font-size: 1.25rem;
-  font-weight: 800;
-  line-height: 1.3;
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 98%;
+  margin:0;
   color: var(--text-primary)
 }
 
 .step-card .foreground p {
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 1.25rem;
+  line-height: 150%;
+  font-weight: 400;
   color: var(--text-secondary);
 }
 
