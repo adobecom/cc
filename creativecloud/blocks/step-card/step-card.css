@@ -65,7 +65,7 @@
 
 .step-card .step-header-group {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
@@ -129,7 +129,7 @@
   height: 100%;
   background-color: #CCCCE0;
   width: 0;
-  border-radius: 0.125rem;
+  border-radius: 1rem;
 }
 
 .step-card .foreground .nav-buttons {
