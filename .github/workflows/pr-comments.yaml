@@ -1,0 +1,9 @@
+name: Use perf-metrics PR comment
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  pr-comment:
+    uses: OWNER/perf-metrics/.github/workflows/pr-comment-from-perf-metrics.yaml@main
