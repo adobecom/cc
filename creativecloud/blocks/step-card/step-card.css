@@ -120,6 +120,17 @@
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  touch-action: none;
+}
+
+.step-card .foreground .progress-track::before{
+  content: '';
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }
 
 .step-card .foreground .progress-indicator {
@@ -186,10 +197,6 @@
   .step-card .foreground .step-card-track > div {
     transition: border-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
   }
-  
-  .step-card .foreground .progress-indicator {
-    transition: transform 0.1s linear, width 0.1s linear; 
-  }
 
   .step-card .foreground .nav-btn {
     transition: all 0.2s ease;
@@ -210,8 +217,8 @@
 
   .step-card .foreground .progress-track{
     display: block;
-    width: 60%;
-    max-width: 80%;
+    width: 60vw;
+    max-width: 60vw;
   }
   
 }

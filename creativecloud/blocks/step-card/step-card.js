@@ -85,6 +85,88 @@ function calculateButtonState({ scrollLeft, scrollWidth, clientWidth }) {
   };
 }
 
+function setupDragInteraction(track, progressTrack, progressBar, setDraggingState) {
+  let isDragging = false;
+
+  // Cache variables
+  let trackRect = null;
+  let thumbWidth = 0;
+  let trackWidth = 0;
+  let maxScroll = 0;
+
+  let rafId = null;
+  let currentClientX = 0;
+
+  const getClientX = (e) => (e.touches ? e.touches[0].clientX : e.clientX);
+
+  const updatePosition = () => {
+    if (!trackRect) return;
+
+    let relativeX = currentClientX - trackRect.left - (thumbWidth / 2);
+
+    const availableSpace = trackWidth - thumbWidth;
+    if (relativeX < 0) relativeX = 0;
+    if (relativeX > availableSpace) relativeX = availableSpace;
+
+    progressBar.style.transform = `translateX(${relativeX}px)`;
+    const percentage = availableSpace > 0 ? relativeX / availableSpace : 0;
+    track.scrollLeft = percentage * maxScroll;
+
+    rafId = null;
+  };
+
+  const onDragStart = (e) => {
+    isDragging = true;
+    setDraggingState(true);
+    trackRect = progressTrack.getBoundingClientRect();
+    thumbWidth = progressBar.getBoundingClientRect().width;
+    trackWidth = trackRect.width;
+    maxScroll = track.scrollWidth - track.clientWidth;
+    track.style.scrollBehavior = 'auto';
+    track.style.scrollSnapType = 'none';
+    progressBar.style.transition = 'none';
+    currentClientX = getClientX(e);
+    updatePosition();
+  };
+
+  const onDragMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    currentClientX = getClientX(e);
+
+    if (!rafId) {
+      rafId = requestAnimationFrame(updatePosition);
+    }
+  };
+
+  const onDragEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    setDraggingState(false);
+
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    track.style.scrollBehavior = '';
+    track.style.scrollSnapType = '';
+    progressBar.style.transition = '';
+    trackRect = null;
+  };
+
+  // Mouse Listeners
+  progressTrack.addEventListener('mousedown', onDragStart);
+  window.addEventListener('mousemove', onDragMove);
+  window.addEventListener('mouseup', onDragEnd);
+
+  // Touch Listeners
+  progressTrack.addEventListener('touchstart', onDragStart, { passive: false });
+  window.addEventListener('touchmove', onDragMove, { passive: false });
+  window.addEventListener('touchend', onDragEnd);
+}
+
 function decorateContent(el) {
   const dataCards = Array.from(el.children);
   const transformedCards = dataCards.map((card) => transformCard(card));
@@ -106,6 +188,7 @@ function decorateContent(el) {
   el.appendChild(foreground);
 
   let ticking = false;
+  let isDragging = false;
 
   const updateUI = () => {
     const metrics = {
@@ -121,9 +204,11 @@ function decorateContent(el) {
     const thumbState = calculateThumbState(metrics, trackWidth);
     const btnState = calculateButtonState(metrics);
 
-    if (trackWidth > 0) {
+    if (trackWidth > 0 && !isDragging) {
       controls.progressBar.style.width = `${thumbState.width}px`;
-      controls.progressBar.style.transform = `translate(${thumbState.x}px)`;
+      controls.progressBar.style.transform = `translateX(${thumbState.x}px)`;
+    } else if (trackWidth > 0 && isDragging) {
+      controls.progressBar.style.width = `${thumbState.width}px`;
     }
     controls.prevBtn.disabled = btnState.prevDisabled;
     controls.nextBtn.disabled = btnState.nextDisabled;
@@ -136,6 +221,13 @@ function decorateContent(el) {
       ticking = true;
     }
   };
+
+  setupDragInteraction(
+    track,
+    controls.progressTrack,
+    controls.progressBar,
+    (val) => { isDragging = val; },
+  );
 
   track.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
