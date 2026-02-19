@@ -111,6 +111,8 @@
   line-height: 150%;
   font-weight: 400;
   color: var(--text-secondary);
+  margin: 0;
+  padding-top: 1.25rem;
 }
 
 .step-cards .foreground .carousel-controls {
