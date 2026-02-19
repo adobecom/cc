@@ -1,0 +1,515 @@
+/* ========== Upload block (shared / reference) ========== */
+.upload-block {
+  --icon-spacing: 14px;
+}
+
+.upload-block .hide { display: none; }
+
+.upload-block .foreground > .tablet-up,
+.upload-block .foreground > .tablet-up.desktop-up,
+.upload-block .foreground > .desktop-up {
+  display: none;
+}
+
+/* Media Zone */
+.upload-block .media-container picture {
+  display: block;
+  line-height: 0;
+}
+
+.upload-block .media-container picture > img,
+.upload-block .media-container video {
+  object-fit: cover;
+}
+
+.upload-block .media-container picture,
+.upload-block .media-container picture > img,
+.upload-block .media-container video {
+  height: 100%;
+  width: 100%;
+}
+
+/* Drop Zone */
+.upload-block .drop-zone-container {
+  background: #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 #00000029;
+  box-sizing: border-box;
+  padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-s);
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  max-width: var(--grid-container-width);
+  margin: -15% auto 0;
+}
+
+.upload-block .drop-zone-container > p:last-child {
+  font-size: var(--type-body-xxs-size);
+  line-height: var(--type-body-xxs-lh);
+  margin: var(--spacing-xs) 0 0;
+}
+
+.upload-block .drop-zone {
+  width: 100%;
+  flex: 1 1 auto;
+  font-size: 14px;
+  position: relative;
+  margin-bottom: 24px;
+  box-sizing: border-box;
+  border: 2px solid white;
+}
+
+.upload-block .drop-zone p:first-child {
+  font-size: var(--type-body-xxl-size);
+  font-weight: 700;
+  margin-bottom: 0;
+  margin-top: var(--spacing-xxs);
+  line-height: var(--type-body-xxl-lh);
+}
+
+.upload-block .drop-zone p:last-child {
+  margin: 12px 0 0;
+  line-height: var(--type-body-xs-lh);
+  font-size: var(--type-body-xs-size);
+}
+
+.upload-block .upload-action-container {
+  margin: 0 auto;
+}
+
+.upload-block .action-button {
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.upload-block .action-button > picture {
+  margin-inline-end: var(--icon-spacing);
+}
+
+.upload-block .action-button > picture,
+.upload-block .action-button > picture > img {
+  width: 24px;
+  height: 24px;
+}
+
+.upload-block .action-button .icon-upload-to-cloud-outline svg {
+  height: 1.3em;
+  width: 1.3em;
+  top: .3em;
+  line-height: 0;
+  margin-top: -6px;
+}
+
+.upload-block .media-container .video-container {
+  width: 100%;
+}
+
+.upload-block .media-container .video-container .pause-play-wrapper {
+  bottom: auto;
+  top: 2%;
+} 
+
+/* Tablet up */
+@media screen and (min-width: 600px) {
+  .upload-block .foreground {
+    max-width: var(--grid-container-width);
+    margin: 0 auto;
+  }
+
+  .upload-block .foreground > .tablet-up,
+  .upload-block .foreground > .tablet-up.desktop-up {
+    display: grid;
+  }
+
+  .upload-block .foreground > .mobile-up,
+  .upload-block .foreground > .desktop-up {
+    display: none;
+  }
+
+  .upload-block .media-container {
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  /* Drop Zone */
+  .upload-block .drop-zone-container {
+    width: 75%;
+    margin: -12% auto 0;
+  }
+}
+
+/* Desktop up */
+@media screen and (min-width: 1200px) {
+  .upload-block .upload-grid {
+    box-shadow: 0 0 20px 0 #00000029;
+    border-radius: 16px;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: 1fr;
+    max-width: 1000px;
+    min-height: 400px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .upload-block .media-container {
+    overflow: initial;
+    border-radius: none
+  }
+
+  .upload-block .drop-zone-container {
+    border-radius: 0;
+    position: static;
+    width: unset;
+    max-width: unset;
+    margin: initial;
+    box-shadow: none;
+  }
+
+  .upload-block .drop-zone {
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-bottom: var(--spacing-s);
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='2' ry='8' stroke='silver' stroke-width='4' stroke-dasharray='5%2c 10' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+  }
+
+  .upload-block .drop-zone:hover,
+  .upload-block .drop-zone.active {
+    border: 2px solid #1473E6;
+    background-color: #E4F0FF;
+    background-image: none;
+    cursor: pointer;
+  }
+
+  .upload-block .drop-zone p:first-child {
+    align-content: center;
+  }
+
+  .upload-block .drop-zone p:last-child {
+    margin: 0;
+    line-height: var(--type-body-s-lh);
+    font-size: var(--type-body-s-size);
+  }
+
+  .upload-block .drop-zone-container > p:last-child {
+    font-size: var(--type-body-xs-size);
+    line-height: var(--type-body-xs-lh);
+  }
+
+  .upload-block .foreground > .upload-grid,
+  .upload-block .foreground > .desktop-up,
+  .upload-block .foreground > .tablet-up.desktop-up {
+    display: grid;
+  }
+
+  .upload-block .foreground > .mobile-up,
+  .upload-block .foreground > .tablet-up {
+    display: none;
+  }
+
+  .upload-block .media-container .video-container .pause-play-wrapper {
+    top: auto;
+    right: auto;
+    left: 2%;
+    bottom: 2%;
+  }
+}
+
+/* ========== Upload marquee block (Figma: FF - Gen Remove - upscale - expand) ========== */
+.upload-marquee-block {
+  --icon-spacing: 14px;
+  --upload-marquee-left-bg: #000000;
+  --upload-marquee-heading-size: clamp(2rem, 5vw, 3rem);
+  --upload-marquee-heading-lh: 1.15;
+  --upload-marquee-dropzone-bg: #0d0d0d;
+  --upload-marquee-dropzone-dot: rgba(255, 255, 255, 0.12);
+  --upload-marquee-branding-spacing: var(--spacing-l);
+}
+
+.upload-marquee-block .hide { display: none; }
+
+.upload-marquee-block .upload-marquee-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  max-width: var(--grid-container-width);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.upload-marquee-block .upload-marquee-left {
+  background: var(--upload-marquee-left-bg);
+  color: #fff;
+  padding: var(--spacing-m) var(--spacing-m) var(--spacing-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+}
+
+/* Figma node 626-19601: marquee content – black panel, branding, heading, description, left-aligned */
+.upload-marquee-block .upload-marquee-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  text-align: left;
+  align-items: flex-start;
+}
+
+/* Figma node 626-19603: Firefly logo – red badge, white Fi + star, soft glow */
+.upload-marquee-block .upload-marquee-content > *:first-child {
+  margin-bottom: var(--upload-marquee-branding-spacing);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.upload-marquee-block .upload-marquee-content > *:first-child picture,
+.upload-marquee-block .upload-marquee-content > *:first-child img,
+.upload-marquee-block .upload-marquee-content > *:first-child svg {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.upload-marquee-block .upload-marquee-content > *:first-child picture img,
+.upload-marquee-block .upload-marquee-content > *:first-child picture svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+}
+
+.upload-marquee-block .upload-marquee-content p,
+.upload-marquee-block .upload-marquee-content h1,
+.upload-marquee-block .upload-marquee-content h2 {
+  color: inherit;
+  margin: 0;
+  text-align: left;
+}
+
+/* Figma: "Remove an object from a photo." – large, bold, white, left-aligned */
+.upload-marquee-block .upload-marquee-content h1 {
+  font-size: var(--upload-marquee-heading-size);
+  line-height: var(--upload-marquee-heading-lh);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+/* Figma: description – smaller white text, comfortable line/letter spacing */
+.upload-marquee-block .upload-marquee-content p {
+  color: #ffffff;
+  font-size: var(--type-body-m-size);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  max-width: 42rem;
+}
+
+.upload-marquee-block .upload-marquee-content a {
+  color: #fff;
+}
+
+/* "Edit photos with AI" CTA: light grey button, dark text (expected design) */
+.upload-marquee-block .upload-marquee-content .upload-marquee-cta {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 12px 24px;
+  background: #e5e5e5;
+  color: #222;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.upload-marquee-block .upload-marquee-content .upload-marquee-cta:hover {
+  background: #d3d3d3;
+  color: #222;
+  text-decoration: none;
+}
+
+.upload-marquee-block .upload-marquee-right {
+  min-height: 280px;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-m);
+  box-sizing: border-box;
+}
+
+.upload-marquee-block .upload-marquee-right .media-container {
+  height: 100%;
+  min-height: 260px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.upload-marquee-block .upload-marquee-right .media-container picture,
+.upload-marquee-block .upload-marquee-right .media-container picture > img,
+.upload-marquee-block .upload-marquee-right .media-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  line-height: 0;
+}
+
+.upload-marquee-block .upload-marquee-right .media-container .video-container {
+  width: 100%;
+  height: 100%;
+}
+
+.upload-marquee-block .drop-zone-container {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  max-width: none;
+}
+
+/* Figma: dashed white border, slightly lighter dark grey interior, subtle dotted pattern */
+.upload-marquee-block .drop-zone {
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: var(--spacing-l) var(--spacing-m);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-s);
+  min-height: 240px;
+  box-sizing: border-box;
+  background-color: var(--upload-marquee-dropzone-bg);
+  background-image: radial-gradient(circle, var(--upload-marquee-dropzone-dot) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+.upload-marquee-block .drop-zone:hover,
+.upload-marquee-block .drop-zone.active {
+  border-color: rgba(255, 255, 255, 0.7);
+  background-color: #111111;
+  background-image: radial-gradient(circle, var(--upload-marquee-dropzone-dot) 1px, transparent 1px);
+  cursor: pointer;
+}
+
+/* Figma: landscape icon at top of upload zone, white */
+.upload-marquee-block .drop-zone > p:first-child {
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+  font-size: var(--type-body-m-size);
+}
+
+.upload-marquee-block .drop-zone > p:first-child img,
+.upload-marquee-block .drop-zone > p:first-child svg {
+  display: block;
+  margin: 0 auto;
+  width: 48px;
+  height: 48px;
+  opacity: 0.9;
+}
+
+/* Blue "Upload your image" button lives inside drop zone */
+.upload-marquee-block .drop-zone .upload-action-container {
+  margin: var(--spacing-xs) 0;
+}
+
+/* Figma: "Or drag and drop here" and file requirements – white text */
+.upload-marquee-block .drop-zone > p:not(:first-child):not(:last-child):not(.upload-action-container) {
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+  font-size: var(--type-body-s-size);
+  line-height: 1.4;
+}
+
+/* Figma: legal at bottom – small white text, blue underlined links */
+.upload-marquee-block .drop-zone > p:last-child {
+  font-size: var(--type-body-xxs-size);
+  line-height: var(--type-body-xxs-lh);
+  margin: var(--spacing-s) 0 0;
+  color: #ffffff;
+  text-align: center;
+}
+
+.upload-marquee-block .drop-zone > p:last-child a {
+  color: #1473E6;
+  text-decoration: underline;
+}
+
+.upload-marquee-block .upload-action-container {
+  margin: 0 auto;
+}
+
+.upload-marquee-block .action-button {
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.upload-marquee-block .action-button > picture {
+  margin-inline-end: var(--icon-spacing);
+}
+
+.upload-marquee-block .action-button > picture,
+.upload-marquee-block .action-button > picture > img {
+  width: 24px;
+  height: 24px;
+}
+
+.upload-marquee-block .action-button .icon-upload-to-cloud-outline svg {
+  height: 1.3em;
+  width: 1.3em;
+  line-height: 0;
+}
+
+/* Desktop: left | right columns */
+@media screen and (min-width: 1200px) {
+  .upload-marquee-block .upload-marquee-layout {
+    grid-template-columns: 1fr 1.2fr;
+    grid-template-rows: 1fr;
+    min-height: 520px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .upload-marquee-block .upload-marquee-left {
+    justify-content: flex-start;
+    padding: var(--spacing-xl) var(--spacing-l);
+  }
+
+  .upload-marquee-block .upload-marquee-right {
+    min-height: auto;
+    padding: var(--spacing-l);
+    align-items: center;
+  }
+
+  .upload-marquee-block .upload-marquee-right .media-container {
+    min-height: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .upload-marquee-block .upload-marquee-right .media-container .video-container .pause-play-wrapper {
+    bottom: 2%;
+    left: 2%;
+    right: auto;
+    top: auto;
+  }
+}
