@@ -6,7 +6,7 @@ function transformCard(card) {
   const cardEl = card.cloneNode(true);
   cardEl.setAttribute('tabindex', '0');
 
-  cardEl.addEventListener('focus', () => cardEl.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'center' }));
+  cardEl.addEventListener('focus', () => cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }));
 
   const title = cardEl.querySelector('h1');
   const stepTitle = cardEl.querySelector('h2');
