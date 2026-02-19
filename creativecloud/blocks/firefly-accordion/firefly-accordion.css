@@ -1,9 +1,8 @@
 .firefly-accordion {
-  --c-text-primary: #2C2C2C;
-  --c-text-secondary: #505050;
+  --c-text-primary: #000000;
   --c-text-tertiary: #8F8F8F;
   --c-bg-default: #FFFFFF;
-  --c-bg-active: #F0E5F5;
+  --c-bg-active: #ECE4F3;
   --c-border: #E0E0E0;
   --c-focus: #0054BB;
   --s-spacing-sm: 1rem;
@@ -61,6 +60,7 @@
   cursor: pointer;
   color: var(--c-text-primary);
   font-family: var(--body-font-family);
+  transition: padding var(--anim-speed) var(--anim-easing);
 }
 
 .firefly-accordion .foreground .firefly-accordion-trigger:focus-visible{
@@ -69,14 +69,18 @@
   border-radius: var(--acc-item-radius);
 }
 
+.firefly-accordion .foreground .firefly-accordion-item.is-open .firefly-accordion-trigger {
+  padding-bottom: 0.5rem;
+}
+
 .firefly-accordion .foreground .step-indicator {
   grid-area: step;
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--c-text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   white-space: nowrap;
+  line-height: 1.25;
 }
 
 .firefly-accordion .foreground .firefly-accordion-item.is-open .step-indicator {
@@ -85,9 +89,9 @@
 
 .firefly-accordion .foreground .firefly-accordion-title {
   grid-area: title;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.4;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.5;
 }
 
 .firefly-accordion .foreground .firefly-accordion-icon{
@@ -95,8 +99,8 @@
   right: var(--s-spacing-md);
   top: 50%;
   transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,9 +144,17 @@
   grid-template-rows: 1fr;
 }
 
+.firefly-accordion .foreground .firefly-accordion-item .firefly-accordion-content {
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 1;
+  line-height: 1.5;
+}
+
 .firefly-accordion .foreground .firefly-accordion-item.is-open .firefly-accordion-content {
   opacity: 1;
   transition: opacity var(--anim-speed) ease 0.1s;
+  
 }
 
 .firefly-accordion .foreground .firefly-accordion-content > *:first-child { margin-top: 0; }
@@ -155,50 +167,46 @@
 }
 
 @media (min-width: 481px) {
- .firefly-accordion .foreground .firefly-accordion-trigger {
-      grid-template-columns: 55px 1fr;
-      grid-template-areas: "step title";
-      align-items: baseline;
-      row-gap: 0;
-      column-gap: 16px;
-  }
-
- .firefly-accordion .foreground .step-indicator {
-      font-size: 0.875rem;
-  }
-
- .firefly-accordion .foreground .firefly-accordion-content {
-      padding: 0 calc(var(--s-spacing-md) + 40px) var(--s-spacing-md) calc(var(--s-spacing-md) + 55px + 16px);
-  }
-}
-
-@media (min-width: 768px) {
   .firefly-accordion .foreground .firefly-accordion-trigger {
-      grid-template-columns: 65px 1fr;
-      column-gap: var(--s-spacing-md); /* 24px */
-      padding: var(--s-spacing-lg); /* 32px */
-      padding-right: calc(var(--s-spacing-lg) + 40px);
-  }
-
-  .firefly-accordion .foreground .firefly-accordion-icon {
-      right: var(--s-spacing-lg);
+    grid-template-columns: 55px 1fr;
+    grid-template-areas: "step title";
+    align-items: baseline;
+    row-gap: 0;
+    column-gap: 16px;
   }
 
   .firefly-accordion .foreground .step-indicator {
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: 1.25;
+    font-size: 1rem;
+  }
+
+  .firefly-accordion .foreground .firefly-accordion-item .firefly-accordion-content {
+    padding: 0 calc(var(--s-spacing-md) + 40px) var(--s-spacing-md) calc(var(--s-spacing-md) + 55px + 16px);
+  }
+}
+
+@media (min-width: 769px) {
+  .firefly-accordion .foreground .firefly-accordion-trigger {
+    grid-template-columns: 65px 1fr;
+    column-gap: var(--s-spacing-md); /* 24px */
+    padding: var(--s-spacing-lg); /* 32px */
+    padding-right: calc(var(--s-spacing-lg) + 40px);
+  }
+
+  .firefly-accordion .foreground .firefly-accordion-icon {
+    right: var(--s-spacing-lg);
   }
 
   .firefly-accordion .foreground .firefly-accordion-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      line-height: 1.5;
+    font-size: 1.5rem;
   }
   
-  .firefly-accordion .foreground .firefly-accordion-content {
-      padding: 0 calc(var(--s-spacing-lg) + 40px) var(--s-spacing-lg) calc(var(--s-spacing-lg) + 65px + var(--s-spacing-md));
-      font-weight: 400;
-      font-size: 1.25rem;
+  .firefly-accordion .foreground .firefly-accordion-item .firefly-accordion-content {
+    padding: 0 calc(var(--s-spacing-lg) + 40px) var(--s-spacing-lg) calc(var(--s-spacing-lg) + 65px + var(--s-spacing-md));
+    font-size: 1.25rem;
+  }
+
+  .firefly-accordion .foreground .firefly-accordion-item.is-open .firefly-accordion-trigger {
+    padding-bottom: 0.5rem ;
   }
 }
+
