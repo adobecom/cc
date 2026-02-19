@@ -6,6 +6,7 @@
   --ff-control-gap: 8px;
   --ff-card-border-radius: 16px;
   padding: 0;
+  position: relative;
 }
 
 .firefly-carousel {
@@ -133,30 +134,29 @@
   left: 14px;
 }
 
-.firefly-carousel .firefly-carousel-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--ff-control-gap);
-  position: absolute;
-  top: calc(var(--ff-card-height) + 20px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-}
-
 .firefly-carousel .firefly-carousel-nav-btn {
   width: var(--ff-nav-size);
   height: var(--ff-nav-size);
-  flex-direction: column;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1/1;
-  display: flex;
+  position: absolute;
+  top: calc(var(--ff-card-height) / 2);
+  z-index: 1;
   border-radius: 90.909px;
   background: #010101;
   backdrop-filter: blur(13.63636302947998px);
   border: none;
+}
+
+.firefly-carousel .firefly-carousel-nav-btn.prev {
+  left: calc((100% - var(--ff-card-width)) / 2);
+  transform: translate(-50%, -50%);
+}
+
+.firefly-carousel .firefly-carousel-nav-btn.next {
+  right: calc((100% - var(--ff-card-width)) / 2);
+  transform: translate(50%, -50%);
 }
 
 .firefly-carousel .firefly-carousel-nav-btn:disabled {
@@ -203,6 +203,7 @@
     --ff-card-width: 60vw;
     --ff-card-height: calc(var(--ff-card-width) / 1.6);
     --ff-card-border-radius: 24px;
+    --ff-nav-size: 65px;
   }
 
   .firefly-carousel .firefly-carousel-prompt {
@@ -211,6 +212,17 @@
     left: 55px;
     bottom: 55px;
     width: calc(var(--ff-card-width) / 2.5);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .firefly-carousel .firefly-carousel-card:not(.is-clone):hover .firefly-carousel-prompt,
+  .firefly-carousel .firefly-carousel-card:not(.is-clone):focus-within .firefly-carousel-prompt {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .firefly-carousel .firefly-carousel-prompt-text {
