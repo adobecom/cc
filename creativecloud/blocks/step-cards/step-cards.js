@@ -77,11 +77,27 @@ function calculateThumbState({ scrollLeft, scrollWidth, clientWidth }, trackWidt
   return { width: thumbWidth, x: thumbLeft };
 }
 
-function calculateButtonState({ scrollLeft, scrollWidth, clientWidth }) {
+function calculateButtonState(track) {
+  const { scrollLeft, scrollWidth, clientWidth } = track;
   const maxScroll = scrollWidth - clientWidth;
+
+  // Standard check (scroll position) with generous 10px buffer
+  let isAtEnd = scrollLeft >= (maxScroll - 10);
+
+  // Robust geometry check for mobile
+  const lastCard = track.lastElementChild;
+  if (!isAtEnd && lastCard) {
+    const trackRight = scrollLeft + clientWidth;
+    const lastCardRightEdge = lastCard.offsetLeft + lastCard.offsetWidth;
+    // If visual end of last card is in view (minus 10px buffer)
+    if (trackRight >= lastCardRightEdge - 10) {
+      isAtEnd = true;
+    }
+  }
+
   return {
-    prevDisabled: scrollLeft <= 2,
-    nextDisabled: scrollLeft >= maxScroll - 2,
+    prevDisabled: scrollLeft <= 5, // Increased buffer for start
+    nextDisabled: isAtEnd,
   };
 }
 

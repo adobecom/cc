@@ -36,8 +36,9 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   margin-left: calc(var(--step-track-margin-left) - 1rem);
-  padding: 0.5rem 1rem 1.25rem;
+  padding: 0.5rem 0.5rem 1.25rem 1rem;
   scroll-padding-left: 1rem;
+  position: relative;
 }
 
 .step-cards .foreground .step-card-track::-webkit-scrollbar{
