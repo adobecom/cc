@@ -7,7 +7,14 @@
   --border-radius: 0.75rem;      /* 12px */
   --spacing-unit: 1.5rem;        /* 24px */
   --transition-speed: 0.3s;
-  --card-max-width: 28.75rem;       /* 460px */
+  --l-card-max-width: 28.75rem;       /* 460px */
+  --m-card-max-width: 18.875rem;
+  --s-card-max-width: 17.75rem;
+  --step-track-margin-left: 9.635%; /* (74px / 768px) * 100 */
+  --xs-font-size: 1rem;
+  --s-font-size: 1.25rem;
+  --m-font-size: 1.875rem;
+  --l-font-size: 2.25rem;
 
   font-family: var(--body-font-family);
   position: relative;
@@ -29,7 +36,7 @@
   padding-bottom: 1.25rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  margin-left: var(--spacing-xxxl);
+  margin-left: var(--step-track-margin-left);
 }
 
 .step-card .foreground .step-card-track::-webkit-scrollbar{
@@ -39,11 +46,11 @@
 .step-card .foreground .step-card-track > div {
   flex: 0 0 auto;
   width: 100%;
-  max-width: var(--card-max-width);
+  max-width: var(--s-card-max-width);
   background: var(--card-bg);
   border-radius: var(--border-radius);
-  padding: 2rem;
-  scroll-snap-align: start;
+  padding: 0.5rem;
+  scroll-snap-align: center;
   box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
@@ -55,7 +62,7 @@
 }
 
 .step-card .foreground h2 {
-  font-size: 1.875rem;
+  font-size: var(--xs-font-size);
   text-transform: uppercase;
   font-weight: 900;
   margin-bottom: 1rem;
@@ -89,7 +96,7 @@
 }
 
 .step-card .foreground h1{
-  font-size: 2.25rem;
+  font-size: var(--s-font-size);
   font-weight: 900;
   line-height: 98%;
   margin:0;
@@ -97,7 +104,7 @@
 }
 
 .step-card .foreground p {
-  font-size: 1.25rem;
+  font-size: var(--xs-font-size);
   line-height: 150%;
   font-weight: 400;
   color: var(--text-secondary);
@@ -185,10 +192,6 @@
 }
 
 
-
-
-
-
 @media (prefers-reduced-motion: no-preference) {
   .step-card .foreground .step-card-track{
     scroll-behavior: smooth;
@@ -204,29 +207,48 @@
   
 }
 
-@media screen and (min-width: 769px) {
-  .step-card .foreground .carousel-controls{
+@media screen and (min-width: 768px) {
+  .step-card .foreground .step-card-track > div {
+    padding: 1rem;
+    max-width: var(--m-card-max-width);
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .step-card .foreground .carousel-controls {
     flex-direction: row;
     justify-content: center;
     margin-top: 1.25rem;
   }
 
-  .step-card  .foreground .nav-buttons {
+  .step-card .foreground .nav-buttons {
     display: none;
-  } 
+  }
 
-  .step-card .foreground .progress-track{
+  .step-card .foreground .progress-track {
     display: block;
     width: 60vw;
     max-width: 60vw;
   }
-  
-}
 
-@media screen and (max-width: 768px) {
   .step-card .foreground .step-card-track > div {
-      width: 85vw;
-      scroll-snap-align: center;
+   padding: 2rem; 
+   max-width: var(--l-card-max-width);
+   scroll-snap-align: start;
+  }
+  
+  .step-card .foreground h1{
+    font-size: var(--l-font-size);
+
+  }
+  
+  .step-card .foreground h2{
+    font-size: var(--m-font-size);
+    
+  }
+  
+  .step-card .foreground p {
+    font-size: var(--s-font-size);
   }
 }
 
