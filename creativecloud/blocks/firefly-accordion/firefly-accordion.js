@@ -60,7 +60,7 @@ function handleItemClick(e) {
 
   if (e.target.tagName === 'A' || e.target.tagName === 'INPUT') return;
 
-  const trigger = item.querySelector('.accordion-trigger');
+  const trigger = item.querySelector('.firefly-accordion-trigger');
   if (!trigger) return;
 
   const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
@@ -79,18 +79,18 @@ function createAccordionItem(data) {
   const isOpen = false;
 
   const itemWrapper = createTag('div');
-  itemWrapper.className = `accordion-item ${isOpen ? 'is-open' : ''}`;
+  itemWrapper.className = `firefly-accordion-item ${isOpen ? 'is-open' : ''}`;
 
   itemWrapper.addEventListener('pointerdown', handlePointerDown);
   itemWrapper.addEventListener('click', handleItemClick);
-  const header = createTag('h3', { class: 'accordion-header' });
+  const header = createTag('h3', { class: 'firefly-accordion-header' });
 
-  const btn = createTag('button', { class: 'accordion-trigger', id: `btn-${headingId}`, 'aria-expanded': isOpen, type: 'button', 'aria-controls': `panel-${headingId}` });
+  const btn = createTag('button', { class: 'firefly-accordion-trigger', id: `btn-${headingId}`, 'aria-expanded': isOpen, type: 'button', 'aria-controls': `panel-${headingId}` });
 
-  const titleSpan = createTag('span', { class: 'accordion-title' });
+  const titleSpan = createTag('span', { class: 'firefly-accordion-title' });
   titleSpan.textContent = title;
 
-  const iconSpan = createTag('span', { class: 'accordion-icon' });
+  const iconSpan = createTag('span', { class: 'firefly-accordion-icon' });
   iconSpan.innerHTML = ICON_SVG;
 
   const stepSpan = createTag('span', { class: 'step-indicator' });
@@ -101,9 +101,9 @@ function createAccordionItem(data) {
   btn.appendChild(iconSpan);
   header.appendChild(btn);
 
-  const panel = createTag('div', { class: 'accordion-panel', id: `panel-${headingId}`, role: 'region', 'aria-labelledby': `btn-${headingId}` });
-  const panelInner = createTag('div', { class: 'accordion-panel-inner' });
-  const contentWrapper = createTag('div', { class: 'accordion-content' });
+  const panel = createTag('div', { class: 'firefly-accordion-panel', id: `panel-${headingId}`, role: 'region', 'aria-labelledby': `btn-${headingId}` });
+  const panelInner = createTag('div', { class: 'firefly-accordion-panel-inner' });
+  const contentWrapper = createTag('div', { class: 'firefly-accordion-content' });
 
   const p = createTag('p');
   p.innerHTML = content;
