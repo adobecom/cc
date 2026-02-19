@@ -9,10 +9,9 @@ function transformCard(card) {
   cardEl.addEventListener('focus', () => cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }));
 
   const title = cardEl.querySelector('h1');
-  const stepTitle = cardEl.querySelector('h2');
   const picture = cardEl.querySelector('picture');
 
-  if (title && stepTitle) {
+  if (title) {
     const headerGroup = createTag('div', { class: 'step-header-group' });
     if (picture) {
       const img = picture.querySelector('img');
