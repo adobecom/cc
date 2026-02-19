@@ -62,12 +62,29 @@
   font-family: var(--body-font-family);
   position: relative;
   z-index: 2;
+  outline: none
 }
 
-.firefly-accordion .foreground .firefly-accordion-trigger:focus-visible{
+.firefly-accordion .foreground .firefly-accordion-trigger::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--radius);
+  pointer-events: none; /* Ensures the box doesn't block mouse clicks */
+  transition: bottom var(--anim-speed) var(--anim-easing); /* Animates smoothly with the panel */
+}
+
+.firefly-accordion .foreground .firefly-accordion-trigger:focus-visible::after{
   outline: 2px solid var(--c-focus);
   outline-offset: -2px;
   border-radius: var(--acc-item-radius);
+}
+
+.firefly-accordion .foreground .firefly-accordion-item.is-open .firefly-accordion-trigger::after {
+  bottom: 16px; 
 }
 
 
@@ -124,7 +141,8 @@
 .firefly-accordion .foreground .firefly-accordion-panel {
   display: grid; 
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--anim-speed) var(--anim-easing); 
+  visibility: hidden;
+  transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear var(--anim-speed); 
   position: relative;
   top: -16px; 
   z-index: 1;
@@ -142,6 +160,8 @@
 
 .firefly-accordion .foreground .firefly-accordion-item.is-open .firefly-accordion-panel {
   grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear 0s;
 }
 
 .firefly-accordion .foreground .firefly-accordion-item .firefly-accordion-content {
@@ -207,6 +227,10 @@
 
   .firefly-accordion .foreground .firefly-accordion-panel {
     top: -24px;
+  }
+
+  .firefly-accordion .foreground .firefly-accordion-item.is-open .firefly-accordion-trigger::after {
+    bottom: 24px; 
   }
 }
 
