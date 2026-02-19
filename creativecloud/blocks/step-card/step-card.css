@@ -5,11 +5,12 @@
   --text-secondary: #5D5D5D;
   --accent-color: #0265DC;
   --border-radius: 0.75rem;      /* 12px */
-  --spacing-unit: 1.5rem;        /* 24px */
+  --l-spacing-unit: 1.5rem;        /* 24px */
+  --m-spacing-unit: 1.25rem;
   --transition-speed: 0.3s;
   --l-card-max-width: 28.75rem;       /* 460px */
-  --m-card-max-width: 18.875rem;
-  --s-card-max-width: 17.75rem;
+  --m-card-max-width: 18.125rem;
+  --s-card-max-width: 16rem;
   --step-track-margin-left: 9.635%; /* (74px / 768px) * 100 */
   --xs-font-size: 1rem;
   --s-font-size: 1.25rem;
@@ -29,7 +30,7 @@
 
 .step-card .foreground .step-card-track {
   display: flex;
-  gap: var(--spacing-unit);
+  gap: var(--m-spacing-unit);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding: 0.25rem;
@@ -49,9 +50,9 @@
   max-width: var(--s-card-max-width);
   background: var(--card-bg);
   border-radius: var(--border-radius);
-  padding: 0.5rem;
+  padding: 1.375rem;
   scroll-snap-align: center;
-  box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.12);
+  box-shadow: 0 3.04px 2.44px 0 #00000013, 0 7.32px 5.85px 0 #0000001C;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -65,6 +66,7 @@
   font-size: var(--xs-font-size);
   text-transform: uppercase;
   font-weight: 900;
+  margin-top: 0;
   margin-bottom: 1rem;
   color: var(--text-primary);
   line-height: 125%;
@@ -209,7 +211,6 @@
 
 @media screen and (min-width: 768px) {
   .step-card .foreground .step-card-track > div {
-    padding: 1rem;
     max-width: var(--m-card-max-width);
   }
 }
@@ -241,7 +242,7 @@
     font-size: var(--l-font-size);
 
   }
-  
+
   .step-card .foreground h2{
     font-size: var(--m-font-size);
     
@@ -249,6 +250,10 @@
   
   .step-card .foreground p {
     font-size: var(--s-font-size);
+  }
+
+  .step-card .foreground .step-card-track{
+    gap: var(--l-spacing-unit);
   }
 }
 
