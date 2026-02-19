@@ -211,10 +211,10 @@ function computeTrackOffset(track, currentIndex) {
 }
 
 /**
- * Creates prev/next navigation buttons, appends them to the controls
+ * Creates prev/next navigation buttons, appends them to the provided
  * container, and returns a reposition callback for resize handling.
  */
-function createNavControls(track, controls, itemCount, state) {
+function createNavControls(track, navContainer, itemCount, state) {
   let prevButton;
   let nextButton;
 
@@ -243,7 +243,7 @@ function createNavControls(track, controls, itemCount, state) {
     reposition();
   });
 
-  controls.append(prevButton, nextButton);
+  navContainer.append(prevButton, nextButton);
   reposition();
   return reposition;
 }
@@ -257,9 +257,8 @@ function extractJsonUrl(el) {
 function createCarouselStructure() {
   const viewport = createTag('div', { class: `${BLOCK}-viewport` });
   const track = createTag('div', { class: `${BLOCK}-track` });
-  const controls = createTag('div', { class: `${BLOCK}-controls` });
   viewport.appendChild(track);
-  return { viewport, track, controls };
+  return { viewport, track };
 }
 
 /** Wires click handlers on non-clone playback buttons to toggle play/pause. */
@@ -298,13 +297,13 @@ export default async function init(el) {
   const { videos, playbackButtons } = buildTrack(structure.track, items, state.isPlaying);
   const reposition = createNavControls(
     structure.track,
-    structure.controls,
+    structure.viewport,
     items.length,
     state,
   );
 
   bindPlaybackControls(playbackButtons, videos, state);
-  el.append(structure.viewport, structure.controls);
+  el.append(structure.viewport);
   observeResize(structure.viewport, reposition);
   await setAllVideosState(videos, state.isPlaying);
 }
