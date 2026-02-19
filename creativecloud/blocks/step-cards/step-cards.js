@@ -240,7 +240,6 @@ export default function init(el) {
     el.classList.add('con-block');
     decorateContent(el);
   } catch (err) {
-    console.error(err);
     window.lana?.log(`Step card Init Error: ${err}`, LANA_OPTIONS);
   }
 }
