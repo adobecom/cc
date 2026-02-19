@@ -1,0 +1,197 @@
+.firefly-accordion {
+  --c-text-primary: #2C2C2C;
+  --c-text-secondary: #505050;
+  --c-text-tertiary: #8F8F8F;
+  --c-bg-default: #FFFFFF;
+  --c-bg-active: #F0E5F5;
+  --c-border: #E0E0E0;
+  --c-focus: #0054BB;
+  --s-spacing-sm: 1rem;
+  --s-spacing-md: 1.5rem;
+  --s-spacing-lg: 2rem;
+  --acc-item-radius: 8px;
+  --acc-item-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  --anim-speed: 0.4s;
+  --anim-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  font-family: var(--body-font-family);
+}
+
+.firefly-accordion .foreground {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem
+}
+
+.firefly-accordion .foreground .accordion-item {
+  background: var(--c-bg-default);
+  border-radius: var(--acc-item-radius);
+  box-shadow: var(--acc-item-shadow);
+  transition: background-color var(--anim-speed) ease;
+  overflow: hidden;
+  border: 1px solid transparent;
+  position: relative;
+  cursor: pointer;
+}
+
+.firefly-accordion .foreground .accordion-item.is-open{
+  background-color: var(--c-bg-active);
+}
+
+.firefly-accordion .foreground  .accordion-header {
+  margin: 0;
+}
+
+.firefly-accordion .foreground .accordion-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr; 
+  grid-template-areas: 
+    "step"
+    "title";
+  row-gap: 4px;
+  align-items: center;
+  padding: var(--s-spacing-md);
+  padding-right: calc(var(--s-spacing-md) + 40px); /* Buffer so text never hits the absolute icon */
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--c-text-primary);
+}
+
+.firefly-accordion .foreground .accordion-trigger:focus-visible{
+  outline: 2px solid var(--c-focus);
+  outline-offset: -2px;
+  border-radius: var(--acc-item-radius);
+}
+
+.firefly-accordion .foreground .step-indicator {
+  grid-area: step;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.firefly-accordion .foreground .accordion-item.is-open .step-indicator {
+  color: var(--c-text-primary);
+}
+
+.firefly-accordion .foreground .accordion-title {
+  grid-area: title;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.firefly-accordion .foreground .accordion-icon{
+  position: absolute;
+  right: var(--s-spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-text-primary);
+  z-index: 2;
+}
+
+.firefly-accordion .foreground .accordion-icon svg{
+  width: 100%;
+  height: 100%;
+}
+
+.firefly-accordion .foreground .accordion-icon .vert-line{
+  transform-origin: 50% 50%;
+  transition: transform var(--anim-speed) var(--anim-easing), opacity var(--anim-speed) var(--anim-easing);
+}
+
+.firefly-accordion .foreground .accordion-trigger[aria-expanded="true"] .accordion-icon .vert-line{
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.firefly-accordion .foreground .accordion-panel {
+  display: grid; 
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--anim-speed) var(--anim-easing); 
+  cursor: auto;
+}
+
+.firefly-accordion .foreground .accordion-content {
+  padding: 0 calc(var(--s-spacing-md) + 40px) var(--s-spacing-md) var(--s-spacing-md);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.firefly-accordion .foreground .accordion-panel-inner {
+  overflow: hidden;
+}
+
+.firefly-accordion .foreground .accordion-item.is-open .accordion-panel {
+  grid-template-rows: 1fr;
+}
+
+.firefly-accordion .foreground .accordion-item.is-open .accordion-content {
+  opacity: 1;
+  transition: opacity var(--anim-speed) ease 0.1s;
+}
+
+.firefly-accordion .foreground .accordion-content > *:first-child { margin-top: 0; }
+.firefly-accordion .foreground .accordion-content > *:last-child { margin-bottom: 0; }
+
+.firefly-accordion .foreground .accordion-panel p {
+  line-height: 1.6;
+  color: var(--c-text-primary);
+  margin: 0;
+}
+
+@media (min-width: 481px) {
+ .firefly-accordion .foreground .accordion-trigger {
+      grid-template-columns: 55px 1fr;
+      grid-template-areas: "step title";
+      align-items: baseline;
+      row-gap: 0;
+      column-gap: 16px;
+  }
+
+ .firefly-accordion .foreground .step-indicator {
+      font-size: 0.875rem;
+  }
+
+ .firefly-accordion .foreground .accordion-content {
+      padding: 0 calc(var(--s-spacing-md) + 40px) var(--s-spacing-md) calc(var(--s-spacing-md) + 55px + 16px);
+  }
+}
+
+@media (min-width: 768px) {
+  .firefly-accordion .foreground .accordion-trigger {
+      grid-template-columns: 65px 1fr;
+      column-gap: var(--s-spacing-md); /* 24px */
+      padding: var(--s-spacing-lg); /* 32px */
+      padding-right: calc(var(--s-spacing-lg) + 40px);
+  }
+
+  .firefly-accordion .foreground .accordion-icon {
+      right: var(--s-spacing-lg);
+  }
+
+  .firefly-accordion .foreground .step-indicator {
+      font-size: 1rem;
+  }
+
+  .firefly-accordion .foreground .accordion-title {
+      font-size: 1.125rem;
+  }
+  
+  .firefly-accordion .foreground .accordion-content {
+      padding: 0 calc(var(--s-spacing-lg) + 40px) var(--s-spacing-lg) calc(var(--s-spacing-lg) + 65px + var(--s-spacing-md));
+  }
+}
