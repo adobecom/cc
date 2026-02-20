@@ -70,10 +70,12 @@ function createPromptPill(promptText, deeplinkUrl) {
     title: promptText || '',
     'aria-label': promptText || 'Open in Firefly',
   };
-  if (deeplinkUrl) {
-    attrs.href = deeplinkUrl;
-  }
   const pill = createTag(deeplinkUrl ? 'a' : 'div', attrs);
+  if (deeplinkUrl) {
+    pill.setAttribute('href', deeplinkUrl);
+    pill.setAttribute('target', '_blank');
+    pill.setAttribute('rel', 'noopener nofollow');
+  }
 
   const text = createTag('span', { class: `${BLOCK}-prompt-text` }, promptText || '');
   const icon = createTag('span', { class: `${BLOCK}-prompt-icon`, 'aria-hidden': 'true' });
