@@ -85,12 +85,14 @@ function decorateMultiViewport(foreground) {
 }
 
 function decorateUploadEls(para, index) {
+  const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
   const button = createTag(
     'button',
     {
       type: 'button',
       class: 'con-button blue action-button button-xl no-track',
-      'daa-ll': `${para.textContent.trim()}|UnityWidget`,
+      'daa-ll': `${buttonLabel}|UnityWidget`,
+      'aria-label': buttonLabel,
     },
     para.innerHTML,
   );
@@ -103,6 +105,7 @@ function decorateUploadEls(para, index) {
       id: `file-upload-${index}`,
       class: 'file-upload hide',
       accept: 'image/*',
+      'aria-label': `${buttonLabel} file picker`,
     },
   );
 
@@ -140,18 +143,35 @@ function decorateUploadColumns(content, index) {
   }
 
   const uploadEls = decorateUploadEls(uploadPara, index);
+  const fileInput = uploadEls.lastElementChild;
   const dropZoneDefaultIcon = createTag('p', { class: 'drop-zone-default-icon' });
   const dropZoneDefaultIconImage = createTag('img', {
     src: 'https://main--cc--adobecom.aem.page/cc-shared/assets/img/default-picture.svg',
     alt: '',
   });
+  dropZoneDefaultIcon.setAttribute('aria-hidden', 'true');
   dropZoneDefaultIcon.append(dropZoneDefaultIconImage);
   const textParas = paras.filter((para) => para !== uploadPara);
   const headingPara = textParas[0];
   const bodyPara = textParas[1];
+  const describedByIds = [];
 
-  if (headingPara) headingPara.classList.add('drop-zone-heading');
-  if (bodyPara) bodyPara.classList.add('drop-zone-body');
+  if (headingPara) {
+    headingPara.classList.add('drop-zone-heading');
+    headingPara.id = `drop-zone-heading-${index}`;
+    describedByIds.push(headingPara.id);
+  }
+  if (bodyPara) {
+    bodyPara.classList.add('drop-zone-body');
+    bodyPara.id = `drop-zone-body-${index}`;
+    describedByIds.push(bodyPara.id);
+  }
+
+  dropZone.setAttribute('role', 'button');
+  dropZone.setAttribute('tabindex', '0');
+  dropZone.setAttribute('aria-label', 'Upload your image. Drag and drop a file, or press Enter to browse.');
+  if (fileInput?.id) dropZone.setAttribute('aria-controls', fileInput.id);
+  if (describedByIds.length) dropZone.setAttribute('aria-describedby', describedByIds.join(' '));
 
   dropZone.append(dropZoneDefaultIcon, ...paras);
   dropZoneContainer.append(dropZone, terms);
@@ -160,7 +180,15 @@ function decorateUploadColumns(content, index) {
 
   dropZone.addEventListener('click', (event) => {
     event.stopPropagation();
-    uploadEls.lastElementChild?.click();
+    fileInput?.click();
+  });
+
+  dropZone.addEventListener('keydown', (event) => {
+    if (event.target !== dropZone) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      fileInput?.click();
+    }
   });
 
   return content;
@@ -224,7 +252,11 @@ export default async function init(el) {
     decorateUploadColumns(content, index + 1);
   });
 
-  const layout = createTag('div', { class: 'upload-marquee-layout' });
+  const layout = createTag('div', {
+    class: 'upload-marquee-layout',
+    role: 'region',
+    'aria-label': 'Image upload area. Drag and drop files anywhere in this section.',
+  });
   const leftCol = createTag('div', { class: 'upload-marquee-left' });
   const rightCol = createTag('div', { class: 'upload-marquee-right' });
   const uploadsWrapper = createTag('div', { class: 'upload-marquee-uploads' });
