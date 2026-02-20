@@ -48,7 +48,7 @@ function parseItemsFromDOM(el) {
   itemDivs.forEach((itemDiv) => {
     const [mediaDiv, captionDiv, deeplinkDiv] = itemDiv.children;
     const pictureEl = mediaDiv?.querySelector('picture');
-    const deeplinkAnchor = deeplinkDiv?.querySelector('a[href*="firefly.adobe.com"]');
+    const deeplinkAnchor = deeplinkDiv?.querySelector('a[href]');
     if (!pictureEl) return;
 
     items.push({
