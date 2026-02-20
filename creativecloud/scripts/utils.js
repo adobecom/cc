@@ -238,6 +238,27 @@ export function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+/**
+ * Checks whether WCAG 2.1 (1.4.12 Text Spacing) adjustments
+ * are applied by verifying computed line, letter, and word spacing
+ * relative to the font size (used to validate Dylan Barrell’s bookmarklet).
+ * @returns {boolean} True if WCAG text spacing requirements appear to be applied.
+ */
+export function isDylanTextSpacingEnabled() {
+  const computedStyles = getComputedStyle(document.body);
+  const fontSize = parseFloat(computedStyles.fontSize) || 1;
+
+  const lineHeight = parseFloat(computedStyles.lineHeight) / fontSize;
+  const letterSpacing = parseFloat(computedStyles.letterSpacing) / fontSize;
+  const wordSpacing = parseFloat(computedStyles.wordSpacing) / fontSize;
+
+  return (
+    lineHeight >= 1.45
+    && letterSpacing >= 0.11
+    && wordSpacing >= 0.15
+  );
+}
+
 function heroForegroundImage(firstBlock) {
   const rows = [...firstBlock.querySelectorAll(':scope > div')];
   if (rows.length > 1 && rows[0].textContent !== '') rows.shift();

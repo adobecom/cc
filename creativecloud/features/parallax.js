@@ -1,3 +1,5 @@
+import { isDylanTextSpacingEnabled } from '../scripts/utils.js';
+
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 function throttle(cb, delay, { trailing = false } = {}) {
   let timer = null;
@@ -40,8 +42,17 @@ function addProgressIMPL(el, NAV_HEIGHT, markers) {
     const enterProgress = clamp((screenHeight - rect.top) / elHeight, 0, 1);
     // how much of the el already exited from top (gnav)
     const exitProgress = clamp((-rect.top + NAV_HEIGHT) / elHeight, 0, 1);
-    el.style.setProperty('--enter-progress', enterProgress * 100);
-    el.style.setProperty('--exit-progress', exitProgress * 100);
+
+    if (isDylanTextSpacingEnabled()) {
+      // Freeze parallax-driven animation when dylan barrel text spacing is enabled.
+      el.style.setProperty('--exit-progress', 0);
+      el.style.setProperty('--enter-progress', 0);
+    } else {
+      // Release parallax animation
+      el.style.setProperty('--exit-progress', exitProgress * 100);
+      el.style.setProperty('--enter-progress', enterProgress * 100);
+    }
+
     if (markers.length) {
       markers.forEach((marker) => {
         const { name, threshold, type = 'exit' } = marker;
