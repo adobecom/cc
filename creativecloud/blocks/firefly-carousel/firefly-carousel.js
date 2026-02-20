@@ -57,7 +57,6 @@ function parseItemsFromDOM(el) {
       deeplinkUrl: deeplinkAnchor?.href || '',
     });
   });
-
   return items;
 }
 
