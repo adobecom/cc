@@ -176,7 +176,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 32px 32px 0;
+  padding: 32px var(--grid-margins-width);
   box-sizing: border-box;
 }
 
@@ -190,6 +190,7 @@
   height: 100%;
   width: 100%;
   border-radius: 20px;
+  overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -218,7 +219,7 @@
 
 /* Figma: dashed white border, slightly lighter dark grey interior, subtle dotted pattern */
 .upload-marquee-block .drop-zone {
-  border: 1px dashed rgba(255, 255, 255, 0.5);
+  border: 2px dashed rgba(255, 255, 255, 0.5);
   border-radius: 8px;
   padding: 34px 24px;
   margin: 0;
@@ -390,6 +391,7 @@
   .upload-marquee-block .upload-marquee-right {
     min-height: auto;
     align-items: center;
+    padding: 24px 24px 24px 0;
   }
 
   .upload-marquee-block .upload-marquee-right .media-container {

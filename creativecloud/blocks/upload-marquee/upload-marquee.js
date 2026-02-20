@@ -4,6 +4,68 @@ const miloLibs = setLibs('/libs');
 let createTag;
 let decorateBlockBg;
 
+function setupLayoutDragAndDrop(layout, uploadsWrapper) {
+  let dragDepth = 0;
+  let activeDropZone;
+
+  const getVisibleDropZone = () => {
+    const dropZones = [...uploadsWrapper.querySelectorAll(':scope > .drop-zone-container > .drop-zone')];
+    return dropZones.find((zone) => zone.offsetParent !== null) || dropZones[0];
+  };
+
+  const setActiveDropZone = () => {
+    const nextDropZone = getVisibleDropZone();
+    if (activeDropZone && activeDropZone !== nextDropZone) {
+      activeDropZone.classList.remove('active');
+    }
+    activeDropZone = nextDropZone;
+    activeDropZone?.classList.add('active');
+  };
+
+  const clearActiveDropZone = () => {
+    dragDepth = 0;
+    activeDropZone?.classList.remove('active');
+    activeDropZone = null;
+  };
+
+  layout.addEventListener('dragenter', (event) => {
+    event.preventDefault();
+    dragDepth += 1;
+    setActiveDropZone();
+  });
+
+  layout.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+    setActiveDropZone();
+  });
+
+  layout.addEventListener('dragleave', (event) => {
+    event.preventDefault();
+    dragDepth = Math.max(dragDepth - 1, 0);
+    if (dragDepth === 0) clearActiveDropZone();
+  });
+
+  layout.addEventListener('drop', (event) => {
+    event.preventDefault();
+    setActiveDropZone();
+    const files = event.dataTransfer?.files;
+    const fileInput = activeDropZone?.querySelector('.file-upload');
+    if (files?.length && fileInput) {
+      try {
+        fileInput.files = files;
+      } catch (e) {
+        // Some browsers may not allow assigning FileList directly.
+      }
+      fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    clearActiveDropZone();
+  });
+
+  window.addEventListener('drop', clearActiveDropZone);
+  window.addEventListener('dragend', clearActiveDropZone);
+}
+
 function decorateMultiViewport(foreground) {
   const viewports = ['mobile-up', 'tablet-up', 'desktop-up'];
   foreground.firstElementChild?.classList.add('upload-grid');
@@ -96,21 +158,9 @@ function decorateUploadColumns(content, index) {
   content.textContent = '';
   content.append(mediaContainer, dropZoneContainer);
 
-  dropZone.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    dropZone.classList.add('active');
-  });
-
-  dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('active');
-  });
-
-  [uploadEls.firstElementChild, dropZone].forEach((el) => {
-    if (!el) return;
-    el.addEventListener('click', (event) => {
-      event.stopPropagation();
-      uploadEls.lastElementChild?.click();
-    });
+  dropZone.addEventListener('click', (event) => {
+    event.stopPropagation();
+    uploadEls.lastElementChild?.click();
   });
 
   return content;
@@ -203,6 +253,7 @@ export default async function init(el) {
   leftCol.append(uploadsWrapper);
   rightCol.append(mediaWrapper);
   layout.append(leftCol, rightCol);
+  setupLayoutDragAndDrop(layout, uploadsWrapper);
 
   const foreground = createTag('div', { class: 'foreground' });
   foreground.append(layout);
