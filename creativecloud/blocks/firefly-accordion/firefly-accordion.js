@@ -95,7 +95,6 @@ function createAccordionItem(data) {
 
   const stepSpan = createTag('span', { class: 'step-indicator' });
   stepSpan.textContent = `${stepPrefix} ${id + 1}`;
-  stepSpan.setAttribute('aria-hidden', 'true');
 
   btn.appendChild(stepSpan);
   btn.appendChild(titleSpan);
