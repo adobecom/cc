@@ -90,12 +90,17 @@
   height: 30px;
 }
 
-.upload-marquee-block .upload-marquee-content .upload-marquee-branding-second img {
-  height: 24px;
+.upload-marquee-block .upload-marquee-content p.upload-marquee-branding .upload-marquee-branding-second picture {
+  height: 15.5px;
+  margin-top: 2.75px;
 }
 
-.upload-marquee-block .upload-marquee-content > *:first-child picture img,
-.upload-marquee-block .upload-marquee-content > *:first-child picture svg {
+.upload-marquee-block .upload-marquee-content p.upload-marquee-branding .upload-marquee-branding-second img {
+  height: 15.5px;
+}
+
+.upload-marquee-block .upload-marquee-content > *:first-child > picture img,
+.upload-marquee-block .upload-marquee-content > *:first-child > picture svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -416,8 +421,8 @@
 
   .upload-marquee-block .upload-marquee-right .media-container .video-container .pause-play-wrapper {
     bottom: 2%;
-    left: 2%;
-    right: auto;
+    right: 2%;
+    left: auto;
     top: auto;
   }
 }
