@@ -359,7 +359,7 @@
 
 @media screen and (min-width: 600px) {
   .upload-marquee-block .upload-marquee-left {
-    margin: 48px 64px 0;
+    margin: 48px var(--grid-margins-width) 0;
   }
 
   .upload-marquee-block .upload-marquee-uploads > .tablet-up,
@@ -398,11 +398,18 @@
 
   .upload-marquee-block .upload-marquee-right {
     min-height: auto;
-    align-items: center;
+    height: 100%;
+    align-self: stretch;
+    align-items: stretch;
     padding: 24px 24px 24px 0;
   }
 
+  .upload-marquee-block .upload-marquee-media {
+    height: 100%;
+  }
+
   .upload-marquee-block .upload-marquee-right .media-container {
+    height: 100%;
     min-height: 100%;
     max-height: 100%;
     overflow: hidden;
