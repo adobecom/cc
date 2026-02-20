@@ -61,7 +61,7 @@
   color: var(--c-text-primary);
   font-family: var(--body-font-family);
   position: relative;
-  z-index: 2;
+  z-index: 1;
   outline: none
 }
 
@@ -145,7 +145,7 @@
   transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear var(--anim-speed); 
   position: relative;
   top: -16px; 
-  z-index: 1;
+  z-index: 2;
 }
 
 .firefly-accordion .foreground .firefly-accordion-content {
