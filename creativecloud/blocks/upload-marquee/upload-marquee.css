@@ -1,224 +1,3 @@
-/* ========== Upload block (shared / reference) ========== */
-.upload-block {
-  --icon-spacing: 14px;
-}
-
-.upload-block .hide { display: none; }
-
-.upload-block .foreground > .tablet-up,
-.upload-block .foreground > .tablet-up.desktop-up,
-.upload-block .foreground > .desktop-up {
-  display: none;
-}
-
-/* Media Zone */
-.upload-block .media-container picture {
-  display: block;
-  line-height: 0;
-}
-
-.upload-block .media-container picture > img,
-.upload-block .media-container video {
-  object-fit: cover;
-}
-
-.upload-block .media-container picture,
-.upload-block .media-container picture > img,
-.upload-block .media-container video {
-  height: 100%;
-  width: 100%;
-}
-
-/* Drop Zone */
-.upload-block .drop-zone-container {
-  background: #FFF;
-  border-radius: 10px;
-  box-shadow: 0 0 20px 0 #00000029;
-  box-sizing: border-box;
-  padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-s);
-  position: relative;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  max-width: var(--grid-container-width);
-  margin: -15% auto 0;
-}
-
-.upload-block .drop-zone-container > p:last-child {
-  font-size: var(--type-body-xxs-size);
-  line-height: var(--type-body-xxs-lh);
-  margin: var(--spacing-xs) 0 0;
-}
-
-.upload-block .drop-zone {
-  width: 100%;
-  flex: 1 1 auto;
-  font-size: 14px;
-  position: relative;
-  margin-bottom: 24px;
-  box-sizing: border-box;
-  border: 2px solid white;
-}
-
-.upload-block .drop-zone p:first-child {
-  font-size: var(--type-body-xxl-size);
-  font-weight: 700;
-  margin-bottom: 0;
-  margin-top: var(--spacing-xxs);
-  line-height: var(--type-body-xxl-lh);
-}
-
-.upload-block .drop-zone p:last-child {
-  margin: 12px 0 0;
-  line-height: var(--type-body-xs-lh);
-  font-size: var(--type-body-xs-size);
-}
-
-.upload-block .upload-action-container {
-  margin: 0 auto;
-}
-
-.upload-block .action-button {
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.upload-block .action-button > picture {
-  margin-inline-end: var(--icon-spacing);
-}
-
-.upload-block .action-button > picture,
-.upload-block .action-button > picture > img {
-  width: 24px;
-  height: 24px;
-}
-
-.upload-block .action-button .icon-upload-to-cloud-outline svg {
-  height: 1.3em;
-  width: 1.3em;
-  top: .3em;
-  line-height: 0;
-  margin-top: -6px;
-}
-
-.upload-block .media-container .video-container {
-  width: 100%;
-}
-
-.upload-block .media-container .video-container .pause-play-wrapper {
-  bottom: auto;
-  top: 2%;
-} 
-
-/* Tablet up */
-@media screen and (min-width: 600px) {
-  .upload-block .foreground {
-    max-width: var(--grid-container-width);
-    margin: 0 auto;
-  }
-
-  .upload-block .foreground > .tablet-up,
-  .upload-block .foreground > .tablet-up.desktop-up {
-    display: grid;
-  }
-
-  .upload-block .foreground > .mobile-up,
-  .upload-block .foreground > .desktop-up {
-    display: none;
-  }
-
-  .upload-block .media-container {
-    overflow: hidden;
-    border-radius: 16px;
-  }
-
-  /* Drop Zone */
-  .upload-block .drop-zone-container {
-    width: 75%;
-    margin: -12% auto 0;
-  }
-}
-
-/* Desktop up */
-@media screen and (min-width: 1200px) {
-  .upload-block .upload-grid {
-    box-shadow: 0 0 20px 0 #00000029;
-    border-radius: 16px;
-    grid-template-columns: 1.5fr 1fr;
-    grid-template-rows: 1fr;
-    max-width: 1000px;
-    min-height: 400px;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  .upload-block .media-container {
-    overflow: initial;
-    border-radius: none
-  }
-
-  .upload-block .drop-zone-container {
-    border-radius: 0;
-    position: static;
-    width: unset;
-    max-width: unset;
-    margin: initial;
-    box-shadow: none;
-  }
-
-  .upload-block .drop-zone {
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    margin-bottom: var(--spacing-s);
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='2' ry='8' stroke='silver' stroke-width='4' stroke-dasharray='5%2c 10' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
-  }
-
-  .upload-block .drop-zone:hover,
-  .upload-block .drop-zone.active {
-    border: 2px solid #1473E6;
-    background-color: #E4F0FF;
-    background-image: none;
-    cursor: pointer;
-  }
-
-  .upload-block .drop-zone p:first-child {
-    align-content: center;
-  }
-
-  .upload-block .drop-zone p:last-child {
-    margin: 0;
-    line-height: var(--type-body-s-lh);
-    font-size: var(--type-body-s-size);
-  }
-
-  .upload-block .drop-zone-container > p:last-child {
-    font-size: var(--type-body-xs-size);
-    line-height: var(--type-body-xs-lh);
-  }
-
-  .upload-block .foreground > .upload-grid,
-  .upload-block .foreground > .desktop-up,
-  .upload-block .foreground > .tablet-up.desktop-up {
-    display: grid;
-  }
-
-  .upload-block .foreground > .mobile-up,
-  .upload-block .foreground > .tablet-up {
-    display: none;
-  }
-
-  .upload-block .media-container .video-container .pause-play-wrapper {
-    top: auto;
-    right: auto;
-    left: 2%;
-    bottom: 2%;
-  }
-}
-
 /* ========== Upload marquee block (Figma: FF - Gen Remove - upscale - expand) ========== */
 .upload-marquee-block {
   --icon-spacing: 14px;
@@ -228,6 +7,8 @@
   --upload-marquee-dropzone-bg: #0d0d0d;
   --upload-marquee-dropzone-dot: rgba(255, 255, 255, 0.12);
   --upload-marquee-branding-spacing: var(--spacing-l);
+  position: relative;
+  overflow: hidden;
 }
 
 .upload-marquee-block .hide { display: none; }
@@ -236,7 +17,6 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto;
-  max-width: var(--grid-container-width);
   margin: 0 auto;
   overflow: hidden;
 }
@@ -244,39 +24,74 @@
 .upload-marquee-block .upload-marquee-left {
   background: var(--upload-marquee-left-bg);
   color: #fff;
-  padding: var(--spacing-m) var(--spacing-m) var(--spacing-l);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-l);
+  justify-content: flex-start;
+  margin: 48px 30px;
+}
+
+.upload-marquee-block .upload-marquee-uploads > .tablet-up,
+.upload-marquee-block .upload-marquee-uploads > .tablet-up.desktop-up,
+.upload-marquee-block .upload-marquee-uploads > .desktop-up,
+.upload-marquee-block .upload-marquee-media > .tablet-up,
+.upload-marquee-block .upload-marquee-media > .tablet-up.desktop-up,
+.upload-marquee-block .upload-marquee-media > .desktop-up {
+  display: none;
 }
 
 /* Figma node 626-19601: marquee content – black panel, branding, heading, description, left-aligned */
 .upload-marquee-block .upload-marquee-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-s);
   text-align: left;
   align-items: flex-start;
 }
 
-/* Figma node 626-19603: Firefly logo – red badge, white Fi + star, soft glow */
-.upload-marquee-block .upload-marquee-content > *:first-child {
-  margin-bottom: var(--upload-marquee-branding-spacing);
+.upload-marquee-block .upload-marquee-content p:first-child {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  text-decoration: none;
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  margin-bottom: 12px;
 }
 
-.upload-marquee-block .upload-marquee-content > *:first-child picture,
-.upload-marquee-block .upload-marquee-content > *:first-child img,
-.upload-marquee-block .upload-marquee-content > *:first-child svg {
+.upload-marquee-block .upload-marquee-content p:first-child picture,
+.upload-marquee-block .upload-marquee-content p:first-child img {
+  height: 26px;
   display: block;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
-  flex-shrink: 0;
+}
+
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding {
+  margin-bottom: 20px;
+  padding-bottom: 0;
+}
+
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding-first picture,
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding-second picture {
+  display: block;
+}
+
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding-first img,
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding-second img {
+  width: auto;
+  height: 30px;
+  display: block;
+  object-fit: contain;
+}
+
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding-first img {
+  height: 30px;
+}
+
+.upload-marquee-block .upload-marquee-content .upload-marquee-branding-second img {
+  height: 24px;
 }
 
 .upload-marquee-block .upload-marquee-content > *:first-child picture img,
@@ -297,63 +112,90 @@
 
 /* Figma: "Remove an object from a photo." – large, bold, white, left-aligned */
 .upload-marquee-block .upload-marquee-content h1 {
-  font-size: var(--upload-marquee-heading-size);
-  line-height: var(--upload-marquee-heading-lh);
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.02em;
+  color: #FFF;
+  text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
+  font-family: "Adobe Clean", var(--body-font-family);
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 98%;
+  letter-spacing: -2.88px;
+  margin-bottom: 16px;
 }
 
 /* Figma: description – smaller white text, comfortable line/letter spacing */
 .upload-marquee-block .upload-marquee-content p {
-  color: #ffffff;
-  font-size: var(--type-body-m-size);
-  line-height: 1.6;
-  letter-spacing: 0.01em;
-  max-width: 42rem;
+  color: #FFF;
+  text-shadow: 0 4px 39px rgba(0, 0, 0, 0.25);
+  font-family: "Adobe Clean";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 136%; /* 24.48px */
+  letter-spacing: var(--Letter-spacing, 0);
+  margin-bottom: 16px;
+}
+
+.upload-marquee-block .upload-marquee-content p:last-of-type {
+  margin-bottom: 40px;
 }
 
 .upload-marquee-block .upload-marquee-content a {
   color: #fff;
 }
 
-/* "Edit photos with AI" CTA: light grey button, dark text (expected design) */
+/* Figma node 1017-24782: outlined pill CTA */
 .upload-marquee-block .upload-marquee-content .upload-marquee-cta {
   align-self: flex-start;
-  display: inline-block;
-  padding: 12px 24px;
-  background: #e5e5e5;
-  color: #222;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 18px 10px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid rgb(255 255 255 / 35%);
+  border-radius: 999px;
+  box-sizing: border-box;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 21px;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  transition: border-color 0.2s ease;
 }
 
 .upload-marquee-block .upload-marquee-content .upload-marquee-cta:hover {
-  background: #d3d3d3;
-  color: #222;
+  border-color: rgb(255 255 255 / 55%);
+  color: #ffffff;
   text-decoration: none;
 }
 
 .upload-marquee-block .upload-marquee-right {
-  min-height: 280px;
+  height: auto;
   background: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-m);
+  padding: 32px 32px 32px 0;
   box-sizing: border-box;
+}
+
+.upload-marquee-block .upload-marquee-media {
+  width: 100%;
+  height: 636px;
+  align-self: center;
 }
 
 .upload-marquee-block .upload-marquee-right .media-container {
   height: 100%;
-  min-height: 260px;
   width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
+  border-radius: 20px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.upload-marquee-block .upload-marquee-right .media-container .video-container {
+  width: 100%;
+  height: 100%;
 }
 
 .upload-marquee-block .upload-marquee-right .media-container picture,
@@ -366,11 +208,6 @@
   line-height: 0;
 }
 
-.upload-marquee-block .upload-marquee-right .media-container .video-container {
-  width: 100%;
-  height: 100%;
-}
-
 .upload-marquee-block .drop-zone-container {
   background: transparent;
   box-shadow: none;
@@ -381,28 +218,28 @@
 
 /* Figma: dashed white border, slightly lighter dark grey interior, subtle dotted pattern */
 .upload-marquee-block .drop-zone {
-  border: 2px dashed rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  padding: var(--spacing-l) var(--spacing-m);
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 34px 24px;
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: var(--spacing-s);
-  min-height: 240px;
+  justify-content: center;
+  gap: 12px;
   box-sizing: border-box;
   background-color: var(--upload-marquee-dropzone-bg);
-  background-image: radial-gradient(circle, var(--upload-marquee-dropzone-dot) 1px, transparent 1px);
-  background-size: 12px 12px;
+  background-image: radial-gradient(circle, rgb(255 255 255 / 18%) 1px, transparent 1px);
+  background-size: 26px 26px;
 }
 
 .upload-marquee-block .drop-zone:hover,
 .upload-marquee-block .drop-zone.active {
-  border-color: rgba(255, 255, 255, 0.7);
-  background-color: #111111;
-  background-image: radial-gradient(circle, var(--upload-marquee-dropzone-dot) 1px, transparent 1px);
+  background-image: none;
   cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid #5681FF;
+  background: #0F1C52;
 }
 
 /* Figma: landscape icon at top of upload zone, white */
@@ -417,14 +254,14 @@
 .upload-marquee-block .drop-zone > p:first-child svg {
   display: block;
   margin: 0 auto;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   opacity: 0.9;
 }
 
 /* Blue "Upload your image" button lives inside drop zone */
 .upload-marquee-block .drop-zone .upload-action-container {
-  margin: var(--spacing-xs) 0;
+  margin: 4px 0 2px;
 }
 
 /* Figma: "Or drag and drop here" and file requirements – white text */
@@ -432,20 +269,41 @@
   color: #ffffff;
   margin: 0;
   text-align: center;
-  font-size: var(--type-body-s-size);
   line-height: 1.4;
 }
 
-/* Figma: legal at bottom – small white text, blue underlined links */
-.upload-marquee-block .drop-zone > p:last-child {
-  font-size: var(--type-body-xxs-size);
-  line-height: var(--type-body-xxs-lh);
-  margin: var(--spacing-s) 0 0;
-  color: #ffffff;
+.upload-marquee-block .drop-zone > .drop-zone-heading {
+  color: #f2f2f2;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0;
+  margin: 0;
   text-align: center;
 }
 
-.upload-marquee-block .drop-zone > p:last-child a {
+/* Figma: file requirements in drop zone */
+.upload-marquee-block .drop-zone > .drop-zone-body {
+  color: #dbdbdb;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  max-width: 380px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Figma: legal at bottom – small white text, blue underlined links */
+.upload-marquee-block .drop-zone-container > p:last-child {
+  font-size: var(--type-body-xxs-size);
+  line-height: var(--type-body-xxs-lh);
+  margin-top: 16px;
+  color: #ffffff;
+  text-align: center;
+  margin-block-end: 0px;
+}
+
+.upload-marquee-block .drop-zone-container > p:last-child a {
   color: #1473E6;
   text-decoration: underline;
 }
@@ -455,14 +313,25 @@
 }
 
 .upload-marquee-block .action-button {
-  border-radius: 8px;
+  border-radius: 999px;
+  border: 0;
+  background: #3b63fb;
+  color: #ffffff;
   cursor: pointer;
+  gap: 8px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 12px 24px 14px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 24px;
+  text-decoration: none;
 }
 
 .upload-marquee-block .action-button > picture {
-  margin-inline-end: var(--icon-spacing);
+  margin-inline-end: 0;
 }
 
 .upload-marquee-block .action-button > picture,
@@ -471,39 +340,76 @@
   height: 24px;
 }
 
+.upload-marquee-block .action-button:hover,
+.upload-marquee-block .action-button:focus-visible {
+  background: #3b63fb;
+  color: #ffffff;
+  text-decoration: none;
+}
+
 .upload-marquee-block .action-button .icon-upload-to-cloud-outline svg {
   height: 1.3em;
   width: 1.3em;
   line-height: 0;
 }
 
+@media screen and (min-width: 600px) {
+  .upload-marquee-block .upload-marquee-left {
+    margin: 48px 64px;
+  }
+
+  .upload-marquee-block .upload-marquee-uploads > .tablet-up,
+  .upload-marquee-block .upload-marquee-uploads > .tablet-up.desktop-up,
+  .upload-marquee-block .upload-marquee-media > .tablet-up,
+  .upload-marquee-block .upload-marquee-media > .tablet-up.desktop-up {
+    display: block;
+  }
+
+  .upload-marquee-block .upload-marquee-uploads > .mobile-up,
+  .upload-marquee-block .upload-marquee-uploads > .desktop-up,
+  .upload-marquee-block .upload-marquee-media > .mobile-up,
+  .upload-marquee-block .upload-marquee-media > .desktop-up {
+    display: none;
+  }
+}
+
 /* Desktop: left | right columns */
 @media screen and (min-width: 1200px) {
+  .upload-marquee-block .upload-marquee-left {
+    margin: 56px 137px;
+  }
+
   .upload-marquee-block .upload-marquee-layout {
-    grid-template-columns: 1fr 1.2fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
-    min-height: 520px;
-    border-radius: 16px;
+    min-height: 700px;
     overflow: hidden;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   }
 
-  .upload-marquee-block .upload-marquee-left {
-    justify-content: flex-start;
-    padding: var(--spacing-xl) var(--spacing-l);
-  }
-
   .upload-marquee-block .upload-marquee-right {
     min-height: auto;
-    padding: var(--spacing-l);
     align-items: center;
   }
 
   .upload-marquee-block .upload-marquee-right .media-container {
     min-height: 100%;
     max-height: 100%;
-    border-radius: 12px;
     overflow: hidden;
+  }
+
+  .upload-marquee-block .upload-marquee-uploads > .desktop-up,
+  .upload-marquee-block .upload-marquee-uploads > .tablet-up.desktop-up,
+  .upload-marquee-block .upload-marquee-media > .desktop-up,
+  .upload-marquee-block .upload-marquee-media > .tablet-up.desktop-up {
+    display: block;
+  }
+
+  .upload-marquee-block .upload-marquee-uploads > .mobile-up,
+  .upload-marquee-block .upload-marquee-uploads > .tablet-up,
+  .upload-marquee-block .upload-marquee-media > .mobile-up,
+  .upload-marquee-block .upload-marquee-media > .tablet-up {
+    display: none;
   }
 
   .upload-marquee-block .upload-marquee-right .media-container .video-container .pause-play-wrapper {
