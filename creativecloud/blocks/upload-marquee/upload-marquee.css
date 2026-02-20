@@ -247,6 +247,12 @@
   background: #0F1C52;
 }
 
+.upload-marquee-block .drop-zone:focus-visible {
+  outline: 2px solid #7f96ff;
+  outline-offset: 2px;
+  border-color: #5681FF;
+}
+
 /* Figma: landscape icon at top of upload zone, white */
 .upload-marquee-block .drop-zone > p:first-child {
   color: #ffffff;
