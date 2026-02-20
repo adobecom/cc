@@ -72,8 +72,6 @@ function createPromptPill(promptText, deeplinkUrl) {
   };
   if (deeplinkUrl) {
     attrs.href = deeplinkUrl;
-    attrs.target = '_blank';
-    attrs.rel = 'noopener nofollow';
   }
   const pill = createTag(deeplinkUrl ? 'a' : 'div', attrs);
 
