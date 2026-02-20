@@ -169,12 +169,6 @@
   transition: border-color 0.2s ease;
 }
 
-.upload-marquee-block .upload-marquee-content .upload-marquee-cta:hover {
-  border-color: rgb(255 255 255 / 55%);
-  color: #ffffff;
-  text-decoration: none;
-}
-
 .upload-marquee-block .upload-marquee-right {
   height: auto;
   background: #000000;
@@ -306,8 +300,8 @@
 
 /* Figma: legal at bottom – small white text, blue underlined links */
 .upload-marquee-block .drop-zone-container > p:last-child {
-  font-size: var(--type-body-xxs-size);
-  line-height: var(--type-body-xxs-lh);
+  font-size: var(--type-body-xs-size);
+  line-height: var(--type-body-xs-lh);
   margin-top: 16px;
   color: #ffffff;
   text-align: center;
