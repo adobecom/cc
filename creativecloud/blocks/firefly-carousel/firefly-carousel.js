@@ -54,7 +54,7 @@ function parseItemsFromDOM(el) {
     items.push({
       pictureEl,
       promptText: captionDiv?.textContent?.trim() || '',
-      deeplinkUrl: deeplinkAnchor?.href || '',
+      deeplinkUrl: deeplinkAnchor?.getAttribute('href') || '',
     });
   });
   return items;
