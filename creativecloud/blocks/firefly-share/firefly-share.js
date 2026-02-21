@@ -71,7 +71,7 @@ function showCopyTooltip({ copyButton, show = true, copied = false }) {
 
 export default async function decorate(block) {
   const config = getConfig();
-  const base = config.codeRoot;
+  const base = config.codeRoot || config.miloLibs;
   const miloLibs = getLibs('/libs');
   const { inlineBlock } = await import(`${miloLibs}/utils/inline.js`);
   const { replaceKey } = await import(`${miloLibs}/features/placeholders.js`);
