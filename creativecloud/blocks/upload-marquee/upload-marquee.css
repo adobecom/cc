@@ -1,12 +1,7 @@
 /* ========== Upload marquee block (Figma: FF - Gen Remove - upscale - expand) ========== */
 .upload-marquee-block {
-  --icon-spacing: 14px;
   --upload-marquee-left-bg: #000000;
-  --upload-marquee-heading-size: clamp(2rem, 5vw, 3rem);
-  --upload-marquee-heading-lh: 1.15;
   --upload-marquee-dropzone-bg: #0d0d0d;
-  --upload-marquee-dropzone-dot: rgba(255, 255, 255, 0.12);
-  --upload-marquee-branding-spacing: var(--spacing-l);
   position: relative;
   overflow: hidden;
 }
@@ -84,10 +79,6 @@
   height: 30px;
   display: block;
   object-fit: contain;
-}
-
-.upload-marquee-block .upload-marquee-content .upload-marquee-branding-first img {
-  height: 30px;
 }
 
 .upload-marquee-block .upload-marquee-content p.upload-marquee-branding .upload-marquee-branding-second picture {
@@ -236,7 +227,6 @@
 .upload-marquee-block .drop-zone.active {
   background-image: none;
   cursor: pointer;
-  border-radius: 8px;
   border: 2px solid #5681FF;
   background: #0F1C52;
 }
@@ -344,7 +334,6 @@
   height: 24px;
 }
 
-.upload-marquee-block .action-button:hover,
 .upload-marquee-block .action-button:focus-visible {
   background: #3b63fb;
   color: #ffffff;
@@ -413,10 +402,8 @@
   }
 
   .upload-marquee-block .upload-marquee-right .media-container {
-    height: 100%;
     min-height: 100%;
     max-height: 100%;
-    overflow: hidden;
   }
 
   .upload-marquee-block .upload-marquee-uploads > .desktop-up,
