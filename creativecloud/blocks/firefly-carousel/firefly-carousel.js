@@ -125,7 +125,9 @@ function getTrackStep(cards) {
 
 function updateActiveCard(cards, currentIndex) {
   cards.forEach((card) => {
-    card.classList.toggle('active', Number(card.dataset.slideIndex) === currentIndex);
+    const isActive = Number(card.dataset.slideIndex) === currentIndex;
+    card.classList.toggle('active', isActive);
+    card.tabIndex = isActive ? 0 : -1;
   });
 }
 
@@ -196,7 +198,8 @@ function createNavControls(track, navContainer, itemCount, state, cards) {
 
   const prevButton = createNavButton(NAV_DIRECTIONS.PREV, () => move(NAV_DIRECTIONS.PREV));
   const nextButton = createNavButton(NAV_DIRECTIONS.NEXT, () => move(NAV_DIRECTIONS.NEXT));
-  navContainer.append(prevButton, nextButton);
+  navContainer.prepend(prevButton);
+  navContainer.append(nextButton);
   applyFrame(NAV_FRAMES.BASE, false);
   return () => applyFrame(NAV_FRAMES.BASE, false);
 }
