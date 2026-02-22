@@ -378,7 +378,9 @@
   }
 
   .upload-marquee-block .upload-marquee-left {
-    margin: 56px 137px;
+    margin: 0;
+    padding: 56px 137px;
+    box-sizing: border-box;
   }
 
   .upload-marquee-block .upload-marquee-layout {

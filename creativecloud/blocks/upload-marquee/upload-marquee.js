@@ -221,17 +221,12 @@ export default async function init(el) {
   el.classList.add('upload-marquee-block', 'con-block');
   const rows = el.querySelectorAll(':scope > div');
   if (rows.length < 3) return;
-  const backgroundRow = rows[0];
-  const marqueeRow = rows[1];
-  const uploadRow = rows[2];
+  const [backgroundRow, marqueeRow, uploadRow] = rows;
 
   if (backgroundRow.textContent.trim() !== '') {
     backgroundRow.classList.add('background');
     decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
   }
-
-  const marqueeCell = marqueeRow.querySelector(':scope > div');
-  if (!marqueeCell) return;
 
   uploadRow.classList.add('foreground');
   decorateMultiViewport(uploadRow);
@@ -250,6 +245,8 @@ export default async function init(el) {
   const uploadsWrapper = createTag('div', { class: 'upload-marquee-uploads' });
   const mediaWrapper = createTag('div', { class: 'upload-marquee-media' });
 
+  const marqueeCell = marqueeRow.querySelector(':scope > div');
+  if (!marqueeCell) return;
   leftCol.append(buildMarqueeContent(marqueeCell));
 
   [...uploadRow.children].forEach((content) => {
