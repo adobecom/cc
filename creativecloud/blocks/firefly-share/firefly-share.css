@@ -203,7 +203,7 @@ main > .section.center firefly-share.inline ul.icon-container {
 
 @media (min-width: 900px){
   .firefly-share {
-    --svg-icon-dimension: 56px;
+    --svg-icon-dimension: 52px;
     --list-gap: 44px;
   }
 
