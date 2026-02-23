@@ -3,6 +3,7 @@ import { createTag } from '../../scripts/utils.js';
 const BLOCK = 'firefly-carousel';
 const GAP = 8;
 const TRANSITION_FALLBACK_MS = 420;
+const AUTOSCROLL_INTERVAL_MS = 4000;
 const NAV_DIRECTIONS = {
   PREV: 'prev',
   NEXT: 'next',
@@ -125,7 +126,9 @@ function getTrackStep(cards) {
 
 function updateActiveCard(cards, currentIndex) {
   cards.forEach((card) => {
-    card.classList.toggle('active', Number(card.dataset.slideIndex) === currentIndex);
+    const isActive = Number(card.dataset.slideIndex) === currentIndex;
+    card.classList.toggle('active', isActive);
+    card.tabIndex = isActive ? 0 : -1;
   });
 }
 
@@ -196,9 +199,13 @@ function createNavControls(track, navContainer, itemCount, state, cards) {
 
   const prevButton = createNavButton(NAV_DIRECTIONS.PREV, () => move(NAV_DIRECTIONS.PREV));
   const nextButton = createNavButton(NAV_DIRECTIONS.NEXT, () => move(NAV_DIRECTIONS.NEXT));
-  navContainer.append(prevButton, nextButton);
+  navContainer.prepend(prevButton);
+  navContainer.append(nextButton);
   applyFrame(NAV_FRAMES.BASE, false);
-  return () => applyFrame(NAV_FRAMES.BASE, false);
+  return {
+    reposition: () => applyFrame(NAV_FRAMES.BASE, false),
+    moveNext: () => move(NAV_DIRECTIONS.NEXT),
+  };
 }
 
 /** Creates the top-level structural containers for the carousel. */
@@ -215,6 +222,40 @@ function observeResize(viewport, updateCarousel) {
   observer.observe(viewport);
 }
 
+function setupAutoScroll(viewport, moveNext) {
+  let autoScrollTimer = null;
+  let autoScrollStopped = false;
+
+  const clearAutoScroll = () => {
+    if (!autoScrollTimer) return;
+    clearInterval(autoScrollTimer);
+    autoScrollTimer = null;
+  };
+
+  const stopAutoScroll = () => {
+    if (autoScrollStopped) return;
+    autoScrollStopped = true;
+    clearAutoScroll();
+    observer.disconnect();
+  };
+
+  const startAutoScroll = () => {
+    if (autoScrollStopped || autoScrollTimer) return;
+    autoScrollTimer = setInterval(() => moveNext(), AUTOSCROLL_INTERVAL_MS);
+  };
+
+  const observer = new IntersectionObserver(([entry]) => {
+    if (autoScrollStopped) return;
+    if (entry?.isIntersecting) startAutoScroll();
+    else clearAutoScroll();
+  });
+
+  observer.observe(viewport);
+  ['pointerdown', 'keydown', 'focusin', 'touchstart'].forEach((eventName) => {
+    viewport.addEventListener(eventName, stopAutoScroll, { once: true, capture: true });
+  });
+}
+
 export default async function init(el) {
   const items = parseItemsFromDOM(el);
   if (!items.length) return;
@@ -224,7 +265,7 @@ export default async function init(el) {
   const state = { currentIndex: 0, isAnimating: false };
   const structure = createCarouselStructure();
   const cards = buildTrack(structure.track, items);
-  const reposition = createNavControls(
+  const controls = createNavControls(
     structure.track,
     structure.viewport,
     items.length,
@@ -233,5 +274,6 @@ export default async function init(el) {
   );
 
   el.append(structure.viewport);
-  observeResize(structure.viewport, reposition);
+  observeResize(structure.viewport, controls.reposition);
+  setupAutoScroll(structure.viewport, controls.moveNext);
 }
