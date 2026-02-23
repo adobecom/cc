@@ -84,7 +84,7 @@ function decorateMultiViewport(foreground) {
   return foreground;
 }
 
-function decorateUploadEls(para, index) {
+function decorateUploadEls(para) {
   const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
   const button = createTag(
     'button',
@@ -100,8 +100,8 @@ function decorateUploadEls(para, index) {
     'input',
     {
       type: 'file',
-      name: `file-upload-${index}`,
-      id: `file-upload-${index}`,
+      name: 'file-upload',
+      id: 'file-upload',
       class: 'file-upload hide',
       accept: 'image/*',
       'aria-label': `${buttonLabel} file picker`,
@@ -114,7 +114,7 @@ function decorateUploadEls(para, index) {
   return para;
 }
 
-function decorateUploadColumns(content, index) {
+function decorateUploadColumns(content) {
   const mediaContainer = createTag('div', { class: 'media-container' });
   const dropZone = createTag('div', { class: 'drop-zone' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
@@ -140,7 +140,7 @@ function decorateUploadColumns(content, index) {
     return null;
   }
 
-  const uploadEls = decorateUploadEls(uploadPara, index);
+  const uploadEls = decorateUploadEls(uploadPara);
   const fileInput = uploadEls.lastElementChild;
 
   const textParas = paras.filter((para) => para !== uploadPara);
@@ -150,12 +150,12 @@ function decorateUploadColumns(content, index) {
 
   if (headingPara) {
     headingPara.classList.add('drop-zone-heading');
-    headingPara.id = `drop-zone-heading-${index}`;
+    headingPara.id = `drop-zone-heading`;
     describedByIds.push(headingPara.id);
   }
   if (bodyPara) {
     bodyPara.classList.add('drop-zone-body');
-    bodyPara.id = `drop-zone-body-${index}`;
+    bodyPara.id = `drop-zone-body`;
     describedByIds.push(bodyPara.id);
   }
 
@@ -231,8 +231,8 @@ export default async function init(el) {
   uploadRow.classList.add('foreground');
   decorateMultiViewport(uploadRow);
 
-  [...uploadRow.children].forEach((content, index) => {
-    decorateUploadColumns(content, index + 1);
+  [...uploadRow.children].forEach((content) => {
+    decorateUploadColumns(content);
   });
 
   const layout = createTag('div', {
