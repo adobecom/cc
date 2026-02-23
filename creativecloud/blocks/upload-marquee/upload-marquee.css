@@ -1,7 +1,5 @@
 /* ========== Upload marquee block (Figma: FF - Gen Remove - upscale - expand) ========== */
 .upload-marquee-block {
-  --upload-marquee-left-bg: #000000;
-  --upload-marquee-dropzone-bg: #0d0d0d;
   position: relative;
   overflow: hidden;
 }
@@ -17,7 +15,7 @@
 }
 
 .upload-marquee-block .upload-marquee-left {
-  background: var(--upload-marquee-left-bg);
+  background: inherit;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -162,7 +160,7 @@
 
 .upload-marquee-block .upload-marquee-right {
   height: auto;
-  background: #000000;
+  background: inherit;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,13 +210,14 @@
   border-radius: 8px;
   padding: 34px 24px;
   margin: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
   box-sizing: border-box;
-  background-color: var(--upload-marquee-dropzone-bg);
+  background-color: inherit;
   background-image: radial-gradient(circle, rgb(255 255 255 / 18%) 1px, transparent 1px);
   background-size: 26px 26px;
 }
