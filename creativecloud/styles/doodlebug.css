@@ -235,6 +235,7 @@
             max-width: 100%;
             padding-left: var(--content-margin);
             padding-right: var(--content-margin);
+            gap: 10px;
             /* padding-inline: 0; */
             justify-content: center;
         }
