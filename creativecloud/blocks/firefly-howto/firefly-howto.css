@@ -65,28 +65,10 @@
   outline: none
 }
 
-.firefly-howto .foreground .firefly-howto-trigger::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: var(--radius);
-  pointer-events: none; /* Ensures the box doesn't block mouse clicks */
-  transition: bottom var(--anim-speed) var(--anim-easing); /* Animates smoothly with the panel */
-}
-
-.firefly-howto .foreground .firefly-howto-trigger:focus-visible::after{
+.firefly-howto .foreground .firefly-howto-item:has(.firefly-howto-trigger:focus-visible) {
   outline: 2px solid var(--c-focus);
   outline-offset: -2px;
-  border-radius: var(--acc-item-radius);
 }
-
-.firefly-howto .foreground .firefly-howto-item.is-open .firefly-howto-trigger::after {
-  bottom: 16px; 
-}
-
 
 .firefly-howto .foreground .step-indicator {
   grid-area: step;
@@ -229,8 +211,5 @@
     top: -24px;
   }
 
-  .firefly-howto .foreground .firefly-howto-item.is-open .firefly-howto-trigger::after {
-    bottom: 24px; 
-  }
 }
 
