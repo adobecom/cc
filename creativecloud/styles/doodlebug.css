@@ -5,9 +5,7 @@
     --content-margin: 6.51%;
 
 @media (min-width: 600px) {
-  :root {
-    --xl-rounded-corners: 32px;
-  }
+  --xl-rounded-corners: 32px;
 }
 
 /* ---- Accordion ---- */
@@ -175,8 +173,20 @@
   .section.show-2-desktop {
     grid-template-columns: repeat(2, minmax(0, 823px));
     max-width: 100%;
-    margin: 0 var(--content-margin);
-    padding-inline: 0;
+    /* margin: 0 var(--content-margin); */
+     padding-left: var(--content-margin);
+    padding-right: var(--content-margin);
+    /* padding-inline: 0; */
+    justify-content: center;
+  }
+
+  .section.show-4-desktop {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 350px));
+    max-width: 100%;
+    padding-left: var(--content-margin);
+    padding-right: var(--content-margin);
+    /* padding-inline: 0; */
     justify-content: center;
   }
 
@@ -186,15 +196,22 @@
     aspect-ratio: 823 / 490;
   }
 
+  .show-2-desktop .editorial-card .media-area :is(img, video) {
+    aspect-ratio: 410/336;
+    height: auto;
+    max-height: unset;
+  }
+
   .show-2-desktop .editorial-card {
     background: none !important;
     box-shadow: none;
   }
 
-  .show-2-desktop .editorial-card .media-area {
+  .show-2-desktop .editorial-card .media-area,
+  .show-4-desktop .editorial-card .media-area {
     position: relative;
   }
-/* change here */
+
   .show-2-desktop .editorial-card .media-area::after {
     position: absolute;
     content: '';
@@ -211,6 +228,15 @@
   .show-2-desktop .editorial-card.s-padding-media .media-area > div {
     padding: 0;
   }
+
+  .show-4-desktop .editorial-card .foreground .body-l {
+    line-height: 26px; /* 130% */
+    letter-spacing: 0.2px;
+  }
+
+    .show-4-desktop .editorial-card .foreground > div {
+        row-gap: 24px;
+    }
 }
 
 /* ---- Section Utilities ---- */
