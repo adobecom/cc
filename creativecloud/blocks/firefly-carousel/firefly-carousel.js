@@ -71,11 +71,11 @@ function createPromptPill(promptText, deeplinkUrl) {
     title: promptText || '',
     'aria-label': promptText || 'Open in Firefly',
   };
-  const pill = createTag(deeplinkUrl ? 'a' : 'div', attrs);
+  const pill = createTag('button', { ...attrs, type: 'button' });
   if (deeplinkUrl) {
-    pill.setAttribute('href', deeplinkUrl);
-    pill.setAttribute('target', '_blank');
-    pill.setAttribute('rel', 'noopener nofollow');
+    pill.addEventListener('click', () => {
+      window.open(deeplinkUrl, '_blank', 'noopener');
+    });
   }
 
   const text = createTag('span', { class: `${BLOCK}-prompt-text` }, promptText || '');
