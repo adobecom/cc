@@ -55,92 +55,134 @@
     }
 
     /* ---- Carousel (Tablet Hinting) ---- */
+    .carousel.hinting-tablet {
+        --tablet-card-width: calc(300 / 768 * 100vw);
+        --tablet-gap: 24px;
+        --tablet-margin: 2rem;
+    }
+
+    .carousel.hinting-mobile .carousel-button-container {
+        background: none;
+        min-width: 100px;
+        gap: 6px;
+    }
+
+    .carousel.hinting-mobile .carousel-button-container .carousel-controls {
+        display: none;
+    }
+
+    .carousel.hinting-mobile .carousel-button-container .carousel-button {
+        width: 40px;
+        height: 40px;
+        background-color: #242424;
+    }
+
+    .carousel.hinting-mobile .carousel-previous path,
+    .carousel.hinting-mobile .carousel-next path {
+        fill: #fff;
+    }
+
+    .carousel.hinting-mobile:has(.carousel-slide:first-child.active) .carousel-previous,
+    .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(1).active) .carousel-next {
+        pointer-events: none;
+        background-color: rgba(177 177 177 / 20%);
+    }
+
+    .carousel.hinting-mobile:has(.carousel-slide:first-child.active) .carousel-previous path,
+    .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(1).active) .carousel-next path {
+        fill: #B1B1B1;
+    }
+
+    .carousel.hinting-mobilet:has(.carousel-slide:nth-last-child(1).active) .carousel-slide:first-child {
+        visibility: hidden;
+    }
+
     @media (min-width: 600px) and (max-width: 1199px) {
-        .carousel.tablet-hinting {
+        .carousel.hinting-tablet {
             --tablet-card-width: calc(300 / 768 * 100vw);
             --tablet-gap: 24px;
             --tablet-margin: 2rem;
         }
 
-        .carousel.tablet-hinting .carousel-button-container {
+        .carousel.hinting-tablet .carousel-button-container {
             background: none;
             min-width: 100px;
             gap: 6px;
         }
 
-        .carousel.tablet-hinting .carousel-button-container .carousel-controls {
+        .carousel.hinting-tablet .carousel-button-container .carousel-controls {
             display: none;
         }
 
-        .carousel.tablet-hinting .carousel-button-container .carousel-button {
+        .carousel.hinting-tablet .carousel-button-container .carousel-button {
             width: 40px;
             height: 40px;
             background-color: #242424;
         }
 
-        .carousel.tablet-hinting .carousel-previous path,
-        .carousel.tablet-hinting .carousel-next path {
+        .carousel.hinting-tablet .carousel-previous path,
+        .carousel.hinting-tablet .carousel-next path {
             fill: #fff;
         }
 
-        .carousel.container.tablet-hinting {
+        .carousel.container.hinting-tablet {
             width: 100%;
         }
 
-        .carousel.tablet-hinting .carousel-wrapper {
+        .carousel.hinting-tablet .carousel-wrapper {
             margin-left: var(--grid-margins-width);
         }
 
-        .carousel.tablet-hinting .carousel-slides {
+        .carousel.hinting-tablet .carousel-slides {
             gap: var(--tablet-gap);
             left: calc(-1 * var(--tablet-card-width));
             transform: translateX(var(--tablet-card-width));
         }
 
-        .carousel.tablet-hinting .carousel-slides.is-reversing {
+        .carousel.hinting-tablet .carousel-slides.is-reversing {
             transform: translateX(calc(-1 * var(--tablet-card-width)));
         }
 
-        .carousel.tablet-hinting .carousel-slide {
+        .carousel.hinting-tablet .carousel-slide {
             flex-basis: var(--tablet-card-width);
         }
 
-        .carousel.tablet-hinting .carousel-slides.is-ready,
-        .carousel.tablet-hinting .carousel-slides.is-ready.is-reversing {
+        .carousel.hinting-tablet .carousel-slides.is-ready,
+        .carousel.hinting-tablet .carousel-slides.is-ready.is-reversing {
             transform: translateX(calc(-1 * var(--tablet-gap)));
         }
 
-        .carousel.tablet-hinting:has(.carousel-slide:first-child.active) .carousel-previous,
-        .carousel.tablet-hinting:has(.carousel-slide:nth-last-child(2).active) .carousel-next {
+        .carousel.hinting-tablet:has(.carousel-slide:first-child.active) .carousel-previous,
+        .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(2).active) .carousel-next {
             pointer-events: none;
             background-color: rgba(177 177 177 / 20%);
         }
 
-        .carousel.tablet-hinting:has(.carousel-slide:first-child.active) .carousel-previous path,
-        .carousel.tablet-hinting:has(.carousel-slide:nth-last-child(2).active) .carousel-next path {
+        .carousel.hinting-tablet:has(.carousel-slide:first-child.active) .carousel-previous path,
+        .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(2).active) .carousel-next path {
             fill: #B1B1B1;
         }
 
-        .carousel.tablet-hinting:has(.carousel-slide:nth-last-child(2).active) .carousel-slide:first-child {
+        .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(2).active) .carousel-slide:first-child {
             visibility: hidden;
         }
 
-        .carousel.disable-nav.tablet-hinting .carousel-slides {
+        .carousel.disable-nav.hinting-tablet .carousel-slides {
             left: calc(-1 * var(--tablet-card-width) - var(--tablet-margin));
             transform: translateX(calc(var(--tablet-card-width) + var(--tablet-margin)));
             align-items: flex-start;
         }
 
-        .carousel.disable-nav.tablet-hinting .carousel-slides.is-reversing {
+        .carousel.disable-nav.hinting-tablet .carousel-slides.is-reversing {
             transform: translateX(calc(-1 * var(--tablet-card-width) - var(--tablet-margin)));
         }
 
-        .carousel.disable-nav.tablet-hinting .carousel-slides.is-ready,
-        .carousel.disable-nav.tablet-hinting .carousel-slides.is-ready.is-reversing {
+        .carousel.disable-nav.hinting-tablet .carousel-slides.is-ready,
+        .carousel.disable-nav.hinting-tablet .carousel-slides.is-ready.is-reversing {
             transform: translateX(calc(var(--tablet-margin) - var(--tablet-gap)));
         }
 
-        .carousel.disable-nav.tablet-hinting .editorial-card .media-area::after {
+        .carousel.disable-nav.hinting-tablet .editorial-card .media-area::after {
             position: absolute;
             content: '';
             inset: 0;
