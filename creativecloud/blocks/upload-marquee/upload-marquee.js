@@ -184,12 +184,12 @@ async function decorateUploadColumns(content) {
 
   if (headingPara) {
     headingPara.classList.add('drop-zone-heading');
-    headingPara.id = `drop-zone-heading`;
+    headingPara.id = 'drop-zone-heading';
     describedByIds.push(headingPara.id);
   }
   if (bodyPara) {
     bodyPara.classList.add('drop-zone-body');
-    bodyPara.id = `drop-zone-body`;
+    bodyPara.id = 'drop-zone-body';
     describedByIds.push(bodyPara.id);
   }
 

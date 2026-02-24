@@ -120,7 +120,7 @@
 /* Figma: description – smaller white text, comfortable line/letter spacing */
 .upload-marquee-block .upload-marquee-content p {
   color: #FFF;
-  text-shadow: 0 4px 39px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
   font-family: "Adobe Clean";
   font-size: 18px;
   font-style: normal;
@@ -147,7 +147,7 @@
   min-height: 40px;
   padding: 9px 18px 10px;
   background: transparent;
-  color: #ffffff;
+  color: #fff;
   border: 2px solid rgb(255 255 255 / 35%);
   border-radius: 999px;
   box-sizing: border-box;
@@ -178,7 +178,7 @@
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgb(0 0 0 / 8%);
 }
 
 .upload-marquee-block .upload-marquee-right .media-container .video-container {
@@ -206,7 +206,7 @@
 
 /* Figma: dashed white border, slightly lighter dark grey interior, subtle dotted pattern */
 .upload-marquee-block .drop-zone {
-  border: 2px dashed rgba(255, 255, 255, 0.5);
+  border: 2px dashed rgb(255 255 255 / 50%);
   border-radius: 8px;
   padding: 34px 24px;
   margin: 0;
@@ -238,7 +238,7 @@
 
 /* Figma: landscape icon at top of upload zone, white */
 .upload-marquee-block .drop-zone > p:first-child {
-  color: #ffffff;
+  color: #fff;
   margin: 0;
   text-align: center;
   font-size: var(--type-body-m-size);
@@ -260,7 +260,7 @@
 
 /* Figma: "Or drag and drop here" and file requirements – white text */
 .upload-marquee-block .drop-zone > p:not(:first-child):not(:last-child):not(.upload-action-container) {
-  color: #ffffff;
+  color: #fff;
   margin: 0;
   text-align: center;
   line-height: 1.4;
@@ -291,9 +291,9 @@
   font-size: var(--type-body-xs-size);
   line-height: var(--type-body-xs-lh);
   margin-top: 16px;
-  color: #ffffff;
+  color: #fff;
   text-align: center;
-  margin-block-end: 0px;
+  margin-block-end: 0;
 }
 
 .upload-marquee-block .drop-zone-container > p:last-child a {
@@ -309,7 +309,7 @@
   border-radius: 999px;
   border: 0;
   background: #3b63fb;
-  color: #ffffff;
+  color: #fff;
   cursor: pointer;
   gap: 8px;
   display: flex;
@@ -335,7 +335,7 @@
 
 .upload-marquee-block .action-button:focus-visible {
   background: #3b63fb;
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -387,7 +387,7 @@
     grid-template-rows: 1fr;
     min-height: 700px;
     overflow: hidden;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 24px rgb(0 0 0 / 12%);
   }
 
   .upload-marquee-block .upload-marquee-right {
