@@ -71,11 +71,11 @@ function createPromptPill(promptText, deeplinkUrl) {
     title: promptText || '',
     'aria-label': promptText || 'Open in Firefly',
   };
-  const pill = createTag(deeplinkUrl ? 'a' : 'div', attrs);
+  const pill = createTag('button', { ...attrs, type: 'button', tabIndex: -1 });
   if (deeplinkUrl) {
-    pill.setAttribute('href', deeplinkUrl);
-    pill.setAttribute('target', '_blank');
-    pill.setAttribute('rel', 'noopener nofollow');
+    pill.addEventListener('click', () => {
+      window.open(deeplinkUrl, '_blank', 'noopener');
+    });
   }
 
   const text = createTag('span', { class: `${BLOCK}-prompt-text` }, promptText || '');
@@ -129,6 +129,8 @@ function updateActiveCard(cards, currentIndex) {
     const isActive = Number(card.dataset.slideIndex) === currentIndex;
     card.classList.toggle('active', isActive);
     card.tabIndex = isActive ? 0 : -1;
+    const prompt = card.querySelector(`.${BLOCK}-prompt`);
+    if (prompt) prompt.tabIndex = isActive ? 0 : -1;
   });
 }
 

@@ -46,7 +46,7 @@
   padding-block-end: 8px;
 }
 
-.firefly-share.xxl-heading h1,h2,h3,h5,h6 {
+.firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
   font-size: 24px;
   font-weight: 900;
 }
@@ -220,7 +220,7 @@ main > .section.center firefly-share.inline ul.icon-container {
     white-space: nowrap;
   }
 
-  .firefly-share.xxl-heading h1,h2,h3,h5,h6 {
+  .firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
     font-size: 40px;
     font-weight: 900;
   }
