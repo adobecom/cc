@@ -136,12 +136,6 @@ function createAccordionItem(data) {
   const p = createTag('p');
   p.innerHTML = content;
 
-  const links = p.querySelectorAll('a');
-  links.forEach((link) => {
-    link.setAttribute('target', '_blank');
-    link.setAttribute('rel', 'noopener noreferrer');
-  });
-
   contentWrapper.appendChild(p);
   panelInner.appendChild(contentWrapper);
   panel.appendChild(panelInner);
