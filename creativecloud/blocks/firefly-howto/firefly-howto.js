@@ -201,7 +201,7 @@ function decorateContent(el) {
 export default function init(el) {
   try {
     el.classList.add('con-block');
-    // decorateContent(el);
+    decorateContent(el);
   } catch (err) {
     window.lana?.log(`Firefly accordion Init error: ${err}`, LANA_OPTIONS);
   }
