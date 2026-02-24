@@ -313,6 +313,12 @@
   }
 }
 
+/* Gate opacity at start */
+.firefly-model-showcase .firefly-model-showcase-content.opacity-gated {
+  opacity: 1;
+  transition: opacity 300ms ease;
+}
+
 /* parallax effects */
 .firefly-model-showcase .firefly-model-showcase-content {
   will-change: opacity, transform;
