@@ -1,5 +1,3 @@
-import { isDylanTextSpacingEnabled } from '../scripts/utils.js';
-
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 function throttle(cb, delay, { trailing = false } = {}) {
   let timer = null;
@@ -38,20 +36,24 @@ function addProgressIMPL(el, NAV_HEIGHT, markers) {
 
   function updateProgress() {
     const rect = el.getBoundingClientRect();
+    const buttonRect = el.querySelector('.firefly-model-showcase-content .action-area a:first-of-type').getBoundingClientRect();
+    const buttonProgress = screenHeight - buttonRect.top;
+    const content = el.querySelector('.firefly-model-showcase-content');
+
     // how much of the el already entered from bottom
     const enterProgress = clamp((screenHeight - rect.top) / elHeight, 0, 1);
     // how much of the el already exited from top (gnav)
     const exitProgress = clamp((-rect.top + NAV_HEIGHT) / elHeight, 0, 1);
 
-    if (isDylanTextSpacingEnabled()) {
-      // Freeze parallax-driven animation when dylan barrel text spacing is enabled.
-      el.style.setProperty('--exit-progress', 0);
-      el.style.setProperty('--enter-progress', 0);
+    if (buttonProgress < 100) {
+      content.classList.add('opacity-gated');
     } else {
-      // Release parallax animation
-      el.style.setProperty('--exit-progress', exitProgress * 100);
-      el.style.setProperty('--enter-progress', enterProgress * 100);
+      content.classList.remove('opacity-gated');
     }
+
+    el.style.setProperty('--enter-progress', enterProgress * 100);
+    el.style.setProperty('--exit-progress', exitProgress * 100);
+    el.style.setProperty('--button-progress', buttonProgress);
 
     if (markers.length) {
       markers.forEach((marker) => {
