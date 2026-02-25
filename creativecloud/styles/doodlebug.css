@@ -367,27 +367,30 @@
 
     .text-block.grid-cta .foreground .cta-container .action-area {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(var(--cell-width), 1fr));
+        grid-template-columns: 1fr;
         justify-content: center;
         gap: 10px;
         max-width: 100%;
     }
 
     .text-block.grid-cta .foreground .cta-container .action-area .con-button {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display: block;
+        position: relative;
         width: 100%;
-        max-height: 81px;
-        padding: 24px 18px;
+        height: 81px;
+        padding: 24px 48px 24px 18px;
         border: none;
         border-radius: 8px;
         background: var(--color-white);
         color: var(--text-color);
         font-size: 1.25rem;
         font-weight: 800;
-        line-height: 0.98;
+        line-height: 33px;
         box-sizing: border-box;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .text-block.grid-cta .foreground .cta-container .action-area .con-button:hover,
@@ -396,21 +399,26 @@
         box-shadow: 0 1px 4px 0 #0000000C, 0 8px 8px 0 #00000013, 0 20px 12px 0 #00000018, 0 40px 24px 0 #0000001D;
     }
 
+    /** TODO: rtl **/
+
     .text-block.grid-cta .foreground .cta-container a::after {
         content: '';
-        display: block;
+        position: absolute;
         width: 20px;
         height: 20px;
+        right: 18px;
+        top: 50%;
+        transform: translateY(-50%);
         background: url('https://main--cc--adobecom.aem.live/drafts/ssircar/s2-icon-openin-20-n.svg') no-repeat;
-        background-size: 100% 100%;
-    }
-
-    .text-block.grid-cta .foreground .cta-container .action-area .con-button:hover {
-        color: var(--color-black);
-        box-shadow: 0 1.85px 3.15px 0 #0000000C, 0 8.15px 6.52px 0 #00000013, 0 20px 13px 0 #00000018, 0 38.52px 25.48px 0 #0000001D;
+        background-size: contain;
     }
 
     @media (min-width: 600px) {
+        .text-block.grid-cta .foreground .cta-container .action-area {
+          grid-template-columns: repeat(2,1fr);
+        }
+        
+
         .text-block.grid-cta .foreground .cta-container .action-area .con-button {
             font-size: 1.5rem;
             letter-spacing: -3%;
@@ -453,6 +461,10 @@
 
         .text-block.grid-cta .foreground {
             --cell-width: 410px;
+        }
+
+        .text-block.grid-cta .foreground .cta-container .action-area {
+          grid-template-columns: repeat(4, 1fr);
         }
     }
 }
