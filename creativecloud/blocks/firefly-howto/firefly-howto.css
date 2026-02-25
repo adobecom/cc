@@ -177,6 +177,10 @@
     column-gap: 16px;
   }
 
+  .firefly-howto .foreground .step-indicator {
+    font-size: 1rem;
+  }
+
   .firefly-howto .foreground .firefly-howto-item .firefly-howto-content {
     padding: 0 calc(var(--s-spacing-md) + 40px) 8px calc(var(--s-spacing-md) + 55px + 16px);
   }
