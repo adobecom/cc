@@ -422,6 +422,10 @@
             text-align: start;
         }
 
+        .text-block.left-tablet .action-area {
+          justify-content: start;
+        }
+
         .text-block [class*="heading-xxxl"] {
             font-size: 36px;
             line-height: 98%;
