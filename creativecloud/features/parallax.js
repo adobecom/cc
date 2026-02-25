@@ -21,11 +21,10 @@ function throttle(cb, delay, { trailing = false } = {}) {
   };
 }
 
-let previousButtonTop = 0;
-
 function addProgressIMPL(el, NAV_HEIGHT, markers) {
   let screenHeight = window.innerHeight;
   let elHeight = el.offsetHeight;
+  let previousButtonTop = 0;
   const content = el.querySelector('.firefly-model-showcase-content');
   const initialContentHeight = content.clientHeight;
   window.addEventListener(
