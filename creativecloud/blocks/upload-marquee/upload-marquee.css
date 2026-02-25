@@ -108,7 +108,7 @@
 .upload-marquee-block .upload-marquee-content h1 {
   color: #FFF;
   text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
-  font-family: var(--Font-adobe-clean, "Adobe Clean");
+  font-family: var(--body-font-family);
   font-size: 40px;
   font-style: normal;
   font-weight: 800;
@@ -121,12 +121,12 @@
 .upload-marquee-block .upload-marquee-content p {
   color: #FFF;
   text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
-  font-family: "Adobe Clean";
+  font-family: var(--body-font-family);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: 136%; /* 24.48px */
-  letter-spacing: var(--Letter-spacing, 0);
+  letter-spacing: var(--letter-spacing, 0);
   margin-bottom: 16px;
 }
 
