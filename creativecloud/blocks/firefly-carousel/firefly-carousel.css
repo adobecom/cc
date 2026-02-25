@@ -96,7 +96,7 @@
 }
 
 .firefly-carousel .firefly-carousel-prompt-text {
-  flex: 0 1 80%;
+  flex: 0 1 90%;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -111,7 +111,7 @@
 }
 
 .firefly-carousel .firefly-carousel-prompt-icon {
-  flex: 0 0 20%;
+  flex: 0 0 10%;
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
