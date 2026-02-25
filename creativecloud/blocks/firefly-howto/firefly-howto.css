@@ -77,7 +77,6 @@
   font-weight: 500;
   color: var(--c-text-tertiary);
   text-transform: uppercase;
-  white-space: nowrap;
   line-height: 1.25;
 }
 
