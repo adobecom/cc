@@ -47,14 +47,14 @@
 .firefly-howto .foreground .firefly-howto-trigger {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr; 
+  grid-template-columns: 1fr 16px; 
   grid-template-areas: 
-    "step"
-    "title";
+    "step step"
+    "title icon";
   row-gap: 4px;
-  align-items: center;
+  column-gap: 16px;
+  align-items: start;
   padding: var(--s-spacing-md);
-  padding-right: calc(var(--s-spacing-md) + 40px); /* Buffer so text never hits the absolute icon */
   background: none;
   border: none;
   text-align: left;
@@ -62,7 +62,7 @@
   color: var(--c-text-primary);
   font-family: var(--body-font-family);
   position: relative;
-  z-index: 1;
+  z-index: 2;
   outline: none
 }
 
@@ -92,18 +92,17 @@
   line-height: 1.5;
 }
 
-.firefly-howto .foreground .firefly-howto-icon{
-  position: absolute;
+.firefly-howto .foreground .firefly-howto-icon {
+  grid-area: icon;
+  align-self: center;
   right: var(--s-spacing-md);
-  top: 50%;
-  transform: translateY(-50%);
+  display: flex;
   width: 16px;
   height: 16px;
-  display: flex;
   align-items: center;
   justify-content: center;
   color: var(--c-text-primary);
-  z-index: 2;
+  z-index: 3;
 }
 
 .firefly-howto .foreground .firefly-howto-icon svg{
@@ -128,7 +127,7 @@
   transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear var(--anim-speed); 
   position: relative;
   top: -16px; 
-  z-index: 2;
+  z-index: 1;
 }
 
 .firefly-howto .foreground .firefly-howto-content {
@@ -171,21 +170,16 @@
 
 @media (min-width: 600px) {
   .firefly-howto .foreground .firefly-howto-trigger {
-    grid-template-columns: 55px 1fr;
-    grid-template-areas: "step title";
+    grid-template-columns: 55px 1fr 16px;
+    grid-template-areas: "step title icon";
     align-items: baseline;
     row-gap: 0;
     column-gap: 16px;
     padding: var(--s-spacing-xl);
-    padding-right: calc(var(--s-spacing-xl) + 40px);
   }
 
   .firefly-howto .foreground .step-indicator {
     font-size: 1rem;
-  }
-
-  .firefly-howto .foreground .firefly-howto-icon {
-    right: var(--s-spacing-xl);
   }
 
   .firefly-howto .foreground .firefly-howto-panel {
@@ -199,8 +193,8 @@
 
 @media (min-width: 1200px) {
   .firefly-howto .foreground .firefly-howto-trigger {
-    grid-template-columns: 65px 1fr;
-    column-gap: var(--s-spacing-md); /* 24px */
+    grid-template-columns: 65px 1fr 16px;
+    column-gap: var(--s-spacing-md);
   }
 
   .firefly-howto .foreground .firefly-howto-title {
