@@ -1,13 +1,46 @@
-import { setLibs } from '../../scripts/utils.js';
+import { getConfig, setLibs } from '../../scripts/utils.js';
 
 const miloLibs = setLibs('/libs');
 let createTag;
 let decorateBlockBg;
 
 const VIEWPORTS = ['mobile-up', 'tablet-up', 'desktop-up'];
-const DROP_ZONE_ARIA_LABEL = 'Upload your image. Drag and drop a file, or press Enter to browse.';
-const LAYOUT_ARIA_LABEL = 'Image upload area. Drag and drop files anywhere in this section.';
+const ARIA_PLACEHOLDER_KEYS = {
+  dropZoneAriaLabel: 'upload-marquee-drop-zone-aria-label',
+  layoutAriaLabel: 'upload-marquee-layout-aria-label',
+  filePickerAriaSuffix: 'file-picker',
+};
+const ARIA_LABEL_DEFAULTS = {
+  dropZoneAriaLabel: 'Upload your asset. Drag and drop a file, or press Enter to browse.',
+  layoutAriaLabel: 'Asset upload area. Drag and drop files anywhere in this section.',
+  filePickerAriaSuffix: 'file picker',
+};
 const DEFAULT_DROPZONE_ICON = 'https://main--cc--adobecom.aem.page/cc-shared/assets/img/default-picture.svg';
+let ariaLabelsPromise;
+
+async function fetchAriaLabels() {
+  try {
+    const config = getConfig();
+    const { replaceKeyArray } = await import(`${miloLibs}/features/placeholders.js`);
+    const labelKeys = Object.keys(ARIA_PLACEHOLDER_KEYS);
+    const localizedValues = await replaceKeyArray(
+      labelKeys.map((key) => ARIA_PLACEHOLDER_KEYS[key]),
+      config,
+    );
+    return labelKeys.reduce((acc, key, index) => {
+      acc[key] = localizedValues[index] || ARIA_LABEL_DEFAULTS[key];
+      return acc;
+    }, {});
+  } catch (err) {
+    window.lana?.log(`Failed to fetch upload marquee aria labels: ${err}`, { tags: 'upload-marquee', errorType: 'i' });
+    return { ...ARIA_LABEL_DEFAULTS };
+  }
+}
+
+async function getAriaLabels() {
+  if (!ariaLabelsPromise) ariaLabelsPromise = fetchAriaLabels();
+  return ariaLabelsPromise;
+}
 
 function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   let dragDepth = 0;
@@ -84,8 +117,9 @@ function decorateMultiViewport(foreground) {
   return foreground;
 }
 
-function decorateUploadEls(para) {
+async function decorateUploadEls(para) {
   const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
+  const { filePickerAriaSuffix } = await getAriaLabels();
   const button = createTag(
     'button',
     {
@@ -104,7 +138,7 @@ function decorateUploadEls(para) {
       id: 'file-upload',
       class: 'file-upload hide',
       accept: 'image/*',
-      'aria-label': `${buttonLabel} file picker`,
+      'aria-label': `${buttonLabel} ${filePickerAriaSuffix}`,
     },
   );
 
@@ -114,7 +148,7 @@ function decorateUploadEls(para) {
   return para;
 }
 
-function decorateUploadColumns(content) {
+async function decorateUploadColumns(content) {
   const mediaContainer = createTag('div', { class: 'media-container' });
   const dropZone = createTag('div', { class: 'drop-zone' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
@@ -140,7 +174,7 @@ function decorateUploadColumns(content) {
     return null;
   }
 
-  const uploadEls = decorateUploadEls(uploadPara);
+  const uploadEls = await decorateUploadEls(uploadPara);
   const fileInput = uploadEls.lastElementChild;
 
   const textParas = paras.filter((para) => para !== uploadPara);
@@ -150,18 +184,19 @@ function decorateUploadColumns(content) {
 
   if (headingPara) {
     headingPara.classList.add('drop-zone-heading');
-    headingPara.id = `drop-zone-heading`;
+    headingPara.id = 'drop-zone-heading';
     describedByIds.push(headingPara.id);
   }
   if (bodyPara) {
     bodyPara.classList.add('drop-zone-body');
-    bodyPara.id = `drop-zone-body`;
+    bodyPara.id = 'drop-zone-body';
     describedByIds.push(bodyPara.id);
   }
 
   dropZone.setAttribute('role', 'button');
   dropZone.setAttribute('tabindex', '0');
-  dropZone.setAttribute('aria-label', DROP_ZONE_ARIA_LABEL);
+  const { dropZoneAriaLabel } = await getAriaLabels();
+  dropZone.setAttribute('aria-label', dropZoneAriaLabel);
   if (fileInput?.id) dropZone.setAttribute('aria-controls', fileInput.id);
   if (describedByIds.length) dropZone.setAttribute('aria-describedby', describedByIds.join(' '));
 
@@ -210,7 +245,12 @@ function buildMarqueeContent(marqueeCell) {
   }
 
   const ctaLink = marqueeContent.querySelector('p strong a[href], p:last-of-type a[href]');
-  if (ctaLink) ctaLink.classList.add('con-button', 'upload-marquee-cta');
+  if (ctaLink) {
+    ctaLink.classList.add('con-button', 'upload-marquee-cta');
+    if (!ctaLink.getAttribute('aria-label')) {
+      ctaLink.setAttribute('aria-label', ctaLink.textContent.trim());
+    }
+  }
 
   return marqueeContent;
 }
@@ -231,14 +271,18 @@ export default async function init(el) {
   uploadRow.classList.add('foreground');
   decorateMultiViewport(uploadRow);
 
-  [...uploadRow.children].forEach((content) => {
-    decorateUploadColumns(content);
-  });
+  // eslint-disable-next-line no-restricted-syntax
+  for (const content of uploadRow.children) {
+    // eslint-disable-next-line no-await-in-loop
+    await decorateUploadColumns(content);
+  }
+
+  const { layoutAriaLabel } = await getAriaLabels();
 
   const layout = createTag('div', {
     class: 'upload-marquee-layout',
     role: 'region',
-    'aria-label': LAYOUT_ARIA_LABEL,
+    'aria-label': layoutAriaLabel,
   });
   const leftCol = createTag('div', { class: 'upload-marquee-left' });
   const rightCol = createTag('div', { class: 'upload-marquee-right' });

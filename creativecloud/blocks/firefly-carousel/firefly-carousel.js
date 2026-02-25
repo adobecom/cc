@@ -207,6 +207,7 @@ function createNavControls(track, navContainer, itemCount, state, cards) {
   return {
     reposition: () => applyFrame(NAV_FRAMES.BASE, false),
     moveNext: () => move(NAV_DIRECTIONS.NEXT),
+    movePrev: () => move(NAV_DIRECTIONS.PREV),
   };
 }
 
@@ -222,6 +223,34 @@ function createCarouselStructure() {
 function observeResize(viewport, updateCarousel) {
   const observer = new ResizeObserver(() => updateCarousel());
   observer.observe(viewport);
+}
+
+const SWIPE_THRESHOLD_PX = 50;
+
+/** Enables touch swipe: left = next, right = prev. Ignores mostly-vertical drags. */
+function setupSwipe(viewport, moveNext, movePrev) {
+  let startX = 0;
+  let startY = 0;
+
+  viewport.addEventListener('touchstart', (e) => {
+    if (e.changedTouches.length !== 1) return;
+    startX = e.changedTouches[0].clientX;
+    startY = e.changedTouches[0].clientY;
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', (e) => {
+    if (e.changedTouches.length !== 1) return;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX) return;
+    if (Math.abs(deltaY) >= Math.abs(deltaX)) return;
+
+    if (deltaX < 0) moveNext();
+    else movePrev();
+  }, { passive: true });
 }
 
 function setupAutoScroll(viewport, moveNext) {
@@ -278,4 +307,5 @@ export default async function init(el) {
   el.append(structure.viewport);
   observeResize(structure.viewport, controls.reposition);
   setupAutoScroll(structure.viewport, controls.moveNext);
+  setupSwipe(structure.viewport, controls.moveNext, controls.movePrev);
 }
