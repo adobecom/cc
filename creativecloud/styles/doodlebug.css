@@ -93,8 +93,8 @@
         fill: #B1B1B1;
     }
 
-    .carousel.hinting-mobilet:has(.carousel-slide:nth-last-child(1).active) .carousel-slide:first-child {
-        visibility: hidden;
+    .carousel.hinting-mobile:has(.carousel-slide:nth-last-child(1).active) .carousel-slide:first-child {
+        visibility: hidden;        
     }
 
     @media (min-width: 600px) and (max-width: 1199px) {
