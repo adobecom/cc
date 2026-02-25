@@ -8,6 +8,7 @@
   --s-spacing-sm: 1rem;
   --s-spacing-md: 1.5rem;
   --s-spacing-lg: 2rem;
+  --s-spacing-xl: 40px;
   --acc-item-radius: 8px;
   --acc-item-shadow: 0 2px 8px rgba(0,0,0,0.05);
   --anim-speed: 0.4s;
@@ -175,14 +176,24 @@
     align-items: baseline;
     row-gap: 0;
     column-gap: 16px;
+    padding: var(--s-spacing-xl);
+    padding-right: calc(var(--s-spacing-xl) + 40px);
   }
 
   .firefly-howto .foreground .step-indicator {
     font-size: 1rem;
   }
 
+  .firefly-howto .foreground .firefly-howto-icon {
+    right: var(--s-spacing-xl);
+  }
+
+  .firefly-howto .foreground .firefly-howto-panel {
+    top: -24px;
+  }
+
   .firefly-howto .foreground .firefly-howto-item .firefly-howto-content {
-    padding: 0 calc(var(--s-spacing-md) + 40px) 8px calc(var(--s-spacing-md) + 55px + 16px);
+    padding: 0 calc(var(--s-spacing-xl) + 40px) 16px calc(var(--s-spacing-xl) + 55px + 16px);
   }
 }
 
@@ -190,12 +201,6 @@
   .firefly-howto .foreground .firefly-howto-trigger {
     grid-template-columns: 65px 1fr;
     column-gap: var(--s-spacing-md); /* 24px */
-    padding: var(--s-spacing-lg); /* 32px */
-    padding-right: calc(var(--s-spacing-lg) + 40px);
-  }
-
-  .firefly-howto .foreground .firefly-howto-icon {
-    right: var(--s-spacing-lg);
   }
 
   .firefly-howto .foreground .firefly-howto-title {
@@ -203,13 +208,8 @@
   }
   
   .firefly-howto .foreground .firefly-howto-item .firefly-howto-content {
-    padding: 0 calc(var(--s-spacing-lg) + 40px) 8px calc(var(--s-spacing-lg) + 65px + var(--s-spacing-md));
+    padding: 0 calc(var(--s-spacing-xl) + 40px) 16px calc(var(--s-spacing-xl) + 65px + var(--s-spacing-md));
     font-size: 1.25rem;
   }
-
-  .firefly-howto .foreground .firefly-howto-panel {
-    top: -24px;
-  }
-
 }
 
