@@ -1,12 +1,10 @@
 .firefly-share {
   --svg-icon-dimension: 24px;
-  --list-gap: 24px; 
+  --list-gap: 28px; 
   --copy-tooltip-background-color: #6D6D6D;
-
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  padding: 56px 0;
   overflow: hidden;
 }
 
@@ -34,20 +32,24 @@
   align-items: center;
   padding-bottom: 0;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .firefly-share ul.icon-container {
   list-style: none;
-  padding-left: 0;
   gap: var(--list-gap);
+  margin: 0;
+  padding: 1rem 0;
 }
 
 .firefly-share :is([role="heading"], h1, h2, h3, h4, h5, h6) {
-  padding-block-end: 8px;
+  margin-top: 2.5rem;
+  margin-bottom: 2.75rem;
 }
 
+
 .firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 900;
 }
 
@@ -187,7 +189,44 @@ main > .section.center firefly-share.inline ul.icon-container {
   justify-content: center;
 }
 
+@media screen and (min-width: 360px) {
+  .firefly-share.left-mobile .tracking-header {
+    max-width: var(--grid-container-width);
+    margin: 0 auto;
+  }
+  
+  .firefly-share.left-mobile :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    text-align: start;
+  }
+  
+  .firefly-share.left-mobile ul.icon-container {
+    max-width: calc(var(--grid-container-width) - 2px);
+    margin-left : auto;
+    margin-right: auto;
+    justify-content: space-around;
+  }
+}
+
 @media screen and (min-width: 600px) {
+  .firefly-share.left-mobile .tracking-header {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .firefly-share.left-mobile :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    text-align: center;
+  }
+  
+  .firefly-share.left-mobile ul.icon-container {
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .firefly-share :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
   .firefly-share .copy-to-clipboard::before,
   [dir="rtl"] firefly-share .copy-to-clipboard::before {
     left: 50%;
@@ -204,7 +243,7 @@ main > .section.center firefly-share.inline ul.icon-container {
 @media (min-width: 900px){
   .firefly-share {
     --svg-icon-dimension: 52px;
-    --list-gap: 44px;
+    --list-gap: 56px;
   }
 
   .firefly-share .copy-to-clipboard::before {
@@ -220,8 +259,17 @@ main > .section.center firefly-share.inline ul.icon-container {
     white-space: nowrap;
   }
 
+  .firefly-share :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
   .firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
     font-size: 40px;
     font-weight: 900;
+  }
+
+  .firefly-share ul.icon-container {
+    padding: 2rem 0
   }
 }
