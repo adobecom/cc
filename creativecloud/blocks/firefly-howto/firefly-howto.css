@@ -78,6 +78,7 @@
   color: var(--c-text-tertiary);
   text-transform: uppercase;
   line-height: 1.25;
+  overflow-wrap: break-word;
 }
 
 .firefly-howto .foreground .firefly-howto-item.is-open .step-indicator {
