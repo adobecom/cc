@@ -132,6 +132,7 @@
   background: #010101;
   backdrop-filter: blur(13.63636302947998px);
   border: none;
+  cursor: pointer;
 }
 
 .firefly-carousel .firefly-carousel-nav-btn.prev {
