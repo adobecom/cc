@@ -82,7 +82,15 @@
         fill: #fff;
     }
 
-    .carousel.hinting-mobile:has(.carousel-slide:first-child.active) .carousel-previous,
+    .carousel.disable-circular-nav .carousel-button-container .disabled {
+        background-color: rgba(177 177 177 / 20%);
+    }
+
+    .carousel.disable-circular-nav .carousel-button-container .disabled path {
+        fill: #B1B1B1;
+    }
+
+    /* .carousel.hinting-mobile:has(.carousel-slide:first-child.active) .carousel-previous,
     .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(1).active) .carousel-next {
         pointer-events: none;
         background-color: rgba(177 177 177 / 20%);
@@ -91,10 +99,10 @@
     .carousel.hinting-mobile:has(.carousel-slide:first-child.active) .carousel-previous path,
     .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(1).active) .carousel-next path {
         fill: #B1B1B1;
-    }
+    } */
 
     .carousel.hinting-mobile:has(.carousel-slide:nth-last-child(1).active) .carousel-slide:first-child {
-        visibility: hidden;        
+        visibility: hidden;
     }
 
     @media (min-width: 600px) and (max-width: 1199px) {
@@ -152,14 +160,11 @@
             transform: translateX(calc(-1 * var(--tablet-gap)));
         }
 
-        .carousel.hinting-tablet:has(.carousel-slide:first-child.active) .carousel-previous,
-        .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(2).active) .carousel-next {
-            pointer-events: none;
+        .carousel.disable-circular-nav .carousel-button-container .disabled {
             background-color: rgba(177 177 177 / 20%);
         }
 
-        .carousel.hinting-tablet:has(.carousel-slide:first-child.active) .carousel-previous path,
-        .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(2).active) .carousel-next path {
+        .carousel.disable-circular-nav .carousel-button-container .disabled path {
             fill: #B1B1B1;
         }
 
@@ -228,7 +233,7 @@
         gap: 24px;
         justify-content: center;
     }
-    
+
 
     @media (min-width: 1200px) {
         .section.show-2-desktop {
@@ -431,7 +436,7 @@
         }
 
         .text-block.left-tablet .action-area {
-          justify-content: start;
+            justify-content: start;
         }
 
         .text-block [class*="heading-xxxl"] {
