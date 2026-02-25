@@ -218,26 +218,33 @@
         letter-spacing: 0.16px;
     }
 
+    .section.show-4-desktop {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(276px, 1fr));
+        gap: var(--spacing-m);
+        align-items: start;
+        padding-left: var(--grid-margins-width);
+        padding-right: var(--grid-margins-width);
+        gap: 24px;
+        justify-content: center;
+    }
+    
+
     @media (min-width: 1200px) {
         .section.show-2-desktop {
             grid-template-columns: repeat(2, minmax(0, 823px));
             max-width: 100%;
-            /* margin: 0 var(--content-margin); */
             padding-left: var(--content-margin);
             padding-right: var(--content-margin);
-            /* padding-inline: 0; */
             justify-content: center;
         }
 
         .section.show-4-desktop {
-            display: grid;
             grid-template-columns: repeat(4, minmax(0, 350px));
             max-width: 100%;
             padding-left: var(--content-margin);
             padding-right: var(--content-margin);
             gap: 10px;
-            /* padding-inline: 0; */
-            justify-content: center;
         }
 
         .show-2-desktop .editorial-card .media-area :is(img, video) {
