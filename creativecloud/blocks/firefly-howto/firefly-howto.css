@@ -162,7 +162,7 @@
 .firefly-howto .foreground .firefly-howto-content > *:first-child { margin-top: 0; }
 .firefly-howto .foreground .firefly-howto-content > *:last-child { margin-bottom: 0; }
 
-.firefly-howto .foreground .firefly-howto-panel p {
+.section .firefly-howto .foreground .firefly-howto-panel .firefly-howto-panel-inner .firefly-howto-content p {
   line-height: 1.6;
   color: var(--c-text-primary);
   margin: 0;
