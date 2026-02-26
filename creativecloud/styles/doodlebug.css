@@ -45,6 +45,13 @@
         margin-inline: 180px 0;
     }
 
+    .aside .foreground.container .text [class*="heading-"] {
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -3%;
+        line-height: 98%;
+    }
+
     .aside .foreground.container:has(> .image:first-child) .text {
         margin-inline: 0 180px;
     }
@@ -52,6 +59,24 @@
     .aside .foreground.container .image img {
         border-radius: 20px;
         border: var(--glass-border);
+    }
+
+    @media (max-width: 1200px) {
+        .aside .foreground.container {
+            display: grid;
+            align-items: center;
+            gap: 8.5%;
+            width: 85%;
+            grid-template-columns: minmax(45%, 1fr) minmax(55%, 1fr);
+        }
+    
+        .aside .foreground.container .text {
+            margin-inline: 9.5% 0;
+        }
+
+        .aside .foreground.container:has(> .image:first-child) .text {
+        margin-inline: 0 9.5%;
+    }
     }
 
     /* ---- Carousel (Tablet Hinting) ---- */
@@ -89,17 +114,6 @@
     .carousel.disable-circular-nav .carousel-button-container .disabled path {
         fill: #B1B1B1;
     }
-
-    /* .carousel.hinting-mobile:has(.carousel-slide:first-child.active) .carousel-previous,
-    .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(1).active) .carousel-next {
-        pointer-events: none;
-        background-color: rgba(177 177 177 / 20%);
-    }
-
-    .carousel.hinting-mobile:has(.carousel-slide:first-child.active) .carousel-previous path,
-    .carousel.hinting-tablet:has(.carousel-slide:nth-last-child(1).active) .carousel-next path {
-        fill: #B1B1B1;
-    } */
 
     .carousel.hinting-mobile:has(.carousel-slide:nth-last-child(1).active) .carousel-slide:first-child {
         visibility: hidden;
@@ -322,6 +336,10 @@
         border-radius: 0 0 var(--xl-rounded-corners) var(--xl-rounded-corners);
     }
 
+    .section:not(.dark) p {
+        color: #5D5D5D;
+    }
+
     @media (max-width: 599px) {
         .section.no-spacing-bottom-mobile {
             padding-bottom: 0;
@@ -401,6 +419,8 @@
     .text-block.grid-cta .foreground .cta-container .action-area .con-button:hover,
     .text-block.grid-cta .foreground .cta-container .action-area .con-button:focus-visible {
         color: var(--color-black);
+        position: relative;
+        z-index: 1;
         box-shadow: 0 1px 4px 0 #0000000C, 0 8px 8px 0 #00000013, 0 20px 12px 0 #00000018, 0 40px 24px 0 #0000001D;
     }
 
