@@ -168,8 +168,8 @@ async function buildUploadActionControls(para, columnId, getAriaLabels) {
   );
   const input = createTag('input', {
     type: 'file',
-    name: inputId,
-    id: inputId,
+    name: 'file-upload',
+    id: 'file-upload',
     class: 'file-upload hide',
     accept: 'image/*',
     'aria-label': `${buttonLabel} ${filePickerAriaSuffix}`,
