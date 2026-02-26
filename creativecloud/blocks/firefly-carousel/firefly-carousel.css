@@ -39,7 +39,8 @@
 }
 
 .firefly-carousel .firefly-carousel-card.active {
-  box-shadow: 0 100px 80px 0 rgba(0, 0, 0, 0.19), 0 64.815px 46.852px 0 rgba(0, 0, 0, 0.14), 0 38.519px 25.481px 0 rgba(0, 0, 0, 0.12), 0 20px 13px 0 rgba(0, 0, 0, 0.09), 0 8.148px 6.519px 0 rgba(0, 0, 0, 0.07), 0 1.852px 3.148px 0 rgba(0, 0, 0, 0.05);
+  /* Slightly reduced shadow extent (5px) to avoid clipping by content below */
+  box-shadow: 0 95px 75px 0 rgba(0, 0, 0, 0.19), 0 64.815px 46.852px 0 rgba(0, 0, 0, 0.14), 0 38.519px 25.481px 0 rgba(0, 0, 0, 0.12), 0 20px 13px 0 rgba(0, 0, 0, 0.09), 0 8.148px 6.519px 0 rgba(0, 0, 0, 0.07), 0 1.852px 3.148px 0 rgba(0, 0, 0, 0.05);
 }
 
 .firefly-carousel .firefly-carousel-media {
