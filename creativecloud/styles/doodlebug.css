@@ -443,7 +443,7 @@
         right: 18px;
         top: 50%;
         transform: translateY(-50%);
-        background: url('https://main--cc--adobecom.aem.live/drafts/ssircar/s2-icon-openin-20-n.svg') no-repeat;
+        background: url('/cc-shared/assets/svg/s2-icon-openin-20-n.svg') no-repeat;
         background-size: contain;
     }
 
