@@ -502,3 +502,26 @@
         }
     }
 }
+
+:root[dir="rtl"]:has(meta[name='theme'][content='doodlebug']) {
+  .text-block.grid-cta .foreground .cta-container .action-area a.con-button {
+    text-align: right;
+    padding: 24px 18px 24px 48px; 
+  }
+
+ .text-block.grid-cta .foreground .cta-container .action-area a.con-button::after {
+    display: none;
+  }
+
+ .text-block.grid-cta .foreground .cta-container .action-area a.con-button::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    width: 20px;
+    height: 20px;
+    background: url('https://main--cc--adobecom.aem.live/drafts/ssircar/s2-icon-openin-20-n.svg') no-repeat center;
+    background-size: contain;
+  }
+}
