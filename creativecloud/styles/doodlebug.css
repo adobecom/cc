@@ -8,6 +8,10 @@
         --xl-rounded-corners: 32px;
     }
 
+    :where(.section:not(.dark) p) {
+      color: #5D5D5D;
+    }
+
     /* ---- Accordion ---- */
     .accordion {
         margin: 0 var(--content-margin);
@@ -345,9 +349,7 @@
         border-radius: 0 0 var(--xl-rounded-corners) var(--xl-rounded-corners);
     }
 
-    .section:not(.dark) p {
-        color: #5D5D5D;
-    }
+    
 
     @media (max-width: 599px) {
         .section.no-spacing-bottom-mobile {
@@ -502,6 +504,10 @@
         }
     }
 }
+
+/**
+TODO: Can use &[dir="rtl"] above also, & is supported by modern browsers, done this for old browsers 
+**/
 
 :root[dir="rtl"]:has(meta[name='theme'][content='doodlebug']) {
   .text-block.grid-cta .foreground .cta-container .action-area a.con-button {
