@@ -215,6 +215,10 @@
         box-shadow: 0 5px 20px 10px #0000000F;
     }
 
+    .editorial-card h3 {
+        letter-spacing: -3%;
+    }
+
     .editorial-card.s-padding-media .media-area>div {
         padding: var(--spacing-xxs);
     }
@@ -325,7 +329,7 @@
     }
 
     .section.spacing-bottom-180 {
-        padding-bottom: 50px;
+        padding-bottom: 80px;
     }
 
     .section.xl-top-rounded-corners {
