@@ -51,6 +51,7 @@
 .firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
   font-size: 1.5rem;
   font-weight: 900;
+  letter-spacing: -4.5%;
 }
 
 .firefly-share.dark :is([role="heading"], h1, h2, h3, h4, h5, h6),
