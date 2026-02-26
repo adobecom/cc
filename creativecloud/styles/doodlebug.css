@@ -46,7 +46,7 @@
     }
 
     .aside .foreground.container .text [class*="heading-"] {
-        font-size: 36px;
+        font-size: 2.25rem;
         font-weight: 800;
         letter-spacing: -3%;
         line-height: 98%;
@@ -236,7 +236,7 @@
     }
 
     .editorial-card .foreground .body-l {
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 135%;
         letter-spacing: 1%;
     }
@@ -381,13 +381,13 @@
     }
 
     .text-block [class*="heading-xxxl"] {
-        font-size: 32px;
+        font-size: 2rem;
         line-height: 105%;
         letter-spacing: -1.44px;
     }
 
     .text-block.center [class*="body-l"] {
-        font-size: 18px;
+        font-size: 1.125rem;
         line-height: 130%;
     }
 
@@ -469,7 +469,7 @@
         }
 
         .text-block [class*="heading-xxxl"] {
-            font-size: 36px;
+            font-size: 2.25rem;
             line-height: 98%;
             letter-spacing: -1.62px;
         }
@@ -481,13 +481,13 @@
 
     @media (min-width: 1200px) {
         .text-block [class*="heading-xxxl"] {
-            font-size: 64px;
+            font-size: 4rem;
             line-height: 98%;
             letter-spacing: -2.88px;
         }
 
         .text-block.center [class*="body-l"] {
-            font-size: 20px;
+            font-size: 1.25rem;
             line-height: 130%;
             max-width: 950px;
             margin: 0 auto;
