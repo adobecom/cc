@@ -258,6 +258,7 @@ function buildMarqueeContent(marqueeCell) {
 export default async function init(el) {
   ({ decorateBlockBg } = (await import(`${miloLibs}/utils/decorate.js`)));
   ({ createTag } = (await import(`${miloLibs}/utils/utils.js`)));
+  el.id = el.id || 'upload-marquee-block';
   el.classList.add('upload-marquee-block', 'con-block');
   const rows = el.querySelectorAll(':scope > div');
   if (rows.length < 3) return;
