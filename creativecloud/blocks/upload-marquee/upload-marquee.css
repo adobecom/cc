@@ -102,7 +102,7 @@
   text-align: left;
 }
 
-#upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content h1 {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content h1 {
   color: #FFF;
   text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
   font-family: var(--body-font-family);
@@ -114,7 +114,7 @@
   margin-bottom: 16px;
 }
 
-#upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content p {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content p {
   color: #FFF;
   text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
   font-family: var(--body-font-family);
@@ -251,7 +251,7 @@
   margin: 4px 0 2px;
 }
 
-#upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone > p:not(:first-child):not(:last-child):not(.upload-action-container) {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone > p:not(:first-child):not(:last-child):not(.upload-action-container) {
   color: #fff;
   margin: 0;
   text-align: center;
@@ -268,7 +268,7 @@
   text-align: center;
 }
 
-#upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone > .drop-zone-body {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone > .drop-zone-body {
   color: #dbdbdb;
   font-size: 16px;
   font-weight: 400;
@@ -278,7 +278,7 @@
   text-align: center;
 }
 
-#upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone-container > p:last-child {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone-container > p:last-child {
   font-size: var(--type-body-xs-size);
   line-height: var(--type-body-xs-lh);
   margin-top: 16px;
@@ -362,7 +362,7 @@
 
 /* Desktop: left | right columns */
 @media screen and (min-width: 1200px) {
-  #upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content h1 {
+  .section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content h1 {
     font-size: 64px;
     letter-spacing: -2.88px;
   }
