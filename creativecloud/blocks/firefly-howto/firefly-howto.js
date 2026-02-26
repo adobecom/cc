@@ -122,7 +122,7 @@ function createAccordionItem(data) {
   iconSpan.innerHTML = ICON_SVG;
 
   const stepSpan = createTag('span', { class: 'step-indicator' });
-  stepSpan.textContent = stepPrefix;
+  stepSpan.textContent = `${stepPrefix} `;
 
   btn.appendChild(stepSpan);
   btn.appendChild(titleSpan);
