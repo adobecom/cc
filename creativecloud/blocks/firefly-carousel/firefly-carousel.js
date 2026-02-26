@@ -160,6 +160,7 @@ function waitForTrackTransition(track, onDone) {
   const settle = () => {
     if (settled) return;
     settled = true;
+    // eslint-disable-next-line no-use-before-define
     clearTimeout(fallbackTimer);
     onDone();
   };
@@ -267,6 +268,7 @@ function setupAutoScroll(viewport, moveNext) {
     if (autoScrollStopped) return;
     autoScrollStopped = true;
     clearAutoScroll();
+    // eslint-disable-next-line no-use-before-define
     observer.disconnect();
   };
 

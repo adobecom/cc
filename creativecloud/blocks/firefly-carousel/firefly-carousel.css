@@ -36,6 +36,17 @@
   overflow: hidden;
   border-radius: var(--ff-card-border-radius);
   background: #111;
+  outline: none;
+}
+
+.firefly-carousel .firefly-carousel-card:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #1473E6;
+  border-radius: var(--ff-card-border-radius);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .firefly-carousel .firefly-carousel-card.active {
