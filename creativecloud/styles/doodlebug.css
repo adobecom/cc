@@ -45,6 +45,13 @@
         margin-inline: 180px 0;
     }
 
+    .aside .foreground.container .text [class*="heading-"] {
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -3%;
+        line-height: 98%;
+    }
+
     .aside .foreground.container:has(> .image:first-child) .text {
         margin-inline: 0 180px;
     }
@@ -327,6 +334,10 @@
 
     .section.xl-bottom-rounded-corners {
         border-radius: 0 0 var(--xl-rounded-corners) var(--xl-rounded-corners);
+    }
+
+    .section:not(.dark) p {
+        color: #5D5D5D;
     }
 
     @media (max-width: 599px) {
