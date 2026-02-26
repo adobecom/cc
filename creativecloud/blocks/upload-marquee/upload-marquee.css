@@ -1,4 +1,3 @@
-/* ========== Upload marquee block (Figma: FF - Gen Remove - upscale - expand) ========== */
 .upload-marquee-block {
   position: relative;
   overflow: hidden;
@@ -32,7 +31,6 @@
   display: none;
 }
 
-/* Figma node 626-19601: marquee content – black panel, branding, heading, description, left-aligned */
 .upload-marquee-block .upload-marquee-content {
   display: flex;
   flex-direction: column;
@@ -104,8 +102,7 @@
   text-align: left;
 }
 
-/* Figma: "Remove an object from a photo." – large, bold, white, left-aligned */
-.upload-marquee-block .upload-marquee-content h1 {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content h1 {
   color: #FFF;
   text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
   font-family: var(--body-font-family);
@@ -117,8 +114,7 @@
   margin-bottom: 16px;
 }
 
-/* Figma: description – smaller white text, comfortable line/letter spacing */
-.upload-marquee-block .upload-marquee-content p {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content p {
   color: #FFF;
   text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
   font-family: var(--body-font-family);
@@ -138,7 +134,6 @@
   color: #fff;
 }
 
-/* Figma node 1017-24782: outlined pill CTA */
 .upload-marquee-block .upload-marquee-content .upload-marquee-cta {
   align-self: flex-start;
   display: inline-flex;
@@ -204,7 +199,6 @@
   max-width: none;
 }
 
-/* Figma: dashed white border, slightly lighter dark grey interior, subtle dotted pattern */
 .upload-marquee-block .drop-zone {
   border: 2px dashed rgb(255 255 255 / 50%);
   border-radius: 8px;
@@ -236,7 +230,6 @@
   border-color: #5681FF;
 }
 
-/* Figma: landscape icon at top of upload zone, white */
 .upload-marquee-block .drop-zone > p:first-child {
   color: #fff;
   margin: 0;
@@ -258,8 +251,7 @@
   margin: 4px 0 2px;
 }
 
-/* Figma: "Or drag and drop here" and file requirements – white text */
-.upload-marquee-block .drop-zone > p:not(:first-child):not(:last-child):not(.upload-action-container) {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone > p:not(:first-child):not(:last-child):not(.upload-action-container) {
   color: #fff;
   margin: 0;
   text-align: center;
@@ -276,8 +268,7 @@
   text-align: center;
 }
 
-/* Figma: file requirements in drop zone */
-.upload-marquee-block .drop-zone > .drop-zone-body {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone > .drop-zone-body {
   color: #dbdbdb;
   font-size: 16px;
   font-weight: 400;
@@ -287,7 +278,7 @@
   text-align: center;
 }
 
-.upload-marquee-block .drop-zone-container > p:last-child {
+.section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .drop-zone-container > p:last-child {
   font-size: var(--type-body-xs-size);
   line-height: var(--type-body-xs-lh);
   margin-top: 16px;
@@ -371,7 +362,7 @@
 
 /* Desktop: left | right columns */
 @media screen and (min-width: 1200px) {
-  .upload-marquee-block .upload-marquee-content h1 {
+  .section .upload-marquee-block .foreground .upload-marquee-layout .upload-marquee-left .upload-marquee-content h1 {
     font-size: 64px;
     letter-spacing: -2.88px;
   }
