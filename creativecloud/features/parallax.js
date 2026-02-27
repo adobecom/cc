@@ -24,6 +24,9 @@ function throttle(cb, delay, { trailing = false } = {}) {
 function addProgressIMPL(el, NAV_HEIGHT, markers) {
   let screenHeight = window.innerHeight;
   let elHeight = el.offsetHeight;
+  let previousButtonTop = 0;
+  const content = el.querySelector('.firefly-model-showcase-content');
+  const initialContentHeight = content.clientHeight;
   window.addEventListener(
     'resize',
     throttle(() => {
@@ -60,10 +63,18 @@ function addProgressIMPL(el, NAV_HEIGHT, markers) {
   window.addEventListener(
     'scroll',
     () => {
+      /* if content height changed due to additional spacing (e.g. dylan text spacing),
+      skip the parallax animation */
+      if (initialContentHeight !== content.clientHeight) return;
+      const buttonRect = el.querySelector('.firefly-model-showcase-content .action-area a:first-of-type').getBoundingClientRect();
+      const currentButtonTop = buttonRect.top;
+      // if the button is below the fold, skip the parallax animation
+      if (previousButtonTop - screenHeight > 0 && !(previousButtonTop < 0)) return;
       if (!ticking) {
         requestAnimationFrame(updateProgress);
         ticking = true;
       }
+      previousButtonTop = currentButtonTop;
     },
     { passive: true },
   );

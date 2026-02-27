@@ -1,7 +1,7 @@
 import { createTag, getConfig, getLibs } from '../../scripts/utils.js';
 
-const fireflyShare = '/blocks/firefly-share/firefly-share.svg';
-const miloShare = '/blocks/share/share.svg';
+const FIREFLY_SHARE = '/cc-shared/assets/svg/firefly-share.svg';
+
 export async function getSVGsfromFile(path, selectors) {
   if (!path) return null;
   const resp = await fetch(path);
@@ -73,7 +73,6 @@ function showCopyTooltip({ copyButton, show = true, copied = false }) {
 
 export default async function decorate(block) {
   const config = getConfig();
-  const sharePath = config.codeRoot ? `${config.codeRoot}${fireflyShare}` : `${config.miloLibs}${miloShare}`;
   const miloLibs = getLibs('/libs');
   const { inlineBlock } = await import(`${miloLibs}/utils/inline.js`);
   const { replaceKey } = await import(`${miloLibs}/features/placeholders.js`);
@@ -103,7 +102,7 @@ export default async function decorate(block) {
   const clipboardSupport = !!navigator.clipboard;
   if (clipboardSupport) platforms.push('clipboard');
   const svgs = await getSVGsfromFile(
-    sharePath,
+    FIREFLY_SHARE,
     platforms,
   );
   if (!svgs) return;
