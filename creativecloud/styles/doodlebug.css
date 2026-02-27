@@ -221,6 +221,8 @@
 
     .editorial-card h3 {
         letter-spacing: -3%;
+        font-weight: 800;
+
     }
 
     .editorial-card.s-padding-media .media-area>div {
