@@ -177,7 +177,7 @@ function updateCurrentIndex(state, itemCount, direction) {
 
 function createMoveHandler(track, itemCount, state, applyFrame) {
   return (direction) => {
-    if (itemCount <= 1 || state.isAnimating) return;
+    if (itemCount <= 1 || state.isAnimating) return false;
     state.isAnimating = true;
     NAV_SEQUENCES[direction].forEach(({ frame, animate }) => applyFrame(frame, animate));
     waitForTrackTransition(track, () => {
@@ -185,6 +185,7 @@ function createMoveHandler(track, itemCount, state, applyFrame) {
       applyFrame(NAV_FRAMES.BASE, false);
       state.isAnimating = false;
     });
+    return true;
   };
 }
 
@@ -199,16 +200,26 @@ function createNavControls(track, navContainer, itemCount, state, cards) {
     animate,
   );
   const move = createMoveHandler(track, itemCount, state, applyFrame);
+  let prevButton;
+  let nextButton;
 
-  const prevButton = createNavButton(NAV_DIRECTIONS.PREV, () => move(NAV_DIRECTIONS.PREV));
-  const nextButton = createNavButton(NAV_DIRECTIONS.NEXT, () => move(NAV_DIRECTIONS.NEXT));
+  const moveByDirection = (direction, focusButton = false) => {
+    const moved = move(direction);
+    if (!moved || !focusButton) return moved;
+    if (direction === NAV_DIRECTIONS.PREV) prevButton.focus();
+    else nextButton.focus();
+    return moved;
+  };
+
+  prevButton = createNavButton(NAV_DIRECTIONS.PREV, () => moveByDirection(NAV_DIRECTIONS.PREV));
+  nextButton = createNavButton(NAV_DIRECTIONS.NEXT, () => moveByDirection(NAV_DIRECTIONS.NEXT));
   navContainer.prepend(prevButton);
   navContainer.append(nextButton);
   applyFrame(NAV_FRAMES.BASE, false);
   return {
     reposition: () => applyFrame(NAV_FRAMES.BASE, false),
-    moveNext: () => move(NAV_DIRECTIONS.NEXT),
-    movePrev: () => move(NAV_DIRECTIONS.PREV),
+    moveNext: (focusButton = false) => moveByDirection(NAV_DIRECTIONS.NEXT, focusButton),
+    movePrev: (focusButton = false) => moveByDirection(NAV_DIRECTIONS.PREV, focusButton),
   };
 }
 
@@ -252,6 +263,16 @@ function setupSwipe(viewport, moveNext, movePrev) {
     if (deltaX < 0) moveNext();
     else movePrev();
   }, { passive: true });
+}
+
+function setupArrowKeyNavigation(el, controls) {
+  el.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (!el.contains(document.activeElement)) return;
+    e.preventDefault();
+    if (e.key === 'ArrowLeft') controls.movePrev(true);
+    else controls.moveNext(true);
+  });
 }
 
 function setupAutoScroll(viewport, moveNext) {
@@ -310,4 +331,5 @@ export default async function init(el) {
   observeResize(structure.viewport, controls.reposition);
   setupAutoScroll(structure.viewport, controls.moveNext);
   setupSwipe(structure.viewport, controls.moveNext, controls.movePrev);
+  setupArrowKeyNavigation(el, controls);
 }
