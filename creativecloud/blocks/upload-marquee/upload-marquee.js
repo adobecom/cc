@@ -155,7 +155,6 @@ function assignDropZoneTextIds(headingPara, bodyPara, columnId) {
 async function buildUploadActionControls(para, columnId, getAriaLabels) {
   const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
   const { filePickerAriaSuffix } = await getAriaLabels();
-  const inputId = buildScopedId('file-upload', columnId);
   const button = createTag(
     'button',
     {
