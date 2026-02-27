@@ -1,0 +1,209 @@
+.firefly-howto {
+  --c-text-primary: var(--color-black);
+  --c-text-tertiary: #8F8F8F;
+  --c-bg-default: var(--color-white);
+  --c-bg-active: #ECE4F3;
+  --c-border: #E0E0E0;
+  --c-focus: #0054BB;
+  --s-spacing-sm: 1rem;
+  --s-spacing-md: 1.5rem;
+  --s-spacing-lg: 2rem;
+  --s-spacing-xl: 40px;
+  --acc-item-radius: 8px;
+  --acc-item-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  --anim-speed: 0.4s;
+  --anim-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  font-family: var(--body-font-family);
+}
+
+.firefly-howto .foreground {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem
+}
+
+.firefly-howto .foreground .firefly-howto-item {
+  background: var(--c-bg-default);
+  border-radius: var(--acc-item-radius);
+  box-shadow: var(--acc-item-shadow);
+  transition: background-color var(--anim-speed) ease;
+  overflow: hidden;
+  border: 1px solid transparent;
+  position: relative;
+  cursor: pointer;
+}
+
+.firefly-howto .foreground .firefly-howto-item.is-open{
+  background-color: var(--c-bg-active);
+}
+
+.firefly-howto .foreground  .firefly-howto-header {
+  margin: 0;
+}
+
+.firefly-howto .foreground .firefly-howto-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 16px; 
+  grid-template-areas: 
+    "step step"
+    "title icon";
+  row-gap: 4px;
+  column-gap: 16px;
+  align-items: start;
+  padding: var(--s-spacing-md);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--c-text-primary);
+  font-family: var(--body-font-family);
+  position: relative;
+  z-index: 2;
+  outline: none
+}
+
+.firefly-howto .foreground .firefly-howto-item:has(.firefly-howto-trigger:focus-visible) {
+  outline: 2px solid var(--c-focus);
+  outline-offset: -2px;
+}
+
+.firefly-howto .foreground .step-indicator {
+  grid-area: step;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--c-text-tertiary);
+  text-transform: uppercase;
+  line-height: 1.25;
+  overflow-wrap: break-word;
+}
+
+.firefly-howto .foreground .firefly-howto-item.is-open .step-indicator {
+  color: var(--c-text-primary);
+}
+
+.firefly-howto .foreground .firefly-howto-title {
+  grid-area: title;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.firefly-howto .foreground .firefly-howto-icon {
+  grid-area: icon;
+  align-self: center;
+  right: var(--s-spacing-md);
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-text-primary);
+  z-index: 3;
+}
+
+.firefly-howto .foreground .firefly-howto-icon svg{
+  width: 100%;
+  height: 100%;
+}
+
+.firefly-howto .foreground .firefly-howto-icon .vert-line{
+  transform-origin: 50% 50%;
+  transition: transform var(--anim-speed) var(--anim-easing), opacity var(--anim-speed) var(--anim-easing);
+}
+
+.firefly-howto .foreground .firefly-howto-trigger[aria-expanded="true"] .firefly-howto-icon .vert-line{
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.firefly-howto .foreground .firefly-howto-panel {
+  display: grid; 
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear var(--anim-speed); 
+  position: relative;
+  top: -16px; 
+  z-index: 1;
+}
+
+.firefly-howto .foreground .firefly-howto-content {
+  padding: 0 calc(var(--s-spacing-md) + 40px) 8px var(--s-spacing-md);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.firefly-howto .foreground .firefly-howto-panel-inner {
+  overflow: hidden;
+}
+
+.firefly-howto .foreground .firefly-howto-item.is-open .firefly-howto-panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear 0s;
+}
+
+.firefly-howto .foreground .firefly-howto-item .firefly-howto-content {
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 1;
+  line-height: 1.5;
+}
+
+.firefly-howto .foreground .firefly-howto-item.is-open .firefly-howto-content {
+  opacity: 1;
+  transition: opacity var(--anim-speed) ease 0.1s;
+  
+}
+
+.firefly-howto .foreground .firefly-howto-content > *:first-child { margin-top: 0; }
+.firefly-howto .foreground .firefly-howto-content > *:last-child { margin-bottom: 0; }
+
+.firefly-howto .foreground .firefly-howto-panel .firefly-howto-content p {
+  line-height: 1.6;
+  color: var(--c-text-primary);
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  .firefly-howto .foreground .firefly-howto-trigger {
+    grid-template-columns: 55px 1fr 16px;
+    grid-template-areas: "step title icon";
+    align-items: baseline;
+    row-gap: 0;
+    column-gap: 16px;
+    padding: var(--s-spacing-xl);
+  }
+
+  .firefly-howto .foreground .step-indicator {
+    font-size: 1rem;
+  }
+
+  .firefly-howto .foreground .firefly-howto-panel {
+    top: -24px;
+  }
+
+  .firefly-howto .foreground .firefly-howto-item .firefly-howto-content {
+    padding: 0 calc(var(--s-spacing-xl) + 40px) 16px calc(var(--s-spacing-xl) + 55px + 16px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .firefly-howto .foreground .firefly-howto-trigger {
+    grid-template-columns: 65px 1fr 16px;
+    column-gap: var(--s-spacing-md);
+  }
+
+  .firefly-howto .foreground .firefly-howto-title {
+    font-size: 1.5rem;
+  }
+  
+  .firefly-howto .foreground .firefly-howto-item .firefly-howto-content {
+    padding: 0 calc(var(--s-spacing-xl) + 40px) 16px calc(var(--s-spacing-xl) + 65px + var(--s-spacing-md));
+    font-size: 1.25rem;
+  }
+}
+

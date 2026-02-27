@@ -191,7 +191,7 @@ export const [setLibs, getLibs] = (() => {
 const miloLibs = setLibs('/libs');
 
 // eslint-disable-next-line object-curly-newline
-const { createTag, localizeLinkAsync, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLinkAsync, getConfig, getMetadata, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
 // eslint-disable-next-line max-len
 export { createTag, loadStyle, loadLink, loadScript, localizeLinkAsync, createIntersectionObserver, getConfig };
 
@@ -458,6 +458,7 @@ export const scriptInit = async () => {
   decorateArea();
   (function loadStyles() {
     const paths = [`${miloLibs}/styles/styles.css`];
+    if (getMetadata('theme') === 'doodlebug') paths.push('/creativecloud/styles/doodlebug.css');
     paths.forEach((path) => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
