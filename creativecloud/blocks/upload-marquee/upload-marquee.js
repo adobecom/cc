@@ -359,7 +359,6 @@ async function decorateUploadColumn(content, getAriaLabels) {
 }
 
 function setupLayoutDragAndDrop(layout, uploadsWrapper) {
-  let dragDepth = 0;
   let activeDropZone;
 
   const setActiveDropZone = () => {
@@ -377,14 +376,12 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   };
 
   const clearActiveDropZone = () => {
-    dragDepth = 0;
     activeDropZone?.classList.remove('active');
     activeDropZone = null;
   };
 
   layout.addEventListener('dragenter', (event) => {
     event.preventDefault();
-    dragDepth += 1;
     setActiveDropZone();
   });
 
@@ -396,9 +393,10 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
 
   layout.addEventListener('dragleave', (event) => {
     event.preventDefault();
-    dragDepth = Math.max(dragDepth - 1, 0);
-    if (dragDepth === 0) clearActiveDropZone();
+    clearActiveDropZone();
   });
+
+  document.addEventListener('dragend', () => clearActiveDropZone());
 
   layout.addEventListener('drop', (event) => {
     event.preventDefault();
@@ -417,8 +415,14 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
     clearActiveDropZone();
   });
 
-  window.addEventListener('drop', clearActiveDropZone);
-  window.addEventListener('dragend', clearActiveDropZone);
+  uploadsWrapper.querySelectorAll('.drop-zone').forEach((zone) => {
+    zone.addEventListener('drop', () => {
+      clearActiveDropZone();
+    });
+  });
+
+  window.addEventListener('drop', () => clearActiveDropZone());
+  window.addEventListener('dragend', () => clearActiveDropZone());
 }
 
 export default async function init(el) {
