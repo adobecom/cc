@@ -191,9 +191,9 @@ export const [setLibs, getLibs] = (() => {
 const miloLibs = setLibs('/libs');
 
 // eslint-disable-next-line object-curly-newline
-const { createTag, localizeLink, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLinkAsync, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
 // eslint-disable-next-line max-len
-export { createTag, loadStyle, loadLink, loadScript, localizeLink, createIntersectionObserver, getConfig };
+export { createTag, loadStyle, loadLink, loadScript, localizeLinkAsync, createIntersectionObserver, getConfig };
 
 function defineDeviceByScreenSize() {
   const DESKTOP_SIZE = 1200;
