@@ -1,0 +1,223 @@
+.firefly-carousel {
+  --ff-gap: 8px;
+  --ff-card-width: 80vw;
+  --ff-card-height: calc(var(--ff-card-width) / 1.4);
+  --ff-nav-size: 40px;
+  --ff-control-gap: 8px;
+  --ff-card-border-radius: 16px;
+  padding: 0;
+  position: relative;
+}
+
+.firefly-carousel {
+  width: 100%;
+}
+
+.firefly-carousel .firefly-carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 160px;
+}
+
+.firefly-carousel .firefly-carousel-track {
+  display: flex;
+  gap: var(--ff-gap);
+  will-change: transform;
+  transition: transform 320ms ease;
+  margin-left: calc((100% - var(--ff-card-width)) / 2);
+}
+
+.firefly-carousel .firefly-carousel-card {
+  position: relative;
+  flex: 0 0 var(--ff-card-width);
+  width: var(--ff-card-width);
+  height: var(--ff-card-height);
+  overflow: hidden;
+  border-radius: var(--ff-card-border-radius);
+  background: #111;
+  outline: none;
+}
+
+.firefly-carousel .firefly-carousel-card:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #1473E6;
+  border-radius: var(--ff-card-border-radius);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.firefly-carousel .firefly-carousel-card.active {
+  /* Slightly reduced shadow extent (5px) to avoid clipping by content below */
+  box-shadow: 0 95px 75px 0 rgba(0, 0, 0, 0.19), 0 64.815px 46.852px 0 rgba(0, 0, 0, 0.14), 0 38.519px 25.481px 0 rgba(0, 0, 0, 0.12), 0 20px 13px 0 rgba(0, 0, 0, 0.09), 0 8.148px 6.519px 0 rgba(0, 0, 0, 0.07), 0 1.852px 3.148px 0 rgba(0, 0, 0, 0.05);
+}
+
+.firefly-carousel .firefly-carousel-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.firefly-carousel .firefly-carousel-media picture,
+.firefly-carousel .firefly-carousel-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.firefly-carousel .firefly-carousel-prompt {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 9px 8px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--Color-Middle-Grey, #707070);
+  background: var(--container-fill, #FFF);
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.25);
+  width: fit-content;
+  max-width: calc(var(--ff-card-width) - 80px);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: start;
+}
+
+.firefly-carousel .firefly-carousel-card.active .firefly-carousel-prompt {
+  display: flex;
+}
+
+[dir="rtl"] .firefly-carousel .firefly-carousel-prompt {
+  left: 56px;
+  right: 16px;
+}
+
+.firefly-carousel .firefly-carousel-prompt-text {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.14px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.firefly-carousel .firefly-carousel-prompt-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 16px;
+  margin-left: 24px;
+  height: 16px;
+}
+
+.firefly-carousel .firefly-carousel-nav-btn {
+  width: var(--ff-nav-size);
+  height: var(--ff-nav-size);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: calc(var(--ff-card-height) / 2);
+  z-index: 1;
+  border-radius: 90.909px;
+  background: #010101;
+  backdrop-filter: blur(13.63636302947998px);
+  border: none;
+  cursor: pointer;
+}
+
+.firefly-carousel .firefly-carousel-nav-btn:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #1473E6;
+  border-radius: 90.909px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.firefly-carousel .firefly-carousel-nav-btn.prev {
+  left: calc((100% - var(--ff-card-width)) / 2);
+  transform: translate(-50%, -50%);
+}
+
+.firefly-carousel .firefly-carousel-nav-btn.next {
+  right: calc((100% - var(--ff-card-width)) / 2);
+  transform: translate(50%, -50%);
+}
+
+.firefly-carousel .firefly-carousel-nav-btn:disabled {
+  opacity: 0.5;
+  background: rgba(80, 80, 80, 0.40);
+  backdrop-filter: blur(13.63636302947998px);
+}
+
+.firefly-carousel .firefly-carousel-nav-btn svg {
+  width: 10.909px;
+  height: 10.909px;
+  flex-shrink: 0;
+  color: #FFFFFF;
+}
+
+@media screen and (min-width: 600px) {
+  .firefly-carousel {
+    --ff-card-width: 70vw;
+    --ff-card-height: calc(var(--ff-card-width) / 1.6);
+    --ff-card-border-radius: 12px;
+  }
+
+  .firefly-carousel .firefly-carousel-prompt {
+    left: 30px;
+    bottom: 20px;
+    transform: none;
+    max-width: calc(var(--ff-card-width) / 2.2);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .firefly-carousel {
+    --ff-card-width: 60vw;
+    --ff-card-height: calc(var(--ff-card-width) / 1.6);
+    --ff-card-border-radius: 24px;
+    --ff-nav-size: 65px;
+  }
+
+  .firefly-carousel .firefly-carousel-card.active .firefly-carousel-prompt {
+    padding: 16px 18px 16px 16px;
+    border-radius: 11px;
+    left: 55px;
+    bottom: 55px;
+    max-width: calc(var(--ff-card-width) / 1.6);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .firefly-carousel .firefly-carousel-card.active:hover .firefly-carousel-prompt,
+  .firefly-carousel .firefly-carousel-card.active:focus-within .firefly-carousel-prompt {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .firefly-carousel .firefly-carousel-prompt-text {
+    font-size: 22px;
+    letter-spacing: -0.22px;
+  }
+}
