@@ -16,6 +16,10 @@ const ARIA_LABEL_DEFAULTS = {
     'Asset upload area. Drag and drop files anywhere in this section.',
   filePickerAriaSuffix: 'file picker',
 };
+const AnalyticsKeys = {
+  uploadAssetCTA: 'Upload asset CTA|UnityWidget',
+  editPhotosCTA: 'Edit Photos CTA|UnityWidget',
+};
 
 let uploadColumnCounter = 0;
 
@@ -155,13 +159,12 @@ function assignDropZoneTextIds(headingPara, bodyPara, columnId) {
 async function buildUploadActionControls(para, columnId, getAriaLabels) {
   const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
   const { filePickerAriaSuffix } = await getAriaLabels();
-  const inputId = buildScopedId('file-upload', columnId);
   const button = createTag(
     'button',
     {
       type: 'button',
       class: 'con-button blue action-button button-xl no-track',
-      'daa-ll': `${buttonLabel}|UnityWidget`,
+      'daa-ll': AnalyticsKeys.uploadAssetCTA,
       'aria-label': buttonLabel,
     },
     para.innerHTML,
@@ -276,8 +279,9 @@ function buildMarqueeContent(marqueeCell) {
     'p strong a[href], p:last-of-type a[href]',
   );
   if (ctaLink) {
-    ctaLink.classList.add('con-button', 'upload-marquee-cta');
+    ctaLink.classList.add('con-button', 'upload-marquee-cta', 'no-track');
     ctaLink.setAttribute('aria-label', ctaLink.textContent.trim());
+    ctaLink.setAttribute('daa-ll', AnalyticsKeys.editPhotosCTA);
   }
 
   return marqueeContent;
