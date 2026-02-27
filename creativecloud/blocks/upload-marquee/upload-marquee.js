@@ -16,6 +16,10 @@ const ARIA_LABEL_DEFAULTS = {
     'Asset upload area. Drag and drop files anywhere in this section.',
   filePickerAriaSuffix: 'file picker',
 };
+const AnalyticsKeys = {
+  uploadAssetCTA: 'Upload asset CTA|UnityWidget',
+  editPhotosCTA: 'Edit Photos CTA|UnityWidget',
+};
 
 let uploadColumnCounter = 0;
 
@@ -160,7 +164,7 @@ async function buildUploadActionControls(para, columnId, getAriaLabels) {
     {
       type: 'button',
       class: 'con-button blue action-button button-xl no-track',
-      'daa-ll': `${buttonLabel}|UnityWidget`,
+      'daa-ll': AnalyticsKeys.uploadAssetCTA,
       'aria-label': buttonLabel,
     },
     para.innerHTML,
@@ -275,8 +279,9 @@ function buildMarqueeContent(marqueeCell) {
     'p strong a[href], p:last-of-type a[href]',
   );
   if (ctaLink) {
-    ctaLink.classList.add('con-button', 'upload-marquee-cta');
+    ctaLink.classList.add('con-button', 'upload-marquee-cta', 'no-track');
     ctaLink.setAttribute('aria-label', ctaLink.textContent.trim());
+    ctaLink.setAttribute('daa-ll', AnalyticsKeys.editPhotosCTA);
   }
 
   return marqueeContent;
@@ -358,7 +363,6 @@ async function decorateUploadColumn(content, getAriaLabels) {
 }
 
 function setupLayoutDragAndDrop(layout, uploadsWrapper) {
-  let dragDepth = 0;
   let activeDropZone;
 
   const setActiveDropZone = () => {
@@ -376,14 +380,12 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   };
 
   const clearActiveDropZone = () => {
-    dragDepth = 0;
     activeDropZone?.classList.remove('active');
     activeDropZone = null;
   };
 
   layout.addEventListener('dragenter', (event) => {
     event.preventDefault();
-    dragDepth += 1;
     setActiveDropZone();
   });
 
@@ -395,9 +397,10 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
 
   layout.addEventListener('dragleave', (event) => {
     event.preventDefault();
-    dragDepth = Math.max(dragDepth - 1, 0);
-    if (dragDepth === 0) clearActiveDropZone();
+    clearActiveDropZone();
   });
+
+  document.addEventListener('dragend', () => clearActiveDropZone());
 
   layout.addEventListener('drop', (event) => {
     event.preventDefault();
@@ -416,8 +419,14 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
     clearActiveDropZone();
   });
 
-  window.addEventListener('drop', clearActiveDropZone);
-  window.addEventListener('dragend', clearActiveDropZone);
+  uploadsWrapper.querySelectorAll('.drop-zone').forEach((zone) => {
+    zone.addEventListener('drop', () => {
+      clearActiveDropZone();
+    });
+  });
+
+  window.addEventListener('drop', () => clearActiveDropZone());
+  window.addEventListener('dragend', () => clearActiveDropZone());
 }
 
 export default async function init(el) {
