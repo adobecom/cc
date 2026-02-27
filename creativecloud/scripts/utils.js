@@ -191,9 +191,20 @@ export const [setLibs, getLibs] = (() => {
 const miloLibs = setLibs('/libs');
 
 // eslint-disable-next-line object-curly-newline
-const { createTag, localizeLinkAsync, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLinkAsync, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver, lingoActive, getCountry } = await import(`${miloLibs}/utils/utils.js`);
+
+async function getGeoLocaleInfo() {
+  const { locale } = getConfig();
+  if (!lingoActive() || !Object.keys(locale.regions ?? {}).length) {
+    return locale;
+  }
+  const country = (await getCountry())?.toLowerCase();
+  const geoLocale = Object.entries(locale.regions).find(([, v]) => v.region === country)?.[1];
+  return geoLocale ?? locale;
+}
+
 // eslint-disable-next-line max-len
-export { createTag, loadStyle, loadLink, loadScript, localizeLinkAsync, createIntersectionObserver, getConfig };
+export { createTag, loadStyle, loadLink, loadScript, localizeLinkAsync, createIntersectionObserver, getConfig, getGeoLocaleInfo };
 
 function defineDeviceByScreenSize() {
   const DESKTOP_SIZE = 1200;
