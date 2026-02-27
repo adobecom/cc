@@ -141,6 +141,16 @@
   cursor: pointer;
 }
 
+.firefly-carousel .firefly-carousel-nav-btn:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #1473E6;
+  border-radius: 90.909px;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .firefly-carousel .firefly-carousel-nav-btn.prev {
   left: calc((100% - var(--ff-card-width)) / 2);
   transform: translate(-50%, -50%);
