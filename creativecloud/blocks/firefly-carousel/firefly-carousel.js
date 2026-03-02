@@ -305,7 +305,7 @@ function setupAutoScroll(viewport, moveNext) {
   });
 
   observer.observe(viewport);
-  ['pointerdown', 'keydown', 'focusin', 'touchstart'].forEach((eventName) => {
+  ['mouseenter', 'pointerdown', 'keydown', 'focusin', 'touchstart'].forEach((eventName) => {
     viewport.addEventListener(eventName, stopAutoScroll, { once: true, capture: true });
   });
 }
