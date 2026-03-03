@@ -32,6 +32,12 @@
         content: none;
     }
 
+    .accordion .descr-term button {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 125%;
+    }
+
     @media (min-width: 1200px) {
         .accordion .descr-term button {
             font-size: 24px;
