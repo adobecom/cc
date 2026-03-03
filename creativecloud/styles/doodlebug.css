@@ -123,6 +123,13 @@
         visibility: hidden;
     }
 
+    @media (max-width: 899px) {
+      .carousel.hinting-mobile .carousel-slide {
+        flex-basis: 80%;
+        min-width: 300px;
+      }
+    }
+
     @media (min-width: 600px) and (max-width: 1199px) {
         .carousel.hinting-tablet {
             --tablet-card-width: calc(300 / 768 * 100vw);
