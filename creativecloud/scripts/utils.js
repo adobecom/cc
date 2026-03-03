@@ -459,6 +459,33 @@ export const scriptInit = async () => {
       document.head.appendChild(link);
     });
   }());
+
+  // TODO can be removed after 2026-03-15 - this is a temporary test for lingo
+  (function setupInteractionLogging() {
+    const now = new Date();
+    const cutoff = new Date(2026, now.getMonth(), 15, 23, 59, 59, 999);
+    const isWithinLoggingWindow = () => new Date() <= cutoff;
+
+    let logged = false;
+    const logInteraction = (e) => {
+      if (!e.target?.closest('a')) return;
+      if (e.type === 'keydown') {
+        if (e.key !== 'Enter') return;
+      }
+      if (!isWithinLoggingWindow() || logged) return;
+      logged = true;
+      const firstSection = document.querySelector('main > .section');
+      const inFirstSection = firstSection?.contains(e.target);
+      const tag = inFirstSection ? 'test-lingo-user-interaction-first-section' : 'test-lingo-user-interaction-other-section';
+      const timeToInteractionMs = Math.round(performance.now());
+      window.lana?.log(`${timeToInteractionMs}`, { sampleRate: 100, severity: 'i', tags: tag });
+    };
+    const opts = { capture: true };
+    document.addEventListener('click', logInteraction, opts);
+    document.addEventListener('keydown', logInteraction, opts);
+    document.addEventListener('touchstart', logInteraction, opts);
+  }());
+
   (async function loadPage() {
     loadLana({ clientId: 'cc' });
     await loadArea();
