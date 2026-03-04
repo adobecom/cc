@@ -49,13 +49,6 @@
         margin-inline: 180px 0;
     }
 
-    .aside .foreground.container .text [class*="heading-"] {
-        font-size: 2.25rem;
-        font-weight: 800;
-        letter-spacing: -3%;
-        line-height: 98%;
-    }
-
     .aside .foreground.container:has(> .image:first-child) .text {
         margin-inline: 0 180px;
     }
@@ -205,6 +198,10 @@
             transform: translateX(calc(var(--tablet-margin) - var(--tablet-gap)));
         }
 
+        .carousel.hinting-tablet .editorial-card {
+            --card-height-default: calc(var(--tablet-card-width) * 225 / 300);
+        }
+
         .carousel.disable-nav.hinting-tablet .editorial-card .media-area::after {
             position: absolute;
             content: '';
@@ -250,21 +247,20 @@
     .section.show-4-desktop {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(276px, 1fr));
-        gap: var(--spacing-m);
+        gap: var(--spacing-s);
         align-items: start;
         padding-left: var(--grid-margins-width);
         padding-right: var(--grid-margins-width);
-        gap: 24px;
         justify-content: center;
     }
 
 
     @media (min-width: 1200px) {
-
         .editorial-card .foreground .body-l {
             font-size: 1.25rem;
             letter-spacing: 1%;
         }
+
         .section.show-2-desktop {
             grid-template-columns: repeat(2, minmax(0, 823px));
             max-width: 100%;
@@ -284,13 +280,7 @@
         .show-2-desktop .editorial-card .media-area :is(img, video) {
             height: auto;
             max-height: unset;
-            aspect-ratio: 823 / 490;
-        }
-
-        .show-2-desktop .editorial-card .media-area :is(img, video) {
             aspect-ratio: 410/336;
-            height: auto;
-            max-height: unset;
         }
 
         .show-2-desktop .editorial-card {
@@ -316,18 +306,17 @@
             border-radius: 20px;
         }
 
+        .show-4-desktop .editorial-card .foreground > div {
+            row-gap: 24px;
+        }
+
         .show-2-desktop .editorial-card.s-padding-media .media-area>div {
             padding: 0;
         }
 
         .show-4-desktop .editorial-card .foreground .body-l {
             line-height: 26px;
-            /* 130% */
-            letter-spacing: 0.2px;
-        }
-
-        .show-4-desktop .editorial-card .foreground>div {
-            row-gap: 24px;
+            letter-spacing: 0.2px; /* 130% */
         }
     }
 
@@ -380,6 +369,14 @@
         font-weight: 900;
     }
 
+    /* ---- Aside (Heading Override) ---- */
+    .aside .foreground.container .text [class*="heading-"] {
+        font-size: 2.25rem;
+        font-weight: 800;
+        letter-spacing: -3%;
+        line-height: 98%;
+    }
+
     .section:not(.dark) .text-block:not(.dark) [class*="heading-"] {
         color: var(--color-black);
     }
@@ -397,6 +394,7 @@
 
     .text-block.grid-cta .foreground {
         --cell-width: 300px;
+
         max-width: 100%;
         margin: 0 var(--content-margin);
     }
@@ -529,7 +527,7 @@ TODO: Can use &[dir="rtl"] above also, & is supported by modern browsers, done t
     transform: translateY(-50%) scaleX(-1);
     width: 20px;
     height: 20px;
-    background: url('https://main--cc--adobecom.aem.live/drafts/ssircar/s2-icon-openin-20-n.svg') no-repeat center;
+    background: url('/cc-shared/assets/svg/s2-icon-openin-20-n.svg') no-repeat center;
     background-size: contain;
   }
 }
