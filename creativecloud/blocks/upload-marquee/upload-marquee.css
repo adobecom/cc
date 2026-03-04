@@ -411,7 +411,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 151px clamp(10px, 9vw - 112px, 56px) 151px 0;
+    padding: 151px clamp(0px, calc(5vw - 40px), 56px) 151px 0;
     box-sizing: border-box;
   }
 
@@ -449,13 +449,13 @@
 
 @media screen and (min-width: 1400px) {
   .upload-marquee-block .upload-marquee-right {
-    padding: 78px clamp(10px, 9vw - 112px, 56px) 78px 0;
+    padding: 78px clamp(0px, calc(5vw - 40px), 56px) 78px 0;
   }
 }
 
 @media screen and (min-width: 1600px) {
   .upload-marquee-block .upload-marquee-right {
-    padding: 78px clamp(10px, 9vw - 112px, 56px) 78px 0;
+    padding: 78px clamp(0px, calc(5vw - 40px), 56px) 78px 0;
   }
 }
 
