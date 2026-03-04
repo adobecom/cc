@@ -29,6 +29,7 @@
 }
 
 .upload-marquee-block .action-button {
+  font-family: var(--body-font-family);
   border-radius: var(--um-radius-pill);
   border: 0;
   background: var(--um-accent-strong);
@@ -211,7 +212,7 @@
   border: var(--um-cta-border);
   border-radius: var(--um-radius-pill);
   box-sizing: border-box;
-  font-size: 17px;
+  font-size: 21px;
   font-weight: 700;
   line-height: 21px;
   text-decoration: none;
