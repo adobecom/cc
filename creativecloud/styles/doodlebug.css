@@ -156,6 +156,7 @@
             gap: var(--tablet-gap);
             left: calc(-1 * var(--tablet-card-width));
             transform: translateX(var(--tablet-card-width));
+            align-items: flex-start;
         }
 
         .carousel.hinting-tablet .carousel-slides.is-reversing {
