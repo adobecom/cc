@@ -481,7 +481,7 @@ export const scriptInit = async () => {
       const inFirstSection = firstSection?.contains(e.target);
       const tag = inFirstSection ? 'test-lingo-user-interaction-first-section' : 'test-lingo-user-interaction-other-section';
       const timeToInteractionMs = Math.round(performance.now());
-      window.lana?.log(`${timeToInteractionMs}`, { sampleRate: 100, severity: 'i', tags: tag });
+      window.lana?.log(`${timeToInteractionMs}`, { sampleRate: 0.1, severity: 'i', tags: tag });
     };
     document.addEventListener('click', logInteraction, opts);
     document.addEventListener('keydown', logInteraction, opts);
