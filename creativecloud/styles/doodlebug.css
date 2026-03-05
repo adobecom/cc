@@ -519,7 +519,7 @@
     }
 
     @media (min-width: 1200px) {
-        .text-block {
+        .text-block:not(.grid-cta) {
             padding-inline: calc((100% - 1080px) / 2);
         }
 
