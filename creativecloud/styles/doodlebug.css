@@ -116,7 +116,7 @@
         visibility: hidden;
     }
 
-    @media (max-width: 899px) {
+    @media (max-width: 600px) {
       .carousel.hinting-mobile .carousel-slide {
         flex-basis: 80%;
         min-width: 300px;
