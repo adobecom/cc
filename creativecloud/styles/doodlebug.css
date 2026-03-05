@@ -214,10 +214,14 @@
 
     /* ---- Editorial Card ---- */
     .editorial-card.l-shadow {
+        box-shadow: 0 5px 20px 10px #0000000F;
+    }
+
+    .editorial-card.h-shadow {
         transition: box-shadow .3s ease-in-out;
     }
 
-    .editorial-card.l-shadow:hover {
+    .editorial-card.h-shadow:hover {
         box-shadow: 0 1px 4px 0 #0000000C, 0 8px 8px 0 #00000013, 0 20px 12px 0 #00000018, 0 40px 24px 0 #0000001D;
     }
 
@@ -243,11 +247,11 @@
         aspect-ratio: 284 / 269;
     }
 
-    .editorial-card.l-shadow .media-area :is(img, video) {
+    .editorial-card.h-shadow .media-area :is(img, video) {
         transition: filter .3s ease-in-out;
     }
 
-    .editorial-card.l-shadow:hover .media-area :is(img, video) {
+    .editorial-card.h-shadow:hover .media-area :is(img, video) {
         filter: brightness(.65);
     }
 
