@@ -260,7 +260,7 @@
   border: var(--um-drop-zone-border);
   border-radius: var(--um-radius-sm);
   padding: 34px 24px;
-  margin: 0;
+  margin-top: 24px;
   position: relative;
   display: flex;
   flex-direction: column;
