@@ -1,0 +1,276 @@
+.firefly-share {
+  --svg-icon-dimension: 24px;
+  --list-gap: 28px; 
+  --copy-tooltip-background-color: #6D6D6D;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  overflow: hidden;
+}
+
+.firefly-share.inline {
+  overflow: unset;
+}
+
+.firefly-share.dark {
+  background-color: #1E1E1E;
+}
+
+.firefly-share svg.icon {
+  height: var(--svg-icon-dimension);
+  transition: filter 0.3s;
+  display: inline-block;
+  width: var(--svg-icon-dimension);
+  margin: 0;
+  color: #222;
+}
+
+.firefly-share ul.icon-container,
+.firefly-share ul.icon-container li,
+.firefly-share ul.icon-container li a {
+  display: flex;
+  align-items: center;
+  padding-bottom: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.firefly-share ul.icon-container {
+  list-style: none;
+  gap: var(--list-gap);
+  margin: 0;
+  padding: 1rem 0;
+}
+
+.firefly-share :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+  margin-top: 2.5rem;
+  margin-bottom: 2.75rem;
+}
+
+
+.firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -4.5%;
+}
+
+.firefly-share.dark :is([role="heading"], h1, h2, h3, h4, h5, h6),
+.firefly-share.dark ul.icon-container svg {
+  color: var(--color-white);
+}
+
+.firefly-share ul.icon-container svg {
+  color: #222;
+}
+
+.firefly-share li:has(.copy-to-clipboard) {
+  position: relative;
+}
+
+.firefly-share li:has(.copy-to-clipboard:not(.hide-copy-tooltip))::before {
+  content: '';
+  width: var(--svg-icon-dimension);
+  height: 5px;
+  position: absolute;
+  bottom: 100%;
+}
+
+.firefly-share .copy-to-clipboard {
+  padding: 0;
+  background: none;
+  margin: 0;
+  line-height: 0;
+  cursor: pointer;
+  position: relative;
+  transition: filter 0.3s;
+  border: none;
+  margin-left: -2px;
+}
+
+.firefly-share .icon-container li > :is(a, button) {
+  outline-offset: 1px;
+}
+
+.firefly-share :is(a, .copy-to-clipboard) svg.icon:hover {
+  filter: brightness(0.7);
+}
+
+.firefly-share .copy-to-clipboard::before,
+.firefly-share .copy-to-clipboard::after {
+  display: block;
+  position : absolute;
+  bottom: 100%;
+  transition: transform 130ms ease-in-out, opacity 130ms ease-in-out, visibility 0ms linear 130ms;
+  transition-delay: 0ms;
+  background-color: var(--copy-tooltip-background-color);
+  visibility: visible;
+  opacity: 1;
+  cursor: default;
+}
+
+.firefly-share .copy-to-clipboard::before {
+  content: attr(aria-label);
+  bottom: 100%;
+  left: -45%;
+  transform: translate(-50%, -4px);
+  color: var(--color-white);
+  padding: 4px 9px 5px;
+  font-size: 12px;
+  line-height: 1.3;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.firefly-share .copy-to-clipboard::after {
+  content: '';
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 4px;
+  width: 8px;
+  clip-path: polygon(0 -5%, 50% 100%, 100% -5%);
+}
+
+.firefly-share .copy-to-clipboard.hide-copy-tooltip::before,
+.firefly-share .copy-to-clipboard.hide-copy-tooltip::after {
+  visibility: hidden;
+  opacity: 0;
+}
+
+[dir="rtl"] .firefly-share ul.icon-container {
+  padding-right: 0;
+}
+
+[dir="rtl"] .firefly-share .copy-to-clipboard {
+  margin-left: 0;
+  margin-right: -2px;
+}
+
+[dir="rtl"] .firefly-share .copy-to-clipboard::before {
+  left: 150%;
+}
+
+.firefly-share.inline .copy-to-clipboard::after {
+  z-index: 8;
+}
+
+.firefly-share .copy-to-clipboard:not(.hide-copy-tooltip)::before {
+  transform: translate(-50%, -6px);
+}
+
+.firefly-share .copy-to-clipboard:not(.hide-copy-tooltip)::after {
+  transform: translate(-50%, -2px);
+}
+
+.firefly-share .copy-to-clipboard.copy-to-clipboard-copied::before {
+  content: attr(data-copied);
+}
+
+.firefly-share.inline {
+  margin: 0 auto;
+  text-align: center;
+  padding: 8px 0 16px;
+}
+
+.firefly-share.inline ul.icon-container {
+  justify-content: flex-start;
+  margin: 0;
+}
+
+main > .section > firefly-share.inline {
+  margin: 0 auto;
+}
+
+main > .section > .inline-wrapper > firefly-share.inline {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+main > .section.center firefly-share.inline ul.icon-container {
+  margin: 0 auto;
+  justify-content: center;
+}
+
+@media screen and (min-width: 360px) {
+  .firefly-share.left-mobile .tracking-header {
+    max-width: var(--grid-container-width);
+    margin: 0 auto;
+  }
+  
+  .firefly-share.left-mobile :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    text-align: start;
+  }
+  
+  .firefly-share.left-mobile ul.icon-container {
+    max-width: calc(var(--grid-container-width) - 2px);
+    margin-left : auto;
+    margin-right: auto;
+    justify-content: space-around;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .firefly-share.left-mobile .tracking-header {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .firefly-share.left-mobile :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    text-align: center;
+  }
+  
+  .firefly-share.left-mobile ul.icon-container {
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .firefly-share :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .firefly-share .copy-to-clipboard::before,
+  [dir="rtl"] firefly-share .copy-to-clipboard::before {
+    left: 50%;
+  }
+}
+
+.firefly-share .aria-live-container {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 900px){
+  .firefly-share {
+    --svg-icon-dimension: 40px;
+    --list-gap: 56px;
+  }
+
+  .firefly-share .copy-to-clipboard::before {
+    content: attr(aria-label);
+    bottom: 100%;
+    left: -45%;
+    transform: translate(-50%, -4px);
+    color: var(--color-white);
+    padding: 4px 9px 5px;
+    font-size: 16px;
+    line-height: 1.3;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .firefly-share :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
+    font-size: 40px;
+    font-weight: 900;
+  }
+
+  .firefly-share ul.icon-container {
+    padding: 2rem 0
+  }
+}
