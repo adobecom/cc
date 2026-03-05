@@ -344,6 +344,13 @@ async function decorateUploadColumn(content, getAriaLabels) {
 
   if (uploadParts.media) {
     mediaContainer.append(uploadParts.media);
+    mediaContainer.querySelectorAll('img').forEach((img) => {
+      img.setAttribute('loading', 'eager');
+      img.setAttribute('fetchpriority', 'high');
+    });
+    mediaContainer.querySelectorAll('video').forEach((video) => {
+      video.setAttribute('preload', 'auto');
+    });
     if (
       uploadParts.media.parentElement?.tagName === 'P'
       && uploadParts.media.parentElement.textContent.trim() === ''
