@@ -460,7 +460,7 @@ export const scriptInit = async () => {
     });
   }());
 
-  // TODO can be removed after 2026-03-15 - this is a temporary test for lingo
+  // TODO can be removed after 2026-03-20 - this is a temporary test for lingo
   (function setupInteractionLogging() {
     const cutoff = new Date(2026, 3, 20, 23, 59, 59, 999);
     const isWithinLoggingWindow = () => new Date() <= cutoff;
