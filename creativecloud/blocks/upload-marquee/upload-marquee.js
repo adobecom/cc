@@ -1,4 +1,4 @@
-import { createTag, getConfig, getLibs } from '../../scripts/utils.js';
+import { createTag, getConfig, getLibs, defineDeviceByScreenSize } from '../../scripts/utils.js';
 
 // ===== CONFIG =====
 const miloLibs = getLibs('/libs');
@@ -22,6 +22,82 @@ const AnalyticsKeys = {
 };
 
 let uploadColumnCounter = 0;
+
+// ===== LCP / MEDIA PRIORITY =====
+const LCP_IMAGE_PARAMS = {
+  webpLarge: 'width=1000&format=webply&optimize=medium',
+  webpSmall: 'width=500&format=webply&optimize=medium',
+  jpgLarge: 'width=1000&format=jpg&optimize=medium',
+  jpgSmall: 'width=500&format=jpg&optimize=medium',
+};
+
+function getBaseImageUrlFromPicture(picture) {
+  const img = picture?.querySelector('img');
+  const src = img?.getAttribute('src');
+  if (src) return src.split('?')[0];
+  const source = picture?.querySelector('source[srcset]');
+  const srcset = source?.getAttribute('srcset');
+  if (srcset) {
+    const firstUrl = srcset.split(',')[0].trim().split(/\s+/)[0];
+    return firstUrl ? firstUrl.split('?')[0] : null;
+  }
+  return null;
+}
+
+function rewritePictureToOurSizes(picture) {
+  const baseUrl = getBaseImageUrlFromPicture(picture);
+  if (!baseUrl) return;
+
+  const img = picture.querySelector('img');
+  if (!img) return;
+
+  picture.textContent = '';
+  picture.append(
+    createTag('source', {
+      type: 'image/webp',
+      srcset: `${baseUrl}?${LCP_IMAGE_PARAMS.webpLarge}`,
+      media: '(min-width: 600px)',
+    }),
+    createTag('source', {
+      type: 'image/webp',
+      srcset: `${baseUrl}?${LCP_IMAGE_PARAMS.webpSmall}`,
+    }),
+    createTag('source', {
+      type: 'image/jpeg',
+      srcset: `${baseUrl}?${LCP_IMAGE_PARAMS.jpgLarge}`,
+      media: '(min-width: 600px)',
+    }),
+  );
+
+  img.setAttribute('src', `${baseUrl}?${LCP_IMAGE_PARAMS.jpgSmall}`);
+  img.removeAttribute('loading');
+  img.removeAttribute('fetchpriority');
+  picture.append(img);
+}
+
+function setUploadRowMediaPriority(uploadRow) {
+  const viewport = defineDeviceByScreenSize();
+  const activeColumnIndex = { MOBILE: 0, TABLET: 1, DESKTOP: 2 }[viewport];
+
+  [...uploadRow.children].forEach((column, index) => {
+    const isActive = index === activeColumnIndex;
+    const picture = column.querySelector('picture');
+
+    if (picture) {
+      rewritePictureToOurSizes(picture);
+      const img = picture.querySelector('img');
+      if (img) {
+        img.setAttribute('loading', isActive ? 'eager' : 'lazy');
+        if (isActive) img.setAttribute('fetchpriority', 'high');
+      }
+    }
+
+    const video = column.querySelector('video');
+    if (video) {
+      video.setAttribute('preload', isActive ? 'auto' : 'metadata');
+    }
+  });
+}
 
 // ===== LOGGING =====
 function logUploadMarqueeInfo(message, errorType = 'i') {
@@ -453,6 +529,7 @@ export default async function init(el) {
 
   uploadRow.classList.add('foreground');
   applyViewportClasses(uploadRow);
+  setUploadRowMediaPriority(uploadRow);
 
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop

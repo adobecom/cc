@@ -207,6 +207,8 @@ function defineDeviceByScreenSize() {
   return 'TABLET';
 }
 
+export { defineDeviceByScreenSize };
+
 export function isSignedInInitialized(interval = 200) {
   return new Promise((resolve) => {
     function poll() {
@@ -312,18 +314,6 @@ function getDecorateAreaFn() {
             if (img) eagerLoad(img);
           }
         } else eagerLoad(firstBlock.querySelector(':scope div:last-child > div img'));
-        break;
-      }
-      case firstBlock?.classList.contains('upload-marquee'): {
-        const viewport = defineDeviceByScreenSize();
-        const columnIndex = { MOBILE: 0, TABLET: 1, DESKTOP: 2 }[viewport];
-        const rows = firstBlock?.querySelectorAll(':scope > div');
-        const uploadRow = rows?.[2];
-        const column = uploadRow?.children[columnIndex];
-        const img = column?.querySelector('picture img, img');
-        const video = column?.querySelector('video');
-        if (img) eagerLoad(img);
-        if (video) video.setAttribute('preload', 'auto');
         break;
       }
       case firstBlock?.classList.contains('interactive-marquee'):
