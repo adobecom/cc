@@ -376,13 +376,27 @@ async function buildMarqueeContent(marqueeCell, getAriaLabels) {
     });
   }
 
-  const ctaLink = marqueeContent.querySelector(
-    'p strong a[href], p:last-of-type a[href]',
-  );
+  const ctaLink = marqueeContent.querySelector('p strong a[href]');
   if (ctaLink) {
     ctaLink.classList.add('con-button', 'upload-marquee-cta', 'no-track');
     ctaLink.setAttribute('aria-label', ctaLink.textContent.trim());
     ctaLink.setAttribute('daa-ll', AnalyticsKeys.editPhotosCTA);
+  }
+
+  const ctaParentPara = ctaLink?.closest('p');
+  const heading = marqueeContent.querySelector(':scope > h1');
+  const descriptionPara = heading?.nextElementSibling?.tagName === 'P'
+    ? heading.nextElementSibling : null;
+  const allParas = [...marqueeContent.querySelectorAll(':scope > p')];
+  const lastPara = allParas[allParas.length - 1];
+  if (
+    lastPara
+    && lastPara !== ctaParentPara
+    && lastPara !== brandingPara
+    && lastPara !== descriptionPara
+    && lastPara.textContent.trim()
+  ) {
+    lastPara.classList.add('upload-marquee-dropzone-label');
   }
 
   return marqueeContent;
