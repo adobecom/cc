@@ -32,6 +32,27 @@
         content: none;
     }
 
+      .accordion .descr-term button {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 125%;
+    }
+
+    @media (min-width: 1200px) {
+        .accordion .descr-term button {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 125%;
+        }
+
+        .accordion .descr-details {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 150%;
+            letter-spacing: 0.4px;
+        }
+    }
+
     /* ---- Aside ---- */
     .aside .foreground.container {
         display: grid;
