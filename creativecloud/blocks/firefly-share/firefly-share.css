@@ -1,6 +1,6 @@
 .firefly-share {
   --svg-icon-dimension: 24px;
-  --list-gap: 28px; 
+  --list-gap: 26px; 
   --copy-tooltip-background-color: #6D6D6D;
 
   margin-left: auto;
@@ -64,7 +64,7 @@
 }
 
 .firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
-  font-size: 1.5rem;
+  font-size: 22px;
   font-weight: 900;
   letter-spacing: -4.5%;
 }
@@ -194,8 +194,6 @@ main > .section.center firefly-share.inline ul.icon-container {
   justify-content: center;
 }
 
-
-
 .firefly-share.left-mobile .tracking-header {
     max-width: var(--grid-container-width);
     margin: 0 auto;
@@ -265,7 +263,6 @@ main > .section.center firefly-share.inline ul.icon-container {
 
   .firefly-share.xxl-heading :is([role="heading"], h1, h2, h3, h4, h5, h6) {
     font-size: 40px;
-    font-weight: 900;
   }
 
   .firefly-share ul.icon-container {
