@@ -171,7 +171,7 @@ function createAccordionItem(data) {
   itemWrapper.addEventListener('click', handleItemClick);
   const header = createTag('h3', { class: 'firefly-howto-header' });
 
-  const btn = createTag('button', { class: 'firefly-howto-trigger', id: `btn-${headingId}`, 'aria-expanded': isOpen, type: 'button', 'aria-controls': `panel-${headingId}` });
+  const btn = createTag('button', { class: 'firefly-howto-trigger', id: `btn-${headingId}`, 'aria-expanded': 'false', type: 'button', 'aria-controls': `panel-${headingId}` });
 
   const titleSpan = createTag('span', { class: 'firefly-howto-title' });
   titleSpan.textContent = title;
@@ -187,7 +187,7 @@ function createAccordionItem(data) {
   btn.appendChild(iconSpan);
   header.appendChild(btn);
 
-  const panel = createTag('div', { class: 'firefly-howto-panel', id: `panel-${headingId}`, role: 'region', 'aria-labelledby': `btn-${headingId}` });
+  const panel = createTag('div', { class: 'firefly-howto-panel', id: `panel-${headingId}` });
   const panelInner = createTag('div', { class: 'firefly-howto-panel-inner' });
   const contentWrapper = createTag('div', { class: 'firefly-howto-content' });
 
