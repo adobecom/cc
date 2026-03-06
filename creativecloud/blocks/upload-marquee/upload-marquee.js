@@ -34,22 +34,25 @@ const LCP_IMAGE_PARAMS = {
 function getBaseImageUrlFromPicture(picture) {
   if (!picture) return null;
 
-  const imgSrc = picture.querySelector('img')?.src;
-  if (imgSrc) return imgSrc.split('?')[0];
+  const img = picture.querySelector('img');
+  const imgSrc = img?.src;
+  if (imgSrc) {
+    return { baseUrl: imgSrc.split('?')[0], img };
+  }
 
   const srcset = picture.querySelector('source[srcset]')?.srcset;
   if (!srcset) return null;
 
   const url = srcset.split(',')[0].trim().split(/\s+/)[0];
-  return url ? url.split('?')[0] : null;
+  const baseUrl = url ? url.split('?')[0] : null;
+  return baseUrl && img ? { baseUrl, img } : null;
 }
 
 function rewritePictureToOurSizes(picture) {
-  const baseUrl = getBaseImageUrlFromPicture(picture);
-  if (!baseUrl) return;
+  const result = getBaseImageUrlFromPicture(picture);
+  if (!result?.baseUrl || !result.img) return null;
 
-  const img = picture.querySelector('img');
-  if (!img) return;
+  const { baseUrl, img } = result;
 
   picture.textContent = '';
   picture.append(
@@ -73,10 +76,11 @@ function rewritePictureToOurSizes(picture) {
   img.removeAttribute('loading');
   img.removeAttribute('fetchpriority');
   picture.append(img);
+  return img;
 }
 
 function setUploadRowMediaPriority(uploadRow) {
-  const screenCategory = getScreenSizeCategory();
+  const screenCategory = getScreenSizeCategory({ mobile: 599, tablet: 1199 });
   const activeColumnIndex = { mobile: 0, tablet: 1, desktop: 2 }[screenCategory];
 
   [...uploadRow.children].forEach((column, index) => {
@@ -84,8 +88,7 @@ function setUploadRowMediaPriority(uploadRow) {
     const picture = column.querySelector('picture');
 
     if (picture) {
-      rewritePictureToOurSizes(picture);
-      const img = picture.querySelector('img');
+      const img = rewritePictureToOurSizes(picture);
       if (img) {
         img.setAttribute('loading', isActive ? 'eager' : 'lazy');
         if (isActive) img.setAttribute('fetchpriority', 'high');
