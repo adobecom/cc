@@ -15,7 +15,7 @@
   --um-shadow-layout: 0 4px 24px rgb(0 0 0 / 12%);
   --um-text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
   --um-drop-zone-border: 2px dashed rgb(255 255 255 / 50%);
-  --um-cta-border: 2px solid rgb(255 255 255 / 35%);
+  --um-cta-border: 2px solid var(--um-white);
 
   position: relative;
   overflow: hidden;
@@ -29,6 +29,7 @@
 }
 
 .upload-marquee-block .action-button {
+  font-family: var(--body-font-family);
   border-radius: var(--um-radius-pill);
   border: 0;
   background: var(--um-accent-strong);
@@ -38,7 +39,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 50px;
   padding: 12px 24px 14px;
   font-size: 19px;
   font-weight: 700;
@@ -211,7 +211,7 @@
   border: var(--um-cta-border);
   border-radius: var(--um-radius-pill);
   box-sizing: border-box;
-  font-size: 17px;
+  font-size: 21px;
   font-weight: 700;
   line-height: 21px;
   text-decoration: none;
@@ -253,13 +253,14 @@
   padding: 0;
   margin: 0;
   max-width: none;
+  text-align: center;
 }
 
 .upload-marquee-block .drop-zone {
   border: var(--um-drop-zone-border);
   border-radius: var(--um-radius-sm);
   padding: 34px 24px;
-  margin: 0;
+  margin-top: 24px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -407,16 +408,20 @@
     min-height: auto;
     height: 100%;
     align-self: stretch;
-    align-items: stretch;
-    padding: 24px 24px 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px clamp(0px, calc(5vw - 45px), 56px) 0px 0;
+    box-sizing: border-box;
   }
 
   .upload-marquee-block .upload-marquee-media {
-    height: 100%;
+    height: auto;
+    width: 100%;
   }
 
   .upload-marquee-block .upload-marquee-right .media-container {
-    min-height: 100%;
+    width: 100%;
     max-height: 100%;
   }
 
