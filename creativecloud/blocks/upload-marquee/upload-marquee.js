@@ -1,4 +1,4 @@
-import { createTag, getConfig, getLibs, defineDeviceByScreenSize } from '../../scripts/utils.js';
+import { createTag, getConfig, getLibs, getScreenSizeCategory } from '../../scripts/utils.js';
 
 // ===== CONFIG =====
 const miloLibs = getLibs('/libs');
@@ -32,16 +32,16 @@ const LCP_IMAGE_PARAMS = {
 };
 
 function getBaseImageUrlFromPicture(picture) {
-  const img = picture?.querySelector('img');
-  const src = img?.getAttribute('src');
-  if (src) return src.split('?')[0];
-  const source = picture?.querySelector('source[srcset]');
-  const srcset = source?.getAttribute('srcset');
-  if (srcset) {
-    const firstUrl = srcset.split(',')[0].trim().split(/\s+/)[0];
-    return firstUrl ? firstUrl.split('?')[0] : null;
-  }
-  return null;
+  if (!picture) return null;
+
+  const imgSrc = picture.querySelector('img')?.src;
+  if (imgSrc) return imgSrc.split('?')[0];
+
+  const srcset = picture.querySelector('source[srcset]')?.srcset;
+  if (!srcset) return null;
+
+  const url = srcset.split(',')[0].trim().split(/\s+/)[0];
+  return url ? url.split('?')[0] : null;
 }
 
 function rewritePictureToOurSizes(picture) {
@@ -76,8 +76,8 @@ function rewritePictureToOurSizes(picture) {
 }
 
 function setUploadRowMediaPriority(uploadRow) {
-  const viewport = defineDeviceByScreenSize();
-  const activeColumnIndex = { MOBILE: 0, TABLET: 1, DESKTOP: 2 }[viewport];
+  const screenCategory = getScreenSizeCategory();
+  const activeColumnIndex = { mobile: 0, tablet: 1, desktop: 2 }[screenCategory];
 
   [...uploadRow.children].forEach((column, index) => {
     const isActive = index === activeColumnIndex;

@@ -207,8 +207,6 @@ function defineDeviceByScreenSize() {
   return 'TABLET';
 }
 
-export { defineDeviceByScreenSize };
-
 export function isSignedInInitialized(interval = 200) {
   return new Promise((resolve) => {
     function poll() {
