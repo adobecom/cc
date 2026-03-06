@@ -220,4 +220,9 @@
     font-size: 22px;
     letter-spacing: -0.22px;
   }
+
+  .firefly-carousel .firefly-carousel-nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
 }
