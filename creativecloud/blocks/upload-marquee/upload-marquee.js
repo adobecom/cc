@@ -336,6 +336,32 @@ function collectViewportContent(uploadRow) {
   });
 }
 
+function extractMediaFromColumn(content) {
+  const media = content.querySelector('picture, .video-container.video-holder');
+  if (!media) return null;
+
+  const mediaContainer = createTag('div', { class: 'media-container' });
+  mediaContainer.append(media.cloneNode(true));
+  return mediaContainer;
+}
+
+function collectPromptViewportContent(mediaRow) {
+  return [...mediaRow.children].map((content) => {
+    const viewportClasses = [...content.classList].filter((cls) => VIEWPORTS.includes(cls));
+    const media = extractMediaFromColumn(content);
+    return { media, viewportClasses };
+  });
+}
+
+function appendPromptMedia(viewportContent, mediaWrapper) {
+  viewportContent.forEach(({ media, viewportClasses }) => {
+    if (media) {
+      media.classList.add(...viewportClasses);
+      mediaWrapper.append(media);
+    }
+  });
+}
+
 async function decorateUploadColumn(content, getAriaLabels) {
   const columnId = nextUploadColumnId();
   const mediaContainer = createTag('div', { class: 'media-container' });
@@ -436,21 +462,7 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   window.addEventListener('dragend', () => clearActiveDropZone());
 }
 
-export default async function init(el) {
-  const { decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-  const getAriaLabels = createAriaLabelsLoader();
-
-  el.classList.add('upload-marquee-block', 'con-block');
-  const rows = el.querySelectorAll(':scope > div');
-  if (rows.length < 3) return;
-
-  const [backgroundRow, marqueeRow, uploadRow] = rows;
-
-  if (backgroundRow.textContent.trim() !== '') {
-    backgroundRow.classList.add('background');
-    decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
-  }
-
+async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
   uploadRow.classList.add('foreground');
   applyViewportClasses(uploadRow);
 
@@ -484,4 +496,58 @@ export default async function init(el) {
 
   el.textContent = '';
   el.append(foreground);
+}
+
+async function initPromptVariant(el, marqueeRow, mediaRow, getAriaLabels) {
+  mediaRow.classList.add('foreground');
+  applyViewportClasses(mediaRow);
+
+  const { layoutAriaLabel } = await getAriaLabels();
+  const { layout, leftCol, rightCol, mediaWrapper } = buildLayout(layoutAriaLabel);
+
+  leftCol.classList.add('copy');
+
+  const marqueeCell = marqueeRow.querySelector(':scope > div');
+  if (!marqueeCell) return;
+
+  leftCol.append(buildMarqueeContent(marqueeCell));
+
+  const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
+  leftCol.append(promptContainer);
+
+  appendPromptMedia(collectPromptViewportContent(mediaRow), mediaWrapper);
+
+  if (!mediaWrapper.children.length) return;
+
+  rightCol.append(mediaWrapper);
+  layout.append(leftCol, rightCol);
+
+  const foreground = createTag('div', { class: 'foreground' });
+  foreground.append(layout);
+
+  el.textContent = '';
+  el.append(foreground);
+}
+
+export default async function init(el) {
+  const { decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
+  const getAriaLabels = createAriaLabelsLoader();
+
+  el.classList.add('upload-marquee-block', 'con-block');
+  const rows = el.querySelectorAll(':scope > div');
+  if (rows.length < 3) return;
+
+  const [backgroundRow, marqueeRow, contentRow] = rows;
+  const isPromptVariant = el.classList.contains('unity-prompt');
+
+  if (backgroundRow.textContent.trim() !== '') {
+    backgroundRow.classList.add('background');
+    decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
+  }
+
+  if (isPromptVariant) {
+    await initPromptVariant(el, marqueeRow, contentRow, getAriaLabels);
+  } else {
+    await initUploadVariant(el, marqueeRow, contentRow, getAriaLabels);
+  }
 }
