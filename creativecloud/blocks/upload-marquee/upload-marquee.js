@@ -156,19 +156,26 @@ function assignDropZoneTextIds(headingPara, bodyPara, columnId) {
   return describedByIds;
 }
 
+function makeDecorativeMediaNonFocusable(container) {
+  container.querySelectorAll('picture, picture img').forEach((el) => {
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('role', 'presentation');
+  });
+}
+
 async function buildUploadActionControls(para, columnId, getAriaLabels) {
   const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
   const { filePickerAriaSuffix } = await getAriaLabels();
   const button = createTag(
-    'button',
+    'span',
     {
-      type: 'button',
       class: 'con-button blue action-button button-xl no-track',
       'daa-ll': AnalyticsKeys.uploadAssetCTA,
-      'aria-label': buttonLabel,
+      'aria-hidden': 'true',
     },
     para.innerHTML,
   );
+  makeDecorativeMediaNonFocusable(button);
   const input = createTag('input', {
     type: 'file',
     name: 'file-upload',
