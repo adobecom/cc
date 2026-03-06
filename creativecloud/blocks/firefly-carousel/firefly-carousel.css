@@ -5,11 +5,9 @@
   --ff-nav-size: 40px;
   --ff-control-gap: 8px;
   --ff-card-border-radius: 16px;
+  
   padding: 0;
   position: relative;
-}
-
-.firefly-carousel {
   width: 100%;
 }
 
@@ -136,11 +134,12 @@
   z-index: 1;
   border-radius: 90.909px;
   background: #010101;
-  backdrop-filter: blur(13.63636302947998px);
+  backdrop-filter: blur(12px);
   border: none;
   cursor: pointer;
 }
 
+.firefly-carousel .firefly-carousel-nav-btn:hover::after,
 .firefly-carousel .firefly-carousel-nav-btn:focus-visible::after {
   content: '';
   position: absolute;
