@@ -12,7 +12,7 @@ const ARIA_PLACEHOLDER_KEYS = {
 };
 const ARIA_LABEL_DEFAULTS = {
   dropZoneAriaLabel:
-    'Upload your asset. Drag and drop a file, or press Enter to browse.',
+    'Upload your asset. Or drag and drop here.',
   filePickerAriaSuffix: 'file picker',
   brandingAltFirst: 'Adobe Firefly generative AI',
   brandingAltSecond: 'Adobe Firefly',
