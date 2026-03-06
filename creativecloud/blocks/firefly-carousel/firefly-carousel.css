@@ -134,7 +134,7 @@
   z-index: 1;
   border-radius: 90.909px;
   background: #010101;
-  backdrop-filter: blur(13.6364);
+  backdrop-filter: blur(12px);
   border: none;
   cursor: pointer;
 }
