@@ -21,6 +21,13 @@ const AnalyticsKeys = {
   editPhotosCTA: 'Edit Photos CTA|UnityWidget',
 };
 
+// Widget registry: maps block class names found in fragments to their decorator modules.
+// Add a new entry here to support a new widget variant; no other code changes required.
+const WIDGET_REGISTRY = {
+  'upload-dropzone': () => import('./widgets/dropzone.js'),
+  'prompt-bar': () => import('./widgets/prompt-bar.js'),
+};
+
 let uploadColumnCounter = 0;
 
 // ===== LOGGING =====
@@ -395,74 +402,120 @@ async function decorateUploadColumn(content, getAriaLabels) {
   );
 }
 
-function setupLayoutDragAndDrop(layout, uploadsWrapper) {
-  let activeDropZone;
+// ===== FRAGMENT SUPPORT =====
 
-  const setActiveDropZone = () => {
-    const dropZones = [
-      ...uploadsWrapper.querySelectorAll(
-        ':scope > .drop-zone-container > .drop-zone',
-      ),
-    ];
-    const nextDropZone = dropZones.find((zone) => zone.offsetParent !== null) || dropZones[0];
-    if (activeDropZone && activeDropZone !== nextDropZone) {
-      activeDropZone.classList.remove('active');
-    }
-    activeDropZone = nextDropZone;
-    activeDropZone?.classList.add('active');
-  };
-
-  const clearActiveDropZone = () => {
-    activeDropZone?.classList.remove('active');
-    activeDropZone = null;
-  };
-
-  layout.addEventListener('dragenter', (event) => {
-    event.preventDefault();
-    setActiveDropZone();
-  });
-
-  layout.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
-    setActiveDropZone();
-  });
-
-  layout.addEventListener('dragleave', (event) => {
-    event.preventDefault();
-    clearActiveDropZone();
-  });
-
-  document.addEventListener('dragend', () => clearActiveDropZone());
-
-  layout.addEventListener('drop', (event) => {
-    event.preventDefault();
-    setActiveDropZone();
-    const fileInput = activeDropZone?.querySelector('.file-upload');
-    const files = event.dataTransfer?.files;
-    if (files?.length && fileInput) {
-      try {
-        fileInput.files = files;
-      } catch {
-        // TODO: Trigger lana log
-        // Some browsers may not allow assigning FileList directly.
-      }
-      fileInput.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-    clearActiveDropZone();
-  });
-
-  uploadsWrapper.querySelectorAll('.drop-zone').forEach((zone) => {
-    zone.addEventListener('drop', () => {
-      clearActiveDropZone();
-    });
-  });
-
-  window.addEventListener('drop', () => clearActiveDropZone());
-  window.addEventListener('dragend', () => clearActiveDropZone());
+/**
+ * Returns true when a block row contains a single fragment link and nothing else.
+ * Used to detect the new 4-row authoring format vs. the legacy 3-row format.
+ */
+function isFragmentLink(row) {
+  const cell = row.firstElementChild;
+  if (!cell || row.childElementCount !== 1) return false;
+  if (cell.childElementCount !== 1) return false;
+  const para = cell.firstElementChild;
+  if (para?.tagName !== 'P') return false;
+  const link = para.querySelector('a[href]');
+  return !!(link && para.children.length === 1 && para.children[0] === link);
 }
 
+async function fetchWidgetFragment(url) {
+  try {
+    const { origin, pathname } = new URL(url);
+    const res = await fetch(`${origin}${pathname}.plain.html`);
+    if (!res.ok) return null;
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.querySelector('body > div > div[class]');
+  } catch (err) {
+    logUploadMarqueeInfo(`Failed to fetch widget fragment: ${err}`);
+    return null;
+  }
+}
+
+async function loadWidgetFromFragment(widgetRow, getAriaLabels) {
+  const link = widgetRow.querySelector('a[href]');
+  if (!link) return null;
+
+  const blockEl = await fetchWidgetFragment(link.href);
+  if (!blockEl) return null;
+
+  const widgetType = [...blockEl.classList].find((cls) => WIDGET_REGISTRY[cls]);
+  if (!widgetType) {
+    logUploadMarqueeInfo(`Unknown widget type in fragment: ${blockEl.className}`);
+    return null;
+  }
+
+  const { default: decorate } = await WIDGET_REGISTRY[widgetType]();
+  return decorate(blockEl, getAriaLabels);
+}
+
+/**
+ * Builds the right-column media wrapper from the side image row (row 3 in the
+ * new 4-row authoring format). Each cell in the row is one viewport variant.
+ */
+function buildSideImageWrapper(sideImageRow) {
+  applyViewportClasses(sideImageRow);
+  const mediaWrapper = createTag('div', { class: 'upload-marquee-media' });
+
+  [...sideImageRow.children].forEach((cell) => {
+    const picture = cell.querySelector('picture, .video-container.video-holder');
+    if (!picture) return;
+    const viewportClasses = [...cell.classList].filter((cls) => VIEWPORTS.includes(cls));
+    const mediaContainer = createTag('div', { class: 'media-container' });
+    mediaContainer.classList.add(...viewportClasses);
+    mediaContainer.append(picture.cloneNode(true));
+    mediaWrapper.append(mediaContainer);
+  });
+
+  return mediaWrapper;
+}
+
+// ===== VARIANT INITS =====
+
+/**
+ * New fragment-based variant.
+ * Row layout: [background] [marquee header] [widget fragment link] [side images]
+ * The widget (dropzone, prompt bar, etc.) is loaded from the fragment URL in row 3.
+ */
+async function initFragmentVariant(el, marqueeRow, widgetRow, sideImageRow, getAriaLabels) {
+  const { layoutAriaLabel } = await getAriaLabels();
+  const { layout, leftCol, rightCol, mediaWrapper } = buildLayout(layoutAriaLabel);
+
+  const marqueeCell = marqueeRow.querySelector(':scope > div');
+  if (!marqueeCell) return;
+  leftCol.append(buildMarqueeContent(marqueeCell));
+
+  const widget = await loadWidgetFromFragment(widgetRow, getAriaLabels);
+  if (!widget?.element) {
+    logUploadMarqueeInfo('Failed to load widget from fragment for upload-marquee.');
+    return;
+  }
+
+  if (widget.leftColClass) leftCol.classList.add(widget.leftColClass);
+  leftCol.append(widget.element);
+
+  const sideImages = buildSideImageWrapper(sideImageRow);
+  if (!sideImages.children.length) return;
+
+  [...sideImages.children].forEach((mc) => mediaWrapper.append(mc));
+  rightCol.append(mediaWrapper);
+  layout.append(leftCol, rightCol);
+
+  widget.setupInteraction?.(layout);
+
+  const foreground = createTag('div', { class: 'foreground' });
+  foreground.append(layout);
+  el.textContent = '';
+  el.append(foreground);
+}
+
+/**
+ * Legacy upload/dropzone variant (3-row authoring).
+ * Kept for backward compatibility with existing authored pages.
+ */
 async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
+  const { setupLayoutDragAndDrop } = await import('./widgets/dropzone.js');
+
   uploadRow.classList.add('foreground');
   applyViewportClasses(uploadRow);
 
@@ -498,6 +551,10 @@ async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
   el.append(foreground);
 }
 
+/**
+ * Legacy prompt variant (3-row authoring, unity-prompt class).
+ * Kept for backward compatibility with existing authored pages.
+ */
 async function initPromptVariant(el, marqueeRow, mediaRow, getAriaLabels) {
   mediaRow.classList.add('foreground');
   applyViewportClasses(mediaRow);
@@ -534,16 +591,25 @@ export default async function init(el) {
   const getAriaLabels = createAriaLabelsLoader();
 
   el.classList.add('upload-marquee-block', 'con-block');
-  const rows = el.querySelectorAll(':scope > div');
+  const rows = [...el.querySelectorAll(':scope > div')];
   if (rows.length < 3) return;
 
-  const [backgroundRow, marqueeRow, contentRow] = rows;
-  const isPromptVariant = el.classList.contains('unity-prompt');
+  const [backgroundRow, marqueeRow, ...contentRows] = rows;
 
   if (backgroundRow.textContent.trim() !== '') {
     backgroundRow.classList.add('background');
     decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
   }
+
+  // New 4-row format: [background] [header] [widget fragment link] [side images]
+  if (contentRows.length >= 2 && isFragmentLink(contentRows[0])) {
+    await initFragmentVariant(el, marqueeRow, contentRows[0], contentRows[1], getAriaLabels);
+    return;
+  }
+
+  // Legacy 3-row format: [background] [header] [content with mixed media + widget]
+  const [contentRow] = contentRows;
+  const isPromptVariant = el.classList.contains('unity-prompt');
 
   if (isPromptVariant) {
     await initPromptVariant(el, marqueeRow, contentRow, getAriaLabels);
