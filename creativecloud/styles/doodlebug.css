@@ -228,6 +228,16 @@
             transform: translateX(calc(var(--tablet-margin) - var(--tablet-gap)));
         }
 
+        .carousel.hinting-tablet:has(.carousel-slides.is-reversing .carousel-slide:first-child.active) .carousel-slides.is-reversing,
+        .carousel.hinting-tablet:has(.carousel-slides.is-reversing .carousel-slide:first-child.active) .carousel-slides.is-ready.is-reversing {
+            transform: translateX(var(--tablet-card-width));
+        }
+
+        .carousel.disable-nav.hinting-tablet:has(.carousel-slides.is-reversing .carousel-slide:first-child.active) .carousel-slides.is-reversing,
+        .carousel.disable-nav.hinting-tablet:has(.carousel-slides.is-reversing .carousel-slide:first-child.active) .carousel-slides.is-ready.is-reversing {
+            transform: translateX(calc(var(--tablet-card-width) + var(--tablet-margin)));
+        }
+
         .carousel.hinting-tablet .editorial-card {
             --card-height-default: calc(var(--tablet-card-width) * 225 / 300);
         }
