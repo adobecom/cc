@@ -1,4 +1,4 @@
-import { createTag, getConfig, getLibs } from '../../scripts/utils.js';
+import { createTag, getConfig, getLibs, getScreenSizeCategory } from '../../scripts/utils.js';
 
 // ===== CONFIG =====
 const miloLibs = getLibs('/libs');
@@ -6,22 +6,103 @@ const VIEWPORTS = ['mobile-up', 'tablet-up', 'desktop-up'];
 const DEFAULT_DROPZONE_ICON = '/cc-shared/assets/svg/s2-icon-upload-20-n.svg';
 const ARIA_PLACEHOLDER_KEYS = {
   dropZoneAriaLabel: 'upload-marquee-drop-zone-aria-label',
-  layoutAriaLabel: 'upload-marquee-layout-aria-label',
   filePickerAriaSuffix: 'file-picker',
+  brandingAltFirst: 'adobe-firefly-gen-ai',
+  brandingAltSecond: 'adobe-firefly',
 };
 const ARIA_LABEL_DEFAULTS = {
   dropZoneAriaLabel:
-    'Upload your asset. Drag and drop a file, or press Enter to browse.',
-  layoutAriaLabel:
-    'Asset upload area. Drag and drop files anywhere in this section.',
+    'Upload your asset. Or drag and drop here.',
   filePickerAriaSuffix: 'file picker',
+  brandingAltFirst: 'Adobe Firefly generative AI',
+  brandingAltSecond: 'Adobe Firefly',
 };
 const AnalyticsKeys = {
   uploadAssetCTA: 'Upload asset CTA|UnityWidget',
   editPhotosCTA: 'Edit Photos CTA|UnityWidget',
 };
+const BRANDING_ALT_KEYS = ['brandingAltFirst', 'brandingAltSecond'];
 
 let uploadColumnCounter = 0;
+
+// ===== LCP / MEDIA PRIORITY =====
+const LCP_IMAGE_PARAMS = {
+  webpLarge: 'width=1000&format=webply&optimize=medium',
+  webpSmall: 'width=500&format=webply&optimize=medium',
+  jpgLarge: 'width=1000&format=jpg&optimize=medium',
+  jpgSmall: 'width=500&format=jpg&optimize=medium',
+};
+
+function getBaseImageUrlFromPicture(picture) {
+  if (!picture) return null;
+
+  const img = picture.querySelector('img');
+  const imgSrc = img?.src;
+  if (imgSrc) {
+    return { baseUrl: imgSrc.split('?')[0], img };
+  }
+
+  const srcset = picture.querySelector('source[srcset]')?.srcset;
+  if (!srcset) return null;
+
+  const url = srcset.split(',')[0].trim().split(/\s+/)[0];
+  const baseUrl = url ? url.split('?')[0] : null;
+  return baseUrl && img ? { baseUrl, img } : null;
+}
+
+function rewritePictureToOurSizes(picture) {
+  const result = getBaseImageUrlFromPicture(picture);
+  if (!result?.baseUrl || !result.img) return null;
+
+  const { baseUrl, img } = result;
+
+  picture.textContent = '';
+  picture.append(
+    createTag('source', {
+      type: 'image/webp',
+      srcset: `${baseUrl}?${LCP_IMAGE_PARAMS.webpLarge}`,
+      media: '(min-width: 600px)',
+    }),
+    createTag('source', {
+      type: 'image/webp',
+      srcset: `${baseUrl}?${LCP_IMAGE_PARAMS.webpSmall}`,
+    }),
+    createTag('source', {
+      type: 'image/jpeg',
+      srcset: `${baseUrl}?${LCP_IMAGE_PARAMS.jpgLarge}`,
+      media: '(min-width: 600px)',
+    }),
+  );
+
+  img.setAttribute('src', `${baseUrl}?${LCP_IMAGE_PARAMS.jpgSmall}`);
+  img.removeAttribute('loading');
+  img.removeAttribute('fetchpriority');
+  picture.append(img);
+  return img;
+}
+
+function setUploadRowMediaPriority(uploadRow) {
+  const screenCategory = getScreenSizeCategory({ mobile: 599, tablet: 1199 });
+  const activeColumnIndex = { mobile: 0, tablet: 1, desktop: 2 }[screenCategory];
+
+  [...uploadRow.children].forEach((column, index) => {
+    const isActive = index === activeColumnIndex;
+    const picture = column.querySelector('picture');
+
+    if (picture) {
+      const img = rewritePictureToOurSizes(picture);
+      if (img) {
+        img.setAttribute('loading', isActive ? 'eager' : 'lazy');
+        if (isActive) img.setAttribute('fetchpriority', 'high');
+      }
+    }
+
+    const video = column.querySelector('video');
+    if (video) {
+      video.setAttribute('preload', isActive ? 'auto' : 'metadata');
+    }
+  });
+}
 
 // ===== LOGGING =====
 function logUploadMarqueeInfo(message, errorType = 'i') {
@@ -156,19 +237,26 @@ function assignDropZoneTextIds(headingPara, bodyPara, columnId) {
   return describedByIds;
 }
 
+function makeDecorativeMediaNonFocusable(container) {
+  container.querySelectorAll('picture, picture img').forEach((el) => {
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('role', 'presentation');
+  });
+}
+
 async function buildUploadActionControls(para, columnId, getAriaLabels) {
   const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
   const { filePickerAriaSuffix } = await getAriaLabels();
   const button = createTag(
-    'button',
+    'span',
     {
-      type: 'button',
       class: 'con-button blue action-button button-xl no-track',
       'daa-ll': AnalyticsKeys.uploadAssetCTA,
-      'aria-label': buttonLabel,
+      'aria-hidden': 'true',
     },
     para.innerHTML,
   );
+  makeDecorativeMediaNonFocusable(button);
   const input = createTag('input', {
     type: 'file',
     name: 'file-upload',
@@ -254,7 +342,8 @@ function replaceUploadColumnContent(
   }
 }
 
-function buildMarqueeContent(marqueeCell) {
+async function buildMarqueeContent(marqueeCell, getAriaLabels) {
+  const ariaLabels = await getAriaLabels();
   const marqueeContent = createTag('div', { class: 'upload-marquee-content' });
   [...marqueeCell.children].forEach((child) => marqueeContent.append(child.cloneNode(true)));
 
@@ -273,6 +362,14 @@ function buildMarqueeContent(marqueeCell) {
     brandingPara.textContent = '';
     brandingPara.classList.add('upload-marquee-branding');
     brandingPara.append(brandingRow);
+    brandingRow.querySelectorAll('picture img, img').forEach((img, index) => {
+      img.setAttribute('loading', 'eager');
+      const altKey = BRANDING_ALT_KEYS[index];
+      const placeholderAlt = ariaLabels[altKey];
+      if (placeholderAlt && (!img.getAttribute('alt') || img.getAttribute('alt').trim() === '')) {
+        img.setAttribute('alt', placeholderAlt);
+      }
+    });
   }
 
   const ctaLink = marqueeContent.querySelector(
@@ -287,12 +384,8 @@ function buildMarqueeContent(marqueeCell) {
   return marqueeContent;
 }
 
-function buildLayout(layoutAriaLabel) {
-  const layout = createTag('div', {
-    class: 'upload-marquee-layout',
-    role: 'region',
-    'aria-label': layoutAriaLabel,
-  });
+function buildLayout() {
+  const layout = createTag('div', { class: 'upload-marquee-layout' });
   const leftCol = createTag('div', { class: 'upload-marquee-left' });
   const rightCol = createTag('div', { class: 'upload-marquee-right' });
   const uploadsWrapper = createTag('div', { class: 'upload-marquee-uploads' });
@@ -446,19 +539,19 @@ export default async function init(el) {
 
   uploadRow.classList.add('foreground');
   applyViewportClasses(uploadRow);
+  setUploadRowMediaPriority(uploadRow);
 
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
     await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
   }
 
-  const { layoutAriaLabel } = await getAriaLabels();
-  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout(layoutAriaLabel);
+  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
 
   const marqueeCell = marqueeRow.querySelector(':scope > div');
   if (!marqueeCell) return;
 
-  leftCol.append(buildMarqueeContent(marqueeCell));
+  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
   appendColumns(
     collectViewportContent(uploadRow),
     uploadsWrapper,
