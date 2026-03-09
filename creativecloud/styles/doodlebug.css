@@ -137,14 +137,14 @@
         visibility: hidden;
     }
 
-    @media (max-width: 600px) {
+    .carousel.hinting-mobile .carousel-slide.reference-slide {
+        min-width: unset;
+    }
+
+    @media (min-width: 360px) and (max-width: 600px) {
       .carousel.hinting-mobile .carousel-slide {
         flex-basis: 80%;
         min-width: 300px;
-      }
-
-      .carousel.hinting-mobile .carousel-slide.reference-slide {
-        min-width: unset;
       }
     }
 
