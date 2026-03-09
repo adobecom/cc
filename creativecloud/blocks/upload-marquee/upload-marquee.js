@@ -263,7 +263,8 @@ function replaceUploadColumnContent(
   }
 }
 
-function buildMarqueeContent(marqueeCell, ariaLabels = {}) {
+async function buildMarqueeContent(marqueeCell, getAriaLabels) {
+  const ariaLabels = await getAriaLabels();
   const marqueeContent = createTag('div', { class: 'upload-marquee-content' });
   [...marqueeCell.children].forEach((child) => marqueeContent.append(child.cloneNode(true)));
 
@@ -465,13 +466,12 @@ export default async function init(el) {
     await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
   }
 
-  const ariaLabels = await getAriaLabels();
   const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
 
   const marqueeCell = marqueeRow.querySelector(':scope > div');
   if (!marqueeCell) return;
 
-  leftCol.append(buildMarqueeContent(marqueeCell, ariaLabels));
+  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
   appendColumns(
     collectViewportContent(uploadRow),
     uploadsWrapper,
