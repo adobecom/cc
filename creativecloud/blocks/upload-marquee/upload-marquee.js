@@ -6,20 +6,22 @@ const VIEWPORTS = ['mobile-up', 'tablet-up', 'desktop-up'];
 const DEFAULT_DROPZONE_ICON = '/cc-shared/assets/svg/s2-icon-upload-20-n.svg';
 const ARIA_PLACEHOLDER_KEYS = {
   dropZoneAriaLabel: 'upload-marquee-drop-zone-aria-label',
-  layoutAriaLabel: 'upload-marquee-layout-aria-label',
   filePickerAriaSuffix: 'file-picker',
+  brandingAltFirst: 'adobe-firefly-gen-ai',
+  brandingAltSecond: 'adobe-firefly',
 };
 const ARIA_LABEL_DEFAULTS = {
   dropZoneAriaLabel:
-    'Upload your asset. Drag and drop a file, or press Enter to browse.',
-  layoutAriaLabel:
-    'Asset upload area. Drag and drop files anywhere in this section.',
+    'Upload your asset. Or drag and drop here.',
   filePickerAriaSuffix: 'file picker',
+  brandingAltFirst: 'Adobe Firefly generative AI',
+  brandingAltSecond: 'Adobe Firefly',
 };
 const AnalyticsKeys = {
   uploadAssetCTA: 'Upload asset CTA|UnityWidget',
   editPhotosCTA: 'Edit Photos CTA|UnityWidget',
 };
+const BRANDING_ALT_KEYS = ['brandingAltFirst', 'brandingAltSecond'];
 
 let uploadColumnCounter = 0;
 
@@ -340,7 +342,8 @@ function replaceUploadColumnContent(
   }
 }
 
-function buildMarqueeContent(marqueeCell) {
+async function buildMarqueeContent(marqueeCell, getAriaLabels) {
+  const ariaLabels = await getAriaLabels();
   const marqueeContent = createTag('div', { class: 'upload-marquee-content' });
   [...marqueeCell.children].forEach((child) => marqueeContent.append(child.cloneNode(true)));
 
@@ -359,6 +362,14 @@ function buildMarqueeContent(marqueeCell) {
     brandingPara.textContent = '';
     brandingPara.classList.add('upload-marquee-branding');
     brandingPara.append(brandingRow);
+    brandingRow.querySelectorAll('picture img, img').forEach((img, index) => {
+      img.setAttribute('loading', 'eager');
+      const altKey = BRANDING_ALT_KEYS[index];
+      const placeholderAlt = ariaLabels[altKey];
+      if (placeholderAlt && (!img.getAttribute('alt') || img.getAttribute('alt').trim() === '')) {
+        img.setAttribute('alt', placeholderAlt);
+      }
+    });
   }
 
   const ctaLink = marqueeContent.querySelector(
@@ -373,12 +384,8 @@ function buildMarqueeContent(marqueeCell) {
   return marqueeContent;
 }
 
-function buildLayout(layoutAriaLabel) {
-  const layout = createTag('div', {
-    class: 'upload-marquee-layout',
-    role: 'region',
-    'aria-label': layoutAriaLabel,
-  });
+function buildLayout() {
+  const layout = createTag('div', { class: 'upload-marquee-layout' });
   const leftCol = createTag('div', { class: 'upload-marquee-left' });
   const rightCol = createTag('div', { class: 'upload-marquee-right' });
   const uploadsWrapper = createTag('div', { class: 'upload-marquee-uploads' });
@@ -539,13 +546,12 @@ export default async function init(el) {
     await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
   }
 
-  const { layoutAriaLabel } = await getAriaLabels();
-  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout(layoutAriaLabel);
+  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
 
   const marqueeCell = marqueeRow.querySelector(':scope > div');
   if (!marqueeCell) return;
 
-  leftCol.append(buildMarqueeContent(marqueeCell));
+  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
   appendColumns(
     collectViewportContent(uploadRow),
     uploadsWrapper,
