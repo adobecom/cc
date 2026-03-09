@@ -21,6 +21,9 @@
         border-radius: 16px;
         background: #F0F0F7;
         border: 1px solid #fff;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 125%;
     }
 
     .descr-list.accordion {
@@ -30,12 +33,6 @@
 
     .accordion .descr-term button[aria-expanded="true"]::before {
         content: none;
-    }
-
-      .accordion .descr-term button {
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 125%;
     }
 
     @media (min-width: 1200px) {
@@ -79,7 +76,7 @@
         border: var(--glass-border);
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1199px) {
         .aside .foreground.container {
             display: grid;
             align-items: center;
@@ -261,6 +258,12 @@
         letter-spacing: -3%;
         font-weight: 800;
 
+    }
+
+    @media (max-width: 1199px) {
+        .editorial-card h3 {
+            font-size: 20px;
+        }
     }
 
     .editorial-card.s-padding-media .media-area > div {
