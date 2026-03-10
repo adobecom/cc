@@ -9,7 +9,7 @@
     }
 
     :where(.section:not(.dark) p) {
-        color: #5D5D5D;
+      color: #5D5D5D;
     }
 
     /* ---- Accordion ---- */
@@ -84,14 +84,14 @@
             width: 85%;
             grid-template-columns: minmax(45%, 1fr) minmax(55%, 1fr);
         }
-
+    
         .aside .foreground.container .text {
             margin-inline: 9.5% 0;
         }
 
         .aside .foreground.container:has(> .image:first-child) .text {
-            margin-inline: 0 9.5%;
-        }
+        margin-inline: 0 9.5%;
+    }
     }
 
     /* ---- Carousel (Tablet Hinting) ---- */
@@ -139,10 +139,10 @@
     }
 
     @media (min-width: 360px) and (max-width: 600px) {
-        .carousel.hinting-mobile .carousel-slide {
-            flex-basis: 80%;
-            min-width: 300px;
-        }
+      .carousel.hinting-mobile .carousel-slide {
+        flex-basis: 80%;
+        min-width: 300px;
+      }
     }
 
     @media (min-width: 600px) and (max-width: 1199px) {
@@ -280,10 +280,9 @@
         padding: var(--spacing-xxs);
     }
 
-    .editorial-card.s-padding-media.m-rounded-corners-image .media-area>div img,
-    .editorial-card.s-padding-media.m-rounded-corners-image .media-area>div video {
-        border-radius: var(--m-rounded-corners);
-    }
+.editorial-card.s-padding-media.m-rounded-corners-image .media-area > div :is(img, video) {
+  border-radius: var(--m-rounded-corners);
+}
 
     .two-up .editorial-card .media-area :is(img, video),
     .three-up .editorial-card .media-area :is(img, video),
@@ -416,7 +415,7 @@
         border-radius: 0 0 var(--xl-rounded-corners) var(--xl-rounded-corners);
     }
 
-
+    
 
     @media (max-width: 599px) {
         .section.no-spacing-bottom-mobile {
@@ -531,7 +530,7 @@
         .text-block.grid-cta .foreground .cta-container .action-area {
             grid-template-columns: repeat(2, 1fr);
         }
-
+        
 
         .text-block.grid-cta .foreground .cta-container .action-area .con-button {
             font-size: 1.5rem;
@@ -578,7 +577,7 @@
         }
 
         .text-block.grid-cta .foreground .cta-container .action-area {
-            grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(4, 1fr);
         }
     }
 }
@@ -588,24 +587,24 @@ TODO: Can use &[dir="rtl"] above also, & is supported by modern browsers, done t
 **/
 
 :root[dir="rtl"]:has(meta[name='theme'][content='doodlebug']) {
-    .text-block.grid-cta .foreground .cta-container .action-area a.con-button {
-        text-align: right;
-        padding: 24px 18px 24px 48px;
-    }
+  .text-block.grid-cta .foreground .cta-container .action-area a.con-button {
+    text-align: right;
+    padding: 24px 18px 24px 48px; 
+  }
 
-    .text-block.grid-cta .foreground .cta-container .action-area a.con-button::after {
-        display: none;
-    }
+ .text-block.grid-cta .foreground .cta-container .action-area a.con-button::after {
+    display: none;
+  }
 
-    .text-block.grid-cta .foreground .cta-container .action-area a.con-button::before {
-        content: '';
-        position: absolute;
-        left: 18px;
-        top: 50%;
-        transform: translateY(-50%) scaleX(-1);
-        width: 20px;
-        height: 20px;
-        background: url('/cc-shared/assets/svg/s2-icon-openin-20-n.svg') no-repeat center;
-        background-size: contain;
-    }
+ .text-block.grid-cta .foreground .cta-container .action-area a.con-button::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    width: 20px;
+    height: 20px;
+    background: url('/cc-shared/assets/svg/s2-icon-openin-20-n.svg') no-repeat center;
+    background-size: contain;
+  }
 }
