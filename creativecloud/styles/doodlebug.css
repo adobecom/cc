@@ -71,7 +71,7 @@
         margin-inline: 0 180px;
     }
 
-    .aside .foreground.container :is(img, video) {
+    .aside .foreground.container .image :is(img, video) {
         border-radius: 20px;
         border: var(--glass-border);
     }
