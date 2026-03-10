@@ -566,17 +566,13 @@ async function appendMarqueeContent(marqueeRow, leftCol, getAriaLabels) {
   return true;
 }
 
-async function initDropzoneVariant(el, marqueeRow, uploadRow, getAriaLabels) {
-  decorateContentRow(uploadRow);
+async function initDropzoneVariant(el, uploadRow, layoutParts, getAriaLabels) {
+  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = layoutParts;
 
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
     await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
   }
-
-  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
-
-  if (!await appendMarqueeContent(marqueeRow, leftCol, getAriaLabels)) return;
 
   appendColumns(
     collectViewportContent(uploadRow, (c) => c.querySelector(':scope > .media-container')),
@@ -594,15 +590,11 @@ async function initDropzoneVariant(el, marqueeRow, uploadRow, getAriaLabels) {
   mountLayout(el, layout);
 }
 
-async function initPromptVariant(el, marqueeRow, mediaRow, getAriaLabels) {
-  decorateContentRow(mediaRow);
-
-  const { layout, leftCol, rightCol, mediaWrapper } = buildLayout();
+async function initPromptVariant(el, mediaRow, layoutParts) {
+  const { layout, leftCol, rightCol, mediaWrapper } = layoutParts;
 
   // 'copy' class is required by Unity to locate and inject the prompt bar
   leftCol.classList.add('copy');
-
-  if (!await appendMarqueeContent(marqueeRow, leftCol, getAriaLabels)) return;
 
   const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
   leftCol.append(promptContainer);
@@ -637,9 +629,13 @@ export default async function init(el) {
     decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
   }
 
+  decorateContentRow(contentRow);
+  const layoutParts = buildLayout();
+  if (!await appendMarqueeContent(marqueeRow, layoutParts.leftCol, getAriaLabels)) return;
+
   if (isPromptVariant) {
-    await initPromptVariant(el, marqueeRow, contentRow, getAriaLabels);
+    await initPromptVariant(el, contentRow, layoutParts);
   } else {
-    await initDropzoneVariant(el, marqueeRow, contentRow, getAriaLabels);
+    await initDropzoneVariant(el, contentRow, layoutParts, getAriaLabels);
   }
 }
