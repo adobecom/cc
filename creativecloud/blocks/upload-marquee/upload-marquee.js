@@ -212,6 +212,10 @@ function applyViewportClasses(foreground) {
   return foreground;
 }
 
+function getViewportClasses(el) {
+  return [...el.classList].filter((cls) => VIEWPORTS.includes(cls));
+}
+
 function buildDropZoneIcon() {
   const defaultIcon = createTag('p', { class: 'drop-zone-default-icon' });
   const image = createTag('img', { src: DEFAULT_DROPZONE_ICON, alt: '' });
@@ -400,9 +404,13 @@ function buildLayout() {
   };
 }
 
+/**
+ * Appends viewport-classified dropZone and media containers to their wrappers.
+ * Pass null for uploadsWrapper when there are no dropZones (e.g. prompt variant).
+ */
 function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   viewportContent.forEach(({ media, dropZone, viewportClasses }) => {
-    if (dropZone) {
+    if (dropZone && uploadsWrapper) {
       dropZone.classList.add(...viewportClasses);
       uploadsWrapper.append(dropZone);
     }
@@ -413,13 +421,18 @@ function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   });
 }
 
-function collectViewportContent(uploadRow) {
-  return [...uploadRow.children].map((content) => {
-    const media = content.querySelector(':scope > .media-container');
-    const dropZone = content.querySelector(':scope > .drop-zone-container');
-    const viewportClasses = [...content.classList].filter((cls) => VIEWPORTS.includes(cls));
-    return { media, dropZone, viewportClasses };
-  });
+/**
+ * Collects per-viewport content from a row's columns.
+ * `extractMedia` determines how the media element is obtained:
+ *   - Upload variant: finds the pre-decorated .media-container
+ *   - Prompt variant: creates a fresh media-container from raw <picture> elements
+ */
+function collectViewportContent(row, extractMedia) {
+  return [...row.children].map((content) => ({
+    media: extractMedia(content),
+    dropZone: content.querySelector(':scope > .drop-zone-container'),
+    viewportClasses: getViewportClasses(content),
+  }));
 }
 
 function extractMediaFromColumn(content) {
@@ -429,23 +442,6 @@ function extractMediaFromColumn(content) {
   const mediaContainer = createTag('div', { class: 'media-container' });
   mediaContainer.append(media.cloneNode(true));
   return mediaContainer;
-}
-
-function collectPromptViewportContent(mediaRow) {
-  return [...mediaRow.children].map((content) => {
-    const viewportClasses = [...content.classList].filter((cls) => VIEWPORTS.includes(cls));
-    const media = extractMediaFromColumn(content);
-    return { media, viewportClasses };
-  });
-}
-
-function appendPromptMedia(viewportContent, mediaWrapper) {
-  viewportContent.forEach(({ media, viewportClasses }) => {
-    if (media) {
-      media.classList.add(...viewportClasses);
-      mediaWrapper.append(media);
-    }
-  });
 }
 
 async function decorateUploadColumn(content, getAriaLabels) {
@@ -548,6 +544,23 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   window.addEventListener('dragend', () => clearActiveDropZone());
 }
 
+/** Mounts the assembled layout into the block, replacing all prior raw content. */
+function mountLayout(el, layout) {
+  const foreground = createTag('div', { class: 'foreground' });
+  foreground.append(layout);
+  el.textContent = '';
+  el.append(foreground);
+}
+
+
+/** Builds the header content from the marquee row and appends it to leftCol.**/
+function appendMarqueeContent(marqueeRow, leftCol) {
+  const marqueeCell = marqueeRow.querySelector(':scope > div');
+  if (!marqueeCell) return false;
+  leftCol.append(buildMarqueeContent(marqueeCell));
+  return true;
+}
+
 async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
   uploadRow.classList.add('foreground');
   applyViewportClasses(uploadRow);
@@ -560,12 +573,10 @@ async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
 
   const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
 
-  const marqueeCell = marqueeRow.querySelector(':scope > div');
-  if (!marqueeCell) return;
+  if (!appendMarqueeContent(marqueeRow, leftCol)) return;
 
-  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
   appendColumns(
-    collectViewportContent(uploadRow),
+    collectViewportContent(uploadRow, (c) => c.querySelector(':scope > .media-container')),
     uploadsWrapper,
     mediaWrapper,
   );
@@ -577,11 +588,7 @@ async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
   layout.append(leftCol, rightCol);
   setupLayoutDragAndDrop(layout, uploadsWrapper);
 
-  const foreground = createTag('div', { class: 'foreground' });
-  foreground.append(layout);
-
-  el.textContent = '';
-  el.append(foreground);
+  mountLayout(el, layout);
 }
 
 async function initPromptVariant(el, marqueeRow, mediaRow, getAriaLabels) {
@@ -591,28 +598,26 @@ async function initPromptVariant(el, marqueeRow, mediaRow, getAriaLabels) {
   const { layoutAriaLabel } = await getAriaLabels();
   const { layout, leftCol, rightCol, mediaWrapper } = buildLayout(layoutAriaLabel);
 
+  // 'copy' class is required by Unity to locate and inject the prompt bar
   leftCol.classList.add('copy');
 
-  const marqueeCell = marqueeRow.querySelector(':scope > div');
-  if (!marqueeCell) return;
-
-  leftCol.append(buildMarqueeContent(marqueeCell));
+  if (!appendMarqueeContent(marqueeRow, leftCol)) return;
 
   const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
   leftCol.append(promptContainer);
 
-  appendPromptMedia(collectPromptViewportContent(mediaRow), mediaWrapper);
+  appendColumns(
+    collectViewportContent(mediaRow, extractMediaFromColumn),
+    null,
+    mediaWrapper,
+  );
 
   if (!mediaWrapper.children.length) return;
 
   rightCol.append(mediaWrapper);
   layout.append(leftCol, rightCol);
 
-  const foreground = createTag('div', { class: 'foreground' });
-  foreground.append(layout);
-
-  el.textContent = '';
-  el.append(foreground);
+  mountLayout(el, layout);
 }
 
 export default async function init(el) {
