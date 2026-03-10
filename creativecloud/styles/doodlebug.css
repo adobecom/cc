@@ -280,7 +280,7 @@
         padding: var(--spacing-xxs);
     }
 
-    .editorial-card.s-padding-media.m-rounded-corners-image .media-area > div img {
+    .editorial-card.s-padding-media.m-rounded-corners-image .media-area > div :is(img, video) {
         border-radius: var(--m-rounded-corners);
     }
 
