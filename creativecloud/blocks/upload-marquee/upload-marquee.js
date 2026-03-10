@@ -404,10 +404,6 @@ function buildLayout() {
   };
 }
 
-/**
- * Appends viewport-classified dropZone and media containers to their wrappers.
- * Pass null for uploadsWrapper when there are no dropZones (e.g. prompt variant).
- */
 function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   viewportContent.forEach(({ media, dropZone, viewportClasses }) => {
     if (dropZone && uploadsWrapper) {
@@ -561,7 +557,7 @@ async function appendMarqueeContent(marqueeRow, leftCol, getAriaLabels) {
 }
 
 async function initDropzoneVariant(el, uploadRow, layoutParts, getAriaLabels) {
-  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = layoutParts;
+  const { layout, leftCol, uploadsWrapper, mediaWrapper } = layoutParts;
 
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
