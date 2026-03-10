@@ -544,6 +544,12 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   window.addEventListener('dragend', () => clearActiveDropZone());
 }
 
+function decorateContentRow(row) {
+  row.classList.add('foreground');
+  applyViewportClasses(row);
+  setUploadRowMediaPriority(row);
+}
+
 /** Mounts the assembled layout into the block, replacing all prior raw content. */
 function mountLayout(el, layout) {
   const foreground = createTag('div', { class: 'foreground' });
@@ -560,10 +566,8 @@ async function appendMarqueeContent(marqueeRow, leftCol, getAriaLabels) {
   return true;
 }
 
-async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
-  uploadRow.classList.add('foreground');
-  applyViewportClasses(uploadRow);
-  setUploadRowMediaPriority(uploadRow);
+async function initDropzoneVariant(el, marqueeRow, uploadRow, getAriaLabels) {
+  decorateContentRow(uploadRow);
 
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
@@ -591,8 +595,7 @@ async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
 }
 
 async function initPromptVariant(el, marqueeRow, mediaRow, getAriaLabels) {
-  mediaRow.classList.add('foreground');
-  applyViewportClasses(mediaRow);
+  decorateContentRow(mediaRow);
 
   const { layout, leftCol, rightCol, mediaWrapper } = buildLayout();
 
@@ -637,6 +640,6 @@ export default async function init(el) {
   if (isPromptVariant) {
     await initPromptVariant(el, marqueeRow, contentRow, getAriaLabels);
   } else {
-    await initUploadVariant(el, marqueeRow, contentRow, getAriaLabels);
+    await initDropzoneVariant(el, marqueeRow, contentRow, getAriaLabels);
   }
 }
