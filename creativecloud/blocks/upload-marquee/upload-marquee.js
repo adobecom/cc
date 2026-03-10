@@ -552,11 +552,11 @@ function mountLayout(el, layout) {
   el.append(foreground);
 }
 
-  /** Builds the header content from the marquee row and appends it to leftCol.**/
-function appendMarqueeContent(marqueeRow, leftCol) {
+/** Builds the header content from the marquee row and appends it to leftCol. */
+async function appendMarqueeContent(marqueeRow, leftCol, getAriaLabels) {
   const marqueeCell = marqueeRow.querySelector(':scope > div');
   if (!marqueeCell) return false;
-  leftCol.append(buildMarqueeContent(marqueeCell));
+  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
   return true;
 }
 
@@ -572,7 +572,7 @@ async function initUploadVariant(el, marqueeRow, uploadRow, getAriaLabels) {
 
   const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
 
-  if (!appendMarqueeContent(marqueeRow, leftCol)) return;
+  if (!await appendMarqueeContent(marqueeRow, leftCol, getAriaLabels)) return;
 
   appendColumns(
     collectViewportContent(uploadRow, (c) => c.querySelector(':scope > .media-container')),
@@ -594,13 +594,12 @@ async function initPromptVariant(el, marqueeRow, mediaRow, getAriaLabels) {
   mediaRow.classList.add('foreground');
   applyViewportClasses(mediaRow);
 
-  const { layoutAriaLabel } = await getAriaLabels();
-  const { layout, leftCol, rightCol, mediaWrapper } = buildLayout(layoutAriaLabel);
+  const { layout, leftCol, rightCol, mediaWrapper } = buildLayout();
 
   // 'copy' class is required by Unity to locate and inject the prompt bar
   leftCol.classList.add('copy');
 
-  if (!appendMarqueeContent(marqueeRow, leftCol)) return;
+  if (!await appendMarqueeContent(marqueeRow, leftCol, getAriaLabels)) return;
 
   const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
   leftCol.append(promptContainer);
