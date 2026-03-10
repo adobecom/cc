@@ -212,6 +212,10 @@ function applyViewportClasses(foreground) {
   return foreground;
 }
 
+function getViewportClasses(el) {
+  return [...el.classList].filter((cls) => VIEWPORTS.includes(cls));
+}
+
 function buildDropZoneIcon() {
   const defaultIcon = createTag('p', { class: 'drop-zone-default-icon' });
   const image = createTag('img', { src: DEFAULT_DROPZONE_ICON, alt: '' });
@@ -402,7 +406,7 @@ function buildLayout() {
 
 function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   viewportContent.forEach(({ media, dropZone, viewportClasses }) => {
-    if (dropZone) {
+    if (dropZone && uploadsWrapper) {
       dropZone.classList.add(...viewportClasses);
       uploadsWrapper.append(dropZone);
     }
@@ -413,13 +417,21 @@ function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   });
 }
 
-function collectViewportContent(uploadRow) {
-  return [...uploadRow.children].map((content) => {
-    const media = content.querySelector(':scope > .media-container');
-    const dropZone = content.querySelector(':scope > .drop-zone-container');
-    const viewportClasses = [...content.classList].filter((cls) => VIEWPORTS.includes(cls));
-    return { media, dropZone, viewportClasses };
-  });
+function collectViewportContent(row, extractMedia) {
+  return [...row.children].map((content) => ({
+    media: extractMedia(content),
+    dropZone: content.querySelector(':scope > .drop-zone-container'),
+    viewportClasses: getViewportClasses(content),
+  }));
+}
+
+function extractMediaFromColumn(content) {
+  const media = content.querySelector('picture, .video-container.video-holder');
+  if (!media) return null;
+
+  const mediaContainer = createTag('div', { class: 'media-container' });
+  mediaContainer.append(media.cloneNode(true));
+  return mediaContainer;
 }
 
 async function decorateUploadColumn(content, getAriaLabels) {
@@ -522,6 +534,67 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   window.addEventListener('dragend', () => clearActiveDropZone());
 }
 
+function decorateContentRow(row) {
+  row.classList.add('foreground');
+  applyViewportClasses(row);
+  setUploadRowMediaPriority(row);
+}
+
+function mountLayout(el, { layout, leftCol, rightCol }, mediaWrapper) {
+  rightCol.append(mediaWrapper);
+  layout.append(leftCol, rightCol);
+  const foreground = createTag('div', { class: 'foreground' });
+  foreground.append(layout);
+  el.textContent = '';
+  el.append(foreground);
+}
+
+async function appendMarqueeContent(marqueeRow, leftCol, getAriaLabels) {
+  const marqueeCell = marqueeRow.querySelector(':scope > div');
+  if (!marqueeCell) return false;
+  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
+  return true;
+}
+
+async function initDropzoneVariant(el, uploadRow, layoutParts, getAriaLabels) {
+  const { layout, leftCol, uploadsWrapper, mediaWrapper } = layoutParts;
+
+  for (let i = 0; i < uploadRow.children.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
+  }
+
+  appendColumns(
+    collectViewportContent(uploadRow, (c) => c.querySelector(':scope > .media-container')),
+    uploadsWrapper,
+    mediaWrapper,
+  );
+
+  if (!uploadsWrapper.children.length || !mediaWrapper.children.length) return;
+
+  leftCol.append(uploadsWrapper);
+  setupLayoutDragAndDrop(layout, uploadsWrapper);
+  mountLayout(el, layoutParts, mediaWrapper);
+}
+
+async function initPromptVariant(el, mediaRow, layoutParts) {
+  const { leftCol, mediaWrapper } = layoutParts;
+
+  // 'copy' class is required by Unity to locate and inject the prompt bar
+  leftCol.classList.add('copy');
+  const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
+  leftCol.append(promptContainer);
+
+  appendColumns(
+    collectViewportContent(mediaRow, extractMediaFromColumn),
+    null,
+    mediaWrapper,
+  );
+
+  if (!mediaWrapper.children.length) return;
+  mountLayout(el, layoutParts, mediaWrapper);
+}
+
 export default async function init(el) {
   const { decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
   const getAriaLabels = createAriaLabelsLoader();
@@ -530,44 +603,21 @@ export default async function init(el) {
   const rows = el.querySelectorAll(':scope > div');
   if (rows.length < 3) return;
 
-  const [backgroundRow, marqueeRow, uploadRow] = rows;
+  const [backgroundRow, marqueeRow, contentRow] = rows;
+  const isPromptVariant = el.classList.contains('unity-prompt');
 
   if (backgroundRow.textContent.trim() !== '') {
     backgroundRow.classList.add('background');
     decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
   }
 
-  uploadRow.classList.add('foreground');
-  applyViewportClasses(uploadRow);
-  setUploadRowMediaPriority(uploadRow);
+  decorateContentRow(contentRow);
+  const layoutParts = buildLayout();
+  if (!await appendMarqueeContent(marqueeRow, layoutParts.leftCol, getAriaLabels)) return;
 
-  for (let i = 0; i < uploadRow.children.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
+  if (isPromptVariant) {
+    await initPromptVariant(el, contentRow, layoutParts);
+  } else {
+    await initDropzoneVariant(el, contentRow, layoutParts, getAriaLabels);
   }
-
-  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
-
-  const marqueeCell = marqueeRow.querySelector(':scope > div');
-  if (!marqueeCell) return;
-
-  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
-  appendColumns(
-    collectViewportContent(uploadRow),
-    uploadsWrapper,
-    mediaWrapper,
-  );
-
-  if (!uploadsWrapper.children.length || !mediaWrapper.children.length) return;
-
-  leftCol.append(uploadsWrapper);
-  rightCol.append(mediaWrapper);
-  layout.append(leftCol, rightCol);
-  setupLayoutDragAndDrop(layout, uploadsWrapper);
-
-  const foreground = createTag('div', { class: 'foreground' });
-  foreground.append(layout);
-
-  el.textContent = '';
-  el.append(foreground);
 }

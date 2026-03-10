@@ -246,6 +246,11 @@
   margin-bottom: 16px;
 }
 
+/* ===== PROMPT VARIANT ===== */
+.upload-marquee-block .upload-marquee-left.copy {
+  justify-content: center;
+}
+
 /* ===== DROP ZONE ===== */
 .upload-marquee-block .drop-zone-container {
   background: transparent;
