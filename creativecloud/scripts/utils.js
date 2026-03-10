@@ -385,7 +385,7 @@ export async function acomsisCookieHandler() {
 export const decorateArea = getDecorateAreaFn();
 
 const CONFIG = {
-  contentRoot: '/cc-shared',
+  contentRoot: '/creativecloud/plans/merch-shared',
   codeRoot: '/creativecloud',
   imsClientId: 'adobedotcom-cc',
   iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata'],
