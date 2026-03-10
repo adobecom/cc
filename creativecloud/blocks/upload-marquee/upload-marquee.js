@@ -552,8 +552,7 @@ function mountLayout(el, layout) {
   el.append(foreground);
 }
 
-
-/** Builds the header content from the marquee row and appends it to leftCol.**/
+  /** Builds the header content from the marquee row and appends it to leftCol.**/
 function appendMarqueeContent(marqueeRow, leftCol) {
   const marqueeCell = marqueeRow.querySelector(':scope > div');
   if (!marqueeCell) return false;
