@@ -421,12 +421,6 @@ function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   });
 }
 
-/**
- * Collects per-viewport content from a row's columns.
- * `extractMedia` determines how the media element is obtained:
- *   - Upload variant: finds the pre-decorated .media-container
- *   - Prompt variant: creates a fresh media-container from raw <picture> elements
- */
 function collectViewportContent(row, extractMedia) {
   return [...row.children].map((content) => ({
     media: extractMedia(content),
@@ -550,15 +544,15 @@ function decorateContentRow(row) {
   setUploadRowMediaPriority(row);
 }
 
-/** Mounts the assembled layout into the block, replacing all prior raw content. */
-function mountLayout(el, layout) {
+function mountLayout(el, { layout, leftCol, rightCol }, mediaWrapper) {
+  rightCol.append(mediaWrapper);
+  layout.append(leftCol, rightCol);
   const foreground = createTag('div', { class: 'foreground' });
   foreground.append(layout);
   el.textContent = '';
   el.append(foreground);
 }
 
-/** Builds the header content from the marquee row and appends it to leftCol. */
 async function appendMarqueeContent(marqueeRow, leftCol, getAriaLabels) {
   const marqueeCell = marqueeRow.querySelector(':scope > div');
   if (!marqueeCell) return false;
@@ -583,11 +577,8 @@ async function initDropzoneVariant(el, uploadRow, layoutParts, getAriaLabels) {
   if (!uploadsWrapper.children.length || !mediaWrapper.children.length) return;
 
   leftCol.append(uploadsWrapper);
-  rightCol.append(mediaWrapper);
-  layout.append(leftCol, rightCol);
   setupLayoutDragAndDrop(layout, uploadsWrapper);
-
-  mountLayout(el, layout);
+  mountLayout(el, layoutParts, mediaWrapper);
 }
 
 async function initPromptVariant(el, mediaRow, layoutParts) {
@@ -595,7 +586,6 @@ async function initPromptVariant(el, mediaRow, layoutParts) {
 
   // 'copy' class is required by Unity to locate and inject the prompt bar
   leftCol.classList.add('copy');
-
   const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
   leftCol.append(promptContainer);
 
@@ -606,11 +596,7 @@ async function initPromptVariant(el, mediaRow, layoutParts) {
   );
 
   if (!mediaWrapper.children.length) return;
-
-  rightCol.append(mediaWrapper);
-  layout.append(leftCol, rightCol);
-
-  mountLayout(el, layout);
+  mountLayout(el, layoutParts, mediaWrapper);
 }
 
 export default async function init(el) {
