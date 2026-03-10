@@ -582,7 +582,7 @@ async function initDropzoneVariant(el, uploadRow, layoutParts, getAriaLabels) {
 }
 
 async function initPromptVariant(el, mediaRow, layoutParts) {
-  const { layout, leftCol, rightCol, mediaWrapper } = layoutParts;
+  const { leftCol, mediaWrapper } = layoutParts;
 
   // 'copy' class is required by Unity to locate and inject the prompt bar
   leftCol.classList.add('copy');
