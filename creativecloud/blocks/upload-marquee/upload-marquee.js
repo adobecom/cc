@@ -6,14 +6,12 @@ const VIEWPORTS = ['mobile-up', 'tablet-up', 'desktop-up'];
 const DEFAULT_DROPZONE_ICON = '/cc-shared/assets/svg/s2-icon-upload-20-n.svg';
 const ARIA_PLACEHOLDER_KEYS = {
   dropZoneAriaLabel: 'upload-marquee-drop-zone-aria-label',
-  filePickerAriaSuffix: 'file-picker',
   brandingAltFirst: 'adobe-firefly-gen-ai',
   brandingAltSecond: 'adobe-firefly',
 };
 const ARIA_LABEL_DEFAULTS = {
   dropZoneAriaLabel:
     'Upload your asset. Or drag and drop here.',
-  filePickerAriaSuffix: 'file picker',
   brandingAltFirst: 'Adobe Firefly generative AI',
   brandingAltSecond: 'Adobe Firefly',
 };
@@ -244,15 +242,13 @@ function makeDecorativeMediaNonFocusable(container) {
   });
 }
 
-async function buildUploadActionControls(para, columnId, getAriaLabels) {
-  const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
-  const { filePickerAriaSuffix } = await getAriaLabels();
+async function buildUploadActionControls(para) {
   const button = createTag(
-    'span',
+    'a',
     {
+      tabindex: '0',
       class: 'con-button blue action-button button-xl no-track',
       'daa-ll': AnalyticsKeys.uploadAssetCTA,
-      'aria-hidden': 'true',
     },
     para.innerHTML,
   );
@@ -263,7 +259,14 @@ async function buildUploadActionControls(para, columnId, getAriaLabels) {
     id: 'file-upload',
     class: 'file-upload hide',
     accept: 'image/*',
-    'aria-label': `${buttonLabel} ${filePickerAriaSuffix}`,
+    'aria-hidden': 'true',
+  });
+
+  button.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      input.click();
+    }
   });
 
   para.classList.add('upload-action-container');
@@ -273,57 +276,25 @@ async function buildUploadActionControls(para, columnId, getAriaLabels) {
 }
 
 // ===== EVENT BINDERS =====
-function wireDropZoneAccessibility(
-  dropZone,
-  fileInput,
-  describedByIds,
-  dropZoneAriaLabel,
-) {
-  dropZone.setAttribute('role', 'button');
-  dropZone.setAttribute('tabindex', '0');
-  dropZone.setAttribute('aria-label', dropZoneAriaLabel);
-
-  if (fileInput?.id) {
-    dropZone.setAttribute('aria-controls', fileInput.id);
-  }
-  if (describedByIds.length) {
-    dropZone.setAttribute('aria-describedby', describedByIds.join(' '));
-  }
+function wireDropZoneAccessibility(dropZone, fileInput) {
+  dropZone.setAttribute('tabindex', '-1');
 
   dropZone.addEventListener('click', (event) => {
     event.stopPropagation();
     fileInput?.click();
   });
-
-  dropZone.addEventListener('keydown', (event) => {
-    if (event.target !== dropZone) return;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      fileInput?.click();
-    }
-  });
 }
 
-async function buildDropZone(uploadParts, columnId, getAriaLabels) {
-  const { dropZoneAriaLabel } = await getAriaLabels();
+async function buildDropZone(uploadParts, columnId) {
   const dropZone = createTag('div', { class: 'drop-zone' });
-  const { fileInput } = await buildUploadActionControls(
-    uploadParts.uploadPara,
-    columnId,
-    getAriaLabels,
-  );
-  const describedByIds = assignDropZoneTextIds(
+  const { fileInput } = await buildUploadActionControls(uploadParts.uploadPara);
+  assignDropZoneTextIds(
     uploadParts.headingPara,
     uploadParts.bodyPara,
     columnId,
   );
 
-  wireDropZoneAccessibility(
-    dropZone,
-    fileInput,
-    describedByIds,
-    dropZoneAriaLabel,
-  );
+  wireDropZoneAccessibility(dropZone, fileInput);
   dropZone.append(buildDropZoneIcon(), ...uploadParts.contentParagraphs);
 
   return dropZone;
@@ -422,7 +393,7 @@ function collectViewportContent(uploadRow) {
   });
 }
 
-async function decorateUploadColumn(content, getAriaLabels) {
+async function decorateUploadColumn(content) {
   const columnId = nextUploadColumnId();
   const mediaContainer = createTag('div', { class: 'media-container' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
@@ -445,7 +416,7 @@ async function decorateUploadColumn(content, getAriaLabels) {
     return;
   }
 
-  const dropZone = await buildDropZone(uploadParts, columnId, getAriaLabels);
+  const dropZone = await buildDropZone(uploadParts, columnId);
   dropZoneContainer.append(dropZone);
   replaceUploadColumnContent(
     content,
@@ -543,7 +514,7 @@ export default async function init(el) {
 
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
+    await decorateUploadColumn(uploadRow.children[i]);
   }
 
   const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
