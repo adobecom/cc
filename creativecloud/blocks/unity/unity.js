@@ -6,6 +6,7 @@ function getUnityLibs(prodLibs = '/unitylibs') {
     && !hostname.includes('hlx.live')
     && !hostname.includes('aem.page')
     && !hostname.includes('aem.live')
+    && !hostname.includes('.da.')
     && !hostname.includes('localhost')) {
     return prodLibs;
   }

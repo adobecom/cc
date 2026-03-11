@@ -1,4 +1,4 @@
-import { createTag, localizeLink, getLibs } from '../../scripts/utils.js';
+import { createTag, localizeLinkAsync, getLibs } from '../../scripts/utils.js';
 
 const CATEGORY_ID_PREFIX = 'categories/';
 const TYPE_ID_PREFIX = 'types/';
@@ -242,8 +242,8 @@ function appendResources(rootNav, resourceLink) {
 
 export default async function init(el) {
   const libs = getLibs();
-  const { decorateLinks } = await import(`${libs}/utils/utils.js`);
-  decorateLinks(el);
+  const { decorateLinksAsync } = await import(`${libs}/utils/utils.js`);
+  await decorateLinksAsync(el);
   const [mainRow, categoryRow] = Array.from(el.children);
   const deps = Promise.all([
     loadMasComponent('merch-sidenav'),
@@ -272,7 +272,7 @@ export default async function init(el) {
   appendSearch(rootNav, searchText);
   if (endpoint) {
     await makePause();
-    endpoint = localizeLink(endpoint.href, null, true);
+    endpoint = await localizeLinkAsync(endpoint.href, null, true);
     const explicitCategories = categoryRow?.querySelector('ul');
     performance.mark('sidenav:appendFilters:start');
     await appendFilters(rootNav, endpoint, explicitCategories, typeText);

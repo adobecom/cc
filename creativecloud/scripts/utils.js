@@ -23,7 +23,7 @@ export const locales = {
   ar: { ietf: 'es-AR', tk: 'oln4yqj.css' },
   br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
   ca: { ietf: 'en-CA', tk: 'pps7abe.css' },
-  ca_fr: { ietf: 'fr-CA', tk: 'vrk5vyv.css' },
+  ca_fr: { ietf: 'fr-CA', tk: 'vrk5vyv.css', base: 'fr' },
   cl: { ietf: 'es-CL', tk: 'oln4yqj.css' },
   co: { ietf: 'es-CO', tk: 'oln4yqj.css' },
   la: { ietf: 'es-LA', tk: 'oln4yqj.css' },
@@ -32,7 +32,7 @@ export const locales = {
   '': { ietf: 'en-US', tk: 'hah7vzn.css' },
   // EMEA
   africa: { ietf: 'en', tk: 'pps7abe.css' },
-  be_fr: { ietf: 'fr-BE', tk: 'vrk5vyv.css' },
+  be_fr: { ietf: 'fr-BE', tk: 'vrk5vyv.css', base: 'fr' },
   be_en: { ietf: 'en-BE', tk: 'pps7abe.css' },
   be_nl: { ietf: 'nl-BE', tk: 'cya6bri.css' },
   cy_en: { ietf: 'en-CY', tk: 'pps7abe.css' },
@@ -49,7 +49,7 @@ export const locales = {
   lt: { ietf: 'lt-LT', tk: 'aaz7dvd.css' },
   lu_de: { ietf: 'de-LU', tk: 'vin7zsi.css' },
   lu_en: { ietf: 'en-LU', tk: 'pps7abe.css' },
-  lu_fr: { ietf: 'fr-LU', tk: 'vrk5vyv.css' },
+  lu_fr: { ietf: 'fr-LU', tk: 'vrk5vyv.css', base: 'fr' },
   hu: { ietf: 'hu-HU', tk: 'aaz7dvd.css' },
   mt: { ietf: 'en-MT', tk: 'pps7abe.css' },
   mena_en: { ietf: 'en', tk: 'pps7abe.css' },
@@ -62,7 +62,7 @@ export const locales = {
   ch_de: { ietf: 'de-CH', tk: 'vin7zsi.css' },
   si: { ietf: 'sl-SI', tk: 'aaz7dvd.css' },
   sk: { ietf: 'sk-SK', tk: 'aaz7dvd.css' },
-  ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css' },
+  ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css', base: 'fr' },
   fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
   ch_it: { ietf: 'it-CH', tk: 'bbf5pok.css' },
@@ -173,6 +173,7 @@ export const [setLibs, getLibs] = (() => {
         && !hostname.includes('hlx.live')
         && !hostname.includes('aem.page')
         && !hostname.includes('aem.live')
+        && !hostname.includes('.da.')
         && !hostname.includes('localhost')) {
         libs = prodLibs;
         return libs;
@@ -190,9 +191,9 @@ export const [setLibs, getLibs] = (() => {
 const miloLibs = setLibs('/libs');
 
 // eslint-disable-next-line object-curly-newline
-const { createTag, localizeLink, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLinkAsync, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
 // eslint-disable-next-line max-len
-export { createTag, loadStyle, loadLink, loadScript, localizeLink, createIntersectionObserver, getConfig };
+export { createTag, loadStyle, loadLink, loadScript, localizeLinkAsync, createIntersectionObserver, getConfig };
 
 function defineDeviceByScreenSize() {
   const DESKTOP_SIZE = 1200;
@@ -431,6 +432,12 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?download(\/.*)?/,
   ],
   brandConciergeAA: 'cc:app-reco',
+  uniqueSiteId: 'da-cc',
+  mepLingoCountryToRegion: {
+    africa: ['ke', 'mu', 'ng', 'za'],
+    la: ['bo', 'cr', 'do', 'ec', 'gt', 'pa', 'pr', 'py', 'sv', 'uy', 've', 'ar', 'co', 'cl', 'mx', 'pe'],
+    mena_en: ['bh', 'dz', 'iq', 'ir', 'jo', 'lb', 'ly', 'om', 'ps', 'sy', 'tn', 'ye'],
+  },
 };
 
 export const scriptInit = async () => {
