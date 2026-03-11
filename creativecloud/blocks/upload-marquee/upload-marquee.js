@@ -351,7 +351,7 @@ function extractMediaFromColumn(content) {
   if (!media) return null;
 
   const mediaContainer = createTag('div', { class: 'media-container' });
-  mediaContainer.append(media.cloneNode(true));
+  mediaContainer.append(media);
   return mediaContainer;
 }
 
