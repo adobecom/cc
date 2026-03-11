@@ -451,10 +451,3 @@
     top: auto;
   }
 }
-
-/* ===== REDUCED MOTION ===== */
-@media (prefers-reduced-motion: reduce) {
-  .upload-marquee-block .upload-marquee-right .media-container .video-container .pause-play-wrapper {
-    display: none;
-  }
-}
