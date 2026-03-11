@@ -71,7 +71,7 @@
         margin-inline: 0 180px;
     }
 
-    .aside .foreground.container .image :is(img, video) {
+    .aside .foreground.container .image :is(img, video):not(.accessibility-control) {
         border-radius: 20px;
         border: var(--glass-border);
     }
@@ -515,6 +515,12 @@
         box-shadow: 0 1px 4px 0 #0000000C, 0 8px 8px 0 #00000013, 0 20px 12px 0 #00000018, 0 40px 24px 0 #0000001D;
     }
 
+    /* Video Block */
+
+    :is(.marquee:not(.light), .dark) .video-container .pause-play-wrapper .offset-filler {
+        border: none;
+    }
+    
     /** TODO: rtl **/
 
     .text-block.grid-cta .foreground .cta-container a::after {
