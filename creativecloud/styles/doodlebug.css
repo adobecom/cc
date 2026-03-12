@@ -515,7 +515,7 @@
         box-shadow: 0 1px 4px 0 #0000000C, 0 8px 8px 0 #00000013, 0 20px 12px 0 #00000018, 0 40px 24px 0 #0000001D;
     }
 
-    :is(.aside, .editorial-card) .video-container .pause-play-wrapper .offset-filler img{
+    :is(.aside, .editorial-card) .video-container .pause-play-wrapper .offset-filler img {
         border: 2px solid #FFFFFF;
         border-radius: 50%;
     }
