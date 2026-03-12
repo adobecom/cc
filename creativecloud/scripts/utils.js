@@ -465,8 +465,16 @@ export const scriptInit = async () => {
       document.head.appendChild(link);
     });
   }());
-  (async function loadPage() {
+  async function loadPage() {
     loadLana({ clientId: 'cc' });
     await loadArea();
+  }
+  loadPage();
+
+  // DA Live Preview
+  (async function loadDa() {
+    if (!new URL(window.location.href).searchParams.get('dapreview')) return;
+    // eslint-disable-next-line import/no-unresolved
+    import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
   }());
 };
