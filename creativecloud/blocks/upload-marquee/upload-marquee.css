@@ -16,6 +16,7 @@
   --um-text-shadow: 0 4px 39px rgb(0 0 0 / 25%);
   --um-drop-zone-border: 2px dashed rgb(255 255 255 / 50%);
   --um-cta-border: 2px solid var(--um-white);
+  --um-button-font-size: 19px;
 
   position: relative;
   overflow: hidden;
@@ -40,7 +41,7 @@
   align-items: center;
   justify-content: center;
   padding: 12px 24px 14px;
-  font-size: 19px;
+  font-size: var(--um-button-font-size);
   font-weight: 700;
   line-height: 24px;
   text-decoration: none;
@@ -373,6 +374,12 @@
 }
 
 /* ===== RESPONSIVE ===== */
+@media screen and (max-width: 350px) {
+  .upload-marquee-block {
+    --um-button-font-size: 16px;
+  }
+}
+
 @media screen and (min-width: 600px) {
   .upload-marquee-block .upload-marquee-right .media-container {
     border-radius: var(--um-radius-md);
