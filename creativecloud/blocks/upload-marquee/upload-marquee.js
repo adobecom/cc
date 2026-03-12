@@ -73,10 +73,11 @@ function setUploadRowMediaPriority(uploadRow) {
 
   [...uploadRow.children].forEach((column, index) => {
     const isActive = index === activeColumnIndex;
-    const picture = column.querySelector('picture');
+    const firstPara = column.querySelector('p');
+    const mediaPicture = firstPara?.querySelector('picture');
 
-    if (picture) {
-      const img = rewritePictureToOurSizes(picture);
+    if (mediaPicture) {
+      const img = rewritePictureToOurSizes(mediaPicture);
       if (img) {
         img.setAttribute('loading', isActive ? 'eager' : 'lazy');
         if (isActive) img.setAttribute('fetchpriority', 'high');
