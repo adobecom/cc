@@ -1,27 +1,13 @@
-import { createTag, getConfig, getLibs, getScreenSizeCategory } from '../../scripts/utils.js';
+import { createTag, getLibs, getScreenSizeCategory } from '../../scripts/utils.js';
 
 // ===== CONFIG =====
 const miloLibs = getLibs('/libs');
 const VIEWPORTS = ['mobile-up', 'tablet-up', 'desktop-up'];
 const DEFAULT_DROPZONE_ICON = '/cc-shared/assets/svg/s2-icon-upload-20-n.svg';
-const ARIA_PLACEHOLDER_KEYS = {
-  dropZoneAriaLabel: 'upload-marquee-drop-zone-aria-label',
-  filePickerAriaSuffix: 'file-picker',
-  brandingAltFirst: 'adobe-firefly-gen-ai',
-  brandingAltSecond: 'adobe-firefly',
-};
-const ARIA_LABEL_DEFAULTS = {
-  dropZoneAriaLabel:
-    'Upload your asset. Or drag and drop here.',
-  filePickerAriaSuffix: 'file picker',
-  brandingAltFirst: 'Adobe Firefly generative AI',
-  brandingAltSecond: 'Adobe Firefly',
-};
 const AnalyticsKeys = {
   uploadAssetCTA: 'Upload asset CTA|UnityWidget',
   editPhotosCTA: 'Edit Photos CTA|UnityWidget',
 };
-const BRANDING_ALT_KEYS = ['brandingAltFirst', 'brandingAltSecond'];
 
 let uploadColumnCounter = 0;
 
@@ -119,38 +105,6 @@ function buildScopedId(prefix, columnId) {
   return `${prefix}-${columnId}`;
 }
 
-// ===== ARIA / LOCALIZATION =====
-function createAriaLabelsLoader() {
-  let labelsPromise;
-  return async function getAriaLabels() {
-    if (!labelsPromise) {
-      labelsPromise = (async () => {
-        try {
-          const config = getConfig();
-          const { replaceKeyArray } = await import(
-            `${miloLibs}/features/placeholders.js`
-          );
-          const labelKeys = Object.keys(ARIA_PLACEHOLDER_KEYS);
-          const localizedValues = await replaceKeyArray(
-            labelKeys.map((key) => ARIA_PLACEHOLDER_KEYS[key]),
-            config,
-          );
-          return labelKeys.reduce((acc, key, index) => {
-            acc[key] = localizedValues[index] || ARIA_LABEL_DEFAULTS[key];
-            return acc;
-          }, {});
-        } catch (err) {
-          logUploadMarqueeInfo(
-            `Failed to fetch upload marquee aria labels: ${err}`,
-          );
-          return { ...ARIA_LABEL_DEFAULTS };
-        }
-      })();
-    }
-    return labelsPromise;
-  };
-}
-
 // ===== DATA EXTRACTION =====
 function extractUploadContentParts(content) {
   const media = content.querySelector('picture, .video-container.video-holder');
@@ -212,6 +166,10 @@ function applyViewportClasses(foreground) {
   return foreground;
 }
 
+function getViewportClasses(el) {
+  return [...el.classList].filter((cls) => VIEWPORTS.includes(cls));
+}
+
 function buildDropZoneIcon() {
   const defaultIcon = createTag('p', { class: 'drop-zone-default-icon' });
   const image = createTag('img', { src: DEFAULT_DROPZONE_ICON, alt: '' });
@@ -244,15 +202,13 @@ function makeDecorativeMediaNonFocusable(container) {
   });
 }
 
-async function buildUploadActionControls(para, columnId, getAriaLabels) {
-  const buttonLabel = para.textContent.trim().split('|')[0].trim() || 'Upload your image';
-  const { filePickerAriaSuffix } = await getAriaLabels();
+async function buildUploadActionControls(para) {
   const button = createTag(
-    'span',
+    'a',
     {
+      tabindex: '0',
       class: 'con-button blue action-button button-xl no-track',
       'daa-ll': AnalyticsKeys.uploadAssetCTA,
-      'aria-hidden': 'true',
     },
     para.innerHTML,
   );
@@ -263,7 +219,14 @@ async function buildUploadActionControls(para, columnId, getAriaLabels) {
     id: 'file-upload',
     class: 'file-upload hide',
     accept: 'image/*',
-    'aria-label': `${buttonLabel} ${filePickerAriaSuffix}`,
+    'aria-hidden': 'true',
+  });
+
+  button.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      input.click();
+    }
   });
 
   para.classList.add('upload-action-container');
@@ -273,57 +236,25 @@ async function buildUploadActionControls(para, columnId, getAriaLabels) {
 }
 
 // ===== EVENT BINDERS =====
-function wireDropZoneAccessibility(
-  dropZone,
-  fileInput,
-  describedByIds,
-  dropZoneAriaLabel,
-) {
-  dropZone.setAttribute('role', 'button');
-  dropZone.setAttribute('tabindex', '0');
-  dropZone.setAttribute('aria-label', dropZoneAriaLabel);
-
-  if (fileInput?.id) {
-    dropZone.setAttribute('aria-controls', fileInput.id);
-  }
-  if (describedByIds.length) {
-    dropZone.setAttribute('aria-describedby', describedByIds.join(' '));
-  }
+function wireDropZoneAccessibility(dropZone, fileInput) {
+  dropZone.setAttribute('tabindex', '-1');
 
   dropZone.addEventListener('click', (event) => {
     event.stopPropagation();
     fileInput?.click();
   });
-
-  dropZone.addEventListener('keydown', (event) => {
-    if (event.target !== dropZone) return;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      fileInput?.click();
-    }
-  });
 }
 
-async function buildDropZone(uploadParts, columnId, getAriaLabels) {
-  const { dropZoneAriaLabel } = await getAriaLabels();
+async function buildDropZone(uploadParts, columnId) {
   const dropZone = createTag('div', { class: 'drop-zone' });
-  const { fileInput } = await buildUploadActionControls(
-    uploadParts.uploadPara,
-    columnId,
-    getAriaLabels,
-  );
-  const describedByIds = assignDropZoneTextIds(
+  const { fileInput } = await buildUploadActionControls(uploadParts.uploadPara);
+  assignDropZoneTextIds(
     uploadParts.headingPara,
     uploadParts.bodyPara,
     columnId,
   );
 
-  wireDropZoneAccessibility(
-    dropZone,
-    fileInput,
-    describedByIds,
-    dropZoneAriaLabel,
-  );
+  wireDropZoneAccessibility(dropZone, fileInput);
   dropZone.append(buildDropZoneIcon(), ...uploadParts.contentParagraphs);
 
   return dropZone;
@@ -342,8 +273,7 @@ function replaceUploadColumnContent(
   }
 }
 
-async function buildMarqueeContent(marqueeCell, getAriaLabels) {
-  const ariaLabels = await getAriaLabels();
+function buildMarqueeContent(marqueeCell) {
   const marqueeContent = createTag('div', { class: 'upload-marquee-content' });
   [...marqueeCell.children].forEach((child) => marqueeContent.append(child.cloneNode(true)));
 
@@ -362,23 +292,32 @@ async function buildMarqueeContent(marqueeCell, getAriaLabels) {
     brandingPara.textContent = '';
     brandingPara.classList.add('upload-marquee-branding');
     brandingPara.append(brandingRow);
-    brandingRow.querySelectorAll('picture img, img').forEach((img, index) => {
+    brandingRow.querySelectorAll('picture img, img').forEach((img) => {
       img.setAttribute('loading', 'eager');
-      const altKey = BRANDING_ALT_KEYS[index];
-      const placeholderAlt = ariaLabels[altKey];
-      if (placeholderAlt && (!img.getAttribute('alt') || img.getAttribute('alt').trim() === '')) {
-        img.setAttribute('alt', placeholderAlt);
-      }
     });
   }
 
-  const ctaLink = marqueeContent.querySelector(
-    'p strong a[href], p:last-of-type a[href]',
-  );
+  const ctaLink = marqueeContent.querySelector('p strong a[href]');
   if (ctaLink) {
     ctaLink.classList.add('con-button', 'upload-marquee-cta', 'no-track');
     ctaLink.setAttribute('aria-label', ctaLink.textContent.trim());
     ctaLink.setAttribute('daa-ll', AnalyticsKeys.editPhotosCTA);
+  }
+
+  const ctaParentPara = ctaLink?.closest('p');
+  const heading = marqueeContent.querySelector(':scope > h1');
+  const descriptionPara = heading?.nextElementSibling?.tagName === 'P'
+    ? heading.nextElementSibling : null;
+  const allParas = [...marqueeContent.querySelectorAll(':scope > p')];
+  const lastPara = allParas[allParas.length - 1];
+  if (
+    lastPara
+    && lastPara !== ctaParentPara
+    && lastPara !== brandingPara
+    && lastPara !== descriptionPara
+    && lastPara.textContent.trim()
+  ) {
+    lastPara.classList.add('upload-marquee-dropzone-label');
   }
 
   return marqueeContent;
@@ -402,7 +341,7 @@ function buildLayout() {
 
 function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   viewportContent.forEach(({ media, dropZone, viewportClasses }) => {
-    if (dropZone) {
+    if (dropZone && uploadsWrapper) {
       dropZone.classList.add(...viewportClasses);
       uploadsWrapper.append(dropZone);
     }
@@ -413,16 +352,24 @@ function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
   });
 }
 
-function collectViewportContent(uploadRow) {
-  return [...uploadRow.children].map((content) => {
-    const media = content.querySelector(':scope > .media-container');
-    const dropZone = content.querySelector(':scope > .drop-zone-container');
-    const viewportClasses = [...content.classList].filter((cls) => VIEWPORTS.includes(cls));
-    return { media, dropZone, viewportClasses };
-  });
+function collectViewportContent(row, extractMedia) {
+  return [...row.children].map((content) => ({
+    media: extractMedia(content),
+    dropZone: content.querySelector(':scope > .drop-zone-container'),
+    viewportClasses: getViewportClasses(content),
+  }));
 }
 
-async function decorateUploadColumn(content, getAriaLabels) {
+function extractMediaFromColumn(content) {
+  const media = content.querySelector('picture, .video-container.video-holder');
+  if (!media) return null;
+
+  const mediaContainer = createTag('div', { class: 'media-container' });
+  mediaContainer.append(media);
+  return mediaContainer;
+}
+
+async function decorateUploadColumn(content) {
   const columnId = nextUploadColumnId();
   const mediaContainer = createTag('div', { class: 'media-container' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
@@ -445,7 +392,7 @@ async function decorateUploadColumn(content, getAriaLabels) {
     return;
   }
 
-  const dropZone = await buildDropZone(uploadParts, columnId, getAriaLabels);
+  const dropZone = await buildDropZone(uploadParts, columnId);
   dropZoneContainer.append(dropZone);
   replaceUploadColumnContent(
     content,
@@ -522,38 +469,38 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   window.addEventListener('dragend', () => clearActiveDropZone());
 }
 
-export default async function init(el) {
-  const { decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-  const getAriaLabels = createAriaLabelsLoader();
+function decorateContentRow(row) {
+  row.classList.add('foreground');
+  applyViewportClasses(row);
+  setUploadRowMediaPriority(row);
+}
 
-  el.classList.add('upload-marquee-block', 'con-block');
-  const rows = el.querySelectorAll(':scope > div');
-  if (rows.length < 3) return;
+function mountLayout(el, { layout, leftCol, rightCol }, mediaWrapper) {
+  rightCol.append(mediaWrapper);
+  layout.append(leftCol, rightCol);
+  const foreground = createTag('div', { class: 'foreground' });
+  foreground.append(layout);
+  el.textContent = '';
+  el.append(foreground);
+}
 
-  const [backgroundRow, marqueeRow, uploadRow] = rows;
+function appendMarqueeContent(marqueeRow, leftCol) {
+  const marqueeCell = marqueeRow.querySelector(':scope > div');
+  if (!marqueeCell) return false;
+  leftCol.append(buildMarqueeContent(marqueeCell));
+  return true;
+}
 
-  if (backgroundRow.textContent.trim() !== '') {
-    backgroundRow.classList.add('background');
-    decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
-  }
-
-  uploadRow.classList.add('foreground');
-  applyViewportClasses(uploadRow);
-  setUploadRowMediaPriority(uploadRow);
+async function initDropzoneVariant(el, uploadRow, layoutParts) {
+  const { layout, leftCol, uploadsWrapper, mediaWrapper } = layoutParts;
 
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    await decorateUploadColumn(uploadRow.children[i], getAriaLabels);
+    await decorateUploadColumn(uploadRow.children[i]);
   }
 
-  const { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper } = buildLayout();
-
-  const marqueeCell = marqueeRow.querySelector(':scope > div');
-  if (!marqueeCell) return;
-
-  leftCol.append(await buildMarqueeContent(marqueeCell, getAriaLabels));
   appendColumns(
-    collectViewportContent(uploadRow),
+    collectViewportContent(uploadRow, (c) => c.querySelector(':scope > .media-container')),
     uploadsWrapper,
     mediaWrapper,
   );
@@ -561,13 +508,50 @@ export default async function init(el) {
   if (!uploadsWrapper.children.length || !mediaWrapper.children.length) return;
 
   leftCol.append(uploadsWrapper);
-  rightCol.append(mediaWrapper);
-  layout.append(leftCol, rightCol);
   setupLayoutDragAndDrop(layout, uploadsWrapper);
+  mountLayout(el, layoutParts, mediaWrapper);
+}
 
-  const foreground = createTag('div', { class: 'foreground' });
-  foreground.append(layout);
+async function initPromptVariant(el, mediaRow, layoutParts) {
+  const { leftCol, mediaWrapper } = layoutParts;
 
-  el.textContent = '';
-  el.append(foreground);
+  // 'copy' class is required by Unity to locate and inject the prompt bar
+  leftCol.classList.add('copy');
+  const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
+  leftCol.append(promptContainer);
+
+  appendColumns(
+    collectViewportContent(mediaRow, extractMediaFromColumn),
+    null,
+    mediaWrapper,
+  );
+
+  if (!mediaWrapper.children.length) return;
+  mountLayout(el, layoutParts, mediaWrapper);
+}
+
+export default async function init(el) {
+  const { decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
+
+  el.classList.add('upload-marquee-block', 'con-block');
+  const rows = el.querySelectorAll(':scope > div');
+  if (rows.length < 3) return;
+
+  const [backgroundRow, marqueeRow, contentRow] = rows;
+  const isPromptVariant = el.classList.contains('unity-prompt');
+
+  if (backgroundRow.textContent.trim() !== '') {
+    backgroundRow.classList.add('background');
+    decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
+  }
+
+  decorateContentRow(contentRow);
+  const layoutParts = buildLayout();
+  if (!appendMarqueeContent(marqueeRow, layoutParts.leftCol)) return;
+
+  if (isPromptVariant) {
+    await initPromptVariant(el, contentRow, layoutParts);
+  } else {
+    await initDropzoneVariant(el, contentRow, layoutParts);
+  }
 }
