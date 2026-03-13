@@ -3,7 +3,7 @@ import { createTag, getLibs, getScreenSizeCategory } from '../../scripts/utils.j
 // ===== CONFIG =====
 const miloLibs = getLibs('/libs');
 const VIEWPORTS = ['mobile-up', 'tablet-up', 'desktop-up'];
-const DEFAULT_DROPZONE_ICON = '/cc-shared/assets/svg/s2-icon-upload-20-n.svg';
+const DEFAULT_DROPZONE_ICON = '/cc-shared/assets/svg/s2-icon-default-image-20-n.svg';
 const AnalyticsKeys = {
   uploadAssetCTA: 'Upload asset CTA|UnityWidget',
   editPhotosCTA: 'Edit Photos CTA|UnityWidget',
