@@ -506,6 +506,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    
+    @media (max-width: 599px) {
+        .text-block.grid-cta .foreground .cta-container .action-area .con-button {
+            box-shadow: 0px 5px 20px 10px rgba(0, 0, 0, 0.059);
+        }
+    }
 
     .text-block.grid-cta .foreground .cta-container .action-area .con-button:hover,
     .text-block.grid-cta .foreground .cta-container .action-area .con-button:focus-visible {
