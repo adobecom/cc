@@ -41,7 +41,7 @@ const ICONS = {
 </svg>`,
 };
 
-const MEDIA_SELECTOR = 'picture, .video-container.video-holder, .video-holder, video';
+const MEDIA_SELECTOR = 'picture, .video-container.video-holder';
 
 function getMediaElement(mediaDiv) {
   if (mediaDiv.matches(MEDIA_SELECTOR)) return mediaDiv;
