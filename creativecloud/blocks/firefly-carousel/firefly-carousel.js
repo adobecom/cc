@@ -121,7 +121,7 @@ function createCard(item, index) {
   const card = createTag('article', { class: `${BLOCK}-card` });
   card.dataset.slideIndex = String(index);
   const mediaWrapper = createTag('div', { class: `${BLOCK}-media` });
-  const prompt = createPromptPill(item.promptText || '', item.deeplinkUrl);
+  const prompt = createPromptPill(item.promptText, item.deeplinkUrl);
   mediaWrapper.append(item.mediaEl);
   const img = mediaWrapper.querySelector('picture img');
   if (img) img.setAttribute('loading', 'eager');
