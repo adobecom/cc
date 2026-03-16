@@ -534,7 +534,7 @@
 
     _buildDock() {
       return h('div', { class: 'rb-dock' }, [
-        h('div', { class: 'rb-dock-title', html: `${iconSvg('wand')} Rebound` }),
+        h('div', { class: 'rb-dock-title', html: `${iconSvg('wand')} Animation` }),
         h('button', { class: 'rb-iconbtn', title: 'Maximize', html: iconSvg('max'), onClick: () => this.maximizeFromDock() }),
         h('button', { class: 'rb-iconbtn danger', title: 'Close', html: iconSvg('close'), onClick: () => this._hideDock() }),
       ]);
@@ -559,7 +559,7 @@
       const header = h('div', { class: 'rb-header' }, [
         h('div', { class: 'rb-brand' }, [
           h('div', { html: iconSvg('wand') }),
-          h('div', { text: 'Rebound' }),
+          h('div', { text: 'Animation' }),
           (this._badgeEl = h('div', { class: 'rb-badge', text: this._badgeText })),
         ]),
         h('div', { class: 'rb-actions' }, [

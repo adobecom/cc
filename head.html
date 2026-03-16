@@ -55,7 +55,7 @@
   import { scriptInit } from '/creativecloud/scripts/utils.js';
   scriptInit();
 </script>
-<script src="/creativecloud/animation/rebound.runtime.js" ></script>
+<script src="/creativecloud/animation/animation.runtime.js" ></script>
 <script>
   function loadScript(src, callback) {
     const script = document.createElement('script');
@@ -77,7 +77,7 @@
     document.head.appendChild(script);
   }
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('mode') === 'rebound') {
+  if (urlParams.get('mode') === 'animation') {
     loadScript('/creativecloud/animation/rebound.editor.js', function(err) {
       if (err) {
         console.error('Error loading script:', err);
