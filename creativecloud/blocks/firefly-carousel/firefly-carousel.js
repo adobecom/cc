@@ -65,10 +65,6 @@ function wrapIndex(index, length) {
   return (index + length) % length;
 }
 
-function isRTLContext(el) {
-  return window.getComputedStyle(el).direction === 'rtl';
-}
-
 function createPromptPill(promptText, deeplinkUrl) {
   const attrs = {
     class: `${BLOCK}-prompt`,
@@ -322,7 +318,7 @@ export default async function init(el) {
 
   el.textContent = '';
 
-  const isRTL = isRTLContext(el);
+  const isRTL = document.dir === 'rtl';
   const state = { currentIndex: 0, isAnimating: false };
   const structure = createCarouselStructure();
   const cards = buildTrack(structure.track, items);
