@@ -1054,7 +1054,7 @@
       const header = h('div', { class: 'rb-header' }, [
         h('div', { class: 'rb-brand' }, [
           h('div', { html: iconSvg('wand') }),
-          h('div', { text: 'Rebound' }),
+          h('div', { text: 'Animation' }),
           (this._badgeEl = h('div', { class: 'rb-badge', text: this._savedBadgeText })),
         ]),
         h('div', { class: 'rb-actions' }, [
