@@ -293,6 +293,11 @@
     .editorial-card.s-padding-media.m-rounded-corners-image .media-area > div :is(img, video) {
         border-radius: var(--m-rounded-corners);
     }
+    @media (min-width: 600px) and (max-width: 1199px) {
+        .editorial-card {
+            width: 300px;
+        }
+    }
 
     .two-up .editorial-card .media-area :is(img, video),
     .three-up .editorial-card .media-area :is(img, video),
