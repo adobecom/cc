@@ -21,9 +21,10 @@
 .firefly-carousel .firefly-carousel-track {
   display: flex;
   gap: var(--ff-gap);
+  width: max-content;
   will-change: transform;
   transition: transform 320ms ease;
-  margin-left: calc((100% - var(--ff-card-width)) / 2);
+  margin-inline-start: calc((100% - var(--ff-card-width)) / 2);
 }
 
 .firefly-carousel .firefly-carousel-card {
@@ -119,7 +120,7 @@
   align-items: center;
   justify-content: flex-end;
   width: 16px;
-  margin-left: 24px;
+  margin-inline-start: 24px;
   height: 16px;
 }
 
