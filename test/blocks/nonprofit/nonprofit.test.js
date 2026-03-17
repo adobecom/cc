@@ -589,3 +589,95 @@ describe('nonprofit - Personal details', () => {
     );
   });
 });
+
+describe('nonprofit - Lingo fallback for base and sub-regions', () => {
+  let originalAkamaiSessionValue;
+
+  const fillFields = () => {
+    const firstName = document.querySelector('.np-input[name="firstName"]');
+    firstName.value = 'Atest';
+    firstName.dispatchEvent(new Event('input'));
+
+    const lastName = document.querySelector('.np-input[name="lastName"]');
+    lastName.value = 'Name';
+    lastName.dispatchEvent(new Event('input'));
+
+    const email = document.querySelector('.np-input[name="email"]');
+    email.value = 'atest@email.com';
+    email.dispatchEvent(new Event('input'));
+  };
+
+  before(() => {
+    // Store the original value of sessionStorage "akamai"
+    originalAkamaiSessionValue = sessionStorage.getItem('akamai');
+
+    const meta = document.createElement('meta');
+    meta.name = 'langfirst';
+    meta.content = 'on';
+    document.head.appendChild(meta);
+
+    setConfig({
+      pathname: '/fr/nonprofits/apply-acrobat',
+      locales: {
+        fr: { ietf: 'fr-FR', tk: 'vrk5vyv.css' },
+        ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css', base: 'fr' },
+      },
+    });
+    window.mph = {};
+    window.lana = { log: () => {} };
+  });
+
+  after(() => {
+    const langfirstMeta = document.querySelector('meta[name="langfirst"]');
+    if (langfirstMeta) {
+      document.head.removeChild(langfirstMeta);
+    }
+    if (originalAkamaiSessionValue === null) {
+      sessionStorage.removeItem('akamai');
+    } else {
+      sessionStorage.setItem('akamai', originalAkamaiSessionValue);
+    }
+  });
+
+  beforeEach(async () => {
+    sessionStorage.removeItem('akamai');
+    document.body.innerHTML = body;
+    const np = document.querySelector('.nonprofit');
+    init(np);
+
+    stepperStore.update({ step: 3, scenario: SCENARIOS.NOT_FOUND_IN_SEARCH });
+
+    sinon.stub(window, 'fetch');
+    window.fetch.returns(
+      Promise.resolve({
+        json: () => Promise.resolve({ data: { validationInviteId: 'avalidationinviteid_0123' } }),
+        ok: true,
+      }),
+    );
+    stepperStore.update({ step: 2, scenario: SCENARIOS.FOUND_IN_SEARCH });
+    fillFields();
+  });
+
+  afterEach(() => {
+    if (window.fetch.restore) window.fetch.restore();
+    if (window.lana.log.restore) window.lana.log.restore();
+  });
+
+  it('should use base locale for form submission when akamai session set', async () => {
+    sessionStorage.setItem('akamai', 'us');
+    const submit = document.querySelector('input[type="submit"]');
+    expect(submit).to.exist;
+    submit.click();
+    await waitForElement('.np-application-review-container');
+    expect(window.fetch.getCall(0).args[0]).to.contain('lng=fr-FR');
+  });
+
+  it('should use user country locale for page submission when user country is child region', async () => {
+    sessionStorage.setItem('akamai', 'ch');
+    const submit = document.querySelector('input[type="submit"]');
+    expect(submit).to.exist;
+    submit.click();
+    await waitForElement('.np-application-review-container');
+    expect(window.fetch.getCall(0).args[0]).to.contain('lng=fr-CH');
+  });
+});
