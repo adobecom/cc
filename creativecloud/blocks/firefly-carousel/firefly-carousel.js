@@ -64,18 +64,11 @@ function parseSlideItem(itemDiv) {
   };
 }
 
-function parseItemsBySelector(el, selector) {
-  return [...el.querySelectorAll(selector)].flatMap((itemDiv) => {
+function parseItemsFromDOM(el) {
+  return [...el.querySelectorAll(':scope > div')].flatMap((itemDiv) => {
     const item = parseSlideItem(itemDiv);
     return item ? [item] : [];
   });
-}
-
-function parseItemsFromDOM(el) {
-  const nestedItems = parseItemsBySelector(el, ':scope > div > div');
-  if (nestedItems.length) return nestedItems;
-
-  return parseItemsBySelector(el, ':scope > div');
 }
 
 function wrapIndex(index, length) {
