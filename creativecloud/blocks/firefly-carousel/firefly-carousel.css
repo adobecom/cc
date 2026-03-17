@@ -60,11 +60,23 @@
 }
 
 .firefly-carousel .firefly-carousel-media picture,
-.firefly-carousel .firefly-carousel-media img {
+.firefly-carousel .firefly-carousel-media img,
+.firefly-carousel .firefly-carousel-media video,
+.firefly-carousel .firefly-carousel-media .video-holder,
+.firefly-carousel .firefly-carousel-media .video-container {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+}
+
+.firefly-carousel .firefly-carousel-media img,
+.firefly-carousel .firefly-carousel-media video {
+  object-fit: cover;
+}
+
+.firefly-carousel .firefly-carousel-media .video-container {
+  margin: 0;
+  max-width: none;
 }
 
 .firefly-carousel .firefly-carousel-prompt {
