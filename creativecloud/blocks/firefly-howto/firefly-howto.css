@@ -1,0 +1,225 @@
+/* Tokens */
+.firefly-howto {
+  --c-text-primary: var(--color-black);
+  --c-text-tertiary: var(--color-black);
+  --c-bg-default: var(--color-white);
+  --c-bg-active: #ece4f3;
+  --c-focus: #0054bb;
+  --s-spacing-md: 1.5rem;
+  --s-spacing-xl: 40px;
+  --acc-item-radius: 8px;
+  --acc-item-shadow: 0 2px 8px rgb(0 0 0 / 5%);
+  --anim-speed: 0.4s;
+  --anim-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --foreground-gap: 1.25rem;
+  --icon-size: 16px;
+  --icon-offset: 40px;
+  --trigger-padding-inline: var(--s-spacing-md);
+  --trigger-gap: 16px;
+  --trigger-row-gap: 4px;
+  --step-column-width: 0;
+  --step-font-size: 0.75rem;
+  --title-font-size: 1.25rem;
+  --content-font-size: 1rem;
+  --content-bottom-padding: 8px;
+  --panel-top-offset: -16px;
+  --content-right-padding: calc(var(--trigger-padding-inline) + var(--icon-offset));
+  --content-left-padding: var(--trigger-padding-inline);
+
+  font-family: var(--body-font-family);
+}
+
+/* Layout */
+.firefly-howto .foreground {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--foreground-gap);
+}
+
+/* Accordion Item */
+.firefly-howto .firefly-howto-item {
+  background: var(--c-bg-default);
+  border-radius: var(--acc-item-radius);
+  box-shadow: var(--acc-item-shadow);
+  transition: background-color var(--anim-speed) ease;
+  overflow: hidden;
+  border: 1px solid transparent;
+  position: relative;
+  cursor: pointer;
+}
+
+.firefly-howto .firefly-howto-item.is-open {
+  background-color: var(--c-bg-active);
+}
+
+/* Trigger/Header */
+.firefly-howto .firefly-howto-header {
+  margin: 0;
+}
+
+.firefly-howto .firefly-howto-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr var(--icon-size);
+  grid-template-areas:
+    "step step"
+    "title icon";
+  row-gap: var(--trigger-row-gap);
+  column-gap: var(--trigger-gap);
+  align-items: start;
+  padding: var(--trigger-padding-inline);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--c-text-primary);
+  font-family: var(--body-font-family);
+  position: relative;
+  z-index: 1;
+  outline: none;
+}
+
+.firefly-howto .firefly-howto-item:has(.firefly-howto-trigger:focus-visible) {
+  outline: 2px solid var(--c-focus);
+  outline-offset: -2px;
+}
+
+.firefly-howto .step-indicator {
+  grid-area: step;
+  font-size: var(--step-font-size);
+  font-weight: 500;
+  color: var(--c-text-tertiary);
+  text-transform: uppercase;
+  line-height: 1.25;
+  overflow-wrap: break-word;
+}
+
+.firefly-howto .firefly-howto-item.is-open .step-indicator {
+  color: var(--c-text-primary);
+}
+
+.firefly-howto .firefly-howto-title {
+  grid-area: title;
+  font-size: var(--title-font-size);
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+/* Icon */
+.firefly-howto .firefly-howto-icon {
+  grid-area: icon;
+  align-self: center;
+  display: flex;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  align-items: center;
+  justify-content: center;
+  color: var(--c-text-primary);
+  z-index: 3;
+}
+
+.firefly-howto .firefly-howto-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.firefly-howto .firefly-howto-icon .vert-line {
+  transform-origin: 50% 50%;
+  transition: transform var(--anim-speed) var(--anim-easing), opacity var(--anim-speed) var(--anim-easing);
+}
+
+.firefly-howto .firefly-howto-trigger[aria-expanded='true'] .firefly-howto-icon .vert-line {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+/* Panel + Content */
+.firefly-howto .firefly-howto-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear var(--anim-speed);
+  position: relative;
+  top: var(--panel-top-offset);
+  z-index: 2;
+}
+
+.firefly-howto .firefly-howto-panel-inner {
+  overflow: hidden;
+}
+
+.firefly-howto .firefly-howto-content {
+  padding: 0 var(--content-right-padding) var(--content-bottom-padding) var(--content-left-padding);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-weight: 400;
+  font-size: var(--content-font-size);
+  letter-spacing: normal;
+  line-height: 1.5;
+}
+
+.firefly-howto .firefly-howto-content > *:first-child {
+  margin-top: 0;
+}
+
+.firefly-howto .firefly-howto-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.firefly-howto .foreground .firefly-howto-panel .firefly-howto-content p {
+  line-height: 1.6;
+  color: var(--c-text-primary);
+  margin: 0;
+}
+
+/* State Variants */
+.firefly-howto .firefly-howto-item.is-open .firefly-howto-panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows var(--anim-speed) var(--anim-easing), visibility 0s linear 0s;
+}
+
+.firefly-howto .firefly-howto-item.is-open .firefly-howto-content {
+  opacity: 1;
+  transition: opacity var(--anim-speed) ease 0.1s;
+}
+
+/* Responsive Overrides */
+@media (min-width: 600px) {
+  .firefly-howto {
+    --step-column-width: 55px;
+    --step-font-size: 1rem;
+    --trigger-padding-inline: var(--s-spacing-xl);
+    --trigger-row-gap: 0;
+    --content-bottom-padding: 16px;
+    --panel-top-offset: -24px;
+    --content-left-padding: calc(var(--trigger-padding-inline) + var(--step-column-width) + var(--trigger-gap));
+  }
+
+  .firefly-howto .firefly-howto-trigger {
+    grid-template-columns: var(--step-column-width) 1fr var(--icon-size);
+    grid-template-areas: "step title icon";
+    align-items: baseline;
+  }
+}
+
+@media (min-width: 1200px) {
+  .firefly-howto {
+    --step-column-width: 65px;
+    --trigger-gap: var(--s-spacing-md);
+    --title-font-size: 1.5rem;
+    --content-font-size: 1.25rem;
+    --content-left-padding: calc(var(--trigger-padding-inline) + var(--step-column-width) + var(--trigger-gap));
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .firefly-howto .firefly-howto-icon .vert-line,
+  .firefly-howto .firefly-howto-panel,
+  .firefly-howto .firefly-howto-content {
+    transition: none !important;
+  }
+}
