@@ -41,24 +41,34 @@ const ICONS = {
 </svg>`,
 };
 
-// Parses carousel items directly from the block DOM. Each item has picture, caption, and deeplink
+const MEDIA_SELECTOR = 'picture, .video-container.video-holder';
+
+function getMediaElement(mediaDiv) {
+  if (mediaDiv.matches(MEDIA_SELECTOR)) return mediaDiv;
+  return mediaDiv.querySelector(MEDIA_SELECTOR);
+}
+
+function parseSlideItem(itemDiv) {
+  if (itemDiv.children.length < 3) return null;
+  const [mediaDiv, captionDiv, deeplinkDiv] = itemDiv.children;
+  const mediaEl = getMediaElement(mediaDiv);
+  if (!mediaEl) return null;
+
+  const deeplinkAnchor = deeplinkDiv.querySelector('a[href]');
+  if (!deeplinkAnchor) return null;
+
+  return {
+    mediaEl,
+    promptText: captionDiv?.textContent?.trim() || '',
+    deeplinkUrl: deeplinkAnchor?.getAttribute('href') || '',
+  };
+}
+
 function parseItemsFromDOM(el) {
-  const itemDivs = el.querySelectorAll(':scope > div');
-  const items = [];
-
-  itemDivs.forEach((itemDiv) => {
-    const [mediaDiv, captionDiv, deeplinkDiv] = itemDiv.children;
-    const pictureEl = mediaDiv?.querySelector('picture');
-    const deeplinkAnchor = deeplinkDiv?.querySelector('a[href]');
-    if (!pictureEl) return;
-
-    items.push({
-      pictureEl,
-      promptText: captionDiv?.textContent?.trim() || '',
-      deeplinkUrl: deeplinkAnchor?.getAttribute('href') || '',
-    });
+  return [...el.querySelectorAll(':scope > div')].flatMap((itemDiv) => {
+    const item = parseSlideItem(itemDiv);
+    return item ? [item] : [];
   });
-  return items;
 }
 
 function wrapIndex(index, length) {
@@ -86,15 +96,33 @@ function createPromptPill(promptText, deeplinkUrl) {
   return pill;
 }
 
+function ensureVideoSource(videoEl) {
+  const hasSource = videoEl.getAttribute('src') || videoEl.querySelector('source[src]');
+  if (hasSource) return;
+  const source = videoEl.dataset.videoSource;
+  if (!source) return;
+  videoEl.src = source;
+}
+
+function setMediaControlTabOrder(card, isActive) {
+  card.querySelectorAll('.pause-play-wrapper').forEach((control) => {
+    control.tabIndex = isActive ? 0 : -1;
+  });
+}
+
 function createCard(item, index) {
   const card = createTag('article', { class: `${BLOCK}-card` });
   card.dataset.slideIndex = String(index);
   const mediaWrapper = createTag('div', { class: `${BLOCK}-media` });
-  const clonedPicture = item.pictureEl.cloneNode(true);
-  const img = clonedPicture.querySelector('img');
+  const prompt = createPromptPill(item.promptText, item.deeplinkUrl);
+  mediaWrapper.append(item.mediaEl);
+  const img = mediaWrapper.querySelector('picture img');
   if (img) img.setAttribute('loading', 'eager');
-  mediaWrapper.appendChild(clonedPicture);
-  card.append(mediaWrapper, createPromptPill(item.promptText || '', item.deeplinkUrl));
+  mediaWrapper.querySelectorAll('video').forEach((videoEl) => ensureVideoSource(videoEl));
+  const pausePlayControl = mediaWrapper.querySelector('.pause-play-wrapper');
+  if (pausePlayControl) pausePlayControl.before(prompt);
+  card.append(mediaWrapper);
+  if (!pausePlayControl) card.append(prompt);
   return card;
 }
 
@@ -131,6 +159,7 @@ function updateActiveCard(cards, currentIndex) {
     card.tabIndex = isActive ? 0 : -1;
     const prompt = card.querySelector(`.${BLOCK}-prompt`);
     if (prompt) prompt.tabIndex = isActive ? 0 : -1;
+    setMediaControlTabOrder(card, isActive);
   });
 }
 
