@@ -3,7 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 import ReactiveStore from './reactiveStore.js';
-import { setLibs } from '../../scripts/utils.js';
+import { setLibs, getGeoLocaleInfo } from '../../scripts/utils.js';
 import { countries, PRODUCT_VALIDATION_CONFIG } from './constants.js';
 import { getNonprofitIconTag, NONPRFIT_ICONS } from './icons.js';
 import nonprofitSelect from './nonprofit-select.js';
@@ -133,7 +133,7 @@ async function fetchRegistries(countryCode, abortController) {
 
 async function sendOrganizationData(product) {
   try {
-    const { locale: { ietf } } = getConfig();
+    const { ietf } = await getGeoLocaleInfo();
     const { VALIDATION_URL, CONFIGURATION_ID } = PRODUCT_VALIDATION_CONFIG[product];
     const inviteResponse = await fetch(`${VALIDATION_URL}?lng=${ietf}`, {
       method: 'POST',

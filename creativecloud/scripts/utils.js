@@ -191,9 +191,20 @@ export const [setLibs, getLibs] = (() => {
 const miloLibs = setLibs('/libs');
 
 // eslint-disable-next-line object-curly-newline
-const { createTag, localizeLinkAsync, getConfig, loadStyle, loadLink, loadScript, createIntersectionObserver } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLinkAsync, getConfig, getMetadata, loadStyle, loadLink, loadScript, createIntersectionObserver, lingoActive, getCountry } = await import(`${miloLibs}/utils/utils.js`);
+
+async function getGeoLocaleInfo() {
+  const { locale } = getConfig();
+  if (!lingoActive() || !Object.keys(locale.regions ?? {}).length) {
+    return locale;
+  }
+  const country = (await getCountry())?.toLowerCase();
+  const geoLocale = Object.entries(locale.regions).find(([, v]) => v.region === country)?.[1];
+  return geoLocale ?? locale;
+}
+
 // eslint-disable-next-line max-len
-export { createTag, loadStyle, loadLink, loadScript, localizeLinkAsync, createIntersectionObserver, getConfig };
+export { createTag, loadStyle, loadLink, loadScript, localizeLinkAsync, createIntersectionObserver, getConfig, getGeoLocaleInfo };
 
 function defineDeviceByScreenSize() {
   const DESKTOP_SIZE = 1200;
@@ -458,6 +469,7 @@ export const scriptInit = async () => {
   decorateArea();
   (function loadStyles() {
     const paths = [`${miloLibs}/styles/styles.css`];
+    if (getMetadata('theme') === 'doodlebug') paths.push('/creativecloud/styles/doodlebug.css');
     paths.forEach((path) => {
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
@@ -465,8 +477,43 @@ export const scriptInit = async () => {
       document.head.appendChild(link);
     });
   }());
-  (async function loadPage() {
+  // TODO can be removed after 2026-03-20 - this is a temporary test for lingo
+  (function setupInteractionLogging() {
+    const cutoff = new Date(2026, 2, 20, 23, 59, 59, 999);
+    const isWithinLoggingWindow = () => new Date() <= cutoff;
+
+    const opts = { capture: true };
+    let logged = false;
+    const logInteraction = (e) => {
+      if (!e.target?.closest('a')) return;
+      if (e.type === 'keydown') {
+        if (e.key !== 'Enter') return;
+      }
+      if (!isWithinLoggingWindow() || logged) return;
+      logged = true;
+      document.removeEventListener('click', logInteraction, opts);
+      document.removeEventListener('keydown', logInteraction, opts);
+      document.removeEventListener('touchstart', logInteraction, opts);
+      const firstSection = document.querySelector('main > .section');
+      const inFirstSection = firstSection?.contains(e.target);
+      const tag = inFirstSection ? 'test-lingo-user-interaction-first-section' : 'test-lingo-user-interaction-other-section';
+      const timeToInteractionMs = Math.round(performance.now());
+      window.lana?.log(`${timeToInteractionMs}`, { sampleRate: 1, severity: 'i', tags: tag });
+    };
+    document.addEventListener('click', logInteraction, opts);
+    document.addEventListener('keydown', logInteraction, opts);
+    document.addEventListener('touchstart', logInteraction, opts);
+  }());
+  async function loadPage() {
     loadLana({ clientId: 'cc' });
     await loadArea();
+  }
+  loadPage();
+
+  // DA Live Preview
+  (async function loadDa() {
+    if (!new URL(window.location.href).searchParams.get('dapreview')) return;
+    // eslint-disable-next-line import/no-unresolved
+    import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
   }());
 };
