@@ -22,7 +22,7 @@ export const locales = {
   // Americas
   ar: { ietf: 'es-AR', tk: 'oln4yqj.css' },
   br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
-  ca: { ietf: 'en-CA', tk: 'pps7abe.css' },
+  ca: { ietf: 'en-CA', tk: 'pps7abe.css', base: '' },
   ca_fr: { ietf: 'fr-CA', tk: 'vrk5vyv.css' },
   cl: { ietf: 'es-CL', tk: 'oln4yqj.css' },
   co: { ietf: 'es-CO', tk: 'oln4yqj.css' },
@@ -391,6 +391,7 @@ const CONFIG = {
   iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata'],
   locales,
   geoRouting: 'on',
+  uniqueSiteId: 'da-cc',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
   stageDomainsMap,
   decorateArea,
