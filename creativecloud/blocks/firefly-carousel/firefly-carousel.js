@@ -14,12 +14,14 @@ const NAV_INDEX_DELTAS = {
 };
 const NAV_FRAMES = {
   BASE: { beforeActive: 1, offsetMultiplier: -1 },
-  NEXT: { beforeActive: 1, offsetMultiplier: -2 },
+  NEXT_STAGE: { beforeActive: 0, offsetMultiplier: 0 },
+  NEXT: { beforeActive: 0, offsetMultiplier: -1 },
   PREV_STAGE: { beforeActive: 2, offsetMultiplier: -2 },
   PREV: { beforeActive: 2, offsetMultiplier: -1 },
 };
 const NAV_SEQUENCES = {
   [NAV_DIRECTIONS.NEXT]: [
+    { frame: NAV_FRAMES.NEXT_STAGE, animate: false },
     { frame: NAV_FRAMES.NEXT, animate: true },
   ],
   [NAV_DIRECTIONS.PREV]: [
@@ -197,6 +199,11 @@ function waitForTrackTransition(track, onDone) {
   track.addEventListener('transitionend', settle, { once: true });
 }
 
+function afterNextPaint(callback) {
+  const raf = window.requestAnimationFrame ?? ((fn) => setTimeout(fn, 16));
+  raf(() => raf(callback));
+}
+
 function updateCurrentIndex(state, itemCount, direction) {
   state.currentIndex = wrapIndex(
     state.currentIndex + NAV_INDEX_DELTAS[direction],
@@ -208,11 +215,23 @@ function createMoveHandler(track, itemCount, state, applyFrame) {
   return (direction) => {
     if (itemCount <= 1 || state.isAnimating) return false;
     state.isAnimating = true;
-    NAV_SEQUENCES[direction].forEach(({ frame, animate }) => applyFrame(frame, animate));
-    waitForTrackTransition(track, () => {
+    const finishMove = () => waitForTrackTransition(track, () => {
       updateCurrentIndex(state, itemCount, direction);
       applyFrame(NAV_FRAMES.BASE, false);
       state.isAnimating = false;
+    });
+    const sequence = NAV_SEQUENCES[direction];
+    const [firstStep, ...remainingSteps] = sequence;
+
+    applyFrame(firstStep.frame, firstStep.animate);
+    if (!remainingSteps.length) {
+      finishMove();
+      return true;
+    }
+
+    afterNextPaint(() => {
+      remainingSteps.forEach(({ frame, animate }) => applyFrame(frame, animate));
+      finishMove();
     });
     return true;
   };
