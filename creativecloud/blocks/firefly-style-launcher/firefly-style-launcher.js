@@ -161,7 +161,7 @@ export default function init(el) {
       module: 'ImageGeneration',
       config: {
         type: 'set',
-        referrer: 'ACOM',
+        referrer: 'Unknown',
         prompt,
         modelId,
         modelVersion,
