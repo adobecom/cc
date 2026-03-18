@@ -158,10 +158,10 @@ export default function init(el) {
     const { modelId = modelName, modelVersion = '', raw } = MODEL_MAP[modelName] || {};
     const hData = encodeURIComponent(JSON.stringify({
       version: '1.1',
-      module: 'ImageEdit',
+      module: 'ImageGeneration',
       config: {
         type: 'set',
-        referrer: 'Unknown',
+        referrer: 'ACOM',
         prompt,
         modelId,
         modelVersion,
