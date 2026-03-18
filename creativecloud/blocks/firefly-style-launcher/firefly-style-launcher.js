@@ -54,25 +54,25 @@ function selectStyle(items, promptText, previewArea, styles, previews, idx, skip
 }
 
 const MODEL_MAP = {
-  'Firefly Image 3':           { fullModelId: 'adobe:firefly:colligo:image3',             modelId: 'image3',          modelVersion: '' },
-  'Firefly Image 4 Ultra':     { fullModelId: 'adobe:firefly:colligo:image4:ultra',        modelId: 'ultra',           modelVersion: '' },
-  'Firefly Image 4':           { fullModelId: 'adobe:firefly:colligo:image4',              modelId: 'image4',          modelVersion: '' },
-  'Firefly Image 5':           { fullModelId: 'adobe:firefly:colligo:image5',              modelId: 'image5',          modelVersion: 'image5' },
-  'FLUX.2 [pro]':              { fullModelId: 'blackforest:firefly:colligo:flux2-pro',     modelId: 'flux2-pro',       modelVersion: '' },
-  'FLUX.1 Kontext [max]':      { fullModelId: 'blackforest:firefly:colligo:flux-kontext-max', modelId: 'flux-kontext-max', modelVersion: 'fluxKontextMax' },
-  'FLUX.1 Kontext [pro]':      { fullModelId: 'blackforest:firefly:colligo:flux-kontext-pro', modelId: 'flux-kontext-pro', modelVersion: 'fluxKontextPro' },
-  'FLUX1.1 [pro]':             { fullModelId: 'blackforest:firefly:colligo:flux-pro',      modelId: 'flux-pro',        modelVersion: '1.1' },
-  'FLUX1.1 [pro] Ultra Raw':   { fullModelId: 'blackforest:firefly:colligo:flux-ultra-raw', modelId: 'flux-ultra-raw', modelVersion: '1.1' },
-  'FLUX1.1 [pro] Ultra':       { fullModelId: 'blackforest:firefly:colligo:flux-ultra',    modelId: 'flux-ultra',      modelVersion: '1.1' },
-  'Gemini 3.1 (w/ Nano Banana 2)': { fullModelId: 'google:firefly:colligo:gemini-flash',  modelId: 'gemini-flash',    modelVersion: 'nano-banana' },
-  'Gemini 2.5 (w/ Nano Banana)':   { fullModelId: 'google:firefly:colligo:gemini-flash',  modelId: 'gemini-flash',    modelVersion: 'nano-banana' },
-  'Gemini 3 (w/ Nano Banana Pro)': { fullModelId: 'google:firefly:colligo:nano-banana-pro', modelId: 'nano-banana-pro', modelVersion: 'nano-banana-2' },
-  'Imagen 3':                  { fullModelId: 'google:firefly:colligo:imagen3',            modelId: 'imagen3',         modelVersion: '3.0-generate-002' },
-  'Imagen 4':                  { fullModelId: 'google:firefly:colligo:imagen4',            modelId: 'imagen4',         modelVersion: '4.0-generate-preview' },
-  'Ideogram 3.0':              { fullModelId: 'ideogram:firefly:colligo:ideogram3',        modelId: 'ideogram3',       modelVersion: '' },
-  'GPT Image 1':               { fullModelId: 'openai:firefly:colligo:gpt-4o',            modelId: 'gpt-4o',          modelVersion: '' },
-  'GPT Image 1.5':             { fullModelId: 'openai:firefly:colligo:gpt-image-1.5',     modelId: 'gpt-image-1.5',   modelVersion: '1.5' },
-  'Runway Gen-4 Image':        { fullModelId: 'runway:firefly:colligo:gen4',              modelId: 'gen4',            modelVersion: '' },
+  'Firefly Image 3':               { modelId: 'adobe-firefly',     modelVersion: 'image3' },
+  'Firefly Image 4 Ultra':         { modelId: 'adobe-firefly',     modelVersion: 'image4_ultra' },
+  'Firefly Image 4':               { modelId: 'adobe-firefly',     modelVersion: 'image4_standard' },
+  'Firefly Image 5':               { modelId: 'firefly_image',     modelVersion: 'image5' },
+  'FLUX.2 [pro]':                  { modelId: 'flux',              modelVersion: 'fluxPro-2' },
+  'FLUX.1 Kontext [max]':          { modelId: 'flux',              modelVersion: 'fluxKontextMax' },
+  'FLUX.1 Kontext [pro]':          { modelId: 'flux',              modelVersion: 'fluxKontextPro' },
+  'FLUX1.1 [pro]':                 { modelId: 'fluxPro',           modelVersion: '1.1' },
+  'FLUX1.1 [pro] Ultra Raw':       { modelId: 'fluxUltra',         modelVersion: '1.1', raw: true },
+  'FLUX1.1 [pro] Ultra':           { modelId: 'fluxUltra',         modelVersion: '1.1' },
+  'Gemini 3.1 (w/ Nano Banana 2)': { modelId: 'gemini-flash',      modelVersion: 'nano-banana-3' },
+  'Gemini 2.5 (w/ Nano Banana)':   { modelId: 'gemini-flash',      modelVersion: 'nano-banana' },
+  'Gemini 3 (w/ Nano Banana Pro)': { modelId: 'gemini-flash',      modelVersion: 'nano-banana-2' },
+  'Imagen 3':                      { modelId: 'imagen',            modelVersion: '3.0-generate-002' },
+  'Imagen 4':                      { modelId: 'imagen',            modelVersion: '4.0-generate-preview' },
+  'Ideogram 3.0':                  { modelId: 'ideogram',          modelVersion: '3.0-generate' },
+  'GPT Image 1':                   { modelId: 'gpt-4o-image',      modelVersion: '' },
+  'GPT Image 1.5':                 { modelId: 'gpt-image',         modelVersion: '1.5' },
+  'Runway Gen-4 Image':            { modelId: 'runway-gen4-image', modelVersion: '' },
 };
 
 export default function init(el) {
@@ -155,7 +155,7 @@ export default function init(el) {
   generateBtn.addEventListener('click', () => {
     const prompt = `${promptText.textContent.trim()}, ${styles[currentStyleIdx].label}`;
     const modelName = modelDisplay.textContent.trim();
-    const { modelId = modelName, modelVersion = '' } = MODEL_MAP[modelName] || {};
+    const { modelId = modelName, modelVersion = '', raw } = MODEL_MAP[modelName] || {};
     const hData = encodeURIComponent(JSON.stringify({
       version: '1.1',
       module: 'ImageEdit',
@@ -165,6 +165,7 @@ export default function init(el) {
         prompt,
         modelId,
         modelVersion,
+        ...(raw && { raw }),
         generate: false,
       },
     }));
