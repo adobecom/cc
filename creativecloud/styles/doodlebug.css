@@ -35,6 +35,12 @@
         content: none;
     }
 
+    @media (max-width: 1199px) {
+        .accordion .descr-term:not(:first-of-type) {
+            margin-top: 10px;
+        }
+    }
+
     @media (min-width: 1200px) {
         .accordion .descr-term button {
             font-size: 24px;
