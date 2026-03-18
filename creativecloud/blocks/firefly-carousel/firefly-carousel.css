@@ -21,9 +21,10 @@
 .firefly-carousel .firefly-carousel-track {
   display: flex;
   gap: var(--ff-gap);
+  width: max-content;
   will-change: transform;
   transition: transform 320ms ease;
-  margin-left: calc((100% - var(--ff-card-width)) / 2);
+  margin-inline-start: calc((100% - var(--ff-card-width)) / 2);
 }
 
 .firefly-carousel .firefly-carousel-card {
@@ -105,11 +106,6 @@
   display: flex;
 }
 
-[dir="rtl"] .firefly-carousel .firefly-carousel-prompt {
-  left: 56px;
-  right: 16px;
-}
-
 .firefly-carousel .firefly-carousel-prompt-text {
   flex: 0 1 auto;
   min-width: 0;
@@ -131,7 +127,7 @@
   align-items: center;
   justify-content: flex-end;
   width: 16px;
-  margin-left: 24px;
+  margin-inline-start: 24px;
   height: 16px;
 }
 
@@ -198,6 +194,11 @@
     transform: none;
     max-width: calc(var(--ff-card-width) / 2.2);
   }
+
+  [dir="rtl"] .firefly-carousel .firefly-carousel-prompt {
+    left: auto;
+    right: 30px;
+  }
 }
 
 @media screen and (min-width: 1200px) {
@@ -218,6 +219,11 @@
     visibility: hidden;
     pointer-events: none;
     transition: opacity 180ms ease;
+  }
+
+  [dir="rtl"] .firefly-carousel .firefly-carousel-card.active .firefly-carousel-prompt {
+    left: auto;
+    right: 55px;
   }
 
   .firefly-carousel .firefly-carousel-card.active:hover .firefly-carousel-prompt,
