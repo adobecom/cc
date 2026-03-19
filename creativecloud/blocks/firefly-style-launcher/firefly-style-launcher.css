@@ -223,3 +223,14 @@
   object-fit: cover;
   display: block;
 }
+
+@media (max-width: 1200px) {
+  .firefly-style-launcher {
+    grid-template-columns: 1fr;
+  }
+
+  .fsl-right {
+    order: -1;
+    aspect-ratio: 16 / 9;
+  }
+}
