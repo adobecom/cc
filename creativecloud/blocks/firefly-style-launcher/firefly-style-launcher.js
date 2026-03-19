@@ -29,7 +29,8 @@ function getLauncherData(el) {
     items: listItems
       .map((item, index) => {
         const thumbnail = item.querySelector('picture');
-        const preview = previewRows[index]?.querySelector('picture');
+        const previewPictures = [...(previewRows[index]?.querySelectorAll('picture') || [])];
+        const preview = previewPictures[previewPictures.length - 1];
 
         if (!thumbnail || !preview) return null;
 
