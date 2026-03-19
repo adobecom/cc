@@ -168,6 +168,14 @@
     min-height: auto;
   }
 
+  .firefly-style-launcher .firefly-style-launcher-preview {
+    order: 1;
+  }
+
+  .firefly-style-launcher .firefly-style-launcher-sidebar {
+    order: 2;
+  }
+
   .firefly-style-launcher .firefly-style-launcher-preview-frame {
     width: 100%;
     height: 370px;

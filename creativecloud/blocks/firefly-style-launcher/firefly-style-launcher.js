@@ -13,30 +13,60 @@ function getCaptionFromListItem(item) {
   return textParts.join(' ').replace(/\s+/g, ' ').trim();
 }
 
+function getPromptTextarea(el) {
+  return el.querySelector('#promptInput, .ex-unity-widget textarea');
+}
+
+function setPromptValue(el, promptText) {
+  const promptInput = getPromptTextarea(el);
+  if (!promptInput) return false;
+  promptInput.value = promptText || '';
+  return true;
+}
+
 function getLauncherData(el) {
   const rows = [...el.querySelectorAll(':scope > div')];
   const chooserContent = rows[0]?.firstElementChild;
   const heading = chooserContent?.querySelector('h4');
-  const listItems = chooserContent
-    ? [...chooserContent.children]
-      .filter((child) => child.tagName === 'UL')
-      .flatMap((list) => [...list.querySelectorAll(':scope > li')])
-    : [];
   const previewRows = rows.slice(1);
+  const items = [];
+  let pendingItems = [];
+
+  if (chooserContent) {
+    [...chooserContent.children].forEach((child) => {
+      if (child.tagName === 'UL') {
+        const listItems = [...child.querySelectorAll(':scope > li')];
+        const nextItems = listItems.map((item) => ({
+          caption: getCaptionFromListItem(item),
+          prompt: '',
+          thumbnail: item.querySelector('picture')?.cloneNode(true),
+        }));
+
+        items.push(...nextItems);
+        pendingItems = nextItems;
+      } else if (child.tagName === 'P' && pendingItems.length) {
+        const prompt = child.textContent.trim();
+        pendingItems.forEach((item) => {
+          item.prompt = prompt;
+        });
+        pendingItems = [];
+      }
+    });
+  }
 
   return {
     heading,
-    items: listItems
+    items: items
       .map((item, index) => {
-        const thumbnail = item.querySelector('picture');
         const previewPictures = [...(previewRows[index]?.querySelectorAll('picture') || [])];
         const preview = previewPictures[previewPictures.length - 1];
 
-        if (!thumbnail || !preview) return null;
+        if (!item.thumbnail || !preview) return null;
 
         return {
-          caption: getCaptionFromListItem(item) || `Style ${index + 1}`,
-          thumbnail: thumbnail.cloneNode(true),
+          caption: item.caption || `Style ${index + 1}`,
+          prompt: item.prompt,
+          thumbnail: item.thumbnail.cloneNode(true),
           preview: preview.cloneNode(true),
         };
       })
@@ -44,7 +74,9 @@ function getLauncherData(el) {
   };
 }
 
-function updateActiveItem(items, buttons, previewFrame, activeIndex) {
+function updateActiveItem(el, items, buttons, previewFrame, activeIndex) {
+  el.dataset.activePromptIndex = String(activeIndex);
+
   buttons.forEach((button, index) => {
     const isActive = index === activeIndex;
     button.classList.toggle('is-active', isActive);
@@ -52,9 +84,10 @@ function updateActiveItem(items, buttons, previewFrame, activeIndex) {
   });
 
   previewFrame.replaceChildren(items[activeIndex].preview.cloneNode(true));
+  setPromptValue(el, items[activeIndex].prompt);
 }
 
-function buildThumbnailItem(item, index, items, buttons, previewFrame) {
+function buildThumbnailItem(el, item, index, items, buttons, previewFrame) {
   const listItem = createTag('li', { class: 'firefly-style-launcher-thumbnail-item' });
   const button = createTag('button', {
     type: 'button',
@@ -67,7 +100,7 @@ function buildThumbnailItem(item, index, items, buttons, previewFrame) {
 
   media.append(item.thumbnail.cloneNode(true));
   button.append(media, caption);
-  button.addEventListener('click', () => updateActiveItem(items, buttons, previewFrame, index));
+  button.addEventListener('click', () => updateActiveItem(el, items, buttons, previewFrame, index));
 
   buttons.push(button);
   listItem.append(button);
@@ -100,7 +133,7 @@ export default async function init(el) {
   }
 
   items.forEach((item, index) => {
-    thumbnailList.append(buildThumbnailItem(item, index, items, buttons, previewFrame));
+    thumbnailList.append(buildThumbnailItem(el, item, index, items, buttons, previewFrame));
   });
 
   thumbnailsSection.append(thumbnailList);
@@ -111,5 +144,16 @@ export default async function init(el) {
   layout.append(sidebar, previewPanel);
 
   el.replaceChildren(layout);
-  updateActiveItem(items, buttons, previewFrame, 0);
+  updateActiveItem(el, items, buttons, previewFrame, 0);
+
+  if (!getPromptTextarea(el)) {
+    const observer = new MutationObserver(() => {
+      if (!getPromptTextarea(el)) return;
+      const activeIndex = Number(el.dataset.activePromptIndex || 0);
+      setPromptValue(el, items[activeIndex]?.prompt || '');
+      observer.disconnect();
+    });
+
+    observer.observe(el, { childList: true, subtree: true });
+  }
 }
