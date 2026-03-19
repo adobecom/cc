@@ -83,11 +83,17 @@
 .fsl-chevron {
   width: 8px;
   height: 8px;
-  border-right: 2px solid #9a9a9a;
-  border-bottom: 2px solid #9a9a9a;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
   transform: rotate(45deg);
   flex-shrink: 0;
   margin-top: -3px;
+  transition: transform 0.2s ease;
+}
+
+.fsl-model-selector.open .fsl-chevron {
+  transform: rotate(225deg);
+  margin-top: 1px;
 }
 
 .fsl-model-dropdown {

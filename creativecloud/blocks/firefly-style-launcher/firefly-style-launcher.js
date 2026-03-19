@@ -3,9 +3,8 @@ import { createTag } from '../../scripts/utils.js';
 function parseStyleLi(li) {
   const picture = li.querySelector('picture');
   if (!picture) return null;
-  const clone = li.cloneNode(true);
-  clone.querySelector('picture').remove();
-  const parts = clone.innerHTML
+  picture.remove();
+  const parts = li.innerHTML
     .split(/<br\s*\/?>/i)
     .map((p) => {
       const t = document.createElement('span');
@@ -13,7 +12,7 @@ function parseStyleLi(li) {
       return t.textContent.trim();
     })
     .filter(Boolean);
-  return { picture: picture.cloneNode(true), label: parts[0] || '', prompt: parts.slice(1).join(' ').trim() };
+  return { picture, label: parts[0] || '', prompt: parts.slice(1).join(' ').trim() };
 }
 
 function parseStyles(row) {
@@ -29,16 +28,63 @@ function parseStyles(row) {
   return styles;
 }
 
+const PREVIEW_IMG_PARAMS = {
+  webpLarge: 'width=1000&format=webply&optimize=medium',
+  webpSmall: 'width=500&format=webply&optimize=medium',
+  jpgLarge: 'width=1000&format=jpg&optimize=medium',
+  jpgSmall: 'width=500&format=jpg&optimize=medium',
+};
+
+function getBaseImageUrlFromPicture(picture) {
+  const img = picture?.querySelector('img');
+  const src = img?.src;
+  if (src) return { baseUrl: src.split('?')[0], img };
+  const srcset = picture?.querySelector('source[srcset]')?.srcset;
+  if (!srcset) return null;
+  const url = srcset.split(',')[0].trim().split(/\s+/)[0];
+  const baseUrl = url ? url.split('?')[0] : null;
+  return baseUrl && img ? { baseUrl, img } : null;
+}
+
+function rewritePreviewPicture(picture, isFirst) {
+  const result = getBaseImageUrlFromPicture(picture);
+  if (!result) return;
+  const { baseUrl, img } = result;
+  picture.textContent = '';
+  picture.append(
+    createTag('source', { type: 'image/webp', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.webpLarge}`, media: '(min-width: 600px)' }),
+    createTag('source', { type: 'image/webp', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.webpSmall}` }),
+    createTag('source', { type: 'image/jpeg', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.jpgLarge}`, media: '(min-width: 600px)' }),
+  );
+  img.setAttribute('src', `${baseUrl}?${PREVIEW_IMG_PARAMS.jpgSmall}`);
+  img.removeAttribute('loading');
+  img.removeAttribute('fetchpriority');
+  if (isFirst) {
+    img.setAttribute('loading', 'eager');
+    img.setAttribute('fetchpriority', 'high');
+  } else {
+    img.setAttribute('loading', 'lazy');
+  }
+  picture.append(img);
+}
+
 function parsePreviews(rows) {
-  return rows.map((row) => {
+  return rows.map((row, i) => {
     const children = [...row.querySelectorAll(':scope > div')];
-    return children[children.length - 1]?.querySelector('picture') || null;
+    const picture = children[children.length - 1]?.querySelector('picture') || null;
+    if (picture) rewritePreviewPicture(picture, i === 0);
+    return picture;
   });
 }
 
 function buildStyleItem(style, selected) {
-  const li = createTag('li', { class: `fsl-style-item${selected ? ' selected' : ''}` });
+  const li = createTag('li', { class: `fsl-style-item${selected ? ' selected' : ''}`, tabindex: '0' });
   li.append(style.picture);
+  const img = style.picture.querySelector('img');
+  if (img) {
+    img.setAttribute('loading', 'eager');
+    img.setAttribute('fetchpriority', 'high');
+  }
   li.append(createTag('span', { class: 'fsl-style-label' }, style.label));
   return li;
 }
@@ -53,6 +99,7 @@ function selectStyle(items, promptText, previewArea, styles, previews, idx, skip
   }
 }
 
+// TODO: Will be moved to Unity backend
 const MODEL_MAP = {
   'Firefly Image 3':               { modelId: 'adobe-firefly',     modelVersion: 'image3' },
   'Firefly Image 4 Ultra':         { modelId: 'adobe-firefly',     modelVersion: 'image4_ultra' },
@@ -134,6 +181,7 @@ export default function init(el) {
       e.stopPropagation();
       modelDisplay.textContent = name;
       dropdown.setAttribute('hidden', '');
+      modelSelector.classList.remove('open');
     });
     dropdown.append(item);
   });
@@ -141,8 +189,13 @@ export default function init(el) {
 
   const toggleDropdown = () => {
     const isHidden = dropdown.hasAttribute('hidden');
-    if (isHidden) dropdown.removeAttribute('hidden');
-    else dropdown.setAttribute('hidden', '');
+    if (isHidden) {
+      dropdown.removeAttribute('hidden');
+      modelSelector.classList.add('open');
+    } else {
+      dropdown.setAttribute('hidden', '');
+      modelSelector.classList.remove('open');
+    }
   };
   modelSelector.addEventListener('click', toggleDropdown);
   modelSelector.addEventListener('keydown', (e) => {
@@ -152,25 +205,25 @@ export default function init(el) {
   const generateBtn = createTag('button', { class: 'fsl-generate-btn' });
   if (ctaIcon) generateBtn.append(ctaIcon.cloneNode(true));
   generateBtn.append(document.createTextNode(ctaText));
-  generateBtn.addEventListener('click', () => {
-    const prompt = `${promptText.textContent.trim()}, ${styles[currentStyleIdx].label}`;
-    const modelName = modelDisplay.textContent.trim();
-    const { modelId = modelName, modelVersion = '', raw } = MODEL_MAP[modelName] || {};
-    const hData = encodeURIComponent(JSON.stringify({
-      version: '1.1',
-      module: 'ImageGeneration',
-      config: {
-        type: 'set',
-        referrer: 'Unknown',
-        prompt,
-        modelId,
-        modelVersion,
-        ...(raw && { raw }),
-        generate: false,
-      },
-    }));
-    window.open(`https://firefly.adobe.com/hub?hData=${hData}`, '_blank');
-  });
+  // generateBtn.addEventListener('click', () => {
+  //   const prompt = `${promptText.textContent.trim()}, ${styles[currentStyleIdx].label}`;
+  //   const modelName = modelDisplay.textContent.trim();
+  //   const { modelId = modelName, modelVersion = '', raw } = MODEL_MAP[modelName] || {};
+  //   const hData = encodeURIComponent(JSON.stringify({
+  //     version: '1.1',
+  //     module: 'ImageGeneration',
+  //     config: {
+  //       type: 'set',
+  //       referrer: 'Unknown',
+  //       prompt,
+  //       modelId,
+  //       modelVersion,
+  //       ...(raw && { raw }),
+  //       generate: false,
+  //     },
+  //   }));
+  //   window.open(`https://firefly.adobe.com/hub?hData=${hData}`, '_blank');
+  // });
 
   controls.append(modelSelector, generateBtn);
 
@@ -196,6 +249,13 @@ export default function init(el) {
     item.addEventListener('click', () => {
       currentStyleIdx = i;
       selectStyle(styleItems, promptText, previewArea, styles, previews, i, userEdited);
+    });
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        currentStyleIdx = i;
+        selectStyle(styleItems, promptText, previewArea, styles, previews, i, userEdited);
+      }
     });
   });
 
