@@ -156,7 +156,6 @@ function updateActiveCard(cards, currentIndex) {
   cards.forEach((card) => {
     const isActive = Number(card.dataset.slideIndex) === currentIndex;
     card.classList.toggle('active', isActive);
-    card.tabIndex = isActive ? 0 : -1;
     const prompt = card.querySelector(`.${BLOCK}-prompt`);
     if (prompt) prompt.tabIndex = isActive ? 0 : -1;
     setMediaControlTabOrder(card, isActive);
