@@ -325,6 +325,11 @@ function getDecorateAreaFn() {
           eagerLoad(area.querySelector('img'));
         }
         break;
+      case firstBlock?.classList.contains('firefly-style-launcher'): {
+        firstBlock.querySelector(':scope > div:nth-child(4)')?.querySelectorAll('img').forEach(eagerLoad);
+        eagerLoad(firstBlock.querySelector(':scope > div:nth-child(5) img'));
+        break;
+      }
       default:
         if (!fragmentLink) eagerLoad(area.querySelector('img'));
         break;
