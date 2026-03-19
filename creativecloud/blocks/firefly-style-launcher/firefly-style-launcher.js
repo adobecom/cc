@@ -80,11 +80,20 @@ function getLauncherData(el) {
 
         if (!preview) return null;
 
+        const previewNode = preview.cloneNode(true);
+        if (index === 0) {
+          const previewImage = previewNode.querySelector('img');
+          if (previewImage) {
+            previewImage.setAttribute('loading', 'eager');
+            previewImage.setAttribute('fetchpriority', 'high');
+          }
+        }
+
         return {
           caption: item.caption,
           prompt: item.prompt,
           thumbnail: item.thumbnail.cloneNode(true),
-          preview: preview.cloneNode(true),
+          preview: previewNode,
         };
       })
       .filter(Boolean),
