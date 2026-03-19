@@ -46,9 +46,11 @@ function getBaseImageUrlFromPicture(picture) {
   return baseUrl && img ? { baseUrl, img } : null;
 }
 
-function rewritePreviewPicture(picture, isFirst) {
-  const result = getBaseImageUrlFromPicture(picture);
-  if (!result) return;
+function rewritePreviewPicture(picture, isFirst, overrideBaseUrl) {
+  const result = overrideBaseUrl
+    ? { baseUrl: overrideBaseUrl, img: picture.querySelector('img') }
+    : getBaseImageUrlFromPicture(picture);
+  if (!result?.baseUrl || !result?.img) return;
   const { baseUrl, img } = result;
   picture.textContent = '';
   picture.append(
@@ -72,7 +74,17 @@ function parsePreviews(rows) {
   return rows.map((row, i) => {
     const children = [...row.querySelectorAll(':scope > div')];
     const picture = children[children.length - 1]?.querySelector('picture') || null;
-    if (picture) rewritePreviewPicture(picture, i === 0);
+    if (!picture) return null;
+    if (i === 0) {
+      rewritePreviewPicture(picture, true);
+      return picture;
+    }
+    // Defer: strip src/srcset, store base URL for on-demand rewrite
+    const result = getBaseImageUrlFromPicture(picture);
+    if (result?.baseUrl) picture.dataset.previewBaseUrl = result.baseUrl;
+    picture.querySelectorAll('source').forEach((s) => s.removeAttribute('srcset'));
+    const img = picture.querySelector('img');
+    if (img) { img.removeAttribute('src'); img.removeAttribute('srcset'); }
     return picture;
   });
 }
@@ -95,7 +107,9 @@ function selectStyle(items, promptText, previewArea, styles, previews, idx, skip
   const preview = previews[idx];
   if (preview) {
     previewArea.textContent = '';
-    previewArea.append(preview.cloneNode(true));
+    const clone = preview.cloneNode(true);
+    if (clone.dataset.previewBaseUrl) rewritePreviewPicture(clone, true, clone.dataset.previewBaseUrl);
+    previewArea.append(clone);
   }
 }
 
