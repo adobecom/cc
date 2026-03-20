@@ -1,5 +1,58 @@
 import { createTag } from '../../scripts/utils.js';
 
+// ===== CONFIG =====
+
+const PREVIEW_IMG_PARAMS = {
+  webpLarge: 'width=1000&format=webply&optimize=medium',
+  webpSmall: 'width=500&format=webply&optimize=medium',
+  jpgLarge: 'width=1000&format=jpg&optimize=medium',
+  jpgSmall: 'width=500&format=jpg&optimize=medium',
+};
+
+// Max number of preview rows consumed after the styles row
+const MAX_PREVIEW_ROWS = 4;
+
+// ===== UTILITIES =====
+
+function getBaseImageUrlFromPicture(picture) {
+  const img = picture?.querySelector('img');
+  const src = img?.src;
+  if (src) return { baseUrl: src.split('?')[0], img };
+  const srcset = picture?.querySelector('source[srcset]')?.srcset;
+  if (!srcset) return null;
+  const url = srcset.split(',')[0].trim().split(/\s+/)[0];
+  const baseUrl = url ? url.split('?')[0] : null;
+  return baseUrl && img ? { baseUrl, img } : null;
+}
+
+// Rewrites a picture's sources to use optimised params.
+// Pass overrideBaseUrl when the picture's src/srcset has already been stripped (deferred previews).
+function rewritePreviewPicture(picture, isFirst, overrideBaseUrl) {
+  const result = overrideBaseUrl
+    ? { baseUrl: overrideBaseUrl, img: picture.querySelector('img') }
+    : getBaseImageUrlFromPicture(picture);
+  if (!result?.baseUrl || !result?.img) return;
+  const { baseUrl, img } = result;
+  picture.textContent = '';
+  picture.append(
+    createTag('source', { type: 'image/webp', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.webpLarge}`, media: '(min-width: 600px)' }),
+    createTag('source', { type: 'image/webp', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.webpSmall}` }),
+    createTag('source', { type: 'image/jpeg', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.jpgLarge}`, media: '(min-width: 600px)' }),
+  );
+  img.setAttribute('src', `${baseUrl}?${PREVIEW_IMG_PARAMS.jpgSmall}`);
+  img.removeAttribute('loading');
+  img.removeAttribute('fetchpriority');
+  if (isFirst) {
+    img.setAttribute('loading', 'eager');
+    img.setAttribute('fetchpriority', 'high');
+  } else {
+    img.setAttribute('loading', 'lazy');
+  }
+  picture.append(img);
+}
+
+// ===== DOM PARSING =====
+
 function parseStyleLi(li) {
   const picture = li.querySelector('picture');
   if (!picture) return null;
@@ -28,48 +81,6 @@ function parseStyles(row) {
   return styles;
 }
 
-const PREVIEW_IMG_PARAMS = {
-  webpLarge: 'width=1000&format=webply&optimize=medium',
-  webpSmall: 'width=500&format=webply&optimize=medium',
-  jpgLarge: 'width=1000&format=jpg&optimize=medium',
-  jpgSmall: 'width=500&format=jpg&optimize=medium',
-};
-
-function getBaseImageUrlFromPicture(picture) {
-  const img = picture?.querySelector('img');
-  const src = img?.src;
-  if (src) return { baseUrl: src.split('?')[0], img };
-  const srcset = picture?.querySelector('source[srcset]')?.srcset;
-  if (!srcset) return null;
-  const url = srcset.split(',')[0].trim().split(/\s+/)[0];
-  const baseUrl = url ? url.split('?')[0] : null;
-  return baseUrl && img ? { baseUrl, img } : null;
-}
-
-function rewritePreviewPicture(picture, isFirst, overrideBaseUrl) {
-  const result = overrideBaseUrl
-    ? { baseUrl: overrideBaseUrl, img: picture.querySelector('img') }
-    : getBaseImageUrlFromPicture(picture);
-  if (!result?.baseUrl || !result?.img) return;
-  const { baseUrl, img } = result;
-  picture.textContent = '';
-  picture.append(
-    createTag('source', { type: 'image/webp', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.webpLarge}`, media: '(min-width: 600px)' }),
-    createTag('source', { type: 'image/webp', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.webpSmall}` }),
-    createTag('source', { type: 'image/jpeg', srcset: `${baseUrl}?${PREVIEW_IMG_PARAMS.jpgLarge}`, media: '(min-width: 600px)' }),
-  );
-  img.setAttribute('src', `${baseUrl}?${PREVIEW_IMG_PARAMS.jpgSmall}`);
-  img.removeAttribute('loading');
-  img.removeAttribute('fetchpriority');
-  if (isFirst) {
-    img.setAttribute('loading', 'eager');
-    img.setAttribute('fetchpriority', 'high');
-  } else {
-    img.setAttribute('loading', 'lazy');
-  }
-  picture.append(img);
-}
-
 function parsePreviews(rows) {
   return rows.map((row, i) => {
     const children = [...row.querySelectorAll(':scope > div')];
@@ -80,18 +91,21 @@ function parsePreviews(rows) {
       return picture;
     }
     // Defer: strip src/srcset, store base URL for on-demand rewrite
-    const result = getBaseImageUrlFromPicture(picture);
-    if (result?.baseUrl) picture.dataset.previewBaseUrl = result.baseUrl;
+    const baseResult = getBaseImageUrlFromPicture(picture);
+    if (baseResult?.baseUrl) picture.dataset.previewBaseUrl = baseResult.baseUrl;
     picture.querySelectorAll('source').forEach((s) => s.removeAttribute('srcset'));
-    const img = picture.querySelector('img');
-    if (img) { img.removeAttribute('src'); img.removeAttribute('srcset'); }
+    const deferImg = picture.querySelector('img');
+    if (deferImg) { deferImg.removeAttribute('src'); deferImg.removeAttribute('srcset'); }
     return picture;
   });
 }
 
+// ===== DOM BUILDING =====
+
 function buildStyleItem(style, selected) {
   const li = createTag('li', { class: `fsl-style-item${selected ? ' selected' : ''}`, tabindex: '0' });
   li.append(style.picture);
+  // Style thumbnails are above-the-fold; load them eagerly for perceived performance
   const img = style.picture.querySelector('img');
   if (img) {
     img.setAttribute('loading', 'eager');
@@ -101,6 +115,8 @@ function buildStyleItem(style, selected) {
   return li;
 }
 
+// ===== STATE & INTERACTION =====
+
 function selectStyle(items, promptText, previewArea, styles, previews, idx, skipPrompt = false) {
   items.forEach((item, i) => item.classList.toggle('selected', i === idx));
   if (!skipPrompt) promptText.textContent = styles[idx].prompt;
@@ -108,33 +124,13 @@ function selectStyle(items, promptText, previewArea, styles, previews, idx, skip
   if (preview) {
     previewArea.textContent = '';
     const clone = preview.cloneNode(true);
+    // eslint-disable-next-line max-len
     if (clone.dataset.previewBaseUrl) rewritePreviewPicture(clone, true, clone.dataset.previewBaseUrl);
     previewArea.append(clone);
   }
 }
 
-// TODO: Will be moved to Unity backend
-const MODEL_MAP = {
-  'Firefly Image 3':               { modelId: 'adobe-firefly',     modelVersion: 'image3' },
-  'Firefly Image 4 Ultra':         { modelId: 'adobe-firefly',     modelVersion: 'image4_ultra' },
-  'Firefly Image 4':               { modelId: 'adobe-firefly',     modelVersion: 'image4_standard' },
-  'Firefly Image 5':               { modelId: 'firefly_image',     modelVersion: 'image5' },
-  'FLUX.2 [pro]':                  { modelId: 'flux',              modelVersion: 'fluxPro-2' },
-  'FLUX.1 Kontext [max]':          { modelId: 'flux',              modelVersion: 'fluxKontextMax' },
-  'FLUX.1 Kontext [pro]':          { modelId: 'flux',              modelVersion: 'fluxKontextPro' },
-  'FLUX1.1 [pro]':                 { modelId: 'fluxPro',           modelVersion: '1.1' },
-  'FLUX1.1 [pro] Ultra Raw':       { modelId: 'fluxUltra',         modelVersion: '1.1', raw: true },
-  'FLUX1.1 [pro] Ultra':           { modelId: 'fluxUltra',         modelVersion: '1.1' },
-  'Gemini 3.1 (w/ Nano Banana 2)': { modelId: 'gemini-flash',      modelVersion: 'nano-banana-3' },
-  'Gemini 2.5 (w/ Nano Banana)':   { modelId: 'gemini-flash',      modelVersion: 'nano-banana' },
-  'Gemini 3 (w/ Nano Banana Pro)': { modelId: 'gemini-flash',      modelVersion: 'nano-banana-2' },
-  'Imagen 3':                      { modelId: 'imagen',            modelVersion: '3.0-generate-002' },
-  'Imagen 4':                      { modelId: 'imagen',            modelVersion: '4.0-generate-preview' },
-  'Ideogram 3.0':                  { modelId: 'ideogram',          modelVersion: '3.0-generate' },
-  'GPT Image 1':                   { modelId: 'gpt-4o-image',      modelVersion: '' },
-  'GPT Image 1.5':                 { modelId: 'gpt-image',         modelVersion: '1.5' },
-  'Runway Gen-4 Image':            { modelId: 'runway-gen4-image', modelVersion: '' },
-};
+// ===== INIT =====
 
 export default function init(el) {
   const rows = [...el.querySelectorAll(':scope > div')];
@@ -151,7 +147,7 @@ export default function init(el) {
   const ctaText = rows[2].querySelector(':scope > div:last-child')?.textContent.trim() || 'Generate';
 
   const styles = parseStyles(rows[3]);
-  const previews = parsePreviews(rows.slice(4, 8));
+  const previews = parsePreviews(rows.slice(4, 4 + MAX_PREVIEW_ROWS));
 
   if (!styles.length) return;
 
@@ -219,25 +215,6 @@ export default function init(el) {
   const generateBtn = createTag('button', { class: 'fsl-generate-btn' });
   if (ctaIcon) generateBtn.append(ctaIcon.cloneNode(true));
   generateBtn.append(document.createTextNode(ctaText));
-  // generateBtn.addEventListener('click', () => {
-  //   const prompt = `${promptText.textContent.trim()}, ${styles[currentStyleIdx].label}`;
-  //   const modelName = modelDisplay.textContent.trim();
-  //   const { modelId = modelName, modelVersion = '', raw } = MODEL_MAP[modelName] || {};
-  //   const hData = encodeURIComponent(JSON.stringify({
-  //     version: '1.1',
-  //     module: 'ImageGeneration',
-  //     config: {
-  //       type: 'set',
-  //       referrer: 'Unknown',
-  //       prompt,
-  //       modelId,
-  //       modelVersion,
-  //       ...(raw && { raw }),
-  //       generate: false,
-  //     },
-  //   }));
-  //   window.open(`https://firefly.adobe.com/hub?hData=${hData}`, '_blank');
-  // });
 
   controls.append(modelSelector, generateBtn);
 
