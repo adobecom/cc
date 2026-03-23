@@ -27,6 +27,10 @@
   margin-inline-start: calc((100% - var(--ff-card-width)) / 2);
 }
 
+.firefly-carousel .firefly-carousel-card wbr {
+  display: none;
+}
+
 .firefly-carousel .firefly-carousel-card {
   position: relative;
   flex: 0 0 var(--ff-card-width);
