@@ -133,6 +133,9 @@ function isDragClick(e, item) {
 }
 
 function setExpandedState(item, trigger, expanded) {
+  const analyticsValue = trigger.getAttribute('daa-ll');
+  const label = expanded ? 'close' : 'open';
+  trigger.setAttribute('daa-ll', analyticsValue.replace(/open|close/gi, label));
   trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
   item.classList.toggle('is-open', expanded);
 }
@@ -171,7 +174,9 @@ function createAccordionItem(data) {
   itemWrapper.addEventListener('click', handleItemClick);
   const header = createTag('h3', { class: 'firefly-howto-header' });
 
-  const btn = createTag('button', { class: 'firefly-howto-trigger', id: `btn-${headingId}`, 'aria-expanded': 'false', type: 'button', 'aria-controls': `panel-${headingId}` });
+  const btn = createTag('button', {
+    class: 'firefly-howto-trigger', id: `btn-${headingId}`, 'aria-expanded': 'false', type: 'button', 'aria-controls': `panel-${headingId}`, 'daa-ll': `open-${headingId}`,
+  });
 
   const titleSpan = createTag('span', { class: 'firefly-howto-title' });
   titleSpan.textContent = title;
