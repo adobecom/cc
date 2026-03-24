@@ -36,6 +36,8 @@
   border-radius: var(--ff-card-border-radius);
   background: #111;
   outline: none;
+  box-shadow: 0 16px 24px 0 rgb(0 0 0 / 8%), 0 4px 10px 0 rgb(0 0 0 / 5%);
+  transition: box-shadow 180ms ease-in-out;
 }
 
 .firefly-carousel .firefly-carousel-card:focus-visible::after {
@@ -50,7 +52,7 @@
 
 .firefly-carousel .firefly-carousel-card.active {
   /* Slightly reduced shadow extent (5px) to avoid clipping by content below */
-  box-shadow: 0 95px 75px 0 rgba(0, 0, 0, 0.19), 0 64.815px 46.852px 0 rgba(0, 0, 0, 0.14), 0 38.519px 25.481px 0 rgba(0, 0, 0, 0.12), 0 20px 13px 0 rgba(0, 0, 0, 0.09), 0 8.148px 6.519px 0 rgba(0, 0, 0, 0.07), 0 1.852px 3.148px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 95px 75px 0 rgb(0 0 0 / 19%), 0 64.815px 46.852px 0 rgb(0 0 0 / 14%), 0 38.519px 25.481px 0 rgb(0 0 0 / 12%), 0 20px 13px 0 rgb(0 0 0 / 9%), 0 8.148px 6.519px 0 rgb(0 0 0 / 7%), 0 1.852px 3.148px 0 rgb(0 0 0 / 5%);
 }
 
 .firefly-carousel .firefly-carousel-media {
@@ -90,9 +92,9 @@
   align-items: center;
   padding: 8px 9px 8px 8px;
   border-radius: 8px;
-  border: 1px solid var(--Color-Middle-Grey, #707070);
+  border: 1px solid #707070;
   background: var(--container-fill, #FFF);
-  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 4px 1px rgb(0 0 0 / 25%);
   width: fit-content;
   max-width: calc(var(--ff-card-width) - 80px);
   color: inherit;
@@ -129,6 +131,10 @@
   width: 16px;
   margin-inline-start: 24px;
   height: 16px;
+}
+
+[dir="rtl"] .firefly-carousel .firefly-carousel-prompt-icon {
+  transform: scaleX(-1);
 }
 
 .firefly-carousel .firefly-carousel-nav-btn {
@@ -170,15 +176,15 @@
 
 .firefly-carousel .firefly-carousel-nav-btn:disabled {
   opacity: 0.5;
-  background: rgba(80, 80, 80, 0.40);
-  backdrop-filter: blur(13.63636302947998px);
+  background: rgb(80 80 80 / 40%);
+  backdrop-filter: blur(13.6364px);
 }
 
 .firefly-carousel .firefly-carousel-nav-btn svg {
   width: 10.909px;
   height: 10.909px;
   flex-shrink: 0;
-  color: #FFFFFF;
+  color: #FFF;
 }
 
 @media screen and (min-width: 600px) {
