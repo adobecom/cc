@@ -83,7 +83,7 @@
 .firefly-carousel .firefly-carousel-prompt {
   position: absolute;
   bottom: 16px;
-  left: 15px;
+  inset-inline-start: 15px;
   display: none;
   flex-direction: row;
   align-items: center;
