@@ -200,8 +200,7 @@ function waitForTrackTransition(track, onDone) {
 }
 
 function afterNextPaint(callback) {
-  const raf = window.requestAnimationFrame ?? ((fn) => setTimeout(fn, 16));
-  raf(() => raf(callback));
+  requestAnimationFrame(() => requestAnimationFrame(callback));
 }
 
 function updateCurrentIndex(state, itemCount, direction) {
@@ -224,11 +223,6 @@ function createMoveHandler(track, itemCount, state, applyFrame) {
     const [firstStep, ...remainingSteps] = sequence;
 
     applyFrame(firstStep.frame, firstStep.animate);
-    if (!remainingSteps.length) {
-      finishMove();
-      return true;
-    }
-
     afterNextPaint(() => {
       remainingSteps.forEach(({ frame, animate }) => applyFrame(frame, animate));
       finishMove();
