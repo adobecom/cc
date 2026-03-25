@@ -99,10 +99,7 @@
 
 .upload-marquee-block .upload-marquee-media {
   width: 100%;
-  max-width: 864px;
-  max-height: 632px;
-  min-height: 0;
-  overflow: hidden;
+  max-width: 910px;
   align-self: center;
 }
 
