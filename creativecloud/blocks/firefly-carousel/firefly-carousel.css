@@ -201,6 +201,11 @@
     max-width: calc(var(--ff-card-width) / 2.2);
   }
 
+  .firefly-carousel .firefly-carousel-nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
   [dir="rtl"] .firefly-carousel .firefly-carousel-prompt {
     left: auto;
     right: 30px;
