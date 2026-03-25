@@ -100,6 +100,26 @@
     }
     }
 
+    /* ----  Video ----  */
+    .video-container .pause-play-wrapper {
+        inset-inline-end: 2%;
+        right: auto;
+    }
+
+    @media (min-width: 600px) {
+        .video-container .pause-play-wrapper {
+            inset-inline-end: 2%;
+            right: auto;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        .video-container .pause-play-wrapper {
+            inset-inline-end: 2%;
+            right: auto;
+        }
+    }
+
     /* ---- Carousel (Tablet Hinting) ---- */
     .carousel.hinting-tablet {
         --tablet-card-width: calc(300 / 768 * 100vw);
