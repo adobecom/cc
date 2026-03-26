@@ -186,6 +186,11 @@
   color: #FFF;
 }
 
+[dir="rtl"] .video-container .pause-play-wrapper {
+  left: 2%;
+  right: auto;
+}
+
 @media screen and (min-width: 600px) {
   .firefly-carousel {
     --ff-card-width: 70vw;
