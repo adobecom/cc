@@ -186,7 +186,6 @@
   color: #FFF;
 }
 
-/* Video play/pause button */
 [dir="rtl"] .video-container .pause-play-wrapper {
   left: 2%;
   right: auto;
