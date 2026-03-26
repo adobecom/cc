@@ -373,6 +373,12 @@
   }
 }
 
+@media screen and (min-width: 2500px) {
+  .showcase-marquee.unity-enabled {
+    padding-top: calc(100vw - 2500px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .showcase-marquee .logo-row .logo-container {
     animation: none !important;

@@ -83,7 +83,7 @@
   color: var(--um-white);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   margin: 48px var(--grid-margins-width) 8px;
 }
 
@@ -99,6 +99,7 @@
 
 .upload-marquee-block .upload-marquee-media {
   width: 100%;
+  max-width: 910px;
   align-self: center;
 }
 
