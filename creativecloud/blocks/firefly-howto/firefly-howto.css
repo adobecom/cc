@@ -72,7 +72,7 @@
   padding: var(--trigger-padding-inline);
   background: none;
   border: none;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   color: var(--c-text-primary);
   font-family: var(--body-font-family);
@@ -189,7 +189,7 @@
 /* Responsive Overrides */
 @media (min-width: 600px) {
   .firefly-howto {
-    --step-column-width: 55px;
+    --step-column-width: 72px;
     --step-font-size: 1rem;
     --trigger-padding-inline: var(--s-spacing-xl);
     --trigger-row-gap: 0;
@@ -207,7 +207,7 @@
 
 @media (min-width: 1200px) {
   .firefly-howto {
-    --step-column-width: 65px;
+    --step-column-width: 76px;
     --trigger-gap: var(--s-spacing-md);
     --title-font-size: 1.5rem;
     --content-font-size: 1.25rem;

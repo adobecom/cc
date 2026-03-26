@@ -2,12 +2,7 @@ import { createTag } from '../../scripts/utils.js';
 
 // ===== CONFIG =====
 
-const CONFIG = {
-  DEFAULT_STEP_PREFIX: 'Step',
-  SEO_MARKER: 'seo-props',
-  STEP_TITLE_DELIMITER: '||',
-  CLICK_DRAG_THRESHOLD: 5,
-};
+const CONFIG = { CLICK_DRAG_THRESHOLD: 5 };
 
 const LANA_OPTIONS = { tags: 'firefly-howto', errorType: 'i' };
 
@@ -19,47 +14,36 @@ function logError(message, error) {
   window.lana?.log(`${message}: ${error}`, LANA_OPTIONS);
 }
 
-// ===== UTILITY FUNCTIONS =====
-
-function parseStepTitle(rawTitle) {
-  let stepPrefix = CONFIG.DEFAULT_STEP_PREFIX;
-  let title = rawTitle;
-  let fullTitle = title;
-
-  if (rawTitle.includes(CONFIG.STEP_TITLE_DELIMITER)) {
-    const parts = rawTitle.split(CONFIG.STEP_TITLE_DELIMITER);
-    stepPrefix = parts[0]?.trim() || CONFIG.DEFAULT_STEP_PREFIX;
-    title = parts[1]?.trim() || '';
-    fullTitle = `${stepPrefix} ${title}`;
-  }
-
-  return { stepPrefix, title, fullTitle };
-}
-
 // ===== PARSING (SEO PROPS) =====
 
 function parseCsv(value) {
   return value.split(',').map((item) => item.trim()).filter(Boolean);
 }
 
+const SEO_PROPS_MAP = {
+  'icon-seo-name': { field: 'name', csv: false },
+  'icon-seo-description': { field: 'description', csv: false },
+  'icon-seo-time': { field: 'totalTime', csv: false },
+  'icon-seo-tools': { field: 'tools', csv: true },
+  'icon-seo-tool': { field: 'tools', csv: true },
+  'icon-seo-supply': { field: 'supply', csv: true },
+  'icon-seo-supplies': { field: 'supply', csv: true },
+};
+
 function extractSeoData(item) {
   const seoData = {};
-  const props = item.children[1]?.querySelectorAll('p') || [];
+  const listItems = item.querySelectorAll('li');
 
-  props.forEach((p) => {
-    const text = p.textContent;
-    const splitIndex = text.indexOf(':');
+  listItems.forEach((li) => {
+    const iconSpan = li.querySelector('span[class]');
+    if (!iconSpan) return;
 
-    if (splitIndex < 0) return;
+    const iconClass = Array.from(iconSpan.classList).find((cls) => SEO_PROPS_MAP[cls]);
+    if (!iconClass) return;
 
-    const key = text.substring(0, splitIndex).trim().toLowerCase();
-    const value = text.substring(splitIndex + 1).trim();
-
-    if (key === 'name') seoData.name = value;
-    if (key === 'description') seoData.description = value;
-    if (key === 'total-time' || key === 'totaltime') seoData.totalTime = value;
-    if (key === 'tools' || key === 'tool') seoData.tools = parseCsv(value);
-    if (key === 'supply' || key === 'supplies') seoData.supply = parseCsv(value);
+    const { field, csv } = SEO_PROPS_MAP[iconClass];
+    const value = li.textContent.trim();
+    seoData[field] = csv ? parseCsv(value) : value;
   });
 
   return seoData;
@@ -68,21 +52,23 @@ function extractSeoData(item) {
 // ===== PARSING (STEPS) =====
 
 function parseStep(item, index) {
-  const innerDiv = item.querySelector('div');
-  if (!innerDiv) return null;
+  const headingCol = item.children[0];
+  const contentCol = item.children[1];
+  if (!headingCol || !contentCol) return null;
 
-  const titleEl = innerDiv.querySelector('h3');
-  const contentEl = innerDiv.querySelector('p');
-  const titleText = titleEl ? titleEl.innerText : '';
-  const { stepPrefix, title, fullTitle } = parseStepTitle(titleText);
+  const [prefixHeading, titleHeading] = headingCol.querySelectorAll('h3');
+  const stepPrefix = prefixHeading?.textContent.trim() ?? '';
+  const title = titleHeading?.textContent.trim() ?? '';
+  const headingId = titleHeading?.id || prefixHeading?.id || `acc-heading-${index}`;
+  const fullTitle = `${stepPrefix} ${title}`.trim();
 
   return {
     id: index,
     title,
     fullTitle,
-    content: contentEl ? contentEl.innerHTML : '',
-    plainText: contentEl ? contentEl.textContent : '',
-    headingId: titleEl ? titleEl.id : `acc-heading-${index}`,
+    content: contentCol.innerHTML,
+    plainText: contentCol.textContent,
+    headingId,
     stepPrefix,
   };
 }
@@ -96,9 +82,9 @@ function extractData(el) {
     const innerDivs = Array.from(item.children);
     if (innerDivs.length === 0) return;
 
-    const isSeoMarker = innerDivs[0].textContent.trim() === CONFIG.SEO_MARKER;
+    const isSeoMarker = !!item.querySelector('[class*="icon-seo-"]');
     if (isSeoMarker) {
-      if (isSeoEnabled && innerDivs.length > 1) {
+      if (isSeoEnabled) {
         seoData = { ...seoData, ...extractSeoData(item) };
       }
       return;
@@ -133,6 +119,9 @@ function isDragClick(e, item) {
 }
 
 function setExpandedState(item, trigger, expanded) {
+  const analyticsValue = trigger.getAttribute('daa-ll');
+  const label = expanded ? 'close' : 'open';
+  trigger.setAttribute('daa-ll', analyticsValue.replace(/open|close/gi, label));
   trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
   item.classList.toggle('is-open', expanded);
 }
@@ -171,7 +160,9 @@ function createAccordionItem(data) {
   itemWrapper.addEventListener('click', handleItemClick);
   const header = createTag('h3', { class: 'firefly-howto-header' });
 
-  const btn = createTag('button', { class: 'firefly-howto-trigger', id: `btn-${headingId}`, 'aria-expanded': 'false', type: 'button', 'aria-controls': `panel-${headingId}` });
+  const btn = createTag('button', {
+    class: 'firefly-howto-trigger', id: `btn-${headingId}`, 'aria-expanded': 'false', type: 'button', 'aria-controls': `panel-${headingId}`, 'daa-ll': `open-${headingId}`,
+  });
 
   const titleSpan = createTag('span', { class: 'firefly-howto-title' });
   titleSpan.textContent = title;
