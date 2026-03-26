@@ -85,8 +85,7 @@
 .firefly-carousel .firefly-carousel-prompt {
   position: absolute;
   bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
+  inset-inline-start: 15px;
   display: none;
   flex-direction: row;
   align-items: center;
@@ -197,7 +196,6 @@
   .firefly-carousel .firefly-carousel-prompt {
     left: 30px;
     bottom: 20px;
-    transform: none;
     max-width: calc(var(--ff-card-width) / 2.2);
   }
 
@@ -227,7 +225,6 @@
     bottom: 55px;
     max-width: calc(var(--ff-card-width) / 1.6);
     opacity: 0;
-    visibility: hidden;
     pointer-events: none;
     transition: opacity 180ms ease;
   }
