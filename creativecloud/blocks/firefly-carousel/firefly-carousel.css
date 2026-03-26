@@ -186,7 +186,7 @@
   color: #FFF;
 }
 
-[dir="rtl"] .video-container .pause-play-wrapper {
+[dir="rtl"] .firefly-carousel .video-container .pause-play-wrapper {
   left: 2%;
   right: auto;
 }
