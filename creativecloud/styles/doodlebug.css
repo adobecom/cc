@@ -17,6 +17,10 @@
         margin: 0 var(--content-margin);
     }
 
+    .accordion p {
+        color: inherit;
+    }
+
     .accordion .descr-term button {
         border-radius: 16px;
         background: #F0F0F7;
