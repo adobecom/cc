@@ -200,6 +200,13 @@ const playVideo = (video) => {
 // Expands a card and starts video playback.
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
+  const infoButton = card.querySelector('.pre-yt-info-button');
+
+  if (infoButton) {
+    infoButton.removeAttribute('aria-hidden'); // make visible to SR
+    infoButton.setAttribute('tabindex', '0'); // add to tab order
+  }
+
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
     playVideo(video);
   }
@@ -219,6 +226,7 @@ const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0) => {
     'aria-label': ariaLabel,
     type: 'button',
     tabIndex,
+    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
   button.addEventListener('click', (e) => {
@@ -243,7 +251,8 @@ const createInfoButton = () => {
     class: CLASSES.INFO_BUTTON,
     'aria-label': 'Show info',
     type: 'button',
-    tabindex: '0',
+    tabindex: '-1',
+    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -254,6 +263,7 @@ const createEditButton = (buttonText) => {
   const button = createTag('a', {
     class: CLASSES.BUTTON,
     tabindex: '0',
+    'aria-hidden': 'true',
   });
   button.textContent = buttonText;
   return button;
@@ -262,7 +272,7 @@ const createEditButton = (buttonText) => {
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
   const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '0' });
+  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1', 'aria-hidden': 'true' });
   overlay.append(overlayText);
   return overlay;
 };
