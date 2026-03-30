@@ -209,7 +209,6 @@ const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0) => {
     'aria-label': ariaLabel,
     type: 'button',
     tabIndex,
-    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
   button.addEventListener('click', (e) => {
@@ -235,7 +234,6 @@ const createInfoButton = () => {
     'aria-label': 'Show info',
     type: 'button',
     tabindex: '0',
-    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -246,7 +244,6 @@ const createEditButton = (buttonText) => {
   const button = createTag('a', {
     class: CLASSES.BUTTON,
     tabindex: '0',
-    'aria-hidden': 'true',
   });
   button.textContent = buttonText;
   return button;
@@ -255,7 +252,7 @@ const createEditButton = (buttonText) => {
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
   const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1' });
+  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '0' });
   overlay.append(overlayText);
   return overlay;
 };
