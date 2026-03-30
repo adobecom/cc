@@ -14,12 +14,14 @@ const NAV_INDEX_DELTAS = {
 };
 const NAV_FRAMES = {
   BASE: { beforeActive: 1, offsetMultiplier: -1 },
-  NEXT: { beforeActive: 1, offsetMultiplier: -2 },
+  NEXT_STAGE: { beforeActive: 0, offsetMultiplier: 0 },
+  NEXT: { beforeActive: 0, offsetMultiplier: -1 },
   PREV_STAGE: { beforeActive: 2, offsetMultiplier: -2 },
   PREV: { beforeActive: 2, offsetMultiplier: -1 },
 };
 const NAV_SEQUENCES = {
   [NAV_DIRECTIONS.NEXT]: [
+    { frame: NAV_FRAMES.NEXT_STAGE, animate: false },
     { frame: NAV_FRAMES.NEXT, animate: true },
   ],
   [NAV_DIRECTIONS.PREV]: [
@@ -41,24 +43,34 @@ const ICONS = {
 </svg>`,
 };
 
-// Parses carousel items directly from the block DOM. Each item has picture, caption, and deeplink
+const MEDIA_SELECTOR = 'picture, .video-container.video-holder';
+
+function getMediaElement(mediaDiv) {
+  if (mediaDiv.matches(MEDIA_SELECTOR)) return mediaDiv;
+  return mediaDiv.querySelector(MEDIA_SELECTOR);
+}
+
+function parseSlideItem(itemDiv) {
+  if (itemDiv.children.length < 3) return null;
+  const [mediaDiv, captionDiv, deeplinkDiv] = itemDiv.children;
+  const mediaEl = getMediaElement(mediaDiv);
+  if (!mediaEl) return null;
+
+  const deeplinkAnchor = deeplinkDiv.querySelector('a[href]');
+  if (!deeplinkAnchor) return null;
+
+  return {
+    mediaEl,
+    promptText: captionDiv?.textContent?.trim() || '',
+    deeplinkUrl: deeplinkAnchor?.getAttribute('href') || '',
+  };
+}
+
 function parseItemsFromDOM(el) {
-  const itemDivs = el.querySelectorAll(':scope > div');
-  const items = [];
-
-  itemDivs.forEach((itemDiv) => {
-    const [mediaDiv, captionDiv, deeplinkDiv] = itemDiv.children;
-    const pictureEl = mediaDiv?.querySelector('picture');
-    const deeplinkAnchor = deeplinkDiv?.querySelector('a[href]');
-    if (!pictureEl) return;
-
-    items.push({
-      pictureEl,
-      promptText: captionDiv?.textContent?.trim() || '',
-      deeplinkUrl: deeplinkAnchor?.getAttribute('href') || '',
-    });
+  return [...el.querySelectorAll(':scope > div')].flatMap((itemDiv) => {
+    const item = parseSlideItem(itemDiv);
+    return item ? [item] : [];
   });
-  return items;
 }
 
 function wrapIndex(index, length) {
@@ -86,15 +98,33 @@ function createPromptPill(promptText, deeplinkUrl) {
   return pill;
 }
 
+function ensureVideoSource(videoEl) {
+  const hasSource = videoEl.getAttribute('src') || videoEl.querySelector('source[src]');
+  if (hasSource) return;
+  const source = videoEl.dataset.videoSource;
+  if (!source) return;
+  videoEl.src = source;
+}
+
+function setMediaControlTabOrder(card, isActive) {
+  card.querySelectorAll('.pause-play-wrapper').forEach((control) => {
+    control.tabIndex = isActive ? 0 : -1;
+  });
+}
+
 function createCard(item, index) {
   const card = createTag('article', { class: `${BLOCK}-card` });
   card.dataset.slideIndex = String(index);
   const mediaWrapper = createTag('div', { class: `${BLOCK}-media` });
-  const clonedPicture = item.pictureEl.cloneNode(true);
-  const img = clonedPicture.querySelector('img');
+  const prompt = createPromptPill(item.promptText, item.deeplinkUrl);
+  mediaWrapper.append(item.mediaEl);
+  const img = mediaWrapper.querySelector('picture img');
   if (img) img.setAttribute('loading', 'eager');
-  mediaWrapper.appendChild(clonedPicture);
-  card.append(mediaWrapper, createPromptPill(item.promptText || '', item.deeplinkUrl));
+  mediaWrapper.querySelectorAll('video').forEach((videoEl) => ensureVideoSource(videoEl));
+  const pausePlayControl = mediaWrapper.querySelector('.pause-play-wrapper');
+  if (pausePlayControl) pausePlayControl.before(prompt);
+  card.append(mediaWrapper);
+  if (!pausePlayControl) card.append(prompt);
   return card;
 }
 
@@ -128,9 +158,9 @@ function updateActiveCard(cards, currentIndex) {
   cards.forEach((card) => {
     const isActive = Number(card.dataset.slideIndex) === currentIndex;
     card.classList.toggle('active', isActive);
-    card.tabIndex = isActive ? 0 : -1;
     const prompt = card.querySelector(`.${BLOCK}-prompt`);
     if (prompt) prompt.tabIndex = isActive ? 0 : -1;
+    setMediaControlTabOrder(card, isActive);
   });
 }
 
@@ -142,13 +172,13 @@ function setCircularOrder(cards, currentIndex, itemCount, beforeActive) {
   }
 }
 
-function applyNavFrame(track, cards, state, itemCount, frame, animate = false) {
+function applyNavFrame(track, cards, state, itemCount, frame, axisMultiplier, animate = false) {
   const step = getTrackStep(cards);
   if (step === null) return;
   setCircularOrder(cards, state.currentIndex, itemCount, frame.beforeActive);
   updateActiveCard(cards, state.currentIndex);
   track.style.transition = animate ? '' : 'none';
-  track.style.transform = `translate3d(${frame.offsetMultiplier * step}px, 0, 0)`;
+  track.style.transform = `translate3d(${frame.offsetMultiplier * step * axisMultiplier}px, 0, 0)`;
   if (!animate) {
     track.getBoundingClientRect();
     track.style.transition = '';
@@ -168,6 +198,10 @@ function waitForTrackTransition(track, onDone) {
   track.addEventListener('transitionend', settle, { once: true });
 }
 
+function afterNextPaint(callback) {
+  requestAnimationFrame(() => requestAnimationFrame(callback));
+}
+
 function updateCurrentIndex(state, itemCount, direction) {
   state.currentIndex = wrapIndex(
     state.currentIndex + NAV_INDEX_DELTAS[direction],
@@ -179,24 +213,33 @@ function createMoveHandler(track, itemCount, state, applyFrame) {
   return (direction) => {
     if (itemCount <= 1 || state.isAnimating) return false;
     state.isAnimating = true;
-    NAV_SEQUENCES[direction].forEach(({ frame, animate }) => applyFrame(frame, animate));
-    waitForTrackTransition(track, () => {
+    const finishMove = () => waitForTrackTransition(track, () => {
       updateCurrentIndex(state, itemCount, direction);
       applyFrame(NAV_FRAMES.BASE, false);
       state.isAnimating = false;
+    });
+    const sequence = NAV_SEQUENCES[direction];
+    const [firstStep, ...remainingSteps] = sequence;
+
+    applyFrame(firstStep.frame, firstStep.animate);
+    afterNextPaint(() => {
+      remainingSteps.forEach(({ frame, animate }) => applyFrame(frame, animate));
+      finishMove();
     });
     return true;
   };
 }
 
 /** Creates circular prev/next navigation controls. */
-function createNavControls(track, navContainer, itemCount, state, cards) {
+function createNavControls(track, navContainer, itemCount, state, cards, isRTL) {
+  const axisMultiplier = isRTL ? -1 : 1;
   const applyFrame = (frame, animate = false) => applyNavFrame(
     track,
     cards,
     state,
     itemCount,
     frame,
+    axisMultiplier,
     animate,
   );
   const move = createMoveHandler(track, itemCount, state, applyFrame);
@@ -316,6 +359,7 @@ export default async function init(el) {
 
   el.textContent = '';
 
+  const isRTL = document.dir === 'rtl';
   const state = { currentIndex: 0, isAnimating: false };
   const structure = createCarouselStructure();
   const cards = buildTrack(structure.track, items);
@@ -325,6 +369,7 @@ export default async function init(el) {
     items.length,
     state,
     cards,
+    isRTL,
   );
 
   el.append(structure.viewport);
