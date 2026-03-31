@@ -95,6 +95,20 @@ const setAriaHidden = (elementOrSelector, hidden, parent = document) => {
   }
 };
 
+// Restores native focus + SR exposure when the card is expanded.
+const revealCardControls = (el) => {
+  if (!el) return;
+  el.removeAttribute('aria-hidden');
+  el.setAttribute('tabindex', '0');
+};
+
+// Hides controls from assistive tech and removes them from the tab order when the card collapses.
+const concealCardControls = (el) => {
+  if (!el) return;
+  el.setAttribute('aria-hidden', 'true');
+  el.removeAttribute('tabindex');
+};
+
 // Normalizes API item to consistent internal structure.
 const normalizeItem = (apiItem, branchLinkTestId) => ({
   image: cleanUrl(apiItem.thumbnail_url),
@@ -190,6 +204,16 @@ const playVideo = (video) => {
 // Expands a card and starts video playback.
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
+  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+  const closeCardButton = card.querySelector(`.${CLASSES.CLOSE_CARD_BUTTON}`);
+  const editButton = card.querySelector(`.${CLASSES.BUTTON}`);
+
+  revealCardControls(infoButton);
+  revealCardControls(closeCardButton);
+  if (isIOSDevice()) {
+    revealCardControls(editButton);
+  }
+
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
     playVideo(video);
   }
@@ -198,6 +222,12 @@ const expandCard = (card, video) => {
 // Collapses a card and stops video playback.
 const collapseCard = (card, video) => {
   card.classList.remove(CLASSES.EXPANDED, CLASSES.INFO_VISIBLE);
+  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+  const closeCardButton = card.querySelector(`.${CLASSES.CLOSE_CARD_BUTTON}`);
+  const editButton = card.querySelector(`.${CLASSES.BUTTON}`);
+  concealCardControls(infoButton);
+  concealCardControls(closeCardButton);
+  concealCardControls(editButton);
   card.querySelector(`.${CLASSES.OVERLAY_TEXT}`).scrollTop = 0;
   if (video) video.pause();
 };
@@ -209,6 +239,7 @@ const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0) => {
     'aria-label': ariaLabel,
     type: 'button',
     tabIndex,
+    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
   button.addEventListener('click', (e) => {
@@ -233,7 +264,8 @@ const createInfoButton = () => {
     class: CLASSES.INFO_BUTTON,
     'aria-label': 'Show info',
     type: 'button',
-    tabindex: '0',
+    tabindex: '-1',
+    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -243,7 +275,8 @@ const createInfoButton = () => {
 const createEditButton = (buttonText) => {
   const button = createTag('a', {
     class: CLASSES.BUTTON,
-    tabindex: '0',
+    tabindex: '-1',
+    'aria-hidden': 'true',
   });
   button.textContent = buttonText;
   return button;
@@ -252,7 +285,12 @@ const createEditButton = (buttonText) => {
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
   const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '0' });
+  const viewport = getScreenSizeCategory(CONFIG.VIEWPORT);
+  const overlayTextTabIndex = viewport === 'mobile' || viewport === 'tablet' ? '0' : '-1';
+  const overlayText = createTag('p', {
+    class: CLASSES.OVERLAY_TEXT,
+    tabindex: overlayTextTabIndex,
+  });
   overlay.append(overlayText);
   return overlay;
 };
@@ -285,6 +323,7 @@ const createCloseCardButton = (card) => {
       collapseCard(card, video);
       if (window.innerWidth > CONFIG.VIEWPORT.mobile) { card?.querySelector('.pre-yt-info-button')?.focus(); }
     },
+    -1,
   );
 };
 
@@ -475,7 +514,6 @@ const setupInfoOverlay = (card) => {
   }
 
   if (closeCardButton) {
-    closeCardButton.setAttribute('tabindex', '0');
     closeCardButton.addEventListener('keydown', (e) => {
       handleCloseCardTabNavigation(e, card);
     });
