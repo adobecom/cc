@@ -102,11 +102,11 @@ const revealCardControls = (el) => {
   el.setAttribute('tabindex', '0');
 };
 
-// Hides controls from assistive tech and removes them from the tab order when the card collapses.
+// Hides controls and removes them from the tab order when the card collapses.
 const concealCardControls = (el) => {
   if (!el) return;
   el.setAttribute('aria-hidden', 'true');
-  el.removeAttribute('tabindex');
+  el.setAttribute('tabindex', '-1');
 };
 
 // Normalizes API item to consistent internal structure.
