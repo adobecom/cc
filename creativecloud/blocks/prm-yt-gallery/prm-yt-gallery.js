@@ -106,6 +106,13 @@ const setAriaHidden = (elementOrSelector, hidden, parent = document) => {
   }
 };
 
+// Restores native focus + SR exposure when the card is expanded (no duplicate tabindex="0").
+const revealCardControls = (el) => {
+  if (!el) return;
+  el.removeAttribute('aria-hidden');
+  el.setAttribute('tabindex', '0');
+};
+
 // Normalizes API item to consistent internal structure.
 const normalizeItem = (apiItem, branchLinkTestId) => ({
   image: cleanUrl(apiItem.thumbnail_url),
@@ -200,11 +207,14 @@ const playVideo = (video) => {
 // Expands a card and starts video playback.
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
-  const infoButton = card.querySelector('.pre-yt-info-button');
+  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+  const closeCardButton = card.querySelector(`.${CLASSES.CLOSE_CARD_BUTTON}`);
+  const editButton = card.querySelector(`.${CLASSES.BUTTON}`);
 
-  if (infoButton) {
-    infoButton.removeAttribute('aria-hidden'); // make visible to SR
-    infoButton.setAttribute('tabindex', '0'); // add to tab order
+  revealCardControls(infoButton);
+  revealCardControls(closeCardButton);
+  if (isIOSDevice()) {
+    revealCardControls(editButton);
   }
 
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
@@ -262,7 +272,7 @@ const createInfoButton = () => {
 const createEditButton = (buttonText) => {
   const button = createTag('a', {
     class: CLASSES.BUTTON,
-    tabindex: '0',
+    tabindex: '-1',
     'aria-hidden': 'true',
   });
   button.textContent = buttonText;
@@ -305,6 +315,7 @@ const createCloseCardButton = (card) => {
       collapseCard(card, video);
       if (window.innerWidth > CONFIG.VIEWPORT.mobile) { card?.querySelector('.pre-yt-info-button')?.focus(); }
     },
+    -1,
   );
 };
 
@@ -495,7 +506,6 @@ const setupInfoOverlay = (card) => {
   }
 
   if (closeCardButton) {
-    closeCardButton.setAttribute('tabindex', '0');
     closeCardButton.addEventListener('keydown', (e) => {
       handleCloseCardTabNavigation(e, card);
     });
