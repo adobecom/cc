@@ -604,6 +604,8 @@ const updateCardsWithData = (container, data, cardLimit, freeTagText, branchLink
   setupVideoHoverBehavior(container);
 };
 
+// Testing...
+
 const setupBlockViewTracking = (el, blockName) => {
   let hasTracked = false;
   const observer = new IntersectionObserver((entries) => {
