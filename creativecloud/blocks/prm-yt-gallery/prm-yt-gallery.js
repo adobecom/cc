@@ -295,7 +295,12 @@ const createEditButton = (buttonText) => {
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
   const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '0' });
+  const viewport = getScreenSizeCategory(CONFIG.VIEWPORT);
+  const overlayTextTabIndex = viewport === 'mobile' || viewport === 'tablet' ? '0' : '-1';
+  const overlayText = createTag('p', {
+    class: CLASSES.OVERLAY_TEXT,
+    tabindex: overlayTextTabIndex,
+  });
   overlay.append(overlayText);
   return overlay;
 };
