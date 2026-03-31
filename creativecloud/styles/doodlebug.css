@@ -353,7 +353,7 @@
 
     @media (min-width: 600px) and (max-width: 1199px) {
         .section.show-4-desktop {
-            padding-right: calc(var(--grid-margins-width) + 16px);
+            padding-right: calc(var(--grid-margins-width));
         }
     }
 
