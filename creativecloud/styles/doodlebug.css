@@ -357,6 +357,7 @@
             font-size: 1.25rem;
             letter-spacing: 1%;
         }
+        
 
         .section.show-2-desktop {
             grid-template-columns: repeat(2, minmax(0, 823px));
