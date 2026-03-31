@@ -106,11 +106,18 @@ const setAriaHidden = (elementOrSelector, hidden, parent = document) => {
   }
 };
 
-// Restores native focus + SR exposure when the card is expanded (no duplicate tabindex="0").
+// Restores native focus + SR exposure when the card is expanded.
 const revealCardControls = (el) => {
   if (!el) return;
   el.removeAttribute('aria-hidden');
   el.setAttribute('tabindex', '0');
+};
+
+// Hides controls from assistive tech and removes them from the tab order when the card collapses.
+const concealCardControls = (el) => {
+  if (!el) return;
+  el.setAttribute('aria-hidden', 'true');
+  el.removeAttribute('tabindex');
 };
 
 // Normalizes API item to consistent internal structure.
@@ -225,6 +232,12 @@ const expandCard = (card, video) => {
 // Collapses a card and stops video playback.
 const collapseCard = (card, video) => {
   card.classList.remove(CLASSES.EXPANDED, CLASSES.INFO_VISIBLE);
+  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+  const closeCardButton = card.querySelector(`.${CLASSES.CLOSE_CARD_BUTTON}`);
+  const editButton = card.querySelector(`.${CLASSES.BUTTON}`);
+  concealCardControls(infoButton);
+  concealCardControls(closeCardButton);
+  concealCardControls(editButton);
   card.querySelector(`.${CLASSES.OVERLAY_TEXT}`).scrollTop = 0;
   if (video) video.pause();
 };
@@ -282,7 +295,7 @@ const createEditButton = (buttonText) => {
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
   const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '0' });
+  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1', 'aria-hidden': 'true' });
   overlay.append(overlayText);
   return overlay;
 };
