@@ -15,7 +15,7 @@
   width: 100%;
   overflow: hidden;
   position: relative;
-  padding-bottom: 160px;
+  padding-bottom: 80px;
 }
 
 .firefly-carousel .firefly-carousel-track {
@@ -36,7 +36,7 @@
   border-radius: var(--ff-card-border-radius);
   background: #111;
   outline: none;
-  box-shadow: 0 16px 24px 0 rgb(0 0 0 / 8%), 0 4px 10px 0 rgb(0 0 0 / 5%);
+  box-shadow: 0 8px 12px 0 rgb(0 0 0 / 8%), 0 2px 5px 0 rgb(0 0 0 / 5%);
   transition: box-shadow 180ms ease-in-out;
 }
 
@@ -51,8 +51,7 @@
 }
 
 .firefly-carousel .firefly-carousel-card.active {
-  /* Slightly reduced shadow extent (5px) to avoid clipping by content below */
-  box-shadow: 0 95px 75px 0 rgb(0 0 0 / 19%), 0 64.815px 46.852px 0 rgb(0 0 0 / 14%), 0 38.519px 25.481px 0 rgb(0 0 0 / 12%), 0 20px 13px 0 rgb(0 0 0 / 9%), 0 8.148px 6.519px 0 rgb(0 0 0 / 7%), 0 1.852px 3.148px 0 rgb(0 0 0 / 5%);
+  box-shadow: 0 48px 38px 0 rgb(0 0 0 / 19%), 0 32px 23px 0 rgb(0 0 0 / 14%), 0 19px 13px 0 rgb(0 0 0 / 12%), 0 10px 7px 0 rgb(0 0 0 / 9%), 0 4px 3px 0 rgb(0 0 0 / 7%), 0 1px 2px 0 rgb(0 0 0 / 5%);
 }
 
 .firefly-carousel .firefly-carousel-media {
@@ -192,6 +191,19 @@
 }
 
 @media screen and (min-width: 600px) {
+  .firefly-carousel .firefly-carousel-viewport {
+    padding-bottom: 160px;
+  }
+
+  .firefly-carousel .firefly-carousel-card {
+    box-shadow: 0 16px 24px 0 rgb(0 0 0 / 8%), 0 4px 10px 0 rgb(0 0 0 / 5%);
+  }
+
+  .firefly-carousel .firefly-carousel-card.active {
+    /* Slightly reduced shadow extent (5px) to avoid clipping by content below */
+    box-shadow: 0 95px 75px 0 rgb(0 0 0 / 19%), 0 64.815px 46.852px 0 rgb(0 0 0 / 14%), 0 38.519px 25.481px 0 rgb(0 0 0 / 12%), 0 20px 13px 0 rgb(0 0 0 / 9%), 0 8.148px 6.519px 0 rgb(0 0 0 / 7%), 0 1.852px 3.148px 0 rgb(0 0 0 / 5%);
+  }
+
   .firefly-carousel {
     --ff-card-width: 70vw;
     --ff-card-height: calc(var(--ff-card-width) / 1.6);
