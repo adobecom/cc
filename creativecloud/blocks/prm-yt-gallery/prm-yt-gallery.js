@@ -245,7 +245,7 @@ const createInfoButton = () => {
     'aria-label': 'Show info',
     type: 'button',
     tabindex: '0',
-    'aria-hidden': 'true',
+    // 'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -256,7 +256,7 @@ const createEditButton = (buttonText) => {
   const button = createTag('a', {
     class: CLASSES.BUTTON,
     tabindex: '0',
-    'aria-hidden': 'true',
+    // 'aria-hidden': 'true',
   });
   button.textContent = buttonText;
   return button;
