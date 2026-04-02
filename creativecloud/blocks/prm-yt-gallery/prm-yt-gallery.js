@@ -385,7 +385,7 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
   card.classList.add(CLASSES.INFO_VISIBLE);
   if (video) video.pause();
   if (closeOverlayButton) {
-    // closeOverlayButton.tabindex = 0;
+    closeOverlayButton.tabindex = 0;
     setAriaHidden(closeOverlayButton, false);
     closeOverlayButton.focus();
   }
@@ -488,7 +488,7 @@ const setupInfoOverlay = (card) => {
   }
 
   if (closeCardButton) {
-    // closeCardButton.setAttribute('tabindex', '0');
+    closeCardButton.setAttribute('tabindex', '0');
     closeCardButton.addEventListener('keydown', (e) => {
       handleCloseCardTabNavigation(e, card);
     });
