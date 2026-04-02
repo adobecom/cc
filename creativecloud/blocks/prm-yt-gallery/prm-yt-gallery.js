@@ -245,7 +245,7 @@ const createInfoButton = () => {
     'aria-label': 'Show info',
     type: 'button',
     tabindex: '0',
-    // 'aria-hidden': 'true',
+    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -256,7 +256,7 @@ const createEditButton = (buttonText) => {
   const button = createTag('a', {
     class: CLASSES.BUTTON,
     tabindex: '0',
-    // 'aria-hidden': 'true',
+    'aria-hidden': 'true',
   });
   button.textContent = buttonText;
   return button;
@@ -306,7 +306,7 @@ const createShimmerCard = (buttonText) => {
   const card = createTag('div', {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
     tabindex: '0',
-    // role: 'presentation',
+    role: 'presentation',
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
   const imageWrapper = createTag('div', { class: CLASSES.IMAGE_WRAPPER });
@@ -348,9 +348,9 @@ const updateCardWithData = (card, item, eager = false) => {
   const button = card.querySelector(`.${CLASSES.BUTTON}`);
   const overlayText = card.querySelector(`.${CLASSES.OVERLAY_TEXT}`);
   // Make card accessible once content is loaded
-  // if (item.altText) {
-  //   card.setAttribute('aria-label', item.altText);
-  // }
+  if (item.altText) {
+    card.setAttribute('aria-label', item.altText);
+  }
   if (item.ID) {
     card.setAttribute('data-template-id', item.ID);
   }
