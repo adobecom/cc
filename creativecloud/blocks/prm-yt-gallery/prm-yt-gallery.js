@@ -386,7 +386,7 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
   if (video) video.pause();
   if (closeOverlayButton) {
     // closeOverlayButton.tabindex = 0;
-    // setAriaHidden(closeOverlayButton, false);
+    setAriaHidden(closeOverlayButton, true);
     closeOverlayButton.focus();
   }
 };
