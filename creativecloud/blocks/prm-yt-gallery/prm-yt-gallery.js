@@ -394,7 +394,7 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
 // Hides info overlay and resumes video.
 const hideInfoOverlay = (card, video) => {
   card.classList.remove(CLASSES.INFO_VISIBLE);
-  setAriaHidden(`.${CLASSES.OVERLAY_CLOSE}`, false, card);
+  // setAriaHidden(`.${CLASSES.OVERLAY_CLOSE}`, false, card);
   if (video) {
     video.play().catch((error) => {
       logError(`Failed to resume video after closing info overlay: ${error.message}`);
