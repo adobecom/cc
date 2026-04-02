@@ -371,7 +371,7 @@ const updateCardWithData = (card, item, eager = false) => {
   // Update button deep link and aria-describedby
   if (button && item.deepLinkUrl) {
     button.href = item.deepLinkUrl;
-    button.setAttribute('aria-describedby', overlayTextId);
+    // button.setAttribute('aria-describedby', overlayTextId);
   }
 
   // Add video if available
