@@ -265,7 +265,7 @@ const createEditButton = (buttonText) => {
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
   const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1', 'aria-hidden': 'true' });
+  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1' });
   overlay.append(overlayText);
   return overlay;
 };
@@ -364,14 +364,14 @@ const updateCardWithData = (card, item, eager = false) => {
   // Update overlay text
   if (overlayText) {
     overlayText.textContent = item.altText;
-    // overlayText.ariaLive = 'polite';
+    overlayText.ariaLive = 'polite';
     overlayText.id = overlayTextId;
   }
 
   // Update button deep link and aria-describedby
   if (button && item.deepLinkUrl) {
     button.href = item.deepLinkUrl;
-    // button.setAttribute('aria-describedby', overlayTextId);
+    button.setAttribute('aria-describedby', overlayTextId);
   }
 
   // Add video if available
