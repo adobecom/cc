@@ -593,7 +593,7 @@
 
     @media (min-width: 1200px) {
         .text-block [class*="heading-xxxl"] {
-            font-size: 4rem;
+            font-size: 2.75rem;
             line-height: 98%;
             letter-spacing: -2.88px;
         }
