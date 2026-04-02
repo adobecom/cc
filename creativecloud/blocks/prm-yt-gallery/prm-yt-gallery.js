@@ -218,8 +218,8 @@ const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0) => {
     class: className,
     'aria-label': ariaLabel,
     type: 'button',
-    tabIndex,
-    'aria-hidden': 'true',
+    // tabIndex,
+    // 'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
   button.addEventListener('click', (e) => {
@@ -244,8 +244,8 @@ const createInfoButton = () => {
     class: CLASSES.INFO_BUTTON,
     'aria-label': 'Show info',
     type: 'button',
-    tabindex: '0',
-    'aria-hidden': 'true',
+    // tabindex: '0',
+    // 'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -255,8 +255,8 @@ const createInfoButton = () => {
 const createEditButton = (buttonText) => {
   const button = createTag('a', {
     class: CLASSES.BUTTON,
-    tabindex: '0',
-    'aria-hidden': 'true',
+    // tabindex: '0',
+    // 'aria-hidden': 'true',
   });
   button.textContent = buttonText;
   return button;
@@ -265,7 +265,7 @@ const createEditButton = (buttonText) => {
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
   const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1' });
+  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '0' });
   overlay.append(overlayText);
   return overlay;
 };
@@ -385,7 +385,7 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
   card.classList.add(CLASSES.INFO_VISIBLE);
   if (video) video.pause();
   if (closeOverlayButton) {
-    closeOverlayButton.tabindex = 0;
+    // closeOverlayButton.tabindex = 0;
     setAriaHidden(closeOverlayButton, false);
     closeOverlayButton.focus();
   }
@@ -394,7 +394,7 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
 // Hides info overlay and resumes video.
 const hideInfoOverlay = (card, video) => {
   card.classList.remove(CLASSES.INFO_VISIBLE);
-  setAriaHidden(`.${CLASSES.OVERLAY_CLOSE}`, true, card);
+  setAriaHidden(`.${CLASSES.OVERLAY_CLOSE}`, false, card);
   if (video) {
     video.play().catch((error) => {
       logError(`Failed to resume video after closing info overlay: ${error.message}`);
@@ -488,7 +488,7 @@ const setupInfoOverlay = (card) => {
   }
 
   if (closeCardButton) {
-    closeCardButton.setAttribute('tabindex', '0');
+    // closeCardButton.setAttribute('tabindex', '0');
     closeCardButton.addEventListener('keydown', (e) => {
       handleCloseCardTabNavigation(e, card);
     });
