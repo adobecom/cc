@@ -263,9 +263,13 @@ const createEditButton = (buttonText) => {
 };
 
 // Creates the info overlay with text container.
+// Overlay stays aria-hidden until opened so the title is not announced twice (card already has aria-label).
 const createInfoOverlay = () => {
-  const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
-  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1', 'aria-hidden': 'true' });
+  const overlay = createTag('div', {
+    class: CLASSES.INFO_OVERLAY,
+    'aria-hidden': 'true',
+  });
+  const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1' });
   overlay.append(overlayText);
   return overlay;
 };
@@ -307,7 +311,7 @@ const createShimmerCard = (buttonText) => {
   const card = createTag('div', {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
     tabindex: '0',
-    role: 'presentation',
+    role: 'group',
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
   const imageWrapper = createTag('div', { class: CLASSES.IMAGE_WRAPPER });
@@ -360,19 +364,15 @@ const updateCardWithData = (card, item, eager = false) => {
   const img = createImageElement(item.image, eager);
   handleImageLoad(card, img);
   imageWrapper.append(img);
-  const overlayTextId = `overlay-text-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Update overlay text
+  // Update overlay text (same string as card aria-label; overlay subtree is hidden until info is opened)
   if (overlayText) {
     overlayText.textContent = item.altText;
-    overlayText.ariaLive = 'polite';
-    overlayText.id = overlayTextId;
   }
 
-  // Update button deep link and aria-describedby
+  // Update button deep link (no aria-describedby: title is on the card; duplicating it caused repeat announcements)
   if (button && item.deepLinkUrl) {
     button.href = item.deepLinkUrl;
-    button.setAttribute('aria-describedby', overlayTextId);
   }
 
   // Add video if available
@@ -384,6 +384,10 @@ const updateCardWithData = (card, item, eager = false) => {
 // Shows info overlay and pauses video.
 const showInfoOverlay = (card, video, closeOverlayButton) => {
   card.classList.add(CLASSES.INFO_VISIBLE);
+  const infoOverlay = card.querySelector(`.${CLASSES.INFO_OVERLAY}`);
+  if (infoOverlay) {
+    infoOverlay.setAttribute('aria-hidden', 'false');
+  }
   if (video) video.pause();
   if (closeOverlayButton) {
     closeOverlayButton.tabindex = 0;
@@ -395,6 +399,10 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
 // Hides info overlay and resumes video.
 const hideInfoOverlay = (card, video) => {
   card.classList.remove(CLASSES.INFO_VISIBLE);
+  const infoOverlay = card.querySelector(`.${CLASSES.INFO_OVERLAY}`);
+  if (infoOverlay) {
+    infoOverlay.setAttribute('aria-hidden', 'true');
+  }
   setAriaHidden(`.${CLASSES.OVERLAY_CLOSE}`, true, card);
   if (video) {
     video.play().catch((error) => {
