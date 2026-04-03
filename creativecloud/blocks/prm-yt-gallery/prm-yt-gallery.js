@@ -218,8 +218,8 @@ const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0) => {
     class: className,
     'aria-label': ariaLabel,
     type: 'button',
-    // tabIndex,
-    // 'aria-hidden': 'true',
+    tabIndex,
+    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
   button.addEventListener('click', (e) => {
@@ -298,6 +298,7 @@ const createCloseCardButton = (card) => {
       collapseCard(card, video);
       if (window.innerWidth > CONFIG.VIEWPORT.mobile) { card?.querySelector('.pre-yt-info-button')?.focus(); }
     },
+    '-1',
   );
 };
 
