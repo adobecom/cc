@@ -351,6 +351,11 @@
         justify-content: center;
     }
 
+    @media (min-width: 600px) and (max-width: 1199px) {
+        .section.show-4-desktop {
+            padding-right: calc(var(--grid-margins-width));
+        }
+    }
 
     @media (min-width: 1200px) {
         .editorial-card .foreground .body-l {
