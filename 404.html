@@ -11,6 +11,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script type="module">
     import { scriptInit } from '/creativecloud/scripts/utils.js';
+    
+    const path = window.location.pathname.toLowerCase();
+    if (/^\/([a-z]{2}_fr|fr)\//.test(path)) {
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'georouting');
+      meta.setAttribute('content', 'off');
+      document.head.append(meta);
+    }
+
     scriptInit();
   </script>
   <link rel="icon" href="data:," />
