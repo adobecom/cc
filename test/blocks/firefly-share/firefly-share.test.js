@@ -226,7 +226,15 @@ describe('firefly-share block', () => {
         block.innerHTML = '<div></div>';
         document.body.appendChild(block);
         await decorate(block);
-        const pinterest = [...block.querySelectorAll('a')].find((a) => a.href.includes('pinterest.com'));
+        const pinterest = [...block.querySelectorAll('a')].find((a) => {
+          try {
+            const url = new URL(a.href);
+            return url.hostname === 'pinterest.com' || url.hostname.endsWith('.pinterest.com');
+          } catch {
+            return false;
+          }
+        });
+        expect(pinterest).to.exist;
         expect(pinterest.href).to.include(encodeURIComponent(document.defaultView.location.href));
         block.remove();
       } finally {
