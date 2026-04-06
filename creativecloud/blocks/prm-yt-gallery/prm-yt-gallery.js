@@ -190,6 +190,7 @@ const playVideo = (video) => {
 // Expands a card and starts video playback.
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
+  card.setAttribute('aria-expanded', 'true');
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
     playVideo(video);
   }
@@ -198,18 +199,19 @@ const expandCard = (card, video) => {
 // Collapses a card and stops video playback.
 const collapseCard = (card, video) => {
   card.classList.remove(CLASSES.EXPANDED, CLASSES.INFO_VISIBLE);
+  card.setAttribute('aria-expanded', 'false');
   card.querySelector(`.${CLASSES.OVERLAY_TEXT}`).scrollTop = 0;
   if (video) video.pause();
 };
 
 // Creates a reusable close button.
-const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0) => {
+const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0, ariaHidden = 'false') => {
   const button = createTag('button', {
     class: className,
     'aria-label': ariaLabel,
     type: 'button',
     tabIndex,
-    'aria-hidden': 'true',
+    'aria-hidden': ariaHidden,
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
   button.addEventListener('click', (e) => {
@@ -234,8 +236,6 @@ const createInfoButton = () => {
     class: CLASSES.INFO_BUTTON,
     'aria-label': 'Show info',
     type: 'button',
-    tabindex: '0',
-    'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -243,18 +243,17 @@ const createInfoButton = () => {
 
 // Creates the "Edit this template" button.
 const createEditButton = (buttonText) => {
-  const button = createTag('a', {
-    class: CLASSES.BUTTON,
-    tabindex: '0',
-    'aria-hidden': 'true',
-  });
+  const button = createTag('a', { class: CLASSES.BUTTON });
   button.textContent = buttonText;
   return button;
 };
 
 // Creates the info overlay with text container.
 const createInfoOverlay = () => {
-  const overlay = createTag('div', { class: CLASSES.INFO_OVERLAY });
+  const overlay = createTag('div', {
+    class: CLASSES.INFO_OVERLAY,
+    'aria-hidden': 'true',
+  });
   const overlayText = createTag('p', { class: CLASSES.OVERLAY_TEXT, tabindex: '-1' });
   overlay.append(overlayText);
   return overlay;
@@ -296,7 +295,8 @@ const createShimmerCard = (buttonText) => {
   const card = createTag('div', {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
     tabindex: '0',
-    role: 'presentation',
+    role: 'group',
+    'aria-expanded': 'false',
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
   const imageWrapper = createTag('div', { class: CLASSES.IMAGE_WRAPPER });
@@ -349,19 +349,15 @@ const updateCardWithData = (card, item, eager = false) => {
   const img = createImageElement(item.image, eager);
   handleImageLoad(card, img);
   imageWrapper.append(img);
-  const overlayTextId = `overlay-text-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
   // Update overlay text
   if (overlayText) {
     overlayText.textContent = item.altText;
-    overlayText.ariaLive = 'polite';
-    overlayText.id = overlayTextId;
   }
 
-  // Update button deep link and aria-describedby
+  // Update button deep link URL
   if (button && item.deepLinkUrl) {
     button.href = item.deepLinkUrl;
-    button.setAttribute('aria-describedby', overlayTextId);
   }
 
   // Add video if available
@@ -373,6 +369,10 @@ const updateCardWithData = (card, item, eager = false) => {
 // Shows info overlay and pauses video.
 const showInfoOverlay = (card, video, closeOverlayButton) => {
   card.classList.add(CLASSES.INFO_VISIBLE);
+  const infoOverlay = card.querySelector(`.${CLASSES.INFO_OVERLAY}`);
+  if (infoOverlay) {
+    infoOverlay.setAttribute('aria-hidden', 'false');
+  }
   if (video) video.pause();
   if (closeOverlayButton) {
     closeOverlayButton.tabindex = 0;
@@ -384,6 +384,10 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
 // Hides info overlay and resumes video.
 const hideInfoOverlay = (card, video) => {
   card.classList.remove(CLASSES.INFO_VISIBLE);
+  const infoOverlay = card.querySelector(`.${CLASSES.INFO_OVERLAY}`);
+  if (infoOverlay) {
+    infoOverlay.setAttribute('aria-hidden', 'true');
+  }
   setAriaHidden(`.${CLASSES.OVERLAY_CLOSE}`, true, card);
   if (video) {
     video.play().catch((error) => {
@@ -457,6 +461,7 @@ const setupInfoOverlay = (card) => {
       }
     },
     -1,
+    'true',
   );
   overlay.appendChild(closeOverlayButton);
 
