@@ -37,6 +37,15 @@ const CLASSES = {
   INFO_VISIBLE: 'info-visible',
 };
 
+// Centralized accessible names (aria-label) for the gallery block.
+const ARIA_LABELS = {
+  CARD_LOADING: 'Loading template',
+  CARD_UNAVAILABLE: 'Templates unavailable',
+  SHOW_INFO: 'Show info',
+  CLOSE_CARD: 'Close card',
+  OVERLAY_CLOSE: 'Close text description',
+};
+
 // SVG Icons
 const ICONS = {
   close: `
@@ -232,7 +241,7 @@ const createCloseButton = (className, ariaLabel, onClick, tabindex = 0, ariaHidd
 const createInfoButton = () => {
   const button = createTag('button', {
     class: CLASSES.INFO_BUTTON,
-    'aria-label': 'Show info',
+    'aria-label': ARIA_LABELS.SHOW_INFO,
     type: 'button',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
@@ -280,7 +289,7 @@ const createCloseCardButton = (card) => {
   const video = card.querySelector(`.${CLASSES.VIDEO_WRAPPER} video`);
   return createCloseButton(
     CLASSES.CLOSE_CARD_BUTTON,
-    'Close card',
+    ARIA_LABELS.CLOSE_CARD,
     () => {
       collapseCard(card, video);
       if (window.innerWidth > CONFIG.VIEWPORT.mobile) { card?.querySelector('.pre-yt-info-button')?.focus(); }
@@ -294,6 +303,7 @@ const createShimmerCard = (buttonText) => {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
     tabindex: '0',
     role: 'group',
+    'aria-label': ARIA_LABELS.CARD_LOADING,
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
   const imageWrapper = createTag('div', { class: CLASSES.IMAGE_WRAPPER });
@@ -448,7 +458,7 @@ const setupInfoOverlay = (card) => {
 
   const closeOverlayButton = createCloseButton(
     CLASSES.OVERLAY_CLOSE,
-    'Close text description',
+    ARIA_LABELS.OVERLAY_CLOSE,
     () => {
       hideInfoOverlay(card, video);
       if (window.innerWidth > CONFIG.VIEWPORT.mobile) {
@@ -597,5 +607,9 @@ export default async function init(el) {
   });
   if (data) {
     updateCardsWithData(grid, data, cardLimit, blockProps.freeTagText, blockProps.branchLinkTestId);
+  } else {
+    grid.querySelectorAll(`.${CLASSES.CARD}`).forEach((card) => {
+      card.setAttribute('aria-label', ARIA_LABELS.CARD_UNAVAILABLE);
+    });
   }
 }
