@@ -39,6 +39,15 @@ const CLASSES = {
   INFO_VISIBLE: 'info-visible',
 };
 
+// Centralized accessible names (aria-label) for the gallery block.
+const ARIA_LABELS = {
+  CARD_LOADING: 'Loading template',
+  CARD_UNAVAILABLE: 'Templates unavailable',
+  SHOW_INFO: 'Show info',
+  CLOSE_CARD: 'Close card',
+  OVERLAY_CLOSE: 'Close text description',
+};
+
 // SVG Icons
 const ICONS = {
   close: `
@@ -200,7 +209,6 @@ const playVideo = (video) => {
 // Expands a card and starts video playback.
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
-  card.setAttribute('aria-expanded', 'true');
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
     playVideo(video);
   }
@@ -209,18 +217,17 @@ const expandCard = (card, video) => {
 // Collapses a card and stops video playback.
 const collapseCard = (card, video) => {
   card.classList.remove(CLASSES.EXPANDED, CLASSES.INFO_VISIBLE);
-  card.setAttribute('aria-expanded', 'false');
   card.querySelector(`.${CLASSES.OVERLAY_TEXT}`).scrollTop = 0;
   if (video) video.pause();
 };
 
 // Creates a reusable close button.
-const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0, ariaHidden = 'false') => {
+const createCloseButton = (className, ariaLabel, onClick, tabindex = 0, ariaHidden = 'false') => {
   const button = createTag('button', {
     class: className,
     'aria-label': ariaLabel,
     type: 'button',
-    tabIndex,
+    tabindex,
     'aria-hidden': ariaHidden,
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
@@ -244,10 +251,8 @@ const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0, ariaHidd
 const createInfoButton = () => {
   const button = createTag('button', {
     class: CLASSES.INFO_BUTTON,
-    'aria-label': 'Show info',
+    'aria-label': ARIA_LABELS.SHOW_INFO,
     type: 'button',
-    // tabindex: '0',
-    // 'aria-hidden': 'true',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
@@ -255,17 +260,12 @@ const createInfoButton = () => {
 
 // Creates the "Edit this template" button.
 const createEditButton = (buttonText) => {
-  const button = createTag('a', {
-    class: CLASSES.BUTTON,
-    // tabindex: '0',
-    // 'aria-hidden': 'true',
-  });
+  const button = createTag('a', { class: CLASSES.BUTTON });
   button.textContent = buttonText;
   return button;
 };
 
 // Creates the info overlay with text container.
-// Overlay stays aria-hidden until opened so the title is not announced twice (card already has aria-label).
 const createInfoOverlay = () => {
   const overlay = createTag('div', {
     class: CLASSES.INFO_OVERLAY,
@@ -299,7 +299,7 @@ const createCloseCardButton = (card) => {
   const video = card.querySelector(`.${CLASSES.VIDEO_WRAPPER} video`);
   return createCloseButton(
     CLASSES.CLOSE_CARD_BUTTON,
-    'Close card',
+    ARIA_LABELS.CLOSE_CARD,
     () => {
       collapseCard(card, video);
       if (window.innerWidth > CONFIG.VIEWPORT.mobile) { card?.querySelector('.pre-yt-info-button')?.focus(); }
@@ -313,7 +313,7 @@ const createShimmerCard = (buttonText) => {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
     tabindex: '0',
     role: 'group',
-    'aria-expanded': 'false',
+    'aria-label': ARIA_LABELS.CARD_LOADING,
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
   const imageWrapper = createTag('div', { class: CLASSES.IMAGE_WRAPPER });
@@ -367,12 +367,12 @@ const updateCardWithData = (card, item, eager = false) => {
   handleImageLoad(card, img);
   imageWrapper.append(img);
 
-  // Update overlay text (same string as card aria-label; overlay subtree is hidden until info is opened)
+  // Update overlay text
   if (overlayText) {
     overlayText.textContent = item.altText;
   }
 
-  // Update button deep link (no aria-describedby: title is on the card; duplicating it caused repeat announcements)
+  // Update button deep link URL
   if (button && item.deepLinkUrl) {
     button.href = item.deepLinkUrl;
   }
@@ -468,7 +468,7 @@ const setupInfoOverlay = (card) => {
 
   const closeOverlayButton = createCloseButton(
     CLASSES.OVERLAY_CLOSE,
-    'Close text description',
+    ARIA_LABELS.OVERLAY_CLOSE,
     () => {
       hideInfoOverlay(card, video);
       if (window.innerWidth > CONFIG.VIEWPORT.mobile) {
@@ -618,5 +618,9 @@ export default async function init(el) {
   });
   if (data) {
     updateCardsWithData(grid, data, cardLimit, blockProps.freeTagText, blockProps.branchLinkTestId);
+  } else {
+    grid.querySelectorAll(`.${CLASSES.CARD}`).forEach((card) => {
+      card.setAttribute('aria-label', ARIA_LABELS.CARD_UNAVAILABLE);
+    });
   }
 }
