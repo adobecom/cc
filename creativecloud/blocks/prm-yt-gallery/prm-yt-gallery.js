@@ -203,12 +203,12 @@ const collapseCard = (card, video) => {
 };
 
 // Creates a reusable close button.
-const createCloseButton = (className, ariaLabel, onClick, tabIndex = 0, ariaHidden = 'false') => {
+const createCloseButton = (className, ariaLabel, onClick, tabindex = 0, ariaHidden = 'false') => {
   const button = createTag('button', {
     class: className,
     'aria-label': ariaLabel,
     type: 'button',
-    tabIndex,
+    tabindex,
     'aria-hidden': ariaHidden,
   });
   button.insertAdjacentHTML('beforeend', ICONS.close);
