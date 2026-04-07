@@ -388,7 +388,7 @@ const CONFIG = {
   contentRoot: '/creativecloud/plans/merch-shared',
   codeRoot: '/creativecloud',
   imsClientId: 'adobedotcom-cc',
-  iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata'],
+  iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata', 'firefly-howto'],
   locales,
   geoRouting: 'on',
   prodDomains: ['www.adobe.com', 'helpx.adobe.com', 'business.adobe.com'],
@@ -458,34 +458,6 @@ export const scriptInit = async () => {
       link.setAttribute('href', path);
       document.head.appendChild(link);
     });
-  }());
-
-  // TODO can be removed after 2026-03-20 - this is a temporary test for lingo
-  (function setupInteractionLogging() {
-    const cutoff = new Date(2026, 2, 20, 23, 59, 59, 999);
-    const isWithinLoggingWindow = () => new Date() <= cutoff;
-
-    const opts = { capture: true };
-    let logged = false;
-    const logInteraction = (e) => {
-      if (!e.target?.closest('a')) return;
-      if (e.type === 'keydown') {
-        if (e.key !== 'Enter') return;
-      }
-      if (!isWithinLoggingWindow() || logged) return;
-      logged = true;
-      document.removeEventListener('click', logInteraction, opts);
-      document.removeEventListener('keydown', logInteraction, opts);
-      document.removeEventListener('touchstart', logInteraction, opts);
-      const firstSection = document.querySelector('main > .section');
-      const inFirstSection = firstSection?.contains(e.target);
-      const tag = inFirstSection ? 'test-lingo-user-interaction-first-section' : 'test-lingo-user-interaction-other-section';
-      const timeToInteractionMs = Math.round(performance.now());
-      window.lana?.log(`${timeToInteractionMs}`, { sampleRate: 1, severity: 'i', tags: tag });
-    };
-    document.addEventListener('click', logInteraction, opts);
-    document.addEventListener('keydown', logInteraction, opts);
-    document.addEventListener('touchstart', logInteraction, opts);
   }());
 
   (async function loadPage() {
