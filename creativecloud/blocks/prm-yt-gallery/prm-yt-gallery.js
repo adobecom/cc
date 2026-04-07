@@ -190,7 +190,6 @@ const playVideo = (video) => {
 // Expands a card and starts video playback.
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
-  card.setAttribute('aria-expanded', 'true');
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
     playVideo(video);
   }
@@ -199,7 +198,6 @@ const expandCard = (card, video) => {
 // Collapses a card and stops video playback.
 const collapseCard = (card, video) => {
   card.classList.remove(CLASSES.EXPANDED, CLASSES.INFO_VISIBLE);
-  card.setAttribute('aria-expanded', 'false');
   card.querySelector(`.${CLASSES.OVERLAY_TEXT}`).scrollTop = 0;
   if (video) video.pause();
 };
@@ -296,7 +294,6 @@ const createShimmerCard = (buttonText) => {
     class: `${CLASSES.CARD} ${CLASSES.SHIMMER}`,
     tabindex: '0',
     role: 'group',
-    'aria-expanded': 'false',
   });
   const cardInner = createTag('div', { class: CLASSES.CARD_INNER });
   const imageWrapper = createTag('div', { class: CLASSES.IMAGE_WRAPPER });
