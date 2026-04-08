@@ -13,7 +13,7 @@
     import { scriptInit } from '/creativecloud/scripts/utils.js';
     
     const path = window.location.pathname.toLowerCase();
-    if (/^\/([a-z]{2}_fr|fr)\//.test(path)) {
+    if (/^\/([a-z]{2}_fr)\//.test(path)) {
       const meta = document.createElement('meta');
       meta.setAttribute('name', 'georouting');
       meta.setAttribute('content', 'off');
