@@ -6,7 +6,6 @@ const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
 setLibs('https://milo.adobe.com/libs');
 const { default: init } = await import('../../../creativecloud/blocks/firefly-howto/firefly-howto.js');
 
-// Fixture snapshot; use resetFixtureDom() only so body markup and head JSON-LD stay in sync.
 const ogBody = document.body.innerHTML;
 
 function resetFixtureDom() {
