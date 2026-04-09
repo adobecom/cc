@@ -12,9 +12,9 @@
   <script type="module">
     import { scriptInit } from '/creativecloud/scripts/utils.js';
     // TODO: Remove once georouting is disabled site-wide.
-    // Matches /fr/ and any regional French locales (e.g., lu_fr, ch_fr, be_fr, ca_fr)
+    // Matches any regional French locales (e.g., lu_fr, ch_fr, be_fr, ca_fr)
     const path = window.location.pathname.toLowerCase();
-    if (/^\/([a-z]{2}_fr|fr)\//.test(path)) {
+    if (/^\/([a-z]{2}_fr)\//.test(path)) {
       const meta = document.createElement('meta');
       meta.setAttribute('name', 'georouting');
       meta.setAttribute('content', 'off');
