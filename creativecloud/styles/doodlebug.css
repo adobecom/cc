@@ -61,7 +61,7 @@
     }
 
     /* ---- Aside ---- */
-    .aside .foreground.container {
+    .aside:not(.promobar) .foreground.container {
         display: grid;
         align-items: center;
         gap: 165px;
@@ -69,25 +69,25 @@
         grid-template-columns: minmax(45%, 1fr) minmax(55%, 1fr);
     }
 
-    .aside .foreground.container:has(> .image:first-child) {
+    .aside:not(.promobar) .foreground.container:has(> .image:first-child) {
         grid-template-columns: minmax(55%, 1fr) minmax(45%, 1fr);
     }
 
-    .aside .foreground.container .text {
+    .aside:not(.promobar) .foreground.container .text {
         margin-inline: 180px 0;
     }
 
-    .aside .foreground.container:has(> .image:first-child) .text {
+    .aside:not(.promobar) .foreground.container:has(> .image:first-child) .text {
         margin-inline: 0 180px;
     }
 
-    .aside .foreground.container .image :is(img, video) {
+    .aside:not(.promobar) .foreground.container .image :is(img, video) {
         border-radius: 20px;
         border: var(--glass-border);
     }
 
     @media (max-width: 1199px) {
-        .aside .foreground.container {
+        .aside:not(.promobar) .foreground.container {
             display: grid;
             align-items: center;
             gap: 8.5%;
@@ -95,13 +95,13 @@
             grid-template-columns: minmax(45%, 1fr) minmax(55%, 1fr);
         }
     
-        .aside .foreground.container .text {
+        .aside:not(.promobar) .foreground.container .text {
             margin-inline: 9.5% 0;
         }
 
-        .aside .foreground.container:has(> .image:first-child) .text {
-        margin-inline: 0 9.5%;
-    }
+        .aside:not(.promobar) .foreground.container:has(> .image:first-child) .text {
+            margin-inline: 0 9.5%;
+        }
     }
 
     /* ---- Carousel (Tablet Hinting) ---- */
