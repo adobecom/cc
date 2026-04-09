@@ -1,6 +1,5 @@
 import { createTag, getLibs, getScreenSizeCategory } from '../../scripts/utils.js';
 
-// ===== CONFIG =====
 const miloLibs = getLibs('/libs');
 const VIEWPORTS = ['mobile-up', 'tablet-up', 'desktop-up'];
 const DEFAULT_DROPZONE_ICON = '/cc-shared/assets/svg/s2-icon-default-image-20-n.svg';
@@ -8,10 +7,7 @@ const AnalyticsKeys = {
   uploadAssetCTA: 'Upload asset CTA|UnityWidget',
   editPhotosCTA: 'Edit Photos CTA|UnityWidget',
 };
-
 let uploadColumnCounter = 0;
-
-// ===== LCP / MEDIA PRIORITY =====
 const LCP_IMAGE_PARAMS = {
   webpLarge: 'width=1000&format=webply&optimize=medium',
   webpSmall: 'width=500&format=webply&optimize=medium',
@@ -21,16 +17,13 @@ const LCP_IMAGE_PARAMS = {
 
 function getBaseImageUrlFromPicture(picture) {
   if (!picture) return null;
-
   const img = picture.querySelector('img');
   const imgSrc = img?.src;
   if (imgSrc) {
     return { baseUrl: imgSrc.split('?')[0], img };
   }
-
   const srcset = picture.querySelector('source[srcset]')?.srcset;
   if (!srcset) return null;
-
   const url = srcset.split(',')[0].trim().split(/\s+/)[0];
   const baseUrl = url ? url.split('?')[0] : null;
   return baseUrl && img ? { baseUrl, img } : null;
@@ -39,9 +32,7 @@ function getBaseImageUrlFromPicture(picture) {
 function rewritePictureToOurSizes(picture) {
   const result = getBaseImageUrlFromPicture(picture);
   if (!result?.baseUrl || !result.img) return null;
-
   const { baseUrl, img } = result;
-
   picture.textContent = '';
   picture.append(
     createTag('source', {
@@ -59,7 +50,6 @@ function rewritePictureToOurSizes(picture) {
       media: '(min-width: 600px)',
     }),
   );
-
   img.setAttribute('src', `${baseUrl}?${LCP_IMAGE_PARAMS.jpgSmall}`);
   img.removeAttribute('loading');
   img.removeAttribute('fetchpriority');
@@ -67,15 +57,24 @@ function rewritePictureToOurSizes(picture) {
   return img;
 }
 
+function rewriteVideoPosterToOurSizes(video, columnIndex) {
+  const poster = video.getAttribute('poster');
+  if (!poster || poster.startsWith('data:') || poster.startsWith('blob:')) return;
+  const baseUrl = poster.trim().split('?')[0];
+  if (!baseUrl) return;
+  const params = columnIndex === 0
+    ? LCP_IMAGE_PARAMS.webpSmall
+    : LCP_IMAGE_PARAMS.webpLarge;
+  video.setAttribute('poster', `${baseUrl}?${params}`);
+}
+
 function setUploadRowMediaPriority(uploadRow) {
   const screenCategory = getScreenSizeCategory({ mobile: 599, tablet: 1199 });
   const activeColumnIndex = { mobile: 0, tablet: 1, desktop: 2 }[screenCategory];
-
   [...uploadRow.children].forEach((column, index) => {
     const isActive = index === activeColumnIndex;
     const firstPara = column.querySelector('p');
     const mediaPicture = firstPara?.querySelector('picture');
-
     if (mediaPicture) {
       const img = rewritePictureToOurSizes(mediaPicture);
       if (img) {
@@ -83,20 +82,18 @@ function setUploadRowMediaPriority(uploadRow) {
         if (isActive) img.setAttribute('fetchpriority', 'high');
       }
     }
-
     const video = column.querySelector('video');
     if (video) {
-      video.setAttribute('preload', isActive ? 'auto' : 'metadata');
+      rewriteVideoPosterToOurSizes(video, index);
+      video.setAttribute('preload', isActive ? 'auto' : 'none');
     }
   });
 }
 
-// ===== LOGGING =====
 function logUploadMarqueeInfo(message, errorType = 'i') {
   window.lana?.log(message, { tags: 'upload-marquee', errorType });
 }
 
-// ===== ID HELPERS =====
 function nextUploadColumnId() {
   uploadColumnCounter += 1;
   return uploadColumnCounter;
@@ -106,50 +103,33 @@ function buildScopedId(prefix, columnId) {
   return `${prefix}-${columnId}`;
 }
 
-// ===== DATA EXTRACTION =====
 function extractUploadContentParts(content) {
   const media = content.querySelector('picture, .video-container.video-holder');
   const terms = content.querySelector('p:last-child');
   const mediaPara = media?.closest('p');
-
   const hasUploadMarker = (para) => para.querySelector(
     'span[class*=icon-share], span[class*=icon-upload], img[src$=".svg"]:not(.video-container img)',
   );
-
   const candidateParagraphs = [
     ...content.querySelectorAll('p:not(:last-child)'),
   ].filter(
     (para) => para.textContent.trim() !== '' || para.querySelector('img, svg'),
   );
-
   const uploadPara = candidateParagraphs.find((para) => hasUploadMarker(para));
-
   const contentParagraphs = candidateParagraphs.filter((para) => {
     const isMediaOnlyPara = para === mediaPara
       && !hasUploadMarker(para)
       && para.textContent.trim() === '';
     return !isMediaOnlyPara;
   });
-
   const textParas = contentParagraphs.filter((para) => para !== uploadPara);
   const headingPara = textParas[0];
   const bodyPara = textParas[1];
-
-  return {
-    media,
-    terms,
-    contentParagraphs,
-    uploadPara,
-    headingPara,
-    bodyPara,
-  };
+  return { media, terms, contentParagraphs, uploadPara, headingPara, bodyPara };
 }
 
-// ===== DOM BUILDERS =====
-// TODO: See if it could be simplified
 function applyViewportClasses(foreground) {
   foreground.firstElementChild?.classList.add('upload-grid');
-
   if (
     foreground.childElementCount === 2
     || foreground.childElementCount === 3
@@ -163,7 +143,6 @@ function applyViewportClasses(foreground) {
   } else if (foreground.childElementCount === 1) {
     foreground.firstElementChild?.classList.add(...VIEWPORTS);
   }
-
   return foreground;
 }
 
@@ -181,7 +160,6 @@ function buildDropZoneIcon() {
 
 function assignDropZoneTextIds(headingPara, bodyPara, columnId) {
   const describedByIds = [];
-
   if (headingPara) {
     headingPara.classList.add('drop-zone-heading');
     headingPara.id = buildScopedId('drop-zone-heading', columnId);
@@ -192,7 +170,6 @@ function assignDropZoneTextIds(headingPara, bodyPara, columnId) {
     bodyPara.id = buildScopedId('drop-zone-body', columnId);
     describedByIds.push(bodyPara.id);
   }
-
   return describedByIds;
 }
 
@@ -222,24 +199,20 @@ async function buildUploadActionControls(para) {
     accept: 'image/*',
     'aria-hidden': 'true',
   });
-
   button.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       input.click();
     }
   });
-
   para.classList.add('upload-action-container');
   para.textContent = '';
   para.append(button, input);
   return { fileInput: input };
 }
 
-// ===== EVENT BINDERS =====
 function wireDropZoneAccessibility(dropZone, fileInput) {
   dropZone.setAttribute('tabindex', '-1');
-
   dropZone.addEventListener('click', (event) => {
     event.stopPropagation();
     fileInput?.click();
@@ -254,19 +227,12 @@ async function buildDropZone(uploadParts, columnId) {
     uploadParts.bodyPara,
     columnId,
   );
-
   wireDropZoneAccessibility(dropZone, fileInput);
   dropZone.append(buildDropZoneIcon(), ...uploadParts.contentParagraphs);
-
   return dropZone;
 }
 
-function replaceUploadColumnContent(
-  content,
-  mediaContainer,
-  dropZoneContainer,
-  terms,
-) {
+function replaceUploadColumnContent(content, mediaContainer, dropZoneContainer, terms) {
   content.textContent = '';
   content.append(mediaContainer, dropZoneContainer);
   if (terms) {
@@ -289,7 +255,6 @@ function buildMarqueeContent(marqueeCell) {
     firstWrap.append(firstPicture.cloneNode(true));
     secondWrap.append(secondPicture.cloneNode(true));
     brandingRow.append(firstWrap, secondWrap);
-
     brandingPara.textContent = '';
     brandingPara.classList.add('upload-marquee-branding');
     brandingPara.append(brandingRow);
@@ -297,14 +262,12 @@ function buildMarqueeContent(marqueeCell) {
       img.setAttribute('loading', 'eager');
     });
   }
-
   const ctaLink = marqueeContent.querySelector('p strong a[href]');
   if (ctaLink) {
     ctaLink.classList.add('con-button', 'upload-marquee-cta', 'no-track');
     ctaLink.setAttribute('aria-label', ctaLink.textContent.trim());
     ctaLink.setAttribute('daa-ll', AnalyticsKeys.editPhotosCTA);
   }
-
   const ctaParentPara = ctaLink?.closest('p');
   const heading = marqueeContent.querySelector(':scope > h1');
   const descriptionPara = heading?.nextElementSibling?.tagName === 'P'
@@ -320,7 +283,6 @@ function buildMarqueeContent(marqueeCell) {
   ) {
     lastPara.classList.add('upload-marquee-dropzone-label');
   }
-
   return marqueeContent;
 }
 
@@ -330,14 +292,7 @@ function buildLayout() {
   const rightCol = createTag('div', { class: 'upload-marquee-right' });
   const uploadsWrapper = createTag('div', { class: 'upload-marquee-uploads' });
   const mediaWrapper = createTag('div', { class: 'upload-marquee-media' });
-
-  return {
-    layout,
-    leftCol,
-    rightCol,
-    uploadsWrapper,
-    mediaWrapper,
-  };
+  return { layout, leftCol, rightCol, uploadsWrapper, mediaWrapper };
 }
 
 function appendColumns(viewportContent, uploadsWrapper, mediaWrapper) {
@@ -364,7 +319,6 @@ function collectViewportContent(row, extractMedia) {
 function extractMediaFromColumn(content) {
   const media = content.querySelector('picture, .video-container.video-holder');
   if (!media) return null;
-
   const mediaContainer = createTag('div', { class: 'media-container' });
   mediaContainer.append(media);
   return mediaContainer;
@@ -375,7 +329,6 @@ async function decorateUploadColumn(content) {
   const mediaContainer = createTag('div', { class: 'media-container' });
   const dropZoneContainer = createTag('div', { class: 'drop-zone-container' });
   const uploadParts = extractUploadContentParts(content);
-
   if (uploadParts.media) {
     mediaContainer.append(uploadParts.media);
     if (
@@ -385,14 +338,12 @@ async function decorateUploadColumn(content) {
       uploadParts.media.parentElement.remove();
     }
   }
-
   if (!uploadParts.uploadPara) {
     logUploadMarqueeInfo(
       'Failed to create upload button for upload-marquee block.',
     );
     return;
   }
-
   const dropZone = await buildDropZone(uploadParts, columnId);
   dropZoneContainer.append(dropZone);
   replaceUploadColumnContent(
@@ -405,7 +356,6 @@ async function decorateUploadColumn(content) {
 
 function setupLayoutDragAndDrop(layout, uploadsWrapper) {
   let activeDropZone;
-
   const setActiveDropZone = () => {
     const dropZones = [
       ...uploadsWrapper.querySelectorAll(
@@ -419,30 +369,24 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
     activeDropZone = nextDropZone;
     activeDropZone?.classList.add('active');
   };
-
   const clearActiveDropZone = () => {
     activeDropZone?.classList.remove('active');
     activeDropZone = null;
   };
-
   layout.addEventListener('dragenter', (event) => {
     event.preventDefault();
     setActiveDropZone();
   });
-
   layout.addEventListener('dragover', (event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
     setActiveDropZone();
   });
-
   layout.addEventListener('dragleave', (event) => {
     event.preventDefault();
     clearActiveDropZone();
   });
-
   document.addEventListener('dragend', () => clearActiveDropZone());
-
   layout.addEventListener('drop', (event) => {
     event.preventDefault();
     setActiveDropZone();
@@ -459,13 +403,11 @@ function setupLayoutDragAndDrop(layout, uploadsWrapper) {
     }
     clearActiveDropZone();
   });
-
   uploadsWrapper.querySelectorAll('.drop-zone').forEach((zone) => {
     zone.addEventListener('drop', () => {
       clearActiveDropZone();
     });
   });
-
   window.addEventListener('drop', () => clearActiveDropZone());
   window.addEventListener('dragend', () => clearActiveDropZone());
 }
@@ -494,20 +436,16 @@ function appendMarqueeContent(marqueeRow, leftCol) {
 
 async function initDropzoneVariant(el, uploadRow, layoutParts) {
   const { layout, leftCol, uploadsWrapper, mediaWrapper } = layoutParts;
-
   for (let i = 0; i < uploadRow.children.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
     await decorateUploadColumn(uploadRow.children[i]);
   }
-
   appendColumns(
     collectViewportContent(uploadRow, (c) => c.querySelector(':scope > .media-container')),
     uploadsWrapper,
     mediaWrapper,
   );
-
   if (!uploadsWrapper.children.length || !mediaWrapper.children.length) return;
-
   leftCol.append(uploadsWrapper);
   setupLayoutDragAndDrop(layout, uploadsWrapper);
   mountLayout(el, layoutParts, mediaWrapper);
@@ -515,41 +453,33 @@ async function initDropzoneVariant(el, uploadRow, layoutParts) {
 
 async function initPromptVariant(el, mediaRow, layoutParts) {
   const { leftCol, mediaWrapper } = layoutParts;
-
   // 'copy' class is required by Unity to locate and inject the prompt bar
   leftCol.classList.add('copy');
   const promptContainer = createTag('div', { class: 'upload-marquee-prompt-container' });
   leftCol.append(promptContainer);
-
   appendColumns(
     collectViewportContent(mediaRow, extractMediaFromColumn),
     null,
     mediaWrapper,
   );
-
   if (!mediaWrapper.children.length) return;
   mountLayout(el, layoutParts, mediaWrapper);
 }
 
 export default async function init(el) {
   const { decorateBlockBg } = await import(`${miloLibs}/utils/decorate.js`);
-
   el.classList.add('upload-marquee-block', 'con-block');
   const rows = el.querySelectorAll(':scope > div');
   if (rows.length < 3) return;
-
   const [backgroundRow, marqueeRow, contentRow] = rows;
   const isPromptVariant = el.classList.contains('unity-prompt');
-
   if (backgroundRow.textContent.trim() !== '') {
     backgroundRow.classList.add('background');
     decorateBlockBg(el, backgroundRow, { useHandleFocalpoint: true });
   }
-
   decorateContentRow(contentRow);
   const layoutParts = buildLayout();
   if (!appendMarqueeContent(marqueeRow, layoutParts.leftCol)) return;
-
   if (isPromptVariant) {
     await initPromptVariant(el, contentRow, layoutParts);
   } else {
