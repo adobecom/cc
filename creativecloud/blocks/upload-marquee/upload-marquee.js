@@ -125,7 +125,9 @@ function extractUploadContentParts(content) {
   const textParas = contentParagraphs.filter((para) => para !== uploadPara);
   const headingPara = textParas[0];
   const bodyPara = textParas[1];
-  return { media, terms, contentParagraphs, uploadPara, headingPara, bodyPara };
+  return {
+    media, terms, contentParagraphs, uploadPara, headingPara, bodyPara,
+  };
 }
 
 function applyViewportClasses(foreground) {
