@@ -1,4 +1,4 @@
-import { readFile } from '@web/test-runner-commands';
+import { readFile, sendKeys } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
@@ -18,6 +18,10 @@ function findHowToJsonLdScript() {
   return scripts.find((s) => s.textContent.includes('"@type":"HowTo"'));
 }
 
+function findAllHowToJsonLdScripts() {
+  return [...document.head.querySelectorAll('script[type="application/ld+json"]')].filter((s) => s.textContent.includes('"@type":"HowTo"'));
+}
+
 function parseHowToSchema() {
   const script = findHowToJsonLdScript();
   expect(script, 'expected HowTo application/ld+json script in document.head').to.exist;
@@ -34,7 +38,7 @@ describe('firefly-howto block', () => {
     expect(block).to.exist;
     init(block);
 
-    expect(block.classList.contains('con-block')).to.be.true;
+    expect(block.classList.contains('con-block')).to.equal(true);
     const foreground = block.querySelector('.foreground');
     expect(foreground).to.exist;
 
@@ -65,13 +69,49 @@ describe('firefly-howto block', () => {
 
     trigger.click();
     expect(trigger.getAttribute('aria-expanded')).to.equal('true');
-    expect(item.classList.contains('is-open')).to.be.true;
+    expect(item.classList.contains('is-open')).to.equal(true);
     expect(trigger.getAttribute('daa-ll')).to.include('close-heading-step-a');
 
     trigger.click();
     expect(trigger.getAttribute('aria-expanded')).to.equal('false');
-    expect(item.classList.contains('is-open')).to.be.false;
+    expect(item.classList.contains('is-open')).to.equal(false);
     expect(trigger.getAttribute('daa-ll')).to.include('open-heading-step-a');
+  });
+
+  it('opens and closes via keyboard Enter on the native button trigger', async () => {
+    const block = document.querySelector('#basic-howto');
+    init(block);
+    const item = block.querySelector('.firefly-howto-item');
+    const trigger = item.querySelector('.firefly-howto-trigger');
+
+    expect(trigger.tagName).to.equal('BUTTON');
+
+    trigger.focus();
+    await sendKeys({ press: 'Enter' });
+    expect(trigger.getAttribute('aria-expanded')).to.equal('true');
+    expect(item.classList.contains('is-open')).to.equal(true);
+
+    await sendKeys({ press: 'Enter' });
+    expect(trigger.getAttribute('aria-expanded')).to.equal('false');
+    expect(item.classList.contains('is-open')).to.equal(false);
+  });
+
+  it('opens and closes via keyboard Space on the native button trigger', async () => {
+    const block = document.querySelector('#basic-howto');
+    init(block);
+    const item = block.querySelector('.firefly-howto-item');
+    const trigger = item.querySelector('.firefly-howto-trigger');
+
+    expect(trigger.tagName).to.equal('BUTTON');
+
+    trigger.focus();
+    await sendKeys({ press: 'Space' });
+    expect(trigger.getAttribute('aria-expanded')).to.equal('true');
+    expect(item.classList.contains('is-open')).to.equal(true);
+
+    await sendKeys({ press: 'Space' });
+    expect(trigger.getAttribute('aria-expanded')).to.equal('false');
+    expect(item.classList.contains('is-open')).to.equal(false);
   });
 
   it('closes an open item when clicking the item surface outside the trigger (not a link)', () => {
@@ -87,7 +127,7 @@ describe('firefly-howto block', () => {
     const panel = item.querySelector('.firefly-howto-panel');
     panel.click();
     expect(trigger.getAttribute('aria-expanded')).to.equal('false');
-    expect(item.classList.contains('is-open')).to.be.false;
+    expect(item.classList.contains('is-open')).to.equal(false);
   });
 
   it('does not open when pointer movement exceeds drag threshold before click', () => {
@@ -188,7 +228,7 @@ describe('firefly-howto block', () => {
     try {
       window.lana = { log: (msg) => logs.push(String(msg)) };
       init(null);
-      expect(logs.some((m) => m.includes('Firefly accordion init error'))).to.be.true;
+      expect(logs.some((m) => m.includes('Firefly accordion init error'))).to.equal(true);
     } finally {
       window.lana = prevLana;
     }
@@ -204,7 +244,7 @@ describe('firefly-howto block', () => {
       } catch (e) {
         threw = true;
       }
-      expect(threw).to.be.false;
+      expect(threw).to.equal(false);
     } finally {
       window.lana = prevLana;
     }
@@ -292,5 +332,48 @@ describe('firefly-howto block', () => {
     expect(schema.tool).to.equal(undefined);
     expect(schema.supply).to.equal(undefined);
     expect(schema.step.length).to.equal(1);
+  });
+
+  it('injects independent HowTo JSON-LD per .firefly-howto.seo block without cross-contamination', () => {
+    const first = document.querySelector('#seo-multi-first');
+    const second = document.querySelector('#seo-multi-second');
+    init(first);
+    init(second);
+
+    const scripts = findAllHowToJsonLdScripts();
+    expect(scripts.length).to.equal(2);
+
+    const byName = Object.fromEntries(
+      scripts.map((s) => {
+        const schema = JSON.parse(s.textContent);
+        return [schema.name, schema];
+      }),
+    );
+
+    const schemaA = byName['Multi First Name'];
+    const schemaB = byName['Multi Second Name'];
+    expect(schemaA, 'first block schema').to.exist;
+    expect(schemaB, 'second block schema').to.exist;
+
+    expect(schemaA['@type']).to.equal('HowTo');
+    expect(schemaA.description).to.equal('Multi First Description');
+    expect(schemaA.step.length).to.equal(1);
+    expect(schemaA.step[0].name).to.equal('Part A Step one title');
+    expect(schemaA.step[0].text.trim()).to.equal('Body for first block.');
+    expect(schemaA.step.some((s) => s.text.includes('second block'))).to.equal(false);
+
+    expect(schemaB['@type']).to.equal('HowTo');
+    expect(schemaB.description).to.equal('Multi Second Description');
+    expect(schemaB.step.length).to.equal(1);
+    expect(schemaB.step[0].name).to.equal('Part B Step two title');
+    expect(schemaB.step[0].text.trim()).to.equal('Body for second block.');
+    expect(schemaB.step.some((s) => s.text.includes('first block'))).to.equal(false);
+
+    expect(first.querySelectorAll('.firefly-howto-item').length).to.equal(1);
+    expect(second.querySelectorAll('.firefly-howto-item').length).to.equal(1);
+    expect(first.querySelector('.firefly-howto-title').textContent.trim()).to.equal('Step one title');
+    expect(second.querySelector('.firefly-howto-title').textContent.trim()).to.equal('Step two title');
+    expect(first.querySelector('.firefly-howto-trigger').id).to.equal('btn-seo-multi-h1');
+    expect(second.querySelector('.firefly-howto-trigger').id).to.equal('btn-seo-multi-h2');
   });
 });
