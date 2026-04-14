@@ -264,6 +264,11 @@
   background: var(--prompt-btn-fill-light);
 } 
 
+/* WCAG 1.4.11: extra ring outside blue border (keyboard focus only). */
+.interactive-enabled .layer .gray-button:focus-visible {
+  box-shadow: 0 0 0 2px #fff;
+}
+
 .interactive-enabled .interactive-link-analytics-text {
   display: none;
 }
@@ -412,6 +417,10 @@
     font-size: var(--type-body-xl-size); 
     line-height: var(--type-body-xl-lh);
     box-shadow: 0 10px 10px rgba(0, 0, 0, 32%);
+  }
+
+  .interactive-enabled .layer .gray-button:focus-visible {
+    box-shadow: 0 0 0 2px #fff, 0 10px 10px rgba(0, 0, 0, 32%);
   }
 
   .interactive-enabled .layer .gray-button.animated::before {
