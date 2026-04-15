@@ -266,7 +266,7 @@
 
 /* WCAG 1.4.11: extra ring outside blue border (keyboard focus only). */
 .interactive-enabled .layer .gray-button:focus-visible {
-  box-shadow: 0 0 0 2px #fff;
+  box-shadow: 0 0 0 2px var(--prompt-btn-fill-light);
 }
 
 .interactive-enabled .interactive-link-analytics-text {
@@ -420,7 +420,7 @@
   }
 
   .interactive-enabled .layer .gray-button:focus-visible {
-    box-shadow: 0 0 0 2px #fff, 0 10px 10px rgba(0, 0, 0, 32%);
+    box-shadow: 0 0 0 2px var(--prompt-btn-fill-light), 0 10px 10px rgba(0, 0, 0, 32%);
   }
 
   .interactive-enabled .layer .gray-button.animated::before {
