@@ -37,6 +37,7 @@ const CLASSES = {
   SHIMMER: 'shimmer',
   EXPANDED: 'expanded',
   INFO_VISIBLE: 'info-visible',
+  INFO_BUTTON_DESC: 'pre-yt-info-button-desc',
 };
 
 // Centralized accessible names (aria-label) for the gallery block.
@@ -49,19 +50,12 @@ const ARIA_LABELS = {
   OVERLAY_CLOSE: 'Close text description',
 };
 
-/** Full name when keyboard/screen reader focus is on the info button only. */
-const getInfoButtonFocusedAriaLabel = (templateDescription) => (
+/** Full phrase for aria-describedby (announced when the info button is focused; aria-label stays short). */
+const getInfoButtonDescriptionText = (templateDescription) => (
   templateDescription
     ? `Show info button for ${templateDescription}`
-    : ARIA_LABELS.SHOW_INFO
+    : ''
 );
-
-/**
- * Desktop: toggle short vs long label on focus/blur so the card group can list a short "Show info".
- * Mobile/tablet: always use the long label — touch screen readers often do not fire focus/blur when swiping
- * between multiple controls (e.g. Edit, Show info, Close), so the full name must live on aria-label directly.
- */
-const useDesktopInfoButtonLabelToggle = () => getScreenSizeCategory(CONFIG.VIEWPORT) === 'desktop';
 
 // SVG Icons
 const ICONS = {
@@ -364,7 +358,7 @@ const handleImageLoad = (card, img) => {
 };
 
 // Updates card with actual content from API data.
-const updateCardWithData = (card, item, eager = false) => {
+const updateCardWithData = (card, item, eager = false, cardIndex = 0) => {
   const imageWrapper = card.querySelector(`.${CLASSES.IMAGE_WRAPPER}`);
   const videoWrapper = card.querySelector(`.${CLASSES.VIDEO_WRAPPER}`);
   const button = card.querySelector(`.${CLASSES.BUTTON}`);
@@ -389,15 +383,24 @@ const updateCardWithData = (card, item, eager = false) => {
 
   const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
   if (infoButton) {
-    if (item.altText) {
-      infoButton.dataset.prmYtTemplateDescription = item.altText;
+    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+    const descText = getInfoButtonDescriptionText(item.altText);
+    if (descText) {
+      const safeKey = String(item.ID || `card-${cardIndex}`).replace(/[^a-zA-Z0-9_-]/g, '_');
+      const descId = `prm-yt-info-desc-${safeKey}`;
+      let descEl = card.querySelector(`#${descId}`);
+      if (!descEl) {
+        descEl = createTag('span', {
+          id: descId,
+          class: CLASSES.INFO_BUTTON_DESC,
+        });
+        card.appendChild(descEl);
+      }
+      descEl.textContent = descText;
+      infoButton.setAttribute('aria-describedby', descId);
     } else {
-      delete infoButton.dataset.prmYtTemplateDescription;
-    }
-    if (useDesktopInfoButtonLabelToggle()) {
-      infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-    } else {
-      infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(item.altText));
+      infoButton.removeAttribute('aria-describedby');
+      card.querySelectorAll(`.${CLASSES.INFO_BUTTON_DESC}`).forEach((el) => el.remove());
     }
   }
 
@@ -517,17 +520,6 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
-  if (useDesktopInfoButtonLabelToggle()) {
-    // Short "Show info" off-focus; full sentence when this button is focused (desktop keyboard / pointer tab order).
-    infoButton.addEventListener('focus', () => {
-      const desc = infoButton.dataset.prmYtTemplateDescription;
-      infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(desc));
-    });
-    infoButton.addEventListener('blur', () => {
-      infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-    });
-  }
-
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
     handleOverlayTabNavigation(e, card, editButton, closeCardButton);
@@ -612,7 +604,7 @@ const updateCardsWithData = (container, data, cardLimit, freeTagText, branchLink
     const item = normalizeItem(rawItem, branchLinkTestId);
     const eager = index < CONFIG.EAGER_LOAD_COUNT;
 
-    updateCardWithData(card, item, eager);
+    updateCardWithData(card, item, eager, index);
 
     if (item.isFree) {
       addFreeTagToCard(card, freeTagText);

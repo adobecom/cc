@@ -1,4 +1,18 @@
 /* Responsive styling with mobile-first approach */
+
+/* Screen-reader-only target for info button aria-describedby (full phrase; name stays short). */
+.pre-yt-info-button-desc {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 :root {
   --color-white: #fff;
   --transition-default: 0.2s ease-out;
