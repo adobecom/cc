@@ -56,6 +56,13 @@ const getInfoButtonFocusedAriaLabel = (templateDescription) => (
     : ARIA_LABELS.SHOW_INFO
 );
 
+/**
+ * Desktop: toggle short vs long label on focus/blur so the card group can list a short "Show info".
+ * Mobile/tablet: always use the long label — touch screen readers often do not fire focus/blur when swiping
+ * between multiple controls (e.g. Edit, Show info, Close), so the full name must live on aria-label directly.
+ */
+const useDesktopInfoButtonLabelToggle = () => getScreenSizeCategory(CONFIG.VIEWPORT) === 'desktop';
+
 // SVG Icons
 const ICONS = {
   close: `
@@ -387,7 +394,11 @@ const updateCardWithData = (card, item, eager = false) => {
     } else {
       delete infoButton.dataset.prmYtTemplateDescription;
     }
-    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+    if (useDesktopInfoButtonLabelToggle()) {
+      infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+    } else {
+      infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(item.altText));
+    }
   }
 
   // Update button deep link URL
@@ -506,14 +517,16 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
-  // Short "Show info" in the a11y tree when the card/group is announced; full sentence when this button is focused.
-  infoButton.addEventListener('focus', () => {
-    const desc = infoButton.dataset.prmYtTemplateDescription;
-    infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(desc));
-  });
-  infoButton.addEventListener('blur', () => {
-    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-  });
+  if (useDesktopInfoButtonLabelToggle()) {
+    // Short "Show info" off-focus; full sentence when this button is focused (desktop keyboard / pointer tab order).
+    infoButton.addEventListener('focus', () => {
+      const desc = infoButton.dataset.prmYtTemplateDescription;
+      infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(desc));
+    });
+    infoButton.addEventListener('blur', () => {
+      infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+    });
+  }
 
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
