@@ -43,10 +43,18 @@ const CLASSES = {
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
+  /** Fallback before API data; prefer getInfoButtonAriaLabel once template title is known. */
   SHOW_INFO: 'Show info',
   CLOSE_CARD: 'Close card',
   OVERLAY_CLOSE: 'Close text description',
 };
+
+/** Per-template info control name so screen readers do not announce duplicate labels (WCAG 4.1.2). */
+const getInfoButtonAriaLabel = (templateDescription) => (
+  templateDescription
+    ? `Show info: ${templateDescription}`
+    : ARIA_LABELS.SHOW_INFO
+);
 
 // SVG Icons
 const ICONS = {
@@ -247,7 +255,7 @@ const createCloseButton = (className, ariaLabel, onClick, tabindex = 0, ariaHidd
   return button;
 };
 
-// Creates the info button for showing template details.
+// Creates the info button for showing template details (label updated in updateCardWithData).
 const createInfoButton = () => {
   const button = createTag('button', {
     class: CLASSES.INFO_BUTTON,
@@ -370,6 +378,11 @@ const updateCardWithData = (card, item, eager = false) => {
   // Update overlay text
   if (overlayText) {
     overlayText.textContent = item.altText;
+  }
+
+  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+  if (infoButton) {
+    infoButton.setAttribute('aria-label', getInfoButtonAriaLabel(item.altText));
   }
 
   // Update button deep link URL
