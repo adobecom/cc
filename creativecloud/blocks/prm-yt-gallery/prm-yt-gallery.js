@@ -43,16 +43,16 @@ const CLASSES = {
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
-  /** Fallback before API data; prefer getInfoButtonAriaLabel once template title is known. */
+  /** Short name when the card group is announced or the control is not focused (avoids duplicating template text). */
   SHOW_INFO: 'Show info',
   CLOSE_CARD: 'Close card',
   OVERLAY_CLOSE: 'Close text description',
 };
 
-/** Per-template info control name so screen readers do not announce duplicate labels (WCAG 4.1.2). */
-const getInfoButtonAriaLabel = (templateDescription) => (
+/** Full name when keyboard/screen reader focus is on the info button only. */
+const getInfoButtonFocusedAriaLabel = (templateDescription) => (
   templateDescription
-    ? `Show info: ${templateDescription}`
+    ? `Show info button for ${templateDescription}`
     : ARIA_LABELS.SHOW_INFO
 );
 
@@ -382,7 +382,12 @@ const updateCardWithData = (card, item, eager = false) => {
 
   const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
   if (infoButton) {
-    infoButton.setAttribute('aria-label', getInfoButtonAriaLabel(item.altText));
+    if (item.altText) {
+      infoButton.dataset.prmYtTemplateDescription = item.altText;
+    } else {
+      delete infoButton.dataset.prmYtTemplateDescription;
+    }
+    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
   }
 
   // Update button deep link URL
@@ -499,6 +504,15 @@ const setupInfoOverlay = (card) => {
   infoButton.addEventListener('click', (e) => {
     e.stopPropagation();
     showInfoOverlay(card, video, closeOverlayButton);
+  });
+
+  // Short "Show info" in the a11y tree when the card/group is announced; full sentence when this button is focused.
+  infoButton.addEventListener('focus', () => {
+    const desc = infoButton.dataset.prmYtTemplateDescription;
+    infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(desc));
+  });
+  infoButton.addEventListener('blur', () => {
+    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
   });
 
   // Keyboard navigation handlers
