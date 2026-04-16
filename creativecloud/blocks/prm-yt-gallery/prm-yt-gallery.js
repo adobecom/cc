@@ -43,17 +43,9 @@ const CLASSES = {
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
-  /** Info control when it does not have keyboard focus. */
-  SHOW_INFO_BUTTON: 'Show info',
+  SHOW_INFO: 'Show info',
   CLOSE_CARD: 'Close card',
   OVERLAY_CLOSE: 'Close text description',
-};
-
-/** Long name while the info button is focused (template copy from API / card). */
-const getInfoButtonFocusedAriaLabel = (templateDescription) => {
-  const t = templateDescription?.trim();
-  if (!t) return ARIA_LABELS.SHOW_INFO_BUTTON;
-  return `Show info button for ${t}`;
 };
 
 // SVG Icons
@@ -259,7 +251,7 @@ const createCloseButton = (className, ariaLabel, onClick, tabindex = 0, ariaHidd
 const createInfoButton = () => {
   const button = createTag('button', {
     class: CLASSES.INFO_BUTTON,
-    'aria-label': ARIA_LABELS.SHOW_INFO_BUTTON,
+    'aria-label': ARIA_LABELS.SHOW_INFO,
     type: 'button',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
@@ -380,16 +372,6 @@ const updateCardWithData = (card, item, eager = false) => {
     overlayText.textContent = item.altText;
   }
 
-  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
-  if (infoButton) {
-    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO_BUTTON);
-    if (item.altText) {
-      infoButton.setAttribute('data-prm-yt-template-description', item.altText);
-    } else {
-      infoButton.removeAttribute('data-prm-yt-template-description');
-    }
-  }
-
   // Update button deep link URL
   if (button && item.deepLinkUrl) {
     button.href = item.deepLinkUrl;
@@ -463,13 +445,12 @@ const handleCloseCardTabNavigation = (e, card) => {
 };
 
 // Handles tab navigation from edit button to info button.
-const handleEditButtonTabNavigation = (e, infoButton, card, applyInfoButtonFocusedLabel) => {
+const handleEditButtonTabNavigation = (e, infoButton, card) => {
   if (e.key === 'Tab' && !e.shiftKey) {
     e.preventDefault();
     if (card.classList.contains(CLASSES.INFO_VISIBLE)) {
       handleCloseCardTabNavigation(e, card);
     } else {
-      applyInfoButtonFocusedLabel();
       infoButton.focus();
     }
   }
@@ -507,37 +488,6 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
-  const readTemplateDescription = () => {
-    const fromBtn = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
-    if (fromBtn) return fromBtn;
-    return card.getAttribute('aria-label')?.trim() || '';
-  };
-
-  const applyInfoButtonBlurredLabel = () => {
-    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO_BUTTON);
-  };
-
-  const applyInfoButtonFocusedLabel = () => {
-    expandCard(card, video);
-    infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(readTemplateDescription()));
-  };
-
-  const onInfoButtonFocusOut = (e) => {
-    if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
-    applyInfoButtonBlurredLabel();
-  };
-
-  card.addEventListener(
-    'focusin',
-    (e) => {
-      if (e.target !== infoButton) return;
-      applyInfoButtonFocusedLabel();
-    },
-    true,
-  );
-  infoButton.addEventListener('pointerdown', applyInfoButtonFocusedLabel, true);
-  infoButton.addEventListener('focusout', onInfoButtonFocusOut, true);
-
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
     handleOverlayTabNavigation(e, card, editButton, closeCardButton);
@@ -545,7 +495,7 @@ const setupInfoOverlay = (card) => {
 
   if (editButton) {
     editButton.addEventListener('keydown', (e) => {
-      handleEditButtonTabNavigation(e, infoButton, card, applyInfoButtonFocusedLabel);
+      handleEditButtonTabNavigation(e, infoButton, card);
     });
   }
 
