@@ -506,9 +506,15 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
-  // Short "Show info" off-focus; full "Show info button for …" while focused (no aria-describedby — it leaks into group).
-  const readTemplateDescription = () => infoButton.getAttribute('data-prm-yt-template-description')?.trim() || '';
+  // Short "Show info" off-focus; full phrase while the info button is focused. Must expand first so the
+  // control is not opacity:0. Template text: data attr, else card aria-label (same source as API title).
+  const readTemplateDescription = () => {
+    const fromBtn = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
+    if (fromBtn) return fromBtn;
+    return card.getAttribute('aria-label')?.trim() || '';
+  };
   const applyInfoButtonLongLabel = () => {
+    expandCard(card, video);
     const desc = readTemplateDescription();
     if (desc) {
       infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(desc));
@@ -520,12 +526,12 @@ const setupInfoOverlay = (card) => {
   const onInfoButtonFocusIn = () => {
     applyInfoButtonLongLabel();
     requestAnimationFrame(applyInfoButtonLongLabel);
+    setTimeout(applyInfoButtonLongLabel, 0);
   };
   const onInfoButtonFocusOut = (e) => {
-    if (infoButton.contains(e.relatedTarget)) return;
+    if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
     applyInfoButtonShortLabel();
   };
-  infoButton.addEventListener('focus', onInfoButtonFocusIn, true);
   infoButton.addEventListener('focusin', onInfoButtonFocusIn, true);
   infoButton.addEventListener('pointerdown', applyInfoButtonLongLabel, true);
   infoButton.addEventListener('focusout', onInfoButtonFocusOut, true);
@@ -566,7 +572,12 @@ const setupCardInteractions = (card) => {
       trackEvent(`${templateId}:video plays`);
       expandCard(card, video);
     });
-    card.addEventListener('mouseleave', () => collapseCard(card, video));
+    // Do not collapse when keyboard/AT focus is still inside the card (e.g. tab to Show info) — otherwise
+    // .expanded is removed, controls stay opacity:0, and aria-label updates on the info button never surface.
+    card.addEventListener('mouseleave', () => {
+      if (card.contains(document.activeElement)) return;
+      collapseCard(card, video);
+    });
   }
 
   // Keyboard navigation: expand on focus (only if coming from outside the card)
