@@ -174,19 +174,6 @@
   opacity: 0;
 }
 
-/* Full name for info button aria-labelledby; sibling of .pre-yt-card-inner, not inside the button. */
-.pre-yt-card > .pre-yt-info-button-a11y-name {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .pre-yt-card-inner .pre-yt-close-card-button {
   position: absolute;
   top: 12px;

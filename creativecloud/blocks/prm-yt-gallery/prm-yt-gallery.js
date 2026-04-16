@@ -28,8 +28,6 @@ const CLASSES = {
   VIDEO_WRAPPER: 'video-wrapper',
   BUTTON: 'pre-yt-button',
   INFO_BUTTON: 'pre-yt-info-button',
-  /** Visually hidden text node for info button name when focused (aria-labelledby). */
-  INFO_BUTTON_A11Y_NAME: 'pre-yt-info-button-a11y-name',
   CLOSE_CARD_BUTTON: 'pre-yt-close-card-button',
   OVERLAY_CLOSE: 'pre-yt-overlay-close',
   INFO_OVERLAY: 'pre-yt-info-overlay',
@@ -41,48 +39,14 @@ const CLASSES = {
   INFO_VISIBLE: 'info-visible',
 };
 
-/** Long-label prep per card; document capture runs before per-card listeners. */
-const cardInfoButtonLongLabelPrep = new WeakMap();
-
-let documentInfoButtonFocusPrepInstalled = false;
-
-const installDocumentInfoButtonFocusPrep = () => {
-  if (documentInfoButtonFocusPrepInstalled) return;
-  documentInfoButtonFocusPrepInstalled = true;
-  document.addEventListener(
-    'focusin',
-    (e) => {
-      const { target } = e;
-      if (!target?.classList?.contains(CLASSES.INFO_BUTTON)) return;
-      const card = target.closest(`.${CLASSES.CARD}`);
-      if (!card) return;
-      cardInfoButtonLongLabelPrep.get(card)?.();
-    },
-    true,
-  );
-};
-
 // Centralized accessible names (aria-label) for the gallery block.
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
-  /**
-   * Short name when the card group is announced or the control is not focused
-   * (avoids duplicating template text).
-   */
   SHOW_INFO: 'Show info',
   CLOSE_CARD: 'Close card',
   OVERLAY_CLOSE: 'Close text description',
 };
-
-/**
- * Full phrase only while the info button has focus (all viewports; no aria-describedby).
- */
-const getInfoButtonFocusedAriaLabel = (templateDescription) => (
-  templateDescription
-    ? `Show info button for ${templateDescription}`
-    : ARIA_LABELS.SHOW_INFO
-);
 
 // SVG Icons
 const ICONS = {
@@ -283,21 +247,7 @@ const createCloseButton = (className, ariaLabel, onClick, tabindex = 0, ariaHidd
   return button;
 };
 
-const uniqueInfoButtonNameId = () => {
-  const suffix = typeof crypto !== 'undefined' && crypto.randomUUID
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-  return `pre-yt-infoname-${suffix}`;
-};
-
-/** Lives on the card (not inside the button) so aria-labelledby resolves reliably across AT. */
-const createInfoButtonA11yNameEl = () => createTag('span', {
-  class: CLASSES.INFO_BUTTON_A11Y_NAME,
-  id: uniqueInfoButtonNameId(),
-  'aria-hidden': 'true',
-});
-
-// Creates the info button for showing template details (label updated in updateCardWithData).
+// Creates the info button for showing template details.
 const createInfoButton = () => {
   const button = createTag('button', {
     class: CLASSES.INFO_BUTTON,
@@ -382,7 +332,6 @@ const createShimmerCard = (buttonText) => {
 
   cardInner.append(imageWrapper, videoWrapper);
   card.append(cardInner);
-  card.append(createInfoButtonA11yNameEl());
 
   return card;
 };
@@ -421,26 +370,6 @@ const updateCardWithData = (card, item, eager = false) => {
   // Update overlay text
   if (overlayText) {
     overlayText.textContent = item.altText;
-  }
-
-  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
-  const a11yNameEl = card.querySelector(`.${CLASSES.INFO_BUTTON_A11Y_NAME}`);
-  if (infoButton) {
-    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-    infoButton.removeAttribute('aria-labelledby');
-    if (item.altText) {
-      infoButton.setAttribute('data-prm-yt-template-description', item.altText);
-      if (a11yNameEl) {
-        a11yNameEl.textContent = getInfoButtonFocusedAriaLabel(item.altText);
-        a11yNameEl.setAttribute('aria-hidden', 'true');
-      }
-    } else {
-      infoButton.removeAttribute('data-prm-yt-template-description');
-      if (a11yNameEl) {
-        a11yNameEl.textContent = '';
-        a11yNameEl.setAttribute('aria-hidden', 'true');
-      }
-    }
   }
 
   // Update button deep link URL
@@ -516,13 +445,12 @@ const handleCloseCardTabNavigation = (e, card) => {
 };
 
 // Handles tab navigation from edit button to info button.
-const handleEditButtonTabNavigation = (e, infoButton, card, applyInfoButtonLongLabel) => {
+const handleEditButtonTabNavigation = (e, infoButton, card) => {
   if (e.key === 'Tab' && !e.shiftKey) {
     e.preventDefault();
     if (card.classList.contains(CLASSES.INFO_VISIBLE)) {
       handleCloseCardTabNavigation(e, card);
     } else {
-      applyInfoButtonLongLabel();
       infoButton.focus();
     }
   }
@@ -560,57 +488,6 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
-  // Short "Show info" off-focus; full phrase while focused. expandCard first (opacity).
-  // Template: data attr, else card aria-label (same as API title).
-  const infoButtonA11yNameEl = card.querySelector(`.${CLASSES.INFO_BUTTON_A11Y_NAME}`);
-  const readTemplateDescription = () => {
-    const fromBtn = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
-    if (fromBtn) return fromBtn;
-    return card.getAttribute('aria-label')?.trim() || '';
-  };
-  const applyInfoButtonShortLabel = () => {
-    infoButton.removeAttribute('aria-labelledby');
-    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-    if (infoButtonA11yNameEl) {
-      infoButtonA11yNameEl.setAttribute('aria-hidden', 'true');
-    }
-  };
-  const applyInfoButtonLongLabel = () => {
-    expandCard(card, video);
-    const desc = readTemplateDescription();
-    if (!desc) {
-      applyInfoButtonShortLabel();
-      return;
-    }
-    const longName = getInfoButtonFocusedAriaLabel(desc);
-    if (infoButtonA11yNameEl?.id) {
-      infoButtonA11yNameEl.textContent = longName;
-      infoButtonA11yNameEl.removeAttribute('aria-hidden');
-      infoButton.removeAttribute('aria-label');
-      infoButton.setAttribute('aria-labelledby', infoButtonA11yNameEl.id);
-    } else {
-      infoButton.setAttribute('aria-label', longName);
-    }
-  };
-  const onInfoButtonFocusOut = (e) => {
-    if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
-    applyInfoButtonShortLabel();
-  };
-  installDocumentInfoButtonFocusPrep();
-  cardInfoButtonLongLabelPrep.set(card, applyInfoButtonLongLabel);
-  // Capture on card before the info button: some AT cache a stale short aria-label on forward Tab.
-  card.addEventListener(
-    'focusin',
-    (e) => {
-      if (e.target !== infoButton) return;
-      applyInfoButtonLongLabel();
-      requestAnimationFrame(applyInfoButtonLongLabel);
-    },
-    true,
-  );
-  infoButton.addEventListener('pointerdown', applyInfoButtonLongLabel, true);
-  infoButton.addEventListener('focusout', onInfoButtonFocusOut, true);
-
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
     handleOverlayTabNavigation(e, card, editButton, closeCardButton);
@@ -618,7 +495,7 @@ const setupInfoOverlay = (card) => {
 
   if (editButton) {
     editButton.addEventListener('keydown', (e) => {
-      handleEditButtonTabNavigation(e, infoButton, card, applyInfoButtonLongLabel);
+      handleEditButtonTabNavigation(e, infoButton, card);
     });
   }
 
@@ -647,12 +524,7 @@ const setupCardInteractions = (card) => {
       trackEvent(`${templateId}:video plays`);
       expandCard(card, video);
     });
-    // Do not collapse while focus stays inside the card (e.g. tab to Show info); collapsing removes
-    // .expanded, hides controls (opacity: 0), and breaks SR + a11y name updates on the button.
-    card.addEventListener('mouseleave', () => {
-      if (card.contains(document.activeElement)) return;
-      collapseCard(card, video);
-    });
+    card.addEventListener('mouseleave', () => collapseCard(card, video));
   }
 
   // Keyboard navigation: expand on focus (only if coming from outside the card)
@@ -661,15 +533,10 @@ const setupCardInteractions = (card) => {
       expandCard(card, video);
     }
   });
-  // WebKit often sets relatedTarget to null when focus moves to a descendant (e.g. info button).
-  // Immediate collapse would remove .expanded and break SR + name updates on the info control.
   card.addEventListener('focusout', (e) => {
-    const next = e.relatedTarget;
-    if (next && card.contains(next)) return;
-    requestAnimationFrame(() => {
-      if (card.contains(document.activeElement)) return;
+    if (!card.contains(e.relatedTarget)) {
       collapseCard(card, video);
-    });
+    }
   });
   setupInfoOverlay(card);
 };
