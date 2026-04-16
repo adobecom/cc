@@ -384,9 +384,9 @@ const updateCardWithData = (card, item, eager = false) => {
   if (infoButton) {
     infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
     if (item.altText) {
-      infoButton.dataset.prmYtTemplateDescription = item.altText;
+      infoButton.setAttribute('data-prm-yt-template-description', item.altText);
     } else {
-      delete infoButton.dataset.prmYtTemplateDescription;
+      infoButton.removeAttribute('data-prm-yt-template-description');
     }
   }
 
@@ -506,19 +506,29 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
-  // Short "Show info" in the a11y tree when the card/group is explored; full phrase only while this button is focused.
-  // Do not use aria-describedby — SRs also expose it in group context. focusin/focusout works across viewports + iOS.
-  const onInfoButtonFocusIn = () => {
-    const desc = infoButton.dataset.prmYtTemplateDescription;
+  // Short "Show info" off-focus; full "Show info button for …" while focused (no aria-describedby — it leaks into group).
+  const readTemplateDescription = () => infoButton.getAttribute('data-prm-yt-template-description')?.trim() || '';
+  const applyInfoButtonLongLabel = () => {
+    const desc = readTemplateDescription();
     if (desc) {
       infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(desc));
     }
   };
-  const onInfoButtonFocusOut = () => {
+  const applyInfoButtonShortLabel = () => {
     infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
   };
-  infoButton.addEventListener('focusin', onInfoButtonFocusIn);
-  infoButton.addEventListener('focusout', onInfoButtonFocusOut);
+  const onInfoButtonFocusIn = () => {
+    applyInfoButtonLongLabel();
+    requestAnimationFrame(applyInfoButtonLongLabel);
+  };
+  const onInfoButtonFocusOut = (e) => {
+    if (infoButton.contains(e.relatedTarget)) return;
+    applyInfoButtonShortLabel();
+  };
+  infoButton.addEventListener('focus', onInfoButtonFocusIn, true);
+  infoButton.addEventListener('focusin', onInfoButtonFocusIn, true);
+  infoButton.addEventListener('pointerdown', applyInfoButtonLongLabel, true);
+  infoButton.addEventListener('focusout', onInfoButtonFocusOut, true);
 
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
@@ -565,10 +575,15 @@ const setupCardInteractions = (card) => {
       expandCard(card, video);
     }
   });
+  // WebKit often sets relatedTarget to null when focus moves to a descendant (e.g. info button).
+  // Immediate collapse would remove .expanded, hide controls (opacity: 0), and break SR + aria-label updates.
   card.addEventListener('focusout', (e) => {
-    if (!card.contains(e.relatedTarget)) {
+    const next = e.relatedTarget;
+    if (next && card.contains(next)) return;
+    requestAnimationFrame(() => {
+      if (card.contains(document.activeElement)) return;
       collapseCard(card, video);
-    }
+    });
   });
   setupInfoOverlay(card);
 };
