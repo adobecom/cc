@@ -37,7 +37,6 @@ const CLASSES = {
   SHIMMER: 'shimmer',
   EXPANDED: 'expanded',
   INFO_VISIBLE: 'info-visible',
-  INFO_BUTTON_DESC: 'pre-yt-info-button-desc',
 };
 
 // Centralized accessible names (aria-label) for the gallery block.
@@ -50,11 +49,11 @@ const ARIA_LABELS = {
   OVERLAY_CLOSE: 'Close text description',
 };
 
-/** Full phrase for aria-describedby (announced when the info button is focused; aria-label stays short). */
-const getInfoButtonDescriptionText = (templateDescription) => (
+/** Full phrase only while the info button has focus (all viewports; no aria-describedby — it is read in group context too). */
+const getInfoButtonFocusedAriaLabel = (templateDescription) => (
   templateDescription
     ? `Show info button for ${templateDescription}`
-    : ''
+    : ARIA_LABELS.SHOW_INFO
 );
 
 // SVG Icons
@@ -358,7 +357,7 @@ const handleImageLoad = (card, img) => {
 };
 
 // Updates card with actual content from API data.
-const updateCardWithData = (card, item, eager = false, cardIndex = 0) => {
+const updateCardWithData = (card, item, eager = false) => {
   const imageWrapper = card.querySelector(`.${CLASSES.IMAGE_WRAPPER}`);
   const videoWrapper = card.querySelector(`.${CLASSES.VIDEO_WRAPPER}`);
   const button = card.querySelector(`.${CLASSES.BUTTON}`);
@@ -384,23 +383,10 @@ const updateCardWithData = (card, item, eager = false, cardIndex = 0) => {
   const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
   if (infoButton) {
     infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-    const descText = getInfoButtonDescriptionText(item.altText);
-    if (descText) {
-      const safeKey = String(item.ID || `card-${cardIndex}`).replace(/[^a-zA-Z0-9_-]/g, '_');
-      const descId = `prm-yt-info-desc-${safeKey}`;
-      let descEl = card.querySelector(`#${descId}`);
-      if (!descEl) {
-        descEl = createTag('span', {
-          id: descId,
-          class: CLASSES.INFO_BUTTON_DESC,
-        });
-        card.appendChild(descEl);
-      }
-      descEl.textContent = descText;
-      infoButton.setAttribute('aria-describedby', descId);
+    if (item.altText) {
+      infoButton.dataset.prmYtTemplateDescription = item.altText;
     } else {
-      infoButton.removeAttribute('aria-describedby');
-      card.querySelectorAll(`.${CLASSES.INFO_BUTTON_DESC}`).forEach((el) => el.remove());
+      delete infoButton.dataset.prmYtTemplateDescription;
     }
   }
 
@@ -520,6 +506,20 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
+  // Short "Show info" in the a11y tree when the card/group is explored; full phrase only while this button is focused.
+  // Do not use aria-describedby — SRs also expose it in group context. focusin/focusout works across viewports + iOS.
+  const onInfoButtonFocusIn = () => {
+    const desc = infoButton.dataset.prmYtTemplateDescription;
+    if (desc) {
+      infoButton.setAttribute('aria-label', getInfoButtonFocusedAriaLabel(desc));
+    }
+  };
+  const onInfoButtonFocusOut = () => {
+    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+  };
+  infoButton.addEventListener('focusin', onInfoButtonFocusIn);
+  infoButton.addEventListener('focusout', onInfoButtonFocusOut);
+
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
     handleOverlayTabNavigation(e, card, editButton, closeCardButton);
@@ -604,7 +604,7 @@ const updateCardsWithData = (container, data, cardLimit, freeTagText, branchLink
     const item = normalizeItem(rawItem, branchLinkTestId);
     const eager = index < CONFIG.EAGER_LOAD_COUNT;
 
-    updateCardWithData(card, item, eager, index);
+    updateCardWithData(card, item, eager);
 
     if (item.isFree) {
       addFreeTagToCard(card, freeTagText);
