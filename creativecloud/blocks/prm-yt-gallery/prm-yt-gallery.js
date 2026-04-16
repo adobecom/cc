@@ -43,20 +43,9 @@ const CLASSES = {
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
-  /** Placeholder before API data; full label set in updateCardWithData. */
-  SHOW_INFO_BUTTON: 'Show info button',
+  SHOW_INFO: 'Show info',
   CLOSE_CARD: 'Close card',
   OVERLAY_CLOSE: 'Close text description',
-};
-
-/**
- * Same template copy as the card (API title / item.altText).
- * e.g. Show info button for Template displays… "Verdant Botanical Gardens". button
- */
-const getInfoButtonAriaLabel = (templateDescription) => {
-  const t = templateDescription?.trim();
-  if (!t) return ARIA_LABELS.SHOW_INFO_BUTTON;
-  return `Show info button for ${t}`;
 };
 
 // SVG Icons
@@ -262,7 +251,7 @@ const createCloseButton = (className, ariaLabel, onClick, tabindex = 0, ariaHidd
 const createInfoButton = () => {
   const button = createTag('button', {
     class: CLASSES.INFO_BUTTON,
-    'aria-label': ARIA_LABELS.SHOW_INFO_BUTTON,
+    'aria-label': ARIA_LABELS.SHOW_INFO,
     type: 'button',
   });
   button.insertAdjacentHTML('beforeend', ICONS.info);
@@ -381,11 +370,6 @@ const updateCardWithData = (card, item, eager = false) => {
   // Update overlay text
   if (overlayText) {
     overlayText.textContent = item.altText;
-  }
-
-  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
-  if (infoButton) {
-    infoButton.setAttribute('aria-label', getInfoButtonAriaLabel(item.altText));
   }
 
   // Update button deep link URL
