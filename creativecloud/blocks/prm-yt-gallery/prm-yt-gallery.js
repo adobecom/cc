@@ -354,9 +354,21 @@ const updateCardWithData = (card, item, eager = false) => {
   const videoWrapper = card.querySelector(`.${CLASSES.VIDEO_WRAPPER}`);
   const button = card.querySelector(`.${CLASSES.BUTTON}`);
   const overlayText = card.querySelector(`.${CLASSES.OVERLAY_TEXT}`);
+  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+
   // Make card accessible once content is loaded
   if (item.altText) {
     card.setAttribute('aria-label', item.altText);
+    if (infoButton) {
+      infoButton.setAttribute('data-prm-yt-template-description', item.altText);
+      infoButton.setAttribute(
+        'aria-label',
+        document.activeElement === infoButton ? item.altText : ARIA_LABELS.SHOW_INFO,
+      );
+    }
+  } else if (infoButton) {
+    infoButton.removeAttribute('data-prm-yt-template-description');
+    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
   }
   if (item.ID) {
     card.setAttribute('data-template-id', item.ID);
@@ -486,6 +498,15 @@ const setupInfoOverlay = (card) => {
   infoButton.addEventListener('click', (e) => {
     e.stopPropagation();
     showInfoOverlay(card, video, closeOverlayButton);
+  });
+
+  infoButton.addEventListener('focusin', () => {
+    const t = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
+    if (t) infoButton.setAttribute('aria-label', t);
+  });
+  infoButton.addEventListener('focusout', (e) => {
+    if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
+    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
   });
 
   // Keyboard navigation handlers
