@@ -372,6 +372,16 @@ const updateCardWithData = (card, item, eager = false) => {
     overlayText.textContent = item.altText;
   }
 
+  const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+  if (infoButton) {
+    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+    if (item.altText) {
+      infoButton.setAttribute('data-prm-yt-template-description', item.altText);
+    } else {
+      infoButton.removeAttribute('data-prm-yt-template-description');
+    }
+  }
+
   // Update button deep link URL
   if (button && item.deepLinkUrl) {
     button.href = item.deepLinkUrl;
@@ -487,6 +497,19 @@ const setupInfoOverlay = (card) => {
     e.stopPropagation();
     showInfoOverlay(card, video, closeOverlayButton);
   });
+
+  infoButton.addEventListener('focusin', () => {
+    const t = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
+    if (t) infoButton.setAttribute('aria-label', `Show info button for ${t}`);
+  });
+  infoButton.addEventListener(
+    'focusout',
+    (e) => {
+      if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
+      infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+    },
+    true,
+  );
 
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
