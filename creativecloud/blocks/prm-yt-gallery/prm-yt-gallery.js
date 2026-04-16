@@ -360,10 +360,10 @@ const updateCardWithData = (card, item, eager = false) => {
   if (item.altText) {
     card.setAttribute('aria-label', item.altText);
     if (infoButton) {
-      infoButton.setAttribute('data-prm-yt-template-description', item.altText);
+      infoButton.setAttribute('data-prm-yt-template-description', `Show info button for ${item.altText}`);
       infoButton.setAttribute(
         'aria-label',
-        document.activeElement === infoButton ? item.altText : ARIA_LABELS.SHOW_INFO,
+        document.activeElement === infoButton ? `Show info button for ${item.altText}` : ARIA_LABELS.SHOW_INFO,
       );
     }
   } else if (infoButton) {
