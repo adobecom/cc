@@ -523,16 +523,21 @@ const setupInfoOverlay = (card) => {
   const applyInfoButtonShortLabel = () => {
     infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
   };
-  const onInfoButtonFocusIn = () => {
-    applyInfoButtonLongLabel();
-    requestAnimationFrame(applyInfoButtonLongLabel);
-    setTimeout(applyInfoButtonLongLabel, 0);
-  };
   const onInfoButtonFocusOut = (e) => {
     if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
     applyInfoButtonShortLabel();
   };
-  infoButton.addEventListener('focusin', onInfoButtonFocusIn, true);
+  // Card capture runs before target phase on the info button. Forward Tab can otherwise leave NVDA/JAWS
+  // reading the stale short name; Shift+Tab often worked due to different event ordering.
+  card.addEventListener(
+    'focusin',
+    (e) => {
+      if (e.target !== infoButton) return;
+      applyInfoButtonLongLabel();
+      requestAnimationFrame(applyInfoButtonLongLabel);
+    },
+    true,
+  );
   infoButton.addEventListener('pointerdown', applyInfoButtonLongLabel, true);
   infoButton.addEventListener('focusout', onInfoButtonFocusOut, true);
 
