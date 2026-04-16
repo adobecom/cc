@@ -1,10 +1,12 @@
-import { createTag, getScreenSizeCategory, getConfig } from '../../scripts/utils.js';
+import { createTag, getScreenSizeCategory } from '../../scripts/utils.js';
 
 const CONFIG = {
   CARD_LIMIT: { desktop: 15, tablet: 9, mobile: 10 },
   API: {
+    KEY: 'milo-prm-yt-gallery',
+    SKIP_API_KEY: false,
     PRODUCT: 'creativecloud',
-    BASE_URL: '/stock-api/Rest/Media/1/Search/Collections',
+    BASE_URL: 'https://stock.adobe.io/Rest/Media/1/Search/Collections',
   },
   VIEWPORT: { mobile: 599, tablet: 1199 },
   EAGER_LOAD_COUNT: 6,
@@ -67,7 +69,7 @@ const ICONS = {
 const cleanUrl = (url) => (url ? url.replace(/\\\//g, '/') : '');
 
 // Generates template deep link URL.
-const createTemplateDeepLink = (templateId, branchLinkTestId) => `https://premierepro.app.link/${branchLinkTestId}?template_id=${templateId}`;
+const createTemplateDeepLink = (templateId) => `https://premierepro.app.link/TMRKlVAD4wXBin82HxtuhQ8LxSYRMrdK?template_id=${templateId}`;
 
 // Detects if the user is on an iOS device.
 const isIOSDevice = () => {
@@ -79,6 +81,15 @@ const isIOSDevice = () => {
 
 const logError = (message) => {
   window.lana?.log(message, { tags: 'prm-yt-gallery' });
+};
+
+// Configures API base URL based on akamai query parameter.
+const configureApiBaseUrl = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('akamai') === 'on') {
+    CONFIG.API.BASE_URL = '/stock-api/Rest/Media/1/Search/Collections';
+    CONFIG.API.SKIP_API_KEY = true;
+  }
 };
 
 const trackEvent = (eventName) => {
@@ -124,13 +135,8 @@ const buildApiUrl = (collectionId, offset, limit) => {
     'search_parameters[order]': 'creation',
     'search_parameters[gallery_id]': collectionId,
   });
-  const { env } = getConfig();
-  const nonProdEnvList = ['stage', 'local'];
-  const baseUrl = nonProdEnvList.includes(env.name)
-    ? 'https://www.stage.adobe.com'
-    : '';
 
-  const apiUrl = `${baseUrl}${CONFIG.API.BASE_URL}?${params.toString()}`;
+  const apiUrl = `${CONFIG.API.BASE_URL}?${params.toString()}`;
   return apiUrl;
 };
 
@@ -139,6 +145,10 @@ const fetchAdobeStockData = async ({ collectionId, offset = 0, limit }) => {
   try {
     const apiUrl = buildApiUrl(collectionId, offset, limit);
     const headers = { 'x-product': CONFIG.API.PRODUCT };
+
+    if (!CONFIG.API.SKIP_API_KEY) {
+      headers['x-api-key'] = CONFIG.API.KEY;
+    }
 
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -588,6 +598,7 @@ const setupBlockViewTracking = (el, blockName) => {
 // Initializes the gallery block.
 export default async function init(el) {
   const blockProps = parseBlockProps(el);
+  configureApiBaseUrl();
   if (!blockProps.collectionId) {
     logError('Collection ID is required for prm-yt-gallery');
     return;
