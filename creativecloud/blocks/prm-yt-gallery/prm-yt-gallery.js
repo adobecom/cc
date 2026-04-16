@@ -44,7 +44,7 @@ const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
   /** Info control when it does not have keyboard focus. */
-  SHOW_INFO_BUTTON: 'Show info button',
+  SHOW_INFO_BUTTON: 'Show info',
   CLOSE_CARD: 'Close card',
   OVERLAY_CLOSE: 'Close text description',
 };
@@ -53,7 +53,7 @@ const ARIA_LABELS = {
 const getInfoButtonFocusedAriaLabel = (templateDescription) => {
   const t = templateDescription?.trim();
   if (!t) return ARIA_LABELS.SHOW_INFO_BUTTON;
-  return `Show info button for ${t} button`;
+  return `Show info button for ${t}`;
 };
 
 // SVG Icons
@@ -214,48 +214,9 @@ const playVideo = (video) => {
   }, { once: true });
 };
 
-/** Hides overlay controls from the a11y tree when they are not shown (opacity / overlay state). */
-const setOverlayControlHidden = (el, hidden) => {
-  if (!el) return;
-  if (hidden) {
-    el.setAttribute('aria-hidden', 'true');
-    el.setAttribute('tabindex', '-1');
-  } else {
-    el.removeAttribute('aria-hidden');
-    el.setAttribute('tabindex', '0');
-  }
-};
-
-const syncCardOverlayControlsA11y = (card) => {
-  const infoBtn = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
-  const closeCardBtn = card.querySelector(`.${CLASSES.CLOSE_CARD_BUTTON}`);
-  const editBtn = card.querySelector(`.${CLASSES.BUTTON}`);
-  const expanded = card.classList.contains(CLASSES.EXPANDED);
-  const overlayOpen = card.classList.contains(CLASSES.INFO_VISIBLE);
-
-  if (!expanded) {
-    setOverlayControlHidden(infoBtn, true);
-    setOverlayControlHidden(closeCardBtn, true);
-    setOverlayControlHidden(editBtn, true);
-    return;
-  }
-
-  if (overlayOpen) {
-    setOverlayControlHidden(infoBtn, true);
-    setOverlayControlHidden(closeCardBtn, true);
-    setOverlayControlHidden(editBtn, false);
-    return;
-  }
-
-  setOverlayControlHidden(infoBtn, false);
-  setOverlayControlHidden(closeCardBtn, false);
-  setOverlayControlHidden(editBtn, false);
-};
-
 // Expands a card and starts video playback.
 const expandCard = (card, video) => {
   card.classList.add(CLASSES.EXPANDED);
-  syncCardOverlayControlsA11y(card);
   if (video && !card.classList.contains(CLASSES.INFO_VISIBLE)) {
     playVideo(video);
   }
@@ -264,7 +225,6 @@ const expandCard = (card, video) => {
 // Collapses a card and stops video playback.
 const collapseCard = (card, video) => {
   card.classList.remove(CLASSES.EXPANDED, CLASSES.INFO_VISIBLE);
-  syncCardOverlayControlsA11y(card);
   card.querySelector(`.${CLASSES.OVERLAY_TEXT}`).scrollTop = 0;
   if (video) video.pause();
 };
@@ -444,7 +404,6 @@ const updateCardWithData = (card, item, eager = false) => {
 // Shows info overlay and pauses video.
 const showInfoOverlay = (card, video, closeOverlayButton) => {
   card.classList.add(CLASSES.INFO_VISIBLE);
-  syncCardOverlayControlsA11y(card);
   const infoOverlay = card.querySelector(`.${CLASSES.INFO_OVERLAY}`);
   if (infoOverlay) {
     infoOverlay.setAttribute('aria-hidden', 'false');
@@ -460,7 +419,6 @@ const showInfoOverlay = (card, video, closeOverlayButton) => {
 // Hides info overlay and resumes video.
 const hideInfoOverlay = (card, video) => {
   card.classList.remove(CLASSES.INFO_VISIBLE);
-  syncCardOverlayControlsA11y(card);
   const infoOverlay = card.querySelector(`.${CLASSES.INFO_OVERLAY}`);
   if (infoOverlay) {
     infoOverlay.setAttribute('aria-hidden', 'true');
@@ -616,10 +574,7 @@ const setupCardInteractions = (card) => {
       trackEvent(`${templateId}:video plays`);
       expandCard(card, video);
     });
-    card.addEventListener('mouseleave', () => {
-      if (card.contains(document.activeElement)) return;
-      collapseCard(card, video);
-    });
+    card.addEventListener('mouseleave', () => collapseCard(card, video));
   }
 
   // Keyboard navigation: expand on focus (only if coming from outside the card)
@@ -628,17 +583,12 @@ const setupCardInteractions = (card) => {
       expandCard(card, video);
     }
   });
-  // WebKit may set relatedTarget to null when focus moves to a descendant; defer collapse check.
   card.addEventListener('focusout', (e) => {
-    const next = e.relatedTarget;
-    if (next && card.contains(next)) return;
-    requestAnimationFrame(() => {
-      if (card.contains(document.activeElement)) return;
+    if (!card.contains(e.relatedTarget)) {
       collapseCard(card, video);
-    });
+    }
   });
   setupInfoOverlay(card);
-  syncCardOverlayControlsA11y(card);
 };
 
 // Sets up interactions for all cards in the container.
