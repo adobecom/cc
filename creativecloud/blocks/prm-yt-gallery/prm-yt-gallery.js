@@ -41,6 +41,27 @@ const CLASSES = {
   INFO_VISIBLE: 'info-visible',
 };
 
+/** Long-label prep per card; document capture runs before per-card listeners. */
+const cardInfoButtonLongLabelPrep = new WeakMap();
+
+let documentInfoButtonFocusPrepInstalled = false;
+
+const installDocumentInfoButtonFocusPrep = () => {
+  if (documentInfoButtonFocusPrepInstalled) return;
+  documentInfoButtonFocusPrepInstalled = true;
+  document.addEventListener(
+    'focusin',
+    (e) => {
+      const { target } = e;
+      if (!target?.classList?.contains(CLASSES.INFO_BUTTON)) return;
+      const card = target.closest(`.${CLASSES.CARD}`);
+      if (!card) return;
+      cardInfoButtonLongLabelPrep.get(card)?.();
+    },
+    true,
+  );
+};
+
 // Centralized accessible names (aria-label) for the gallery block.
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
@@ -269,18 +290,20 @@ const uniqueInfoButtonNameId = () => {
   return `pre-yt-infoname-${suffix}`;
 };
 
+/** Lives on the card (not inside the button) so aria-labelledby resolves reliably across AT. */
+const createInfoButtonA11yNameEl = () => createTag('span', {
+  class: CLASSES.INFO_BUTTON_A11Y_NAME,
+  id: uniqueInfoButtonNameId(),
+  'aria-hidden': 'true',
+});
+
 // Creates the info button for showing template details (label updated in updateCardWithData).
 const createInfoButton = () => {
-  const a11yNameEl = createTag('span', {
-    class: CLASSES.INFO_BUTTON_A11Y_NAME,
-    id: uniqueInfoButtonNameId(),
-  });
   const button = createTag('button', {
     class: CLASSES.INFO_BUTTON,
     'aria-label': ARIA_LABELS.SHOW_INFO,
     type: 'button',
   });
-  button.append(a11yNameEl);
   button.insertAdjacentHTML('beforeend', ICONS.info);
   return button;
 };
@@ -359,6 +382,7 @@ const createShimmerCard = (buttonText) => {
 
   cardInner.append(imageWrapper, videoWrapper);
   card.append(cardInner);
+  card.append(createInfoButtonA11yNameEl());
 
   return card;
 };
@@ -400,18 +424,22 @@ const updateCardWithData = (card, item, eager = false) => {
   }
 
   const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
+  const a11yNameEl = card.querySelector(`.${CLASSES.INFO_BUTTON_A11Y_NAME}`);
   if (infoButton) {
     infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
     infoButton.removeAttribute('aria-labelledby');
-    const a11yNameEl = infoButton.querySelector(`.${CLASSES.INFO_BUTTON_A11Y_NAME}`);
     if (item.altText) {
       infoButton.setAttribute('data-prm-yt-template-description', item.altText);
       if (a11yNameEl) {
         a11yNameEl.textContent = getInfoButtonFocusedAriaLabel(item.altText);
+        a11yNameEl.setAttribute('aria-hidden', 'true');
       }
     } else {
       infoButton.removeAttribute('data-prm-yt-template-description');
-      if (a11yNameEl) a11yNameEl.textContent = '';
+      if (a11yNameEl) {
+        a11yNameEl.textContent = '';
+        a11yNameEl.setAttribute('aria-hidden', 'true');
+      }
     }
   }
 
@@ -534,7 +562,7 @@ const setupInfoOverlay = (card) => {
 
   // Short "Show info" off-focus; full phrase while focused. expandCard first (opacity).
   // Template: data attr, else card aria-label (same as API title).
-  const infoButtonA11yNameEl = infoButton.querySelector(`.${CLASSES.INFO_BUTTON_A11Y_NAME}`);
+  const infoButtonA11yNameEl = card.querySelector(`.${CLASSES.INFO_BUTTON_A11Y_NAME}`);
   const readTemplateDescription = () => {
     const fromBtn = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
     if (fromBtn) return fromBtn;
@@ -543,6 +571,9 @@ const setupInfoOverlay = (card) => {
   const applyInfoButtonShortLabel = () => {
     infoButton.removeAttribute('aria-labelledby');
     infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
+    if (infoButtonA11yNameEl) {
+      infoButtonA11yNameEl.setAttribute('aria-hidden', 'true');
+    }
   };
   const applyInfoButtonLongLabel = () => {
     expandCard(card, video);
@@ -554,6 +585,7 @@ const setupInfoOverlay = (card) => {
     const longName = getInfoButtonFocusedAriaLabel(desc);
     if (infoButtonA11yNameEl?.id) {
       infoButtonA11yNameEl.textContent = longName;
+      infoButtonA11yNameEl.removeAttribute('aria-hidden');
       infoButton.removeAttribute('aria-label');
       infoButton.setAttribute('aria-labelledby', infoButtonA11yNameEl.id);
     } else {
@@ -564,6 +596,8 @@ const setupInfoOverlay = (card) => {
     if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
     applyInfoButtonShortLabel();
   };
+  installDocumentInfoButtonFocusPrep();
+  cardInfoButtonLongLabelPrep.set(card, applyInfoButtonLongLabel);
   // Capture on card before the info button: some AT cache a stale short aria-label on forward Tab.
   card.addEventListener(
     'focusin',

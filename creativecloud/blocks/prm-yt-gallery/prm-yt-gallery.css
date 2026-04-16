@@ -174,8 +174,8 @@
   opacity: 0;
 }
 
-/* Full name for aria-labelledby; aria-label="Show info" wins when not focused. */
-.pre-yt-card-inner .pre-yt-info-button .pre-yt-info-button-a11y-name {
+/* Full name for info button aria-labelledby; sibling of .pre-yt-card-inner, not inside the button. */
+.pre-yt-card > .pre-yt-info-button-a11y-name {
   position: absolute;
   width: 1px;
   height: 1px;
