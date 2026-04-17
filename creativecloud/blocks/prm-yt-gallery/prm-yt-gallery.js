@@ -39,25 +39,6 @@ const CLASSES = {
   INFO_VISIBLE: 'info-visible',
 };
 
-/** Earliest focus hook for NVDA (document capture runs before card). */
-const cardApplyInfoButtonFocusA11y = new WeakMap();
-let documentInfoButtonFocusPrepInstalled = false;
-
-const installDocumentInfoButtonFocusPrep = () => {
-  if (documentInfoButtonFocusPrepInstalled) return;
-  documentInfoButtonFocusPrepInstalled = true;
-  document.addEventListener(
-    'focusin',
-    (e) => {
-      const { target } = e;
-      if (!target?.classList?.contains(CLASSES.INFO_BUTTON)) return;
-      const c = target.closest(`.${CLASSES.CARD}`);
-      cardApplyInfoButtonFocusA11y.get(c)?.();
-    },
-    true,
-  );
-};
-
 // Centralized accessible names (aria-label) for the gallery block.
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
@@ -474,13 +455,12 @@ const handleCloseCardTabNavigation = (e, card) => {
 };
 
 // Handles tab navigation from edit button to info button.
-const handleEditButtonTabNavigation = (e, infoButton, card, applyInfoButtonFocusA11y) => {
+const handleEditButtonTabNavigation = (e, infoButton, card) => {
   if (e.key === 'Tab' && !e.shiftKey) {
     e.preventDefault();
     if (card.classList.contains(CLASSES.INFO_VISIBLE)) {
       handleCloseCardTabNavigation(e, card);
     } else {
-      applyInfoButtonFocusA11y?.();
       infoButton.focus();
     }
   }
@@ -518,26 +498,10 @@ const setupInfoOverlay = (card) => {
     showInfoOverlay(card, video, closeOverlayButton);
   });
 
-  // NVDA reads the button name before bubble-phase focusin; update in capture on the card
-  // (and again on rAF) so the accessibility tree has the long label in time.
-  const applyInfoButtonFocusA11y = () => {
-    expandCard(card, video);
+  infoButton.addEventListener('focusin', () => {
     const t = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
     if (t) infoButton.setAttribute('aria-label', `Show info button for ${t}`);
-  };
-
-  card.addEventListener(
-    'focusin',
-    (e) => {
-      if (e.target !== infoButton) return;
-      applyInfoButtonFocusA11y();
-      requestAnimationFrame(applyInfoButtonFocusA11y);
-    },
-    true,
-  );
-  infoButton.addEventListener('pointerdown', applyInfoButtonFocusA11y, true);
-  installDocumentInfoButtonFocusPrep();
-  cardApplyInfoButtonFocusA11y.set(card, applyInfoButtonFocusA11y);
+  });
   infoButton.addEventListener(
     'focusout',
     (e) => {
@@ -554,7 +518,7 @@ const setupInfoOverlay = (card) => {
 
   if (editButton) {
     editButton.addEventListener('keydown', (e) => {
-      handleEditButtonTabNavigation(e, infoButton, card, applyInfoButtonFocusA11y);
+      handleEditButtonTabNavigation(e, infoButton, card);
     });
   }
 
