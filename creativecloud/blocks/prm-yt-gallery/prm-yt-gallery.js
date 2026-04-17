@@ -48,13 +48,6 @@ const ARIA_LABELS = {
   OVERLAY_CLOSE: 'Close text description',
 };
 
-/** Same template copy as the card (`item.altText`). Set once in updateCardWithData. */
-const getInfoButtonAriaLabel = (templateDescription) => {
-  const t = templateDescription?.trim();
-  if (!t) return ARIA_LABELS.SHOW_INFO;
-  return `Show info button for ${t}`;
-};
-
 // SVG Icons
 const ICONS = {
   close: `
@@ -120,6 +113,13 @@ const setAriaHidden = (elementOrSelector, hidden, parent = document) => {
   if (element) {
     element.setAttribute('aria-hidden', hidden ? 'true' : 'false');
   }
+};
+
+// Info button accessible name from template text (same as card); empty → SHOW_INFO.
+const getInfoButtonAriaLabel = (templateDescription) => {
+  const trimmedDescription = templateDescription?.trim();
+  if (!trimmedDescription) return ARIA_LABELS.SHOW_INFO;
+  return `Show info button for ${trimmedDescription}`;
 };
 
 // Normalizes API item to consistent internal structure.
