@@ -48,6 +48,13 @@ const ARIA_LABELS = {
   OVERLAY_CLOSE: 'Close text description',
 };
 
+/** Same template copy as the card (`item.altText`). Set once in updateCardWithData. */
+const getInfoButtonAriaLabel = (templateDescription) => {
+  const t = templateDescription?.trim();
+  if (!t) return ARIA_LABELS.SHOW_INFO;
+  return `Show info button for ${t}`;
+};
+
 // SVG Icons
 const ICONS = {
   close: `
@@ -374,12 +381,7 @@ const updateCardWithData = (card, item, eager = false) => {
 
   const infoButton = card.querySelector(`.${CLASSES.INFO_BUTTON}`);
   if (infoButton) {
-    infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-    if (item.altText) {
-      infoButton.setAttribute('data-prm-yt-template-description', item.altText);
-    } else {
-      infoButton.removeAttribute('data-prm-yt-template-description');
-    }
+    infoButton.setAttribute('aria-label', getInfoButtonAriaLabel(item.altText));
   }
 
   // Update button deep link URL
@@ -497,19 +499,6 @@ const setupInfoOverlay = (card) => {
     e.stopPropagation();
     showInfoOverlay(card, video, closeOverlayButton);
   });
-
-  infoButton.addEventListener('focusin', () => {
-    const t = infoButton.getAttribute('data-prm-yt-template-description')?.trim();
-    if (t) infoButton.setAttribute('aria-label', `Show info button for ${t}`);
-  });
-  infoButton.addEventListener(
-    'focusout',
-    (e) => {
-      if (e.relatedTarget && infoButton.contains(e.relatedTarget)) return;
-      infoButton.setAttribute('aria-label', ARIA_LABELS.SHOW_INFO);
-    },
-    true,
-  );
 
   // Keyboard navigation handlers
   closeOverlayButton.addEventListener('keydown', (e) => {
