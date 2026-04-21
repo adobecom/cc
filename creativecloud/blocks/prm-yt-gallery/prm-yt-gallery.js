@@ -44,6 +44,7 @@ const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
   SHOW_INFO: 'Show info',
+  SHOW_INFO_WITH_DESCRIPTION: (description) => `Show info button for ${description}`,
   CLOSE_CARD: 'Close card',
   OVERLAY_CLOSE: 'Close text description',
 };
