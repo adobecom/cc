@@ -39,7 +39,7 @@ const CLASSES = {
   INFO_VISIBLE: 'info-visible',
 };
 
-// Centralized accessible names (aria-label) for the gallery block.
+// Centralized accessible names (aria-label).
 const ARIA_LABELS = {
   CARD_LOADING: 'Loading template',
   CARD_UNAVAILABLE: 'Templates unavailable',
@@ -115,11 +115,10 @@ const setAriaHidden = (elementOrSelector, hidden, parent = document) => {
   }
 };
 
-// Info button accessible name from template text (same as card); empty → SHOW_INFO.
 const getInfoButtonAriaLabel = (templateDescription) => {
   const trimmedDescription = templateDescription?.trim();
   if (!trimmedDescription) return ARIA_LABELS.SHOW_INFO;
-  return `Show info button for ${trimmedDescription}`;
+  return ARIA_LABELS.SHOW_INFO_WITH_DESCRIPTION(trimmedDescription);
 };
 
 // Normalizes API item to consistent internal structure.
