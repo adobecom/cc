@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setLibs, getLibs } from '../../../../creativecloud/scripts/utils.js';
+import { setLibs, getLibs } from '../../../../creativecloud/plans/scripts/utils.js';
 
 const miloLibs = '/libs';
 setLibs(miloLibs);
@@ -37,7 +37,7 @@ function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });
 }
 
-const { default: init } = await import('../../../../creativecloud/blocks/cc-forms/cc-forms.js');
+const { default: init } = await import('../../../../creativecloud/plans/blocks/cc-forms/cc-forms.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/subscribe-body.html' });
 

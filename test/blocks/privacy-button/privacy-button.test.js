@@ -12,7 +12,7 @@ setConfig(conf);
 describe('Privacy Button', () => {
   before(async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-    const { default: init } = await import('../../../creativecloud/blocks/privacy-button/privacy-button.js');
+    const { default: init } = await import('../../../creativecloud/plans/blocks/privacy-button/privacy-button.js');
     const privacyButton = document.querySelector('.privacy-button');
     init(privacyButton);
   });

@@ -2,7 +2,7 @@ import { runTests } from '@web/test-runner-mocha';
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
-import { setLibs } from '../../../creativecloud/scripts/utils.js';
+import { setLibs } from '../../../creativecloud/plans/scripts/utils.js';
 
 const libs = setLibs('https://milo.adobe.com/libs', true);
 
@@ -12,7 +12,7 @@ const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 const conf = { locales };
 setConfig(conf);
 
-const { default: init } = await import('../../../creativecloud/blocks/sidenav/sidenav.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/sidenav/sidenav.js');
 
 const taxoString = await readFile({ path: './mocks/taxonomy.json' });
 const taxonomy = JSON.parse(taxoString);

@@ -50,7 +50,7 @@
     }
   }
 </style>
-<script src="/creativecloud/scripts/fallback.js" nomodule></script>
+<script src="/creativecloud/plans/scripts/fallback.js" nomodule></script>
 <script type="module">
   const userAgentMeta = document.querySelector('meta[name="hreflinksuseragents"]');
   const allowedAgents = userAgentMeta && userAgentMeta.content.split(',');
@@ -152,7 +152,7 @@
   meta.setAttribute('name', 'head-loaded');
   document.head.append(meta);
 
-  import { scriptInit } from '/creativecloud/scripts/utils.js';
+  import { scriptInit } from '/creativecloud/plans/scripts/utils.js';
   scriptInit();
 </script>
 <link rel="icon" href="data:," />

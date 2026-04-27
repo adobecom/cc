@@ -1,10 +1,10 @@
 import { readFile, setViewport } from '@web/test-runner-commands';
 import sinon from 'sinon';
-import { setLibs } from '../../../creativecloud/scripts/utils.js';
+import { setLibs } from '../../../creativecloud/plans/scripts/utils.js';
 
 setLibs('/libs');
 
-const { default: init } = await import('../../../creativecloud/blocks/interactive-marquee/interactive-marquee.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/interactive-marquee/interactive-marquee.js');
 
 function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });

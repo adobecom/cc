@@ -386,7 +386,7 @@ export const decorateArea = getDecorateAreaFn();
 
 const CONFIG = {
   contentRoot: '/cc-shared',
-  codeRoot: '/creativecloud',
+  codeRoot: '/creativecloud/plans',
   imsClientId: 'adobedotcom-cc',
   iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata', 'firefly-howto'],
   locales,
