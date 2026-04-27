@@ -28,7 +28,7 @@ const Config = {
 };
 
 const { setLibs } = await import('../../../creativecloud/plans/scripts/utils.js');
-const { default: init } = await import('../../../creativecloud/blocks/trustcenter-metadata/trustcenter-metadata.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/trustcenter-metadata/trustcenter-metadata.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/trustcenter-metadata.html' });
 describe('trustcenter metadata', () => {

@@ -4,7 +4,7 @@ import { setLibs } from '../../../../creativecloud/plans/scripts/utils.js';
 
 setLibs('/libs');
 
-const { default: init } = await import('../../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
+const { default: init } = await import('../../../../creativecloud/plans/blocks/interactive-metadata/interactive-metadata.js');
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 window.lana = { log: (msg) => { console.log(msg); } };
 function delay(ms) {

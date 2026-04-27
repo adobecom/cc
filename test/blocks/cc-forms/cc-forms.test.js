@@ -42,7 +42,7 @@ function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });
 }
 
-const { default: init } = await import('../../../creativecloud/blocks/cc-forms/cc-forms.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/cc-forms/cc-forms.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('CC Form', () => {

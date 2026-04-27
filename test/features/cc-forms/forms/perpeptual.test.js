@@ -35,7 +35,7 @@ window.adobeid = {
   locale: 'en',
 };
 
-const { default: init } = await import('../../../../creativecloud/blocks/cc-forms/cc-forms.js');
+const { default: init } = await import('../../../../creativecloud/plans/blocks/cc-forms/cc-forms.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/perpeptual-body.html' });
 describe('Perpeptual Form', async () => {

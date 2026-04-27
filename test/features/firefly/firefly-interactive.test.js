@@ -4,7 +4,7 @@ import { setLibs } from '../../../creativecloud/plans/scripts/utils.js';
 import waitForElement from '../../helpers/waitForElement.js';
 
 setLibs('/libs');
-const { default: init } = await import('../../../creativecloud/blocks/interactive-marquee/interactive-marquee.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/interactive-marquee/interactive-marquee.js');
 
 describe('firefly-marquee', () => {
   before(async () => {

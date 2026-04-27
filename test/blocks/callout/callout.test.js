@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { setLibs } = await import('../../../creativecloud/plans/scripts/utils.js');
-const { default: init } = await import('../../../creativecloud/blocks/callout/callout.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/callout/callout.js');
 
 describe('callout block', () => {
   const oneBlockOneParagraph = document.querySelector('#one-block-one-paragraph');

@@ -1,10 +1,10 @@
 import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { waitForGenerateButton } from '../../../../creativecloud/features/interactive-components/start-over/start-over.js';
+import { waitForGenerateButton } from '../../../../creativecloud/plans/features/interactive-components/start-over/start-over.js';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { setLibs } = await import('../../../../creativecloud/plans/scripts/utils.js');
-const { default: init } = await import('../../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
+const { default: init } = await import('../../../../creativecloud/plans/blocks/interactive-metadata/interactive-metadata.js');
 
 describe('Start Over', () => {
   let im = null;

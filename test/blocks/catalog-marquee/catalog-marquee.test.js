@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { setLibs } = await import('../../../creativecloud/plans/scripts/utils.js');
-const { default: init } = await import('../../../creativecloud/blocks/catalog-marquee/catalog-marquee.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/catalog-marquee/catalog-marquee.js');
 
 describe('catalog marquee', () => {
   const marquee = document.querySelector('.catalog-marquee');

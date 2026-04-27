@@ -4,7 +4,7 @@ import { expect } from '@esm-bundle/chai';
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { setLibs } = await import('../../../creativecloud/plans/scripts/utils.js');
 setLibs('https://milo.adobe.com/libs');
-const { default: init } = await import('../../../creativecloud/blocks/firefly-howto/firefly-howto.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/firefly-howto/firefly-howto.js');
 
 const ogBody = document.body.innerHTML;
 

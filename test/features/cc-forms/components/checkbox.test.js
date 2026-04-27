@@ -11,7 +11,7 @@ const CONFIG = {
   prod: { odinEndpoint: 'https://odin.adobe.com/' },
 };
 setConfig(CONFIG);
-const { default: init } = await import('../../../../creativecloud/blocks/cc-forms/cc-forms.js');
+const { default: init } = await import('../../../../creativecloud/plans/blocks/cc-forms/cc-forms.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/checkbox-body.html' });
 describe('Checkbox Component', async () => {

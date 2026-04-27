@@ -6,7 +6,7 @@ document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('upload', () => {
   before(async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-    const { default: init } = await import('../../../creativecloud/blocks/upload/upload.js');
+    const { default: init } = await import('../../../creativecloud/plans/blocks/upload/upload.js');
     const uploadBlock = document.querySelector('.upload');
     init(uploadBlock);
   });

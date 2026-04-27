@@ -35,7 +35,7 @@ function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });
 }
 
-const { default: init } = await import('../../../../creativecloud/blocks/cc-forms/cc-forms.js');
+const { default: init } = await import('../../../../creativecloud/plans/blocks/cc-forms/cc-forms.js');
 
 describe('Unsubscribe Form', () => {
   const fetchStub = sinon.stub(window, 'fetch');

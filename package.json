@@ -13,7 +13,7 @@
     "lcov": "lcov -a coverage/jest/lcov.info -a coverage/wtr/lcov.info -o coverage/lcov.info",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint .",
-    "lint:css": "stylelint 'creativecloud/blocks/**/*.css' 'creativecloud/styles/*.css'",
+    "lint:css": "stylelint 'creativecloud/plans/blocks/**/*.css' 'creativecloud/plans/styles/*.css'",
     "nala": "node nala/utils/nala.run.js",
     "a11y": "node nala/utils/nala.cli.js a11y"
   },
