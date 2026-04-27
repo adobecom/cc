@@ -1,6 +1,6 @@
 import { readFile, setViewport } from '@web/test-runner-commands';
 import sinon from 'sinon';
-import { setLibs } from '../../../creativecloud/scripts/utils.js';
+import { setLibs } from '../../../creativecloud/plans/scripts/utils.js';
 
 setLibs('/libs');
 

@@ -2,7 +2,7 @@ import { expect } from '@esm-bundle/chai';
 import { readFile } from '@web/test-runner-commands';
 import { stub } from 'sinon';
 
-import { getScreenSizeCategory } from '../../../creativecloud/scripts/utils.js';
+import { getScreenSizeCategory } from '../../../creativecloud/plans/scripts/utils.js';
 import {
   safeJsonParse,
   getLocalizedValue,

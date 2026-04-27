@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setLibs, getLibs, createTag } from '../../../../creativecloud/scripts/utils.js';
+import { setLibs, getLibs, createTag } from '../../../../creativecloud/plans/scripts/utils.js';
 import DemandBase from '../../../../creativecloud/features/cc-forms/forms/demandbase.js';
 
 const miloLibs = '/libs';

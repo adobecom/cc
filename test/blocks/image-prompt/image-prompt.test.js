@@ -2,7 +2,7 @@ import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
+const { setLibs } = await import('../../../creativecloud/plans/scripts/utils.js');
 const { default: init } = await import('../../../creativecloud/blocks/image-prompt/image-prompt.js');
 
 describe('image prompt', () => {

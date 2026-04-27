@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 import { waitForGenerateButton } from '../../../../creativecloud/features/interactive-components/start-over/start-over.js';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-const { setLibs } = await import('../../../../creativecloud/scripts/utils.js');
+const { setLibs } = await import('../../../../creativecloud/plans/scripts/utils.js');
 const { default: init } = await import('../../../../creativecloud/blocks/interactive-metadata/interactive-metadata.js');
 
 describe('Start Over', () => {

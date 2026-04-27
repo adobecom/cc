@@ -2,7 +2,7 @@ import { readFile, sendKeys } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
+const { setLibs } = await import('../../../creativecloud/plans/scripts/utils.js');
 setLibs('https://milo.adobe.com/libs');
 const { default: init } = await import('../../../creativecloud/blocks/firefly-howto/firefly-howto.js');
 

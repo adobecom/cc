@@ -1,6 +1,6 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setLibs, getLibs } from '../../../../creativecloud/scripts/utils.js';
+import { setLibs, getLibs } from '../../../../creativecloud/plans/scripts/utils.js';
 
 const miloLibs = '/libs';
 setLibs(miloLibs);
