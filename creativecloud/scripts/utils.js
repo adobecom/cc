@@ -462,6 +462,7 @@ export const scriptInit = async () => {
 
   (async function loadPage() {
     loadLana({ clientId: 'cc' });
+    (await import('../features/crm-modal-lana/crm-modal-lana.js')).default();
     await loadArea();
   }());
 };
