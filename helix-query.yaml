@@ -3955,3 +3955,58 @@ indices:
     include:
       - /cis_ru/cc-shared/fragments/merch/**/merch-card/**
     target: /cis_ru/cc-shared/assets/query-index-cards.xslx
+
+  lingo-mapping-ca_fr:
+    target: /ca_fr/creativecloud/plans/merch-shared/assets/lingo/query-index.xslx
+    include:
+      - /ca_fr/creativecloud/plans
+      - /ca_fr/creativecloud/plans/**
+      - /ca_fr/products/catalog
+      - /ca_fr/products/catalog/**
+    exclude:
+      - "**/drafts/**"
+      - "**/*.json"
+
+  lingo-mapping-be_fr:
+    target: /be_fr/creativecloud/plans/merch-shared/assets/lingo/query-index.xslx
+    include:
+      - /be_fr/creativecloud/plans
+      - /be_fr/creativecloud/plans/**
+      - /be_fr/products/catalog
+      - /be_fr/products/catalog/**
+    exclude:
+      - "**/drafts/**"
+      - "**/*.json" 
+
+  lingo-mapping-lu_fr:
+    target: /lu_fr/creativecloud/plans/merch-shared/assets/lingo/query-index.xslx
+    include:
+      - /lu_fr/creativecloud/plans
+      - /lu_fr/creativecloud/plans/**
+      - /lu_fr/products/catalog
+      - /lu_fr/products/catalog/**
+    exclude:
+      - "**/drafts/**"
+      - "**/*.json"
+
+  lingo-mapping-ch_fr:
+    target: /ch_fr/creativecloud/plans/merch-shared/assets/lingo/query-index.xslx
+    include:
+      - /ch_fr/creativecloud/plans
+      - /ch_fr/creativecloud/plans/**
+      - /ch_fr/products/catalog
+      - /ch_fr/products/catalog/**
+    exclude:
+      - "**/drafts/**"
+      - "**/*.json"
+
+  lingo-mapping-fr:
+    target: /fr/creativecloud/plans/merch-shared/assets/lingo/query-index.xslx
+    include:
+      - /fr/creativecloud/plans
+      - /fr/creativecloud/plans/**
+      - /fr/products/catalog
+      - /fr/products/catalog/**
+    exclude:
+      - "**/drafts/**"
+      - "**/*.json"
