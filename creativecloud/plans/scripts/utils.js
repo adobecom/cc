@@ -169,15 +169,13 @@ export const [setLibs, getLibs] = (() => {
         return libs;
       }
       const { hostname } = window.location;
-      if (!hostname.includes('hlx.page')
-        && !hostname.includes('hlx.live')
-        && !hostname.includes('aem.page')
-        && !hostname.includes('aem.live')
-        && !hostname.includes('localhost')) {
+      if (!['.aem.', '.hlx.', '.stage.', 'localhost', '.da.'].some((i) => hostname.includes(i))) {
         libs = prodLibs;
-        return libs;
-      }
+        return prodLibs
+      };
+      if (branch === 'main' && hostname.includes('.stage.')) return prodLibs;
       const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
+      if (!/^[a-zA-Z0-9_-]+$/.test(branch)) throw new Error('Invalid branch name.');
       if (branch === 'local') { libs = 'http://localhost:6456/libs'; return libs; }
       const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
       if (branch.indexOf('--') > -1) { libs = `https://${branch}.${env}.live/libs`; return libs; }
