@@ -13,21 +13,54 @@ const MODAL = [
 ].join(',');
 const MAX_MS = 60000;
 const RENDER_POLL_MS = 50;
+/** Elapsed modal load over this logs with `severity: 'c'` even when not an error. */
+const SLOW_MODAL_MS = 3000;
 
 /** @see https://github.com/adobecom/milo/blob/main/libs/utils/lana.md */
 const LANA = {
   clientId: 'cc',
   sampleRate: 1,
-  tags: 'cc-merch,crm-modal-load',
+  tags: 'crm-modal-load',
 };
 
 let run = 0;
 let inited = false;
 
-function lanaLog(message, isError) {
+/**
+ * Innermost ancestor from the click target through the CRM CTA root with a non-empty aria-label.
+ * @param {EventTarget|null} clickTarget
+ * @param {Element} crmRoot `[data-modal="crm"]`
+ */
+function getCrmCtaAriaLabel(clickTarget, crmRoot) {
+  if (!(clickTarget instanceof Element) || !crmRoot) return '';
+  let n = clickTarget;
+  while (n) {
+    const a = n.getAttribute?.('aria-label')?.trim();
+    if (a) return a;
+    if (n === crmRoot) break;
+    n = n.parentElement;
+  }
+  return '';
+}
+
+/** @param {{ page: string, ctaAriaLabel: string }} ctx */
+function formatCrmModalMeta(ctx) {
+  const aria = ctx.ctaAriaLabel || '(none)';
+  return ` page=${ctx.page} ctaAriaLabel=${aria}`;
+}
+
+/**
+ * @param {string} message
+ * @param {boolean} isError
+ * @param {number} [elapsedMs] when over `SLOW_MODAL_MS`, adds `severity: 'c'` on success too
+ */
+function lanaLog(message, isError, elapsedMs) {
+  const slow = typeof elapsedMs === 'number' && elapsedMs > SLOW_MODAL_MS;
+  const severityC = Boolean(isError) || slow;
+  const base = severityC ? { ...LANA, severity: 'c' } : LANA;
   window.lana?.log(
     message,
-    isError ? { ...LANA, errorType: 'e' } : LANA,
+    isError ? { ...base, errorType: 'e' } : base,
   );
 }
 
@@ -95,21 +128,25 @@ function waitForIframeRendered(iframe, rid, deadline) {
 
 /**
  * @param {number} rid
+ * @param {{ page: string, ctaAriaLabel: string }} ctx
  */
-function measureFromClick(rid) {
+function measureFromClick(rid, ctx) {
   const t0 = performance.now();
   const deadline = t0 + MAX_MS;
+  const meta = formatCrmModalMeta(ctx);
 
   const schedule = () => {
     if (rid !== run) return;
     if (performance.now() >= deadline) {
-      lanaLog('cc-crm-modal: took longer than a minute', true);
+      lanaLog(`3 in 1 modal: took longer than a minute${meta}`, true);
       return;
     }
     if (hasModalError()) {
+      const elapsedMs = Math.round(performance.now() - t0);
       lanaLog(
-        `cc-crm-modal: error error-wrapper loadTimeMs=${Math.round(performance.now() - t0)}`,
+        `3 in 1 modal: Error after ${elapsedMs}ms${meta}`,
         true,
+        elapsedMs,
       );
       return;
     }
@@ -126,11 +163,12 @@ function measureFromClick(rid) {
         const loadTimeMs = Math.round(performance.now() - t0);
         if (hasModalError()) {
           lanaLog(
-            `cc-crm-modal: error error-wrapper loadTimeMs=${loadTimeMs}`,
+            `3 in 1 modal: Error after ${loadTimeMs}ms${meta}`,
             true,
+            loadTimeMs,
           );
         } else {
-          lanaLog(`cc-crm-modal: loadTimeMs=${loadTimeMs}`);
+          lanaLog(`3 in 1 modal: Took ${loadTimeMs}ms to load${meta}`, false, loadTimeMs);
         }
       })
       .catch((err) => {
@@ -138,12 +176,13 @@ function measureFromClick(rid) {
         const loadTimeMs = Math.round(performance.now() - t0);
         if (err?.message === 'error-wrapper' || hasModalError()) {
           lanaLog(
-            `cc-crm-modal: error error-wrapper loadTimeMs=${loadTimeMs}`,
+            `3 in 1 modal: Error after ${loadTimeMs}ms${meta}`,
             true,
+            loadTimeMs,
           );
           return;
         }
-        lanaLog('cc-crm-modal: took longer than a minute', true);
+        lanaLog(`3 in 1 modal: took longer than a minute${meta}`, true, loadTimeMs);
       });
   };
 
@@ -154,7 +193,10 @@ function onCrmClick(e) {
   const el = e.target?.nodeType === Node.ELEMENT_NODE && e.target?.closest(CRM);
   if (!el) return;
   run += 1;
-  measureFromClick(run);
+  measureFromClick(run, {
+    page: window.location.href,
+    ctaAriaLabel: getCrmCtaAriaLabel(e.target, el),
+  });
 }
 
 export default function initCrmModalLana() {
