@@ -43,10 +43,15 @@ function getCrmCtaAriaLabel(clickTarget, crmRoot) {
   return '';
 }
 
-/** @param {{ page: string, ctaAriaLabel: string }} ctx */
-function formatCrmModalMeta(ctx) {
+/**
+ * Shared suffix for LANA reporting: page, CTA label, elapsed ms (`time`).
+ * @param {{ page: string, ctaAriaLabel: string }} ctx
+ * @param {number} elapsedMs
+ */
+function formatCrmModalMeta(ctx, elapsedMs) {
   const aria = ctx.ctaAriaLabel || '(none)';
-  return ` page=${ctx.page} ctaAriaLabel=${aria}`;
+  const ms = Math.round(elapsedMs);
+  return ` page=${ctx.page} ctaAriaLabel=${aria} time=${ms}`;
 }
 
 /**
@@ -133,18 +138,22 @@ function waitForIframeRendered(iframe, rid, deadline) {
 function measureFromClick(rid, ctx) {
   const t0 = performance.now();
   const deadline = t0 + MAX_MS;
-  const meta = formatCrmModalMeta(ctx);
 
   const schedule = () => {
     if (rid !== run) return;
     if (performance.now() >= deadline) {
-      lanaLog(`3 in 1 modal: took longer than a minute${meta}`, true);
+      const elapsedMs = Math.round(performance.now() - t0);
+      lanaLog(
+        `3 in 1 modal: took longer than a minute${formatCrmModalMeta(ctx, elapsedMs)}`,
+        true,
+        elapsedMs,
+      );
       return;
     }
     if (hasModalError()) {
       const elapsedMs = Math.round(performance.now() - t0);
       lanaLog(
-        `3 in 1 modal: Error after ${elapsedMs}ms${meta}`,
+        `3 in 1 modal: Error after ${elapsedMs}ms${formatCrmModalMeta(ctx, elapsedMs)}`,
         true,
         elapsedMs,
       );
@@ -163,12 +172,16 @@ function measureFromClick(rid, ctx) {
         const loadTimeMs = Math.round(performance.now() - t0);
         if (hasModalError()) {
           lanaLog(
-            `3 in 1 modal: Error after ${loadTimeMs}ms${meta}`,
+            `3 in 1 modal: Error after ${loadTimeMs}ms${formatCrmModalMeta(ctx, loadTimeMs)}`,
             true,
             loadTimeMs,
           );
         } else {
-          lanaLog(`3 in 1 modal: Took ${loadTimeMs}ms to load${meta}`, false, loadTimeMs);
+          lanaLog(
+            `3 in 1 modal: Took ${loadTimeMs}ms to load${formatCrmModalMeta(ctx, loadTimeMs)}`,
+            false,
+            loadTimeMs,
+          );
         }
       })
       .catch((err) => {
@@ -176,13 +189,17 @@ function measureFromClick(rid, ctx) {
         const loadTimeMs = Math.round(performance.now() - t0);
         if (err?.message === 'error-wrapper' || hasModalError()) {
           lanaLog(
-            `3 in 1 modal: Error after ${loadTimeMs}ms${meta}`,
+            `3 in 1 modal: Error after ${loadTimeMs}ms${formatCrmModalMeta(ctx, loadTimeMs)}`,
             true,
             loadTimeMs,
           );
           return;
         }
-        lanaLog(`3 in 1 modal: took longer than a minute${meta}`, true, loadTimeMs);
+        lanaLog(
+          `3 in 1 modal: took longer than a minute${formatCrmModalMeta(ctx, loadTimeMs)}`,
+          true,
+          loadTimeMs,
+        );
       });
   };
 
