@@ -136,6 +136,10 @@
     display: block;
     margin: 0 0 var(--spacing-s);
   }
+
+  .catalog-marquee .mnemonic-list .product-list .product-item strong {
+    font-size: var(--type-heading-xs-size);
+  }
 }
 
 @media screen and (min-width: 1600px) {
