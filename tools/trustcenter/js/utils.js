@@ -1,4 +1,4 @@
-import { getLibs } from '../../../creativecloud/scripts/utils.js';
+import { getLibs } from '../../../creativecloud/plans/scripts/utils.js';
 
 const PROTECT_URL_SUBMIT = document.querySelector('#generate-protected-link');
 const PROTECTED_URL_ELEMENT = document.querySelector('#protected-url');
