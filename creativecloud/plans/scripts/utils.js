@@ -17,6 +17,34 @@
 const COOKIE_SIGNED_IN = 'acomsis';
 const COOKIE_SIGNED_IN_STAGE = 'acomsis_stage';
 const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
+const SESSION_CATALOG_POST_ADOBEID_RELOAD = 'cc-catalog-post-adobeid-reload';
+
+/** True for services.adobe.com and *.services.adobe.com (e.g. adobeid-na1.services.adobe.com). */
+function isAdobeServicesHost(hostname) {
+  return hostname === 'services.adobe.com' || hostname.endsWith('.services.adobe.com');
+}
+
+/**
+ * Reload once when landing on a /catalog URL after the Adobe services auth flow
+ * so IMS-dependent UI can hydrate.
+ * Uses sessionStorage so we do not loop if referrer is still present after reload.
+ */
+export function maybeRefreshCatalogFromAdobeId() {
+  if (!window.location.pathname.includes('/catalog')) return;
+  if (sessionStorage.getItem(SESSION_CATALOG_POST_ADOBEID_RELOAD) === 'true') {
+    sessionStorage.removeItem(SESSION_CATALOG_POST_ADOBEID_RELOAD);
+    return;
+  }
+  try {
+    if (!document.referrer) return;
+    const { hostname } = new URL(document.referrer);
+    if (!isAdobeServicesHost(hostname)) return;
+  } catch {
+    return;
+  }
+  sessionStorage.setItem(SESSION_CATALOG_POST_ADOBEID_RELOAD, 'true');
+  window.location.reload();
+}
 
 export const locales = {
   // Americas
@@ -441,6 +469,7 @@ const CONFIG = {
 };
 
 export const scriptInit = async () => {
+  maybeRefreshCatalogFromAdobeId();
   const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
   const trialsCheck = document.querySelector('head > meta[name="trialsims"]');
   if (trialsCheck && trialsCheck.content.toLowerCase() === 'on') {
