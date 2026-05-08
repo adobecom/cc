@@ -20,7 +20,7 @@ const SLOW_MODAL_MS = 3000;
 const LANA = {
   clientId: 'cc',
   sampleRate: 1,
-  tags: 'crm-modal-load',
+  tags: '3in1',
 };
 
 let run = 0;
