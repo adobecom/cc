@@ -45,13 +45,13 @@ function getCrmCtaAriaLabel(clickTarget, crmRoot) {
 
 /**
  * Shared suffix for LANA reporting: page, CTA label, elapsed ms (`time`).
- * @param {{ page: string, ctaAriaLabel: string }} ctx
+ * @param {{ page: string, cta: string }} ctx
  * @param {number} elapsedMs
  */
 function formatCrmModalMeta(ctx, elapsedMs) {
-  const aria = ctx.ctaAriaLabel || '(none)';
+  const cta = ctx.cta || '(none)';
   const ms = Math.round(elapsedMs);
-  return ` page=${ctx.page} ctaAriaLabel=${aria} time=${ms}`;
+  return ` page=${ctx.page} cta=${cta} time=${ms}`;
 }
 
 /**
@@ -133,7 +133,7 @@ function waitForIframeRendered(iframe, rid, deadline) {
 
 /**
  * @param {number} rid
- * @param {{ page: string, ctaAriaLabel: string }} ctx
+ * @param {{ page: string, cta: string }} ctx
  */
 function measureFromClick(rid, ctx) {
   const t0 = performance.now();
@@ -212,7 +212,7 @@ function onCrmClick(e) {
   run += 1;
   measureFromClick(run, {
     page: window.location.href,
-    ctaAriaLabel: getCrmCtaAriaLabel(e.target, el),
+    cta: getCrmCtaAriaLabel(e.target, el),
   });
 }
 
