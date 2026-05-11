@@ -2,7 +2,7 @@ import { expect } from '@esm-bundle/chai';
 import { readFile } from '@web/test-runner-commands';
 import { stub } from 'sinon';
 
-import { getScreenSizeCategory } from '../../../creativecloud/scripts/utils.js';
+import { getScreenSizeCategory } from '../../../creativecloud/plans/scripts/utils.js';
 import {
   safeJsonParse,
   getLocalizedValue,
@@ -11,7 +11,7 @@ import {
   getImageRendition,
   buildAndGetGalleryElements,
   createFireflyURL,
-} from '../../../creativecloud/blocks/firefly-gallery/firefly-gallery.js';
+} from '../../../creativecloud/plans/blocks/firefly-gallery/firefly-gallery.js';
 
 const sleep = (ms) => new Promise((resolve) => {
   setTimeout(resolve, ms);
@@ -21,7 +21,7 @@ document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { setConfig } = await import(import.meta.resolve('libs/utils/utils.js'));
 
 const ogDocument = document.body.innerHTML;
-const { default: init } = await import('../../../creativecloud/blocks/firefly-gallery/firefly-gallery.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/firefly-gallery/firefly-gallery.js');
 
 let fetchStub;
 class MockIntersectionObserver {
