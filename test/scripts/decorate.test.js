@@ -1,6 +1,6 @@
 import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import defineDeviceByScreenSize from '../../creativecloud/scripts/decorate.js';
+import defineDeviceByScreenSize from '../../creativecloud/plans/scripts/decorate.js';
 
 function delay(ms) {
   return new Promise((res) => { setTimeout(() => { res(); }, ms); });

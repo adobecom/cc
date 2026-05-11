@@ -72,7 +72,7 @@ npm run lint:css
 2. **Milo Integration**: This project heavily relies on Adobe's Milo library. The library source is dynamically determined:
    - Local development: Uses localhost Milo
    - Production: Uses specific Milo branch/tag
-   - Configured in `/creativecloud/scripts/scripts.js`
+   - Configured in `creativecloud/plans/scripts/utils.js` (Milo `setLibs` / `scriptInit`)
 
 3. **Feature Loading**: Complex features in `/creativecloud/features/` are loaded on-demand based on page requirements.
 

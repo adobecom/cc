@@ -75,5 +75,6 @@ module.exports = {
   ],
   ignorePatterns: [
     '/creativecloud/deps/*',
+    'creativecloud/plans/deps/**',
   ],
 };
