@@ -11,10 +11,10 @@ import {
   registriesStore,
   SCENARIOS,
   stepperStore,
-} from '../../../creativecloud/blocks/nonprofit/nonprofit.js';
+} from '../../../creativecloud/plans/blocks/nonprofit/nonprofit.js';
 import { mockedOrganizations, mockedRegistries } from './mocks/data.js';
 
-const { default: init } = await import('../../../creativecloud/blocks/nonprofit/nonprofit.js');
+const { default: init } = await import('../../../creativecloud/plans/blocks/nonprofit/nonprofit.js');
 const { setConfig } = await import(import.meta.resolve('libs/utils/utils.js'));
 
 const body = await readFile({ path: './mocks/body.html' });

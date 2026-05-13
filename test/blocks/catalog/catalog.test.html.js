@@ -4,7 +4,7 @@ import { expect } from '@esm-bundle/chai';
 
 import sinon from 'sinon';
 
-const { updateCatalogLh, enableAnalytics } = await import('../../../creativecloud/blocks/catalog/catalog.js');
+const { updateCatalogLh, enableAnalytics } = await import('../../../creativecloud/plans/blocks/catalog/catalog.js');
 
 const dispatchEvent = (container, name, value) => {
   const detail = typeof (value) === 'string' ? { value } : value;

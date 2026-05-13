@@ -1,0 +1,240 @@
+<div>
+  <!-- ===== Fixture: basic-howto — default two-step accordion; headings heading-step-a / heading-step-b ===== -->
+  <div class="firefly-howto" id="basic-howto">
+    <div>
+      <div>
+        <h3>Step 1</h3>
+        <h3 id="heading-step-a">Choose a style</h3>
+      </div>
+      <div>
+        <p>Pick a look for your project.</p>
+      </div>
+    </div>
+    <div>
+      <div>
+        <h3>Step 2</h3>
+        <h3 id="heading-step-b">Add details</h3>
+      </div>
+      <div>
+        <p>Refine with prompts.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-howto — full SEO list + step; JSON-LD HowTo with time, tools, supply ===== -->
+  <div class="firefly-howto seo" id="seo-howto">
+    <div>
+      <div>
+        <ul>
+          <li><span class="icon icon-seo-name"></span> Test HowTo Title</li>
+          <li><span class="icon icon-seo-description"></span> A short description for schema.</li>
+          <li><span class="icon icon-seo-time"></span> PT15M</li>
+          <li><span class="icon icon-seo-tools"></span> Brush, Pen</li>
+          <li><span class="icon icon-seo-supply"></span> Canvas, Ink</li>
+        </ul>
+      </div>
+      <div></div>
+    </div>
+    <div>
+      <div>
+        <h3>Step 1</h3>
+        <h3 id="seo-step-heading">Do the thing</h3>
+      </div>
+      <div>
+        <p>Step body text.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-incomplete — name only, no description; must not inject JSON-LD ===== -->
+  <div class="firefly-howto seo" id="seo-incomplete">
+    <div>
+      <div>
+        <ul>
+          <li><span class="icon icon-seo-name"></span> Only name (missing description)</li>
+        </ul>
+      </div>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: with-link — #inner-link click must not toggle accordion ===== -->
+  <div class="firefly-howto" id="with-link">
+    <div>
+      <div>
+        <h3>Step 1</h3>
+        <h3 id="hl">Title with in-panel link</h3>
+      </div>
+      <div>
+        <p>Sample copy with an <a href="#x" id="inner-link">in-panel link</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: with-input — #panel-input click must not toggle accordion ===== -->
+  <div class="firefly-howto" id="with-input">
+    <div>
+      <div><h3>Step 1</h3><h3 id="hin">Panel with a text input</h3></div>
+      <div><p><input type="text" id="panel-input" /></p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: prefix-id-only — trigger/panel ids from prefixHeading #prefix-id when title h3 has no id ===== -->
+  <div class="firefly-howto" id="prefix-id-only">
+    <div>
+      <div><h3 id="prefix-id">Step label</h3><h3>Title only</h3></div>
+      <div><p>Step body paragraph.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: one-col-row — first row malformed (one column); second row valid; expect btn-good ===== -->
+  <div class="firefly-howto" id="one-col-row">
+    <div>
+      <div><h3>Step</h3><h3 id="only-col">Malformed row (single column only)</h3></div>
+    </div>
+    <div>
+      <div><h3>Step 2</h3><h3 id="good">Valid step title</h3></div>
+      <div><p>Valid step body.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: no-h3-id — acc-heading-0 fallback for trigger/panel ids ===== -->
+  <div class="firefly-howto" id="no-h3-id">
+    <div>
+      <div><h3>Prefix</h3><h3>Title text</h3></div>
+      <div><p>Content</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: skip-empty — leading empty row skipped; step uses #hid ===== -->
+  <div class="firefly-howto" id="skip-empty">
+    <div></div>
+    <div>
+      <div><h3>Step 1</h3><h3 id="hid">First step after an empty row</h3></div>
+      <div><p>Step body content.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: marker-not-seo — icon-seo list present but block lacks class seo; no JSON-LD ===== -->
+  <div class="firefly-howto" id="marker-not-seo">
+    <div>
+      <div><ul><li><span class="icon icon-seo-name"></span> Ignored name (block lacks seo class)</li></ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Step 1</h3><h3 id="hh">Accordion title (SEO list ignored)</h3></div>
+      <div><p>Step body.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-aliases-min — icon-seo-tool / icon-seo-supplies aliases; JSON-LD tools + supply ===== -->
+  <div class="firefly-howto seo" id="seo-aliases-min">
+    <div>
+      <div><ul>
+        <li><span class="icon icon-seo-name"></span> Alias how-to name</li>
+        <li><span class="icon icon-seo-description"></span> Alias how-to description</li>
+        <li><span class="icon icon-seo-tool"></span> Wrench, Hammer</li>
+        <li><span class="icon icon-seo-supplies"></span> Glue, Tape</li>
+      </ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Step 1</h3><h3 id="sid">Alias step heading</h3></div>
+      <div><p>Alias step body.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-tools-only — JSON-LD tools only; no supply ===== -->
+  <div class="firefly-howto seo" id="seo-tools-only">
+    <div>
+      <div><ul>
+        <li><span class="icon icon-seo-name"></span> Tools-only how-to name</li>
+        <li><span class="icon icon-seo-description"></span> Tools-only description</li>
+        <li><span class="icon icon-seo-tools"></span> Pencil, Marker</li>
+      </ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Step 1</h3><h3 id="tid">Tools-only step title</h3></div>
+      <div><p>Tools-only step body.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-supply-only — JSON-LD supply only; no tools ===== -->
+  <div class="firefly-howto seo" id="seo-supply-only">
+    <div>
+      <div><ul>
+        <li><span class="icon icon-seo-name"></span> Supply-only how-to name</li>
+        <li><span class="icon icon-seo-description"></span> Supply-only description</li>
+        <li><span class="icon icon-seo-supply"></span> Paper, Glue</li>
+      </ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Step 1</h3><h3 id="sid2">Supply-only step title</h3></div>
+      <div><p>Supply-only step body.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-noisy-list — invalid SEO rows ignored; schema GoodName / GoodDesc ===== -->
+  <div class="firefly-howto seo" id="seo-noisy-list">
+    <div>
+      <div><ul>
+        <li>no icon span at all</li>
+        <li><span class="icon not-a-seo-icon"></span> skip me</li>
+        <li><span class="icon icon-seo-name"></span> GoodName</li>
+        <li><span class="icon icon-seo-description"></span> GoodDesc</li>
+      </ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Step 1</h3><h3 id="xh">Step after noisy SEO list</h3></div>
+      <div><p>Step body text.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-minimal-only — OnlyName / OnlyDesc; JSON-LD without time, tools, supply ===== -->
+  <div class="firefly-howto seo" id="seo-minimal-only">
+    <div>
+      <div><ul>
+        <li><span class="icon icon-seo-name"></span> OnlyName</li>
+        <li><span class="icon icon-seo-description"></span> OnlyDesc</li>
+      </ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Step 1</h3><h3 id="mid">Minimal metadata step title</h3></div>
+      <div><p>Minimal step body.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-multi-first — paired with seo-multi-second for two independent HowTo scripts on one page ===== -->
+  <div class="firefly-howto seo" id="seo-multi-first">
+    <div>
+      <div><ul>
+        <li><span class="icon icon-seo-name"></span> Multi First Name</li>
+        <li><span class="icon icon-seo-description"></span> Multi First Description</li>
+      </ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Part A</h3><h3 id="seo-multi-h1">Step one title</h3></div>
+      <div><p>Body for first block.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Fixture: seo-multi-second — second HowTo block; #seo-multi-h2 ===== -->
+  <div class="firefly-howto seo" id="seo-multi-second">
+    <div>
+      <div><ul>
+        <li><span class="icon icon-seo-name"></span> Multi Second Name</li>
+        <li><span class="icon icon-seo-description"></span> Multi Second Description</li>
+      </ul></div>
+      <div></div>
+    </div>
+    <div>
+      <div><h3>Part B</h3><h3 id="seo-multi-h2">Step two title</h3></div>
+      <div><p>Body for second block.</p></div>
+    </div>
+  </div>
+</div>

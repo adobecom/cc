@@ -4,8 +4,8 @@ import sinon from 'sinon';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const mockData = JSON.parse(await readFile({ path: './mocks/de_DE.json' }));
-const { getLibs, locales } = await import('../../../creativecloud/scripts/utils.js');
-const { default: init, getLocaleInfo } = await import('../../../creativecloud/blocks/universal-promo-terms/universal-promo-terms.js');
+const { getLibs, locales } = await import('../../../creativecloud/plans/scripts/utils.js');
+const { default: init, getLocaleInfo } = await import('../../../creativecloud/plans/blocks/universal-promo-terms/universal-promo-terms.js');
 
 describe('universal-promo-terms', () => {
   const block = document.body.querySelector('.universal-promo-terms');

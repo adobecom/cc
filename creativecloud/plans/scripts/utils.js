@@ -17,13 +17,41 @@
 const COOKIE_SIGNED_IN = 'acomsis';
 const COOKIE_SIGNED_IN_STAGE = 'acomsis_stage';
 const CHINA_SIGNED_IN_HOME_PATH = '/cn/creativecloud/roc/home';
+const SESSION_CATALOG_POST_ADOBEID_RELOAD = 'cc-catalog-post-adobeid-reload';
+
+/** True for services.adobe.com and *.services.adobe.com (e.g. adobeid-na1.services.adobe.com). */
+function isAdobeServicesHost(hostname) {
+  return hostname === 'services.adobe.com' || hostname.endsWith('.services.adobe.com');
+}
+
+/**
+ * Reload once when landing on a /catalog URL after the Adobe services auth flow
+ * so IMS-dependent UI can hydrate.
+ * Uses sessionStorage so we do not loop if referrer is still present after reload.
+ */
+export function maybeRefreshCatalogFromAdobeId() {
+  if (!window.location.pathname.includes('/catalog')) return;
+  if (sessionStorage.getItem(SESSION_CATALOG_POST_ADOBEID_RELOAD) === 'true') {
+    sessionStorage.removeItem(SESSION_CATALOG_POST_ADOBEID_RELOAD);
+    return;
+  }
+  try {
+    if (!document.referrer) return;
+    const { hostname } = new URL(document.referrer);
+    if (!isAdobeServicesHost(hostname)) return;
+  } catch {
+    return;
+  }
+  sessionStorage.setItem(SESSION_CATALOG_POST_ADOBEID_RELOAD, 'true');
+  window.location.reload();
+}
 
 export const locales = {
   // Americas
   ar: { ietf: 'es-AR', tk: 'oln4yqj.css' },
   br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
   ca: { ietf: 'en-CA', tk: 'pps7abe.css' },
-  ca_fr: { ietf: 'fr-CA', tk: 'vrk5vyv.css' },
+  ca_fr: { ietf: 'fr-CA', tk: 'vrk5vyv.css', base: 'fr' },
   cl: { ietf: 'es-CL', tk: 'oln4yqj.css' },
   co: { ietf: 'es-CO', tk: 'oln4yqj.css' },
   la: { ietf: 'es-LA', tk: 'oln4yqj.css' },
@@ -32,7 +60,7 @@ export const locales = {
   '': { ietf: 'en-US', tk: 'hah7vzn.css' },
   // EMEA
   africa: { ietf: 'en', tk: 'pps7abe.css' },
-  be_fr: { ietf: 'fr-BE', tk: 'vrk5vyv.css' },
+  be_fr: { ietf: 'fr-BE', tk: 'vrk5vyv.css', base: 'fr' },
   be_en: { ietf: 'en-BE', tk: 'pps7abe.css' },
   be_nl: { ietf: 'nl-BE', tk: 'cya6bri.css' },
   cy_en: { ietf: 'en-CY', tk: 'pps7abe.css' },
@@ -49,7 +77,7 @@ export const locales = {
   lt: { ietf: 'lt-LT', tk: 'aaz7dvd.css' },
   lu_de: { ietf: 'de-LU', tk: 'vin7zsi.css' },
   lu_en: { ietf: 'en-LU', tk: 'pps7abe.css' },
-  lu_fr: { ietf: 'fr-LU', tk: 'vrk5vyv.css' },
+  lu_fr: { ietf: 'fr-LU', tk: 'vrk5vyv.css', base: 'fr' },
   hu: { ietf: 'hu-HU', tk: 'aaz7dvd.css' },
   mt: { ietf: 'en-MT', tk: 'pps7abe.css' },
   mena_en: { ietf: 'en', tk: 'pps7abe.css' },
@@ -62,7 +90,7 @@ export const locales = {
   ch_de: { ietf: 'de-CH', tk: 'vin7zsi.css' },
   si: { ietf: 'sl-SI', tk: 'aaz7dvd.css' },
   sk: { ietf: 'sk-SK', tk: 'aaz7dvd.css' },
-  ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css' },
+  ch_fr: { ietf: 'fr-CH', tk: 'vrk5vyv.css', base: 'fr' },
   fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
   se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
   ch_it: { ietf: 'it-CH', tk: 'bbf5pok.css' },
@@ -178,6 +206,7 @@ export const [setLibs, getLibs] = (() => {
         return libs;
       }
       const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
+      if (!/^[a-zA-Z0-9_-]+$/.test(branch)) throw new Error('Invalid branch name.');
       if (branch === 'local') { libs = 'http://localhost:6456/libs'; return libs; }
       const env = hostname.includes('.hlx.') ? 'hlx' : 'aem';
       if (branch.indexOf('--') > -1) { libs = `https://${branch}.${env}.live/libs`; return libs; }
@@ -386,7 +415,7 @@ export const decorateArea = getDecorateAreaFn();
 
 const CONFIG = {
   contentRoot: '/cc-shared',
-  codeRoot: '/creativecloud',
+  codeRoot: '/creativecloud/plans',
   imsClientId: 'adobedotcom-cc',
   iconsExcludeBlocks: ['unity', 'cc-forms', 'interactive-metadata', 'firefly-howto'],
   locales,
@@ -431,9 +460,16 @@ const CONFIG = {
     /www\.adobe\.com\/(\w\w(_\w\w)?\/)?download(\/.*)?/,
   ],
   brandConciergeAA: 'cc:app-reco',
+  uniqueSiteId: 'cc',
+  mepLingoCountryToRegion: {
+    africa: ['ke', 'mu', 'ng', 'za'],
+    la: ['bo', 'cr', 'do', 'ec', 'gt', 'pa', 'pr', 'py', 'sv', 'uy', 've', 'ar', 'co', 'cl', 'mx', 'pe'],
+    mena_en: ['bh', 'dz', 'iq', 'ir', 'jo', 'lb', 'ly', 'om', 'ps', 'sy', 'tn', 'ye'],
+  },
 };
 
 export const scriptInit = async () => {
+  maybeRefreshCatalogFromAdobeId();
   const isSignedInHomepage = window.location.pathname.includes(CHINA_SIGNED_IN_HOME_PATH);
   const trialsCheck = document.querySelector('head > meta[name="trialsims"]');
   if (trialsCheck && trialsCheck.content.toLowerCase() === 'on') {
@@ -462,6 +498,7 @@ export const scriptInit = async () => {
 
   (async function loadPage() {
     loadLana({ clientId: 'cc' });
+    (await import('../features/crm-modal-lana/crm-modal-lana.js')).default();
     await loadArea();
   }());
 };
