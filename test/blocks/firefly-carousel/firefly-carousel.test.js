@@ -5,6 +5,7 @@ import sinon from 'sinon';
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const ogBody = document.body.innerHTML;
 
+// eslint-disable-next-line import/no-unresolved
 const { default: init } = await import('../../../creativecloud/blocks/firefly-carousel/firefly-carousel.js');
 const { body } = document;
 
