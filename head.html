@@ -73,11 +73,11 @@
       const sitemapOrigin = 'https://www.adobe.com';
       const { origin, pathname } = window.location;
 
-      let sitemapPath = '/cc-shared/assets/sitemap.xml';
+      let sitemapPath = '/plans-catalog-sitemap.xml';
       const localeMatch = LOCALES.find(locale => pathname.startsWith(`/${locale}/`));
 
       if (localeMatch) {
-        sitemapPath = `/${localeMatch}/cc-shared/assets/sitemap.xml`;
+        sitemapPath = `/${localeMatch}/plans-catalog-sitemap.xml`;
       }
       
       try {
