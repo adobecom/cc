@@ -50,6 +50,131 @@
     }
   }
 </style>
+<meta name="head-loaded" content="false"/>
+<script>
+  const flagMeta = document.querySelector('meta[name="head-loaded"]');
+  const headAlreadyLoaded = flagMeta.content === 'true';
+
+  const HOME_LOCALES = ['ae_ar', 'ae_en', 'africa', 'ar', 'at', 'au', 'be_en', 'be_fr', 'be_nl', 'bg', 'br', 'ca', 'ca_fr', 'ch_de', 'ch_fr', 'ch_it', 'cis_en', 'cis_ru', 'cl', 'cn', 'co', 'cr', 'cz', 'de', 'dk', 'ec', 'ee', 'eg_ar', 'eg_en', 'es', 'fi', 'fr', 'gr_el', 'gr_en', 'gt', 'hk_en', 'hk_zh', 'hu', 'id_en', 'id_id', 'ie', 'il_en', 'il_he', 'in', 'in_hi', 'it', 'jp', 'kr', 'kw_ar', 'kw_en', 'la', 'lt', 'lu_de', 'lu_en', 'lu_fr', 'lv', 'mena_ar', 'mena_en', 'mx', 'my_en', 'my_ms', 'ng', 'nl', 'no', 'nz', 'pe', 'ph_en', 'ph_fil', 'pl', 'pr', 'pt', 'qa_ar', 'qa_en', 'ro', 'ru', 'sa_ar', 'sa_en', 'se', 'sg', 'si', 'sk', 'th_en', 'th_th', 'tr', 'tw', 'ua', 'uk', 'vn_en', 'vn_vi', 'za'];
+  const PLANS_LOCALES = [...HOME_LOCALES.filter((l) => l !== 'cn' && l !== 'ru'), 'cy_en', 'mt', 'sea'];
+
+  if (!headAlreadyLoaded) {
+    (async () => {
+      const HREFLANG_ORIGIN = 'https://www.adobe.com';
+      const HOME_SITEMAP = `${HREFLANG_ORIGIN}/home-sitemap.xml`;
+      const PLANS_SITEMAP = `${HREFLANG_ORIGIN}/plans-catalog-sitemap.xml`;
+      const PLANS_PATHS = ['/creativecloud/plans', '/products/catalog'];
+      const HREFLANG_CACHE_PREFIX = 'hreflang-';
+      const HREFLANG_TIMEOUT_MS = 5000;
+
+      function buildHreflangMap(xmlDoc) {
+        const map = {};
+        xmlDoc.querySelectorAll('url').forEach((urlEl) => {
+          const loc = urlEl.querySelector('loc')?.textContent;
+          if (!loc) return;
+          const links = [...urlEl.querySelectorAll('link[rel="alternate"]')]
+            .map((el) => ({ hreflang: el.getAttribute('hreflang'), href: el.getAttribute('href') }))
+            .filter((l) => l.hreflang && l.href);
+          if (links.length) map[loc] = links;
+        });
+        return map;
+      }
+
+      function getCachedMap(cacheKey) {
+        try { return JSON.parse(sessionStorage.getItem(cacheKey)); } catch { return null; }
+      }
+
+      function setCachedMap(cacheKey, map) {
+        try {
+          Object.keys(sessionStorage)
+            .filter((k) => k.startsWith(HREFLANG_CACHE_PREFIX) && k !== cacheKey)
+            .forEach((k) => sessionStorage.removeItem(k));
+          sessionStorage.setItem(cacheKey, JSON.stringify(map));
+        } catch {
+          window.lana?.log('hreflang: sessionStorage quota exceeded', { tags: 'hreflang', severity: 'warning' });
+        }
+      }
+
+      async function fetchSitemapMap(sitemapUrl) {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), HREFLANG_TIMEOUT_MS);
+        try {
+          const res = await fetch(sitemapUrl, { signal: ctrl.signal });
+          if (!res.ok) {
+            window.lana?.log(`hreflang: fetch failed (${res.status}) ${sitemapUrl}`, { tags: 'hreflang', severity: 'error' });
+            return null;
+          }
+          const xmlDoc = new DOMParser().parseFromString(await res.text(), 'text/xml');
+          if (xmlDoc.querySelector('parsererror')) {
+            window.lana?.log(`hreflang: parse failed ${sitemapUrl}`, { tags: 'hreflang', severity: 'error' });
+            return null;
+          }
+          return buildHreflangMap(xmlDoc);
+        } catch (e) {
+          const msg = e.name === 'AbortError'
+            ? `hreflang: timeout fetching ${sitemapUrl}`
+            : `hreflang: error fetching ${sitemapUrl} - ${e.message}`;
+          window.lana?.log(msg, { tags: 'hreflang', severity: 'error' });
+          return null;
+        } finally {
+          clearTimeout(tid);
+        }
+      }
+
+      function getPageUrl(pathname) {
+        if (pathname.endsWith('/')) return `${HREFLANG_ORIGIN}${pathname}`;
+        const withoutHtml = pathname.replace(/\.html$/, '');
+        return `${HREFLANG_ORIGIN}${withoutHtml}.html`;
+      }
+
+      function injectHreflangLinks(links) {
+        const titleEl = document.head.querySelector('title');
+        if (!titleEl) return;
+        titleEl.after(...links.map(({ hreflang, href }) => {
+          const el = document.createElement('link');
+          el.setAttribute('rel', 'alternate');
+          el.setAttribute('hreflang', hreflang);
+          el.setAttribute('href', href);
+          return el;
+        }));
+      }
+
+      const uaMeta = document.querySelector('meta[name="hreflinksuseragents"]');
+      if (!uaMeta?.content) return;
+      if (!uaMeta.content.split(',').some((a) => navigator.userAgent.includes(a.trim()))) return;
+
+      const { pathname } = window.location;
+      const firstSegment = pathname.split('/')[1];
+
+      const isHomePage = pathname === '/' || (HOME_LOCALES.includes(firstSegment) && pathname === `/${firstSegment}/`);
+      const isPlansPage = PLANS_PATHS.some((p) => pathname.includes(p))
+        && (!HOME_LOCALES.includes(firstSegment) || PLANS_LOCALES.includes(firstSegment));
+
+      let sitemapUrl;
+      if (isHomePage) {
+        sitemapUrl = HOME_SITEMAP;
+      } else if (isPlansPage) {
+        sitemapUrl = PLANS_SITEMAP;
+      } else {
+        return;
+      }
+
+      const cacheKey = HREFLANG_CACHE_PREFIX + sitemapUrl;
+      let map = getCachedMap(cacheKey);
+      if (!map) {
+        map = await fetchSitemapMap(sitemapUrl);
+        if (!map) return;
+        setCachedMap(cacheKey, map);
+      }
+
+      const pageUrl = getPageUrl(pathname);
+      const links = map[pageUrl] ?? map[pageUrl.replace(/\/$/, '')];
+      if (links?.length) injectHreflangLinks(links);
+    })();
+  }
+
+  flagMeta.content = 'true';
+</script>
 <script src="/creativecloud/plans/scripts/fallback.js" nomodule></script>
 <script type="module">
   const userAgentMeta = document.querySelector('meta[name="hreflinksuseragents"]');
@@ -73,11 +198,11 @@
       const sitemapOrigin = 'https://www.adobe.com';
       const { origin, pathname } = window.location;
 
-      let sitemapPath = '/cc-shared/assets/sitemap.xml';
+      let sitemapPath = '/plans-catalog-sitemap.xml';
       const localeMatch = LOCALES.find(locale => pathname.startsWith(`/${locale}/`));
 
       if (localeMatch) {
-        sitemapPath = `/${localeMatch}/cc-shared/assets/sitemap.xml`;
+        sitemapPath = `/${localeMatch}/plans-catalog-sitemap.xml`;
       }
       
       try {
