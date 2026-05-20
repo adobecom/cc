@@ -22,7 +22,7 @@ const odinConfig = {
 const formConfig = {
   perpeptual: {
     type: 'perpeptual',
-    jsPath: '/creativecloud/features/cc-forms/forms/perpeptual.js',
+    jsPath: '/creativecloud/plans/features/cc-forms/forms/perpeptual.js',
     blockDataset: {
       clientname: 'trials',
       endpoint: '/api2/marketing_common_service',
@@ -33,7 +33,7 @@ const formConfig = {
   },
   connect: {
     type: 'connect',
-    jsPath: '/creativecloud/features/cc-forms/forms/connect.js',
+    jsPath: '/creativecloud/plans/features/cc-forms/forms/connect.js',
     blockDataset: {
       clientname: 'connecttrial',
       endpoint: '/api2/connect_trial_creation_service',
@@ -47,7 +47,7 @@ const formConfig = {
   },
   subscribe: {
     type: 'subscribe',
-    jsPath: '/creativecloud/features/cc-forms/forms/subscribe.js',
+    jsPath: '/creativecloud/plans/features/cc-forms/forms/subscribe.js',
     blockDataset: {
       endpoint: '/api2/subscribe_v1',
       'form-submit': 'trials',
@@ -60,7 +60,7 @@ const formConfig = {
   },
   unsubscribe: {
     type: 'unsubscribe',
-    jsPath: '/creativecloud/features/cc-forms/forms/unsubscribe.js',
+    jsPath: '/creativecloud/plans/features/cc-forms/forms/unsubscribe.js',
     blockDataset: {
       clientname: 'trials',
       endpoint: '/api2/unsubscribe_v2',
