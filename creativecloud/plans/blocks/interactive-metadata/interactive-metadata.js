@@ -39,8 +39,8 @@ async function addLayerAnimation(asset) {
 }
 
 async function loadJSandCSS(stepName) {
-  const stepJS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.js`;
-  const stepCSS = `${window.location.origin}/creativecloud/features/interactive-components/${stepName}/${stepName}.css`;
+  const stepJS = `${window.location.origin}/creativecloud/plans/features/interactive-components/${stepName}/${stepName}.js`;
+  const stepCSS = `${window.location.origin}/creativecloud/plans/features/interactive-components/${stepName}/${stepName}.css`;
   loadStyle(stepCSS);
   const { default: initFunc } = await import(stepJS);
   return initFunc;
