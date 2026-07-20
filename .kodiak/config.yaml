@@ -16,7 +16,6 @@ notifications:
       fields:
         assignee:
           name: sumanh
-        customfield_11800: MWPW-164516 #epic link
         customfield_12900: 
           value: Brahmos
         watchers:
