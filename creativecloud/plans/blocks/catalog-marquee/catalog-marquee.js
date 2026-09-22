@@ -16,37 +16,47 @@ export function extendButtonsClass(text) {
 }
 
 export async function decorateFeatures(paragraphs, parentEl, lastChild, createTag) {
-  if (!paragraphs?.length || !parentEl || !lastChild) return;
+  if (!paragraphs?.length || !parentEl) return;
 
   const mnemonicList = createTag('div', { class: 'mnemonic-list' });
   const productList = createTag('div', { class: 'product-list' });
-  [...paragraphs].forEach((paragraph) => {
+  // no action area when CTAs are hidden
+  const anchor = lastChild ?? paragraphs[0];
+  paragraphs.forEach((paragraph) => {
     const title = paragraph.querySelector('strong');
     const picture = paragraph.querySelector('picture');
     const product = createTag('div', { class: 'product-item' });
     if (picture) product.appendChild(picture);
     if (title) product.appendChild(title);
     productList.appendChild(product);
-    paragraph.replaceWith(productList);
   });
   mnemonicList.appendChild(productList);
-  parentEl.insertBefore(mnemonicList, lastChild);
+  parentEl.insertBefore(mnemonicList, anchor);
+  paragraphs.forEach((paragraph) => paragraph.remove());
 }
 
 export function appendFeatures(el, foreground, text, promiseArr, getConfig, loadStyle, createTag) {
   if (!el || !foreground || !text || !promiseArr) return;
   const paragraphs = Array.from(foreground.querySelectorAll(':scope p:not([class])'));
   const actionArea = text.querySelector('.action-area');
-  const headingsIndexes = paragraphs.flatMap((elem, i) => (elem.querySelector('strong') && !elem.querySelector('picture') ? i : []));
-  if (!headingsIndexes.length) return;
-  if (headingsIndexes.length === 1) {
-    decorateFeatures(paragraphs, text, actionArea, createTag);
-  } else {
-    const mnemonics = paragraphs.splice(...headingsIndexes);
-    const businessFeatures = paragraphs;
-    decorateFeatures(mnemonics, text, actionArea, createTag);
-    decorateFeatures(businessFeatures, text, actionArea, createTag);
-  }
+  // heading + following icons = one group; drop non-product lines
+  const groups = [];
+  let current = null;
+  paragraphs.forEach((paragraph) => {
+    const hasPicture = !!paragraph.querySelector('picture');
+    const hasHeading = !!paragraph.querySelector('strong');
+    if (hasHeading && !hasPicture) {
+      current = [paragraph];
+      groups.push(current);
+    } else if (hasPicture && current) {
+      current.push(paragraph);
+    } else {
+      current = null;
+    }
+  });
+  const featureGroups = groups.filter((group) => group.length > 1);
+  if (!featureGroups.length) return;
+  featureGroups.forEach((group) => decorateFeatures(group, text, actionArea, createTag));
   promiseArr.push(loadStyle(`${getConfig().base}/blocks/mnemonic-list/mnemonic-list.css`));
 }
 
