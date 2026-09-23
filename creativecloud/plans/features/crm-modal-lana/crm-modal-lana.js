@@ -1,7 +1,8 @@
 /**
  * CRM modal RUM: click `[data-modal=crm]` → the three-in-one (or AUP) modal’s
- * iframe `load` fires, then the iframe is “rendered” (no `loading` class) before
- * we report `loadTimeMs` (≤60s). `.error-wrapper` anywhere in the modal = failure.
+ * iframe `load` fires, then it’s “rendered” once neither the iframe nor the
+ * modal itself still carries `class="loading"`, before we report `loadTimeMs`
+ * (≤60s). `.error-wrapper` anywhere in the modal = failure.
  * @see https://github.com/adobecom/milo/blob/main/libs/utils/lana.md
  */
 
@@ -114,7 +115,17 @@ function whenIframeLoad(iframe, timeLeftMs) {
 }
 
 /**
- * After `load`, wait until the iframe is not showing `class="loading"` and no modal error.
+ * True while either the iframe or its modal (e.g. `#aup-workflow-dialog`)
+ * carries `class="loading"`.
+ */
+function isStillLoading(iframe) {
+  const modal = getModal();
+  return Boolean(iframe.classList.contains('loading') || modal?.classList.contains('loading'));
+}
+
+/**
+ * After `load`, wait until neither the iframe nor its modal shows `class="loading"`,
+ * and no modal error.
  * @param {HTMLIFrameElement} iframe
  * @param {number} rid
  * @param {number} deadline performance.now() deadline
@@ -125,7 +136,7 @@ function waitForIframeRendered(iframe, rid, deadline) {
       if (rid !== run) { reject(new Error('stale')); return; }
       if (performance.now() >= deadline) { reject(new Error('timeout')); return; }
       if (hasModalError()) { reject(new Error('error-wrapper')); return; }
-      if (!iframe.classList.contains('loading')) { resolve(); return; }
+      if (!isStillLoading(iframe)) { resolve(); return; }
       setTimeout(check, RENDER_POLL_MS);
     }
     check();
