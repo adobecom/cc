@@ -1,6 +1,6 @@
 /**
- * CRM modal RUM: click `[data-modal=crm]` → the three-in-one modal’s iframe
- * `load` fires, then the iframe is “rendered” (no `loading` class) before
+ * CRM modal RUM: click `[data-modal=crm]` → the three-in-one (or AUP) modal’s
+ * iframe `load` fires, then the iframe is “rendered” (no `loading` class) before
  * we report `loadTimeMs` (≤60s). `.error-wrapper` anywhere in the modal = failure.
  * @see https://github.com/adobecom/milo/blob/main/libs/utils/lana.md
  */
@@ -10,6 +10,7 @@ const MODAL = [
   '.dialog-modal.three-in-one',
   '[role="dialog"].three-in-one',
   '[aria-modal="true"].three-in-one',
+  'dialog#aup-workflow-dialog[open]',
 ].join(',');
 const MAX_MS = 60000;
 const RENDER_POLL_MS = 50;
