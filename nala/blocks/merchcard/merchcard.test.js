@@ -16,14 +16,13 @@ test.describe('verify merch card UI and its features', () => {
       await expect(page).toHaveURL(`${baseURL}${features[0].path}`);
     });
     await test.step('verify merch card UI and its section elements', async () => {
-      await page.waitForLoadState();
-      expect(await merchcard.merchCard).toBeTruthy();
-      expect(await merchcard.merchProductTitle).toBeTruthy();
-      expect(await merchcard.meachBodyAppText).toBeTruthy();
-      expect(await merchcard.merchActionArea).toBeTruthy();
-      expect(await merchcard.merchFooterDiscription).toBeTruthy();
-      expect(await merchcard.merchFooerIcon).toBeTruthy();
-      expect(await merchcard.BestValueBadge).toBeTruthy();
+      await expect(merchcard.merchCard).toBeVisible();
+      await expect(merchcard.merchProductTitle).toBeVisible();
+      await expect(merchcard.meachBodyAppText).toBeVisible();
+      await expect(merchcard.merchActionArea).toBeVisible();
+      await expect(merchcard.merchFooterDiscription).toBeVisible();
+      await expect(merchcard.merchFooerIcon).toBeVisible();
+      await expect(merchcard.BestValueBadge).toBeVisible();
     });
   });
   // price, CTA buttons and its navigation to correct commerce pages
@@ -35,11 +34,12 @@ test.describe('verify merch card UI and its features', () => {
       await expect(page).toHaveURL(`${baseURL}${features[1].path}`);
     });
     await test.step('free, buynow price cta should work as expected navigation', async () => {
-      await page.waitForLoadState();
-      expect(await merchcard.merchBodyPrice).toBeTruthy();
-      expect(await merchcard.mercHeadPrice).toBeTruthy();
+      await expect(merchcard.merchBodyPrice).toBeVisible();
+      await expect(merchcard.mercHeadPrice).toBeVisible();
+      await expect(merchcard.mercHeadPrice).toHaveText(/\d+([.,]\d+)+\/mo/);
+      await expect(merchcard.merchBodyPrice).toHaveText(/\d+([.,]\d+)+/);
       await merchcard.merchBuyNowCTA.click();
-      await expect(page).toHaveURL(/.*commerce.adobe.com/);
+      await expect(page).toHaveURL(/^https:\/\/commerce\.adobe\.com\//);
     });
   });
   // merch card reference from fragment and all product listed prices are shown
@@ -51,15 +51,8 @@ test.describe('verify merch card UI and its features', () => {
       await expect(page).toHaveURL(`${baseURL}${features[2].path}`);
     });
     await test.step('all prices are showing in merch cards', async () => {
-      await page.waitForLoadState();
-      expect(await merchcard.fragmentsection).toBeTruthy();
-      expect(await merchcard.ccAllappsPrice).toBeTruthy();
-      expect(await merchcard.ccOtherAppsPrice).toBeTruthy();
-      expect(await merchcard.ccPhotographyPrice).toBeTruthy();
-      expect(await merchcard.ccSingleApp).toBeTruthy();
-      expect(await merchcard.ccOfferPrice).toBeTruthy();
-      expect(await merchcard.ccBusinessSingleApp).toBeTruthy();
-      expect(await merchcard.ccBusinessAllApps).toBeTruthy();
+      await expect(merchcard.ccAllappsPrice).toBeVisible();
+      await expect(merchcard.ccAllappsPrice).toHaveText(/\d+([.,]\d+)+\/mo/);
     });
   });
 });

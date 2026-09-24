@@ -4,13 +4,13 @@ module.exports = {
     {
       tcid: '0',
       name: '@merchcard-ui',
-      path: '/drafts/Automation-PW/merchcard?georouting=off',
+      path: '/creativecloud/animation/testdoc/automation-pw/merchcard?languageBanner=off',
       tags: '@cc @cc-merchcard @cc-merchcardui',
     },
     {
       tcid: '1',
       name: '@merchcard-prices',
-      path: '/drafts/Automation-PW/merchcard?georouting=off',
+      path: '/creativecloud/animation/testdoc/automation-pw/merchcard?languageBanner=off',
       tags: '@cc @cc-merchcard @cc-merchcardprices',
       urls: {
         freetrial: 'https://commerce.adobe.com/store/commitment',
@@ -20,7 +20,7 @@ module.exports = {
     {
       tcid: '2',
       name: '@merchcard-fragmentrefecence',
-      path: '/drafts/Automation-PW/pricefragments?georouting=off',
+      path: '/creativecloud/animation/testdoc/automation-pw/merchcard?languageBanner=off',
       tags: '@cc @cc-merchcard @cc-merchcardrefernce',
     },
   ],

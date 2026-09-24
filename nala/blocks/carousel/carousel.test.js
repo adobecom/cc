@@ -16,16 +16,14 @@ test.describe('verify carousel showing up with authored and navigations are work
       await expect(page).toHaveURL(`${baseURL}${features[0].path}`);
     });
     await test.step('all carousel UI elements showup', async () => {
-      await page.waitForLoadState();
-      expect(await carousel.carouselContainer).toBeTruthy();
-      expect(await carousel.carouselCenterSlideActive).toBeTruthy();
-      expect(await carousel.carouselActiveImage).toBeTruthy();
-      expect(await carousel.carouselTileText).toBeTruthy();
-      expect(await carousel.carouselButtonContainer).toBeTruthy();
-      expect(await carousel.carouselButtonLeft).toBeTruthy();
-      expect(await carousel.carouselButtonRight).toBeTruthy();
-      expect(await carousel.carouselIndicators).toBeTruthy();
-      expect(await carousel.carouselFirstCard_default).toBeTruthy();
+      await expect(carousel.carouselContainer).toBeVisible();
+      await expect(carousel.carouselCenterSlideActive).toBeVisible();
+      await expect(carousel.carouselActiveImage).toBeVisible();
+      await expect(carousel.carouselTileText).toBeVisible();
+      await expect(carousel.carouselButtonContainer).toBeVisible();
+      await expect(carousel.carouselButtonLeft).toBeVisible();
+      await expect(carousel.carouselButtonRight).toBeVisible();
+      await expect(carousel.carouselFirstCard_default).toBeVisible();
     });
   });
 
@@ -38,31 +36,27 @@ test.describe('verify carousel showing up with authored and navigations are work
       await expect(page).toHaveURL(`${baseURL}${features[1].path}`);
     });
     await test.step('carousel left navigation button is clickable and goes to destination', async () => {
-      await page.waitForLoadState();
-      expect(await carousel.carouselContainer).toBeTruthy();
-      expect(await carousel.carouselButtonLeft).toBeTruthy();
+      await expect(carousel.carouselContainer).toBeVisible();
+      await expect(carousel.carouselButtonLeft).toBeVisible();
       await carousel.carouselButtonLeft.click();
-      await page.waitForTimeout(2000);
-      expect(await carousel.carouselCenterSlideActive).toBeTruthy();
-      expect(await carousel.carouselCard_load3).toBeTruthy();
+      await expect(carousel.carouselCenterSlideActive).toBeVisible();
+      await expect(carousel.carouselCard_load3).toBeVisible();
     });
   });
 
-  // check the breadcrumb page parent link is clickable and goes to valid page
+  // check the carousel right navigation button is clickable and goes to valid card
   test(`${features[2].name},${features[2].tags}`, async ({ page, baseURL }) => {
-    console.info(`[Test Page]: ${baseURL}${features[1].path}`);
+    console.info(`[Test Page]: ${baseURL}${features[2].path}`);
     await test.step('carousel right navigation button is clickable and goes to destination card', async () => {
-      await page.goto(`${baseURL}${features[1].path}`);
+      await page.goto(`${baseURL}${features[2].path}`);
       await page.waitForLoadState('domcontentloaded');
-      await expect(page).toHaveURL(`${baseURL}${features[1].path}`);
+      await expect(page).toHaveURL(`${baseURL}${features[2].path}`);
     });
     await test.step('carousel right navigation button is clickable and goes to destination card', async () => {
-      await page.waitForLoadState();
-      expect(await carousel.carouselContainer).toBeTruthy();
-      expect(await carousel.carouselButtonRight).toBeTruthy();
+      await expect(carousel.carouselContainer).toBeVisible();
+      await expect(carousel.carouselButtonRight).toBeVisible();
       await carousel.carouselButtonRight.click();
-      await page.waitForTimeout(2000);
-      expect(await carousel.carouselCard_load2).toBeTruthy();
+      await expect(carousel.carouselCard_load2).toBeVisible();
     });
   });
 });

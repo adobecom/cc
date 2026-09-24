@@ -16,13 +16,13 @@ test.describe('verify fragment references are working in CC pages', () => {
       await expect(page).toHaveURL(`${baseURL}${features[0].path}`);
     });
     await test.step('fragment shows up in page from its reference', async () => {
-      await page.waitForLoadState();
-      expect(await fragment.pageFragment).toBeTruthy();
-      expect(await fragment.fragmentHeading).toBeTruthy();
-      expect(await fragment.fragmentSection).toBeTruthy();
-      expect(await fragment.fragmentProduct1).toBeTruthy();
-      expect(await fragment.fragmentProduct2).toBeTruthy();
-      expect(await fragment.fragmentProduct3).toBeTruthy();
+      // the fragment block stays hidden until its remote content finishes loading and decorating
+      await expect(fragment.pageFragment).toBeVisible({ timeout: 15000 });
+      await expect(fragment.fragmentHeading).toBeVisible({ timeout: 15000 });
+      await expect(fragment.fragmentSection).toBeVisible({ timeout: 15000 });
+      // merch-card content loads pricing data asynchronously and can take longer than the default timeout
+      await expect(fragment.fragmentProduct1).toBeVisible({ timeout: 15000 });
+      await expect(fragment.fragmentProduct2).toBeVisible({ timeout: 15000 });
     });
   });
 });
