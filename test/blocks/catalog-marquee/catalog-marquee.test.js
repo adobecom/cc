@@ -3,7 +3,7 @@ import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const { setLibs } = await import('../../../creativecloud/plans/scripts/utils.js');
-const { default: init } = await import('../../../creativecloud/plans/blocks/catalog-marquee/catalog-marquee.js');
+const { default: init, appendFeatures } = await import('../../../creativecloud/plans/blocks/catalog-marquee/catalog-marquee.js');
 
 describe('catalog marquee', () => {
   const marquee = document.querySelector('.catalog-marquee');
@@ -51,5 +51,38 @@ describe('catalog marquee', () => {
     const [freeTrialCta, buyNowCta] = actionArea.querySelectorAll('a.con-button.button-l.button-justified-mobile');
     expect(freeTrialCta.innerText).to.contain('Free trial');
     expect(buyNowCta.innerText).to.contain('Buy now');
+  });
+});
+
+describe('catalog marquee mnemonics without an action area', () => {
+  const createTag = (tag, attrs) => {
+    const el = document.createElement(tag);
+    Object.entries(attrs ?? {}).forEach(([k, v]) => el.setAttribute(k, v));
+    return el;
+  };
+  const iconParagraph = (name) => `<p><picture><img src="/x.svg" alt="${name}"></picture> <strong>${name}</strong></p>`;
+
+  it('builds the mnemonic list and ignores trailing non-product paragraphs', () => {
+    const el = createTag('div', { class: 'catalog-marquee' });
+    const foreground = createTag('div', { class: 'foreground container' });
+    const text = createTag('div', { class: 'text' });
+    text.innerHTML = `
+      <p><strong>Includes:</strong></p>
+      ${iconParagraph('Acrobat')}
+      ${iconParagraph('Firefly')}
+      <p><strong>Cancel anytime within 14 days.</strong></p>`;
+    foreground.append(text);
+    el.append(foreground);
+
+    appendFeatures(el, foreground, text, [], () => ({ base: '' }), () => {}, createTag);
+
+    const lists = text.querySelectorAll('.mnemonic-list');
+    expect(lists.length).to.equal(1);
+    const items = lists[0].querySelectorAll('.product-item');
+    expect(items.length).to.equal(3);
+    expect(items[0].innerText).to.contain('Includes:');
+    expect(text.querySelector('.mnemonic-list picture')).to.exist;
+    const disclaimer = [...text.querySelectorAll(':scope > p')].find((p) => p.textContent.includes('Cancel anytime'));
+    expect(disclaimer).to.exist;
   });
 });
