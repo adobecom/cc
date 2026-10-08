@@ -1,17 +1,18 @@
 /**
- * CRM modal RUM: click `[data-modal=crm]` → the three-in-one (or AUP) modal’s
- * iframe `load` fires, then it’s “rendered” once neither the iframe nor the
- * modal itself still carries `class="loading"`, before we report `loadTimeMs`
- * (≤60s). `.error-wrapper` anywhere in the modal = failure.
+ * CRM modal RUM: click `[data-modal=crm]` → three-in-one iframe load and loading
+ * indicators cleared, or AUP's `app_loaded` marker (`hide-close-button`).
+ * Report click-to-ready time (≤60s), with separate `3in1` and `aup` LANA tags.
+ * `.error-wrapper` anywhere in the modal = failure.
  * @see https://github.com/adobecom/milo/blob/main/libs/utils/lana.md
  */
 
 const CRM = '[data-modal="crm"]';
+const AUP = '#aup-workflow-dialog.aup-modal, dialog#aup-workflow-dialog[open]';
 const MODAL = [
   '.dialog-modal.three-in-one',
   '[role="dialog"].three-in-one',
   '[aria-modal="true"].three-in-one',
-  'dialog#aup-workflow-dialog[open]',
+  AUP,
 ].join(',');
 const MAX_MS = 60000;
 const RENDER_POLL_MS = 50;
@@ -61,10 +62,11 @@ function formatCrmModalMeta(ctx, elapsedMs) {
  * @param {boolean} isError
  * @param {number} [elapsedMs] when over `SLOW_MODAL_MS`, adds `severity: 'c'` on success too
  */
-function lanaLog(message, isError, elapsedMs) {
+function lanaLog(message, isError, elapsedMs, modalType) {
   const slow = typeof elapsedMs === 'number' && elapsedMs > SLOW_MODAL_MS;
   const severityC = Boolean(isError) || slow;
-  const base = severityC ? { ...LANA, severity: 'c' } : LANA;
+  const options = modalType === 'AUP' ? { ...LANA, tags: 'aup' } : LANA;
+  const base = severityC ? { ...options, severity: 'c' } : options;
   window.lana?.log(
     message,
     isError ? { ...base, errorType: 'e' } : base,
@@ -124,8 +126,8 @@ function isStillLoading(iframe) {
 }
 
 /**
- * After `load`, wait until neither the iframe nor its modal shows `class="loading"`,
- * and no modal error.
+ * Wait until loading indicators clear and, for AUP, the host signals `app_loaded`
+ * by adding `hide-close-button`. No iframe document access is needed for AUP.
  * @param {HTMLIFrameElement} iframe
  * @param {number} rid
  * @param {number} deadline performance.now() deadline
@@ -136,7 +138,9 @@ function waitForIframeRendered(iframe, rid, deadline) {
       if (rid !== run) { reject(new Error('stale')); return; }
       if (performance.now() >= deadline) { reject(new Error('timeout')); return; }
       if (hasModalError()) { reject(new Error('error-wrapper')); return; }
-      if (!isStillLoading(iframe)) { resolve(); return; }
+      const modal = getModal();
+      const aupReady = !modal?.matches(AUP) || modal.classList.contains('hide-close-button');
+      if (aupReady && !isStillLoading(iframe)) { resolve(); return; }
       setTimeout(check, RENDER_POLL_MS);
     }
     check();
@@ -145,7 +149,7 @@ function waitForIframeRendered(iframe, rid, deadline) {
 
 /**
  * @param {number} rid
- * @param {{ page: string, cta: string }} ctx
+ * @param {{ page: string, cta: string, type: string }} ctx
  */
 function measureFromClick(rid, ctx) {
   const t0 = performance.now();
@@ -153,21 +157,25 @@ function measureFromClick(rid, ctx) {
 
   const schedule = () => {
     if (rid !== run) return;
+    const modal = getModal();
+    if (modal) ctx.type = modal.matches(AUP) ? 'AUP' : '3 in 1';
     if (performance.now() >= deadline) {
       const elapsedMs = Math.round(performance.now() - t0);
       lanaLog(
-        `3 in 1 modal: took longer than a minute${formatCrmModalMeta(ctx, elapsedMs)}`,
+        `${ctx.type} modal: took longer than a minute${formatCrmModalMeta(ctx, elapsedMs)}`,
         true,
         elapsedMs,
+        ctx.type,
       );
       return;
     }
     if (hasModalError()) {
       const elapsedMs = Math.round(performance.now() - t0);
       lanaLog(
-        `3 in 1 modal: Error after ${elapsedMs}ms${formatCrmModalMeta(ctx, elapsedMs)}`,
+        `${ctx.type} modal: Error after ${elapsedMs}ms${formatCrmModalMeta(ctx, elapsedMs)}`,
         true,
         elapsedMs,
+        ctx.type,
       );
       return;
     }
@@ -177,22 +185,25 @@ function measureFromClick(rid, ctx) {
       return;
     }
     const timeLeft = deadline - performance.now();
-    whenIframeLoad(iframe, timeLeft)
+    const loaded = modal.matches(AUP) ? Promise.resolve() : whenIframeLoad(iframe, timeLeft);
+    loaded
       .then(() => waitForIframeRendered(iframe, rid, deadline))
       .then(() => {
         if (rid !== run) return;
         const loadTimeMs = Math.round(performance.now() - t0);
         if (hasModalError()) {
           lanaLog(
-            `3 in 1 modal: Error after ${loadTimeMs}ms${formatCrmModalMeta(ctx, loadTimeMs)}`,
+            `${ctx.type} modal: Error after ${loadTimeMs}ms${formatCrmModalMeta(ctx, loadTimeMs)}`,
             true,
             loadTimeMs,
+            ctx.type,
           );
         } else {
           lanaLog(
-            `3 in 1 modal: Took ${loadTimeMs}ms to load${formatCrmModalMeta(ctx, loadTimeMs)}`,
+            `${ctx.type} modal: Took ${loadTimeMs}ms to load${formatCrmModalMeta(ctx, loadTimeMs)}`,
             false,
             loadTimeMs,
+            ctx.type,
           );
         }
       })
@@ -201,16 +212,18 @@ function measureFromClick(rid, ctx) {
         const loadTimeMs = Math.round(performance.now() - t0);
         if (err?.message === 'error-wrapper' || hasModalError()) {
           lanaLog(
-            `3 in 1 modal: Error after ${loadTimeMs}ms${formatCrmModalMeta(ctx, loadTimeMs)}`,
+            `${ctx.type} modal: Error after ${loadTimeMs}ms${formatCrmModalMeta(ctx, loadTimeMs)}`,
             true,
             loadTimeMs,
+            ctx.type,
           );
           return;
         }
         lanaLog(
-          `3 in 1 modal: took longer than a minute${formatCrmModalMeta(ctx, loadTimeMs)}`,
+          `${ctx.type} modal: took longer than a minute${formatCrmModalMeta(ctx, loadTimeMs)}`,
           true,
           loadTimeMs,
+          ctx.type,
         );
       });
   };
@@ -225,6 +238,7 @@ function onCrmClick(e) {
   measureFromClick(run, {
     page: window.location.href,
     cta: getCrmCtaAriaLabel(e.target, el),
+    type: '3 in 1',
   });
 }
 
