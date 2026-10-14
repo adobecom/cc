@@ -35,7 +35,7 @@ function parseConfigBlock(configContainer) {
       } else {
         const rowMatch = key.match(/^r-?(\d+)--(.+)/);
         if (rowMatch) {
-          const rowNum = parseInt(rowMatch[1], 10);
+          const rowNum = Number.parseInt(rowMatch[1], 10);
           const prop = rowMatch[2];
           if (!currentProps[rowNum]) {
             currentProps[rowNum] = { left: 0 };
@@ -44,7 +44,7 @@ function parseConfigBlock(configContainer) {
           if (prop === 'left') {
             currentProps[rowNum].left = parseFloat(val);
           } else if (prop === 'start-index') {
-            currentProps[rowNum].startIndex = parseInt(val, 10);
+            currentProps[rowNum].startIndex = Number.parseInt(val, 10);
           }
         }
       }
