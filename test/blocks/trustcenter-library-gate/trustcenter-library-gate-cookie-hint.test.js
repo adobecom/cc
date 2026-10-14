@@ -12,9 +12,6 @@ window.adobeIMS = {
   // eslint-disable-next-line arrow-body-style
   getAccessToken: () => { return { token: 'token' }; },
 };
-// Lets setHasSignedNdaCookie()/removeHasSignedNdaCookie() run synchronously instead of
-// waiting for a real adobePrivacy consent event that never fires in this test environment.
-window.adobePrivacy = { activeCookieGroups: () => ['C0003'] };
 
 const { setConfig } = await import(import.meta.resolve('libs/utils/utils.js'));
 const { setLibs } = await import('../../../creativecloud/scripts/utils.js');
@@ -47,6 +44,7 @@ describe('trustcenter library gate - cookie reasonHint', () => {
 
   beforeEach(() => {
     clearCookie();
+    window.adobePrivacy = { activeCookieGroups: () => ['C0003'] };
     document.body.innerHTML = siblingHtml;
     if (window.fetch.restore) window.fetch.restore();
     fetchStub = sinon.stub(window, 'fetch');
