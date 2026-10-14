@@ -130,12 +130,12 @@ function parseSlotData(block) {
             .filter(Boolean);
           break;
         case 'total-animation-duration': {
-          const dur = parseInt(value, 10);
+          const dur = Number.parseInt(value, 10);
           if (!Number.isNaN(dur)) config.totalDuration = dur;
           break;
         }
         case 'initial-wait': {
-          const wait = parseInt(value, 10);
+          const wait = Number.parseInt(value, 10);
           if (!Number.isNaN(wait)) config.initialWait = wait;
           break;
         }
