@@ -355,7 +355,7 @@ function initControls({
   const restartAnimation = () => {
     if (animationRef.cancel) animationRef.cancel();
     windowEl.classList.remove('finished');
-    if (animationInterface && animationInterface.start) {
+    if (animationInterface?.start) {
       animationInterface.start(0);
     }
   };
