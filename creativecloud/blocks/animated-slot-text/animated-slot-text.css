@@ -43,7 +43,7 @@
   max-width: 100%;
   line-height: var(--line-height);
   mask-image: linear-gradient(to top, black 65%, transparent 100%);
-  transition: mask-image 2s ease;;
+  transition: mask-image 2s ease;
 }
 
 .animated-slot-text .foreground .slot-machine-window.finished {
