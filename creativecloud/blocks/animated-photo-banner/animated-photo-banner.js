@@ -1,7 +1,3 @@
-// Animated Photo Banner Component
-// Provides animated image galleries with wave-based animations and responsive behavior
-// TODO: Write a more detailed authoring document in repo
-
 import { createTag, getScreenSizeCategory, prefersReducedMotion } from '../../scripts/utils.js';
 
 // Configuration constants
