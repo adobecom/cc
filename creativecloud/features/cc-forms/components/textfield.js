@@ -99,7 +99,7 @@ class Textfield {
       case 'email': {
         const isConnectTrial = this.form.closest('.cc-forms')?.classList.contains('connect');
         const blockedDomains = isConnectTrial ? '(?!.*@(gmail\\.com|yahoo\\.com|yahoo\\.co\\.|aol\\.com))' : '';
-        i.setAttribute('pattern', `^${blockedDomains}[a-zA-Z0-9_.\\-]+@[a-z0-9_.\\-]{3,}\\.[a-z]{2,6}$`);
+        i.setAttribute('pattern', `^${blockedDomains}[a-zA-Z0-9_.\\-]+@[a-zA-Z0-9_.\\-]{2,}\\.[a-z]{2,6}$`);
         break;
       }
       case 'phonenumber':
