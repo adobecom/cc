@@ -31,11 +31,14 @@ export default function nonprofitSelect(props) {
   let localSelection = null;
 
   const controlTag = createTag('div', { class: 'np-control' });
-  const labelTag = createTag('label', { class: 'np-label', for: name }, label);
+  const fieldId = `np-field-${name}`;
+  const labelTag = createTag('label', { class: 'np-label', for: fieldId }, label);
   const searchTag = createTag('input', {
     class: 'np-input np-select-search',
     type: 'text',
     placeholder,
+    id: fieldId,
+    'aria-label': `${label},`,
     'data-for': name,
   });
   const valueTag = createTag('input', {
@@ -54,7 +57,8 @@ export default function nonprofitSelect(props) {
   }
 
   const listContainerTag = createTag('div', { class: 'np-select-list-container' });
-  const listTag = createTag('ul', { class: 'np-select-list', 'data-for': name });
+  const listTag = createTag('ul', { class: 'np-select-list', 'data-for': name, tabindex: -1 });
+  const liveRegionTag = createTag('div', { class: 'np-sr-only', 'aria-live': 'polite', role: 'status' });
 
   let searchTimeout;
   let abortController;
@@ -76,7 +80,10 @@ export default function nonprofitSelect(props) {
       }
     } else {
       searchTag.value = localSelection[labelKey];
-      optionsStore.update([localSelection]);
+      const selectionToRestore = localSelection;
+      setTimeout(() => {
+        if (document.body.contains(searchTag)) optionsStore.update([selectionToRestore]);
+      }, 0);
     }
   };
 
@@ -101,7 +108,12 @@ export default function nonprofitSelect(props) {
   });
 
   let focusedFromList = false;
+  let suppressShowOnFocus = false;
   searchTag.addEventListener('focus', () => {
+    if (suppressShowOnFocus) {
+      suppressShowOnFocus = false;
+      return;
+    }
     if (debounce && !searchTag.value) return;
     if (!focusedFromList) searchTag.select();
     else focusedFromList = false;
@@ -163,10 +175,16 @@ export default function nonprofitSelect(props) {
         valueTag.dispatchEvent(new Event('input'));
         localSelection = option;
         hasNewInput = false;
+        const shouldRestoreFocus = document.activeElement === itemTag;
         hideList();
+        if (shouldRestoreFocus) {
+          suppressShowOnFocus = true;
+          searchTag.focus();
+        }
       };
 
       itemTag.addEventListener('keydown', (ev) => {
+        if (ev.code === 'Tab') return;
         if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(ev.code)) {
           focusedFromList = true;
           searchTag.focus();
@@ -174,13 +192,11 @@ export default function nonprofitSelect(props) {
         }
         ev.preventDefault();
 
-        // Select on Enter
         if (ev.code === 'Enter') {
           selectItem();
           return;
         }
 
-        // Navigate on ArrowDown/Up
         let sibling;
         if (ev.code === 'ArrowDown') {
           sibling = ev.target.nextElementSibling;
@@ -190,6 +206,11 @@ export default function nonprofitSelect(props) {
         }
         if (sibling && !sibling.classList.contains('np-select-loader')) {
           sibling.focus();
+          return;
+        }
+
+        if (ev.code === 'ArrowDown' && footerTag) {
+          footerTag.querySelector('a, button, [tabindex]')?.focus();
         }
       });
 
@@ -240,6 +261,14 @@ export default function nonprofitSelect(props) {
       if (itemToFocus) itemToFocus.focus();
     }
 
+    if (loading) {
+      liveRegionTag.textContent = `${loadingText}...`;
+    } else if (storeOptions.length === 0) {
+      liveRegionTag.textContent = noOptionsText;
+    } else {
+      liveRegionTag.textContent = `${storeOptions.length} result${storeOptions.length === 1 ? '' : 's'}, use arrow keys to navigate`;
+    }
+
     rerendering = false;
   });
 
@@ -247,9 +276,15 @@ export default function nonprofitSelect(props) {
   if (footerTag) {
     listContainerTag.append(footerTag);
     footerTag.addEventListener('focusout', focusOut);
+    footerTag.addEventListener('keydown', (ev) => {
+      if (ev.code !== 'ArrowUp') return;
+      ev.preventDefault();
+      const items = listTag.querySelectorAll('.np-select-item');
+      items[items.length - 1]?.focus();
+    });
   }
 
-  controlTag.append(labelTag, searchTag, valueTag, listContainerTag);
+  controlTag.append(labelTag, searchTag, valueTag, listContainerTag, liveRegionTag);
 
   if (!hideIcon) {
     const arrowIconTag = getNonprofitIconTag(NONPRFIT_ICONS.CHEVRON_DOWN);
