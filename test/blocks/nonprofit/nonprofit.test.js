@@ -139,6 +139,10 @@ describe('nonprofit - Organization search', () => {
       data: [],
       _links: { next: '' },
     },
+    'should announce when no results are found via a live region': {
+      data: [],
+      _links: { next: '' },
+    },
   };
 
   before(() => {
@@ -158,7 +162,7 @@ describe('nonprofit - Organization search', () => {
       },
     });
 
-    window.mph = {};
+    window.mph = { 'nonprofit-no-search-result-found': 'No matching nonprofit found' };
     window.lana = { log: () => {} };
   });
 
@@ -283,6 +287,117 @@ describe('nonprofit - Organization search', () => {
     organizationSearch.blur();
 
     expect(organizationSearch.value).to.equal('');
+  });
+
+  it('should move focus from the search input directly to the "cannot find" link via Tab when results are present', async () => {
+    await sendKeys({ press: 'a' });
+
+    await waitForElement('.np-select-list[data-for="organizationId"] .np-select-item');
+
+    await sendKeys({ press: 'Tab' });
+
+    const cannotFind = document.querySelector('.np-organization-cannot-find a');
+    expect(document.activeElement).to.equal(cannotFind);
+  });
+
+  it('should reach the "cannot find" link via Tab from a focused option when results are present', async () => {
+    await sendKeys({ press: 'a' });
+
+    await waitForElement('.np-select-list[data-for="organizationId"] .np-select-item');
+
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Tab' });
+
+    const cannotFind = document.querySelector('.np-organization-cannot-find a');
+    expect(document.activeElement).to.equal(cannotFind);
+  });
+
+  it('should navigate back to the search input from the "cannot find" link using Shift+Tab', async () => {
+    await sendKeys({ press: 'a' });
+
+    await waitForElement('.np-select-list[data-for="organizationId"] .np-select-item');
+
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Tab' });
+
+    const cannotFind = document.querySelector('.np-organization-cannot-find a');
+    expect(document.activeElement).to.equal(cannotFind);
+
+    const organizationSearch = document.querySelector('input[data-for="organizationId"]');
+    await sendKeys({ down: 'Shift' });
+    await sendKeys({ press: 'Tab' });
+    await sendKeys({ up: 'Shift' });
+
+    expect(document.activeElement).to.equal(organizationSearch);
+  });
+
+  it('should navigate back to the last option from the "cannot find" link using ArrowUp', async () => {
+    await sendKeys({ press: 'a' });
+
+    const lastOption = await waitForElement(
+      '.np-select-list[data-for="organizationId"] .np-select-item:last-child',
+    );
+
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Tab' });
+
+    const cannotFind = document.querySelector('.np-organization-cannot-find a');
+    expect(document.activeElement).to.equal(cannotFind);
+
+    await sendKeys({ press: 'ArrowUp' });
+
+    expect(document.activeElement).to.equal(lastOption);
+  });
+
+  it('should return focus to the search input after selecting an organization without reopening the list', async () => {
+    const organizationSearch = document.querySelector('input[data-for="organizationId"]');
+
+    await sendKeys({ press: 'a' });
+
+    await waitForElement('.np-select-list[data-for="organizationId"] .np-select-item');
+
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Enter' });
+
+    expect(document.activeElement).to.equal(organizationSearch);
+
+    const listContainer = organizationSearch.closest('.np-control').querySelector('.np-select-list-container');
+    expect(listContainer.style.display).to.equal('none');
+  });
+
+  it('should still move focus to the organization field after selecting a country (focus already redirected by onSelect)', async () => {
+    const countrySearch = document.querySelector('input[data-for="country"]');
+    const organizationSearch = document.querySelector('input[data-for="organizationId"]');
+
+    countrySearch.focus();
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Enter' });
+
+    expect(document.activeElement).to.equal(organizationSearch);
+  });
+
+  it('should announce the number of available results via a live region', async () => {
+    const organizationSearch = document.querySelector('input[data-for="organizationId"]');
+
+    await sendKeys({ press: 'a' });
+
+    await waitForElement('.np-select-list[data-for="organizationId"] .np-select-item');
+
+    const liveRegion = organizationSearch.closest('.np-control').querySelector('.np-sr-only');
+    expect(liveRegion.textContent).to.equal(`${mockedOrganizations.length} results, use arrow keys to navigate`);
+  });
+
+  it('should announce when no results are found via a live region', async () => {
+    const organizationSearch = document.querySelector('input[data-for="organizationId"]');
+
+    await sendKeys({ press: 'z' });
+
+    await waitForElement(
+      '.np-select-list[data-for="organizationId"] .np-select-no-options',
+    );
+
+    const liveRegion = organizationSearch.closest('.np-control').querySelector('.np-sr-only');
+    expect(liveRegion.textContent).to.equal('No matching nonprofit found');
   });
 
   it('should navigate to personal data', async () => {
