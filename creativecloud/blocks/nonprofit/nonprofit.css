@@ -9,6 +9,22 @@
   --np-selected-organization-fallback-background: #da408b;
   --np-button-disabled-background: #e6e6e6;
   --np-button-disabled-color: #b1b1b1;
+  --np-focus-ring-color: var(--color-accent-focus-ring, #1473e6);
+}
+
+.np-container :is(
+  .np-input,
+  .np-button,
+  .np-stepper-back,
+  .np-selected-organization-clear
+):focus-visible {
+  box-shadow: 0 0 0 2px var(--np-focus-ring-color);
+  outline: none;
+}
+
+.np-container .np-select-list-tag:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--np-focus-ring-color);
+  outline: none;
 }
 
 .np-container {
@@ -105,12 +121,12 @@
 }
 
 .np-stepper-back:hover,
-.np-stepper-back:focus {
+.np-stepper-back:focus-visible {
   background-color: var(--color-gray-300);
 }
 
 .np-stepper-back:hover .np-icon path,
-.np-stepper-back:focus .np-icon path {
+.np-stepper-back:focus-visible .np-icon path {
   fill: var(--color-gray-800);
 }
 
@@ -316,7 +332,7 @@
   background-color: var(--color-gray-100);
 }
 
-.np-select-item:focus {
+.np-select-item:focus-visible {
   background-color: var(--color-gray-200);
 }
 
@@ -446,7 +462,7 @@
 }
 
 .np-selected-organization-clear:hover .np-icon path,
-.np-selected-organization-clear:focus .np-icon path {
+.np-selected-organization-clear:focus-visible .np-icon path {
   fill: var(--color-gray-800);
 }
 
