@@ -464,7 +464,9 @@ function getNonprofitInput(params) {
 
     const uploadIconTag = getNonprofitIconTag(NONPRFIT_ICONS.UPLOAD);
 
-    controlTag.append(textTag, uploadIconTag);
+    const inputWrapper = createTag('div', { class: 'np-input-wrapper' });
+    inputWrapper.append(textTag, uploadIconTag);
+    controlTag.append(inputWrapper);
   }
 
   return controlTag;
@@ -781,6 +783,38 @@ function renderOrganizationDetails(containerTag) {
     label: window.mph['nonprofit-evidence-non-profit-status'],
     placeholder: window.mph['nonprofit-evidence-non-profit-status-placeholder'],
     required: true,
+  });
+
+  // A11y: announce the visible file control as a button with a descriptive name
+  const evidenceFileControl = evidenceNonProfitStatusTag.querySelector('.np-input-file');
+  evidenceFileControl.setAttribute('role', 'button');
+  evidenceFileControl.setAttribute('aria-label', `Upload ${window.mph['nonprofit-evidence-non-profit-status']}`);
+
+  const evidenceHelperText = createTag(
+    'span',
+    { class: 'np-input-helper-text', id: 'np-evidence-helper-text' },
+    window.mph['nonprofit-evidence-helper-text'] || 'Accepted file types: JPG, PNG, PDF. Maximum file size: 5 MB.',
+  );
+  evidenceNonProfitStatusTag.append(evidenceHelperText);
+  evidenceFileControl.setAttribute('aria-describedby', 'np-evidence-helper-text');
+
+  // A11y: announce the selected filename when tabbing back to the control
+  const evidenceNativeInput = evidenceNonProfitStatusTag.querySelector('input[type="file"]');
+
+  evidenceNativeInput.addEventListener('change', () => {
+    const file = evidenceNativeInput.files?.[0];
+    if (file) {
+      evidenceFileControl.setAttribute(
+        'aria-label',
+        `${window.mph['nonprofit-evidence-non-profit-status']}: ${file.name}`,
+      );
+      evidenceFileControl.removeAttribute('placeholder');
+      evidenceFileControl.removeAttribute('aria-describedby');
+    } else {
+      evidenceFileControl.setAttribute('aria-label', `Upload ${window.mph['nonprofit-evidence-non-profit-status']}`);
+      evidenceFileControl.setAttribute('placeholder', window.mph['nonprofit-evidence-non-profit-status-placeholder']);
+      evidenceFileControl.setAttribute('aria-describedby', 'np-evidence-helper-text');
+    }
   });
 
   const websiteTag = getNonprofitInput({
