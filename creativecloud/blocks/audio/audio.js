@@ -49,7 +49,7 @@ function syncDaaLl(btn, playing) {
   const ll = btn.getAttribute('daa-ll');
   if (!ll) return;
   const label = playing ? 'Pause' : 'Play';
-  btn.setAttribute('daa-ll', ll.replace(/\b(?:play|pause)\b/gi, label));
+  btn.setAttribute('daa-ll', ll.replaceAll(/\b(?:play|pause)\b/gi, label));
 }
 
 function syncBtnA11y(btn, label) {
