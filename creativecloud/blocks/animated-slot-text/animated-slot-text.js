@@ -162,7 +162,7 @@ function getSlotTextItems(items) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return [items[items.length - 1]];
     }
-    return items.map((item) => item.replace(/\./g, ''));
+    return items.map((item) => item.replaceAll('.', ''));
   } catch (err) {
     logError('Failed to process slot text items', err);
     return [];
