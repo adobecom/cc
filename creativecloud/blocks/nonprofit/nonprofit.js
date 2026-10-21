@@ -393,14 +393,17 @@ function getNonprofitInput(params) {
   const {
     type, name, label, placeholder, required, value,
   } = params;
+  const fieldId = `np-field-${name}`;
   const baseParams = { name, placeholder };
   if (required) baseParams.required = 'required';
   if (value) baseParams.value = value;
   const controlTag = createTag('div', { class: 'np-control' });
-  const labelTag = createTag('label', { class: 'np-label', for: name }, label);
+  const labelTag = createTag('label', { class: 'np-label', for: fieldId }, label);
   const inputTag = createTag('input', {
     class: `np-input${required ? ' np-required-field' : ''}`,
     type,
+    'aria-label': `${label},`,
+    ...(type === 'file' ? {} : { id: fieldId }),
     ...baseParams,
   });
   controlTag.append(labelTag, inputTag);
@@ -414,6 +417,8 @@ function getNonprofitInput(params) {
       class: 'np-input np-input-file',
       placeholder,
       readonly: 'readonly',
+      id: fieldId,
+      'aria-label': `${label},`,
       'data-for': name,
     });
 

@@ -31,11 +31,14 @@ export default function nonprofitSelect(props) {
   let localSelection = null;
 
   const controlTag = createTag('div', { class: 'np-control' });
-  const labelTag = createTag('label', { class: 'np-label', for: name }, label);
+  const fieldId = `np-field-${name}`;
+  const labelTag = createTag('label', { class: 'np-label', for: fieldId }, label);
   const searchTag = createTag('input', {
     class: 'np-input np-select-search',
     type: 'text',
     placeholder,
+    id: fieldId,
+    'aria-label': `${label},`,
     'data-for': name,
   });
   const valueTag = createTag('input', {
