@@ -477,7 +477,7 @@ describe('nonprofit - Organization details', () => {
       'nonprofit-organization-name': 'Organization name',
       'nonprofit-registry': 'Registry',
       'nonprofit-organization-registration-id': 'Registration ID',
-      'nonprofit-evidence-non-profit-status': 'Evidence of nonprofit status',
+      'nonprofit-evidence-non-profit-status': 'Evidence of nonprofit status,',
       'nonprofit-website': 'Website',
     };
   });
@@ -548,7 +548,7 @@ describe('nonprofit - Organization details', () => {
     expect(fileInput.hasAttribute('id')).to.be.false;
     expect(visibleInput.id).to.not.be.empty;
     expect(labelTag.getAttribute('for')).to.equal(visibleInput.id);
-    expect(visibleInput.getAttribute('aria-label')).to.equal(`${labelTag.textContent},`);
+    expect(visibleInput.getAttribute('aria-label')).to.equal(`Upload ${labelTag.textContent}`);
   });
 
   // userEvent crashes on import - this test is skipped

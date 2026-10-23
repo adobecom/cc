@@ -23,6 +23,37 @@ const siblingHtml = await readFile({ path: './mocks/trustcenter-library-gate-sib
 const COOKIE_NAME = 'trustcenter_nda_signed';
 const wait = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
+// Test files run concurrently in the same browser and share its cookie jar, so other files
+// touching this cookie make these tests flaky. Use a private in-memory jar for this page.
+const cookieJar = new Map();
+const nativeCookieDescriptor = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie');
+
+function installCookieJar() {
+  Object.defineProperty(document, 'cookie', {
+    configurable: true,
+    get: () => [...cookieJar].map(([name, value]) => `${name}=${value}`).join('; '),
+    set: (cookieString) => {
+      const [pair, ...attributes] = cookieString.split(';').map((part) => part.trim());
+      const separator = pair.indexOf('=');
+      const name = pair.slice(0, separator);
+      const value = pair.slice(separator + 1);
+      const expired = attributes.some((attribute) => {
+        const [key, attributeValue] = attribute.split('=');
+        if (/^expires$/i.test(key)) return new Date(attributeValue).getTime() <= Date.now();
+        if (/^max-age$/i.test(key)) return Number(attributeValue) <= 0;
+        return false;
+      });
+      if (expired) cookieJar.delete(name);
+      else cookieJar.set(name, value);
+    },
+  });
+}
+
+function uninstallCookieJar() {
+  delete document.cookie;
+  if (nativeCookieDescriptor) Object.defineProperty(Document.prototype, 'cookie', nativeCookieDescriptor);
+}
+
 function clearCookie() {
   document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
 }
@@ -36,6 +67,7 @@ describe('trustcenter library gate - cookie reasonHint', () => {
   }, 4000);
 
   before(() => {
+    installCookieJar();
     setLibs('https://milo.adobe.com/libs');
     setConfig({ env: 'test' });
   });
@@ -53,6 +85,7 @@ describe('trustcenter library gate - cookie reasonHint', () => {
   after(() => {
     if (window.fetch.restore) window.fetch.restore();
     clearCookie();
+    uninstallCookieJar();
   });
 
   it('sends the cookie value as reasonHint on the initial libraryaccess call', async () => {
