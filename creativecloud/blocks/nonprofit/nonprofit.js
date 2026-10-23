@@ -339,6 +339,7 @@ function renderStepper(containerTag) {
 
   const separatorIconTag = getNonprofitIconTag(NONPRFIT_ICONS.CHEVRON_RIGHT);
   separatorIconTag.classList.add('np-step-separator');
+  separatorIconTag.setAttribute('aria-hidden', 'true');
 
   stepperContainerTag.append(
     step1,
@@ -490,7 +491,7 @@ function getSelectedOrganizationTag() {
     initialsTag.textContent = initials;
   };
 
-  const logoTag = createTag('img', { class: 'np-selected-organization-logo' });
+  const logoTag = createTag('img', { class: 'np-selected-organization-logo', alt: '' });
   logoTag.addEventListener('error', () => {
     avatarTag.classList.remove('loading');
     showInitials();
