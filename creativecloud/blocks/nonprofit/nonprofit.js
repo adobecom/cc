@@ -250,7 +250,12 @@ async function sendOrganizationData(product) {
 // UI
 
 function getStepBackTag() {
-  const buttonTag = createTag('div', { class: 'np-stepper-back', tabindex: 0 });
+  const buttonTag = createTag('div', {
+    class: 'np-stepper-back',
+    tabindex: 0,
+    role: 'button',
+    'aria-label': window.mph['nonprofit-back'] || 'Back',
+  });
   const backIconTag = getNonprofitIconTag(NONPRFIT_ICONS.BACK);
   buttonTag.append(backIconTag);
 
@@ -510,7 +515,12 @@ function getSelectedOrganizationTag() {
   const addressTag = createTag('span', { class: 'np-selected-organization-detail' });
   const idTag = createTag('span', { class: 'np-selected-organization-detail' });
 
-  const clearTag = createTag('div', { class: 'np-selected-organization-clear', tabindex: 0 });
+  const clearTag = createTag('div', {
+    class: 'np-selected-organization-clear',
+    tabindex: 0,
+    role: 'button',
+    'aria-label': window.mph['nonprofit-close'] || 'Close',
+  });
   const clearIconTag = getNonprofitIconTag(NONPRFIT_ICONS.CLOSE);
   clearTag.append(clearIconTag);
 
