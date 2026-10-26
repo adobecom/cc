@@ -39,7 +39,7 @@
     "@web/test-runner-commands": "0.6.1",
     "@web/test-runner-mocha": "^0.9.0",
     "axe-html-reporter": "2.2.11",
-    "axios": "1.7.5",
+    "axios": "1.20.0",
     "chai": "4.3.6",
     "chalk": "4.1.2",
     "commander": "12.1.0",
@@ -49,9 +49,9 @@
     "eslint-plugin-import": "2.25.4",
     "playwright": "^1.44.1",
     "sinon": "13.0.1",
-    "stylelint": "14.6.0",
+    "stylelint": "17.16.0",
     "stylelint-config-prettier": "9.0.3",
-    "stylelint-config-standard": "25.0.0"
+    "stylelint-config-standard": "40.0.0"
   },
   "dependencies": {
     "@adobecom/milo": "github:adobecom/milo#main"

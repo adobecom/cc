@@ -250,7 +250,12 @@ async function sendOrganizationData(product) {
 // UI
 
 function getStepBackTag() {
-  const buttonTag = createTag('div', { class: 'np-stepper-back', tabindex: 0 });
+  const buttonTag = createTag('div', {
+    class: 'np-stepper-back',
+    tabindex: 0,
+    role: 'button',
+    'aria-label': window.mph.back || 'Back',
+  });
   const backIconTag = getNonprofitIconTag(NONPRFIT_ICONS.BACK);
   buttonTag.append(backIconTag);
 
@@ -339,6 +344,7 @@ function renderStepper(containerTag) {
 
   const separatorIconTag = getNonprofitIconTag(NONPRFIT_ICONS.CHEVRON_RIGHT);
   separatorIconTag.classList.add('np-step-separator');
+  separatorIconTag.setAttribute('aria-hidden', 'true');
 
   stepperContainerTag.append(
     step1,
@@ -490,7 +496,7 @@ function getSelectedOrganizationTag() {
     initialsTag.textContent = initials;
   };
 
-  const logoTag = createTag('img', { class: 'np-selected-organization-logo' });
+  const logoTag = createTag('img', { class: 'np-selected-organization-logo', alt: '' });
   logoTag.addEventListener('error', () => {
     avatarTag.classList.remove('loading');
     showInitials();
@@ -509,7 +515,12 @@ function getSelectedOrganizationTag() {
   const addressTag = createTag('span', { class: 'np-selected-organization-detail' });
   const idTag = createTag('span', { class: 'np-selected-organization-detail' });
 
-  const clearTag = createTag('div', { class: 'np-selected-organization-clear', tabindex: 0 });
+  const clearTag = createTag('div', {
+    class: 'np-selected-organization-clear',
+    tabindex: 0,
+    role: 'button',
+    'aria-label': window.mph.close || 'Close',
+  });
   const clearIconTag = getNonprofitIconTag(NONPRFIT_ICONS.CLOSE);
   clearTag.append(clearIconTag);
 

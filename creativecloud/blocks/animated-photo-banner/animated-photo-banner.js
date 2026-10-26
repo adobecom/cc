@@ -81,9 +81,9 @@ function removeTransformTransition(element) {
 
 function parseParamValue(key, value) {
   if (key === 'start-pos' || key === 'end-pos') {
-    return value.split(',').map((coord) => parseFloat(coord));
+    return value.split(',').map((coord) => Number.parseFloat(coord));
   }
-  return ['scale', 'wave', 'height'].includes(key) ? parseFloat(value) : value;
+  return ['scale', 'wave', 'height'].includes(key) ? Number.parseFloat(value) : value;
 }
 
 function extractParams(paramDiv) {
@@ -144,7 +144,7 @@ function groupImagesByWave(images, paramsList) {
 
 function initializeImageStates(waveGroups) {
   Object.entries(waveGroups).forEach(([wave, waveImages]) => {
-    const waveNumber = parseInt(wave, 10);
+    const waveNumber = Number.parseInt(wave, 10);
 
     waveImages.forEach(({ element, params }) => {
       if (waveNumber === 0) {
@@ -174,8 +174,8 @@ function setupHeaderInitialState(header, headerParams) {
 
 function animateWaveSequence(waveGroups) {
   const waves = Object.keys(waveGroups)
-    .filter((wave) => parseInt(wave, 10) > 0) // Exclude wave -1 and 0
-    .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+    .filter((wave) => Number.parseInt(wave, 10) > 0) // Exclude wave -1 and 0
+    .sort((a, b) => Number.parseInt(a, 10) - Number.parseInt(b, 10));
 
   waves.forEach((wave, index) => {
     setTimeout(() => {

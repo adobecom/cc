@@ -34,7 +34,7 @@ function decorateSlide(slide) {
 }
 
 function getVisibleCount(track, slides) {
-  const gap = parseFloat(getComputedStyle(track).gap) || 16;
+  const gap = Number.parseFloat(getComputedStyle(track).gap) || 16;
   const slideWidth = slides[0].offsetWidth;
   return Math.floor((track.parentElement.offsetWidth + gap) / (slideWidth + gap));
 }
@@ -50,7 +50,7 @@ function setAriaState(slides, current, visibleCount) {
 }
 
 function goTo(track, slides, index) {
-  const gap = parseFloat(getComputedStyle(track).gap) || 16;
+  const gap = Number.parseFloat(getComputedStyle(track).gap) || 16;
   track.style.transform = `translateX(-${index * (slides[0].offsetWidth + gap)}px)`;
 }
 
