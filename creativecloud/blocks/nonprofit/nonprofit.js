@@ -254,7 +254,7 @@ function getStepBackTag() {
     class: 'np-stepper-back',
     tabindex: 0,
     role: 'button',
-    'aria-label': window.mph['nonprofit-back'] || 'Back',
+    'aria-label': window.mph.back || 'Back',
   });
   const backIconTag = getNonprofitIconTag(NONPRFIT_ICONS.BACK);
   buttonTag.append(backIconTag);
@@ -519,7 +519,7 @@ function getSelectedOrganizationTag() {
     class: 'np-selected-organization-clear',
     tabindex: 0,
     role: 'button',
-    'aria-label': window.mph['nonprofit-close'] || 'Close',
+    'aria-label': window.mph.close || 'Close',
   });
   const clearIconTag = getNonprofitIconTag(NONPRFIT_ICONS.CLOSE);
   clearTag.append(clearIconTag);
