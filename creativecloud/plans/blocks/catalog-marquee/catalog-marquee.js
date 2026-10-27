@@ -38,7 +38,9 @@ export async function decorateFeatures(paragraphs, parentEl, lastChild, createTa
 export function appendFeatures(el, foreground, text, promiseArr, getConfig, loadStyle, createTag) {
   if (!el || !foreground || !text || !promiseArr) return;
   const paragraphs = Array.from(foreground.querySelectorAll(':scope p:not([class])'));
-  const actionArea = text.querySelector('.action-area');
+  // Blob CTAs nest .action-area inside mas-field, so climb to the direct child of text.
+  let actionArea = text.querySelector('.action-area');
+  while (actionArea && actionArea.parentElement !== text) actionArea = actionArea.parentElement;
   // heading + following icons = one group; drop non-product lines
   const groups = [];
   let current = null;
