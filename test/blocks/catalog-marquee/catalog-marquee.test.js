@@ -54,7 +54,7 @@ describe('catalog marquee', () => {
   });
 });
 
-describe('catalog marquee mnemonics without an action area', () => {
+describe('catalog marquee appendFeatures', () => {
   const createTag = (tag, attrs) => {
     const el = document.createElement(tag);
     Object.entries(attrs ?? {}).forEach(([k, v]) => el.setAttribute(k, v));
@@ -62,19 +62,23 @@ describe('catalog marquee mnemonics without an action area', () => {
   };
   const iconParagraph = (name) => `<p><picture><img src="/x.svg" alt="${name}"></picture> <strong>${name}</strong></p>`;
 
-  it('builds the mnemonic list and ignores trailing non-product paragraphs', () => {
+  const decorate = (html) => {
     const el = createTag('div', { class: 'catalog-marquee' });
     const foreground = createTag('div', { class: 'foreground container' });
     const text = createTag('div', { class: 'text' });
-    text.innerHTML = `
+    text.innerHTML = html;
+    foreground.append(text);
+    el.append(foreground);
+    appendFeatures(el, foreground, text, [], () => ({ base: '' }), () => {}, createTag);
+    return text;
+  };
+
+  it('builds the mnemonic list and ignores trailing non-product paragraphs', () => {
+    const text = decorate(`
       <p><strong>Includes:</strong></p>
       ${iconParagraph('Acrobat')}
       ${iconParagraph('Firefly')}
-      <p><strong>Cancel anytime within 14 days.</strong></p>`;
-    foreground.append(text);
-    el.append(foreground);
-
-    appendFeatures(el, foreground, text, [], () => ({ base: '' }), () => {}, createTag);
+      <p><strong>Cancel anytime within 14 days.</strong></p>`);
 
     const lists = text.querySelectorAll('.mnemonic-list');
     expect(lists.length).to.equal(1);
@@ -84,5 +88,17 @@ describe('catalog marquee mnemonics without an action area', () => {
     expect(text.querySelector('.mnemonic-list picture')).to.exist;
     const disclaimer = [...text.querySelectorAll(':scope > p')].find((p) => p.textContent.includes('Cancel anytime'));
     expect(disclaimer).to.exist;
+  });
+
+  it('inserts the list before an .action-area nested in mas-field (blob CTAs)', () => {
+    const text = decorate(`
+      <p><strong>Includes:</strong></p>
+      ${iconParagraph('Acrobat')}
+      <mas-field><span><div class="action-area"><a href="#">Buy</a></div></span></mas-field>`);
+
+    const list = text.querySelector('.mnemonic-list');
+    expect(list.parentElement).to.equal(text);
+    expect(list.nextElementSibling.tagName).to.equal('MAS-FIELD');
+    expect(list.querySelectorAll('.product-item').length).to.equal(2);
   });
 });
