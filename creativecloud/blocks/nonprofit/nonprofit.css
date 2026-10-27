@@ -271,6 +271,11 @@
   pointer-events: none;
 }
 
+[dir='rtl'] .np-control .np-icon {
+  right: unset;
+  left: 15px;
+}
+
 .np-input:disabled ~ .np-icon path,
 .np-stepper-back.disabled .np-icon path {
   fill: var(--color-gray-400);
@@ -285,6 +290,12 @@
   padding-right: 40px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+[dir='rtl'] .np-input.np-input-file,
+[dir='rtl'] .np-select-search {
+  padding-right: 15px;
+  padding-left: 40px;
 }
 
 .np-select-list-container {
