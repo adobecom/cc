@@ -456,8 +456,13 @@
 .np-selected-organization-clear {
   position: absolute;
   display: flex;
+  align-items: center;
+  justify-content: center;
   top: 15px;
   inset-inline-end: 15px;
+  width: 24px;
+  height: 24px;
+  margin: -6px;
   cursor: pointer;
 }
 
