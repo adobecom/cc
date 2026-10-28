@@ -100,6 +100,10 @@
   height: 12px;
 }
 
+[dir='rtl'] .np-step-separator {
+  transform: scaleX(-1);
+}
+
 .np-step-separator.np-icon path {
   fill: none;
 }
