@@ -100,6 +100,10 @@
   height: 12px;
 }
 
+[dir='rtl'] .np-step-separator {
+  transform: scaleX(-1);
+}
+
 .np-step-separator.np-icon path {
   fill: none;
 }
@@ -271,6 +275,11 @@
   pointer-events: none;
 }
 
+[dir='rtl'] .np-control .np-icon {
+  right: unset;
+  left: 15px;
+}
+
 .np-input:disabled ~ .np-icon path,
 .np-stepper-back.disabled .np-icon path {
   fill: var(--color-gray-400);
@@ -285,6 +294,12 @@
   padding-right: 40px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+[dir='rtl'] .np-input.np-input-file,
+[dir='rtl'] .np-select-search {
+  padding-right: 15px;
+  padding-left: 40px;
 }
 
 .np-select-list-container {
@@ -456,8 +471,13 @@
 .np-selected-organization-clear {
   position: absolute;
   display: flex;
+  align-items: center;
+  justify-content: center;
   top: 15px;
   inset-inline-end: 15px;
+  width: 24px;
+  height: 24px;
+  margin: -6px;
   cursor: pointer;
 }
 

@@ -357,6 +357,18 @@
 
     }
 
+    @media (max-width: 600px) {
+        .editorial-card h3 {
+            line-height: 98%;
+        }
+    }
+
+    @media (min-width: 600px) and (max-width: 1199px) {
+        .editorial-card h3 {
+            line-height: 105%;
+        }
+    }
+
     @media (max-width: 1199px) {
         .editorial-card h3 {
             font-size: 20px;
