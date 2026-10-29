@@ -348,3 +348,37 @@ describe('Utility image decoration', () => {
     expect(fragment.querySelector('img').getAttribute('loading')).to.equal('lazy');
   });
 });
+
+describe('MAS fragment preload locale', () => {
+  [
+    ['', undefined, 'en_US', 'US'],
+    ['', 'AU', 'en_GB', 'AU'],
+    ['', 'GB', 'en_GB', 'GB'],
+    ['/au', 'AU', 'en_AU', 'AU'],
+    ['/in', 'IN', 'en_IN', 'IN'],
+    ['/uk', 'GB', 'en_GB', 'GB'],
+    ['/au', 'US', 'en_AU', 'US'],
+    ['/fr', 'AU', 'fr_FR', 'AU'],
+  ].forEach(([prefix, market, locale, country]) => {
+    it(`resolves ${locale}/${country} for prefix "${prefix}" and market ${market}`, () => {
+      expect(utils.getMasLocale({ prefix }, market)).to.deep.equal({ locale, country });
+    });
+  });
+
+  it('fetches the validated market once for parallel preloads', async () => {
+    const original = window.location.href;
+    window.history.replaceState(null, '', '?mas-geo-detection=on');
+    const getValidatedMarket = sinon.stub().resolves('au');
+    const getMarket = utils.createMasMarketGetter(getValidatedMarket);
+    const markets = await Promise.all([getMarket(), getMarket(), getMarket()]);
+    expect(markets).to.deep.equal(['AU', 'AU', 'AU']);
+    expect(getValidatedMarket.calledOnce).to.be.true;
+    window.history.replaceState(null, '', original);
+  });
+
+  it('skips the market lookup when geo detection is off', async () => {
+    const loader = sinon.stub();
+    expect(await utils.createMasMarketGetter(loader)()).to.be.undefined;
+    expect(loader.called).to.be.false;
+  });
+});

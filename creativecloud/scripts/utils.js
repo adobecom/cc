@@ -222,7 +222,7 @@ export const [setLibs, getLibs] = (() => {
 const miloLibs = setLibs('/libs');
 
 // eslint-disable-next-line object-curly-newline
-const { createTag, localizeLinkAsync, getConfig, getMetadata, loadStyle, loadLink, loadScript, createIntersectionObserver, lingoActive, getCountry } = await import(`${miloLibs}/utils/utils.js`);
+const { createTag, localizeLinkAsync, getConfig, getMetadata, loadStyle, loadLink, loadScript, createIntersectionObserver, lingoActive, getCountry, getValidatedMarket } = await import(`${miloLibs}/utils/utils.js`);
 
 async function getGeoLocaleInfo() {
   const { locale } = getConfig();
@@ -383,14 +383,28 @@ const MARKET_LOCALE_OVERRIDES = { en: { AU: 'en_GB', IN: 'en_GB', GB: 'en_GB' } 
 const MAS_LINK_SELECTOR = 'a[href*="mas.adobe.com/studio.html"]';
 const preloadedMasFragments = new Set();
 
-function getMasLocale(miloLocale, geoCountry) {
+export function getMasLocale(miloLocale, market) {
   const geo = (miloLocale?.prefix || 'US_en').replace('/', '');
   let [country = 'US', language = 'en'] = (MAS_GEO_MAP[geo] ?? geo).split('_', 2);
   country = country.toUpperCase();
   language = language.toLowerCase();
-  const marketOverride = MARKET_LOCALE_OVERRIDES[language]?.[geoCountry];
-  return { locale: marketOverride ?? MAS_EXTRA_LOCALES[geo] ?? `${language}_${country}`, country: geoCountry ?? country };
+  const locale = MAS_EXTRA_LOCALES[geo] ?? `${language}_${country}`;
+  if (!market) return { locale, country };
+  const override = market !== country ? MARKET_LOCALE_OVERRIDES[language]?.[market] : undefined;
+  return { locale: override ?? locale, country: market };
 }
+
+export function createMasMarketGetter(getMarket = getValidatedMarket) {
+  let marketPromise;
+  return () => {
+    const flag = new URLSearchParams(window.location.search).get('mas-geo-detection') ?? getMetadata('mas-geo-detection');
+    if (!['on', 'true'].includes(flag?.toLowerCase())) return Promise.resolve(undefined);
+    marketPromise ??= Promise.resolve(getMarket()).then((market) => market?.toUpperCase());
+    return marketPromise;
+  };
+}
+
+const getMasMarket = createMasMarketGetter();
 
 async function preloadMasFragment(a) {
   let url;
@@ -402,13 +416,16 @@ async function preloadMasFragment(a) {
   if (url.hostname !== 'mas.adobe.com' || !url.pathname.endsWith('/studio.html')) return;
   const params = new URLSearchParams(url.hash.replace(/^#/, ''));
   const fragment = params.get('fragment') || params.get('query');
-  if (!fragment || preloadedMasFragments.has(fragment)) return;
-  preloadedMasFragments.add(fragment);
+  const mask = params.get('mask');
+  const preloadKey = `${fragment}|${mask ?? ''}`;
+  if (!fragment || preloadedMasFragments.has(preloadKey)) return;
+  preloadedMasFragments.add(preloadKey);
 
-  const { locale, country } = getMasLocale(getConfig().locale, (await getCountry())?.toUpperCase());
+  const { locale, country } = getMasLocale(getConfig().locale, await getMasMarket());
   const apiKey = getConfig().commerce?.['wcs-api-key'] ?? DEFAULT_MAS_FRAGMENT_API_KEY;
   let endpoint = `${MAS_FRAGMENT_API}?id=${fragment}&api_key=${apiKey}&locale=${locale}`;
   if (country && !locale.endsWith(`_${country}`)) endpoint += `&country=${country}`;
+  if (mask) endpoint += `&mask=${mask}`;
 
   // Explicitly low priority: default fetch-preload priority is High, same tier as the LCP
   // image's fetchpriority="high" below, and would compete with it for bandwidth. We still
