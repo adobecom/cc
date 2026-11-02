@@ -103,9 +103,9 @@ export const locales = {
   ru: { ietf: 'ru-RU', tk: 'aaz7dvd.css' },
   ua: { ietf: 'uk-UA', tk: 'aaz7dvd.css' },
   il_he: { ietf: 'he', tk: 'nwq1mna.css', dir: 'rtl' },
-  ae_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
+  ae_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl', base: 'ara' },
   mena_ar: { ietf: 'ar', tk: 'dis2dpj.css', dir: 'rtl' },
-  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' },
+  sa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl', base: 'ara' },
   // Asia Pacific
   au: { ietf: 'en-AU', tk: 'pps7abe.css' },
   hk_en: { ietf: 'en-HK', tk: 'pps7abe.css', base: '' },
@@ -122,8 +122,8 @@ export const locales = {
   in_hi: { ietf: 'hi', tk: 'aaa8deh.css' },
   th_th: { ietf: 'th', tk: 'lqo2bst.css' },
   cn: { ietf: 'zh-CN', tk: 'puu3xkp' },
-  hk_zh: { ietf: 'zh-HK', tk: 'jay0ecd' },
-  tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
+  hk_zh: { ietf: 'zh-HK', tk: 'jay0ecd', base: 'zh-hant' },
+  tw: { ietf: 'zh-TW', tk: 'jay0ecd', base: 'zh-hant' },
   jp: { ietf: 'ja-JP', tk: 'dvg6awq' },
   kr: { ietf: 'ko-KR', tk: 'qjs5sfm' },
   // Langstore Support.
@@ -135,17 +135,20 @@ export const locales = {
   ec: { ietf: 'es-419', tk: 'oln4yqj.css', base: 'es' }, // Ecuador (Spanish Latin America)
   pr: { ietf: 'es-419', tk: 'oln4yqj.css', base: 'es' }, // Puerto Rico (Spanish Latin America)
   gt: { ietf: 'es-419', tk: 'oln4yqj.css', base: 'es' }, // Guatemala (Spanish Latin America)
-  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Egypt (Arabic)
-  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Kuwait (Arabic)
-  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl' }, // Qatar (Arabic)
+  eg_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl', base: 'ara' }, // Egypt (Arabic)
+  kw_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl', base: 'ara' }, // Kuwait (Arabic)
+  qa_ar: { ietf: 'ar', tk: 'nwq1mna.css', dir: 'rtl', base: 'ara' }, // Qatar (Arabic)
   eg_en: { ietf: 'en-GB', tk: 'pps7abe.css', base: '' }, // Egypt (GB English)
   kw_en: { ietf: 'en-GB', tk: 'pps7abe.css', base: '' }, // Kuwait (GB English)
   qa_en: { ietf: 'en-GB', tk: 'pps7abe.css', base: '' }, // Qatar (GB English)
-  gr_el: { ietf: 'el', tk: 'fnx0rsr.css' }, // Greece (Greek)
+  gr_el: { ietf: 'el', tk: 'fnx0rsr.css', base: 'el' }, // Greece (Greek)
   vn_en: { ietf: 'en-GB', tk: 'hah7vzn.css', base: '' },
   vn_vi: { ietf: 'vi', tk: 'qxw8hzm.css' },
   cis_ru: { ietf: 'ru', tk: 'qxw8hzm.css' },
   cis_en: { ietf: 'en', tk: 'pps7abe.css', base: '' },
+  ara: { ietf: 'ar', tk: 'dis2dpj.css' },
+  el: { ietf: 'el', tk: 'fnx0rsr.css' },
+  'zh-hant': { ietf: 'zh-Hant', tk: 'jay0ecd' },
 };
 
 const stageDomainsMap = {
